@@ -1,5 +1,5 @@
 # -----------------------------------------------------------------------------
-# Define the primary BGL17 target.
+# Define the primary NW_GRAPH target.
 # -----------------------------------------------------------------------------
 #
 # This target keeps track of all of the header sources for BGL, and sets up all
@@ -85,7 +85,7 @@ check_cxx_source_compiles(
   HAVE_INCLUSIVE_SCAN)
 
 if (NOT HAVE_INCLUSIVE_SCAN)
-  target_compile_definitions(bgl INTERFACE BGL17_NEED_INCLUSIVE_SCAN)
+  target_compile_definitions(bgl INTERFACE NW_GRAPH_NEED_INCLUSIVE_SCAN)
 endif ()
 
 check_cxx_source_compiles(
@@ -97,7 +97,7 @@ check_cxx_source_compiles(
   HAVE_EXCLUSIVE_SCAN)
 
 if (NOT HAVE_EXCLUSIVE_SCAN)
-  target_compile_definitions(bgl INTERFACE BGL17_NEED_EXCLUSIVE_SCAN)
+  target_compile_definitions(bgl INTERFACE NW_GRAPH_NEED_EXCLUSIVE_SCAN)
 endif ()
 
 check_cxx_source_compiles(
@@ -109,19 +109,19 @@ check_cxx_source_compiles(
   HAVE_REDUCE)
 
 if (NOT HAVE_REDUCE)
-  target_compile_definitions(bgl INTERFACE BGL17_NEED_REDUCE)
+  target_compile_definitions(bgl INTERFACE NW_GRAPH_NEED_REDUCE)
 endif ()
 
 # -----------------------------------------------------------------------------
 # Handle requests for parallel execution
 # -----------------------------------------------------------------------------
-if (BGL17_EXECUTION_POLICY)
+if (NW_GRAPH_EXECUTION_POLICY)
   set(THREADS_PREFER_PTHREAD_FLAG ON)
   find_package(TBB REQUIRED)
   find_package(Threads REQUIRED)
   target_compile_definitions(bgl INTERFACE EXECUTION_POLICY)
   target_link_libraries(bgl INTERFACE TBB::tbb Threads::Threads)
-  if (BGL17_USE_TBBMALLOC)
+  if (NW_GRAPH_USE_TBBMALLOC)
     target_link_libraries(bgl INTERFACE TBB::tbbmalloc) 
   endif ()
 endif()
