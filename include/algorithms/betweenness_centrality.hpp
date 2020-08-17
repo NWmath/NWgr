@@ -2,8 +2,8 @@
 // This file is part of Standard Graph Library (SGL)
 // (c) Pacific Northwest National Laboratory 2018
 //
-// Licensed under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License
-// https://creativecommons.org/licenses/by-nc-sa/4.0/
+// Licensed under Creative Commons Attribution-NonCommercial-ShareAlike 4.0
+// International License https://creativecommons.org/licenses/by-nc-sa/4.0/
 //
 // Author: Kevin Deweese
 //
@@ -12,10 +12,10 @@
 #define BETWEENNESS_CENTRALITY_HPP
 
 #include "util.hpp"
-#include "worklist.hpp"
 #include "util/AtomicBitVector.hpp"
 #include "util/atomic.hpp"
 #include "util/parallel_for.hpp"
+#include "worklist.hpp"
 
 #include <algorithm>
 
@@ -45,6 +45,9 @@
 #include <tbb/concurrent_vector.h>
 #include <tbb/parallel_for_each.h>
 
+namespace nw {
+namespace graph {
+
 class Spinlock {
   std::atomic_flag flag = ATOMIC_FLAG_INIT;
 
@@ -57,7 +60,7 @@ public:
   void unlock() { flag.clear(std::memory_order_release); }
 };
 //****************************************************************************
-template<typename Graph, typename score_t = float, typename accum_t = size_t>
+template <typename Graph, typename score_t = float, typename accum_t = size_t>
 std::vector<score_t> betweenness_brandes(Graph& A) {
   size_t               n_vtx = A.size();
   std::vector<score_t> centrality(n_vtx, 0);
@@ -76,7 +79,7 @@ std::vector<score_t> betweenness_brandes(Graph& A) {
     std::vector<std::list<size_t>> P(n_vtx);
 
     path_counts[s] = 1;
-    d[s]     = 0;
+    d[s]           = 0;
     Q.push(s);
 
     while (!Q.empty()) {
@@ -101,8 +104,7 @@ std::vector<score_t> betweenness_brandes(Graph& A) {
       auto w = S.top();
       S.pop();
       for (auto it = P[w].begin(); it != P[w].end(); ++it) {
-        delta[*it] += static_cast<score_t>(path_counts[*it]) /
-      static_cast<score_t>(path_counts[w]) * (1 + delta[w]);
+        delta[*it] += static_cast<score_t>(path_counts[*it]) / static_cast<score_t>(path_counts[w]) * (1 + delta[w]);
       }
       if (w != s) {
         centrality[w] += delta[w];
@@ -115,7 +117,7 @@ std::vector<score_t> betweenness_brandes(Graph& A) {
   return final;
 }
 
-template<typename Graph, typename score_t = float, typename accum_t = size_t>
+template <typename Graph, typename score_t = float, typename accum_t = size_t>
 std::vector<score_t> approx_betweenness_brandes(Graph& A, std::vector<vertex_id_t>& sources) {
   size_t               n_vtx = A.size();
   std::vector<score_t> centrality(n_vtx, 0);
@@ -132,7 +134,7 @@ std::vector<score_t> approx_betweenness_brandes(Graph& A, std::vector<vertex_id_
     std::vector<std::list<size_t>> P(n_vtx);
 
     path_counts[s] = 1;
-    d[s]     = 0;
+    d[s]           = 0;
     Q.push(s);
 
     while (!Q.empty()) {
@@ -157,8 +159,7 @@ std::vector<score_t> approx_betweenness_brandes(Graph& A, std::vector<vertex_id_
       auto w = S.top();
       S.pop();
       for (auto it = P[w].begin(); it != P[w].end(); ++it) {
-        delta[*it] += static_cast<score_t>(path_counts[*it]) /
-      static_cast<score_t>(path_counts[w]) * (1 + delta[w]);
+        delta[*it] += static_cast<score_t>(path_counts[*it]) / static_cast<score_t>(path_counts[w]) * (1 + delta[w]);
       }
       if (w != s) {
         centrality[w] += delta[w];
@@ -171,7 +172,7 @@ std::vector<score_t> approx_betweenness_brandes(Graph& A, std::vector<vertex_id_
   return centrality;
 }
 
-template<typename Graph, typename score_t = float, typename accum_t = size_t>
+template <typename Graph, typename score_t = float, typename accum_t = size_t>
 std::vector<score_t> approx_betweenness_worklist_serial(Graph& A, std::vector<vertex_id_t>& sources) {
   size_t               n_vtx = A.size();
   std::vector<score_t> centrality(n_vtx, 0);
@@ -198,7 +199,7 @@ std::vector<score_t> approx_betweenness_worklist_serial(Graph& A, std::vector<ve
   };
   auto g_sp       = [](auto& u, auto& v, auto& udata, auto& vdata) { return vdata->l > udata->l + 1; };
   auto apply_spfu = [](auto& u, auto& v, auto& udata, auto& vdata) {
-    vdata->l     = udata->l + 1;
+    vdata->l           = udata->l + 1;
     vdata->path_counts = udata->path_counts;
     vdata->preds.clear();
     vdata->succs.clear();
@@ -221,7 +222,7 @@ std::vector<score_t> approx_betweenness_worklist_serial(Graph& A, std::vector<ve
     return udata->l == udata->edge_l_s[v].first && vdata->l == udata->l + 1 && udata->edge_l_s[v].second != udata->path_counts;
   };
   auto apply_us = [](auto& u, auto& v, auto& udata, auto& vdata) {
-    vdata->path_counts              = vdata->path_counts + udata->path_counts - udata->edge_l_s[v].second;
+    vdata->path_counts        = vdata->path_counts + udata->path_counts - udata->edge_l_s[v].second;
     udata->edge_l_s[v].second = udata->path_counts;
   };
 
@@ -230,14 +231,14 @@ std::vector<score_t> approx_betweenness_worklist_serial(Graph& A, std::vector<ve
   for (auto& s : sources) {
 
     for (auto it = vertices.begin(); it != vertices.end(); ++it) {
-      it->l     = std::numeric_limits<std::uint32_t>::max();
+      it->l           = std::numeric_limits<std::uint32_t>::max();
       it->path_counts = 0;
       it->preds.clear();
       it->succs.clear();
       it->edge_l_s.clear();
     }
 
-    vertices[s].l     = 0;
+    vertices[s].l           = 0;
     vertices[s].path_counts = 1;
     std::fill(delta.begin(), delta.end(), 0);
 
@@ -247,14 +248,14 @@ std::vector<score_t> approx_betweenness_worklist_serial(Graph& A, std::vector<ve
 
     auto work = worklist.begin();
     for (; work != worklist.end(); ++work) {
-      //auto workitem = *(++work);
+      // auto workitem = *(++work);
       auto workitem = *(work);
       auto u        = std::get<0>(workitem);
       auto v        = std::get<1>(workitem);
 
       nodeinfo* vdata = &vertices[v];
       nodeinfo* udata = &vertices[u];
-      //lock u,v
+      // lock u,v
 
       if (g_cn(u, v, udata, vdata)) {
         apply_cn(u, v, udata, vdata);
@@ -266,42 +267,44 @@ std::vector<score_t> approx_betweenness_worklist_serial(Graph& A, std::vector<ve
           ++i;
         }
         apply_spfu(u, v, udata, vdata);
-        //unlock u,v
+        // unlock u,v
 
         for (auto inner = G[v].begin(); inner != G[v].end(); ++inner) {
           worklist.push_back(std::pair(v, std::get<0>(*inner)));
         }
-        //Should this be all incoming edges?
+        // Should this be all incoming edges?
         for (auto iter = temp_preds.begin(); iter != temp_preds.end(); ++iter) {
           worklist.push_back(std::pair(*iter, v));
         }
-      }    //else if (vdata->l == udata->l + 1 && udata->edge_l_s[v].first != udata->l) {
-      //else if (vdata->l == udata->l + 1 && udata->edge_l[v] != udata->l) {
+      }    // else if (vdata->l == udata->l + 1 && udata->edge_l_s[v].first !=
+      // udata->l) {
+      // else if (vdata->l == udata->l + 1 && udata->edge_l[v] != udata->l) {
       else if (g_fu(u, v, udata, vdata)) {
         apply_fu(u, v, udata, vdata);
-        //unlock u,v
-        //should this include all neighbors of v?
+        // unlock u,v
+        // should this include all neighbors of v?
         if (vdata->succs.begin() != vdata->succs.end()) {
           for (auto inner = G[v].begin(); inner != G[v].end(); ++inner) {
             worklist.push_back(std::pair(v, std::get<0>(*inner)));
           }
         }
-        /*for (auto it = vertices[v].succs.begin(); it != vertices[v].succs.end(); ++it) {
-          worklist.push_back(std::pair(v, *it));
+        /*for (auto it = vertices[v].succs.begin(); it !=
+        vertices[v].succs.end(); ++it) { worklist.push_back(std::pair(v, *it));
         }*/
       } else if (g_us(u, v, udata, vdata)) {
         apply_us(u, v, udata, vdata);
-        //unlock u,v
+        // unlock u,v
 
-        //should this only be all neighbors of v?
-        /*for (auto inner = (A.begin()[v]).begin(); inner != (A.begin()[v]).end(); ++inner) {
-          worklist.push_back(std::pair(v, std::get<0>(*inner)));
+        // should this only be all neighbors of v?
+        /*for (auto inner = (A.begin()[v]).begin(); inner !=
+        (A.begin()[v]).end(); ++inner) { worklist.push_back(std::pair(v,
+        std::get<0>(*inner)));
         }*/
         for (auto it = vdata->succs.begin(); it != vdata->succs.end(); ++it) {
           worklist.push_back(std::pair(v, *it));
         }
       } else {
-        //unlock u,v
+        // unlock u,v
       }
     }
 
@@ -322,10 +325,9 @@ std::vector<score_t> approx_betweenness_worklist_serial(Graph& A, std::vector<ve
       nodeinfo* vdata    = &vertices[v];
 
       for (auto it = vdata->preds.begin(); it != vdata->preds.end(); ++it) {
-        //lock u (*it)
+        // lock u (*it)
         auto u = *it;
-        delta[u] += static_cast<score_t>(vertices[u].path_counts) /
-      static_cast<score_t>(vdata->path_counts) * (1 + delta[v]);
+        delta[u] += static_cast<score_t>(vertices[u].path_counts) / static_cast<score_t>(vdata->path_counts) * (1 + delta[v]);
         succs_ct[u]--;
         if (succs_ct[u] == 0 && u != s) worklist_back.push_back(u);
       }
@@ -338,12 +340,12 @@ std::vector<score_t> approx_betweenness_worklist_serial(Graph& A, std::vector<ve
   return centrality;
 }
 
-template<typename Graph, typename score_t = float, typename accum_t = size_t>
+template <typename Graph, typename score_t = float, typename accum_t = size_t>
 std::vector<score_t> approx_betweenness_worklist(Graph& A, std::vector<vertex_id_t>& sources, size_t num_threads, size_t DELTA) {
   size_t               n_vtx = A.size();
   std::vector<score_t> centrality(n_vtx, 0);
   auto                 G = A.begin();
-  //size_t             DELTA = 200;
+  // size_t             DELTA = 200;
   struct nodeinfo {
     size_t                                                      l;
     accum_t                                                     path_counts;
@@ -367,7 +369,7 @@ std::vector<score_t> approx_betweenness_worklist(Graph& A, std::vector<vertex_id
   };
   auto g_sp       = [](auto& u, auto& v, auto& udata, auto& vdata) { return vdata->l > udata->l + 1; };
   auto apply_spfu = [](auto& u, auto& v, auto& udata, auto& vdata) {
-    vdata->l     = udata->l + 1;
+    vdata->l           = udata->l + 1;
     vdata->path_counts = udata->path_counts;
     vdata->preds.clear();
     vdata->succs.clear();
@@ -390,30 +392,31 @@ std::vector<score_t> approx_betweenness_worklist(Graph& A, std::vector<vertex_id
     return udata->l == udata->edge_l_s[v].first && vdata->l == udata->l + 1 && udata->edge_l_s[v].second != udata->path_counts;
   };
   auto apply_us = [](auto& u, auto& v, auto& udata, auto& vdata) {
-    vdata->path_counts              = vdata->path_counts + udata->path_counts - udata->edge_l_s[v].second;
+    vdata->path_counts        = vdata->path_counts + udata->path_counts - udata->edge_l_s[v].second;
     udata->edge_l_s[v].second = udata->path_counts;
   };
 
   for (auto& s : sources) {
     for (auto it = vertices.begin(); it != vertices.end(); ++it) {
-      it->l     = std::numeric_limits<std::uint32_t>::max();
+      it->l           = std::numeric_limits<std::uint32_t>::max();
       it->path_counts = 0;
       it->preds.clear();
       it->succs.clear();
       it->edge_l_s.clear();
     }
 
-    vertices[s].l     = 0;
+    vertices[s].l           = 0;
     vertices[s].path_counts = 1;
     std::fill(delta.begin(), delta.end(), 0);
     tbb::concurrent_queue<std::pair<vertex_id_t, vertex_id_t>> myqueue;
-    //tbbworklist_range<decltype(A), std::pair<std::pair<vertex_id_t, vertex_id_t>, size_t>, DELTAQ> worklist(A);
+    // tbbworklist_range<decltype(A), std::pair<std::pair<vertex_id_t,
+    // vertex_id_t>, size_t>, DELTAQ> worklist(A);
     tbbworklist_range2<decltype(A), std::pair<vertex_id_t, vertex_id_t>> worklist(A);
     auto                                                                 first = A.begin();
     for (auto inner = (first[s]).begin(); inner != (first[s]).end(); ++inner) {
-      //worklist.push_back(std::pair(s, std::get<0>(*inner)));
+      // worklist.push_back(std::pair(s, std::get<0>(*inner)));
       worklist.push_back(std::pair(s, std::get<0>(*inner)), 0);
-      //myqueue.push(std::pair(s, std::get<0>(*inner)));
+      // myqueue.push(std::pair(s, std::get<0>(*inner)));
     }
     std::pair<vertex_id_t, vertex_id_t> dummy1(0, 0);
     worklist.set_dummy(dummy1);
@@ -427,24 +430,26 @@ std::vector<score_t> approx_betweenness_worklist(Graph& A, std::vector<vertex_id
             for (; work != worklist.end(); ++work) {
               if (*work != dummy1) {
 
-                //while (myqueue.unsafe_size() > 0) {
+                // while (myqueue.unsafe_size() > 0) {
                 /*size_t buffer_size=50;
-                                       std::vector<std::pair<vertex_id_t, vertex_id_t>> buffer(buffer_size);
-                                       for(size_t j = 0; j < buffer_size; ++j) {
-                                         buffer[j] = *(++work);
+                                       std::vector<std::pair<vertex_id_t,
+                   vertex_id_t>> buffer(buffer_size); for(size_t j = 0; j <
+                   buffer_size; ++j) { buffer[j] = *(++work);
                                        }
                                        for(size_t j = 0; j < buffer_size; ++j) {
                                          auto workitem = buffer[j];*/
-                //auto      workitembuffer = *(++work);
-                //std::cout << "anything" << std::endl;
-                //for(auto workitem = (*work).begin(); workitem != (*work).end(); ++workitem) {
-                //std::for_each(std::execution::par_unseq,(*work).begin(), (*work).end(), [&](auto &workitem) {
+                // auto      workitembuffer = *(++work);
+                // std::cout << "anything" << std::endl;
+                // for(auto workitem = (*work).begin(); workitem !=
+                // (*work).end(); ++workitem) {
+                // std::for_each(std::execution::par_unseq,(*work).begin(),
+                // (*work).end(), [&](auto &workitem) {
 
-                //for (auto workitem = (*work).begin(); workitem != (*work).end(); ++workitem) {
-                //auto workitem = *y;
-                //std::pair<vertex_id_t, vertex_id_t> workitem;
-                //if (myqueue.try_pop(workitem)) {
-                //if(*workitem != dummy1) {
+                // for (auto workitem = (*work).begin(); workitem !=
+                // (*work).end(); ++workitem) { auto workitem = *y;
+                // std::pair<vertex_id_t, vertex_id_t> workitem;
+                // if (myqueue.try_pop(workitem)) {
+                // if(*workitem != dummy1) {
                 auto u = std::get<0>(*work);
                 auto v = std::get<1>(*work);
                 if (u < v) {
@@ -455,10 +460,10 @@ std::vector<score_t> approx_betweenness_worklist(Graph& A, std::vector<vertex_id
                   vector_spinlocks[u].lock();
                 }
 
-                //std::cout << u << " " << v << std::endl;
+                // std::cout << u << " " << v << std::endl;
                 nodeinfo* udata = &vertices[u];
                 nodeinfo* vdata = &vertices[v];
-                //lock u,v
+                // lock u,v
                 if (g_cn(u, v, udata, vdata)) {
                   apply_cn(u, v, udata, vdata);
                   vector_spinlocks[v].unlock();
@@ -471,61 +476,63 @@ std::vector<score_t> approx_betweenness_worklist(Graph& A, std::vector<vertex_id
                     ++i;
                   }
                   apply_spfu(u, v, udata, vdata);
-                  //unlock u,v
+                  // unlock u,v
                   vector_spinlocks[u].unlock();
 
                   for (auto inner = (A.begin()[v]).begin(); inner != (A.begin()[v]).end(); ++inner) {
                     size_t priority = (vdata->l + 1) / DELTA;
-                    //worklist.push_back(std::pair(v, std::get<0>(*inner)));
-                    //myqueue.push(std::pair(v, std::get<0>(*inner)));
+                    // worklist.push_back(std::pair(v, std::get<0>(*inner)));
+                    // myqueue.push(std::pair(v, std::get<0>(*inner)));
                     worklist.push_back(std::pair(v, std::get<0>(*inner)), priority);
                   }
 
-                  //Should this be all incoming edges?
+                  // Should this be all incoming edges?
                   for (auto iter = temp_preds.begin(); iter != temp_preds.end(); ++iter) {
                     size_t priority = (vertices[*iter].l + 1) / DELTA;
-                    //worklist.push_back(std::pair(*iter, v));
-                    //myqueue.push(std::pair(*iter, v));
+                    // worklist.push_back(std::pair(*iter, v));
+                    // myqueue.push(std::pair(*iter, v));
                     worklist.push_back(std::pair(*iter, v), priority);
                   }
                   vector_spinlocks[v].unlock();
                 } else if (g_fu(u, v, udata, vdata)) {
                   apply_fu(u, v, udata, vdata);
-                  //unlock u,v
+                  // unlock u,v
                   vector_spinlocks[u].unlock();
 
-                  //should this only be succ of v?
+                  // should this only be succ of v?
                   if (vdata->succs.begin() != vdata->succs.end()) {
                     for (auto inner = (A.begin()[v]).begin(); inner != (A.begin()[v]).end(); ++inner) {
                       size_t priority = (vdata->l + 1) / DELTA;
-                      //worklist.push_back(std::pair(v, std::get<0>(*inner)));
-                      //myqueue.push(std::pair(v, std::get<0>(*inner)));
+                      // worklist.push_back(std::pair(v, std::get<0>(*inner)));
+                      // myqueue.push(std::pair(v, std::get<0>(*inner)));
                       worklist.push_back(std::pair(v, std::get<0>(*inner)), priority);
                     }
                   }
                   vector_spinlocks[v].unlock();
-                  /*for (auto it = vdata->succs.begin(); it != vdata->succs.end(); ++it) {
-                         worklist.push_back(std::pair(v, *it));
+                  /*for (auto it = vdata->succs.begin(); it !=
+                     vdata->succs.end(); ++it) { worklist.push_back(std::pair(v,
+                     *it));
                        }*/
                 } else if (g_us(u, v, udata, vdata)) {
                   apply_us(u, v, udata, vdata);
-                  //unlock u,v
+                  // unlock u,v
                   vector_spinlocks[u].unlock();
 
-                  //should this only be succ of v?
-                  /*for (auto inner = (A.begin()[v]).begin(); inner != (A.begin()[v]).end(); ++inner) {
+                  // should this only be succ of v?
+                  /*for (auto inner = (A.begin()[v]).begin(); inner !=
+                     (A.begin()[v]).end(); ++inner) {
                          worklist.push_back(std::pair(v, std::get<0>(*inner)));
                        }*/
 
                   for (auto it = vdata->succs.begin(); it != vdata->succs.end(); ++it) {
                     size_t priority = (vdata->l + 1) / DELTA;
                     worklist.push_back(std::pair(v, *it), priority);
-                    //worklist.push_back(std::pair(v, *it));
-                    //myqueue.push(std::pair(v, *it));
+                    // worklist.push_back(std::pair(v, *it));
+                    // myqueue.push(std::pair(v, *it));
                   }
                   vector_spinlocks[v].unlock();
                 } else {
-                  //unlock u,v
+                  // unlock u,v
                   vector_spinlocks[v].unlock();
                   vector_spinlocks[u].unlock();
                 }
@@ -538,10 +545,11 @@ std::vector<score_t> approx_betweenness_worklist(Graph& A, std::vector<vertex_id
     for (size_t i = 0; i < num_threads; ++i) {
       futures[i].get();
     }
-    //std::cout << "here" << std::endl;
+    // std::cout << "here" << std::endl;
     for (auto work = worklist.begin(); work != worklist.end(); ++work) {
-      //auto      workitembuffer = *(++work);
-      //for (auto workitem = (*work).begin(); workitem != (*work).end(); ++workitem) {
+      // auto      workitembuffer = *(++work);
+      // for (auto workitem = (*work).begin(); workitem != (*work).end();
+      // ++workitem) {
       if (*work != dummy1) {
         auto u = std::get<0>(*work);
         auto v = std::get<1>(*work);
@@ -559,23 +567,23 @@ std::vector<score_t> approx_betweenness_worklist(Graph& A, std::vector<vertex_id
             ++i;
           }
           apply_spfu(u, v, udata, vdata);
-          //unlock u,v
+          // unlock u,v
 
           for (auto inner = (A.begin()[v]).begin(); inner != (A.begin()[v]).end(); ++inner) {
             size_t priority = (vdata->l + 1) / DELTA;
-            //worklist.push_back(std::pair(v, std::get<0>(*inner)));
+            // worklist.push_back(std::pair(v, std::get<0>(*inner)));
             worklist.push_back(std::pair(v, std::get<0>(*inner)), priority);
           }
-          //Should this be all incoming edges?
+          // Should this be all incoming edges?
           for (auto iter = temp_preds.begin(); iter != temp_preds.end(); ++iter) {
             size_t priority = (vertices[*iter].l + 1) / DELTA;
-            //worklist.push_back(std::pair(*iter, v));
+            // worklist.push_back(std::pair(*iter, v));
             worklist.push_back(std::pair(*iter, v), priority);
           }
         } else if (g_fu(u, v, udata, vdata)) {
           apply_fu(u, v, udata, vdata);
-          //unlock u,v
-          //should this include all neighbors of v?
+          // unlock u,v
+          // should this include all neighbors of v?
           if (vdata->succs.begin() != vdata->succs.end()) {
             for (auto inner = (A.begin()[v]).begin(); inner != (A.begin()[v]).end(); ++inner) {
               size_t priority = (vdata->l + 1) / DELTA;
@@ -586,7 +594,7 @@ std::vector<score_t> approx_betweenness_worklist(Graph& A, std::vector<vertex_id
           apply_us(u, v, udata, vdata);
           for (auto it = vdata->succs.begin(); it != vdata->succs.end(); ++it) {
             size_t priority = (vdata->l + 1) / DELTA;
-            //worklist.push_back(std::pair(v, *it));
+            // worklist.push_back(std::pair(v, *it));
             worklist.push_back(std::pair(v, *it), priority);
           }
         }
@@ -596,9 +604,9 @@ std::vector<score_t> approx_betweenness_worklist(Graph& A, std::vector<vertex_id
     std::cout << "back" << std::endl;
     tbbworklist_range<decltype(A), vertex_id_t> worklist_back(A);
 
-    std::vector<size_t>                         succs_ct(n_vtx);
-    //std::cout << "back" << std::endl;
-    for(vertex_id_t v = 0; v < A.max()+1; ++v) {
+    std::vector<size_t> succs_ct(n_vtx);
+    // std::cout << "back" << std::endl;
+    for (vertex_id_t v = 0; v < A.max() + 1; ++v) {
       succs_ct[v] = vertices[v].succs.size();
       if (vertices[v].succs.empty()) {
         worklist_back.push_back(v);
@@ -607,46 +615,46 @@ std::vector<score_t> approx_betweenness_worklist(Graph& A, std::vector<vertex_id
 
     worklist_back.set_dummy(std::numeric_limits<std::uint32_t>::max());
     std::vector<std::future<void>> futures2(num_threads);
-    //std::cout << "num_threads " << num_threads << std::endl;
+    // std::cout << "num_threads " << num_threads << std::endl;
     for (size_t thread = 0; thread < num_threads; ++thread) {
       futures2[thread] = std::async(
           std::launch::async,
           [&](size_t thread) {
-            //std::cout << "starting on " << thread << std::endl;
+            // std::cout << "starting on " << thread << std::endl;
             thread_local auto work2 = worklist_back.begin();
             for (; work2 != worklist_back.end(); ++work2) {
-              //auto workitembuffer = *(++work2);
-              //for (auto y : workitembuffer) {
-              //auto workitem = y;
+              // auto workitembuffer = *(++work2);
+              // for (auto y : workitembuffer) {
+              // auto workitem = y;
               if (*work2 != std::numeric_limits<std::uint32_t>::max()) {
                 auto v = *work2;
-                //std::cout << "thread " << thread << " taking " << v << std::endl;
-                //vector_spinlocks[v].lock();
-                //locks[v].lock();
-                //std::cout << "thread " << thread << " got " << v << std::endl;
+                // std::cout << "thread " << thread << " taking " << v <<
+                // std::endl; vector_spinlocks[v].lock(); locks[v].lock();
+                // std::cout << "thread " << thread << " got " << v <<
+                // std::endl;
                 for (auto it = vertices[v].preds.begin(); it != vertices[v].preds.end(); ++it) {
                   auto u = *it;
-                  //std::cout << "u " << u << std::endl;
+                  // std::cout << "u " << u << std::endl;
                   vector_spinlocks[u].lock();
-                  //locks[u].lock();
+                  // locks[u].lock();
                   delta[u] = delta[u] + static_cast<score_t>(vertices[u].path_counts) /
-            static_cast<score_t>(vertices[v].path_counts) * (1 + delta[v]);
-                  //succs[u].erase(v);
+                                            static_cast<score_t>(vertices[v].path_counts) * (1 + delta[v]);
+                  // succs[u].erase(v);
                   succs_ct[u]--;
-                  //if (succs[u].empty() && u != s) worklist_back.push_back(u);
+                  // if (succs[u].empty() && u != s) worklist_back.push_back(u);
                   if (succs_ct[u] == 0 && u != s) {
                     worklist_back.push_back(u);
                   }
                   vector_spinlocks[u].unlock();
-                  //locks[u].unlock();
+                  // locks[u].unlock();
                 }
                 centrality[v] += delta[v];
-                //vector_spinlocks[v].unlock();
-                //locks[v].unlock();
+                // vector_spinlocks[v].unlock();
+                // locks[v].unlock();
               }
             }
 
-            //std::cout << "thread " << thread << " done" << std::endl;
+            // std::cout << "thread " << thread << " done" << std::endl;
 
             return;
           },
@@ -659,7 +667,7 @@ std::vector<score_t> approx_betweenness_worklist(Graph& A, std::vector<vertex_id
   return centrality;
 }
 
-template<typename Graph, typename score_t = float, typename accum_t = size_t>
+template <typename Graph, typename score_t = float, typename accum_t = size_t>
 std::vector<score_t> approx_betweenness_worklist_noabstraction(Graph& A, std::vector<vertex_id_t>& sources, size_t num_threads,
                                                                size_t par_thresh, size_t DELTA = 1) {
   size_t               n_vtx = A.size();
@@ -686,7 +694,7 @@ std::vector<score_t> approx_betweenness_worklist_noabstraction(Graph& A, std::ve
   };
   auto g_sp       = [](auto& u, auto& v, auto& udata, auto& vdata) { return vdata->l > udata->l + 1; };
   auto apply_spfu = [](auto& u, auto& v, auto& udata, auto& vdata) {
-    vdata->l     = udata->l + 1;
+    vdata->l           = udata->l + 1;
     vdata->path_counts = udata->path_counts;
     vdata->preds.clear();
     vdata->succs.clear();
@@ -701,18 +709,19 @@ std::vector<score_t> approx_betweenness_worklist_noabstraction(Graph& A, std::ve
   auto apply_fu = [](auto& u, auto& v, auto& udata, auto& vdata) {
     vdata->path_counts += udata->path_counts;
     udata->succs.emplace_front(v);
-    //vdata->preds.push_back(u);
+    // vdata->preds.push_back(u);
     udata->edge_l_s[v].first  = udata->l;
     udata->edge_l_s[v].second = udata->path_counts;
-    //udata->succs.emplace_front(std::tuple(v, udata->l, udata->path_counts));
+    // udata->succs.emplace_front(std::tuple(v, udata->l, udata->path_counts));
     vdata->preds.emplace_front(u);
   };
   auto g_us = [](auto& u, auto& v, auto& udata, auto& vdata) {
     return udata->l == udata->edge_l_s[v].first && vdata->l == udata->l + 1 && udata->edge_l_s[v].second != udata->path_counts;
-    //return udata->l == std::get<1>(*it) && vdata->l == udata->l + 1 && std::get<2>(*it) != udata->path_counts;
+    // return udata->l == std::get<1>(*it) && vdata->l == udata->l + 1 &&
+    // std::get<2>(*it) != udata->path_counts;
   };
   auto apply_us = [](auto& u, auto& v, auto& udata, auto& vdata) {
-    vdata->path_counts              = vdata->path_counts + udata->path_counts - udata->edge_l_s[v].second;
+    vdata->path_counts        = vdata->path_counts + udata->path_counts - udata->edge_l_s[v].second;
     udata->edge_l_s[v].second = udata->path_counts;
   };
 
@@ -726,7 +735,7 @@ std::vector<score_t> approx_betweenness_worklist_noabstraction(Graph& A, std::ve
   std::function<void(vertex_id_t, size_t)> innerfunc = [&](vertex_id_t s, size_t num_threads) {
     std::function<void(size_t, size_t)> reset([&](size_t begin, size_t end) {
       for (size_t v = begin; v < end; ++v) {
-        vertices[v].l     = std::numeric_limits<std::uint32_t>::max();
+        vertices[v].l           = std::numeric_limits<std::uint32_t>::max();
         vertices[v].path_counts = 0;
         vertices[v].preds.clear();
         vertices[v].succs.clear();
@@ -750,7 +759,7 @@ std::vector<score_t> approx_betweenness_worklist_noabstraction(Graph& A, std::ve
       reset(0, n_vtx);
     }
 
-    vertices[s].l     = 0;
+    vertices[s].l           = 0;
     vertices[s].path_counts = 1;
 
     if (asyncv1) {
@@ -763,7 +772,7 @@ std::vector<score_t> approx_betweenness_worklist_noabstraction(Graph& A, std::ve
       auto async1 = [&](auto& workpair) {
         auto u = std::get<0>(workpair);
         auto v = std::get<1>(workpair);
-        //std::cout << u << " " << v << std::endl;
+        // std::cout << u << " " << v << std::endl;
         if (parallel) {
           if (u < v) {
             vector_spinlocks[u].lock();
@@ -776,7 +785,7 @@ std::vector<score_t> approx_betweenness_worklist_noabstraction(Graph& A, std::ve
 
         nodeinfo* udata = &vertices[u];
         nodeinfo* vdata = &vertices[v];
-        //lock u,v
+        // lock u,v
         if (g_cn(u, v, udata, vdata)) {
           apply_cn(u, v, udata, vdata);
           if (parallel) {
@@ -787,86 +796,86 @@ std::vector<score_t> approx_betweenness_worklist_noabstraction(Graph& A, std::ve
           auto temp_preds = vdata->preds;
 
           apply_spfu(u, v, udata, vdata);
-          //unlock u,v
+          // unlock u,v
           if (parallel) {
             vector_spinlocks[u].unlock();
             vector_spinlocks[v].unlock();
           }
           for (auto inner = (A.begin()[v]).begin(); inner != (A.begin()[v]).end(); ++inner) {
             size_t priority = (vdata->l + 1) / DELTA;
-            //if (priority > maxbucket) {
+            // if (priority > maxbucket) {
             if (priority + 1 > num_buckets) {
               if (parallel) b_lock.lock();
               buckets.grow_to_at_least(priority + 1);
               num_buckets = priority + 1;
               if (parallel) b_lock.unlock();
             }
-            //maxbucket = priority;
+            // maxbucket = priority;
             //}
             buckets[priority].push_back(std::pair(v, std::get<0>(*inner)));
           }
 
-          //Should this be all incoming edges?
+          // Should this be all incoming edges?
           for (auto iter = temp_preds.begin(); iter != temp_preds.end(); ++iter) {
             size_t priority = (vdata->l + 1) / DELTA;
-            //if (priority > maxbucket) {
+            // if (priority > maxbucket) {
             if (priority + 1 > num_buckets) {
               if (parallel) b_lock.lock();
               buckets.grow_to_at_least(priority + 1);
               num_buckets = priority + 1;
               if (parallel) b_lock.unlock();
             }
-            //maxbucket = priority;
+            // maxbucket = priority;
             //}
             buckets[priority].push_back(std::pair(*iter, v));
           }
 
         } else if (g_fu(u, v, udata, vdata)) {
           apply_fu(u, v, udata, vdata);
-          //unlock u,v
+          // unlock u,v
           if (parallel) {
             vector_spinlocks[u].unlock();
             vector_spinlocks[v].unlock();
           }
-          //should this only be succ of v?
+          // should this only be succ of v?
           if (vdata->succs.begin() != vdata->succs.end()) {
             for (auto inner = (A.begin()[v]).begin(); inner != (A.begin()[v]).end(); ++inner) {
               size_t priority = (vdata->l + 1) / DELTA;
-              //if (priority > maxbucket) {
+              // if (priority > maxbucket) {
               if (priority + 1 > num_buckets) {
                 if (parallel) b_lock.lock();
                 buckets.grow_to_at_least(priority + 1);
                 num_buckets = priority + 1;
                 if (parallel) b_lock.unlock();
               }
-              //maxbucket = priority;
+              // maxbucket = priority;
               //}
               buckets[priority].push_back(std::pair(v, std::get<0>(*inner)));
             }
           }
         } else if (g_us(u, v, udata, vdata)) {
           apply_us(u, v, udata, vdata);
-          //unlock u,v
+          // unlock u,v
           if (parallel) {
             vector_spinlocks[u].unlock();
             vector_spinlocks[v].unlock();
           }
           for (auto it = vdata->succs.begin(); it != vdata->succs.end(); ++it) {
             size_t priority = (vdata->l + 1) / DELTA;
-            //if (priority > maxbucket) {
+            // if (priority > maxbucket) {
             if (priority + 1 > num_buckets) {
               if (parallel) b_lock.lock();
               buckets.grow_to_at_least(priority + 1);
               num_buckets = priority + 1;
               if (parallel) b_lock.unlock();
             }
-            //maxbucket = priority;
+            // maxbucket = priority;
             //}
             buckets[priority].push_back(std::pair(v, *it));
           }
 
         } else if (parallel) {
-          //unlock u,v
+          // unlock u,v
           vector_spinlocks[v].unlock();
           vector_spinlocks[u].unlock();
         }
@@ -912,24 +921,24 @@ std::vector<score_t> approx_betweenness_worklist_noabstraction(Graph& A, std::ve
 
           nodeinfo* udata = &vertices[u];
           nodeinfo* vdata = &vertices[v];
-          //lock u,v
+          // lock u,v
           if (g_sp(u, v, udata, vdata)) {
             auto temp_preds = vdata->preds;
             apply_spfu(u, v, udata, vdata);
-            //unlock u,v
+            // unlock u,v
             if (parallel) {
               vector_spinlocks[u].unlock();
               vector_spinlocks[v].unlock();
             }
             size_t priority = (vdata->l + 1) / DELTA;
-            //if (priority > maxbucket) {
+            // if (priority > maxbucket) {
             if (priority + 1 > num_buckets) {
               if (parallel) b_lock.lock();
               buckets.grow_to_at_least(priority + 1);
               num_buckets = priority + 1;
               if (parallel) b_lock.unlock();
             }
-            //maxbucket = priority;
+            // maxbucket = priority;
             //}
             buckets[priority].push_back(v);
 
@@ -959,47 +968,47 @@ std::vector<score_t> approx_betweenness_worklist_noabstraction(Graph& A, std::ve
             }
           } else if (g_fu(u, v, udata, vdata)) {
             apply_fu(u, v, udata, vdata);
-            //unlock u,v
+            // unlock u,v
             if (parallel) {
               vector_spinlocks[u].unlock();
               vector_spinlocks[v].unlock();
             }
-            //should this only be succ of v?
+            // should this only be succ of v?
             if (vdata->succs.begin() != vdata->succs.end()) {
               size_t priority = (vdata->l + 1) / DELTA;
-              //if (priority > maxbucket) {
+              // if (priority > maxbucket) {
               if (priority + 1 > num_buckets) {
                 if (parallel) b_lock.lock();
                 buckets.grow_to_at_least(priority + 1);
                 num_buckets = priority + 1;
                 if (parallel) b_lock.unlock();
               }
-              //maxbucket = priority;
+              // maxbucket = priority;
               //}
               buckets[priority].push_back(v);
             }
           } else if (g_us(u, v, udata, vdata)) {
             apply_us(u, v, udata, vdata);
-            //unlock u,v
+            // unlock u,v
             if (parallel) {
               vector_spinlocks[u].unlock();
               vector_spinlocks[v].unlock();
             }
             if (vdata->succs.begin() != vdata->succs.end()) {
               size_t priority = (vdata->l + 1) / DELTA;
-              //if (priority > maxbucket) {
+              // if (priority > maxbucket) {
               if (priority + 1 > num_buckets) {
                 if (parallel) b_lock.lock();
                 buckets.grow_to_at_least(priority + 1);
                 num_buckets = priority + 1;
                 if (parallel) b_lock.unlock();
               }
-              //maxbucket = priority;
+              // maxbucket = priority;
               //}
               buckets[priority].push_back(v);
             }
           } else if (parallel) {
-            //unlock u,v
+            // unlock u,v
             vector_spinlocks[v].unlock();
             vector_spinlocks[u].unlock();
           }
@@ -1271,7 +1280,7 @@ std::vector<score_t> Brandes(const Graph &g, const std::vector<vertex_id_t> sour
 }
 #endif
 
-template<typename Graph, typename score_t = float, typename accum_t = size_t>
+template <typename Graph, typename score_t = float, typename accum_t = size_t>
 auto bc2_v0(Graph& graph, const std::vector<vertex_id_t> sources) {
 
   auto                 g = graph.begin();
@@ -1321,8 +1330,7 @@ auto bc2_v0(Graph& graph, const std::vector<vertex_id_t> sources) {
     while (phase-- > 0) {
       for (auto w : S[phase]) {
         for (auto v : P[w]) {
-          delta[v] += static_cast<score_t>(path_counts[v]) /
-        static_cast<score_t>(path_counts[w]) * (1 + delta[w]);
+          delta[v] += static_cast<score_t>(path_counts[v]) / static_cast<score_t>(path_counts[w]) * (1 + delta[w]);
         }
         bc[w] = bc[w] + delta[w];
       }
@@ -1337,7 +1345,7 @@ auto bc2_v0(Graph& graph, const std::vector<vertex_id_t> sources) {
   return bc;
 }
 
-template<typename Graph, typename score_t = float, typename accum_t = size_t>
+template <typename Graph, typename score_t = float, typename accum_t = size_t>
 auto bc2_v1(Graph& graph, const std::vector<vertex_id_t> sources) {
 
   auto                 g = graph.begin();
@@ -1388,8 +1396,7 @@ auto bc2_v1(Graph& graph, const std::vector<vertex_id_t> sources) {
     while (--phase > 0) {
       for (auto w : S[phase]) {
         for (auto v : P[w]) {
-          delta[v] += static_cast<score_t>(path_counts[v]) /
-        static_cast<score_t>(path_counts[w]) * (1 + delta[w]);
+          delta[v] += static_cast<score_t>(path_counts[v]) / static_cast<score_t>(path_counts[w]) * (1 + delta[w]);
         }
         bc[w] = bc[w] + delta[w];
       }
@@ -1404,7 +1411,7 @@ auto bc2_v1(Graph& graph, const std::vector<vertex_id_t> sources) {
   return bc;
 }
 
-template<typename Graph, typename score_t = float, typename accum_t = size_t>
+template <typename Graph, typename score_t = float, typename accum_t = size_t>
 auto bc2_v2(Graph& graph, const std::vector<vertex_id_t>& sources) {
 
   auto                 g = graph.begin();
@@ -1463,9 +1470,9 @@ auto bc2_v2(Graph& graph, const std::vector<vertex_id_t>& sources) {
 
     while (--phase > 0) {
       std::for_each(std::execution::par_unseq, S[phase].begin(), S[phase].end(), [&](auto&& w) {
-        std::for_each(P[w].begin(), P[w].end(),
-                      [&](auto&& v) { delta[v] = delta[v] + static_cast<score_t>(path_counts[v]) /
-              static_cast<score_t>(path_counts[w]) * (1 + delta[w]); });
+        std::for_each(P[w].begin(), P[w].end(), [&](auto&& v) {
+          delta[v] = delta[v] + static_cast<score_t>(path_counts[v]) / static_cast<score_t>(path_counts[w]) * (1 + delta[w]);
+        });
 
         bc[w] += delta[w];
       });
@@ -1478,7 +1485,7 @@ auto bc2_v2(Graph& graph, const std::vector<vertex_id_t>& sources) {
   return bc;
 }
 
-template<typename Graph, typename score_t = float, typename accum_t = size_t>
+template <typename Graph, typename score_t = float, typename accum_t = size_t>
 auto bc2_v3(Graph& graph, const std::vector<vertex_id_t>& sources) {
 
   auto        g = graph.begin();
@@ -1514,16 +1521,16 @@ auto bc2_v3(Graph& graph, const std::vector<vertex_id_t>& sources) {
     while (!done) {
       std::for_each(std::execution::par_unseq, q1.begin(), q1.end(), [&](auto& q) {
         std::for_each(std::execution::par_unseq, q.begin(), q.end(), [&](vertex_id_t u) {
-          //tbb::parallel_for(g[u], [&](auto&& gu) {
+          // tbb::parallel_for(g[u], [&](auto&& gu) {
           auto gu = g[u];
           for (auto x = gu.begin(); x != gu.end(); ++x) {
-            auto&& v       = std::get<0>(*x);
+            auto&&      v       = std::get<0>(*x);
             vertex_id_t neg_one = std::numeric_limits<vertex_id_t>::max();
             if (levels[v] == neg_one && levels[v].compare_exchange_strong(neg_one, lvl)) {
               q2[u & bin_mask].push_back(v);
             }
             if (levels[v] == lvl) {
-              //path_counts[v].fetch_add(path_counts[u]);
+              // path_counts[v].fetch_add(path_counts[u]);
               for (accum_t temp = path_counts[v];
                    !path_counts[v].compare_exchange_strong(temp, temp + path_counts[u], std::memory_order_acq_rel);)
                 ;
@@ -1549,7 +1556,7 @@ auto bc2_v3(Graph& graph, const std::vector<vertex_id_t>& sources) {
       ++lvl;
     }
 
-    //std::cout << "lvl = " << lvl << " " << retired.size() << std::endl;
+    // std::cout << "lvl = " << lvl << " " << retired.size() << std::endl;
 
     std::vector<score_t> deltas(N);
 
@@ -1560,8 +1567,7 @@ auto bc2_v3(Graph& graph, const std::vector<vertex_id_t>& sources) {
           for (auto x = g[u].begin(); x != g[u].end(); ++x) {
             vertex_id_t v = std::get<0>(*x);
             if (succ[x - neighbors]) {
-              delta += static_cast<double>(path_counts[u]) /
-        static_cast<double>(path_counts[v]) * (1 + deltas[v]);
+              delta += static_cast<double>(path_counts[u]) / static_cast<double>(path_counts[v]) * (1 + deltas[v]);
             }
           }
           deltas[u] = delta;
@@ -1578,12 +1584,11 @@ auto bc2_v3(Graph& graph, const std::vector<vertex_id_t>& sources) {
 }
 
 template <class score_t, class accum_t, class Graph>
-auto bc2_v4(Graph&& graph, const std::vector<vertex_id_t>& sources, int threads)
-{
-  auto        g = graph.begin();
-  vertex_id_t N = graph.max() + 1;
-  size_t      M = graph.to_be_indexed_.size();
-  auto&&  edges = std::get<0>(*(*g).begin());
+auto bc2_v4(Graph&& graph, const std::vector<vertex_id_t>& sources, int threads) {
+  auto                 g     = graph.begin();
+  vertex_id_t          N     = graph.max() + 1;
+  size_t               M     = graph.to_be_indexed_.size();
+  auto&&               edges = std::get<0>(*(*g).begin());
   std::vector<score_t> bc(N);
 
   const vertex_id_t num_bins = bgl17::pow2(bgl17::ceil_log2(threads));
@@ -1640,7 +1645,7 @@ auto bc2_v4(Graph&& graph, const std::vector<vertex_id_t>& sources, int threads)
       ++lvl;
     }
 
-    //std::cout << "lvl = " << lvl << " " << retired.size() << std::endl;
+    // std::cout << "lvl = " << lvl << " " << retired.size() << std::endl;
 
     std::vector<score_t> deltas(N);
 
@@ -1668,11 +1673,10 @@ auto bc2_v4(Graph&& graph, const std::vector<vertex_id_t>& sources, int threads)
 }
 
 template <class score_t, class accum_t, class Graph>
-auto bc2_v5(Graph&& graph, const std::vector<vertex_id_t>& sources, int threads)
-{
-  vertex_id_t N = graph.max() + 1;
-  size_t      M = graph.to_be_indexed_.size();
-  auto&&  edges = std::get<0>(*(graph[0]).begin());
+auto bc2_v5(Graph&& graph, const std::vector<vertex_id_t>& sources, int threads) {
+  vertex_id_t          N     = graph.max() + 1;
+  size_t               M     = graph.to_be_indexed_.size();
+  auto&&               edges = std::get<0>(*(graph[0]).begin());
   std::vector<score_t> bc(N);
 
   const vertex_id_t num_bins = bgl17::pow2(bgl17::ceil_log2(threads));
@@ -1680,83 +1684,87 @@ auto bc2_v5(Graph&& graph, const std::vector<vertex_id_t>& sources, int threads)
 
   std::vector<std::future<void>> futures(sources.size());
   for (size_t s_idx = 0; s_idx < sources.size(); ++s_idx) {
-    futures[s_idx] = std::async(std::launch::async, [&](vertex_id_t root) {
-      std::cout << "source: " + std::to_string(root) + "\n";
+    futures[s_idx] = std::async(
+        std::launch::async,
+        [&](vertex_id_t root) {
+          std::cout << "source: " + std::to_string(root) + "\n";
 
-      std::vector<vertex_id_t> levels(N);
-      bgl17::AtomicBitVector   succ(M);
+          std::vector<vertex_id_t> levels(N);
+          bgl17::AtomicBitVector   succ(M);
 
-      // Initialize the levels to infinity.
-      std::fill(std::execution::par_unseq, levels.begin(), levels.end(), std::numeric_limits<vertex_id_t>::max());
+          // Initialize the levels to infinity.
+          std::fill(std::execution::par_unseq, levels.begin(), levels.end(), std::numeric_limits<vertex_id_t>::max());
 
-      std::vector<accum_t>                                          path_counts(N);
-      std::vector<tbb::concurrent_vector<vertex_id_t>>              q1(num_bins);
-      std::vector<tbb::concurrent_vector<vertex_id_t>>              q2(num_bins);
-      std::vector<std::vector<tbb::concurrent_vector<vertex_id_t>>> retired;
+          std::vector<accum_t>                                          path_counts(N);
+          std::vector<tbb::concurrent_vector<vertex_id_t>>              q1(num_bins);
+          std::vector<tbb::concurrent_vector<vertex_id_t>>              q2(num_bins);
+          std::vector<std::vector<tbb::concurrent_vector<vertex_id_t>>> retired;
 
-      vertex_id_t lvl = 0;
+          vertex_id_t lvl = 0;
 
-      path_counts[root] = 1;
-      q1[0].push_back(root);
-      levels[root] = lvl++;
+          path_counts[root] = 1;
+          q1[0].push_back(root);
+          levels[root] = lvl++;
 
-      bool done = false;
-      while (!done) {
-        std::for_each(std::execution::par_unseq, q1.begin(), q1.end(), [&](auto&& q) {
-          std::for_each(std::execution::par_unseq, q.begin(), q.end(), [&](auto&& u) {
-            for (auto&& [v] : graph[u]) {
-              auto&& infinity = std::numeric_limits<vertex_id_t>::max();
-              auto&& lvl_v = bgl17::acquire(levels[v]);
+          bool done = false;
+          while (!done) {
+            std::for_each(std::execution::par_unseq, q1.begin(), q1.end(), [&](auto&& q) {
+              std::for_each(std::execution::par_unseq, q.begin(), q.end(), [&](auto&& u) {
+                for (auto&& [v] : graph[u]) {
+                  auto&& infinity = std::numeric_limits<vertex_id_t>::max();
+                  auto&& lvl_v    = bgl17::acquire(levels[v]);
 
-              // If this is our first encounter with this node, or it's on the
-              // right level, then propagate the counts from u to v, and mark
-              // the edge from u to v as used.
-              if (lvl_v == infinity || lvl_v == lvl) {
-                bgl17::fetch_add(path_counts[v], bgl17::acquire(path_counts[u]));
-                succ.atomic_set(&v - &edges);    // edge(w,v) : P[w][v]
-              }
+                  // If this is our first encounter with this node, or
+                  // it's on the right level, then propagate the counts
+                  // from u to v, and mark the edge from u to v as used.
+                  if (lvl_v == infinity || lvl_v == lvl) {
+                    bgl17::fetch_add(path_counts[v], bgl17::acquire(path_counts[u]));
+                    succ.atomic_set(&v - &edges);    // edge(w,v) : P[w][v]
+                  }
 
-              // We need to add v to the frontier exactly once the first time we
-              // encounter it, so we race to set its level and if we win that
-              // race we can be the one to add it.
-              if (lvl_v == infinity && bgl17::cas(levels[v], infinity, lvl)) {
-                q2[u & bin_mask].push_back(v);
+                  // We need to add v to the frontier exactly once the
+                  // first time we encounter it, so we race to set its
+                  // level and if we win that race we can be the one to
+                  // add it.
+                  if (lvl_v == infinity && bgl17::cas(levels[v], infinity, lvl)) {
+                    q2[u & bin_mask].push_back(v);
+                  }
+                }
+              });
+            });
+
+            done = true;
+            for (size_t i = 0; i < num_bins; ++i) {
+              if (q2[i].size() != 0) {
+                done = false;
+                break;
               }
             }
-          });
-        });
 
-        done = true;
-        for (size_t i = 0; i < num_bins; ++i) {
-          if (q2[i].size() != 0) {
-            done = false;
-            break;
+            retired.emplace_back(num_bins);
+            std::swap(q1, retired.back());
+            std::swap(q1, q2);
+
+            ++lvl;
           }
-        }
 
-        retired.emplace_back(num_bins);
-        std::swap(q1, retired.back());
-        std::swap(q1, q2);
+          std::vector<score_t> deltas(N);
 
-        ++lvl;
-      }
-
-      std::vector<score_t> deltas(N);
-
-      std::for_each(retired.rbegin(), retired.rend(), [&](auto&& vvv) {
-        std::for_each(std::execution::par_unseq, vvv.begin(), vvv.end(), [&](auto&& vv) {
-          std::for_each(std::execution::par_unseq, vv.begin(), vv.end(), [&](auto&& u) {
-            score_t delta = 0;
-            for (auto&& [v] : graph[u]) {
-              if (succ.get(&v - &edges)) {
-                delta += path_counts[u] / path_counts[v] * (1.0f + deltas[v]);
-              }
-            }
-            bgl17::fetch_add(bc[u], deltas[u] = delta);
+          std::for_each(retired.rbegin(), retired.rend(), [&](auto&& vvv) {
+            std::for_each(std::execution::par_unseq, vvv.begin(), vvv.end(), [&](auto&& vv) {
+              std::for_each(std::execution::par_unseq, vv.begin(), vv.end(), [&](auto&& u) {
+                score_t delta = 0;
+                for (auto&& [v] : graph[u]) {
+                  if (succ.get(&v - &edges)) {
+                    delta += path_counts[u] / path_counts[v] * (1.0f + deltas[v]);
+                  }
+                }
+                bgl17::fetch_add(bc[u], deltas[u] = delta);
+              });
+            });
           });
-        });
-      });
-    }, sources[s_idx]);
+        },
+        sources[s_idx]);
   }
 
   for (auto&& f : futures) {
@@ -1769,4 +1777,6 @@ auto bc2_v5(Graph&& graph, const std::vector<vertex_id_t>& sources, int threads)
   return bc;
 }
 
+}    // namespace graph
+}    // namespace nw
 #endif    // BETWEENNESS_CENTRALITY_HPP

@@ -2,8 +2,8 @@
 // This file is part of Standard Graph Library (SGL)
 // (c) Pacific Northwest National Laboratory 2018
 //
-// Licensed under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License
-// https://creativecommons.org/licenses/by-nc-sa/4.0/
+// Licensed under Creative Commons Attribution-NonCommercial-ShareAlike 4.0
+// International License https://creativecommons.org/licenses/by-nc-sa/4.0/
 //
 // Author: Kevin Deweese
 //
@@ -21,16 +21,19 @@
 #include "util.hpp"
 #include "util/types.hpp"
 
+namespace nw {
+namespace graph {
+
 const size_t INFINITE_D = 100000000;
 
 enum class tree_mem : bool { source = false, term = true };
 
-template<typename Graph>
+template <typename Graph>
 std::tuple<double, std::vector<tree_mem>> bk_maxflow(Graph& A, std::vector<double>& cap) {
-  //std::clock_t start;
-  //double grow = 0;
-  //double augment = 0;
-  //double adopt = 0;
+  // std::clock_t start;
+  // double grow = 0;
+  // double augment = 0;
+  // double adopt = 0;
   size_t      n_vtx    = A.size();
   vertex_id_t source   = n_vtx;
   vertex_id_t terminal = source + 1;
@@ -71,8 +74,8 @@ std::tuple<double, std::vector<tree_mem>> bk_maxflow(Graph& A, std::vector<doubl
 
   while (true) {
     bool found = false;
-    //start = std::clock();
-    //Grow
+    // start = std::clock();
+    // Grow
     while (!active.empty()) {
       auto p = active.front();
 
@@ -88,8 +91,9 @@ std::tuple<double, std::vector<tree_mem>> bk_maxflow(Graph& A, std::vector<doubl
         auto q = std::get<0>(*it);
 
         if (t == tree_mem::term) {
-          // We are in the term tree, so we need to push flow "backwards", which is the residual capacity.
-          //residual_cap = std::get<2>(*it);
+          // We are in the term tree, so we need to push flow "backwards", which
+          // is the residual capacity.
+          // residual_cap = std::get<2>(*it);
           residual_cap = &std::get<1>(A.get_back_edge(p, q));
           if (*residual_cap <= tol) {
             // No residual capacity
@@ -105,7 +109,7 @@ std::tuple<double, std::vector<tree_mem>> bk_maxflow(Graph& A, std::vector<doubl
             // no residual capacity
             continue;
           }
-          //back_residual_cap = std::get<2>(*it);
+          // back_residual_cap = std::get<2>(*it);
           back_residual_cap = &std::get<1>(A.get_back_edge(p, q));
           connect_s         = p;
           // potential endpoint in the terminal tree
@@ -146,9 +150,9 @@ std::tuple<double, std::vector<tree_mem>> bk_maxflow(Graph& A, std::vector<doubl
 
     if (!found) break;
 
-    //grow += (std::clock() - start);
-    //start = std::clock();
-    //Augment
+    // grow += (std::clock() - start);
+    // start = std::clock();
+    // Augment
     min_cap = *residual_cap;
     // Search the t-tree for min capacity
     for (auto vtx = connect_t; vtx != terminal; vtx = preds[vtx]) {
@@ -172,7 +176,8 @@ std::tuple<double, std::vector<tree_mem>> bk_maxflow(Graph& A, std::vector<doubl
     max_flow += min_cap;
     *residual_cap -= min_cap;
     *back_residual_cap += min_cap;
-    //auto vtx = connect_t, next = preds[vtx]; vtx != terminal; vtx = next, next = preds[vtx]
+    // auto vtx = connect_t, next = preds[vtx]; vtx != terminal; vtx = next,
+    // next = preds[vtx]
     // Update t-tree
     for (auto vtx = connect_t, next = preds[vtx]; vtx != terminal; vtx = next) {
       next = preds[vtx];
@@ -212,9 +217,9 @@ std::tuple<double, std::vector<tree_mem>> bk_maxflow(Graph& A, std::vector<doubl
       }
     }
 
-    //augment += (std::clock() - start);
-    //start = std::clock();
-    //Adopt
+    // augment += (std::clock() - start);
+    // start = std::clock();
+    // Adopt
     while (!orphans.empty()) {
       auto p = orphans.front();
       orphans.pop();
@@ -234,11 +239,11 @@ std::tuple<double, std::vector<tree_mem>> bk_maxflow(Graph& A, std::vector<doubl
         if (t == tree_mem::term) {
           residual_cap = &std::get<1>(*it);
           if (*residual_cap <= tol) continue;
-          //back_residual_cap = std::get<2>(*it);
+          // back_residual_cap = std::get<2>(*it);
           back_residual_cap = &std::get<1>(A.get_back_edge(p, q));
           target            = terminal;
         } else {
-          //residual_cap = std::get<2>(*it);
+          // residual_cap = std::get<2>(*it);
           residual_cap = &std::get<1>(A.get_back_edge(p, q));
           if (*residual_cap <= tol) continue;
           back_residual_cap = &std::get<1>(*it);
@@ -279,7 +284,7 @@ std::tuple<double, std::vector<tree_mem>> bk_maxflow(Graph& A, std::vector<doubl
         }
       }
 
-      //can't find new parent
+      // can't find new parent
       if (min_pred == null_vertex) {
         timestamp[p] = 0;
 
@@ -300,7 +305,7 @@ std::tuple<double, std::vector<tree_mem>> bk_maxflow(Graph& A, std::vector<doubl
           }
         }
       }
-      //Found parent
+      // Found parent
       else {
         preds[p]     = min_pred;
         trees[p]     = min_edge;
@@ -308,13 +313,14 @@ std::tuple<double, std::vector<tree_mem>> bk_maxflow(Graph& A, std::vector<doubl
         dist[p]      = d_min + 1;
       }
     }
-    //adopt += (std::clock() - start);
+    // adopt += (std::clock() - start);
   }
   /*std::cout << "grow time: " << grow / (double) CLOCKS_PER_SEC <<
     " augment time: " << augment / (double) CLOCKS_PER_SEC <<
     " adopt time: " << adopt / (double) CLOCKS_PER_SEC << std::endl;*/
-  //std::cout << augment_ct << " aguments" << std::endl;
-  //std::cout << path_length*(1.0)/augment_ct << " avg path length" << std::endl;
+  // std::cout << augment_ct << " aguments" << std::endl;
+  // std::cout << path_length*(1.0)/augment_ct << " avg path length" <<
+  // std::endl;
   for (size_t i = 0; i < n_vtx; ++i) {
     if (preds[i] == null_vertex) {
       tree_id[i] = tree_mem::term;
@@ -322,5 +328,8 @@ std::tuple<double, std::vector<tree_mem>> bk_maxflow(Graph& A, std::vector<doubl
   }
   return std::make_tuple(max_flow, tree_id);
 }
+
+}    // namespace graph
+}    // namespace nw
 
 #endif    // BOYKOV_KOLMOGOROV_HPP

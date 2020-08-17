@@ -2,14 +2,14 @@
 // This file is part of Standard Graph Library (SGL)
 // (c) Pacific Northwest National Laboratory 2018
 //
-// Licensed under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License
-// https://creativecommons.org/licenses/by-nc-sa/4.0/
+// Licensed under Creative Commons Attribution-NonCommercial-ShareAlike 4.0
+// International License https://creativecommons.org/licenses/by-nc-sa/4.0/
 //
 // Author: Scott McMillan
 //
 
-#ifndef PAGE_RANK_HPP
-#define PAGE_RANK_HPP
+#ifndef NW_GRAPH_PAGE_RANK_HPP
+#define NW_GRAPH_PAGE_RANK_HPP
 
 #include <cmath>
 #include <future>
@@ -27,14 +27,17 @@
 #if defined(EXECUTION_POLICY)
 #if defined(CL_SYCL_LANGUAGE_VERSION)
 #include <dpstd/iterators.h>
-template<class T>
-using counting_iterator = dpstd::counting_iterator<T>;
+template <class T>
+using nw::graph::counting_iterator = dpstd::counting_iterator<T>;
 #else
 #include <tbb/iterators.h>
-template<class T>
-using counting_iterator = tbb::counting_iterator<T>;
+template <class T>
+using nw::graph::counting_iterator = tbb::counting_iterator<T>;
 #endif
 #endif
+
+namespace nw {
+namespace graph {
 
 namespace page_rank {
 /// Helper to trace some timing.
@@ -51,7 +54,7 @@ constexpr auto trace = [](auto iter, auto error, auto time, auto max) {
 };
 
 /// Helper to time an operation.
-template<class Op>
+template <class Op>
 auto time_op(Op&& op) {
   if constexpr (std::is_void_v<decltype(op())>) {
     auto start = std::chrono::high_resolution_clock::now();
@@ -122,7 +125,7 @@ void page_rank_range_for(GraphT& graph, std::vector<RealT>& page_rank, RealT dam
 
 #endif
 
-template<typename Graph, typename Real = double>
+template <typename Graph, typename Real = double>
 void page_rank_vc(Graph& graph, std::vector<Real>& page_rank, const Real damping_factor = 0.85, const Real threshold = 1.e-4,
                   const size_t max_iters = std::numeric_limits<unsigned int>::max()) {
   const Real init_score = 1.0 / page_rank.size();
@@ -164,7 +167,7 @@ void page_rank_vc(Graph& graph, std::vector<Real>& page_rank, const Real damping
   }
 }
 
-template<typename Graph, typename Real = double>
+template <typename Graph, typename Real = double>
 void page_rank_v1(Graph& graph, const std::vector<vertex_id_t>& degrees, std::vector<Real>& page_rank,
                   const Real damping_factor = 0.85, const Real threshold = 1.e-4,
                   const size_t max_iters = std::numeric_limits<unsigned int>::max()) {
@@ -201,7 +204,7 @@ void page_rank_v1(Graph& graph, const std::vector<vertex_id_t>& degrees, std::ve
   }
 }
 
-template<typename Graph, typename Real = double>
+template <typename Graph, typename Real = double>
 void page_rank_v2(Graph& graph, const std::vector<vertex_id_t>& degrees, std::vector<Real>& page_rank,
                   const Real damping_factor = 0.85, const Real threshold = 1.e-4,
                   const size_t max_iters = std::numeric_limits<unsigned int>::max()) {
@@ -234,7 +237,7 @@ void page_rank_v2(Graph& graph, const std::vector<vertex_id_t>& degrees, std::ve
   }
 }
 
-template<typename Graph, typename Real = double>
+template <typename Graph, typename Real = double>
 void page_rank_v4(Graph& graph, const std::vector<vertex_id_t>& degrees, std::vector<Real>& page_rank,
                   const Real damping_factor = 0.85, const Real threshold = 1.e-4,
                   const size_t max_iters = std::numeric_limits<unsigned int>::max(), size_t num_threads = 1) {
@@ -264,24 +267,25 @@ void page_rank_v4(Graph& graph, const std::vector<vertex_id_t>& degrees, std::ve
     auto G = graph.begin();
 
     for (size_t thread = 0; thread < num_threads; ++thread) {
-      futures[thread] = std::async(std::launch::async,
-                                   [&](size_t thread) {
-                                     double error = 0;
+      futures[thread] = std::async(
+          std::launch::async,
+          [&](size_t thread) {
+            double error = 0;
 
-                                     for (vertex_id_t i = thread; i < page_rank.size(); i += num_threads) {
-                                       Real z = 0;
-                                       for (auto j = G[i].begin(); j != G[i].end(); ++j) {
-                                         z += outgoing_contrib[std::get<0>(*j)];
-                                         //for (auto&& [j] : G[i]) {
-                                         // z += outgoing_contrib[j];
-                                       }
-                                       auto old_rank = page_rank[i];
-                                       page_rank[i]  = base_score + damping_factor * z;
-                                       error += fabs(page_rank[i] - old_rank);
-                                     }
-                                     return error;
-                                   },
-                                   thread);
+            for (vertex_id_t i = thread; i < page_rank.size(); i += num_threads) {
+              Real z = 0;
+              for (auto j = G[i].begin(); j != G[i].end(); ++j) {
+                z += outgoing_contrib[std::get<0>(*j)];
+                // for (auto&& [j] : G[i]) {
+                // z += outgoing_contrib[j];
+              }
+              auto old_rank = page_rank[i];
+              page_rank[i]  = base_score + damping_factor * z;
+              error += fabs(page_rank[i] - old_rank);
+            }
+            return error;
+          },
+          thread);
     }
     double error = 0;
     for (size_t i = 0; i < num_threads; ++i) {
@@ -295,7 +299,7 @@ void page_rank_v4(Graph& graph, const std::vector<vertex_id_t>& degrees, std::ve
 
 #if defined(EXECUTION_POLICY)
 
-template<typename Graph, typename Real = double>
+template <typename Graph, typename Real = double>
 [[gnu::noinline]] void page_rank_v6(Graph& graph, const std::vector<vertex_id_t>& degrees, std::vector<Real>& page_rank,
                                     const Real damping_factor = 0.85, const Real threshold = 1.e-4,
                                     const size_t max_iters = std::numeric_limits<unsigned int>::max(), size_t num_threads = 1) {
@@ -353,7 +357,7 @@ template<typename Graph, typename Real = double>
   }
 }
 
-template<typename Graph, typename Real = double>
+template <typename Graph, typename Real = double>
 void page_rank_v7(Graph& graph, const std::vector<vertex_id_t>& degrees, std::vector<Real>& page_rank,
                   const Real damping_factor = 0.85, const Real threshold = 1.e-4,
                   const size_t max_iters = std::numeric_limits<unsigned int>::max(), size_t num_threads = 1) {
@@ -393,13 +397,13 @@ void page_rank_v7(Graph& graph, const std::vector<vertex_id_t>& degrees, std::ve
           counting_iterator<vertex_id_t>(0), counting_iterator<vertex_id_t>(page_rank.size()), Real(0.0), std::plus<Real>(),
 
           [&](auto i) {
-            Real z        = tbb::parallel_reduce(G[i], Real(0.0),
-                                          [&](auto&& j, const Real& foo) {
-                                            return foo + std::transform_reduce(
-                                                             std::execution::seq, j.begin(), j.end(), Real(0.0), std::plus<Real>(),
-                                                             [&](auto&& a) { return outgoing_contrib[std::get<0>(a)]; });
-                                          },
-                                          std::plus<Real>());
+            Real z = tbb::parallel_reduce(
+                G[i], Real(0.0),
+                [&](auto&& j, const Real& foo) {
+                  return foo + std::transform_reduce(std::execution::seq, j.begin(), j.end(), Real(0.0), std::plus<Real>(),
+                                                     [&](auto&& a) { return outgoing_contrib[std::get<0>(a)]; });
+                },
+                std::plus<Real>());
             auto old_rank = page_rank[i];
             page_rank[i]  = base_score + damping_factor * z;
             return fabs(page_rank[i] - old_rank);
@@ -410,7 +414,7 @@ void page_rank_v7(Graph& graph, const std::vector<vertex_id_t>& degrees, std::ve
   }
 }
 
-template<typename Graph, typename Real = double>
+template <typename Graph, typename Real = double>
 void page_rank_v8(Graph& graph, const std::vector<vertex_id_t>& degrees, std::vector<Real>& page_rank,
                   const Real damping_factor = 0.85, const Real threshold = 1.e-4,
                   const size_t max_iters = std::numeric_limits<unsigned int>::max(), size_t num_threads = 1) {
@@ -456,7 +460,7 @@ void page_rank_v8(Graph& graph, const std::vector<vertex_id_t>& degrees, std::ve
   }
 }
 
-template<typename Graph, typename Real>
+template <typename Graph, typename Real>
 [[gnu::noinline]] void page_rank_v9(Graph& graph, const std::vector<vertex_id_t>& degrees, std::vector<Real>& page_rank,
                                     Real damping_factor, Real threshold, size_t max_iters, size_t num_threads) {
   std::size_t N          = page_rank.size();
@@ -497,7 +501,7 @@ template<typename Graph, typename Real>
   }
 }
 
-template<typename Graph, typename Real>
+template <typename Graph, typename Real>
 [[gnu::noinline]] void page_rank_v10(Graph& graph, const std::vector<vertex_id_t>& degrees, std::vector<Real>& page_rank,
                                      Real damping_factor, Real threshold, size_t max_iters, size_t num_threads) {
   std::size_t N          = graph.size();
@@ -530,20 +534,21 @@ template<typename Graph, typename Real>
     });
 
     auto&& [time, error] = page_rank::time_op([&] {
-      return tbb::parallel_reduce(tbb::blocked_range(0ul, N), 0.0,
-                                  [&](auto&& r, auto partial_sum) {
-                                    for (size_t i = r.begin(), e = r.end(); i != e; ++i) {
-                                      Real z = 0.0;
-                                      for (auto&& j : G[i]) {
-                                        z += outgoing_contrib[std::get<0>(j)];
-                                      }
-                                      auto old_rank = page_rank[i];
-                                      page_rank[i]  = base_score + damping_factor * z;
-                                      partial_sum += fabs(page_rank[i] - old_rank);
-                                    }
-                                    return partial_sum;
-                                  },
-                                  std::plus{});
+      return tbb::parallel_reduce(
+          tbb::blocked_range(0ul, N), 0.0,
+          [&](auto&& r, auto partial_sum) {
+            for (size_t i = r.begin(), e = r.end(); i != e; ++i) {
+              Real z = 0.0;
+              for (auto&& j : G[i]) {
+                z += outgoing_contrib[std::get<0>(j)];
+              }
+              auto old_rank = page_rank[i];
+              page_rank[i]  = base_score + damping_factor * z;
+              partial_sum += fabs(page_rank[i] - old_rank);
+            }
+            return partial_sum;
+          },
+          std::plus{});
     });
 
     page_rank::trace(iter, error, time, outgoing);
@@ -554,7 +559,7 @@ template<typename Graph, typename Real>
   }
 }
 
-template<typename Graph, typename Real>
+template <typename Graph, typename Real>
 [[gnu::noinline]] void page_rank_v11(Graph& graph, const std::vector<vertex_id_t>& degrees, std::vector<Real>& page_rank,
                                      Real damping_factor, Real threshold, size_t max_iters, size_t num_threads) {
   std::size_t N          = graph.size();
@@ -590,21 +595,22 @@ template<typename Graph, typename Real>
   for (size_t iter = 0; iter < max_iters; ++iter) {
 
     auto&& [time, error] = page_rank::time_op([&] {
-      return tbb::parallel_reduce(tbb::blocked_range(0ul, N), 0.0,
-                                  [&](auto&& r, auto partial_sum) {
-                                    for (size_t i = r.begin(), e = r.end(); i != e; ++i) {
-                                      Real z = 0.0;
-                                      for (auto&& j : G[i]) {
-                                        z += outgoing_contrib[std::get<0>(j)];
-                                      }
-                                      auto old_rank = page_rank[i];
-                                      page_rank[i]  = base_score + damping_factor * z;
-                                      partial_sum += fabs(page_rank[i] - old_rank);
-                                      outgoing_contrib[i] = page_rank[i] / (Real)degrees[i];
-                                    }
-                                    return partial_sum;
-                                  },
-                                  std::plus{});
+      return tbb::parallel_reduce(
+          tbb::blocked_range(0ul, N), 0.0,
+          [&](auto&& r, auto partial_sum) {
+            for (size_t i = r.begin(), e = r.end(); i != e; ++i) {
+              Real z = 0.0;
+              for (auto&& j : G[i]) {
+                z += outgoing_contrib[std::get<0>(j)];
+              }
+              auto old_rank = page_rank[i];
+              page_rank[i]  = base_score + damping_factor * z;
+              partial_sum += fabs(page_rank[i] - old_rank);
+              outgoing_contrib[i] = page_rank[i] / (Real)degrees[i];
+            }
+            return partial_sum;
+          },
+          std::plus{});
     });
 
     page_rank::trace(iter, error, time, 0);
@@ -615,7 +621,7 @@ template<typename Graph, typename Real>
   }
 }
 
-template<typename Graph, typename Real>
+template <typename Graph, typename Real>
 [[gnu::noinline]] void page_rank_v12(Graph& graph, const std::vector<vertex_id_t>& degrees, std::vector<Real>& page_rank,
                                      Real damping_factor, Real threshold, size_t max_iters, size_t num_threads) {
   std::size_t N          = graph.size();
@@ -647,23 +653,24 @@ template<typename Graph, typename Real>
   for (size_t iter = 0; iter < max_iters; ++iter) {
 
     auto&& [time, error] = page_rank::time_op([&] {
-      return tbb::parallel_reduce(tbb::blocked_range(0ul, N), 0.0,
-                                  [&](auto&& r, auto partial_sum) {
-                                    for (size_t i = r.begin(), e = r.end(); i != e; ++i) {
-                                      Real z = 0.0;
-                                      for (auto&& j : G[i]) {
-                                        if (outgoing_contrib[std::get<0>(j)] > threshold) {
-                                          z += outgoing_contrib[std::get<0>(j)];
-                                        }
-                                      }
-                                      auto old_rank = page_rank[i];
-                                      page_rank[i]  = base_score + damping_factor * z;
-                                      partial_sum += fabs(page_rank[i] - old_rank);
-                                      outgoing_contrib[i] = page_rank[i] / (Real)degrees[i];
-                                    }
-                                    return partial_sum;
-                                  },
-                                  std::plus{});
+      return tbb::parallel_reduce(
+          tbb::blocked_range(0ul, N), 0.0,
+          [&](auto&& r, auto partial_sum) {
+            for (size_t i = r.begin(), e = r.end(); i != e; ++i) {
+              Real z = 0.0;
+              for (auto&& j : G[i]) {
+                if (outgoing_contrib[std::get<0>(j)] > threshold) {
+                  z += outgoing_contrib[std::get<0>(j)];
+                }
+              }
+              auto old_rank = page_rank[i];
+              page_rank[i]  = base_score + damping_factor * z;
+              partial_sum += fabs(page_rank[i] - old_rank);
+              outgoing_contrib[i] = page_rank[i] / (Real)degrees[i];
+            }
+            return partial_sum;
+          },
+          std::plus{});
     });
 
     page_rank::trace(iter, error, time, 0);
@@ -674,7 +681,7 @@ template<typename Graph, typename Real>
   }
 }
 
-template<typename Graph, typename Real>
+template <typename Graph, typename Real>
 [[gnu::noinline]] void page_rank_v3(Graph& graph, const std::vector<vertex_id_t>& degrees, std::vector<Real>& page_rank,
                                     Real damping_factor, Real threshold, size_t max_iters) {
   std::size_t N          = graph.size();
@@ -696,23 +703,22 @@ template<typename Graph, typename Real>
 
   for (size_t iter = 0; iter < max_iters; ++iter) {
 
-
     bool changed = false;
 
-    Real max_residual = 0, max_value = 0;
+    Real        max_residual = 0, max_value = 0;
     vertex_id_t max_degree = 0;
 
     for (size_t src = 0; src < N; ++src) {
-      delta[src] = 0;
-      max_degree = std::max(degrees[src], max_degree);
+      delta[src]   = 0;
+      max_degree   = std::max(degrees[src], max_degree);
       max_residual = std::max(residual[src], max_residual);
       if (residual[src] > threshold) {
-        max_value = std::max(max_value, page_rank[src]);
+        max_value        = std::max(max_value, page_rank[src]);
         Real oldResidual = residual[src];
-        residual[src] = 0.0;
+        residual[src]    = 0.0;
         page_rank[src] += oldResidual;
-        if (degrees[src]  > 0) {
-          delta[src] = oldResidual * damping_factor / (Real) degrees[src];
+        if (degrees[src] > 0) {
+          delta[src] = oldResidual * damping_factor / (Real)degrees[src];
           changed    = true;
         }
       }
@@ -733,8 +739,7 @@ template<typename Graph, typename Real>
       }
     }
 
-    std::cout << iter << ": " << max_residual << ", " << next_max << ", " << max_value << ", "<< max_degree <<  std::endl;
-
+    std::cout << iter << ": " << max_residual << ", " << next_max << ", " << max_value << ", " << max_degree << std::endl;
 
     if (!changed) {    // termination condition
       break;
@@ -742,7 +747,7 @@ template<typename Graph, typename Real>
   }
 }
 
-template<typename Graph, typename Real>
+template <typename Graph, typename Real>
 [[gnu::noinline]] void page_rank_v13(Graph& graph, const std::vector<vertex_id_t>& degrees, std::vector<Real>& page_rank,
                                      Real damping_factor, Real threshold, size_t max_iters, size_t num_threads) {
   std::size_t N          = graph.size();
@@ -815,18 +820,11 @@ template<typename Graph, typename Real>
 #endif
 
 template <class Graph, typename Real>
-[[gnu::noinline]]
-std::size_t
-page_rank_v14(Graph&& graph,
-              const std::vector<vertex_id_t>& degrees,
-              std::vector<Real>& page_rank,
-              Real damping_factor,
-              Real threshold,
-              size_t max_iters)
-{
-  std::size_t   N = graph.size();
-  Real init_score = 1.0 / N;
-  Real base_score = (1.0 - damping_factor) / N;
+[[gnu::noinline]] std::size_t page_rank_v14(Graph&& graph, const std::vector<vertex_id_t>& degrees, std::vector<Real>& page_rank,
+                                            Real damping_factor, Real threshold, size_t max_iters) {
+  std::size_t N          = graph.size();
+  Real        init_score = 1.0 / N;
+  Real        base_score = (1.0 - damping_factor) / N;
 
   std::unique_ptr<Real[]> outgoing_contrib(new Real[N]);
 
@@ -837,16 +835,19 @@ page_rank_v14(Graph&& graph,
 
   auto G = graph.begin();
   for (size_t iter = 0; iter < max_iters; ++iter) {
-    Real error = bgl17::parallel_for(tbb::blocked_range(0ul, N), [&](auto&& u) {
-      Real z = 0.0;
-      for (auto&& [v] : G[u]) {
-        z += outgoing_contrib[v];
-      }
-      Real old_rank       = page_rank[u];
-      page_rank[u]        = base_score + damping_factor * z;
-      outgoing_contrib[u] = page_rank[u] / degrees[u];
-      return fabs(page_rank[u] - old_rank);
-    }, std::plus{}, 0.0);
+    Real error = bgl17::parallel_for(
+        tbb::blocked_range(0ul, N),
+        [&](auto&& u) {
+          Real z = 0.0;
+          for (auto&& [v] : G[u]) {
+            z += outgoing_contrib[v];
+          }
+          Real old_rank       = page_rank[u];
+          page_rank[u]        = base_score + damping_factor * z;
+          outgoing_contrib[u] = page_rank[u] / degrees[u];
+          return fabs(page_rank[u] - old_rank);
+        },
+        std::plus{}, 0.0);
 
     if (error < threshold) {
       return iter;
@@ -855,4 +856,6 @@ page_rank_v14(Graph&& graph,
   return max_iters;
 }
 
-#endif    // PAGE_RANK_HPP
+}    // namespace graph
+}    // namespace nw
+#endif    //  NW_GRAPH_PAGE_RANK_HPP

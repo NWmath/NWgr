@@ -1,9 +1,9 @@
 //
-// This file is part of BGL17 (aka NWGraph aka GraphPack aka the Graph Standard Library)
-// (c) Pacific Northwest National Laboratory 2020
+// This file is part of BGL17 (aka NWGraph aka GraphPack aka the Graph Standard
+// Library) (c) Pacific Northwest National Laboratory 2020
 //
-// Licensed under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License
-// https://creativecommons.org/licenses/by-nc-sa/4.0/
+// Licensed under Creative Commons Attribution-NonCommercial-ShareAlike 4.0
+// International License https://creativecommons.org/licenses/by-nc-sa/4.0/
 //
 // Author: Andrew Lumsdaine
 //
@@ -33,7 +33,10 @@
 #include "tbb/parallel_for_each.h"
 #include "tbb/queuing_mutex.h"
 
-template<class T, class Container = std::vector<T>, class Compare = std::less<typename Container::value_type>>
+namespace nw {
+namespace graph {
+
+template <class T, class Container = std::vector<T>, class Compare = std::less<typename Container::value_type>>
 class _priority_queue : public std::priority_queue<T, Container, Compare> {
   using base = std::priority_queue<T, Container, Compare>;
 
@@ -46,10 +49,9 @@ public:
 };
 
 template <class distance_t, class Graph, class Id, class T>
-auto delta_stepping_m1(Graph&& graph, Id source, T)
-{
+auto delta_stepping_m1(Graph&& graph, Id source, T) {
   std::vector<distance_t> tdist(graph.max() + 1, std::numeric_limits<distance_t>::max());
-  size_t top_bin = 0;
+  size_t                  top_bin = 0;
 
   auto tdist_comp = [&](Id a, Id b) { return tdist[a] > tdist[b]; };
 
@@ -88,7 +90,7 @@ template <class distance_t, class Graph, class Id, class T>
 auto delta_stepping_v0(Graph&& graph, Id source, T delta) {
   std::vector<distance_t>      tdist(graph.max() + 1, std::numeric_limits<distance_t>::max());
   std::vector<std::vector<Id>> bins(1);
-  std::size_t top_bin = 0;
+  std::size_t                  top_bin = 0;
 
   bins[top_bin].push_back(source);
   tdist[source] = 0;
@@ -96,7 +98,7 @@ auto delta_stepping_v0(Graph&& graph, Id source, T delta) {
   auto relax = [&](Id i, Id j, auto wt) {
     auto new_distance = tdist[i] + wt;
     if (new_distance < tdist[j]) {
-      tdist[j]        = new_distance;
+      tdist[j]             = new_distance;
       std::size_t dest_bin = new_distance / delta;
       if (dest_bin >= bins.size()) {
         bins.resize(dest_bin + 1);
@@ -134,12 +136,10 @@ auto delta_stepping_v0(Graph&& graph, Id source, T delta) {
 template <class distance_t, class Graph, class Id, class T>
 auto delta_stepping_v6(Graph&& graph, Id source, T delta) {
   tbb::concurrent_vector<tbb::concurrent_vector<Id>> bins(1);
-  std::size_t top_bin = 0;
+  std::size_t                                        top_bin = 0;
 
   std::vector<distance_t> tdist(graph.max() + 1);
-  tbb::parallel_for_each(tdist, [&](auto&& d) {
-    d = std::numeric_limits<distance_t>::max();
-  });
+  tbb::parallel_for_each(tdist, [&](auto&& d) { d = std::numeric_limits<distance_t>::max(); });
 
   bins[top_bin].push_back(source);
   tdist[source] = 0;
@@ -164,11 +164,8 @@ auto delta_stepping_v6(Graph&& graph, Id source, T delta) {
     std::swap(frontier, bins[top_bin]);
     tbb::parallel_for_each(frontier, [&](Id i) {
       if (tdist[i] >= delta * top_bin) {
-        std::for_each(g[i].begin(), g[i].end(), [&](auto&& elt) {
-          std::apply([&](Id j, auto wt) {
-            relax(i, j, wt);
-          }, std::move(elt));
-        });
+        std::for_each(g[i].begin(), g[i].end(),
+                      [&](auto&& elt) { std::apply([&](Id j, auto wt) { relax(i, j, wt); }, std::move(elt)); });
       }
     });
 
@@ -183,10 +180,10 @@ auto delta_stepping_v6(Graph&& graph, Id source, T delta) {
 // Inspired by gapbs implementation
 template <class distance_t, class Graph, class Id, class T>
 auto delta_stepping_v8(Graph&& graph, Id source, T delta) {
-  Id N = graph.max() + 1;
-  std::vector<std::atomic<distance_t>> tdist(N);
+  Id                                                 N = graph.max() + 1;
+  std::vector<std::atomic<distance_t>>               tdist(N);
   tbb::concurrent_vector<tbb::concurrent_vector<Id>> bins(1);
-  std::size_t top_bin = 0;
+  std::size_t                                        top_bin = 0;
   for (auto&& d : tdist) {
     d = std::numeric_limits<distance_t>::max();
   }
@@ -242,15 +239,13 @@ auto delta_stepping_v8(Graph&& graph, Id source, T delta) {
 
 template <class distance_t, class Graph, class Id, class T>
 auto delta_stepping_v9(Graph&& graph, Id source, T delta) {
-  tbb::queuing_mutex lock;
-  std::atomic<std::size_t> size = 1;
+  tbb::queuing_mutex                                 lock;
+  std::atomic<std::size_t>                           size = 1;
   tbb::concurrent_vector<tbb::concurrent_vector<Id>> bins(size);
-  std::size_t top_bin = 0;
+  std::size_t                                        top_bin = 0;
 
   std::vector<std::atomic<distance_t>> tdist(graph.max() + 1);
-  tbb::parallel_for_each(tdist, [](auto&& d) {
-    d = std::numeric_limits<distance_t>::max();
-  });
+  tbb::parallel_for_each(tdist, [](auto&& d) { d = std::numeric_limits<distance_t>::max(); });
 
   bins[top_bin].push_back(source);
   tdist[source] = 0;
@@ -258,8 +253,9 @@ auto delta_stepping_v9(Graph&& graph, Id source, T delta) {
   auto relax = [&](Id i, Id j, auto wt) {
     distance_t next = bgl17::acquire(tdist[i]) + wt;
     distance_t prev = bgl17::acquire(tdist[j]);
-    bool success;
-    while (next < prev && !(success = bgl17::cas(tdist[j], prev, next))) { }
+    bool       success;
+    while (next < prev && !(success = bgl17::cas(tdist[j], prev, next))) {
+    }
     if (!success) return;
 
     // inject this into the right bin (double-checked locking to serialize
@@ -299,15 +295,13 @@ auto delta_stepping_v9(Graph&& graph, Id source, T delta) {
 
 template <class distance_t, class Graph, class Id, class T>
 auto delta_stepping_v10(Graph&& graph, Id source, T delta) {
-  tbb::queuing_mutex lock;
-  std::atomic<std::size_t> size = 1;
+  tbb::queuing_mutex                                 lock;
+  std::atomic<std::size_t>                           size = 1;
   tbb::concurrent_vector<tbb::concurrent_vector<Id>> bins(size);
-  std::size_t top_bin = 0;
+  std::size_t                                        top_bin = 0;
 
   std::vector<std::atomic<distance_t>> tdist(graph.max() + 1);
-  tbb::parallel_for_each(tdist, [](auto&& d) {
-    d = std::numeric_limits<distance_t>::max();
-  });
+  tbb::parallel_for_each(tdist, [](auto&& d) { d = std::numeric_limits<distance_t>::max(); });
 
   bins[top_bin].push_back(source);
   tdist[source] = 0;
@@ -315,8 +309,9 @@ auto delta_stepping_v10(Graph&& graph, Id source, T delta) {
   auto relax = [&](Id i, Id j, auto wt) {
     distance_t next = bgl17::acquire(tdist[i]) + wt;
     distance_t prev = bgl17::acquire(tdist[j]);
-    bool success;
-    while (next < prev && !(success = bgl17::cas(tdist[j], prev, next))) { }
+    bool       success;
+    while (next < prev && !(success = bgl17::cas(tdist[j], prev, next))) {
+    }
     if (!success) return;
 
     // inject this into the right bin (double-checked locking to serialize
@@ -339,17 +334,16 @@ auto delta_stepping_v10(Graph&& graph, Id source, T delta) {
   while (top_bin < bins.size()) {
     frontier.resize(0);
     std::swap(frontier, bins[top_bin]);
-    tbb::parallel_for(tbb::blocked_range(0ul, frontier.size()),
-                      [&](auto&& range) {
-                        for (auto id = range.begin(), e = range.end(); id < e; ++id) {
-                          auto i = frontier[id];
-                          if (tdist[i] >= delta * top_bin) {
-                            for (auto&& [j, wt] : g[i]) {
-                              relax(i, j, wt);
-                            }
-                          }
-                        }
-                      });
+    tbb::parallel_for(tbb::blocked_range(0ul, frontier.size()), [&](auto&& range) {
+      for (auto id = range.begin(), e = range.end(); id < e; ++id) {
+        auto i = frontier[id];
+        if (tdist[i] >= delta * top_bin) {
+          for (auto&& [j, wt] : g[i]) {
+            relax(i, j, wt);
+          }
+        }
+      }
+    });
 
     while (top_bin < bins.size() && bins[top_bin].size() == 0) {
       bins[top_bin++].shrink_to_fit();
@@ -360,15 +354,13 @@ auto delta_stepping_v10(Graph&& graph, Id source, T delta) {
 
 template <class distance_t, class Graph, class Id, class T>
 auto delta_stepping_v11(Graph&& graph, Id source, T delta) {
-  tbb::queuing_mutex lock;
-  std::atomic<std::size_t> size = 1;
+  tbb::queuing_mutex                                 lock;
+  std::atomic<std::size_t>                           size = 1;
   tbb::concurrent_vector<tbb::concurrent_vector<Id>> bins(size);
-  std::size_t top_bin = 0;
+  std::size_t                                        top_bin = 0;
 
   std::vector<std::atomic<distance_t>> tdist(graph.max() + 1);
-  tbb::parallel_for_each(tdist, [](auto&& d) {
-    d = std::numeric_limits<distance_t>::max();
-  });
+  tbb::parallel_for_each(tdist, [](auto&& d) { d = std::numeric_limits<distance_t>::max(); });
 
   bins[top_bin].push_back(source);
   tdist[source] = 0;
@@ -376,8 +368,9 @@ auto delta_stepping_v11(Graph&& graph, Id source, T delta) {
   auto relax = [&](Id i, Id j, auto wt) {
     distance_t next = bgl17::acquire(tdist[i]) + wt;
     distance_t prev = bgl17::acquire(tdist[j]);
-    bool success;
-    while (next < prev && !(success = bgl17::cas(tdist[j], prev, next))) { }
+    bool       success;
+    while (next < prev && !(success = bgl17::cas(tdist[j], prev, next))) {
+    }
     if (!success) return;
 
     // inject this into the right bin (double-checked locking to serialize
@@ -400,19 +393,18 @@ auto delta_stepping_v11(Graph&& graph, Id source, T delta) {
   while (top_bin < bins.size()) {
     frontier.resize(0);
     std::swap(frontier, bins[top_bin]);
-    tbb::parallel_for(tbb::blocked_range(0ul, frontier.size()),
-                      [&](auto&& range) {
-                        for (auto id = range.begin(), e = range.end(); id < e; ++id) {
-                          auto i = frontier[id];
-                          if (tdist[i] >= delta * top_bin) {
-                            tbb::parallel_for(g[i], [&](auto&& range) {
-                              for (auto&& [j, wt] : range) {
-                                relax(i, j, wt);
-                              }
-                            });
-                          }
-                        }
-                      });
+    tbb::parallel_for(tbb::blocked_range(0ul, frontier.size()), [&](auto&& range) {
+      for (auto id = range.begin(), e = range.end(); id < e; ++id) {
+        auto i = frontier[id];
+        if (tdist[i] >= delta * top_bin) {
+          tbb::parallel_for(g[i], [&](auto&& range) {
+            for (auto&& [j, wt] : range) {
+              relax(i, j, wt);
+            }
+          });
+        }
+      }
+    });
 
     while (top_bin < bins.size() && bins[top_bin].size() == 0) {
       bins[top_bin++].shrink_to_fit();
@@ -423,15 +415,13 @@ auto delta_stepping_v11(Graph&& graph, Id source, T delta) {
 
 template <class distance_t, class Graph, class Id, class T>
 auto delta_stepping_v12(Graph&& graph, Id source, T delta) {
-  tbb::queuing_mutex lock;
-  std::atomic<std::size_t> size = 1;
+  tbb::queuing_mutex                                 lock;
+  std::atomic<std::size_t>                           size = 1;
   tbb::concurrent_vector<tbb::concurrent_vector<Id>> bins(size);
-  std::size_t top_bin = 0;
+  std::size_t                                        top_bin = 0;
 
   std::vector<std::atomic<distance_t>> tdist(graph.max() + 1);
-  tbb::parallel_for_each(tdist, [](auto&& d) {
-    d = std::numeric_limits<distance_t>::max();
-  });
+  tbb::parallel_for_each(tdist, [](auto&& d) { d = std::numeric_limits<distance_t>::max(); });
 
   bins[top_bin].push_back(source);
   tdist[source] = 0;
@@ -439,8 +429,9 @@ auto delta_stepping_v12(Graph&& graph, Id source, T delta) {
   auto relax = [&](Id i, Id j, auto wt) {
     distance_t next = bgl17::acquire(tdist[i]) + wt;
     distance_t prev = bgl17::acquire(tdist[j]);
-    bool success;
-    while (next < prev && !(success = bgl17::cas(tdist[j], prev, next))) { }
+    bool       success;
+    while (next < prev && !(success = bgl17::cas(tdist[j], prev, next))) {
+    }
     if (!success) return;
 
     // inject this into the right bin (double-checked locking to serialize
@@ -465,9 +456,7 @@ auto delta_stepping_v12(Graph&& graph, Id source, T delta) {
     std::swap(frontier, bins[top_bin]);
     tbb::parallel_for_each(frontier, [&](auto&& u) {
       if (tdist[u] >= delta * top_bin) {
-        bgl17::parallel_for(g[u], [&](auto&& v, auto&& wt) {
-          relax(u, v, wt);
-        });
+        bgl17::parallel_for(g[u], [&](auto&& v, auto&& wt) { relax(u, v, wt); });
       }
     });
 
@@ -478,4 +467,6 @@ auto delta_stepping_v12(Graph&& graph, Id source, T delta) {
   return tdist;
 }
 
+}    // namespace graph
+}    // namespace nw
 #endif    // DELTA_STEPPING_HPP

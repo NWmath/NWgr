@@ -2,8 +2,8 @@
 // This file is part of Standard Graph Library (SGL)
 // (c) Pacific Northwest National Laboratory 2018
 //
-// Licensed under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License
-// https://creativecommons.org/licenses/by-nc-sa/4.0/
+// Licensed under Creative Commons Attribution-NonCommercial-ShareAlike 4.0
+// International License https://creativecommons.org/licenses/by-nc-sa/4.0/
 //
 // Author: Jesun Sahariar Firoz
 //
@@ -18,7 +18,10 @@
 
 // #define PRINT_DEBUG 1
 
-template<typename Graph>
+namespace nw {
+namespace graph {
+
+template <typename Graph>
 void jones_plassmann_coloring(Graph A, std::vector<size_t>& colors) {
   size_t N = A.size();
 #ifdef PRINT_DEBUG
@@ -127,4 +130,6 @@ void jones_plassmann_coloring(Graph A, std::vector<size_t>& colors) {
   return;
 }
 
+}    // namespace graph
+}    // namespace nw
 #endif    // JONES_PLASSMANN_COLORING_HPP

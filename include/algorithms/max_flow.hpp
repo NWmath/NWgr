@@ -2,13 +2,15 @@
 // This file is part of Standard Graph Library (SGL)
 // (c) Pacific Northwest National Laboratory 2018
 //
-// Licensed under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License
-// https://creativecommons.org/licenses/by-nc-sa/4.0/
+// Licensed under Creative Commons Attribution-NonCommercial-ShareAlike 4.0
+// International License https://creativecommons.org/licenses/by-nc-sa/4.0/
 //
 // Author: Kevin Deweese
 //
 
-#pragma once
+#ifndef NW_GRAPH_MAX_FLOW_HPP
+#define NW_GRAPH_MAX_FLOW_HPP
+
 #include "back_edge_range.hpp"
 #include "filtered_bfs_range.hpp"
 #include "reverse.hpp"
@@ -17,14 +19,17 @@
 #include <iostream>
 #include <tuple>
 
+namespace nw {
+namespace graph {
+
 static int DEFAULT_MAX = 1000;
 enum class default_dict { capacity_idx = 1, flow_idx = 2 };
-template<size_t Idx, typename Edge>
+template <size_t Idx, typename Edge>
 auto backedge_property(Edge edge) {
   return std::get<Idx>(edge);
 }
 //****************************************************************************
-template<typename Dict = default_dict, typename flowtype = double, typename Graph>
+template <typename Dict = default_dict, typename flowtype = double, typename Graph>
 flowtype max_flow(Graph& A, vertex_id_t source, vertex_id_t sink, size_t max_iters = DEFAULT_MAX) {
   struct tree_edge {
     flowtype* capacity;
@@ -79,3 +84,6 @@ flowtype max_flow(Graph& A, vertex_id_t source, vertex_id_t sink, size_t max_ite
 
   return maxflow;
 }
+}    // namespace graph
+}    // namespace nw
+#endif    // NW_GRAPH_MAX_FLOW_HPP

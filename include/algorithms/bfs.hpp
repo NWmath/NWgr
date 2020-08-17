@@ -2,17 +2,18 @@
 //
 // (c) Pacific Northwest National Laboratory 2020
 //
-// Licensed under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License
-// https://creativecommons.org/licenses/by-nc-sa/4.0/
+// Licensed under Creative Commons Attribution-NonCommercial-ShareAlike 4.0
+// International License https://creativecommons.org/licenses/by-nc-sa/4.0/
 //
 // Author: Andrew Lumsdaine
 //
 
-#pragma once
+#ifndef NW_GRAPH_BFS_HPP
+#define NW_GRAPH_BFS_HPP
 
 #include "compressed.hpp"
-#include "util/atomic.hpp"
 #include "util/AtomicBitVector.hpp"
+#include "util/atomic.hpp"
 #include "util/parallel_for.hpp"
 #include <queue>
 
@@ -22,15 +23,18 @@
 
 #if defined(CL_SYCL_LANGUAGE_VERSION)
 #include <dpstd/iterators.h>
-template<class T>
-using counting_iterator = dpstd::counting_iterator<T>;
+template <class T>
+using nw::graph::counting_iterator = dpstd::counting_iterator<T>;
 #else
 #include <tbb/iterators.h>
-template<class T>
-using counting_iterator = tbb::counting_iterator<T>;
+template <class T>
+using nw::graph::counting_iterator = tbb::counting_iterator<T>;
 #endif
 
-template<typename Graph>
+namespace nw {
+namespace graph {
+
+template <typename Graph>
 auto bfs_v0(Graph& graph, vertex_id_t root) {
 
   std::deque<vertex_id_t>  q1, q2;
@@ -39,7 +43,7 @@ auto bfs_v0(Graph& graph, vertex_id_t root) {
   size_t                   lvl = 0;
 
   q1.push_back(root);
-  level[root] = lvl++;
+  level[root]   = lvl++;
   parents[root] = root;
 
   auto g = graph.begin();
@@ -51,7 +55,7 @@ auto bfs_v0(Graph& graph, vertex_id_t root) {
         vertex_id_t v = std::get<0>(x);
         if (level[v] == std::numeric_limits<vertex_id_t>::max()) {
           q2.push_back(v);
-          level[v] = lvl;
+          level[v]   = lvl;
           parents[v] = u;
         }
       });
@@ -63,7 +67,7 @@ auto bfs_v0(Graph& graph, vertex_id_t root) {
   return parents;
 }
 
-template<typename T>
+template <typename T>
 class _concurrent_queue : public tbb::concurrent_queue<T> {
   using base = tbb::concurrent_queue<T>;
 
@@ -71,7 +75,7 @@ public:
   auto internal_swap(_concurrent_queue& src) { base::internal_swap(src); }
 };
 
-template<typename Graph>
+template <typename Graph>
 auto bfs_v4(Graph& graph, vertex_id_t root) {
 
   _concurrent_queue<vertex_id_t> q1, q2;
@@ -91,8 +95,8 @@ auto bfs_v4(Graph& graph, vertex_id_t root) {
         vertex_id_t v = std::get<0>(x);
         if (level[v] == std::numeric_limits<vertex_id_t>::max()) {
           q2.push(v);
-          level[v] = lvl;
-      parents[v] = u;
+          level[v]   = lvl;
+          parents[v] = u;
         }
       });
     });
@@ -104,7 +108,7 @@ auto bfs_v4(Graph& graph, vertex_id_t root) {
   return parents;
 }
 
-template<typename Graph>
+template <typename Graph>
 auto bfs_v6(Graph& graph, vertex_id_t root) {
 
   tbb::concurrent_vector<vertex_id_t> q1, q2;
@@ -113,7 +117,7 @@ auto bfs_v6(Graph& graph, vertex_id_t root) {
   size_t                              lvl = 0;
 
   q1.push_back(root);
-  level[root] = lvl++;
+  level[root]   = lvl++;
   parents[root] = root;
 
   auto g = graph.begin();
@@ -125,8 +129,8 @@ auto bfs_v6(Graph& graph, vertex_id_t root) {
         vertex_id_t v = std::get<0>(x);
         if (level[v] == std::numeric_limits<vertex_id_t>::max()) {
           q2.push_back(v);
-          level[v] = lvl;
-      parents[v] = u;
+          level[v]   = lvl;
+          parents[v] = u;
         }
       });
     });
@@ -137,7 +141,7 @@ auto bfs_v6(Graph& graph, vertex_id_t root) {
   return parents;
 }
 
-template<typename Graph>
+template <typename Graph>
 auto bfs_v7(Graph& graph, vertex_id_t root) {
 
   tbb::concurrent_vector<vertex_id_t>   q1, q2;
@@ -146,10 +150,10 @@ auto bfs_v7(Graph& graph, vertex_id_t root) {
     level[i] = std::numeric_limits<vertex_id_t>::max();
   }
   std::vector parents(graph.max() + 1, std::numeric_limits<vertex_id_t>::max());
-  size_t lvl = 0;
+  size_t      lvl = 0;
 
   q1.push_back(root);
-  level[root] = lvl++;
+  level[root]   = lvl++;
   parents[root] = root;
 
   auto g = graph.begin();
@@ -170,7 +174,7 @@ auto bfs_v7(Graph& graph, vertex_id_t root) {
           }
           if (changed) {
             q2.push_back(v);
-        parents[v] = u;
+            parents[v] = u;
           }
         }
       });
@@ -183,7 +187,7 @@ auto bfs_v7(Graph& graph, vertex_id_t root) {
   return parents;
 }
 
-template<typename Graph>
+template <typename Graph>
 auto bfs_v8(Graph& graph, vertex_id_t root) {
 
   _concurrent_queue<vertex_id_t> q1, q2;
@@ -192,7 +196,7 @@ auto bfs_v8(Graph& graph, vertex_id_t root) {
   size_t                         lvl = 0;
 
   q1.push(root);
-  level[root] = lvl++;
+  level[root]   = lvl++;
   parents[root] = root;
 
   auto g = graph.begin();
@@ -204,8 +208,8 @@ auto bfs_v8(Graph& graph, vertex_id_t root) {
         vertex_id_t v = std::get<0>(x);
         if (level[v] == std::numeric_limits<vertex_id_t>::max()) {
           q2.push(v);
-          level[v] = lvl;
-      parents[v] = u;
+          level[v]   = lvl;
+          parents[v] = u;
         }
       });
     });
@@ -217,7 +221,7 @@ auto bfs_v8(Graph& graph, vertex_id_t root) {
   return parents;
 }
 
-template<typename Graph>
+template <typename Graph>
 auto bfs_v9(Graph& graph, vertex_id_t root) {
 
   const size_t                                     num_bins = 32;
@@ -226,10 +230,10 @@ auto bfs_v9(Graph& graph, vertex_id_t root) {
   std::vector                                      level(graph.max() + 1, std::numeric_limits<vertex_id_t>::max());
   std::vector                                      parents(graph.max() + 1, std::numeric_limits<vertex_id_t>::max());
   size_t                                           lvl = 0;
-  parents[root] = root;
+  parents[root]                                        = root;
 
   q1[0].push_back(root);
-  level[root] = lvl++;
+  level[root]   = lvl++;
   parents[root] = root;
 
   auto g = graph.begin();
@@ -243,8 +247,8 @@ auto bfs_v9(Graph& graph, vertex_id_t root) {
             vertex_id_t v = std::get<0>(x);
             if (level[v] == std::numeric_limits<vertex_id_t>::max()) {
               q2[u & bin_mask].push_back(v);
-              level[v] = lvl;
-          parents[v] = u;
+              level[v]   = lvl;
+              parents[v] = u;
             }
           });
         });
@@ -271,14 +275,12 @@ auto bfs_v9(Graph& graph, vertex_id_t root) {
 }
 
 template <class Graph>
-[[gnu::noinline]]
-auto bfs_top_down(Graph&& graph, vertex_id_t root)
-{
-  constexpr const std::size_t num_bins = 32;
-  const std::size_t                  N = graph.max() + 1;
+[[gnu::noinline]] auto bfs_top_down(Graph&& graph, vertex_id_t root) {
+  constexpr const std::size_t                      num_bins = 32;
+  const std::size_t                                N        = graph.max() + 1;
   std::vector<tbb::concurrent_vector<vertex_id_t>> q1(num_bins);
   std::vector<tbb::concurrent_vector<vertex_id_t>> q2(num_bins);
-  std::vector<vertex_id_t> parents(N);
+  std::vector<vertex_id_t>                         parents(N);
 
   std::fill(std::execution::par_unseq, parents.begin(), parents.end(), null_vertex);
 
@@ -316,15 +318,13 @@ auto bfs_top_down(Graph&& graph, vertex_id_t root)
 }
 
 template <class Graph>
-[[gnu::noinline]]
-auto bfs_top_down_bitmap(Graph&& graph, vertex_id_t root)
-{
-  constexpr const std::size_t num_bins = 32;
-  const std::size_t                  N = graph.max() + 1;
+[[gnu::noinline]] auto bfs_top_down_bitmap(Graph&& graph, vertex_id_t root) {
+  constexpr const std::size_t                      num_bins = 32;
+  const std::size_t                                N        = graph.max() + 1;
   std::vector<tbb::concurrent_vector<vertex_id_t>> q1(num_bins);
   std::vector<tbb::concurrent_vector<vertex_id_t>> q2(num_bins);
-  std::vector<vertex_id_t> parents(N);
-  bgl17::AtomicBitVector visited(N);
+  std::vector<vertex_id_t>                         parents(N);
+  bgl17::AtomicBitVector                           visited(N);
 
   std::fill(std::execution::par_unseq, parents.begin(), parents.end(), null_vertex);
 
@@ -363,10 +363,8 @@ auto bfs_top_down_bitmap(Graph&& graph, vertex_id_t root)
 }
 
 template <class Graph, class Transpose>
-[[gnu::noinline]]
-auto bfs_bottom_up(Graph&& g, Transpose&& gx, vertex_id_t root)
-{
-  const std::size_t N = gx.max() + 1;
+[[gnu::noinline]] auto bfs_bottom_up(Graph&& g, Transpose&& gx, vertex_id_t root) {
+  const std::size_t      N = gx.max() + 1;
   bgl17::AtomicBitVector frontier(N);
   bgl17::AtomicBitVector next(N);
 
@@ -375,22 +373,24 @@ auto bfs_bottom_up(Graph&& g, Transpose&& gx, vertex_id_t root)
 
   parents[root] = root;
   next.set(root);
-  for (vertex_id_t n = 1; n != 0;
-       n = tbb::parallel_reduce(tbb::blocked_range(0ul, N), 0, [&](auto&& range, auto n) {
-         for (auto&& v = range.begin(), e = range.end(); v != e; ++v) {
-           if (parents[v] == null_vertex) {
-             for (auto&& [u] : gx[v]) {
-               if (frontier.get(u)) {
-                 next.atomic_set(v);
-                 parents[v] = u;
-                 ++n;
-                 break;
-               }
-             }
-           }
-         }
-         return n;
-       }, std::plus{})) {
+  for (vertex_id_t n = 1; n != 0; n = tbb::parallel_reduce(
+                                      tbb::blocked_range(0ul, N), 0,
+                                      [&](auto&&range, auto n) {
+                                        for (auto &&v = range.begin(), e = range.end(); v != e; ++v) {
+                                          if (parents[v] == null_vertex) {
+                                            for (auto&& [u] : gx[v]) {
+                                              if (frontier.get(u)) {
+                                                next.atomic_set(v);
+                                                parents[v] = u;
+                                                ++n;
+                                                break;
+                                              }
+                                            }
+                                          }
+                                        }
+                                        return n;
+                                      },
+                                      std::plus{})) {
     std::swap(frontier, next);
     next.clear();
   }
@@ -398,11 +398,11 @@ auto bfs_bottom_up(Graph&& g, Transpose&& gx, vertex_id_t root)
 }
 
 template <typename OutGraph, typename InGraph>
-[[gnu::noinline]]
-auto bfs_v11(OutGraph& out_graph, InGraph& in_graph, vertex_id_t root, int num_bins = 32, int alpha = 15, int beta = 18) {
-  const std::size_t n = bgl17::pow2(bgl17::ceil_log2(num_bins));
-  const std::size_t N = out_graph.max() + 1;
-  const std::size_t M = out_graph.to_be_indexed_.size();
+[[gnu::noinline]] auto bfs_v11(OutGraph& out_graph, InGraph& in_graph, vertex_id_t root, int num_bins = 32, int alpha = 15,
+                               int beta = 18) {
+  const std::size_t                                n = bgl17::pow2(bgl17::ceil_log2(num_bins));
+  const std::size_t                                N = out_graph.max() + 1;
+  const std::size_t                                M = out_graph.to_be_indexed_.size();
   std::vector<tbb::concurrent_vector<vertex_id_t>> q1(n), q2(n);
 
   bgl17::AtomicBitVector   visited(N);
@@ -411,7 +411,7 @@ auto bfs_v11(OutGraph& out_graph, InGraph& in_graph, vertex_id_t root, int num_b
   std::fill(std::execution::par_unseq, parents.begin(), parents.end(), null_vertex);
 
   std::uint64_t edges_to_check = M;
-  std::uint64_t    scout_count = out_graph[root].size();
+  std::uint64_t scout_count    = out_graph[root].size();
 
   visited.atomic_set(root);
   parents[root] = root;
@@ -422,15 +422,13 @@ auto bfs_v11(OutGraph& out_graph, InGraph& in_graph, vertex_id_t root, int num_b
     if (scout_count > edges_to_check / alpha) {
       bgl17::AtomicBitVector front(N, false);
       bgl17::AtomicBitVector curr(N);
-      std::size_t awake_count = 0;
+      std::size_t            awake_count = 0;
 
       // Initialize the frontier bitmap from the frontier queues, and count the
       // number of non-zeros.
       std::for_each(std::execution::par_unseq, q1.begin(), q1.end(), [&](auto&& q) {
         bgl17::fetch_add(awake_count, q.size());
-        std::for_each(std::execution::par_unseq, q.begin(), q.end(), [&](auto&& u) {
-          curr.atomic_set(u);
-        });
+        std::for_each(std::execution::par_unseq, q.begin(), q.end(), [&](auto&& u) { curr.atomic_set(u); });
       });
 
       std::size_t old_awake_count = 0;
@@ -464,7 +462,7 @@ auto bfs_v11(OutGraph& out_graph, InGraph& in_graph, vertex_id_t root, int num_b
       }
 
       tbb::parallel_for(curr.non_zeros(bgl17::pow2(15)), [&](auto&& range) {
-        for (auto&& i = range.begin(), e = range.end(); i != e; ++i) {
+        for (auto &&i = range.begin(), e = range.end(); i != e; ++i) {
           q2[*i % n].push_back(*i);
         }
       });
@@ -512,3 +510,7 @@ auto bfs_v11(OutGraph& out_graph, InGraph& in_graph, vertex_id_t root, int num_b
 
   return parents;
 }
+}    // namespace graph
+}    // namespace nw
+
+#endif    // NW_GRAPH_BFS_HPP

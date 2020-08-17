@@ -2,20 +2,23 @@
 // This file is part of Standard Graph Library (SGL)
 // (c) Pacific Northwest National Laboratory 2018
 //
-// Licensed under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License
-// https://creativecommons.org/licenses/by-nc-sa/4.0/
+// Licensed under Creative Commons Attribution-NonCommercial-ShareAlike 4.0
+// International License https://creativecommons.org/licenses/by-nc-sa/4.0/
 //
 // Author: Jesun Sahariar Firoz
 //
 
-/*Implements maximal independent set algorithm*/
-#pragma once
+#ifndef NW_GRAPH_MIS_HPP
+#define NW_GRAPH_MIS_HPP
 
 #include "bfs_range.hpp"
 
-template<typename Graph>
+namespace nw {
+namespace graph {
+
+template <typename Graph>
 void mis_algorithm(Graph A, std::vector<size_t>& mis) {
-  size_t              N = A.size();
+  size_t            N = A.size();
   std::vector<bool> removedVertices(N);
   for (size_t vtx = 0; vtx < N; vtx++) {
     if (!removedVertices[vtx]) {
@@ -28,3 +31,6 @@ void mis_algorithm(Graph A, std::vector<size_t>& mis) {
     }
   }
 }
+}    // namespace graph
+}    // namespace nw
+#endif    // NW_GRAPH_MIS_HPP

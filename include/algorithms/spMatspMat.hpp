@@ -9,7 +9,8 @@
 // Author: Scott McMillan
 //
 
-#pragma once
+#ifndef NW_GRAPH_SPMATSPMAT_HPP
+#define NW_GRAPH_SPMATSPMAT_HPP
 
 #include <algorithm>
 #include <map>
@@ -19,6 +20,9 @@
 #include <plain_range.hpp>
 #include <util.hpp>
 
+namespace nw {
+namespace graph {
+
 //****************************************************************************
 // A * B
 //****************************************************************************
@@ -26,8 +30,8 @@
 //****************************************************************************
 /// @todo cannot currently pass "const &" for A or B
 /// @todo Need to discuss interface options
-template<typename ScalarT, typename LGraphT, typename RGraphT, typename MapOpT = std::multiplies<ScalarT>,
-         typename ReduceOpT = std::plus<ScalarT>>
+template <typename ScalarT, typename LGraphT, typename RGraphT, typename MapOpT = std::multiplies<ScalarT>,
+          typename ReduceOpT = std::plus<ScalarT>>
 edge_list<directed, ScalarT> spMatspMat(LGraphT& A, RGraphT& B) {
   edge_list<directed, ScalarT> edges(0);
   edges.open_for_push_back();
@@ -74,7 +78,7 @@ edge_list<directed, ScalarT> spMatspMat(LGraphT& A, RGraphT& B) {
 
 //****************************************************************************
 // map
-template<class InputIt1, class InputIt2, class Output, class Compare, class Map>
+template <class InputIt1, class InputIt2, class Output, class Compare, class Map>
 void set_ewise_intersection(InputIt1 first1, InputIt1 last1, InputIt2 first2, InputIt2 last2, Output& container, Compare comp,
                             Map map) {
   while (first1 != last1 && first2 != last2) {
@@ -83,7 +87,7 @@ void set_ewise_intersection(InputIt1 first1, InputIt1 last1, InputIt2 first2, In
     } else {
       if (!comp(*first2, *first1)) {
         container.push_back(map(*first1, *first2));
-        //std::cout << "map = " << map(*first1, *first2) << std::endl;
+        // std::cout << "map = " << map(*first1, *first2) << std::endl;
         ++first1;
       }
       ++first2;
@@ -93,8 +97,8 @@ void set_ewise_intersection(InputIt1 first1, InputIt1 last1, InputIt2 first2, In
 
 //****************************************************************************
 /// @todo cannot currently pass "const &" for A or BT
-template<typename ScalarT, typename LGraphT, typename RGraphT, typename MapOpT = std::multiplies<ScalarT>,
-         typename ReduceOpT = std::plus<ScalarT>>
+template <typename ScalarT, typename LGraphT, typename RGraphT, typename MapOpT = std::multiplies<ScalarT>,
+          typename ReduceOpT = std::plus<ScalarT>>
 edge_list<directed, ScalarT> spMatspMatT(LGraphT& A, RGraphT& BT) {
   std::vector<ScalarT> products;
 
@@ -106,7 +110,7 @@ edge_list<directed, ScalarT> spMatspMatT(LGraphT& A, RGraphT& BT) {
   for (auto row_it = A.begin(); row_it != A.end(); ++row_it, ++row_idx) {
     vertex_id_t col_idx = 0;
     for (auto col_it = BT.begin(); col_it != BT.end(); ++col_it, ++col_idx) {
-      //std::cout << "Computing " << row_idx << "," << col_idx << std::endl;
+      // std::cout << "Computing " << row_idx << "," << col_idx << std::endl;
       products.clear();
 
       set_ewise_intersection((*row_it).begin(), (*row_it).end(), (*col_it).begin(), (*col_it).end(), products,
@@ -116,7 +120,7 @@ edge_list<directed, ScalarT> spMatspMatT(LGraphT& A, RGraphT& BT) {
       if (!products.empty()) {
         ScalarT res = std::accumulate(products.begin(), products.end(), (ScalarT)0, ReduceOpT());
         edges.push_back(row_idx, col_idx, res);
-        //std::cout << "Added element (" << row_idx << ","
+        // std::cout << "Added element (" << row_idx << ","
         //          << col_idx << ") = " << res << std::endl;
         products.clear();
       }
@@ -124,6 +128,10 @@ edge_list<directed, ScalarT> spMatspMatT(LGraphT& A, RGraphT& BT) {
   }
 
   edges.close_for_push_back();
-  //edges.template sort_by<0>();  // not necessary
+  // edges.template sort_by<0>();  // not necessary
   return edges;
 }
+}    // namespace graph
+}    // namespace nw
+
+#endif    // NW_GRAPH_SPMATSPMAT_HPP

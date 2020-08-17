@@ -2,8 +2,8 @@
 // This file is part of Standard Graph Library (SGL)
 // (c) Pacific Northwest National Laboratory 2018
 //
-// Licensed under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License
-// https://creativecommons.org/licenses/by-nc-sa/4.0/
+// Licensed under Creative Commons Attribution-NonCommercial-ShareAlike 4.0
+// International License https://creativecommons.org/licenses/by-nc-sa/4.0/
 //
 // Author: Kevin Deweese
 //
@@ -24,11 +24,14 @@
 #include "util.hpp"
 #include "util/types.hpp"
 
+namespace nw {
+namespace graph {
+
 const size_t INFINITE_D = 100000000;
 
-template<typename Graph>
+template <typename Graph>
 double bk_maxflow3(Graph& A, std::vector<double>& cap) {
-  //std::clock_t start;
+  // std::clock_t start;
   double                   grow    = 0;
   double                   augment = 0;
   double                   adopt   = 0;
@@ -49,9 +52,9 @@ double bk_maxflow3(Graph& A, std::vector<double>& cap) {
   std::vector<bool>   in_tree(n_vtx, false);
   std::vector<size_t> timestamp(n_vtx);
   std::vector<size_t> dist(n_vtx);
-  //capacity forward, flow forward
-  //capacity back, flow back
-  //residuals are never stored explicitly
+  // capacity forward, flow forward
+  // capacity back, flow back
+  // residuals are never stored explicitly
   vertex_id_t connect_s;
   vertex_id_t connect_t;
   int         augment_ct = 0;
@@ -98,13 +101,13 @@ double bk_maxflow3(Graph& A, std::vector<double>& cap) {
 
   while (true) {
     bool found = false;
-    //start = std::clock();
-    //Grow
+    // start = std::clock();
+    // Grow
     while (!active.empty()) {
 
       p = active.front();
-      //if(preds[p] == null_vertex && p != source && p != terminal) {
-      //if(preds[p] == null_vertex) {
+      // if(preds[p] == null_vertex && p != source && p != terminal) {
+      // if(preds[p] == null_vertex) {
       if (!in_tree[p]) {
         active.pop();
         continue;
@@ -127,7 +130,7 @@ double bk_maxflow3(Graph& A, std::vector<double>& cap) {
           connect_t = q;
         }
 
-        //if(preds[q] == null_vertex) {
+        // if(preds[q] == null_vertex) {
         if (!in_tree[q]) {
           tree_id[q] = t;
           preds[q]   = p;
@@ -143,7 +146,7 @@ double bk_maxflow3(Graph& A, std::vector<double>& cap) {
           dist[q]      = dist[p] + 1;
         }
 
-        //found path
+        // found path
         else if (tree_id[q] != t) {
           found = true;
           if (t) {
@@ -175,9 +178,9 @@ double bk_maxflow3(Graph& A, std::vector<double>& cap) {
     }
 
     if (!found) break;
-    //grow += (std::clock() - start);
-    //start = std::clock();
-    //Augment
+    // grow += (std::clock() - start);
+    // start = std::clock();
+    // Augment
     augment_ct += 1;
 
     min_cap       = std::get<4>(*connect);
@@ -272,9 +275,9 @@ double bk_maxflow3(Graph& A, std::vector<double>& cap) {
       }
     }
 
-    //augment += (std::clock() - start);
-    //start = std::clock();
-    //Adopt
+    // augment += (std::clock() - start);
+    // start = std::clock();
+    // Adopt
 
     while (!orphans.empty()) {
       p = orphans.front();
@@ -313,7 +316,7 @@ double bk_maxflow3(Graph& A, std::vector<double>& cap) {
             break;
           }
 
-          //else if(preds[vtx] == null_vertex) {
+          // else if(preds[vtx] == null_vertex) {
           else if (!in_tree[vtx]) {
             d = INFINITE_D;
             break;
@@ -342,8 +345,8 @@ double bk_maxflow3(Graph& A, std::vector<double>& cap) {
         }
       }
 
-      //can't find new parent
-      //if(preds[p] == null_vertex) {
+      // can't find new parent
+      // if(preds[p] == null_vertex) {
       if (!in_tree[p]) {
         timestamp[p] = 0;
 
@@ -366,7 +369,7 @@ double bk_maxflow3(Graph& A, std::vector<double>& cap) {
           }
         }
       }
-      //Found parent
+      // Found parent
       else {
         preds[p]     = min_pred;
         in_tree[p]   = true;
@@ -375,7 +378,7 @@ double bk_maxflow3(Graph& A, std::vector<double>& cap) {
         dist[p]      = d_min + 1;
       }
     }
-    //adopt += (std::clock() - start);
+    // adopt += (std::clock() - start);
   }
   /*std::cout << "grow time: " << grow / (double) CLOCKS_PER_SEC <<
     " augment time: " << augment / (double) CLOCKS_PER_SEC <<
@@ -384,4 +387,6 @@ double bk_maxflow3(Graph& A, std::vector<double>& cap) {
   return max_flow;
 }
 
+}    // namespace graph
+}    // namespace nw
 #endif    // BOYKOV_KOLMOGOROV3_HPP

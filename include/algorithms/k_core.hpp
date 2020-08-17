@@ -2,13 +2,14 @@
 // This file is part of Standard Graph Library (SGL)
 // (c) Pacific Northwest National Laboratory 2018
 //
-// Licensed under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License
-// https://creativecommons.org/licenses/by-nc-sa/4.0/
+// Licensed under Creative Commons Attribution-NonCommercial-ShareAlike 4.0
+// International License https://creativecommons.org/licenses/by-nc-sa/4.0/
 //
 // Author: Kevin Deweese
 //
 
-#pragma once
+#ifndef NW_GRAPH_K_CORE_HPP
+#define NW_GRAPH_K_CORE_HPP
 
 #include "edge_range.hpp"
 #include <algorithm>
@@ -17,6 +18,9 @@
 #include <unordered_map>
 #include <util.hpp>
 #include <utility>
+
+namespace nw {
+namespace graph {
 
 struct pair_hash {
   std::size_t operator()(const std::pair<size_t, size_t>& p) const {
@@ -36,7 +40,7 @@ Neighbors make_my_pair(vertex_id_t x, vertex_id_t y) {
 }
 
 //****************************************************************************
-template<typename Graph>
+template <typename Graph>
 std::tuple<Unordered_map, size_t> k_core(Graph& A, int k) {
   Unordered_map filter;
 
@@ -73,22 +77,25 @@ std::tuple<Unordered_map, size_t> k_core(Graph& A, int k) {
     }
     }*/
 
-  //edge_list<undirected> k_core_list(n_vtx);
-  //Graph k_core_graph(n_vtx);
-  //k_core_graph.open_for_pushback();
-  //first = A.begin();
-  //last = A.end();
+  // edge_list<undirected> k_core_list(n_vtx);
+  // Graph k_core_graph(n_vtx);
+  // k_core_graph.open_for_pushback();
+  // first = A.begin();
+  // last = A.end();
 
   /*for(auto G=first; first !=last; ++first) {
     for (auto v = (*first).begin(); v != (*first).end(); ++v) {
       Neighbors edge = make_my_pair(first-G,std::get<0>(*v));
       if(filter.find(edge) != filter.end())
-    std::cout << "removed edge " << first-G << " " << std::get<0>(*v) << " " << std::endl;
-      else
-    k_core_graph.push_back(relabel[first-G],v);
+    std::cout << "removed edge " << first-G << " " << std::get<0>(*v) << " " <<
+  std::endl; else k_core_graph.push_back(relabel[first-G],v);
     }
   }
   */
 
   return std::make_tuple(filter, n_vtx);
 }
+
+}    // namespace graph
+}    // namespace nw
+#endif

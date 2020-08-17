@@ -2,13 +2,14 @@
 // This file is part of Standard Graph Library (SGL)
 // (c) Pacific Northwest National Laboratory 2018
 //
-// Licensed under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License
-// https://creativecommons.org/licenses/by-nc-sa/4.0/
+// Licensed under Creative Commons Attribution-NonCommercial-ShareAlike 4.0
+// International License https://creativecommons.org/licenses/by-nc-sa/4.0/
 //
 // Author: Kevin Deweese
 //
 
-#pragma once
+#ifndef NW_GRAPH_SPANNING_TREE
+#define NW_GRAPH_SPANNING_TREE
 
 #include <algorithm>
 #include <tuple>
@@ -16,13 +17,16 @@
 #include <disjoint_set.hpp>
 #include <util.hpp>
 
+namespace nw {
+namespace graph {
+
 //****************************************************************************
-template<typename EdgeListT>
+template <typename EdgeListT>
 EdgeListT kruskal(EdgeListT& E) {
   return kruskal(E, [](auto t1, auto t2) { return std::get<2>(t1) < std::get<2>(t2); });
 }
 //****************************************************************************
-template<typename EdgeListT, typename Compare>
+template <typename EdgeListT, typename Compare>
 EdgeListT kruskal(EdgeListT& E, Compare comp) {
   size_t    n_vtx = E.size();
   EdgeListT T(n_vtx);
@@ -42,3 +46,7 @@ EdgeListT kruskal(EdgeListT& E, Compare comp) {
 
   return T;
 }
+
+}    // namespace graph
+}    // namespace nw
+#endif    //  NW_GRAPH_SPANNING_TREE

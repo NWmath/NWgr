@@ -2,8 +2,8 @@
 // This file is part of Standard Graph Library (SGL)
 // (c) Pacific Northwest National Laboratory 2018
 //
-// Licensed under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License
-// https://creativecommons.org/licenses/by-nc-sa/4.0/
+// Licensed under Creative Commons Attribution-NonCommercial-ShareAlike 4.0
+// International License https://creativecommons.org/licenses/by-nc-sa/4.0/
 //
 // Author: Jesun Sahariar Firoz
 //
@@ -22,7 +22,10 @@
 
 // #define PRINT_DEBUG 1
 
-template<typename Graph>
+namespace nw {
+namespace graph {
+
+template <typename Graph>
 void dag_based_mis(Graph A, std::vector<bool>& mis) {
   size_t N = A.size();
 #ifdef PRINT_DEBUG
@@ -84,4 +87,6 @@ void dag_based_mis(Graph A, std::vector<bool>& mis) {
   return;
 }
 
+}    // namespace graph
+}    // namespace nw
 #endif    // DAG_BASED_MIS_HPP

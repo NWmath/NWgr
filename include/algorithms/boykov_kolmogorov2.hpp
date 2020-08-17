@@ -2,8 +2,8 @@
 // This file is part of Standard Graph Library (SGL)
 // (c) Pacific Northwest National Laboratory 2018
 //
-// Licensed under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License
-// https://creativecommons.org/licenses/by-nc-sa/4.0/
+// Licensed under Creative Commons Attribution-NonCommercial-ShareAlike 4.0
+// International License https://creativecommons.org/licenses/by-nc-sa/4.0/
 //
 // Author: Kevin Deweese
 //
@@ -23,9 +23,12 @@
 #include "util.hpp"
 #include "util/types.hpp"
 
+namespace nw {
+namespace graph {
+
 const size_t INFINITE_D = 100000000;
 
-template<typename Graph>
+template <typename Graph>
 std::tuple<double, std::vector<bool>> bk_maxflow2(Graph& A, const std::vector<double>& cap, std::vector<double>& flow) {
   auto resid_cap = [](auto capacity, auto flow, auto backflow) { return capacity - flow + backflow; };
 
@@ -42,18 +45,18 @@ std::tuple<double, std::vector<bool>> bk_maxflow2(Graph& A, const std::vector<do
   std::queue<vertex_id_t>  active;
   std::queue<vertex_id_t>  orphans;
 
-  //std::vector<double> flow(n_vtx, 0);
+  // std::vector<double> flow(n_vtx, 0);
   double stbackflow = 0;
   size_t gtime      = 0;
 
-  //std::vector<bool> in_tree(n_vtx, false);
+  // std::vector<bool> in_tree(n_vtx, false);
   std::vector<bool>                                 tree_id(n_vtx);
   std::vector<std::tuple<double, double*, double*>> trees(n_vtx);
   std::vector<size_t>                               timestamp(n_vtx);
   std::vector<size_t>                               dist(n_vtx);
-  //capacity forward, flow forward
-  //capacity back, flow back
-  //residuals are never stored explicitly
+  // capacity forward, flow forward
+  // capacity back, flow back
+  // residuals are never stored explicitly
   double      cf, *ff, *cb, *fb;
   vertex_id_t connect_s;
   vertex_id_t connect_t;
@@ -98,8 +101,8 @@ std::tuple<double, std::vector<bool>> bk_maxflow2(Graph& A, const std::vector<do
 
   while (true) {
     bool found = false;
-    //start = std::clock();
-    //Grow
+    // start = std::clock();
+    // Grow
     while (!active.empty()) {
       auto p = active.front();
 
@@ -138,7 +141,7 @@ std::tuple<double, std::vector<bool>> bk_maxflow2(Graph& A, const std::vector<do
           dist[q]      = dist[p] + 1;
         }
 
-        //found path
+        // found path
         else if (tree_id[q] != t) {
           found = true;
           break;
@@ -160,9 +163,9 @@ std::tuple<double, std::vector<bool>> bk_maxflow2(Graph& A, const std::vector<do
     }
 
     if (!found) break;
-    //grow += (std::clock() - start);
-    //start = std::clock();
-    //Augment
+    // grow += (std::clock() - start);
+    // start = std::clock();
+    // Augment
     augment_ct += 1;
     min_cap = resid_cap(cf, *ff, *fb);
     path_length++;
@@ -217,9 +220,9 @@ std::tuple<double, std::vector<bool>> bk_maxflow2(Graph& A, const std::vector<do
       }
     }
 
-    //augment += (std::clock() - start);
-    //start = std::clock();
-    //Adopt
+    // augment += (std::clock() - start);
+    // start = std::clock();
+    // Adopt
 
     while (!orphans.empty()) {
       auto p = orphans.front();
@@ -290,7 +293,7 @@ std::tuple<double, std::vector<bool>> bk_maxflow2(Graph& A, const std::vector<do
         }
       }
 
-      //can't find new parent
+      // can't find new parent
       if (preds[p] == null_vertex) {
         timestamp[p] = 0;
 
@@ -311,16 +314,16 @@ std::tuple<double, std::vector<bool>> bk_maxflow2(Graph& A, const std::vector<do
           }
         }
       }
-      //Found parent
+      // Found parent
       else {
-        //in_tree[p] = true;
+        // in_tree[p] = true;
         preds[p]     = min_pred;
         trees[p]     = min_edge;
         timestamp[p] = gtime;
         dist[p]      = d_min + 1;
       }
     }
-    //adopt += (std::clock() - start);
+    // adopt += (std::clock() - start);
   }
   /*std::cout << "grow time: " << grow / (double) CLOCKS_PER_SEC <<
     " augment time: " << augment / (double) CLOCKS_PER_SEC <<
@@ -335,4 +338,6 @@ std::tuple<double, std::vector<bool>> bk_maxflow2(Graph& A, const std::vector<do
   return std::make_tuple(max_flow, tree_id);
 }
 
+}    // namespace graph
+}    // namespace nw
 #endif    //  BOYKOV_KOLMOGOROV2_HPP

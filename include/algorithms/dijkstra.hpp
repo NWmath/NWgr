@@ -2,8 +2,8 @@
 // This file is part of the Graph Standard Library (aka BGL17 aka NWGraph)
 // (c) Pacific Northwest National Laboratory
 //
-// Licensed under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License
-// https://creativecommons.org/licenses/by-nc-sa/4.0/
+// Licensed under Creative Commons Attribution-NonCommercial-ShareAlike 4.0
+// International License https://creativecommons.org/licenses/by-nc-sa/4.0/
 //
 // Author: Andrew Lumsdaine
 //
@@ -20,9 +20,12 @@
 #include "bfs_edge_range.hpp"
 #include "util/types.hpp"
 
+namespace nw {
+namespace graph {
+
 //****************************************************************************
 /// @todo cannot yet specify const graph.
-template<typename DistanceT, typename GraphT>
+template <typename DistanceT, typename GraphT>
 std::vector<DistanceT> dijkstra(GraphT& graph, vertex_id_t source) {
   size_t N(graph.end() - graph.begin());
   assert(source < N);
@@ -47,7 +50,7 @@ std::vector<DistanceT> dijkstra(GraphT& graph, vertex_id_t source) {
 
 //****************************************************************************
 /// @todo cannot yet specify const graph.
-template<typename DistanceT, typename GraphT>
+template <typename DistanceT, typename GraphT>
 auto dijkstra_v0(GraphT& graph, vertex_id_t source) {
   size_t N(graph.end() - graph.begin());
   assert(source < N);
@@ -80,4 +83,6 @@ auto dijkstra_v0(GraphT& graph, vertex_id_t source) {
   return distance;
 }
 
+}    // namespace graph
+}    // namespace nw
 #endif    // DIJKSTRA_HPP
