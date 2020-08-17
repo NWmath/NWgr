@@ -17,6 +17,9 @@
 #include <mmio.hpp>
 #include <vector>
 
+using namespace nw::graph;
+using namespace nw::util;
+
 TEST_CASE("boykov-kolmogorov max flow", "[bkmf]") {
 
   auto aos_a = read_mm<directed, double>(DATA_DIR "bktest1.mtx");

@@ -4,6 +4,8 @@
 #include <vector>
 #include "proxysort.hpp"
 
+using namespace nw::graph;
+using namespace nw::util;
 
 
 template <typename Vector>

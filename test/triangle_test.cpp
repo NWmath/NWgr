@@ -18,6 +18,10 @@
 
 #include "common/test_header.hpp"
 
+using namespace nw::graph;
+using namespace nw::util;
+
+
 typedef compressed_sparse<0, undirected> csr_graph;
 
 //****************************************************************************

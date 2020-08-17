@@ -30,7 +30,7 @@ static constexpr const char USAGE[] =
       -V, --verbose         run in verbose mode
 )";
 
-#include "algorithms/connected_component.hpp"
+#include "algorithms/connected_components.hpp"
 #include "Log.hpp"
 #include "common.hpp"
 #include "util/atomic.hpp"
@@ -43,7 +43,11 @@ static constexpr const char USAGE[] =
 #define cins tbb
 #endif
 
+
 using namespace nw::graph::bench;
+using namespace nw::graph;
+using namespace nw::util;
+
 
 template<typename Vector>
 static void link(vertex_id_t u, vertex_id_t v, Vector& comp) {
@@ -174,7 +178,7 @@ static auto read_graphs(std::string path, bool symmetric, bool verbose) {
 // - Asserts every vertex is visited (degree-0 vertex should have own label)
 template <class Graph, class Transpose, class Vector>
 static bool CCVerifier(Graph&& graph, Transpose&& xpose, Vector&& comp) {
-  using NodeID = nw::graph::vertex_id_t<std::decay_t<Graph>>;
+  using NodeID = typename nw::graph::vertex_id<std::decay_t<Graph>>::type;
   std::unordered_map<NodeID, NodeID> label_to_source;
   for (auto&& [n] : plain_range(graph)) {
     label_to_source[comp[n]] = n;

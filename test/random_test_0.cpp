@@ -17,6 +17,10 @@
 #include "mmio.hpp"
 #include "random_range.hpp"
 
+using namespace nw::graph;
+using namespace nw::util;
+
+
 int main(int argc, char* argv[]) {
 
   size_t num_points = 8;

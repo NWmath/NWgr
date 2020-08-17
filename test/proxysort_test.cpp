@@ -4,7 +4,10 @@
 #include <vector>
 #include "proxysort.hpp"
 
+namespace nw::graph {};
 
+using namespace nw::graph;
+using namespace nw::util;
 
 template <typename Vector>
 void print_n_ranks(const Vector& page_rank, size_t n) {

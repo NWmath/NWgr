@@ -7,6 +7,7 @@
 //
 // Author: Jesun Firoz
 //
+
 static constexpr const char USAGE[] =
  R"(pr.exe: BGL17 page rank benchmark driver.
   Usage:
@@ -32,7 +33,12 @@ static constexpr const char USAGE[] =
 #include "common.hpp"
 #include <docopt.h>
 
+
 using namespace nw::graph::bench;
+using namespace nw::graph;
+using namespace nw::util;
+
+
 
 template<typename Vector>
 void print_n_ranks(const Vector& page_rank, size_t n) {

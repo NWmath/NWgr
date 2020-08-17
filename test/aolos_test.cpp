@@ -13,6 +13,9 @@
 #include <bfs_edge_range.hpp>
 #include <complex>
 
+using namespace nw::graph;
+using namespace nw::util;
+
 TEST_CASE("array of list of structures", "[array_of_list_of_structs]") {
   SECTION("construct") { array_of_list_of_structs A(5); }
 }

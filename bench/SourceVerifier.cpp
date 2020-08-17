@@ -27,8 +27,11 @@ static constexpr const char USAGE[] =
 #include "common.hpp"
 #include <docopt.h>
 #include <random>
+#include "mmio.hpp"
 
 using namespace nw::graph::bench;
+using namespace nw::graph;
+using namespace nw::util;
 
 int main(int argc, char* const argv[]) {
   std::vector strings = std::vector<std::string>{argv + 1, argv + argc};

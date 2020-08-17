@@ -7,6 +7,7 @@
 //
 // Author: Andrew Lumsdaine
 //
+
 static constexpr const char USAGE[] =
  R"(sssp.exe : BGL17 page rank benchmark driver.
   Usage:
@@ -37,7 +38,12 @@ static constexpr const char USAGE[] =
 #include "util/traits.hpp"
 #include <docopt.h>
 
+
 using namespace nw::graph::bench;
+using namespace nw::graph;
+using namespace nw::util;
+
+
 using distance_t = std::uint64_t;
 
 /// Basic sequential sssp (Dijkstra) copied from GAP benchmark suite.

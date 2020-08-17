@@ -28,12 +28,16 @@
 #if defined(EXECUTION_POLICY)
 #if defined(CL_SYCL_LANGUAGE_VERSION)
 #include <dpstd/iterators.h>
+namespace nw::graph {
 template <class T>
-using nw::graph::counting_iterator = dpstd::counting_iterator<T>;
+using counting_iterator = dpstd::counting_iterator<T>;
+}
 #else
 #include <tbb/iterators.h>
+namespace nw::graph {
 template <class T>
-using nw::graph::counting_iterator = tbb::counting_iterator<T>;
+using counting_iterator = tbb::counting_iterator<T>;
+}
 #endif
 #endif
 
@@ -366,7 +370,7 @@ void page_rank_v7(Graph& graph, const std::vector<vertex_id_t>& degrees, std::ve
   const Real base_score = (1.0 - damping_factor) / page_rank.size();
 
   {
-    life_timer _("fill");
+    nw::util::life_timer _("fill");
 
     std::fill(
 #if defined(EXECUTION_POLICY)
@@ -377,7 +381,7 @@ void page_rank_v7(Graph& graph, const std::vector<vertex_id_t>& degrees, std::ve
   std::vector<Real> outgoing_contrib(page_rank.size());
 
   {
-    life_timer _("iters");
+    nw::util::life_timer _("iters");
     for (size_t iter = 0; iter < max_iters; ++iter) {
 
       std::transform(
@@ -510,7 +514,7 @@ template <typename Graph, typename Real>
   Real        base_score = (1.0 - damping_factor) / N;
 
   {
-    life_timer _("init page rank");
+    nw::util::life_timer _("init page rank");
 
     // Initialize the page rank.
     tbb::parallel_for(tbb::blocked_range(0ul, N), [&](auto&& r) {
@@ -568,7 +572,7 @@ template <typename Graph, typename Real>
   Real        base_score = (1.0 - damping_factor) / N;
 
   {
-    life_timer _("init page rank");
+    nw::util::life_timer _("init page rank");
 
     // Initialize the page rank.
     tbb::parallel_for(tbb::blocked_range(0ul, N), [&](auto&& r) {
@@ -583,7 +587,7 @@ template <typename Graph, typename Real>
   page_rank::trace("iter", "error", "time", "outgoing");
 
   {
-    life_timer _("init contrib");
+    nw::util::life_timer _("init contrib");
 
     tbb::parallel_for(tbb::blocked_range(0ul, N), [&](auto&& r) {
       for (auto i = r.begin(), e = r.end(); i != e; ++i) {
@@ -630,7 +634,7 @@ template <typename Graph, typename Real>
   Real        base_score = (1.0 - damping_factor) / N;
 
   {
-    life_timer _("init page rank");
+    nw::util::life_timer _("init page rank");
 
     // Initialize the page rank.
     tbb::parallel_for(tbb::blocked_range(0ul, N), [&](auto&& r) {
@@ -759,7 +763,7 @@ template <typename Graph, typename Real>
   std::vector<Real> residual(N);
 
   {
-    life_timer _("init data structures");
+    nw::util::life_timer _("init data structures");
 
     // Initialize the page rank.
     tbb::parallel_for(tbb::blocked_range(0ul, N), [&](auto&& r) {

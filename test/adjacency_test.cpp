@@ -17,6 +17,10 @@
 
 #include "common/test_header.hpp"
 
+using namespace nw::graph;
+using namespace nw::util;
+
+
 TEST_CASE("adjacency", "[adjacency]") {
   size_t n_vtx = 5;
 

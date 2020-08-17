@@ -12,6 +12,9 @@
 #include "edge_list.hpp"
 #include "linalg.hpp"
 
+using namespace nw::graph;
+using namespace nw::util;
+
 template<typename Mat, typename EdgeList>
 void run_test(EdgeList&& E) {
   std::vector<double> x = {3.1, -1.4, 1.59};

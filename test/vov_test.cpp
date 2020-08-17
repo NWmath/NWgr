@@ -16,6 +16,10 @@
 
 #include "util/print_types.hpp"
 
+using namespace nw::graph;
+using namespace nw::util;
+
+
 TEST_CASE("vector of vector of structures", "[vector_of_vector_of_structs]") {
   SECTION("construct") { vector_of_vector_of_structs A(5); }
 }

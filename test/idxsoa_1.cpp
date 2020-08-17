@@ -16,6 +16,9 @@
 
 #include "mmio.hpp"
 
+using namespace nw::graph;
+using namespace nw::util;
+
 int main(int argc, char* argv[]) {
 
   indexed_struct_of_arrays<size_t> pre_A(7);

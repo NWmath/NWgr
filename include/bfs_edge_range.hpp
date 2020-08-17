@@ -25,7 +25,7 @@
 #include <vector>
 
 namespace nw {
-nameespace graph {
+namespace graph {
 
   enum three_colors { black, white, grey };
 

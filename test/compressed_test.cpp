@@ -17,6 +17,10 @@
 
 #include <iostream>
 
+using namespace nw::graph;
+using namespace nw::util;
+
+
 // data/karate.mtx:%%MatrixMarket matrix coordinate pattern symmetric
 // data/karate.mtx:%%MatrixMarket matrix coordinate pattern symmetric
 

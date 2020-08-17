@@ -4,6 +4,9 @@
 #include "edge_list.hpp"
 #include "karate.hpp"
 
+using namespace nw::graph;
+using namespace nw::util;
+
 int main() {
   
   {

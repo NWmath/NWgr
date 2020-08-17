@@ -5,6 +5,9 @@
 #include "compressed.hpp"
 #include "mmio.hpp"
 
+using namespace nw::graph;
+using namespace nw::util;
+
 typedef compressed_sparse<0, directed> directed_csr_graph_t;
 class test_util {
 public:

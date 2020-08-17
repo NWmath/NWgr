@@ -18,6 +18,9 @@
 
 #define PRINT_OUT
 
+using namespace nw::graph;
+using namespace nw::util;
+
 //****************************************************************************
 template<typename EdgeListT>
 bool validate(EdgeListT& aos, size_t seed, std::vector<vertex_id_t> const& distance, std::vector<vertex_id_t> const& predecessor) {

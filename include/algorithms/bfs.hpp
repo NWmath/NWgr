@@ -24,12 +24,16 @@
 
 #if defined(CL_SYCL_LANGUAGE_VERSION)
 #include <dpstd/iterators.h>
+namespace nw::graph {
 template <class T>
-using nw::graph::counting_iterator = dpstd::counting_iterator<T>;
+using counting_iterator = dpstd::counting_iterator<T>;
+}
 #else
 #include <tbb/iterators.h>
+namespace nw::graph {
 template <class T>
-using nw::graph::counting_iterator = tbb::counting_iterator<T>;
+using counting_iterator = tbb::counting_iterator<T>;
+}
 #endif
 
 namespace nw {

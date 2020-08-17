@@ -21,10 +21,12 @@
 #include <mmio.hpp>
 
 #include "common/abstract_test.hpp"
-#include <algorithms/degree.hpp>
 #include <algorithms/page_rank.hpp>
 #include <util/timer.hpp>
 #include <util.hpp>
+
+using namespace nw::graph;
+using namespace nw::util;
 
 size_t const NUM_NODES = 34;
 

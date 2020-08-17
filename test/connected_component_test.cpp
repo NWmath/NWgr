@@ -10,7 +10,7 @@
 
 /**/
 
-#include "algorithms/connected_component.hpp"
+#include "algorithms/connected_components.hpp"
 #include "aos.hpp"
 #include "common/test_header.hpp"
 #include "compressed.hpp"
@@ -21,6 +21,9 @@
 #include <iostream>
 #include <limits>
 #include <list>
+
+using namespace nw::graph;
+using namespace nw::util;
 
 typedef compressed_sparse<0, directed> csr_graph;
 

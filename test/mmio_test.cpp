@@ -11,6 +11,9 @@
 #include "common/test_header.hpp"
 #include "compressed.hpp"
 
+using namespace nw::graph;
+using namespace nw::util;
+
 // TODO: Need to add proper catch asserts to verify results
 
 TEST_CASE("constructing graphs using mmio", "[mmio]") {

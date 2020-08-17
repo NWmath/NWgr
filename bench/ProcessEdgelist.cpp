@@ -25,6 +25,9 @@ static constexpr const char USAGE[] =
 #include "graph_base.hpp"
 #include <docopt.h>
 
+using namespace nw::graph;
+using namespace nw::util;
+
 template <directedness Directed, class... Attributes>
 static void eval(std::string input, std::string output)
 {

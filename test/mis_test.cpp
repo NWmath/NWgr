@@ -19,6 +19,9 @@
 #include <cassert>
 #include <iostream>
 
+using namespace nw::graph;
+using namespace nw::util;
+
 typedef compressed_sparse<0> csr_graph;
 
 TEST_CASE("Maximal independent set", "[mis]") {

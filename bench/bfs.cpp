@@ -38,6 +38,8 @@ static constexpr const char USAGE[] =
 #include <docopt.h>
 
 using namespace nw::graph::bench;
+using namespace nw::graph;
+using namespace nw::util;
 
 template<typename Graph, typename GraphT>
 bool BFSVerifier(Graph& g, GraphT& g_t, vertex_id_t source, std::vector<vertex_id_t>& parent) {

@@ -15,6 +15,9 @@
 #include <filtered_bfs_range.hpp>
 #include <reverse.hpp>
 
+using namespace nw::graph;
+using namespace nw::util;
+
 TEST_CASE("back edge", "[back edge]") {
 
   edge_list<directed, double, double> E_list(6);

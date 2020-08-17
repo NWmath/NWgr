@@ -19,6 +19,10 @@
 #include "common/test_header.hpp"
 #include "rcm.hpp"
 
+using namespace nw::graph;
+using namespace nw::util;
+
+
 TEST_CASE("Reverse Cuthill-Mckee Ordering", "[rcm]") {
   edge_list<directed> el(10);
   el.push_back(0, 1);

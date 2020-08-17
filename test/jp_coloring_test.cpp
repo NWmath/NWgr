@@ -8,6 +8,8 @@
 // Author: Jesun Sahariar Firoz
 //
 
+
+
 #include "algorithms/jones_plassmann_coloring.hpp"
 #include "aos.hpp"
 #include "common/test_header.hpp"
@@ -19,6 +21,9 @@
 #include <iostream>
 #include <limits>
 #include <list>
+
+using namespace nw::graph;
+using namespace nw::util;
 
 typedef compressed_sparse<0> csr_graph;
 

@@ -17,6 +17,9 @@
 
 #include "common/test_header.hpp"
 
+using namespace nw::graph;
+using namespace nw::util;
+
 TEST_CASE("New Depth First Search", "[DFS]") {
   size_t n_vtx = 15;
 

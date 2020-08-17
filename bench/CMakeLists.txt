@@ -43,9 +43,6 @@ target_link_libraries(pr.exe bench)
 add_executable(sssp.exe sssp.cpp)
 target_link_libraries(sssp.exe bench)
 
-add_executable(sv.exe sv.cpp)
-target_link_libraries(sv.exe nw_graph)
-
 add_executable(tc.exe tc.cpp)
 target_link_libraries(tc.exe bench)
 
@@ -54,10 +51,3 @@ target_link_libraries(bc.exe bench)
 
 add_executable(cc.exe cc.cpp) 
 target_link_libraries(cc.exe bench) 
-
-add_executable(bicc.exe bicc.cpp) 
-target_link_libraries(bicc.exe bench) 
-
-add_executable(bicc2.exe bicc2.cpp)
-target_link_libraries(bicc2.exe bench)
-

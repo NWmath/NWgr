@@ -36,6 +36,10 @@ static constexpr const char USAGE[] =
 #include <docopt.h>
 
 using namespace nw::graph::bench;
+using namespace nw::graph;
+using namespace nw::util;
+
+
 using score_t=float;
 using accum_t=double;
 

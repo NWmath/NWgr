@@ -4,6 +4,9 @@
 #include "edge_list.hpp"
 #include "util/print_types.hpp"
 
+using namespace nw::graph;
+using namespace nw::util;
+
 
 template<directedness dir>
 void do_test_0() {

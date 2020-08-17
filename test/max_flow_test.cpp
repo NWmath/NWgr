@@ -18,6 +18,9 @@
 #include <reverse.hpp>
 #include <vector>
 
+using namespace nw::graph;
+using namespace nw::util;
+
 TEST_CASE("max flow 1", "[MF1]") {
   size_t                              source = 0, sink = 5;
   edge_list<directed, double, double> E_list(8);

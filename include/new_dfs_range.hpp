@@ -247,4 +247,4 @@ private:
 
 }    // namespace graph
 }    // namespace nw
-#endif NW_GRAPH_NEW_DFS_RANGE_HPP
+#endif // NW_GRAPH_NEW_DFS_RANGE_HPP

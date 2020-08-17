@@ -499,6 +499,7 @@ public:
   // The first vertex_id_t isn't considered an attribute.
   using attributes_t = std::tuple<Attributes...>;
   static constexpr std::size_t getNAttr() { return sizeof...(Attributes); }
+  using vertex_id_t = nw::graph::vertex_id_t;
 
   adjacency(size_t N = 0, size_t M = 0) : indexed_struct_of_arrays<vertex_id_t, Attributes...>(N, M) {}
   adjacency(edge_list<directed, Attributes...>& A) : indexed_struct_of_arrays<vertex_id_t, Attributes...>(A.max()[idx] + 1) {

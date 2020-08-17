@@ -16,6 +16,8 @@
 #include "bfs_edge_range.hpp"
 #include "common/abstract_test.hpp"
 
+using namespace nw::graph;
+using namespace nw::util;
 
 //****************************************************************************
 template<typename EdgeListT>

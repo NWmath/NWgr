@@ -22,6 +22,8 @@ using counting_iterator = tbb::counting_iterator<T>;
 #include "plain_range.hpp"
 #include <tuple>
 
+using namespace nw::graph;
+using namespace nw::util;
 
 int main() {
 
