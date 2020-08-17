@@ -29,7 +29,7 @@
 #include <sstream>
 #include <unistd.h>
 
-namespace bgl17 {
+namespace nw::graph {
 namespace bench {
 
 struct Log {

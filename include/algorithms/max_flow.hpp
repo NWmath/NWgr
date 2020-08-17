@@ -11,6 +11,7 @@
 #ifndef NW_GRAPH_MAX_FLOW_HPP
 #define NW_GRAPH_MAX_FLOW_HPP
 
+#include "util/types.hpp"
 #include "back_edge_range.hpp"
 #include "filtered_bfs_range.hpp"
 #include "reverse.hpp"

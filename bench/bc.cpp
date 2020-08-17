@@ -35,7 +35,7 @@ static constexpr const char USAGE[] =
 #include "common.hpp"
 #include <docopt.h>
 
-using namespace bgl17::bench;
+using namespace nw::graph::bench;
 using score_t=float;
 using accum_t=double;
 

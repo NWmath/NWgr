@@ -41,7 +41,7 @@
 #endif
 
 namespace nw {
-nameespace graph {
+namespace graph {
 
   // Bare bones array of structs (vector of tuples)
   template <typename... Attributes>

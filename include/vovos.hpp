@@ -14,6 +14,8 @@
 #include <tuple>
 #include <vector>
 
+#include "util/types.hpp"
+
 #include "edge_list.hpp"
 #include "graph_base.hpp"
 

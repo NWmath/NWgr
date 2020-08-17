@@ -28,7 +28,7 @@ static constexpr const char USAGE[] =
 #include <docopt.h>
 #include <random>
 
-using namespace bgl17::bench;
+using namespace nw::graph::bench;
 
 int main(int argc, char* const argv[]) {
   std::vector strings = std::vector<std::string>{argv + 1, argv + argc};

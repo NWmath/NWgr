@@ -43,11 +43,11 @@ static constexpr const char USAGE[] =
 #define cins tbb
 #endif
 
-using namespace bgl17::bench;
+using namespace nw::graph::bench;
 
 template<typename Vector>
 static void link(vertex_id_t u, vertex_id_t v, Vector& comp) {
-  vertex_id_t p1 = bgl17::acquire(comp[u]);
+  vertex_id_t p1 = nw::graph::acquire(comp[u]);
   vertex_id_t p2 = comp[v];
   while (p1 != p2) {
     vertex_id_t high   = std::max(p1, p2);
@@ -64,9 +64,9 @@ template<typename Execution, typename Graph, typename Vector>
 static void compress(Execution exec, Graph&& g, Vector& comp) {
   std::for_each(exec, cins::counting_iterator(0ul), cins::counting_iterator(comp.size()), [&](auto n) {
     while (comp[n] != comp[comp[n]]) {
-      auto foo = bgl17::acquire(comp[n]);
-      auto bar = bgl17::acquire(comp[foo]);
-      bgl17::release(comp[n], bar);
+      auto foo = nw::graph::acquire(comp[n]);
+      auto bar = nw::graph::acquire(comp[foo]);
+      nw::graph::release(comp[n], bar);
     }
   });
 }
@@ -174,7 +174,7 @@ static auto read_graphs(std::string path, bool symmetric, bool verbose) {
 // - Asserts every vertex is visited (degree-0 vertex should have own label)
 template <class Graph, class Transpose, class Vector>
 static bool CCVerifier(Graph&& graph, Transpose&& xpose, Vector&& comp) {
-  using NodeID = bgl17::vertex_id_t<std::decay_t<Graph>>;
+  using NodeID = nw::graph::vertex_id_t<std::decay_t<Graph>>;
   std::unordered_map<NodeID, NodeID> label_to_source;
   for (auto&& [n] : plain_range(graph)) {
     label_to_source[comp[n]] = n;

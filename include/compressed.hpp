@@ -10,6 +10,7 @@
 #include "soa.hpp"
 #include "splittable_range_adapter.hpp"
 #include "util.hpp"
+#include "util/types.hpp"
 
 #include <algorithm>
 #include <cxxabi.h>
@@ -61,7 +62,7 @@ public:    // fixme
 
   using edge_id_t      = std::ptrdiff_t;
   using inner_iterator = typename struct_of_arrays<Attributes...>::iterator;
-  using sub_view       = bgl17::splittable_range_adapter<inner_iterator>;
+  using sub_view       = nw::graph::splittable_range_adapter<inner_iterator>;
 
   static constexpr std::size_t getNAttr() { return sizeof...(Attributes); }
 
@@ -79,9 +80,9 @@ public:    // fixme
   class edge_iterator {
   public:
     using difference_type   = edge_id_t;
-    using value_type        = bgl17::select_t<std::tuple<vertex_id_t, Attributes...>, 0, 1, (Attrs + 2)...>;
-    using reference         = bgl17::select_t<std::tuple<vertex_id_t, const Attributes&...>, 0, 1, (Attrs + 2)...>;
-    using pointer           = bgl17::select_t<std::tuple<vertex_id_t, const Attributes*...>, 0, 1, (Attrs + 2)...>;
+    using value_type        = nw::graph::select_t<std::tuple<vertex_id_t, Attributes...>, 0, 1, (Attrs + 2)...>;
+    using reference         = nw::graph::select_t<std::tuple<vertex_id_t, const Attributes&...>, 0, 1, (Attrs + 2)...>;
+    using pointer           = nw::graph::select_t<std::tuple<vertex_id_t, const Attributes*...>, 0, 1, (Attrs + 2)...>;
     using iterator_category = std::random_access_iterator_tag;
 
   private:
@@ -379,8 +380,6 @@ public:    // fixme
     std::iota(perm.begin(), perm.end(), 0);
     auto d = degrees_.begin() + 1;
 
-    DEF_TIMER(sort_1);
-    START_TIMER(sort_1);
 #if defined(EXECUTION_POLICY)
     if (direction == "descending") {
       std::sort(std::execution::par_unseq, perm.begin(), perm.end(), [&](auto a, auto b) { return d[a] > d[b]; });
@@ -398,10 +397,7 @@ public:    // fixme
       std::cout << "Unknown direction: " << direction << std::endl;
     }
 #endif
-    STOP_TIMER(sort_1);
 
-    DEF_TIMER(iperm_and_scan);
-    START_TIMER(iperm_and_scan);
     std::vector<vertex_id_t> new_indices_(indices_);
     auto                     n = new_indices_.begin() + 1;
     std::vector<vertex_id_t> iperm(perm.size());
@@ -415,13 +411,10 @@ public:    // fixme
 #else
     std::partial_sum(new_indices_.begin(), new_indices_.end(), new_indices_.begin());
 #endif
-    STOP_TIMER(iperm_and_scan);
 
-    DEF_TIMER(permute_1);
-    START_TIMER(permute_1);
+
     to_be_indexed_.permute(indices_, new_indices_, perm);
     indices_ = std::move(new_indices_);
-    STOP_TIMER(permute_1);
 
     auto b = std::get<0>(to_be_indexed_).begin();
 
@@ -431,8 +424,6 @@ public:    // fixme
 
     auto s = std::get<0>(to_be_indexed_).begin();
 
-    DEF_TIMER(sort_2);
-    START_TIMER(sort_2);
 #if defined(EXECUTION_POLICY)
     for (size_t i = 0; i < perm.size(); ++i) {
       std::sort(std::execution::par_unseq, s + indices_[i], s + indices_[i + 1]);
@@ -443,7 +434,7 @@ public:    // fixme
       std::sort(s + indices_[i], s + indices_[i + 1]);
     }
 #endif
-    STOP_TIMER(sort_2);
+
     if (g_debug_compressed) {
       stream_indices(std::cout);
     }
@@ -467,7 +458,7 @@ public:    // fixme
   void stream_stats(std::ostream& os = std::cout) const {
     int status = -4;
     std::cout << "% ";
-    std::cout << bgl17::demangle(typeid(*this).name(), nullptr, nullptr, &status);
+    std::cout << nw::graph::demangle(typeid(*this).name(), nullptr, nullptr, &status);
     std::cout << std::string("indices_.size() ") + std::to_string(indices_.size()) + " ";
     std::cout << std::string("to_be_indexed_.size() ") + std::to_string(to_be_indexed_.size());
     std::cout << std::endl;

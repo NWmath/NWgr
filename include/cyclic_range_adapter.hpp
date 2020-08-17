@@ -2,6 +2,7 @@
 #define NW_GRAPH_CYCLIC_RANGE_ADAPTER_HPP
 
 #include "util.hpp"
+#include "util/types.hpp"
 #include <iterator>
 #include <tbb/tbb_stddef.h>
 
@@ -42,7 +43,7 @@ private:
 public:
   template <class Range, class Cutoff>
   cyclic_range_adapter(Range&& range, Cutoff cutoff)
-      : begin_(range.begin()), end_(range.end()), cutoff_(bgl17::pow2(bgl17::ceil_log2(cutoff))) {}
+      : begin_(range.begin()), end_(range.end()), cutoff_(nw::graph::pow2(nw::graph::ceil_log2(cutoff))) {}
 
   cyclic_range_adapter(const cyclic_range_adapter&) = default;
   cyclic_range_adapter(cyclic_range_adapter&&)      = default;
@@ -105,4 +106,4 @@ constexpr decltype(auto) cyclic(Range&& range, Cutoff cutoff) {
 }
 }    // namespace graph
 }    // namespace nw
-#endif NW_GRAPH_CYCLIC_RANGE_ADAPTER_HPP
+#endif // NW_GRAPH_CYCLIC_RANGE_ADAPTER_HPP

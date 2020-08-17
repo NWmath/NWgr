@@ -42,7 +42,9 @@ static constexpr const char USAGE[] =
 #include <docopt.h>
 #include <tuple>
 
-using namespace bgl17::bench;
+using namespace nw::graph::bench;
+using namespace nw::graph;
+using namespace nw::util;
 
 template <class Vector>
 static void relabel(edge_list<undirected>& A, Vector&& degrees, const std::string& direction) {

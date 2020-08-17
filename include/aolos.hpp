@@ -8,6 +8,7 @@
 #ifndef NW_GRAPH_AOLOS_HPP
 #define NW_GRAPH_AOLOS_HPP
 
+#include "graph_base.hpp"
 #include "edge_list.hpp"
 #include <cassert>
 #include <forward_list>

@@ -8,7 +8,7 @@ message(STATUS ${CXX_FILESYSTEM_IS_EXPERIMENTAL})
 # -----------------------------------------------------------------------------
 # Generate the configuration files used for logging, and -I its built path.
 # -----------------------------------------------------------------------------
-get_filename_component(BGL17_CXX_COMPILER ${CMAKE_CXX_COMPILER} NAME)
+get_filename_component(NW_GRAPH_CXX_COMPILER ${CMAKE_CXX_COMPILER} NAME)
 configure_file(config.h.in config.h)
 
 # -----------------------------------------------------------------------------
@@ -20,16 +20,16 @@ target_sources(bench INTERFACE
   Log.hpp
   config.h)
 target_include_directories(bench INTERFACE ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
-target_link_libraries(bench INTERFACE bgl docopt date::date std::filesystem)
+target_link_libraries(bench INTERFACE nw_graph docopt date::date std::filesystem)
 
 # -----------------------------------------------------------------------------
-# BGL17 driver to process edgelists.
+# NW_GRAPH driver to process edgelists.
 # -----------------------------------------------------------------------------
 add_executable(process_edge_list ProcessEdgelist.cpp)
-target_link_libraries(process_edge_list bgl docopt)
+target_link_libraries(process_edge_list nw_graph docopt)
 
 # -----------------------------------------------------------------------------
-# BGL17 driver to verify that we're correctly generating source lists.
+# NW_GRAPH driver to verify that we're correctly generating source lists.
 # -----------------------------------------------------------------------------
 add_executable(sources SourceVerifier.cpp)
 target_link_libraries(sources bench)
@@ -44,7 +44,7 @@ add_executable(sssp.exe sssp.cpp)
 target_link_libraries(sssp.exe bench)
 
 add_executable(sv.exe sv.cpp)
-target_link_libraries(sv.exe bgl)
+target_link_libraries(sv.exe nw_graph)
 
 add_executable(tc.exe tc.cpp)
 target_link_libraries(tc.exe bench)

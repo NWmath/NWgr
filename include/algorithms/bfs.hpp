@@ -11,6 +11,7 @@
 #ifndef NW_GRAPH_BFS_HPP
 #define NW_GRAPH_BFS_HPP
 
+#include "util/types.hpp"
 #include "compressed.hpp"
 #include "util/AtomicBitVector.hpp"
 #include "util/atomic.hpp"
@@ -291,9 +292,9 @@ template <class Graph>
   while (!done) {
     std::for_each(std::execution::par_unseq, q1.begin(), q1.end(), [&](auto&& q) {
       std::for_each(std::execution::par_unseq, q.begin(), q.end(), [&](auto&& u) {
-        bgl17::parallel_for(graph[u], [&](auto&& v) {
-          if (bgl17::relaxed(parents[v]) == null_vertex) {
-            bgl17::relaxed(parents[v], u);
+        nw::graph::parallel_for(graph[u], [&](auto&& v) {
+          if (nw::graph::relaxed(parents[v]) == null_vertex) {
+            nw::graph::relaxed(parents[v], u);
             q2[u % num_bins].push_back(v);
           }
         });
@@ -324,7 +325,7 @@ template <class Graph>
   std::vector<tbb::concurrent_vector<vertex_id_t>> q1(num_bins);
   std::vector<tbb::concurrent_vector<vertex_id_t>> q2(num_bins);
   std::vector<vertex_id_t>                         parents(N);
-  bgl17::AtomicBitVector                           visited(N);
+  nw::graph::AtomicBitVector                           visited(N);
 
   std::fill(std::execution::par_unseq, parents.begin(), parents.end(), null_vertex);
 
@@ -336,7 +337,7 @@ template <class Graph>
   while (!done) {
     std::for_each(std::execution::par_unseq, q1.begin(), q1.end(), [&](auto&& q) {
       std::for_each(std::execution::par_unseq, q.begin(), q.end(), [&](auto&& u) {
-        bgl17::parallel_for(graph[u], [&](auto&& v) {
+        nw::graph::parallel_for(graph[u], [&](auto&& v) {
           if (visited.atomic_get(v) == 0 && visited.atomic_set(v) == 0) {
             parents[v] = u;
             q2[u % num_bins].push_back(v);
@@ -365,8 +366,8 @@ template <class Graph>
 template <class Graph, class Transpose>
 [[gnu::noinline]] auto bfs_bottom_up(Graph&& g, Transpose&& gx, vertex_id_t root) {
   const std::size_t      N = gx.max() + 1;
-  bgl17::AtomicBitVector frontier(N);
-  bgl17::AtomicBitVector next(N);
+  nw::graph::AtomicBitVector frontier(N);
+  nw::graph::AtomicBitVector next(N);
 
   std::vector<vertex_id_t> parents(N);
   std::fill(std::execution::par_unseq, parents.begin(), parents.end(), null_vertex);
@@ -400,12 +401,12 @@ template <class Graph, class Transpose>
 template <typename OutGraph, typename InGraph>
 [[gnu::noinline]] auto bfs_v11(OutGraph& out_graph, InGraph& in_graph, vertex_id_t root, int num_bins = 32, int alpha = 15,
                                int beta = 18) {
-  const std::size_t                                n = bgl17::pow2(bgl17::ceil_log2(num_bins));
+  const std::size_t                                n = nw::graph::pow2(nw::graph::ceil_log2(num_bins));
   const std::size_t                                N = out_graph.max() + 1;
   const std::size_t                                M = out_graph.to_be_indexed_.size();
   std::vector<tbb::concurrent_vector<vertex_id_t>> q1(n), q2(n);
 
-  bgl17::AtomicBitVector   visited(N);
+  nw::graph::AtomicBitVector   visited(N);
   std::vector<vertex_id_t> parents(N);
 
   std::fill(std::execution::par_unseq, parents.begin(), parents.end(), null_vertex);
@@ -420,14 +421,14 @@ template <typename OutGraph, typename InGraph>
   bool done = false;
   while (!done) {
     if (scout_count > edges_to_check / alpha) {
-      bgl17::AtomicBitVector front(N, false);
-      bgl17::AtomicBitVector curr(N);
+      nw::graph::AtomicBitVector front(N, false);
+      nw::graph::AtomicBitVector curr(N);
       std::size_t            awake_count = 0;
 
       // Initialize the frontier bitmap from the frontier queues, and count the
       // number of non-zeros.
       std::for_each(std::execution::par_unseq, q1.begin(), q1.end(), [&](auto&& q) {
-        bgl17::fetch_add(awake_count, q.size());
+        nw::graph::fetch_add(awake_count, q.size());
         std::for_each(std::execution::par_unseq, q.begin(), q.end(), [&](auto&& u) { curr.atomic_set(u); });
       });
 
@@ -461,7 +462,7 @@ template <typename OutGraph, typename InGraph>
         return parents;
       }
 
-      tbb::parallel_for(curr.non_zeros(bgl17::pow2(15)), [&](auto&& range) {
+      tbb::parallel_for(curr.non_zeros(nw::graph::pow2(15)), [&](auto&& range) {
         for (auto &&i = range.begin(), e = range.end(); i != e; ++i) {
           q2[*i % n].push_back(*i);
         }
@@ -470,15 +471,15 @@ template <typename OutGraph, typename InGraph>
       scout_count = 1;
     } else {
       edges_to_check -= scout_count;
-      scout_count = bgl17::parallel_for(
+      scout_count = nw::graph::parallel_for(
           tbb::blocked_range(0ul, q1.size()),
           [&](auto&& i) {
             auto&& q = q1[i];
-            return bgl17::parallel_for(
+            return nw::graph::parallel_for(
                 tbb::blocked_range(0ul, q.size()),
                 [&](auto&& i) {
                   auto&& u = q[i];
-                  return bgl17::parallel_for(
+                  return nw::graph::parallel_for(
                       out_graph[u],
                       [&](auto&& v) {
                         if (visited.atomic_get(v) == 0 && visited.atomic_set(v) == 0) {

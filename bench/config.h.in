@@ -11,12 +11,13 @@
 // order to correctly record how BGL17 was configured.
 //
 
-#pragma once
+#ifndef NW_GRAPH_BENCH_CONFIG_H
+#define NW_GRAPH_BENCH_CONFIG_H
 
 #cmakedefine01 CXX_FILESYSTEM_IS_EXPERIMENTAL
 #define CXX_FILESYSTEM_NAMESPACE @CXX_FILESYSTEM_NAMESPACE@
 
-namespace bgl17 {
+namespace nw::graph {
 namespace bench {
 
 constexpr const char BUILD_TYPE[]      = "@CMAKE_BUILD_TYPE@";
@@ -27,3 +28,6 @@ constexpr const char USE_TBBMALLOC[]   = "@BGL17_USE_TBBMALLOC@";
 
 }
 }
+
+
+#endif //  NW_GRAPH_BENCH_CONFIG_H

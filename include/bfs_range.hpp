@@ -12,6 +12,7 @@
 #define NW_GRAPH_BFS_RANGE_HPP
 
 #include "util.hpp"
+#include "util/types.hpp"
 #include <cassert>
 #include <queue>
 #include <vector>

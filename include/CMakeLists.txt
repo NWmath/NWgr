@@ -2,24 +2,24 @@
 # Define the primary NW_GRAPH target.
 # -----------------------------------------------------------------------------
 #
-# This target keeps track of all of the header sources for BGL, and sets up all
+# This target keeps track of all of the header sources for NW_GRAPH, and sets up all
 # of the associated flags and dependencies such that we can correctly compile
-# and link executables that are dependent on BGL. Ultimately this target will
+# and link executables that are dependent on NW_GRAPH. Ultimately this target will
 # control the install target too, once we have one.
 #
-# Executable targets should be defined with `target_link_libraries(exec bgl)`
+# Executable targets should be defined with `target_link_libraries(exec nw_graph)`
 # and then they'll have the appropriate `-I`, `-D`, and `-l` stuff set
 # automagically though the transitive dependency infrastructure.
 
 # @note
-#   If BGL starts to have .cpp sources, change this from an interface library to
+#   If NW_GRAPH starts to have .cpp sources, change this from an interface library to
 #   a STATIC (or DYNAMIC) library, and add those sources here. Change other
 #   instances of INTERFACE to PUBLIC.
 # @note
-add_library(bgl INTERFACE)
+add_library(nw_graph INTERFACE)
 
 # Extend this as needed.
-target_sources(bgl
+target_sources(nw_graph
   INTERFACE
   dag_range.hpp
   random_range.hpp
@@ -68,7 +68,8 @@ target_sources(bgl
   detail/numeric.hpp
   edge_range.hpp)
 
-target_include_directories(bgl INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})
+target_include_directories(nw_graph INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})
+target_include_directories(nw_graph INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/../../NWut/include)
 
 # -----------------------------------------------------------------------------
 # Check to see if our C++ compiler supports Parallelism TS. If it does than
@@ -85,7 +86,7 @@ check_cxx_source_compiles(
   HAVE_INCLUSIVE_SCAN)
 
 if (NOT HAVE_INCLUSIVE_SCAN)
-  target_compile_definitions(bgl INTERFACE NW_GRAPH_NEED_INCLUSIVE_SCAN)
+  target_compile_definitions(nw_graph INTERFACE NW_GRAPH_NEED_INCLUSIVE_SCAN)
 endif ()
 
 check_cxx_source_compiles(
@@ -97,7 +98,7 @@ check_cxx_source_compiles(
   HAVE_EXCLUSIVE_SCAN)
 
 if (NOT HAVE_EXCLUSIVE_SCAN)
-  target_compile_definitions(bgl INTERFACE NW_GRAPH_NEED_EXCLUSIVE_SCAN)
+  target_compile_definitions(nw_graph INTERFACE NW_GRAPH_NEED_EXCLUSIVE_SCAN)
 endif ()
 
 check_cxx_source_compiles(
@@ -109,7 +110,7 @@ check_cxx_source_compiles(
   HAVE_REDUCE)
 
 if (NOT HAVE_REDUCE)
-  target_compile_definitions(bgl INTERFACE NW_GRAPH_NEED_REDUCE)
+  target_compile_definitions(nw_graph INTERFACE NW_GRAPH_NEED_REDUCE)
 endif ()
 
 # -----------------------------------------------------------------------------
@@ -119,10 +120,10 @@ if (NW_GRAPH_EXECUTION_POLICY)
   set(THREADS_PREFER_PTHREAD_FLAG ON)
   find_package(TBB REQUIRED)
   find_package(Threads REQUIRED)
-  target_compile_definitions(bgl INTERFACE EXECUTION_POLICY)
-  target_link_libraries(bgl INTERFACE TBB::tbb Threads::Threads)
+  target_compile_definitions(nw_graph INTERFACE EXECUTION_POLICY)
+  target_link_libraries(nw_graph INTERFACE TBB::tbb Threads::Threads)
   if (NW_GRAPH_USE_TBBMALLOC)
-    target_link_libraries(bgl INTERFACE TBB::tbbmalloc) 
+    target_link_libraries(nw_graph INTERFACE TBB::tbbmalloc) 
   endif ()
 endif()
 
@@ -131,6 +132,6 @@ endif()
 # -----------------------------------------------------------------------------
 if (APPLE)
   if (NOT "${CMAKE_CXX_COMPILER_ID}" STREQUAL "AppleClang")
-    target_compile_definitions(bgl INTERFACE _Atomic=volatile)
+    target_compile_definitions(nw_graph INTERFACE _Atomic=volatile)
   endif()
 endif()

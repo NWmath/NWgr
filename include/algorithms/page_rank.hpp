@@ -19,6 +19,7 @@
 #include <tuple>
 #include <vector>
 
+#include "util/types.hpp"
 #include "compressed.hpp"
 #include "edge_list.hpp"
 #include "edge_range.hpp"
@@ -835,7 +836,7 @@ template <class Graph, typename Real>
 
   auto G = graph.begin();
   for (size_t iter = 0; iter < max_iters; ++iter) {
-    Real error = bgl17::parallel_for(
+    Real error = nw::graph::parallel_for(
         tbb::blocked_range(0ul, N),
         [&](auto&& u) {
           Real z = 0.0;

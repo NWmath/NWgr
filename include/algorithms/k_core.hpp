@@ -11,6 +11,7 @@
 #ifndef NW_GRAPH_K_CORE_HPP
 #define NW_GRAPH_K_CORE_HPP
 
+#include "util/types.hpp"
 #include "edge_range.hpp"
 #include <algorithm>
 #include <new_dfs_range.hpp>

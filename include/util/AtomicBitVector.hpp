@@ -83,7 +83,7 @@ public:
   template <std::memory_order order = std::memory_order_relaxed>
   Word get(std::size_t i) const {
     auto&& [word, mask] = split(i);
-    return bgl17::load<order>(data_[word]) & mask;
+    return nw::graph::load<order>(data_[word]) & mask;
   }
 
   /// Set a bit in the vector.
@@ -107,7 +107,7 @@ public:
   template <std::memory_order order = std::memory_order_relaxed>
   Word set(std::size_t i) {
     auto&& [word, mask] = split(i);
-    return bgl17::fetch_or<order>(data_[word], mask) & mask;
+    return nw::graph::fetch_or<order>(data_[word], mask) & mask;
   }
 
   /// Get a bit from the vector.

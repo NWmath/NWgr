@@ -12,6 +12,7 @@
 #define NW_GRAPH_RCM_HPP
 
 #include "edge_list.hpp"
+#include "util/types.hpp"
 #include "util/AtomicBitVector.hpp"
 #include "util/parallel_for.hpp"
 #include <tbb/concurrent_vector.h>
@@ -38,7 +39,7 @@ std::vector<vertex_id_t> rcm(edge_list<directed, Attributes...>& el, vertex_id_t
 
   std::vector<vertex_id_t> perm;
   perm.reserve(N);
-  bgl17::AtomicBitVector              marked(N);
+  nw::graph::AtomicBitVector              marked(N);
   tbb::concurrent_vector<vertex_id_t> q1, q2;
 
   if (seed == std::numeric_limits<vertex_id_t>::max()) {

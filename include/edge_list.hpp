@@ -158,8 +158,8 @@ public:
 
       x.prv      = prv;
       int status = -4;
-      x.prv.push_back(bgl17::demangle(typeid(*this).name(), nullptr, nullptr, &status) + "::" + __func__,
-                      std::string("to ") + bgl17::demangle(typeid(to_dir).name(), nullptr, nullptr, &status) + " " +
+      x.prv.push_back(nw::graph::demangle(typeid(*this).name(), nullptr, nullptr, &status) + "::" + __func__,
+                      std::string("to ") + nw::graph::demangle(typeid(to_dir).name(), nullptr, nullptr, &status) + " " +
                           std::to_string(to_dir));
       return x;
     } else if constexpr (edge_directedness == undirected && to_dir == directed) {
@@ -198,8 +198,8 @@ public:
       int status = -4;
       x.close_for_push_back();
       x.prv = prv;
-      x.prv.push_back(bgl17::demangle(typeid(*this).name(), nullptr, nullptr, &status) + "::" + __func__,
-                      std::string("to ") + bgl17::demangle(typeid(to_dir).name(), nullptr, nullptr, &status) + " " +
+      x.prv.push_back(nw::graph::demangle(typeid(*this).name(), nullptr, nullptr, &status) + "::" + __func__,
+                      std::string("to ") + nw::graph::demangle(typeid(to_dir).name(), nullptr, nullptr, &status) + " " +
                           std::to_string(to_dir));
       return x;
     }
@@ -257,7 +257,7 @@ public:
   template <int idx>
   void sort_by() {
     int status = -4;
-    prv.push_back(bgl17::demangle(typeid(*this).name(), nullptr, nullptr, &status) + "::" + __func__,
+    prv.push_back(nw::graph::demangle(typeid(*this).name(), nullptr, nullptr, &status) + "::" + __func__,
                   std::string("index ") + std::to_string(idx));
 
 #if defined(EXECUTION_POLICY)
@@ -271,7 +271,7 @@ public:
   template <int idx>
   void stable_sort_by() {
     int status = -4;
-    prv.push_back(bgl17::demangle(typeid(*this).name(), nullptr, nullptr, &status) + "::" + __func__,
+    prv.push_back(nw::graph::demangle(typeid(*this).name(), nullptr, nullptr, &status) + "::" + __func__,
                   std::string("index ") + std::to_string(idx));
 
 #if defined(EXECUTION_POLICY)
@@ -285,7 +285,7 @@ public:
   template <int idx>
   void lexical_sort_by() {
     int status = -4;
-    prv.push_back(bgl17::demangle(typeid(*this).name(), nullptr, nullptr, &status) + "::" + __func__,
+    prv.push_back(nw::graph::demangle(typeid(*this).name(), nullptr, nullptr, &status) + "::" + __func__,
                   std::string("index ") + std::to_string(idx));
 
     const int jdx = (idx + 1) % 2;
@@ -319,7 +319,7 @@ public:
   template <int idx>
   void lexical_stable_sort_by() {
     int status = -4;
-    prv.push_back(bgl17::demangle(typeid(*this).name(), nullptr, nullptr, &status) + "::" + __func__,
+    prv.push_back(nw::graph::demangle(typeid(*this).name(), nullptr, nullptr, &status) + "::" + __func__,
                   std::string("index ") + std::to_string(idx));
 
     const int jdx = (idx + 1) % 2;
@@ -502,7 +502,7 @@ public:
       Tmp.open_for_push_back();
 
       {
-        auto _ = g_time_edge_list ? life_timer(__func__ + std::string(" adj fill push_back")) : empty_timer();
+        auto _ = g_time_edge_list ? nw::util::life_timer(__func__ + std::string(" adj fill push_back")) : nw::util::empty_timer();
 
         std::for_each(base::begin(), base::end(), [&](auto&& elt) {
           std::apply([&](vertex_id_t i, vertex_id_t j, Attributes... attrs) { Tmp.push_back(i, j, attrs...); }, elt);
@@ -515,13 +515,13 @@ public:
       cs.open_for_push_back();
 
       if constexpr (idx == 0) {
-        auto _ = g_time_edge_list ? life_timer(__func__ + std::string(" adj fill push_back zero too")) : empty_timer();
+	  auto _ = g_time_edge_list ? nw::util::life_timer(__func__ + std::string(" adj fill push_back zero too")) : nw::util::empty_timer();
 
         std::for_each(Tmp.begin(), Tmp.end(), [&](auto&& elt) {
           std::apply([&](vertex_id_t i, vertex_id_t j, Attributes... attrs) { cs.push_back(i, j, attrs...); }, elt);
         });
       } else if constexpr (idx == 1) {
-        auto _ = g_time_edge_list ? life_timer(__func__ + std::string(" adj fill push_back one too")) : empty_timer();
+        auto _ = g_time_edge_list ? nw::util::life_timer(__func__ + std::string(" adj fill push_back one too")) : nw::util::empty_timer();
 
         std::for_each(Tmp.begin(), Tmp.end(), [&](auto&& elt) {
           std::apply([&](vertex_id_t i, vertex_id_t j, Attributes... attrs) { cs.push_back(j, i, attrs...); }, elt);
@@ -571,7 +571,7 @@ public:
 
   void symmetrize_in_place() {
     int status = -4;
-    prv.push_back(bgl17::demangle(typeid(*this).name(), nullptr, nullptr, &status) + "::" + __func__);
+    prv.push_back(nw::graph::demangle(typeid(*this).name(), nullptr, nullptr, &status) + "::" + __func__);
 
     base::reserve(2 * base::size());
     for (auto j : base::storage_) {
@@ -585,9 +585,9 @@ public:
   template <int idx, succession cessor = predecessor>
   void _triangularize_() {
     int status = -4;
-    prv.push_back(bgl17::demangle(typeid(*this).name(), nullptr, nullptr, &status) + "::" + __func__,
+    prv.push_back(nw::graph::demangle(typeid(*this).name(), nullptr, nullptr, &status) + "::" + __func__,
                   std::string("index ") + std::to_string(idx) + " " +
-                      bgl17::demangle(typeid(cessor).name(), nullptr, nullptr, &status));
+                      nw::graph::demangle(typeid(cessor).name(), nullptr, nullptr, &status));
 
     if constexpr (edge_directedness == undirected) {
       if constexpr ((idx == 0 && cessor == predecessor) || (idx == 1 && cessor == successor)) {
@@ -628,9 +628,9 @@ public:
   template <int idx, succession cessor = predecessor>
   void swap_to_triangular() {
     int status = -4;
-    prv.push_back(bgl17::demangle(typeid(*this).name(), nullptr, nullptr, &status) + "::" + __func__,
+    prv.push_back(nw::graph::demangle(typeid(*this).name(), nullptr, nullptr, &status) + "::" + __func__,
                   std::string("index ") + std::to_string(idx) + " " +
-                      bgl17::demangle(typeid(cessor).name(), nullptr, nullptr, &status));
+                      nw::graph::demangle(typeid(cessor).name(), nullptr, nullptr, &status));
 
     if constexpr ((idx == 0 && cessor == predecessor) || (idx == 1 && cessor == successor)) {
 #if defined(EXECUTION_POLICY)
@@ -660,9 +660,9 @@ public:
   template <int idx, succession cessor = predecessor>
   void filter_to_triangular() {
     int status = -4;
-    prv.push_back(bgl17::demangle(typeid(*this).name(), nullptr, nullptr, &status) + "::" + __func__,
+    prv.push_back(nw::graph::demangle(typeid(*this).name(), nullptr, nullptr, &status) + "::" + __func__,
                   std::string("index ") + std::to_string(idx) + " " +
-                      bgl17::demangle(typeid(cessor).name(), nullptr, nullptr, &status));
+                      nw::graph::demangle(typeid(cessor).name(), nullptr, nullptr, &status));
 
     if constexpr ((idx == 0 && cessor == predecessor) || (idx == 1 && cessor == successor)) {
 #if defined(EXECUTION_POLICY)
@@ -689,7 +689,7 @@ public:
   // Requires entries to be sorted in both dimensions
   void uniq() {
     int status = -4;
-    prv.push_back(bgl17::demangle(typeid(*this).name(), nullptr, nullptr, &status) + "::" + __func__);
+    prv.push_back(nw::graph::demangle(typeid(*this).name(), nullptr, nullptr, &status) + "::" + __func__);
 
 #if defined(EXECUTION_POLICY)
     auto past_the_end =
@@ -706,7 +706,7 @@ public:
 
   void remove_self_loops() {
     int status = -4;
-    prv.push_back(bgl17::demangle(typeid(*this).name(), nullptr, nullptr, &status) + "::" + __func__);
+    prv.push_back(nw::graph::demangle(typeid(*this).name(), nullptr, nullptr, &status) + "::" + __func__);
 
 #if defined(EXECUTION_POLICY)
     auto past_the_end = std::remove_if(/*std::execution::par_unseq,*/ base::begin(), base::end(),
@@ -752,7 +752,7 @@ public:
   template <int idx = 0>
   auto perm_by_degree(std::string direction = "ascending") {
     int status = -4;
-    prv.push_back(bgl17::demangle(typeid(*this).name(), nullptr, nullptr, &status) + "::" + __func__,
+    prv.push_back(nw::graph::demangle(typeid(*this).name(), nullptr, nullptr, &status) + "::" + __func__,
                   "index " + std::to_string(idx) + " " + direction);
 
     auto degree = degrees<idx>();
@@ -826,7 +826,7 @@ public:
   template <int idx, class Vector = std::vector<int>>
   void relabel_by_degree(std::string direction = "ascending", Vector&& degree = std::vector<int>(0)) {
     int status = -4;
-    prv.push_back(bgl17::demangle(typeid(*this).name(), nullptr, nullptr, &status) + "::" + __func__,
+    prv.push_back(nw::graph::demangle(typeid(*this).name(), nullptr, nullptr, &status) + "::" + __func__,
                   "index " + std::to_string(idx) + " " + direction);
 
     std::vector<vertex_id_t> perm = degree.size() == 0 ? perm_by_degree<0>(direction) : perm_by_degree<0>(degree, direction);
@@ -880,7 +880,7 @@ public:
   void stream_stats(std::ostream& os = std::cout) const {
     int status = -4;
     std::cout << "% ";
-    std::cout << bgl17::demangle(typeid(*this).name(), nullptr, nullptr, &status) + ": " +
+    std::cout << nw::graph::demangle(typeid(*this).name(), nullptr, nullptr, &status) + ": " +
                      "lim = " + std::to_string(graph_base::lim[0]) + " ";
     std::cout << std::string("(min, max) = (") + std::to_string(min_[0]) + ", " + std::to_string(min_[1]) + ", " +
                      std::to_string(max_[0]) + ", " + std::to_string(max_[1]) + ")" + " ";

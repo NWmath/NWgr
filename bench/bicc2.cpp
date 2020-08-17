@@ -17,7 +17,7 @@
 #include "util/intersection_size.hpp"
 #include <docopt.h>
 
-using namespace bgl17::bench;
+using namespace nw::graph::bench;
 
 static constexpr const char USAGE[] =
     R"(bicc.exe: BGL17 hypergraph connected components benchmark driver.
@@ -56,7 +56,7 @@ auto to_two_graph(ExecutionPolicy&& exec, HyperGraph& H, size_t s = 1) {
 
   for (size_t i = 0; i < n_nbs.size(); ++i) {
     for (size_t j = i + 1; j < n_nbs.size(); ++j) {
-      size_t count = bgl17::intersection_size(n_nbs[i], n_nbs[j]);    //       if intersection_size(n_nbs(i), n_nbs(j)) >= s
+      size_t count = nw::graph::intersection_size(n_nbs[i], n_nbs[j]);    //       if intersection_size(n_nbs(i), n_nbs(j)) >= s
       if (count >= s) {
         two_graph.push_back(i, j);    //         add (i,j) to new edge_list
       }
@@ -97,7 +97,7 @@ inline bool writeMin(T& old, T& next) {
   bool success;
   do
     prev = old;
-  while (prev > next && !(success = bgl17::cas(old, prev, next)));
+  while (prev > next && !(success = nw::graph::cas(old, prev, next)));
   return success;
 }
 
@@ -267,8 +267,8 @@ std::map<vertex_id_t, edge_list<>> bfsCC(Graph& aos_a, GraphN& hypernodes, Graph
   std::vector<vertex_id_t> E(num_hyperedges);
   std::vector<vertex_id_t> N(num_hypernodes, std::numeric_limits<vertex_id_t>::max());
 
-  bgl17::AtomicBitVector   visitedN(num_hypernodes);
-  bgl17::AtomicBitVector   visitedE(num_hyperedges);
+  nw::graph::AtomicBitVector   visitedN(num_hypernodes);
+  nw::graph::AtomicBitVector   visitedE(num_hyperedges);
   std::vector<vertex_id_t> frontierN, frontierE(num_hyperedges);
   frontierN.reserve(num_hypernodes);
   //initial node frontier includes every node
@@ -346,8 +346,8 @@ std::map<vertex_id_t, edge_list<>> bfsCC(Execution exec, Graph& aos_a, GraphN& h
   std::vector<vertex_id_t> E(num_hyperedges), prevE(num_hyperedges);
   std::vector<vertex_id_t> N(num_hypernodes, std::numeric_limits<vertex_id_t>::max()), prevN(num_hypernodes);
 
-  bgl17::AtomicBitVector   visitedN(num_hypernodes);
-  bgl17::AtomicBitVector   visitedE(num_hyperedges);
+  nw::graph::AtomicBitVector   visitedN(num_hypernodes);
+  nw::graph::AtomicBitVector   visitedE(num_hyperedges);
   std::vector<vertex_id_t> frontierN, frontierE(num_hyperedges);
   frontierN.reserve(num_hypernodes);
   //frontierE.resize(num_hyperedges);
@@ -381,7 +381,7 @@ std::map<vertex_id_t, edge_list<>> bfsCC(Execution exec, Graph& aos_a, GraphN& h
           N[hyperN] = labelE;
           auto old  = N[hyperN];
           while (old == N[hyperN]) {
-            auto s = bgl17::cas(N[hyperN], old, labelE);
+            auto s = nw::graph::cas(N[hyperN], old, labelE);
             if (s) {
               if (visitedN.atomic_get(hyperN) == 0) {
                 // visitedN.atomic_set(hyperN);
@@ -507,8 +507,8 @@ std::map<vertex_id_t, edge_list<>> lpaCC(Execution exec, Graph& aos_a, GraphN& h
   std::vector<vertex_id_t> E(num_hyperedges);
   std::vector<vertex_id_t> N(num_hypernodes, std::numeric_limits<vertex_id_t>::max());
 
-  bgl17::AtomicBitVector   visitedN(num_hypernodes);
-  bgl17::AtomicBitVector   visitedE(num_hyperedges);
+  nw::graph::AtomicBitVector   visitedN(num_hypernodes);
+  nw::graph::AtomicBitVector   visitedE(num_hyperedges);
   std::vector<vertex_id_t> frontierN, frontierE(num_hyperedges);
   frontierN.reserve(num_hypernodes);
   //frontierE.resize(num_hyperedges);
@@ -591,8 +591,8 @@ std::map<vertex_id_t, edge_list<>> lpaNoFrontierCC(Execution exec, Graph& aos_a,
   std::vector<vertex_id_t> E(num_hyperedges);
   std::vector<vertex_id_t> N(num_hypernodes, std::numeric_limits<vertex_id_t>::max());
 
-  bgl17::AtomicBitVector visitedN(num_hypernodes);
-  bgl17::AtomicBitVector visitedE(num_hyperedges);
+  nw::graph::AtomicBitVector visitedN(num_hypernodes);
+  nw::graph::AtomicBitVector visitedE(num_hyperedges);
   //std::vector<vertex_id_t> frontierN, frontierE(num_hyperedges);
   //frontierN.reserve(num_hypernodes);
   //frontierE.resize(num_hyperedges);

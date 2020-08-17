@@ -32,7 +32,7 @@ static constexpr const char USAGE[] =
 #include "common.hpp"
 #include <docopt.h>
 
-using namespace bgl17::bench;
+using namespace nw::graph::bench;
 
 template<typename Vector>
 void print_n_ranks(const Vector& page_rank, size_t n) {

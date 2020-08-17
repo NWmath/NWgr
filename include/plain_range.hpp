@@ -24,18 +24,27 @@
 #if defined(CL_SYCL_LANGUAGE_VERSION)
 #include <dpstd/execution>
 #include <dpstd/iterators.h>
+namespace nw {
+namespace graph {
 template <class T>
-using nw::graph::counting_iterator = dpstd::counting_iterator<T>;
+using counting_iterator = dpstd::counting_iterator<T>;
+}
+}
 #else
 #include <execution>
 #include <tbb/iterators.h>
+namespace nw {
+namespace graph {
 template <class T>
-using nw::graph::counting_iterator = tbb::counting_iterator<T>;
+using counting_iterator = tbb::counting_iterator<T>;
+}
+}
 #endif
 #endif
 
 namespace nw {
 namespace graph {
+
 
 template <typename Graph>
 class plain_range {

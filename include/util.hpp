@@ -57,7 +57,6 @@ private:
   T& count;
 };
 
-namespace bgl17 {
 /// Trivial function object to forward to std::max.
 ///
 /// This is mainly useful in BGL as a convenience in reductions.
@@ -122,12 +121,11 @@ constexpr auto select(Tuple&& t) -> std::tuple<std::tuple_element_t<Is, std::dec
 /// Meta-function to get the type of a tuple after selection (see `select`).
 template <class Tuple, std::size_t... Is>
 using select_t = decltype(select<Is...>(std::declval<Tuple>()));
-}    // namespace bgl17
 
 inline constexpr vertex_id_t null_vertex = std::numeric_limits<vertex_id_t>::max();
 
 template <typename InputIterator, typename RandomAccessIterator,
-          typename = std::enable_if_t<bgl17::is_tuple_v<typename InputIterator::value_type>>>
+          typename = std::enable_if_t<nw::graph::is_tuple_v<typename InputIterator::value_type>>>
 void histogram(InputIterator first, InputIterator last, RandomAccessIterator o_first, RandomAccessIterator o_last, size_t idx = 0) {
   std::fill(o_first, o_last, 0);
   std::for_each(first, last, [&](auto& i) { o_first[std::get<idx>(i)]++; });

@@ -11,6 +11,7 @@
 #ifndef CONNECTED_COMPONENT_HPP
 #define CONNECTED_COMPONENT_HPP
 
+#include "util/types.hpp"
 #include "bfs_edge_range.hpp"
 #include "disjoint_set.hpp"
 #include "edge_range.hpp"

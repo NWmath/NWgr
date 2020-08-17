@@ -12,6 +12,7 @@
 #define BETWEENNESS_CENTRALITY_HPP
 
 #include "util.hpp"
+#include "util/types.hpp"
 #include "util/AtomicBitVector.hpp"
 #include "util/atomic.hpp"
 #include "util/parallel_for.hpp"
@@ -1591,14 +1592,14 @@ auto bc2_v4(Graph&& graph, const std::vector<vertex_id_t>& sources, int threads)
   auto&&               edges = std::get<0>(*(*g).begin());
   std::vector<score_t> bc(N);
 
-  const vertex_id_t num_bins = bgl17::pow2(bgl17::ceil_log2(threads));
+  const vertex_id_t num_bins = nw::graph::pow2(nw::graph::ceil_log2(threads));
   const vertex_id_t bin_mask = num_bins - 1;
 
   for (vertex_id_t root : sources) {
     std::cout << "source: " << root << std::endl;
 
     std::vector<std::atomic<vertex_id_t>> levels(N);
-    bgl17::AtomicBitVector                succ(M);
+    nw::graph::AtomicBitVector                succ(M);
 
     std::fill(std::execution::par_unseq, levels.begin(), levels.end(), std::numeric_limits<vertex_id_t>::max());
 
@@ -1619,11 +1620,11 @@ auto bc2_v4(Graph&& graph, const std::vector<vertex_id_t>& sources, int threads)
         std::for_each(std::execution::par_unseq, q.begin(), q.end(), [&](auto&& u) {
           for (auto&& [v] : g[u]) {
             auto&& neg_one = std::numeric_limits<vertex_id_t>::max();
-            if (bgl17::acquire(levels[v]) == neg_one && bgl17::cas(levels[v], neg_one, lvl)) {
+            if (nw::graph::acquire(levels[v]) == neg_one && nw::graph::cas(levels[v], neg_one, lvl)) {
               q2[u & bin_mask].push_back(v);
             }
-            if (bgl17::acquire(levels[v]) == lvl) {
-              bgl17::fetch_add(path_counts[v], bgl17::acquire(path_counts[u]));
+            if (nw::graph::acquire(levels[v]) == lvl) {
+              nw::graph::fetch_add(path_counts[v], nw::graph::acquire(path_counts[u]));
               succ.atomic_set(&v - &edges);    // edge(w,v) : P[w][v]
             }
           }
@@ -1679,7 +1680,7 @@ auto bc2_v5(Graph&& graph, const std::vector<vertex_id_t>& sources, int threads)
   auto&&               edges = std::get<0>(*(graph[0]).begin());
   std::vector<score_t> bc(N);
 
-  const vertex_id_t num_bins = bgl17::pow2(bgl17::ceil_log2(threads));
+  const vertex_id_t num_bins = nw::graph::pow2(nw::graph::ceil_log2(threads));
   const vertex_id_t bin_mask = num_bins - 1;
 
   std::vector<std::future<void>> futures(sources.size());
@@ -1690,7 +1691,7 @@ auto bc2_v5(Graph&& graph, const std::vector<vertex_id_t>& sources, int threads)
           std::cout << "source: " + std::to_string(root) + "\n";
 
           std::vector<vertex_id_t> levels(N);
-          bgl17::AtomicBitVector   succ(M);
+          nw::graph::AtomicBitVector   succ(M);
 
           // Initialize the levels to infinity.
           std::fill(std::execution::par_unseq, levels.begin(), levels.end(), std::numeric_limits<vertex_id_t>::max());
@@ -1712,13 +1713,13 @@ auto bc2_v5(Graph&& graph, const std::vector<vertex_id_t>& sources, int threads)
               std::for_each(std::execution::par_unseq, q.begin(), q.end(), [&](auto&& u) {
                 for (auto&& [v] : graph[u]) {
                   auto&& infinity = std::numeric_limits<vertex_id_t>::max();
-                  auto&& lvl_v    = bgl17::acquire(levels[v]);
+                  auto&& lvl_v    = nw::graph::acquire(levels[v]);
 
                   // If this is our first encounter with this node, or
                   // it's on the right level, then propagate the counts
                   // from u to v, and mark the edge from u to v as used.
                   if (lvl_v == infinity || lvl_v == lvl) {
-                    bgl17::fetch_add(path_counts[v], bgl17::acquire(path_counts[u]));
+                    nw::graph::fetch_add(path_counts[v], nw::graph::acquire(path_counts[u]));
                     succ.atomic_set(&v - &edges);    // edge(w,v) : P[w][v]
                   }
 
@@ -1726,7 +1727,7 @@ auto bc2_v5(Graph&& graph, const std::vector<vertex_id_t>& sources, int threads)
                   // first time we encounter it, so we race to set its
                   // level and if we win that race we can be the one to
                   // add it.
-                  if (lvl_v == infinity && bgl17::cas(levels[v], infinity, lvl)) {
+                  if (lvl_v == infinity && nw::graph::cas(levels[v], infinity, lvl)) {
                     q2[u & bin_mask].push_back(v);
                   }
                 }
@@ -1759,7 +1760,7 @@ auto bc2_v5(Graph&& graph, const std::vector<vertex_id_t>& sources, int threads)
                     delta += path_counts[u] / path_counts[v] * (1.0f + deltas[v]);
                   }
                 }
-                bgl17::fetch_add(bc[u], deltas[u] = delta);
+                nw::graph::fetch_add(bc[u], deltas[u] = delta);
               });
             });
           });
@@ -1771,7 +1772,7 @@ auto bc2_v5(Graph&& graph, const std::vector<vertex_id_t>& sources, int threads)
     f.wait();
   }
 
-  auto max = std::reduce(std::execution::par_unseq, bc.begin(), bc.end(), 0.0f, bgl17::max{});
+  auto max = std::reduce(std::execution::par_unseq, bc.begin(), bc.end(), 0.0f, nw::graph::max{});
   std::for_each(std::execution::par_unseq, bc.begin(), bc.end(), [&](auto&& j) { j /= max; });
 
   return bc;

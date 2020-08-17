@@ -1,5 +1,5 @@
 ##########################################################################
-#	CMake Build Rules for the Standard Graph Library (v0.3)          #
+#	CMake Build Rules for the NW Graph (v0.3)                              #
 ##########################################################################
 # Basic Usage:                                                           #
 #   cmake ..								 #

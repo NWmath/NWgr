@@ -12,6 +12,7 @@
 #define NW_GRAPH_REVERSE_HPP
 
 #include "util.hpp"
+#include "util/types.hpp"
 #include <vector>
 
 namespace nw {

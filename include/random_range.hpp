@@ -12,7 +12,7 @@
 #define NW_GRAPH_RANDOM_RANGE_HPP
 
 #include "util.hpp"
-
+#include "util/types.hpp"
 #include <cmath>
 #include <random>
 #include <vector>

@@ -37,7 +37,7 @@ static constexpr const char USAGE[] =
 #include "util/traits.hpp"
 #include <docopt.h>
 
-using namespace bgl17::bench;
+using namespace nw::graph::bench;
 using distance_t = std::uint64_t;
 
 /// Basic sequential sssp (Dijkstra) copied from GAP benchmark suite.
@@ -46,7 +46,7 @@ static auto dijkstra(Graph&& graph, vertex_id_t source)
 {
   // Workqueue
   using WN = std::tuple<vertex_id_t, distance_t>;
-  auto mq = bgl17::make_priority_queue<WN>([](const WN& a, const WN& b) {
+  auto mq = nw::graph::make_priority_queue<WN>([](const WN& a, const WN& b) {
     return std::get<1>(a) > std::get<1>(b);
   });
   mq.emplace(source, 0);

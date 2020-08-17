@@ -30,7 +30,7 @@ constexpr auto make_priority_queue(Compare&& compare) {
 /// Create a priority queue adapter for a `std::vector<T>`.
 ///
 /// This convenience utility forwards the `compare` object to
-/// `bgl17::make_priority_queue` while selecting a `std::vector<T>` as the
+/// `nw::graph::make_priority_queue` while selecting a `std::vector<T>` as the
 /// container type.
 ///
 /// @tparam           T The type of the stored element.

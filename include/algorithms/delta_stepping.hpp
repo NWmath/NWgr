@@ -251,10 +251,10 @@ auto delta_stepping_v9(Graph&& graph, Id source, T delta) {
   tdist[source] = 0;
 
   auto relax = [&](Id i, Id j, auto wt) {
-    distance_t next = bgl17::acquire(tdist[i]) + wt;
-    distance_t prev = bgl17::acquire(tdist[j]);
+    distance_t next = nw::graph::acquire(tdist[i]) + wt;
+    distance_t prev = nw::graph::acquire(tdist[j]);
     bool       success;
-    while (next < prev && !(success = bgl17::cas(tdist[j], prev, next))) {
+    while (next < prev && !(success = nw::graph::cas(tdist[j], prev, next))) {
     }
     if (!success) return;
 
@@ -262,11 +262,11 @@ auto delta_stepping_v9(Graph&& graph, Id source, T delta) {
     // resizing because tbb::concurrent_vector resizing is not thread safe
     // https://www.threadingbuildingblocks.org/docs/help/hh_goto.htm?index.htm#tbb_userguide/Advanced_Idiom_Waiting_on_an_Element.html)
     std::size_t bin = next / delta;
-    if (bgl17::acquire(size) < bin + 1) {
+    if (nw::graph::acquire(size) < bin + 1) {
       tbb::queuing_mutex::scoped_lock _(lock);
-      if (bgl17::acquire(size) < bin + 1) {
+      if (nw::graph::acquire(size) < bin + 1) {
         bins.grow_to_at_least(bin + 1);
-        bgl17::release(size, bin + 1);
+        nw::graph::release(size, bin + 1);
       }
     }
     bins[bin].push_back(j);
@@ -307,10 +307,10 @@ auto delta_stepping_v10(Graph&& graph, Id source, T delta) {
   tdist[source] = 0;
 
   auto relax = [&](Id i, Id j, auto wt) {
-    distance_t next = bgl17::acquire(tdist[i]) + wt;
-    distance_t prev = bgl17::acquire(tdist[j]);
+    distance_t next = nw::graph::acquire(tdist[i]) + wt;
+    distance_t prev = nw::graph::acquire(tdist[j]);
     bool       success;
-    while (next < prev && !(success = bgl17::cas(tdist[j], prev, next))) {
+    while (next < prev && !(success = nw::graph::cas(tdist[j], prev, next))) {
     }
     if (!success) return;
 
@@ -318,11 +318,11 @@ auto delta_stepping_v10(Graph&& graph, Id source, T delta) {
     // resizing because tbb::concurrent_vector resizing is not thread safe
     // https://www.threadingbuildingblocks.org/docs/help/hh_goto.htm?index.htm#tbb_userguide/Advanced_Idiom_Waiting_on_an_Element.html)
     std::size_t bin = next / delta;
-    if (bgl17::acquire(size) < bin + 1) {
+    if (nw::graph::acquire(size) < bin + 1) {
       tbb::queuing_mutex::scoped_lock _(lock);
-      if (bgl17::acquire(size) < bin + 1) {
+      if (nw::graph::acquire(size) < bin + 1) {
         bins.grow_to_at_least(bin + 1);
-        bgl17::release(size, bin + 1);
+        nw::graph::release(size, bin + 1);
       }
     }
     bins[bin].push_back(j);
@@ -366,10 +366,10 @@ auto delta_stepping_v11(Graph&& graph, Id source, T delta) {
   tdist[source] = 0;
 
   auto relax = [&](Id i, Id j, auto wt) {
-    distance_t next = bgl17::acquire(tdist[i]) + wt;
-    distance_t prev = bgl17::acquire(tdist[j]);
+    distance_t next = nw::graph::acquire(tdist[i]) + wt;
+    distance_t prev = nw::graph::acquire(tdist[j]);
     bool       success;
-    while (next < prev && !(success = bgl17::cas(tdist[j], prev, next))) {
+    while (next < prev && !(success = nw::graph::cas(tdist[j], prev, next))) {
     }
     if (!success) return;
 
@@ -377,11 +377,11 @@ auto delta_stepping_v11(Graph&& graph, Id source, T delta) {
     // resizing because tbb::concurrent_vector resizing is not thread safe
     // https://www.threadingbuildingblocks.org/docs/help/hh_goto.htm?index.htm#tbb_userguide/Advanced_Idiom_Waiting_on_an_Element.html)
     std::size_t bin = next / delta;
-    if (bgl17::acquire(size) < bin + 1) {
+    if (nw::graph::acquire(size) < bin + 1) {
       tbb::queuing_mutex::scoped_lock _(lock);
-      if (bgl17::acquire(size) < bin + 1) {
+      if (nw::graph::acquire(size) < bin + 1) {
         bins.grow_to_at_least(bin + 1);
-        bgl17::release(size, bin + 1);
+        nw::graph::release(size, bin + 1);
       }
     }
     bins[bin].push_back(j);
@@ -427,10 +427,10 @@ auto delta_stepping_v12(Graph&& graph, Id source, T delta) {
   tdist[source] = 0;
 
   auto relax = [&](Id i, Id j, auto wt) {
-    distance_t next = bgl17::acquire(tdist[i]) + wt;
-    distance_t prev = bgl17::acquire(tdist[j]);
+    distance_t next = nw::graph::acquire(tdist[i]) + wt;
+    distance_t prev = nw::graph::acquire(tdist[j]);
     bool       success;
-    while (next < prev && !(success = bgl17::cas(tdist[j], prev, next))) {
+    while (next < prev && !(success = nw::graph::cas(tdist[j], prev, next))) {
     }
     if (!success) return;
 
@@ -438,11 +438,11 @@ auto delta_stepping_v12(Graph&& graph, Id source, T delta) {
     // resizing because tbb::concurrent_vector resizing is not thread safe
     // https://www.threadingbuildingblocks.org/docs/help/hh_goto.htm?index.htm#tbb_userguide/Advanced_Idiom_Waiting_on_an_Element.html)
     std::size_t bin = next / delta;
-    if (bgl17::acquire(size) < bin + 1) {
+    if (nw::graph::acquire(size) < bin + 1) {
       tbb::queuing_mutex::scoped_lock _(lock);
-      if (bgl17::acquire(size) < bin + 1) {
+      if (nw::graph::acquire(size) < bin + 1) {
         bins.grow_to_at_least(bin + 1);
-        bgl17::release(size, bin + 1);
+        nw::graph::release(size, bin + 1);
       }
     }
     bins[bin].push_back(j);
@@ -456,7 +456,7 @@ auto delta_stepping_v12(Graph&& graph, Id source, T delta) {
     std::swap(frontier, bins[top_bin]);
     tbb::parallel_for_each(frontier, [&](auto&& u) {
       if (tdist[u] >= delta * top_bin) {
-        bgl17::parallel_for(g[u], [&](auto&& v, auto&& wt) { relax(u, v, wt); });
+        nw::graph::parallel_for(g[u], [&](auto&& v, auto&& wt) { relax(u, v, wt); });
       }
     });
 

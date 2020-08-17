@@ -16,9 +16,9 @@
 #include <map>
 #include <tuple>
 
-#include <edge_list.hpp>
-#include <plain_range.hpp>
-#include <util.hpp>
+#include "edge_list.hpp"
+#include "plain_range.hpp"
+#include "util.hpp"
 
 namespace nw {
 namespace graph {

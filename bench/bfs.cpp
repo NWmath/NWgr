@@ -37,7 +37,7 @@ static constexpr const char USAGE[] =
 #include "common.hpp"
 #include <docopt.h>
 
-using namespace bgl17::bench;
+using namespace nw::graph::bench;
 
 template<typename Graph, typename GraphT>
 bool BFSVerifier(Graph& g, GraphT& g_t, vertex_id_t source, std::vector<vertex_id_t>& parent) {

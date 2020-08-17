@@ -8,6 +8,8 @@
 // Author: Kevin Deweese
 //
 #include "util.hpp"
+#include "util/types.hpp"
+
 #include <functional>
 #include <iostream>
 #include <map>

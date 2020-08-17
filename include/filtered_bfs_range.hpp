@@ -11,6 +11,7 @@
 #define NW_GRAPH_FILTERED_BFS_RANGE_HPP
 
 #include "util.hpp"
+#include "util/types.hpp"
 #include <cassert>
 #include <functional>
 #include <queue>

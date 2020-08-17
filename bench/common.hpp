@@ -1,5 +1,7 @@
-#pragma once
+#ifndef NW_GRAPH_BENCH_COMMON_HPP
+#define NW_GRAPH_BENCH_COMMON_HPP
 
+#include "graph_base.hpp"
 #include "edge_list.hpp"
 #include "edge_range.hpp"
 #include "mmio.hpp"
@@ -16,7 +18,7 @@
 #include <tuple>
 #include <vector>
 
-namespace bgl17 {
+namespace nw::graph {
 namespace bench {
 
 #if defined (EXECUTION_POLICY)
@@ -76,14 +78,14 @@ edge_list<Directedness, Attributes...> load_graph(std::string file) {
   in >> type;
 
   if (type == "BGL17") {
-    life_timer _("deserialize");
+    nw::util::life_timer _("deserialize");
     edge_list<Directedness, Attributes...> aos_a(0);
     aos_a.deserialize(file);
     return aos_a;
   }
   else if (type == "%%MatrixMarket") {
     std::cout << "Reading matrix market input " << file << " (slow)\n";
-    life_timer _("read mm");
+    nw::util::life_timer _("read mm");
     return read_mm<Directedness, Attributes...>(file);
   }
   else {
@@ -94,15 +96,15 @@ edge_list<Directedness, Attributes...> load_graph(std::string file) {
 
 template <int Adj, directedness Directedness, class... Attributes>
 adjacency<Adj, Attributes...> build_adjacency(edge_list<Directedness, Attributes...>& graph) {
-  life_timer _("build adjacency");
+  nw::util::life_timer _("build adjacency");
   return { graph };
 }
 
 template <class Graph>
 auto build_degrees(Graph&& graph)
 {
-  using Id = bgl17::vertex_id_t<std::decay_t<Graph>>;
-  life_timer _("degrees");
+  using Id = typename nw::graph::vertex_id<std::decay_t<Graph>>::type;
+  nw::util::life_timer _("degrees");
   std::vector<Id> degrees(graph.size());
   tbb::parallel_for(edge_range(graph), [&](auto&& edges) {
     for (auto&& [i, j] : edges) {
@@ -115,7 +117,7 @@ auto build_degrees(Graph&& graph)
 template <class Graph>
 auto build_random_sources(Graph&& graph, size_t n, long seed)
 {
-  using Id = bgl17::vertex_id_t<std::decay_t<Graph>>;
+  using Id = typename nw::graph::vertex_id<std::decay_t<Graph>>::type;
 
   auto sources = std::vector<Id>(n);
   auto degrees = build_degrees(graph);
@@ -135,7 +137,7 @@ auto build_random_sources(Graph&& graph, size_t n, long seed)
 template <class Graph>
 auto load_sources_from_file(Graph&&, std::string file, size_t n = 0)
 {
-  using Id = bgl17::vertex_id_t<std::decay_t<Graph>>;
+  using Id = typename nw::graph::vertex_id<std::decay_t<Graph>>::type;
   std::vector sources = read_mm_vector<Id>(file);
   if (n && sources.size() != n) {
     std::cerr << file << " contains " << sources.size() << " sources, however options require " << n << "\n";
@@ -249,3 +251,5 @@ class Times
 };
 }
 }
+
+#endif // NW_GRAPH_BENCH_COMMON_HPP

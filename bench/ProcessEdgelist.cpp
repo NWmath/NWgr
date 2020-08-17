@@ -28,13 +28,13 @@ static constexpr const char USAGE[] =
 template <directedness Directed, class... Attributes>
 static void eval(std::string input, std::string output)
 {
-  auto&& [read, aos] = bgl17::bench::time_op([&] {
+  auto&& [read, aos] = nw::graph::bench::time_op([&] {
     std::cout << "Reading " << input << "\n";
     return read_mm<Directed, Attributes...>(input);
   });
   std::cout << read << " seconds\n";
 
-  auto&& [write] = bgl17::bench::time_op([&,aos=aos] {
+  auto&& [write] = nw::graph::bench::time_op([&,aos=aos] {
     std::cout << "Writing " << output << "\n";
     aos.serialize(output);
   });

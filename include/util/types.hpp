@@ -22,4 +22,5 @@ using index_t     = std::size_t;
 
 }    // namespace graph
 }    // namespace nw
+
 #endif    // NW_GRAPH_TYPES_HPP
