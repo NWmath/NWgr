@@ -8,8 +8,8 @@
 // Author: Andrew Lumsdaine
 //
 
-#ifndef __PLAIN_RANGE_HPP
-#define __PLAIN_RANGE_HPP
+#ifndef NW_GRAPH_PLAIN_RANGE_HPP
+#define NW_GRAPH_PLAIN_RANGE_HPP
 
 #include "util.hpp"
 #include "util/print_types.hpp"
@@ -24,15 +24,18 @@
 #if defined(CL_SYCL_LANGUAGE_VERSION)
 #include <dpstd/execution>
 #include <dpstd/iterators.h>
-template<class T>
-using counting_iterator = dpstd::counting_iterator<T>;
+template <class T>
+using nw::graph::counting_iterator = dpstd::counting_iterator<T>;
 #else
 #include <execution>
 #include <tbb/iterators.h>
-template<class T>
-using counting_iterator = tbb::counting_iterator<T>;
+template <class T>
+using nw::graph::counting_iterator = tbb::counting_iterator<T>;
 #endif
 #endif
+
+namespace nw {
+namespace graph {
 
 template <typename Graph>
 class plain_range {
@@ -40,13 +43,11 @@ public:
   plain_range(Graph& g) : the_graph_(g) {}
 
   class iterator {
-    typename Graph::iterator  base_;
+    typename Graph::iterator base_;
     typename Graph::iterator first_;
 
   public:
-    iterator(typename Graph::iterator base, typename Graph::iterator first)
-        : base_(base), first_(first) {
-    }
+    iterator(typename Graph::iterator base, typename Graph::iterator first) : base_(base), first_(first) {}
 
     iterator& operator++() {
       ++first_;
@@ -61,8 +62,8 @@ public:
 
   std::size_t size() const { return the_graph_.size(); }
 
-  iterator begin() { return { the_graph_.begin(), the_graph_.begin() }; }
-  iterator   end() { return { the_graph_.begin(),   the_graph_.end() }; }
+  iterator begin() { return {the_graph_.begin(), the_graph_.begin()}; }
+  iterator end() { return {the_graph_.begin(), the_graph_.end()}; }
 
 private:
   Graph& the_graph_;
@@ -74,17 +75,13 @@ public:
   plain_degree_range(Graph& g) : the_graph_(g) {}
 
   class iterator {
-    typename Graph::iterator  base_;
+    typename Graph::iterator base_;
     typename Graph::iterator first_;
-    typename Graph::iterator  last_;
+    typename Graph::iterator last_;
 
   public:
     iterator(typename Graph::iterator base, typename Graph::iterator first, typename Graph::iterator last)
-        : base_(base),
-          first_(first),
-          last_(last)
-    {
-    }
+        : base_(base), first_(first), last_(last) {}
 
     iterator(const iterator& b) = default;
 
@@ -101,11 +98,14 @@ public:
 
   std::size_t size() const { return the_graph_.size(); }
 
-  iterator begin() { return { the_graph_.begin(), the_graph_.begin(), the_graph_.end() }; }
-  iterator   end() { return { the_graph_.begin(),   the_graph_.end(), the_graph_.end() }; }
+  iterator begin() { return {the_graph_.begin(), the_graph_.begin(), the_graph_.end()}; }
+  iterator end() { return {the_graph_.begin(), the_graph_.end(), the_graph_.end()}; }
 
 private:
   Graph& the_graph_;
 };
 
-#endif    // __PLAIN_RANGE_HPP
+}    // namespace graph
+}    // namespace nw
+
+#endif    // NW_GRAPH_PLAIN_RANGE_HPP

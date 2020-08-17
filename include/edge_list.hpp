@@ -8,8 +8,8 @@
 // Author: Andrew Lumsdaine
 //
 
-#ifndef __EDGE_LIST_HPP
-#define __EDGE_LIST_HPP
+#ifndef NW_GRAPH_EDGE_LIST_HPP
+#define NW_GRAPH_EDGE_LIST_HPP
 
 #include "aos.hpp"
 #include "soa.hpp"
@@ -43,6 +43,9 @@
 #include <numeric>
 #include <tuple>
 
+namespace nw {
+namespace graph {
+
 static bool g_debug_edge_list = false;
 static bool g_time_edge_list  = false;
 
@@ -50,19 +53,19 @@ void debug_edge_list(bool flag = true) { g_debug_edge_list = flag; }
 
 void time_edge_list(bool flag = true) { g_time_edge_list = flag; }
 
-template<int idx, directedness sym, typename... Attributes>
+template <int idx, directedness sym, typename... Attributes>
 class compressed_sparse;
 
-template<int idx, typename... Attributes>
+template <int idx, typename... Attributes>
 class adjacency;
 
-template<int idx, succession cessor, typename... Attributes>
+template <int idx, succession cessor, typename... Attributes>
 class packed;
 
-template<typename... Attributes>
+template <typename... Attributes>
 class adj_list;
 
-template<directedness edge_directedness = undirected, typename... Attributes>
+template <directedness edge_directedness = undirected, typename... Attributes>
 
 // #define EDGELIST_AOS
 
@@ -81,7 +84,9 @@ public:
   edge_list(size_t N)
       : graph_base(N), min_({std::numeric_limits<vertex_id_t>::max(), std::numeric_limits<vertex_id_t>::max()}), max_({0, 0}) {}
 
-  edge_list(std::initializer_list<element> l) : graph_base(l.size()), min_({std::numeric_limits<vertex_id_t>::max(), std::numeric_limits<vertex_id_t>::max()}), max_({0, 0}) {
+  edge_list(std::initializer_list<element> l)
+      : graph_base(l.size()), min_({std::numeric_limits<vertex_id_t>::max(), std::numeric_limits<vertex_id_t>::max()}),
+        max_({0, 0}) {
     open_for_push_back();
 
     for_each(l.begin(), l.end(), [&](element x) { push_back(x); });
@@ -95,13 +100,16 @@ public:
               << " max " << max_[0] << " " << max_[1] << std::endl;
   }
 
-  edge_list() : graph_base(0), min_({std::numeric_limits<vertex_id_t>::max(), std::numeric_limits<vertex_id_t>::max()}), max_({0, 0}) { open_for_push_back(); }
+  edge_list()
+      : graph_base(0), min_({std::numeric_limits<vertex_id_t>::max(), std::numeric_limits<vertex_id_t>::max()}), max_({0, 0}) {
+    open_for_push_back();
+  }
 
   //edge_list(const edge_list&) = default;
 
   //edge_list<directed, Attributes...> convert (const edge_list<undirected, Attributes...>&) ;
   //edge_list<undirected, Attributes...> convert(const edge_list<directed, Attributes...>&);
-  template<directedness to_dir, int kdx = 0>
+  template <directedness to_dir, int kdx = 0>
   auto convert_directedness() {
     if constexpr (edge_directedness == to_dir) {
       return edge_list(*this);
@@ -246,7 +254,7 @@ public:
     base::push_back(elem);
   }
 
-  template<int idx>
+  template <int idx>
   void sort_by() {
     int status = -4;
     prv.push_back(bgl17::demangle(typeid(*this).name(), nullptr, nullptr, &status) + "::" + __func__,
@@ -260,7 +268,7 @@ public:
               [](const element& a, const element& b) -> bool { return (std::get<idx>(a) < std::get<idx>(b)); });
   }
 
-  template<int idx>
+  template <int idx>
   void stable_sort_by() {
     int status = -4;
     prv.push_back(bgl17::demangle(typeid(*this).name(), nullptr, nullptr, &status) + "::" + __func__,
@@ -274,7 +282,7 @@ public:
                      [](const element& a, const element& b) -> bool { return (std::get<idx>(a) < std::get<idx>(b)); });
   }
 
-  template<int idx>
+  template <int idx>
   void lexical_sort_by() {
     int status = -4;
     prv.push_back(bgl17::demangle(typeid(*this).name(), nullptr, nullptr, &status) + "::" + __func__,
@@ -308,7 +316,7 @@ public:
     }
   }
 
-  template<int idx>
+  template <int idx>
   void lexical_stable_sort_by() {
     int status = -4;
     prv.push_back(bgl17::demangle(typeid(*this).name(), nullptr, nullptr, &status) + "::" + __func__,
@@ -326,13 +334,13 @@ public:
                      });
   }
 
-  template<int idx, directedness sym>
+  template <int idx, directedness sym>
   void fill(compressed_sparse<idx, sym, Attributes...>& cs) {
     stable_sort_by<idx>();
     fill_sorted(cs);
   }
 
-  template<int idx, directedness sym>
+  template <int idx, directedness sym>
   void fill_sorted(compressed_sparse<idx, sym, Attributes...>& cs) {
     cs.open_for_push_back();
 
@@ -343,7 +351,7 @@ public:
     cs.close_for_push_back();
   }
 
-  template<int idx, succession cessor>
+  template <int idx, succession cessor>
   void fill(packed<idx, cessor, Attributes...>& cs) {
     if constexpr (edge_directedness == undirected) {
 
@@ -361,7 +369,7 @@ public:
   }
 
 #if defined(FILL_IF)
-  template<int idx, succession cessor = successor>
+  template <int idx, succession cessor = successor>
   void fill_if(adjacency<idx, Attributes...>& cs) {
     if constexpr (cessor == predecessor) {
       fill_if<idx>(cs, std::less<vertex_id_t>{});
@@ -371,7 +379,7 @@ public:
     }
   }
 
-  template<int idx, typename Comparator = decltype(std::less<vertex_id_t>{})>
+  template <int idx, typename Comparator = decltype(std::less<vertex_id_t>{})>
   void fill_if(adjacency<idx, Attributes...>& cs, Comparator comp) {
     const kdx = (idx + 1) % 2;
 
@@ -407,7 +415,7 @@ public:
   }
 #endif    // FILL_IF
 
-  template<int idx, size_t... Is>
+  template <int idx, size_t... Is>
   void fill_helper(adjacency<idx, Attributes...>& cs, std::index_sequence<Is...> is) {
     (..., (
 #if defined(EXECUTION_POLICY)
@@ -419,7 +427,7 @@ public:
                         std::get<Is + 1>(cs.to_be_indexed_).begin())));
   }
 
-  template<int idx>
+  template <int idx>
   void fill(adjacency<idx, Attributes...>& cs) {
     if constexpr (edge_directedness == directed) {
 
@@ -574,7 +582,7 @@ public:
     uniq();
   }
 
-  template<int idx, succession cessor = predecessor>
+  template <int idx, succession cessor = predecessor>
   void _triangularize_() {
     int status = -4;
     prv.push_back(bgl17::demangle(typeid(*this).name(), nullptr, nullptr, &status) + "::" + __func__,
@@ -606,7 +614,7 @@ public:
     }
   }
 
-  template<int idx>
+  template <int idx>
   void swap_to_triangular(const std::string& cessor = "predecessor") {
     if (cessor == "predecessor") {
       swap_to_triangular<idx, predecessor>();
@@ -617,7 +625,7 @@ public:
     }
   }
 
-  template<int idx, succession cessor = predecessor>
+  template <int idx, succession cessor = predecessor>
   void swap_to_triangular() {
     int status = -4;
     prv.push_back(bgl17::demangle(typeid(*this).name(), nullptr, nullptr, &status) + "::" + __func__,
@@ -649,7 +657,7 @@ public:
     }
   }
 
-  template<int idx, succession cessor = predecessor>
+  template <int idx, succession cessor = predecessor>
   void filter_to_triangular() {
     int status = -4;
     prv.push_back(bgl17::demangle(typeid(*this).name(), nullptr, nullptr, &status) + "::" + __func__,
@@ -710,7 +718,7 @@ public:
     base::resize(past_the_end - base::begin());
   }
 
-  template<int d_idx = 0>
+  template <int d_idx = 0>
   auto degrees() {
     std::vector<index_t> degree(max_[d_idx] + 1);
 
@@ -741,7 +749,7 @@ public:
     return degree;
   }
 
-  template<int idx = 0>
+  template <int idx = 0>
   auto perm_by_degree(std::string direction = "ascending") {
     int status = -4;
     prv.push_back(bgl17::demangle(typeid(*this).name(), nullptr, nullptr, &status) + "::" + __func__,
@@ -752,7 +760,7 @@ public:
     return perm_by_degree<idx>(degree, direction);
   }
 
-  template<int idx = 0, class Vector>
+  template <int idx = 0, class Vector>
   auto perm_by_degree(Vector&& degree, std::string direction = "ascending") {
     std::vector<vertex_id_t> perm(degree.size());
 
@@ -788,7 +796,7 @@ public:
     return perm;
   }
 
-  template<class Vector = std::vector<vertex_id_t>>
+  template <class Vector = std::vector<vertex_id_t>>
   void relabel(Vector&& perm) {
     std::vector<vertex_id_t> iperm(perm.size());
 
@@ -814,8 +822,8 @@ public:
                     std::get<1>(x) = iperm[std::get<1>(x)];
                   });
   }
-  
-  template<int idx, class Vector = std::vector<int>>
+
+  template <int idx, class Vector = std::vector<int>>
   void relabel_by_degree(std::string direction = "ascending", Vector&& degree = std::vector<int>(0)) {
     int status = -4;
     prv.push_back(bgl17::demangle(typeid(*this).name(), nullptr, nullptr, &status) + "::" + __func__,
@@ -823,7 +831,6 @@ public:
 
     std::vector<vertex_id_t> perm = degree.size() == 0 ? perm_by_degree<0>(direction) : perm_by_degree<0>(degree, direction);
     relabel(perm);
-    
   }
 
   constexpr static const char magic[16] = "BGL17 edge_list";
@@ -903,4 +910,7 @@ public:
   std::array<vertex_id_t, 2> min_, max_;
 };
 
-#endif    // __EDGE_LIST_HPP
+}    // namespace graph
+}    // namespace nw
+
+#endif    // NW_GRAPH_EDGE_LIST_HPP

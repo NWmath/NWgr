@@ -8,13 +8,16 @@
 // Author: Andrew Lumsdaine
 //
 
-#ifndef __UTIL_PAR_HPP
-#define __UTIL_PAR_HPP
+#ifndef NW_GRAPH_UTIL_PAR_HPP
+#define NW_GRAPH_UTIL_PAR_HPP
 
 #include <atomic>
 #include <cstddef>
 #include <iterator>
 #include <mutex>
+
+namespace nw {
+namespace graph {
 
 std::mutex mtx;
 
@@ -26,7 +29,7 @@ public:
   par_counting_output_iterator& operator*() { return *this; }
   par_counting_output_iterator& operator[](size_t) { return *this; }
 
-  template<typename T>
+  template <typename T>
   void operator=(T) {
     std::lock_guard<std::mutex> lock(mtx);
     count++;
@@ -45,7 +48,7 @@ public:
   atomic_counting_output_iterator& operator*() { return *this; }
   atomic_counting_output_iterator& operator[](size_t) { return *this; }
 
-  template<typename T>
+  template <typename T>
   void operator=(T) {
     count++;
   }
@@ -57,4 +60,7 @@ private:
 
 typedef size_t vertex_id_t;
 
-#endif    // __UTIL_HPP
+}    // namespace graph
+}    // namespace nw
+
+#endif    // NW_GRAPH_UTIL_PAR_HPP

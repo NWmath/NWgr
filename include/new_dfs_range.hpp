@@ -8,17 +8,20 @@
 // Author: Andrew Lumsdaine
 //
 
-#ifndef __DFS_RANGE_HPP
-#define __DFS_RANGE_HPP
+#ifndef NW_GRAPH_NEW_DFS_RANGE_HPP
+#define NW_GRAPH_NEW_DFS_RANGE_HPP
 
 #include "util.hpp"
 #include <cassert>
 #include <stack>
 #include <vector>
 
+namespace nw {
+namespace graph {
+
 enum three_colors { black, white, grey };
 
-template<typename Graph, typename Stack = std::stack<vertex_id_t>>
+template <typename Graph, typename Stack = std::stack<vertex_id_t>>
 class dfs_range {
 
 public:
@@ -35,7 +38,7 @@ public:
   bool empty() { return Q_.empty(); }
 
 private:
-  template<typename GraphRange>
+  template <typename GraphRange>
   static void dfs_visit(const GraphRange& G, Stack& Q, std::vector<three_colors>& colors, vertex_id_t v) {
     auto u     = G[v].begin();
     auto u_end = G[v].end();
@@ -111,7 +114,7 @@ private:
   std::vector<three_colors> colors_;
 };
 
-template<typename Graph, typename Stack = std::stack<vertex_id_t>>
+template <typename Graph, typename Stack = std::stack<vertex_id_t>>
 class dfs_edge_range {
 
 public:
@@ -241,4 +244,6 @@ private:
   std::vector<three_colors> colors_;
 };
 
-#endif    // __DFS_RANGE_HPP
+}    // namespace graph
+}    // namespace nw
+#endif NW_GRAPH_NEW_DFS_RANGE_HPP

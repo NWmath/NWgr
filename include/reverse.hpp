@@ -8,13 +8,16 @@
 // Author: Kevin Deweese
 //
 
+#ifndef NW_GRAPH_REVERSE_HPP
+#define NW_GRAPH_REVERSE_HPP
+
 #include "util.hpp"
 #include <vector>
 
-#ifndef __REVERSE_HPP
-#define __REVERSE_HPP
+namespace nw {
+namespace graph {
 
-template<typename path_edge>
+template <typename path_edge>
 class reverse_path {
 public:
   reverse_path(std::vector<path_edge>& path, vertex_id_t start, vertex_id_t stop) : path_(path), start_(start), stop_(stop) {}
@@ -58,4 +61,6 @@ public:
   auto end() { return typename reverse_iterator::end_sentinel_type(); }
 };
 
-#endif
+}    // namespace graph
+}    // namespace nw
+#endif    // NW_GRAPH_REVERSE_HPP

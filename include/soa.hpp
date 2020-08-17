@@ -8,8 +8,8 @@
 // Author: Andrew Lumsdaine
 //
 
-#ifndef SOA_HPP
-#define SOA_HPP
+#ifndef NW_GRAPH_SOA_HPP
+#define NW_GRAPH_SOA_HPP
 
 #include <cassert>
 
@@ -36,44 +36,43 @@
 #endif
 #endif
 
+namespace nw {
+namespace graph {
+
 // Bare bones struct of arrays (tuple of vectors)
 template <class... Attributes>
-struct struct_of_arrays : std::tuple<std::vector<Attributes>...>
-{
+struct struct_of_arrays : std::tuple<std::vector<Attributes>...> {
   using storage_type = std::tuple<std::vector<Attributes>...>;
   using base         = std::tuple<std::vector<Attributes>...>;
 
   struct_of_arrays() = default;
-  struct_of_arrays(size_t M) : base(std::vector<Attributes>(M)...) {
-  }
+  struct_of_arrays(size_t M) : base(std::vector<Attributes>(M)...) {}
 
   template <class... RandomAccessIterators>
-  class It
-  {
+  class It {
     std::tuple<RandomAccessIterators...> start;
     std::size_t                          cursor = 0;
 
     It(const std::tuple<RandomAccessIterators...>& iters, std::size_t init) : start(iters), cursor(init) {}
 
-   public:
-    using        value_type = typename std::tuple<typename std::iterator_traits<RandomAccessIterators>::value_type...>;
-    using         reference = typename std::tuple<typename std::iterator_traits<RandomAccessIterators>::reference...>;
-    using           pointer = typename std::tuple<typename std::iterator_traits<RandomAccessIterators>::pointer...>;
-    using   difference_type = std::ptrdiff_t;
+  public:
+    using value_type        = typename std::tuple<typename std::iterator_traits<RandomAccessIterators>::value_type...>;
+    using reference         = typename std::tuple<typename std::iterator_traits<RandomAccessIterators>::reference...>;
+    using pointer           = typename std::tuple<typename std::iterator_traits<RandomAccessIterators>::pointer...>;
+    using difference_type   = std::ptrdiff_t;
     using iterator_category = std::random_access_iterator_tag;
 
-    It() = default;
+    It()          = default;
     It(const It&) = default;
     It& operator=(const It&) = default;
-    It(It&&) = default;
+    It(It&&)                 = default;
     It& operator=(It&&) = default;
 
-    explicit It(const RandomAccessIterators... iters) : start(iters...) { }
+    explicit It(const RandomAccessIterators... iters) : start(iters...) {}
 
     friend void swap(It a, It b) {
-      std::apply([&](auto&&... is) {
-        (std::swap(*a.start[is], *b.start[is]), ...);
-      }, std::make_index_sequence<sizeof...(Attributes)>());
+      std::apply([&](auto&&... is) { (std::swap(*a.start[is], *b.start[is]), ...); },
+                 std::make_index_sequence<sizeof...(Attributes)>());
     }
 
     It operator++(int) {
@@ -98,10 +97,10 @@ struct struct_of_arrays : std::tuple<std::vector<Attributes>...>
       return x;
     }
 
-    It operator+(std::size_t offset)       { return { start, cursor + offset }; }
-    It operator+(std::size_t offset) const { return { start, cursor + offset }; }
-    It operator-(std::size_t offset)       { return { start, cursor - offset }; }
-    It operator-(std::size_t offset) const { return { start, cursor - offset }; }
+    It operator+(std::size_t offset) { return {start, cursor + offset}; }
+    It operator+(std::size_t offset) const { return {start, cursor + offset}; }
+    It operator-(std::size_t offset) { return {start, cursor - offset}; }
+    It operator-(std::size_t offset) const { return {start, cursor - offset}; }
 
     It& operator+=(std::size_t offset) {
       cursor += offset;
@@ -113,38 +112,26 @@ struct struct_of_arrays : std::tuple<std::vector<Attributes>...>
       return *this;
     }
 
-    difference_type operator-(const It& b) const {
-      return cursor - b.cursor;
-    }
+    difference_type operator-(const It& b) const { return cursor - b.cursor; }
 
-    bool operator==(const It& b) const {
-      return cursor == b.cursor;
-    }
+    bool operator==(const It& b) const { return cursor == b.cursor; }
 
-    bool operator!=(const It& b) const {
-      return cursor != b.cursor;
-    }
+    bool operator!=(const It& b) const { return cursor != b.cursor; }
 
     reference operator*() {
-      return std::apply([&](auto&&... r) {
-        return std::forward_as_tuple(*(std::forward<decltype(r)>(r) + cursor)...);
-      }, start);
+      return std::apply([&](auto&&... r) { return std::forward_as_tuple(*(std::forward<decltype(r)>(r) + cursor)...); }, start);
     }
 
     reference operator[](std::size_t i) {
-      return std::apply([&](auto&&... r) {
-        return std::forward_as_tuple(std::forward<decltype(r)>(r)[i + cursor]...);
-      }, start);
+      return std::apply([&](auto&&... r) { return std::forward_as_tuple(std::forward<decltype(r)>(r)[i + cursor]...); }, start);
     }
 
     reference operator[](std::size_t i) const {
-      return std::apply([&](auto&&... r) {
-        return std::forward_as_tuple(std::forward<decltype(r)>(r)[i + cursor]...);
-      }, start);
+      return std::apply([&](auto&&... r) { return std::forward_as_tuple(std::forward<decltype(r)>(r)[i + cursor]...); }, start);
     }
 
-    bool operator<(const It& x) const { return cursor <  x.cursor; }
-    bool operator>(const It& x) const { return cursor >  x.cursor; }
+    bool operator<(const It& x) const { return cursor < x.cursor; }
+    bool operator>(const It& x) const { return cursor > x.cursor; }
     bool operator>=(const It& x) const { return cursor >= x.cursor; }
     bool operator<=(const It& x) const { return cursor <= x.cursor; }
   };
@@ -152,65 +139,43 @@ struct struct_of_arrays : std::tuple<std::vector<Attributes>...>
   using iterator = It<typename std::vector<Attributes>::iterator...>;
 
   iterator begin() {
-    return std::apply([](auto&... vs) {
-      return iterator(vs.begin()...);
-    }, *this);
+    return std::apply([](auto&... vs) { return iterator(vs.begin()...); }, *this);
   }
 
   iterator begin() const {
-    return std::apply([](auto&... vs) {
-      return iterator(vs.begin()...);
-    }, *this);
+    return std::apply([](auto&... vs) { return iterator(vs.begin()...); }, *this);
   }
 
-  iterator end() {
-    return begin() + size();
-  }
+  iterator end() { return begin() + size(); }
 
-  iterator end() const {
-    return begin() + size();
-  }
+  iterator end() const { return begin() + size(); }
 
   void push_back(Attributes... attrs) {
-    std::apply([&](auto&... vs) {
-      (vs.push_back(attrs), ...);
-    }, *this);
+    std::apply([&](auto&... vs) { (vs.push_back(attrs), ...); }, *this);
   }
 
   void push_back(std::tuple<Attributes...> attrs) {
-    std::apply([&](Attributes... attr) {
-      push_back(attr...);
-    }, attrs);
+    std::apply([&](Attributes... attr) { push_back(attr...); }, attrs);
   }
 
   void push_at(std::size_t i, Attributes... attrs) {
-    std::apply([&](auto&... vs) {
-      ((vs[i] = attrs), ...);
-    }, *this);
+    std::apply([&](auto&... vs) { ((vs[i] = attrs), ...); }, *this);
   }
 
   void push_at(std::size_t i, std::tuple<Attributes...> attrs) {
-    std::apply([&](Attributes... attr) {
-      push_at(i, attr...);
-    }, attrs);
+    std::apply([&](Attributes... attr) { push_at(i, attr...); }, attrs);
   }
 
   void clear() {
-    std::apply([&](auto&... vs) {
-      (vs.clear(), ...);
-    }, *this);
+    std::apply([&](auto&... vs) { (vs.clear(), ...); }, *this);
   }
 
   void resize(size_t N) {
-    std::apply([&](auto&&... vs) {
-      (vs.resize(N), ...);
-    }, *this);
+    std::apply([&](auto&&... vs) { (vs.resize(N), ...); }, *this);
   }
 
   void reserve(size_t N) {
-    std::apply([&](auto&&... vs) {
-      (vs.reserve(N), ...);
-    }, *this);
+    std::apply([&](auto&&... vs) { (vs.reserve(N), ...); }, *this);
   }
 
   template <class T>
@@ -236,9 +201,7 @@ struct struct_of_arrays : std::tuple<std::vector<Attributes>...>
     size_t el_size = std::tuple_size<storage_type>::value;
     outfile.write(reinterpret_cast<char*>(&st_size), sizeof(size_t));
     outfile.write(reinterpret_cast<char*>(&el_size), sizeof(size_t));
-    std::apply([&](auto&... vs) {
-      (serialize(outfile, vs), ...);
-    }, *this);
+    std::apply([&](auto&... vs) { (serialize(outfile, vs), ...); }, *this);
   }
 
   void deserialize(std::istream& infile) {
@@ -247,17 +210,12 @@ struct struct_of_arrays : std::tuple<std::vector<Attributes>...>
     infile.read(reinterpret_cast<char*>(&st_size), sizeof(size_t));
     infile.read(reinterpret_cast<char*>(&el_size), sizeof(size_t));
     resize(st_size);
-    std::apply([&](auto&... vs) {
-      (deserialize(infile, vs), ...);
-    }, *this);
+    std::apply([&](auto&... vs) { (deserialize(infile, vs), ...); }, *this);
   }
 
   template <class T>
-  void permute(const std::vector<index_t>& indices,
-               const std::vector<index_t>& new_indices,
-               const std::vector<vertex_id_t>& perm,
-               T& vs)
-  {
+  void permute(const std::vector<index_t>& indices, const std::vector<index_t>& new_indices, const std::vector<vertex_id_t>& perm,
+               T& vs) {
     T ws(vs.size());
     for (size_t i = 0, e = indices.size() - 1; i < e; ++i) {
       vertex_id_t j = perm[i];
@@ -266,30 +224,23 @@ struct struct_of_arrays : std::tuple<std::vector<Attributes>...>
     std::copy(std::execution::par_unseq, ws.begin(), ws.end(), vs.begin());
   }
 
-  void permute(const std::vector<index_t>& indices,
-               const std::vector<index_t>& new_indices,
-               const std::vector<vertex_id_t>& perm)
-  {
-    std::apply([&](auto&... vs) {
-      (permute(indices, new_indices, perm, vs), ...);
-    }, *this);
+  void permute(const std::vector<index_t>& indices, const std::vector<index_t>& new_indices, const std::vector<vertex_id_t>& perm) {
+    std::apply([&](auto&... vs) { (permute(indices, new_indices, perm, vs), ...); }, *this);
   }
 
   size_t size() const { return std::get<0>(*this).size(); }
 
-  bool operator==(struct_of_arrays& a) {
-    return std::equal(std::execution::par, begin(), end(), a.begin());
-  }
+  bool operator==(struct_of_arrays& a) { return std::equal(std::execution::par, begin(), end(), a.begin()); }
 
-  bool operator!=(const storage_type& a) {
-    return !operator==(a);
-  }
+  bool operator!=(const storage_type& a) { return !operator==(a); }
 };
 
-namespace std
-{
+}    // namespace graph
+}    // namespace nw
+
+namespace std {
 template <class... Attributes>
-class tuple_size<struct_of_arrays<Attributes...>> : public std::integral_constant<std::size_t, sizeof...(Attributes)>{};
+class tuple_size<struct_of_arrays<Attributes...>> : public std::integral_constant<std::size_t, sizeof...(Attributes)> {};
 
 /// NB: technically we're supposed to be using `iter_swap` here on the
 /// struct_of_array iterator type, but I can't figure out how to do this.
@@ -302,6 +253,6 @@ template <class... Ts>
 void swap(std::tuple<Ts&...>&& x, std::tuple<Ts&...>&& y) {
   swap(std::move(x), std::move(y), std::make_index_sequence<sizeof...(Ts)>());
 }
-}
+}    // namespace std
 
-#endif    // SOA_HPP
+#endif    // NW_GRAPH_SOA_HPP

@@ -13,17 +13,22 @@
 #include <map>
 #include <tuple>
 
-template<typename Graph>
+#ifndef NW_GRAPH_BACK_EDGE_RANGE_HPP
+#define NW_GRAPH_BACK_EDGE_RANGE_HPP
+
+namespace nw {
+namespace graph {
+
+template <typename Graph>
 class back_edge_range {
   /// Transform a reference to a tuple to a tuple of references.
   template <class Tuple>
   static constexpr decltype(auto) ref_tuple(Tuple&& tuple) {
-    return std::apply([](auto&&... vals) {
-      return std::forward_as_tuple(std::forward<decltype(vals)>(vals)...);
-    }, std::forward<Tuple>(tuple));
+    return std::apply([](auto&&... vals) { return std::forward_as_tuple(std::forward<decltype(vals)>(vals)...); },
+                      std::forward<Tuple>(tuple));
   }
 
- public:
+public:
   back_edge_range(Graph& graph, bool as_needed = false)
       : the_graph_(graph), back_address(graph.end() - graph.begin()), back_address_extra(graph.end() - graph.begin()),
         address_extra(graph.end() - graph.begin()) {
@@ -61,13 +66,13 @@ class back_edge_range {
   using edge = typename std::iterator_traits<typename Graph::inner_iterator>::value_type;
 
   class back_edge_range_iterator {
-   private:
+  private:
     typename Graph::outer_iterator            G;
     vertex_id_t                               v_;
     typename Graph::inner_iterator            u_begin, u_end;
     typename std::map<size_t, edge>::iterator e_begin, e_end;
 
-   public:
+  public:
     back_edge_range_iterator(back_edge_range<Graph>& range, vertex_id_t v)
         : G(range.the_graph_.begin()), v_(v), u_begin(G[v_].begin()), u_end(G[v_].end()), e_begin(range.address_extra[v_].begin()),
           e_end(range.address_extra[v_].end()) {}
@@ -90,7 +95,7 @@ class back_edge_range {
     }
 
     class end_sentinel_type {
-     public:
+    public:
       end_sentinel_type() {}
     };
 
@@ -100,25 +105,25 @@ class back_edge_range {
     auto operator!=(const back_edge_range_iterator& b) const { return u_begin != b.u_begin || e_begin != b.e_begin; }
   };
 
- public:
+public:
   class sub_view {
-   public:
+  public:
     sub_view(back_edge_range<Graph>& range, vertex_id_t v) : the_range_(range), v_(v) {}
 
     auto begin() { return back_edge_range_iterator(the_range_, v_); }
     auto end() { return typename back_edge_range_iterator::end_sentinel_type(); }
 
-   private:
+  private:
     back_edge_range<Graph>& the_range_;
     vertex_id_t             v_;
   };
 
   class outer_back_edge_range_iterator {
-   public:
+  public:
     back_edge_range<Graph>&        the_range_;
     typename Graph::outer_iterator G;
 
-   public:
+  public:
     outer_back_edge_range_iterator(back_edge_range<Graph>& range, typename Graph::outer_iterator outer)
         : the_range_(range), G(outer) {}
 
@@ -140,7 +145,7 @@ class back_edge_range {
     auto operator*() { return sub_view(the_range_, get_index()); }
 
     class end_sentinel_type {
-     public:
+    public:
       end_sentinel_type() {}
     };
     auto operator==(const end_sentinel_type&) const { return G == the_range_.the_graph_.end(); }
@@ -154,7 +159,7 @@ class back_edge_range {
 
   using reference = typename std::iterator_traits<typename Graph::inner_iterator>::reference;
   auto get_back_edge(typename Graph::outer_iterator& outer, typename Graph::inner_iterator& inner) {
-    auto vtx = outer - the_graph_.begin();
+    auto vtx  = outer - the_graph_.begin();
     auto vtx2 = std::get<0>(*inner);
     return get_back_edge(vtx, vtx2);
   }
@@ -207,9 +212,13 @@ class back_edge_range {
   auto end() { return outer_back_edge_range_iterator(*this, the_graph_.end()); }
   auto size() { return the_graph_.size(); }
 
- private:
+private:
   Graph&                                   the_graph_;
   std::vector<std::map<size_t, reference>> back_address;
   std::vector<std::map<size_t, edge>>      back_address_extra;
   std::vector<std::map<size_t, edge>>      address_extra;
 };
+
+}    // namespace graph
+}    // namespace nw
+#endif    //  NW_GRAPH_BACK_EDGE_RANGE_HPP

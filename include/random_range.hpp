@@ -8,8 +8,8 @@
 // Author: Andrew Lumsdaine
 //
 
-#ifndef __RANDOM_RANGE_HPP
-#define __RANDOM_RANGE_HPP
+#ifndef NW_GRAPH_RANDOM_RANGE_HPP
+#define NW_GRAPH_RANDOM_RANGE_HPP
 
 #include "util.hpp"
 
@@ -17,7 +17,10 @@
 #include <random>
 #include <vector>
 
-template<typename Graph>
+namespace nw {
+namespace graph {
+
+template <typename Graph>
 class random_range {
 public:
   random_range(Graph& g, size_t length = size_t(0xffffffffffffffffULL), vertex_id_t first = 0, unsigned seed = 2049)
@@ -73,4 +76,6 @@ private:
   decltype(std::bind(distribution, generator)) dice;
 };
 
-#endif    // __RANDOM_RANGE_HPP
+}    // namespace graph
+}    // namespace nw
+#endif    // NW_GRAPH_RANDOM_RANGE_HPP

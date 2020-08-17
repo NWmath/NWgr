@@ -7,15 +7,20 @@
 //
 // Author: Jesun Sahariar Firoz
 //
-#pragma once
+
+#ifndef NW_GRAPH_DAG_RANGE_HPP
+#define NW_GRAPH_DAG_RANGE_HPP
 
 #include "util/types.hpp"
 #include <queue>
 #include <vector>
 
+namespace nw {
+namespace graph {
+
 enum ready_to_process { yes, no };
 
-template<typename Graph, typename Queue = std::queue<vertex_id_t>>
+template <typename Graph, typename Queue = std::queue<vertex_id_t>>
 class dag_range {
 
 public:
@@ -106,3 +111,8 @@ private:
   std::vector<uint64_t> _pred_done_counter;
   ready_to_process      _ready_to_process;
 };
+
+}    // namespace graph
+}    // namespace nw
+
+#endif NW_GRAPH_DAG_RANGE_HPP

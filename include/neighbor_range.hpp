@@ -8,14 +8,17 @@
 // Author: Andrew Lumsdaine
 //
 
-#ifndef __ROW_RANGE_HPP
-#define __ROW_RANGE_HPP
+#ifndef NW_GRAPH_NEIGHBOR_RANGE_HPP
+#define NW_GRAPH_NEIGHBOR_RANGE_HPP
 
 #include "util.hpp"
 #include <queue>
 #include <vector>
 
-template<typename Graph>
+namespace nw {
+namespace graph {
+
+template <typename Graph>
 class neighbor_range {
 public:
   neighbor_range(Graph& g) : the_graph_(g) {}
@@ -65,4 +68,7 @@ private:
   Graph& the_graph_;
 };
 
-#endif    // __NEIGHBOR_RANGE_HPP
+}    // namespace graph
+}    // namespace nw
+
+#endif    // NW_GRAPH_NEIGHBOR_RANGE_HPP

@@ -5,8 +5,8 @@
 // Author: Andrew Lumsdaine (c) 2018
 //
 
-#ifndef __VOVOS_HPP
-#define __VOVOS_HPP
+#ifndef NW_GRAPH_VOVOS_HPP
+#define NW_GRAPH_VOVOS_HPP
 
 #include <algorithm>
 #include <cassert>
@@ -17,7 +17,10 @@
 #include "edge_list.hpp"
 #include "graph_base.hpp"
 
-template<typename... Attributes>
+namespace nw {
+namespace graph {
+
+template <typename... Attributes>
 class vector_of_vector_of_structs : public std::vector<std::forward_list<std::tuple<Attributes...>>> {
 
 public:
@@ -36,7 +39,7 @@ public:
   auto size() const { return base::size(); }
 };
 
-template<typename... Attributes>
+template <typename... Attributes>
 class vov : public vector_of_vector_of_structs<size_t, Attributes...> {
   using base = vector_of_vector_of_structs<size_t, Attributes...>;
 
@@ -46,7 +49,7 @@ public:
 
   vov(size_t N) : vector_of_vector_of_structs<size_t, Attributes...>(N) {}
 
-  template<directedness dir>
+  template <directedness dir>
   vov(/* const */ edge_list<dir, Attributes...>& A) : vector_of_vector_of_structs<size_t, Attributes...>(0) {
     dynamic_cast<base&>(*this).open_for_push_back();
 
@@ -69,4 +72,6 @@ public:
   }
 };
 
-#endif    // __VOVOS_HPP
+}    // namespace graph
+}    // namespace nw
+#endif    // NW_GRAPH_VOVOS_HPP

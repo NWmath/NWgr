@@ -8,8 +8,8 @@
 // Author: Andrew Lumsdaine
 //
 
-#ifndef __UTIL_HPP
-#define __UTIL_HPP
+#ifndef NW_GRAPH_UTIL_HPP
+#define NW_GRAPH_UTIL_HPP
 
 #include <algorithm>
 #include <atomic>
@@ -24,10 +24,13 @@
 #include "util/traits.hpp"
 #include "util/types.hpp"
 
+namespace nw {
+namespace graph {
+
 #ifdef EXECUTION_POLICY
-template<typename T = std::size_t>
+template <typename T = std::size_t>
 #else
-template<typename T = std::atomic<std::size_t>>
+template <typename T = std::atomic<std::size_t>>
 #endif
 
 class counting_output_iterator : public std::iterator<std::output_iterator_tag, std::ptrdiff_t> {
@@ -42,7 +45,7 @@ public:
   // counting_output_iterator& operator=(const counting_output_iterator&) = delete;
   // counting_output_iterator& operator=(counting_output_iterator&&) = delete;
 
-  template<typename U>
+  template <typename U>
   auto& operator=(U) {
     count++;
     return *this;
@@ -111,59 +114,56 @@ struct counter : public std::iterator<std::output_iterator_tag, std::ptrdiff_t> 
 ///
 /// @returns            A tuple composed of the proper elements from `t`.
 template <std::size_t... Is, class Tuple, class = std::enable_if_t<is_tuple_v<std::decay_t<Tuple>>>>
-constexpr auto select(Tuple&& t) ->
-  std::tuple<std::tuple_element_t<Is, std::decay_t<Tuple>>...>
-{
-  static_assert(((Is < std::tuple_size_v<std::decay_t<Tuple>>) && ...), "tuple index out of range during select");
-  return { std::forward<std::tuple_element_t<Is, std::decay_t<Tuple>>>(std::get<Is>(std::forward<Tuple>(t)))... };
+constexpr auto select(Tuple&& t) -> std::tuple<std::tuple_element_t<Is, std::decay_t<Tuple>>...> {
+  static_assert(((Is < std::tuple_size_v<std::decay_t<Tuple>>)&&...), "tuple index out of range during select");
+  return {std::forward<std::tuple_element_t<Is, std::decay_t<Tuple>>>(std::get<Is>(std::forward<Tuple>(t)))...};
 }
 
 /// Meta-function to get the type of a tuple after selection (see `select`).
 template <class Tuple, std::size_t... Is>
 using select_t = decltype(select<Is...>(std::declval<Tuple>()));
-}
+}    // namespace bgl17
 
 inline constexpr vertex_id_t null_vertex = std::numeric_limits<vertex_id_t>::max();
 
-template<typename InputIterator, typename RandomAccessIterator,
-         typename = std::enable_if_t<bgl17::is_tuple_v<typename InputIterator::value_type>>>
+template <typename InputIterator, typename RandomAccessIterator,
+          typename = std::enable_if_t<bgl17::is_tuple_v<typename InputIterator::value_type>>>
 void histogram(InputIterator first, InputIterator last, RandomAccessIterator o_first, RandomAccessIterator o_last, size_t idx = 0) {
   std::fill(o_first, o_last, 0);
   std::for_each(first, last, [&](auto& i) { o_first[std::get<idx>(i)]++; });
 };
 
-template<typename InputIterator, typename RandomAccessIterator>
+template <typename InputIterator, typename RandomAccessIterator>
 void histogram(InputIterator first, InputIterator last, RandomAccessIterator o_first, RandomAccessIterator o_last) {
   std::fill(o_first, o_last, 0);
   std::for_each(first, last, [&](auto& i) { o_first[i]++; });
 };
 
-template<typename T>
+template <typename T>
 constexpr typename std::underlying_type<T>::type idx(T value) {
   return static_cast<typename std::underlying_type<T>::type>(value);
 }
 
-template<typename OuterIter>
+template <typename OuterIter>
 auto get_source(OuterIter& outer) {
   return outer.get_index();
 };
 
-template<typename InnerIter>
+template <typename InnerIter>
 vertex_id_t get_target(InnerIter& inner) {
   return std::get<0>(*inner);
 };
 
-template<size_t Idx, typename Iterator>
+template <size_t Idx, typename Iterator>
 auto property(Iterator& inner) {
   return std::get<Idx>(*inner);
 }
 
-template<size_t Idx, typename Iterator>
+template <size_t Idx, typename Iterator>
 auto property_ptr(Iterator& inner) {
   return &std::get<Idx>(*inner);
 }
 
-namespace bgl17 {
 /// The log_2 of an integer is the inverse of pow2... essentially the number of
 /// left shift bits we need to shift out of the value to get to 0.
 static inline constexpr int log2(uint64_t val) {
@@ -192,7 +192,7 @@ static inline constexpr int ceil_log2(uint64_t val) {
 template <class T = uint64_t>
 static constexpr T pow2(int exp) {
   static_assert(std::is_integral_v<T>, "pow2 only returns integer types");
-  assert(0 <= exp and exp < (int)(8*sizeof(T) - 1));
+  assert(0 <= exp and exp < (int)(8 * sizeof(T) - 1));
   return (T(1) << exp);
 }
 
@@ -201,16 +201,16 @@ static constexpr T pow2(int exp) {
 /// Given a number N, and a number of blocks n, and an id, create a block range
 /// for this id.
 template <class T, class U, class V>
-static constexpr std::pair<T, T> block(T N, U n, V id)
-{
-  auto     r = N % n;                              // remainder for block size
-  auto     b = N / n;                              // basic block size
-  auto begin = id * b + std::min(id, r);           // block min
-  auto   end = (id + 1) * b + std::min(id + 1, r); // block max
-  assert(id != 0 || begin == 0);                // first range should start at 0
-  assert(id != (N - 1) || end == N);            // last range should end at N
+static constexpr std::pair<T, T> block(T N, U n, V id) {
+  auto r     = N % n;                                 // remainder for block size
+  auto b     = N / n;                                 // basic block size
+  auto begin = id * b + std::min(id, r);              // block min
+  auto end   = (id + 1) * b + std::min(id + 1, r);    // block max
+  assert(id != 0 || begin == 0);                      // first range should start at 0
+  assert(id != (N - 1) || end == N);                  // last range should end at N
   return std::pair(begin, end);
 }
-}
+}    // namespace graph
+}    // namespace nw
 
-#endif    // __UTIL_HPP
+#endif    // NW_GRAPH_UTIL_HPP

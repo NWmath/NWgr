@@ -7,8 +7,8 @@
 // Author: Kevin Deweese
 //
 
-#ifndef __FILTERED_BFS_RANGE_HPP
-#define __FILTERED_BFS_RANGE_HPP
+#ifndef NW_GRAPH_FILTERED_BFS_RANGE_HPP
+#define NW_GRAPH_FILTERED_BFS_RANGE_HPP
 
 #include "util.hpp"
 #include <cassert>
@@ -17,11 +17,13 @@
 #include <tuple>
 #include <vector>
 
+namespace nw {
+namespace graph {
 namespace filtered_bfs {
 
 enum three_colors { black, white, grey };
 
-template<typename Graph, typename Queue = std::queue<vertex_id_t>, typename Filter = std::function<bool()>>
+template <typename Graph, typename Queue = std::queue<vertex_id_t>, typename Filter = std::function<bool()>>
 class filtered_bfs_edge_range {
 
 public:
@@ -136,4 +138,6 @@ private:
   Filter                    filter_;
 };
 }    // namespace filtered_bfs
-#endif    // __FILTERED_BFS_RANGE_HPP
+}    // namespace graph
+}    // namespace nw
+#endif    // NW_GRAPH_FILTERED_BFS_RANGE_HPP

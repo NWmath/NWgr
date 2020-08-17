@@ -8,10 +8,16 @@
 // Author: Andrew Lumsdaine
 //
 
+#ifndef NW_GRAPH_PROVENANCE_HPP
+#define NW_GRAPH_PROVENANCE_HPP
+
 #include <fstream>
 #include <iostream>
 #include <string>
 #include <vector>
+
+namespace nw {
+namespace graph {
 
 std::string& ltrim(std::string& str, const std::string& chars = "\t\n\v\f\r ") {
   str.erase(0, str.find_first_not_of(chars));
@@ -57,3 +63,8 @@ public:
 private:
   std::vector<std::string> info;
 };
+
+}    // namespace graph
+}    // namespace nw
+
+#endif    // NW_GRAPH_PROVENANCE_HPP

@@ -18,8 +18,8 @@
  * @date 2018-08-21
  */
 
-#ifndef __AOS_HPP
-#define __AOS_HPP
+#ifndef NW_GRAPH_AOS_HPP
+#define NW_GRAPH_AOS_HPP
 
 #include <algorithm>
 #include <cassert>
@@ -40,18 +40,21 @@
 #endif
 #endif
 
-// Bare bones array of structs (vector of tuples)
-template<typename... Attributes>
-class array_of_structs : public std::vector<std::tuple<Attributes...>> {
+namespace nw {
+nameespace graph {
 
-public:
-  using storage_type = std::vector<std::tuple<Attributes...>>;
-  using base         = std::vector<std::tuple<Attributes...>>;
-  using reference    = typename std::iterator_traits<typename storage_type::iterator>::reference;
+  // Bare bones array of structs (vector of tuples)
+  template <typename... Attributes>
+  class array_of_structs : public std::vector<std::tuple<Attributes...>> {
 
-  //  storage_type storage_;
+  public:
+    using storage_type = std::vector<std::tuple<Attributes...>>;
+    using base         = std::vector<std::tuple<Attributes...>>;
+    using reference    = typename std::iterator_traits<typename storage_type::iterator>::reference;
 
-public:
+    //  storage_type storage_;
+
+  public:
 #if 0
 
   void clear() { storage_.clear(); }
@@ -67,58 +70,59 @@ public:
 
 #endif
 
-  void push_back(const std::tuple<Attributes...>& attrs) { base::push_back(attrs); }
-  void push_back(const std::tuple<Attributes&...>& attrs) { base::push_back(attrs); }
-  void push_back(const Attributes&... attrs) { base::push_back({attrs...}); }
+    void push_back(const std::tuple<Attributes...>& attrs) { base::push_back(attrs); }
+    void push_back(const std::tuple<Attributes&...>& attrs) { base::push_back(attrs); }
+    void push_back(const Attributes&... attrs) { base::push_back({attrs...}); }
 
-  bool operator==(array_of_structs& a) {
+    bool operator==(array_of_structs& a) {
 
 #if defined(EXECUTION_POLICY)
-    return std::equal(std::execution::par, base::begin(), base::end(), a.begin());
+      return std::equal(std::execution::par, base::begin(), base::end(), a.begin());
 #else
-    return std::equal(base::begin(), base::end(), a.begin());
+      return std::equal(base::begin(), base::end(), a.begin());
 #endif
-  }
-  bool operator!=(const storage_type& a) { return !operator==(a); }
-
-  template<size_t... Is>
-  void print_helper(std::ostream& output_stream, std::tuple<Attributes...> attrs, std::index_sequence<Is...>) {
-    output_stream << "( ";
-    (..., (output_stream << (0 == Is ? "" : ", ") << std::get<Is>(attrs)));
-    output_stream << " )" << std::endl;
-  }
-
-  void stream(std::ostream& output_stream, const std::string& msg = "") {
-    output_stream << msg;
-    for (auto& element : *this) {
-      print_helper(output_stream, element, std::make_index_sequence<sizeof...(Attributes)>());
     }
-  }
+    bool operator!=(const storage_type& a) { return !operator==(a); }
 
-  void stream(const std::string& msg = "") { stream(std::cout, msg); }
+    template <size_t... Is>
+    void print_helper(std::ostream& output_stream, std::tuple<Attributes...> attrs, std::index_sequence<Is...>) {
+      output_stream << "( ";
+      (..., (output_stream << (0 == Is ? "" : ", ") << std::get<Is>(attrs)));
+      output_stream << " )" << std::endl;
+    }
 
-  // size (number of elements)
-  // sizeof data elements
-  // data elements
+    void stream(std::ostream& output_stream, const std::string& msg = "") {
+      output_stream << msg;
+      for (auto& element : *this) {
+        print_helper(output_stream, element, std::make_index_sequence<sizeof...(Attributes)>());
+      }
+    }
 
-  void serialize(std::ostream& outfile) const {
-    size_t st_size = base::size();
-    size_t el_size = sizeof(dynamic_cast<const base&>(*this)[0]);
+    void stream(const std::string& msg = "") { stream(std::cout, msg); }
 
-    outfile.write(reinterpret_cast<const char*>(&st_size), sizeof(size_t));
-    outfile.write(reinterpret_cast<const char*>(&el_size), sizeof(size_t));
-    outfile.write(reinterpret_cast<const char*>(base::data()), st_size * el_size);
-  }
+    // size (number of elements)
+    // sizeof data elements
+    // data elements
 
-  void deserialize(std::istream& infile) {
-    size_t st_size = -1;
-    size_t el_size = -1;
+    void serialize(std::ostream& outfile) const {
+      size_t st_size = base::size();
+      size_t el_size = sizeof(dynamic_cast<const base&>(*this)[0]);
 
-    infile.read(reinterpret_cast<char*>(&st_size), sizeof(size_t));
-    infile.read(reinterpret_cast<char*>(&el_size), sizeof(size_t));
-    base::resize(st_size);
-    infile.read(reinterpret_cast<char*>(base::data()), st_size * el_size);
-  }
-};
+      outfile.write(reinterpret_cast<const char*>(&st_size), sizeof(size_t));
+      outfile.write(reinterpret_cast<const char*>(&el_size), sizeof(size_t));
+      outfile.write(reinterpret_cast<const char*>(base::data()), st_size * el_size);
+    }
 
-#endif    // __AOS_HPP
+    void deserialize(std::istream& infile) {
+      size_t st_size = -1;
+      size_t el_size = -1;
+
+      infile.read(reinterpret_cast<char*>(&st_size), sizeof(size_t));
+      infile.read(reinterpret_cast<char*>(&el_size), sizeof(size_t));
+      base::resize(st_size);
+      infile.read(reinterpret_cast<char*>(base::data()), st_size * el_size);
+    }
+  };
+}
+}    // namespace nw
+#endif    // NW_GRAPH_AOS_HPP

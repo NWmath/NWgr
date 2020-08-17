@@ -1,7 +1,7 @@
 
 
-#ifndef __COMPRESSED_HPP
-#define __COMPRESSED_HPP
+#ifndef NW_GRAPH_COMPRESSED_HPP
+#define NW_GRAPH_COMPRESSED_HPP
 
 #include "aos.hpp"
 #include "edge_list.hpp"
@@ -38,6 +38,9 @@
 #include "util/timer.hpp"
 #include "util/types.hpp"
 
+namespace nw {
+namespace graph {
+
 bool g_debug_compressed = false;
 bool g_time_compressed  = false;
 
@@ -46,20 +49,19 @@ void debug_compressed(bool flag = true) { g_debug_compressed = flag; }
 void time_compressed(bool flag = true) { g_time_compressed = flag; }
 
 template <typename... Attributes>
-class indexed_struct_of_arrays
-{
+class indexed_struct_of_arrays {
   constexpr static const char magic_[24] = "BGL17 compressed_sparse";
 
-  bool  is_open_ = false;
+  bool        is_open_ = false;
   vertex_id_t N_;
 
- public: // fixme
+public:    // fixme
   std::vector<vertex_id_t>        indices_;
   struct_of_arrays<Attributes...> to_be_indexed_;
 
-  using      edge_id_t = std::ptrdiff_t;
+  using edge_id_t      = std::ptrdiff_t;
   using inner_iterator = typename struct_of_arrays<Attributes...>::iterator;
-  using       sub_view = bgl17::splittable_range_adapter<inner_iterator>;
+  using sub_view       = bgl17::splittable_range_adapter<inner_iterator>;
 
   static constexpr std::size_t getNAttr() { return sizeof...(Attributes); }
 
@@ -74,40 +76,39 @@ class indexed_struct_of_arrays
   ///
   /// @tparam  Attrs... The 0-based indices of the edge attributes to access.
   template <std::size_t... Attrs>
-  class edge_iterator
-  {
-   public:
-    using   difference_type = edge_id_t;
-    using        value_type = bgl17::select_t<std::tuple<vertex_id_t, Attributes...>, 0, 1, (Attrs + 2)...>;
-    using         reference = bgl17::select_t<std::tuple<vertex_id_t, const Attributes&...>, 0, 1, (Attrs + 2)...>;
-    using           pointer = bgl17::select_t<std::tuple<vertex_id_t, const Attributes*...>, 0, 1, (Attrs + 2)...>;
+  class edge_iterator {
+  public:
+    using difference_type   = edge_id_t;
+    using value_type        = bgl17::select_t<std::tuple<vertex_id_t, Attributes...>, 0, 1, (Attrs + 2)...>;
+    using reference         = bgl17::select_t<std::tuple<vertex_id_t, const Attributes&...>, 0, 1, (Attrs + 2)...>;
+    using pointer           = bgl17::select_t<std::tuple<vertex_id_t, const Attributes*...>, 0, 1, (Attrs + 2)...>;
     using iterator_category = std::random_access_iterator_tag;
 
-   private:
-    indexed_struct_of_arrays& graph_;           // the underlying indexed data
-    vertex_id_t u_;                             // the current source vertex id
-    edge_id_t j_;                               // the current edge
+  private:
+    indexed_struct_of_arrays& graph_;    // the underlying indexed data
+    vertex_id_t               u_;        // the current source vertex id
+    edge_id_t                 j_;        // the current edge
 
-   public:
-    edge_iterator(indexed_struct_of_arrays& graph, vertex_id_t i, edge_id_t j)
-        : graph_(graph), u_(i), j_(j) {
-    }
+  public:
+    edge_iterator(indexed_struct_of_arrays& graph, vertex_id_t i, edge_id_t j) : graph_(graph), u_(i), j_(j) {}
 
     reference operator*() {
-      return { u_, std::get<0>(graph_.to_be_indexed_)[j_], std::get<Attrs + 1>(graph_.to_be_indexed_)[j_]... };
+      return {u_, std::get<0>(graph_.to_be_indexed_)[j_], std::get<Attrs + 1>(graph_.to_be_indexed_)[j_]...};
     }
 
     reference operator[](edge_id_t n) {
-      return { graph_.source(j_ + n), std::get<0>(graph_.to_be_indexed_)[j_ + n], std::get<Attrs + 1>(graph_.to_be_indexed_)[j_]... };
+      return {graph_.source(j_ + n), std::get<0>(graph_.to_be_indexed_)[j_ + n], std::get<Attrs + 1>(graph_.to_be_indexed_)[j_]...};
     }
 
     edge_iterator& operator++() {
-      for (++j_; j_ >= graph_.indices_[u_ + 1] && u_ < graph_.indices_.size() - 1; ++u_);
+      for (++j_; j_ >= graph_.indices_[u_ + 1] && u_ < graph_.indices_.size() - 1; ++u_)
+        ;
       return *this;
     }
 
     edge_iterator& operator--() {
-      for (--j_; j_ < graph_.indices_[u_] && u_ > 0; --u_);
+      for (--j_; j_ < graph_.indices_[u_] && u_ > 0; --u_)
+        ;
       return *this;
     }
 
@@ -135,98 +136,71 @@ class indexed_struct_of_arrays
       return *this;
     }
 
-    edge_iterator operator+(edge_id_t n) const {
-      return { graph_, graph_.source(j_ + n), j_ + n };
-    }
+    edge_iterator operator+(edge_id_t n) const { return {graph_, graph_.source(j_ + n), j_ + n}; }
 
-    edge_iterator operator-(edge_id_t n) const {
-      return { graph_, graph_.source(j_ - n), j_ - n };
-    }
+    edge_iterator operator-(edge_id_t n) const { return {graph_, graph_.source(j_ - n), j_ - n}; }
 
-    edge_id_t operator-(const edge_iterator& b) const {
-      return j_ - b.j_;
-    }
+    edge_id_t operator-(const edge_iterator& b) const { return j_ - b.j_; }
 
-    bool operator==(const edge_iterator& b) const {
-      return j_ == b.j_;
-    }
+    bool operator==(const edge_iterator& b) const { return j_ == b.j_; }
 
-    bool operator!=(const edge_iterator& b) const {
-      return j_ != b.j_;
-    }
+    bool operator!=(const edge_iterator& b) const { return j_ != b.j_; }
 
-    bool operator<(const edge_iterator& b) const {
-      return j_ < b.j_;
-    }
+    bool operator<(const edge_iterator& b) const { return j_ < b.j_; }
 
-    bool operator>(const edge_iterator& b) const {
-      return j_ > b.j_;
-    }
+    bool operator>(const edge_iterator& b) const { return j_ > b.j_; }
 
-    bool operator<=(const edge_iterator& b) const {
-      return j_ <= b.j_;
-    }
+    bool operator<=(const edge_iterator& b) const { return j_ <= b.j_; }
 
-    bool operator>=(const edge_iterator& b) const {
-      return j_ >= b.j_;
-    }
+    bool operator>=(const edge_iterator& b) const { return j_ >= b.j_; }
   };
 
   /// Provide a tbb split-able range interface to the edge iterators.
   template <std::size_t... Attrs>
-  class edge_range
-  {
+  class edge_range {
     edge_iterator<Attrs...> begin_;
-    edge_iterator<Attrs...>   end_;
-    std::ptrdiff_t cutoff_;
+    edge_iterator<Attrs...> end_;
+    std::ptrdiff_t          cutoff_;
 
-   public:
+  public:
     edge_range(edge_iterator<Attrs...> begin, edge_iterator<Attrs...> end, std::ptrdiff_t cutoff)
-        : begin_(begin), end_(end), cutoff_(cutoff) {
-    }
+        : begin_(begin), end_(end), cutoff_(cutoff) {}
 
-    edge_range(edge_range& rhs, tbb::split)
-        : begin_(rhs.begin_),
-          end_(rhs.begin_ += rhs.size() / 2),
-          cutoff_(rhs.cutoff_) {
-    }
+    edge_range(edge_range& rhs, tbb::split) : begin_(rhs.begin_), end_(rhs.begin_ += rhs.size() / 2), cutoff_(rhs.cutoff_) {}
 
     edge_iterator<Attrs...> begin() { return begin_; }
-    edge_iterator<Attrs...>   end() { return end_; }
+    edge_iterator<Attrs...> end() { return end_; }
 
     std::ptrdiff_t size() const { return end_ - begin_; }
-    bool          empty() const { return begin_ == end_; }
-    bool   is_divisible() const { return size() >= cutoff_; }
+    bool           empty() const { return begin_ == end_; }
+    bool           is_divisible() const { return size() >= cutoff_; }
   };
 
   /// Get a tbb split-able edge range with the passed cutoff.
   template <std::size_t... Attrs>
   edge_range<Attrs...> edges(std::ptrdiff_t cutoff = std::numeric_limits<std::ptrdiff_t>::max()) {
-    edge_iterator<Attrs...> begin = { *this, 0, 0 };
-    edge_iterator<Attrs...>   end = { *this, vertex_id_t(indices_.size() - 1), vertex_id_t(to_be_indexed_.size()) };
-    return { begin, end, cutoff };
+    edge_iterator<Attrs...> begin = {*this, 0, 0};
+    edge_iterator<Attrs...> end   = {*this, vertex_id_t(indices_.size() - 1), vertex_id_t(to_be_indexed_.size())};
+    return {begin, end, cutoff};
   }
 
   /// This iterator provides a 2D vertex-neighbor tbb split-able interface to
   /// the graph.
-  class outer_iterator
-  {
+  class outer_iterator {
     std::vector<vertex_id_t>::iterator                 indices_;
     typename struct_of_arrays<Attributes...>::iterator indexed_;
-    vertex_id_t i_;
+    vertex_id_t                                        i_;
 
-   public:
-    using   difference_type = vertex_id_t;
-    using        value_type = sub_view;
-    using         reference = value_type&;
-    using           pointer = value_type*;
+  public:
+    using difference_type   = vertex_id_t;
+    using value_type        = sub_view;
+    using reference         = value_type&;
+    using pointer           = value_type*;
     using iterator_category = std::random_access_iterator_tag;
 
-    outer_iterator(std::vector<vertex_id_t>::iterator                 indices,
-                          typename struct_of_arrays<Attributes...>::iterator indexed,
-                          vertex_id_t i)
-        : indices_(indices), indexed_(indexed), i_(i) {
-    }
+    outer_iterator(std::vector<vertex_id_t>::iterator indices, typename struct_of_arrays<Attributes...>::iterator indexed,
+                   vertex_id_t i)
+        : indices_(indices), indexed_(indexed), i_(i) {}
 
     outer_iterator& operator++() {
       ++i_;
@@ -238,8 +212,8 @@ class indexed_struct_of_arrays
       return *this;
     }
 
-    outer_iterator operator+(difference_type n) const { return { indices_, indexed_, i_ + n }; }
-    outer_iterator operator-(difference_type n) const { return { indices_, indexed_, i_ - n }; }
+    outer_iterator operator+(difference_type n) const { return {indices_, indexed_, i_ + n}; }
+    outer_iterator operator-(difference_type n) const { return {indices_, indexed_, i_ - n}; }
 
     difference_type operator-(const outer_iterator& b) const { return i_ - b.i_; }
 
@@ -247,30 +221,26 @@ class indexed_struct_of_arrays
     bool operator!=(const outer_iterator& b) const { return i_ != b.i_; }
     bool operator<(const outer_iterator& b) const { return i_ < b.i_; }
 
-    value_type operator*()       { return { indexed_ + indices_[i_], indexed_ + indices_[i_ + 1] }; }
-    value_type operator*() const { return { indexed_ + indices_[i_], indexed_ + indices_[i_ + 1] }; }
+    value_type operator*() { return {indexed_ + indices_[i_], indexed_ + indices_[i_ + 1]}; }
+    value_type operator*() const { return {indexed_ + indices_[i_], indexed_ + indices_[i_ + 1]}; }
 
-    value_type operator[](vertex_id_t n) {
-      return { indexed_ + indices_[i_ + n], indexed_ + indices_[i_ + n + 1] };
-    }
+    value_type operator[](vertex_id_t n) { return {indexed_ + indices_[i_ + n], indexed_ + indices_[i_ + n + 1]}; }
 
-    value_type operator[](vertex_id_t n) const {
-      return { indexed_ + indices_[i_ + n], indexed_ + indices_[i_ + n + 1] };
-    }
+    value_type operator[](vertex_id_t n) const { return {indexed_ + indices_[i_ + n], indexed_ + indices_[i_ + n + 1]}; }
   };
   using iterator = outer_iterator;
 
-  iterator begin()       { return { indices_.begin(), to_be_indexed_.begin(), 0 };  }
-  iterator begin() const { return { indices_.begin(), to_be_indexed_.begin(), 0 };  }
-  iterator   end()       { return { indices_.begin(), to_be_indexed_.begin(), N_ }; }
-  iterator   end() const { return { indices_.begin(), to_be_indexed_.begin(), N_ }; }
+  iterator begin() { return {indices_.begin(), to_be_indexed_.begin(), 0}; }
+  iterator begin() const { return {indices_.begin(), to_be_indexed_.begin(), 0}; }
+  iterator end() { return {indices_.begin(), to_be_indexed_.begin(), N_}; }
+  iterator end() const { return {indices_.begin(), to_be_indexed_.begin(), N_}; }
 
   /// Random access to the outer range.
-  sub_view operator[](vertex_id_t i)       { return begin()[i]; }
+  sub_view operator[](vertex_id_t i) { return begin()[i]; }
   sub_view operator[](vertex_id_t i) const { return begin()[i]; }
 
   vertex_id_t size() const { return indices_.size() - 1; }
-  vertex_id_t  max() const { return indices_.size() - 2; }
+  vertex_id_t max() const { return indices_.size() - 2; }
 
   vertex_id_t source(edge_id_t edge) const {
     auto i = std::upper_bound(indices_.begin(), indices_.end(), edge);
@@ -360,7 +330,7 @@ class indexed_struct_of_arrays
     deserialize(infile);
   }
 
-  template<typename Comparator = decltype(std::less<vertex_id_t>{})>
+  template <typename Comparator = decltype(std::less<vertex_id_t>{})>
   void triangularize_(Comparator comp = std::less<vertex_id_t>{}) {
     std::vector<vertex_id_t>        new_indices_(indices_.size());
     struct_of_arrays<Attributes...> new_to_be_indexed_(0);
@@ -479,8 +449,7 @@ class indexed_struct_of_arrays
     }
   }
 
-  void stream_indices(std::ostream& out = std::cout)
-  {
+  void stream_indices(std::ostream& out = std::cout) {
     auto s = std::get<0>(to_be_indexed_).begin();
     out << "\n+++\n";
 
@@ -515,10 +484,10 @@ class indexed_struct_of_arrays
  * @date 2018-08-22
  */
 
-template<directedness edge_directedness, typename... Attributes>
+template <directedness edge_directedness, typename... Attributes>
 class edge_list;
 
-template<int idx = 0, directedness sym = undirected, typename... Attributes>
+template <int idx = 0, directedness sym = undirected, typename... Attributes>
 class compressed_sparse : public indexed_struct_of_arrays<vertex_id_t, Attributes...> {
 public:
   // The first vertex_id_t isn't considered an attribute.
@@ -533,7 +502,7 @@ public:
   //  size_t size() const { return indexed_struct_of_arrays<vertex_id_t, Attributes...>::size(); }
 };
 
-template<int idx, typename... Attributes>
+template <int idx, typename... Attributes>
 class adjacency : public indexed_struct_of_arrays<vertex_id_t, Attributes...> {
 public:
   // The first vertex_id_t isn't considered an attribute.
@@ -544,7 +513,8 @@ public:
   adjacency(edge_list<directed, Attributes...>& A) : indexed_struct_of_arrays<vertex_id_t, Attributes...>(A.max()[idx] + 1) {
     A.fill(*this);
   }
-  adjacency(edge_list<undirected, Attributes...>& A) : indexed_struct_of_arrays<vertex_id_t, Attributes...>(std::max(A.max()[0], A.max()[1]) + 1) {
+  adjacency(edge_list<undirected, Attributes...>& A)
+      : indexed_struct_of_arrays<vertex_id_t, Attributes...>(std::max(A.max()[0], A.max()[1]) + 1) {
     A.fill(*this);
   }
 
@@ -584,7 +554,7 @@ public:
 #endif
 };
 
-template<int idx, succession cessor, typename... Attributes>
+template <int idx, succession cessor, typename... Attributes>
 class packed : public indexed_struct_of_arrays<vertex_id_t, Attributes...> {
 public:
   // The first vertex_id_t isn't considered an attribute.
@@ -599,4 +569,6 @@ public:
   //  size_t size() const { return indexed_struct_of_arrays<vertex_id_t, Attributes...>::size(); }
 };
 
-#endif    // __COMPRESSED_HPP
+}    // namespace graph
+}    // namespace nw
+#endif    // NW_GRAPH_COMPRESSED_HPP

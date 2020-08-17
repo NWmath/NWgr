@@ -8,8 +8,8 @@
 // Author: Kevin Deweese
 //
 
-#ifndef __WORKLIST_RANGE_HPP
-#define __WORKLIST_RANGE_HPP
+#ifndef NW_GRAPH_WORKLIST_HPP
+#define NW_GRAPH_WORKLIST_HPP
 
 #if defined(EXECUTION_POLICY)
 #include "tbb/concurrent_priority_queue.h"
@@ -23,9 +23,12 @@
 #include <queue>
 #include <vector>
 
+namespace nw {
+namespace graph {
+
 //****************************************************************************
 //template<typename Graph, typename Workitem = vertex_id_t, typename Queue = tbb::concurrent_queue<Workitem> >
-template<typename Graph, typename Workitem = vertex_id_t, typename Queue = std::queue<Workitem>>
+template <typename Graph, typename Workitem = vertex_id_t, typename Queue = std::queue<Workitem>>
 class worklist_range {
 public:
   worklist_range(Graph& graph) : the_graph_(graph) {}
@@ -75,10 +78,9 @@ private:
   Queue  Q_;
 };
 
-
 #if defined(EXECUTION_POLICY)
 //****************************************************************************
-template<typename Graph, typename Workitem = vertex_id_t, typename Queue = tbb::concurrent_queue<Workitem>>
+template <typename Graph, typename Workitem = vertex_id_t, typename Queue = tbb::concurrent_queue<Workitem>>
 class tbbworklist_range {
 public:
   tbbworklist_range(Graph& graph) : the_graph_(graph) {}
@@ -143,7 +145,7 @@ private:
 };
 
 //****************************************************************************
-template<typename Graph, typename Workitem = vertex_id_t, typename Queue = tbb::concurrent_queue<Workitem>>
+template <typename Graph, typename Workitem = vertex_id_t, typename Queue = tbb::concurrent_queue<Workitem>>
 class tbbworklist_range2 {
 public:
   tbbworklist_range2(Graph& graph) : the_graph_(graph), buckets_(10000) {}
@@ -246,4 +248,7 @@ private:
 };
 #endif
 
-#endif    // __WORKLIST_RANGE_HPP
+}    // namespace graph
+}    // namespace nw
+
+#endif    //  NW_GRAPH_WORKLIST_HPP

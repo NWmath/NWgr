@@ -8,12 +8,13 @@
 // Author: Andrew Lumsdaine
 //
 
-#include <cstddef>
-
-#ifndef __GRAPH_BASE_HPP
-#define __GRAPH_BASE_HPP
+#ifndef NW_GRAPH_GRAPH_BASE_HPP
+#define NW_GRAPH_GRAPH_BASE_HPP
 
 #include <cstddef>
+
+namespace nw {
+namespace graph {
 
 enum directedness { undirected, directed };    // Really about packed / tri
 enum view_shape {
@@ -30,19 +31,19 @@ enum view_shape {
 };
 enum succession { successor, predecessor };
 
-template<directedness dir>
+template <directedness dir>
 class other_direction {
 public:
   const directedness direction;
 };
 
-template<>
+template <>
 class other_direction<undirected> {
 public:
   const directedness direction = directed;
 };
 
-template<>
+template <>
 class other_direction<directed> {
 public:
   const directedness direction = undirected;
@@ -58,16 +59,18 @@ protected:
   bool   is_open;    // can we mutate graph
 };
 
-template<directedness sym, typename... Attributes>
+template <directedness sym, typename... Attributes>
 class sparse_aos;
 
-template<int idx, directedness sym, typename... Attributes>
+template <int idx, directedness sym, typename... Attributes>
 class compressed_sparse;
 
-template<int idx, directedness sym, typename... Attributes>
+template <int idx, directedness sym, typename... Attributes>
 class vov_sparse;
 
-template<int idx, directedness sym, typename... Attributes>
+template <int idx, directedness sym, typename... Attributes>
 class adj_sparse;
 
-#endif    // __GRAPH_BASE_HPP
+}    // namespace graph
+}    // namespace nw
+#endif    // NW_GRAPH_GRAPH_BASE_HPP
