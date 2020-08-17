@@ -8,13 +8,18 @@
 // Author: Andrew Lumsdaine
 //
 
-#ifndef TYPES_HPP
-#define TYPES_HPP
+#ifndef NW_GRAPH_TYPES_HPP
+#define NW_GRAPH_TYPES_HPP
 
 #include <cstddef>
 #include <cstdint>
 
+namespace nw {
+namespace graph {
+
 using vertex_id_t = uint32_t;
 using index_t     = std::size_t;
 
-#endif    // TYPES_HPP
+}    // namespace graph
+}    // namespace nw
+#endif    // NW_GRAPH_TYPES_HPP

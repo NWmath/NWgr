@@ -1,13 +1,14 @@
-#pragma once
+#ifndef NW_GRAPH_INTERSECTION_SIZE_HPP
+#define NW_GRAPH_INTERSECTION_SIZE_HPP
 
 #if defined(CL_SYCL_LANGUAGE_VERSION)
 #include <dpstd/algorithm>
 #include <dpstd/execution>
 #include <dpstd/numeric>
 #elif defined(BGL17_NEED_EXCLUSIVE_SCAN)
+#include "detail/numeric.hpp"
 #include <algorithm>
 #include <execution>
-#include "detail/numeric.hpp"
 #else
 #include <algorithm>
 #include <execution>
@@ -15,7 +16,8 @@
 #endif
 #include <type_traits>
 
-namespace bgl17 {
+namespace nw {
+namespace graph {
 /// Basic helper used for all of the inner set intersections.
 ///
 /// This wraps `std::set_intersection` to produce the size of the set rather
@@ -39,9 +41,7 @@ template <class A, class B, class C, class D, class ExecutionPolicy>
 std::size_t intersection_size(A i, B&& ie, C j, D&& je, ExecutionPolicy&& ep) {
   // Custom comparator because we know our iterator operator* produces tuples
   // and we only care about the first value.
-  static constexpr auto lt = [](auto&& x, auto&& y) {
-    return std::get<0>(x) < std::get<0>(y);
-  };
+  static constexpr auto lt = [](auto&& x, auto&& y) { return std::get<0>(x) < std::get<0>(y); };
 
   // Use our own trivial loop for the intersection size when the execution
   // policy is sequential, otherwise rely on std::set_intersection.
@@ -54,11 +54,9 @@ std::size_t intersection_size(A i, B&& ie, C j, D&& je, ExecutionPolicy&& ep) {
     while (i != ie && j != je) {
       if (lt(*i, *j)) {
         ++i;
-      }
-      else if (lt(*j, *i)) {
+      } else if (lt(*j, *i)) {
         ++j;
-      }
-      else {
+      } else {
         ++n;
         ++i;
         ++j;
@@ -66,12 +64,9 @@ std::size_t intersection_size(A i, B&& ie, C j, D&& je, ExecutionPolicy&& ep) {
     }
     return n;
     (void)ep;
-  }
-  else {
-    return std::set_intersection(std::forward<ExecutionPolicy>(ep),
-                                 std::forward<A>(i), std::forward<B>(ie),
-                                 std::forward<C>(j), std::forward<D>(je),
-                                 bgl17::counter{}, lt);
+  } else {
+    return std::set_intersection(std::forward<ExecutionPolicy>(ep), std::forward<A>(i), std::forward<B>(ie), std::forward<C>(j),
+                                 std::forward<D>(je), bgl17::counter{}, lt);
   }
 }
 
@@ -93,9 +88,7 @@ std::size_t intersection_size(A i, B&& ie, C j, D&& je, ExecutionPolicy&& ep) {
 template <class R, class S, class ExecutionPolicy,
           std::enable_if_t<std::is_execution_policy_v<std::decay_t<ExecutionPolicy>>, void**> = nullptr>
 std::size_t intersection_size(R&& i, S&& j, ExecutionPolicy&& ep) {
-  return intersection_size(i.begin(), i.end(),
-                           j.begin(), j.end(),
-                           std::forward<ExecutionPolicy>(ep));
+  return intersection_size(i.begin(), i.end(), j.begin(), j.end(), std::forward<ExecutionPolicy>(ep));
 }
 
 /// A convenience overload for `intersection_size`.
@@ -118,9 +111,7 @@ std::size_t intersection_size(R&& i, S&& j, ExecutionPolicy&& ep) {
 template <class A, class B, class Range, class ExecutionPolicy,
           std::enable_if_t<std::is_execution_policy_v<std::decay_t<ExecutionPolicy>>, void**> = nullptr>
 std::size_t intersection_size(A&& i, B&& ie, Range&& j, ExecutionPolicy&& ep) {
-  return intersection_size(std::forward<A>(i), std::forward<B>(ie),
-                           j.begin(), j.end(),
-                           std::forward<ExecutionPolicy>(ep));
+  return intersection_size(std::forward<A>(i), std::forward<B>(ie), j.begin(), j.end(), std::forward<ExecutionPolicy>(ep));
 }
 
 /// A convenience overload for `intersection_size`.
@@ -140,12 +131,9 @@ std::size_t intersection_size(A&& i, B&& ie, Range&& j, ExecutionPolicy&& ep) {
 /// @param           je The end of the second range.
 ///
 /// @returns            The size of the intersected set.
-template <class A, class B, class C, class D,
-          std::enable_if_t<!std::is_execution_policy_v<std::decay_t<D>>, void**> = nullptr>
+template <class A, class B, class C, class D, std::enable_if_t<!std::is_execution_policy_v<std::decay_t<D>>, void**> = nullptr>
 std::size_t intersection_size(A&& i, B&& ie, C&& j, D&& je) {
-  return intersection_size(std::forward<A>(i), std::forward<B>(ie),
-                           std::forward<C>(j), std::forward<D>(je),
-                           std::execution::seq);
+  return intersection_size(std::forward<A>(i), std::forward<B>(ie), std::forward<C>(j), std::forward<D>(je), std::execution::seq);
 }
 
 /// A convenience overload for `intersection_size`.
@@ -162,9 +150,7 @@ std::size_t intersection_size(A&& i, B&& ie, C&& j, D&& je) {
 /// @returns            The size of the intersected set.
 template <class R, class S>
 std::size_t intersection_size(R&& i, S&& j) {
-  return intersection_size(i.begin(), i.end(),
-                           j.begin(), j.end(),
-                           std::execution::seq);
+  return intersection_size(i.begin(), i.end(), j.begin(), j.end(), std::execution::seq);
 }
 
 /// A convenience overload for `intersection_size`.
@@ -183,11 +169,11 @@ std::size_t intersection_size(R&& i, S&& j) {
 /// @param            j The second range.
 ///
 /// @returns            The size of the intersected set.
-template <class A, class B, class Range,
-          std::enable_if_t<!std::is_execution_policy_v<std::decay_t<Range>>, void**> = nullptr>
+template <class A, class B, class Range, std::enable_if_t<!std::is_execution_policy_v<std::decay_t<Range>>, void**> = nullptr>
 std::size_t intersection_size(A&& i, B&& ie, Range&& j) {
-  return intersection_size(std::forward<A>(i), std::forward<B>(ie),
-                           j.begin(), j.end(),
-                           std::execution::seq);
+  return intersection_size(std::forward<A>(i), std::forward<B>(ie), j.begin(), j.end(), std::execution::seq);
 }
-}
+}    // namespace graph
+}    // namespace nw
+
+#endif    // NW_GRAPH_INTERSECTION_SIZE_HPP

@@ -1,9 +1,12 @@
-#pragma once
+
+#ifndef NW_GRAPH_MAKE_PRIORITY_QUEUE_HPP
+#define NW_GRAPH_MAKE_PRIORITY_QUEUE_HPP
 
 #include <queue>
 #include <vector>
 
-namespace bgl17 {
+namespace nw {
+namespace graph {
 /// Create a priority queue adapter for the passed container type.
 ///
 /// This utility makes it easier to specify a priority queue that uses a custom
@@ -19,10 +22,9 @@ namespace bgl17 {
 /// @returns            A `std::priority_queue` instantiated with the proper
 ///                     types.
 template <class T, class Container, class Compare>
-constexpr auto make_priority_queue(Compare&& compare)
-{
+constexpr auto make_priority_queue(Compare&& compare) {
   using PQ = std::priority_queue<T, Container, std::decay_t<Compare>>;
-  return PQ { std::forward<Compare>(compare) };
+  return PQ{std::forward<Compare>(compare)};
 }
 
 /// Create a priority queue adapter for a `std::vector<T>`.
@@ -39,8 +41,10 @@ constexpr auto make_priority_queue(Compare&& compare)
 /// @returns            A `std::priority_queue` wrapping a `std::vector<T>` that
 ///                     uses the passed `compare` operation.
 template <class T, class Compare>
-constexpr auto make_priority_queue(Compare&& compare)
-{
+constexpr auto make_priority_queue(Compare&& compare) {
   return make_priority_queue<T, std::vector<T>>(std::forward<Compare>(compare));
 }
-}
+}    // namespace graph
+}    // namespace nw
+
+#endif    // NW_GRAPH_MAKE_PRIORITY_QUEUE_HPP
