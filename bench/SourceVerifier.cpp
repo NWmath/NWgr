@@ -1,0 +1,65 @@
+//
+// This file is part of the Graph Standard Library (aka BGL17 aka NWGraph)
+// (c) Pacific Northwest National Laboratory
+//
+// Licensed under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License
+// https://creativecommons.org/licenses/by-nc-sa/4.0/
+//
+// Author: Luke D'Alessandro
+
+static constexpr const char USAGE[] =
+ R"(sources : BGL17 gap sources file verifier.
+  Usage:
+      sources (-h | --help)
+      sources --version
+      sources -f FILE -s FILE -i NUM -n NUM [--seed NUM]
+
+  Options:
+      -h, --help          show this screen
+      --version           driver version number
+      -f FILE             input graph
+      -s FILE             input source list to verify
+      -i NUM              number of iteration
+      -n NUM              number of trials
+      --seed NUM          random seed [default: 27491095]
+)";
+
+#include "common.hpp"
+#include <docopt.h>
+#include <random>
+
+using namespace bgl17::bench;
+
+int main(int argc, char* const argv[]) {
+  std::vector strings = std::vector<std::string>{argv + 1, argv + argc};
+  std::map       args = docopt::docopt(USAGE, strings, true);
+
+  int64_t iterations = args["-i"].asLong();
+  int64_t     trials = args["-n"].asLong();
+  int64_t       seed = args["--seed"].asLong();
+
+  auto sources = read_mm_vector<vertex_id_t>(args["-s"].asString());
+
+  if (int64_t(sources.size()) != trials * iterations) {
+    std::cerr << "Read " << sources.size() << " sources from "
+              << args["-s"].asString() << " but expected "
+              << trials * iterations << "\n";
+    return 0;
+  }
+
+  auto     aos = load_graph<directed>(args["-f"].asString());
+  auto   graph = build_adjacency<1>(aos);
+  auto  random = build_random_sources(graph, sources.size(), seed);
+
+  std::cout << "Testing sources\n";
+  int64_t failures = 0;
+  for (size_t i = 0, e = sources.size(); i < e; ++i) {
+    if (sources[i] != random[i]) {
+      std::cerr << "sources[i]=" << sources[i] << " but random[i]=" << random[i] << "\n";
+      ++failures;
+    }
+  }
+  std::cout << failures << " failures\n";
+
+  return 0;
+}

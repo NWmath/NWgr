@@ -1,0 +1,91 @@
+##########################################################################
+#	CMake Build Rules for the Standard Graph Library (v0.3)          #
+##########################################################################
+# Basic Usage:                                                           #
+#   cmake ..								 #
+#   make  								 #
+#   make test                                                            #
+# For more information about CMake, see http://www.cmake.org             #
+##########################################################################
+#
+# Useful things to know 
+# make VERBOSE=1
+# cmake --trace
+# cmake .. -DCMAKE_CXX_COMPILER=icpx
+#
+##########################################################################
+cmake_minimum_required(VERSION 3.14 FATAL_ERROR)
+
+set(BGL17_VERSION 0.3)
+
+project(
+  BGL17
+  VERSION ${BGL17_VERSION}
+  LANGUAGES CXX)
+
+# -----------------------------------------------------------------------------
+# Extend the module path so we can find our custom modules
+# -----------------------------------------------------------------------------
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
+
+# -----------------------------------------------------------------------------
+# Build types and default flags
+# -----------------------------------------------------------------------------
+set(CMAKE_CXX_FLAGS_DEBUG "-O0 -g -fno-elide-constructors" CACHE STRING "" FORCE)
+set(CMAKE_CXX_FLAGS_RELEASE "-Ofast -march=native -DNDEBUG" CACHE STRING "" FORCE)
+set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-Ofast -g -march=native" CACHE STRING "" FORCE)
+set(CMAKE_CXX_FLAGS_MINSIZEREL "-Os -march=native -DNDEBUG" CACHE STRING "" FORCE)
+
+# Default to Release build
+if (NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
+  message(STATUS "No build type selected, default to Release")
+  set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Build type (default Release)" FORCE)
+endif()
+
+# Control compiler-specific flags.
+include(CompilerFlags)
+
+# -----------------------------------------------------------------------------
+# Select a C++ standard
+# -----------------------------------------------------------------------------
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
+# -----------------------------------------------------------------------------
+# Options
+# -----------------------------------------------------------------------------
+set(BGL17_SANITIZE "" CACHE STRING "-fsanitize compiler options (e.g., =address)")
+if (BGL17_SANITIZE)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-omit-frame-pointer -fsanitize=${BGL17_SANITIZE}")
+  set(CMAKE_LINKER_FLAGS "${CMAKE_LINKER_FLAGS} -fsanitize=${BGL17_SANITIZE}")
+endif (BGL17_SANITIZE)
+
+option(BGL17_EXECUTION_POLICY "with(out) C++ parallel execution policy" ON)
+option(BGL17_BUILD_TESTS "Determines whether to build tests." ON)
+option(BGL17_BUILD_APBS "Determines whether to build abstraction penalty benchmarks." ON)
+option(BGL17_BUILD_SPARSE "Determines whether to build sparse matrix tests and benchmarks." OFF)
+option(BGL17_BUILD_BENCH "Determines whether to build performance benchmarks." ON)
+option(BGL17_USE_TBBMALLOC "Link to tbbmalloc" OFF)
+
+add_subdirectory(src)
+
+include(Docopt)
+include(RangeV3)
+  
+if (BGL17_BUILD_TESTS)
+  include(CTest)
+  add_subdirectory(test)
+endif()
+
+if (BGL17_BUILD_APBS)
+  add_subdirectory(apb)
+endif()
+
+if (BGL17_BUILD_SPARSE)
+  add_subdirectory(sparse)
+endif()
+
+if (BGL17_BUILD_BENCH)
+  add_subdirectory(bench)
+endif()

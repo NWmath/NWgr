@@ -1,0 +1,160 @@
+# -----------------------------------------------------------------------------
+# Define the primary BGL17 target.
+# -----------------------------------------------------------------------------
+#
+# This target keeps track of all of the header sources for BGL, and sets up all
+# of the associated flags and dependencies such that we can correctly compile
+# and link executables that are dependent on BGL. Ultimately this target will
+# control the install target too, once we have one.
+#
+# Executable targets should be defined with `target_link_libraries(exec bgl)`
+# and then they'll have the appropriate `-I`, `-D`, and `-l` stuff set
+# automagically though the transitive dependency infrastructure.
+
+# @note
+#   If BGL starts to have .cpp sources, change this from an interface library to
+#   a STATIC (or DYNAMIC) library, and add those sources here. Change other
+#   instances of INTERFACE to PUBLIC.
+# @note
+add_library(bgl INTERFACE)
+
+# Extend this as needed.
+target_sources(bgl
+  INTERFACE
+  dag_range.hpp
+  random_range.hpp
+  checkpoint/adj.hpp
+  checkpoint/attributed.hpp
+  checkpoint/mmio.hpp
+  checkpoint/graph_base.hpp
+  checkpoint/compressed.hpp
+  checkpoint/var_compressed.hpp
+  checkpoint/aos.hpp
+  checkpoint/util.hpp
+  checkpoint/dimacs_io.hpp
+  checkpoint/vov.hpp
+  checkpoint/timer.hpp
+  soa.hpp
+  bfs_range.hpp
+  edge_list.hpp
+  util/print_types.hpp
+  util/types.hpp
+  util/timer.hpp
+  bfs_edge_range.hpp
+  back_edge_range.hpp
+  neighbor_range.hpp
+  backlog/adj.hpp
+  backlog/dimacs_io.hpp
+  backlog/vov.hpp
+  linalg.hpp
+  mmio.hpp
+  new_dfs_range.hpp
+  vovos.hpp
+  worklist.hpp
+  algorithms/k_core.hpp
+  algorithms/mis.hpp
+  algorithms/boykov_kolmogorov3.hpp
+  algorithms/triangle_count.hpp
+  algorithms/degree.hpp
+  algorithms/connected_component.hpp
+  algorithms/page_rank.hpp
+  algorithms/utils.hpp
+  algorithms/betweenness_centrality.hpp
+  algorithms/dijkstra.hpp
+  algorithms/jones_plassmann_coloring.hpp
+  algorithms/boykov_kolmogorov2.hpp
+  algorithms/bfs.hpp
+  algorithms/spMatspMat.hpp
+  algorithms/dag_based_mis.hpp
+  algorithms/delta_stepping.hpp
+  algorithms/spanning_tree.hpp
+  algorithms/boykov_kolmogorov.hpp
+  algorithms/max_flow.hpp
+  binio.hpp
+  CMakeLists.txt
+  provenance.hpp
+  graph_base.hpp
+  attic/mmap_mmio.hpp
+  attic/compressed.hpp
+  disjoint_set.hpp
+  dfs_range.hpp
+  proxysort.hpp
+  compressed.hpp
+  aolos.hpp
+  util_par.hpp
+  reverse.hpp
+  plain_range.hpp
+  filtered_bfs_range.hpp
+  aos.hpp
+  contrib/matplotlibcpp.h
+  contrib/catch.hpp
+  util.hpp
+  detail/numeric.hpp
+  edge_range.hpp)
+
+target_include_directories(bgl INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})
+
+# -----------------------------------------------------------------------------
+# Check to see if our C++ compiler supports Parallelism TS. If it does than
+# nothing weird will happen. If it doesn't we define the `NEED_` macros and that
+# will pull in `detail/numeric.hpp`.
+# -----------------------------------------------------------------------------
+include(CheckCXXSourceCompiles)
+check_cxx_source_compiles(
+  "#include<numeric>
+    int main() {
+        int* ptr;
+        std::inclusive_scan(ptr, ptr, ptr);
+    }"
+  HAVE_INCLUSIVE_SCAN)
+
+if (NOT HAVE_INCLUSIVE_SCAN)
+  target_compile_definitions(bgl INTERFACE BGL17_NEED_INCLUSIVE_SCAN)
+endif ()
+
+check_cxx_source_compiles(
+  "#include<numeric>
+    int main() {
+        int* ptr;
+        std::exclusive_scan(ptr, ptr, ptr, 0);
+    }"
+  HAVE_EXCLUSIVE_SCAN)
+
+if (NOT HAVE_EXCLUSIVE_SCAN)
+  target_compile_definitions(bgl INTERFACE BGL17_NEED_EXCLUSIVE_SCAN)
+endif ()
+
+check_cxx_source_compiles(
+  "#include<numeric>
+    int main() {
+        int* ptr;
+        std::reduce(ptr, ptr, 0);
+    }"
+  HAVE_REDUCE)
+
+if (NOT HAVE_REDUCE)
+  target_compile_definitions(bgl INTERFACE BGL17_NEED_REDUCE)
+endif ()
+
+# -----------------------------------------------------------------------------
+# Handle requests for parallel execution
+# -----------------------------------------------------------------------------
+if (BGL17_EXECUTION_POLICY)
+  set(THREADS_PREFER_PTHREAD_FLAG ON)
+  find_package(TBB REQUIRED)
+  find_package(Threads REQUIRED)
+  target_compile_definitions(bgl INTERFACE EXECUTION_POLICY)
+  target_link_libraries(bgl INTERFACE TBB::tbb Threads::Threads)
+  if (BGL17_USE_TBBMALLOC)
+    target_link_libraries(bgl INTERFACE TBB::tbbmalloc) 
+  endif ()
+endif()
+
+# -----------------------------------------------------------------------------
+# Handle Apple-specific things
+# -----------------------------------------------------------------------------
+if (APPLE)
+  if (NOT "${CMAKE_CXX_COMPILER_ID}" STREQUAL "AppleClang")
+    target_compile_definitions(bgl INTERFACE _Atomic=volatile)
+  endif()
+endif()
