@@ -16,11 +16,11 @@
 ##########################################################################
 cmake_minimum_required(VERSION 3.14 FATAL_ERROR)
 
-set(BGL17_VERSION 0.3)
+set(NW_GRAPH_VERSION 0.3)
 
 project(
-  BGL17
-  VERSION ${BGL17_VERSION}
+  NW_GRAPH
+  VERSION ${NW_GRAPH_VERSION}
   LANGUAGES CXX)
 
 # -----------------------------------------------------------------------------
@@ -55,37 +55,32 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 # -----------------------------------------------------------------------------
 # Options
 # -----------------------------------------------------------------------------
-set(BGL17_SANITIZE "" CACHE STRING "-fsanitize compiler options (e.g., =address)")
-if (BGL17_SANITIZE)
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-omit-frame-pointer -fsanitize=${BGL17_SANITIZE}")
-  set(CMAKE_LINKER_FLAGS "${CMAKE_LINKER_FLAGS} -fsanitize=${BGL17_SANITIZE}")
-endif (BGL17_SANITIZE)
+set(NW_GRAPH_SANITIZE "" CACHE STRING "-fsanitize compiler options (e.g., =address)")
+if (NW_GRAPH_SANITIZE)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-omit-frame-pointer -fsanitize=${NW_GRAPH_SANITIZE}")
+  set(CMAKE_LINKER_FLAGS "${CMAKE_LINKER_FLAGS} -fsanitize=${NW_GRAPH_SANITIZE}")
+endif (NW_GRAPH_SANITIZE)
 
-option(BGL17_EXECUTION_POLICY "with(out) C++ parallel execution policy" ON)
-option(BGL17_BUILD_TESTS "Determines whether to build tests." ON)
-option(BGL17_BUILD_APBS "Determines whether to build abstraction penalty benchmarks." ON)
-option(BGL17_BUILD_SPARSE "Determines whether to build sparse matrix tests and benchmarks." OFF)
-option(BGL17_BUILD_BENCH "Determines whether to build performance benchmarks." ON)
-option(BGL17_USE_TBBMALLOC "Link to tbbmalloc" OFF)
+option(NW_GRAPH_EXECUTION_POLICY "with(out) C++ parallel execution policy" ON)
+option(NW_GRAPH_BUILD_TESTS "Determines whether to build tests." ON)
+option(NW_GRAPH_BUILD_APBS "Determines whether to build abstraction penalty benchmarks." OFF)
+option(NW_GRAPH_BUILD_BENCH "Determines whether to build performance benchmarks." ON)
+option(NW_GRAPH_USE_TBBMALLOC "Link to tbbmalloc" OFF)
 
-add_subdirectory(src)
+add_subdirectory(include)
 
 include(Docopt)
 include(RangeV3)
   
-if (BGL17_BUILD_TESTS)
+if (NW_GRAPH_BUILD_TESTS)
   include(CTest)
   add_subdirectory(test)
 endif()
 
-if (BGL17_BUILD_APBS)
+if (NW_GRAPH_BUILD_APBS)
   add_subdirectory(apb)
 endif()
 
-if (BGL17_BUILD_SPARSE)
-  add_subdirectory(sparse)
-endif()
-
-if (BGL17_BUILD_BENCH)
+if (NW_GRAPH_BUILD_BENCH)
   add_subdirectory(bench)
 endif()

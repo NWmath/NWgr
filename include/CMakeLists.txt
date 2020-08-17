@@ -23,30 +23,14 @@ target_sources(bgl
   INTERFACE
   dag_range.hpp
   random_range.hpp
-  checkpoint/adj.hpp
-  checkpoint/attributed.hpp
-  checkpoint/mmio.hpp
-  checkpoint/graph_base.hpp
-  checkpoint/compressed.hpp
-  checkpoint/var_compressed.hpp
-  checkpoint/aos.hpp
-  checkpoint/util.hpp
-  checkpoint/dimacs_io.hpp
-  checkpoint/vov.hpp
-  checkpoint/timer.hpp
   soa.hpp
   bfs_range.hpp
   edge_list.hpp
   util/print_types.hpp
   util/types.hpp
-  util/timer.hpp
   bfs_edge_range.hpp
   back_edge_range.hpp
   neighbor_range.hpp
-  backlog/adj.hpp
-  backlog/dimacs_io.hpp
-  backlog/vov.hpp
-  linalg.hpp
   mmio.hpp
   new_dfs_range.hpp
   vovos.hpp
@@ -55,10 +39,8 @@ target_sources(bgl
   algorithms/mis.hpp
   algorithms/boykov_kolmogorov3.hpp
   algorithms/triangle_count.hpp
-  algorithms/degree.hpp
-  algorithms/connected_component.hpp
+  algorithms/connected_components.hpp
   algorithms/page_rank.hpp
-  algorithms/utils.hpp
   algorithms/betweenness_centrality.hpp
   algorithms/dijkstra.hpp
   algorithms/jones_plassmann_coloring.hpp
@@ -70,12 +52,8 @@ target_sources(bgl
   algorithms/spanning_tree.hpp
   algorithms/boykov_kolmogorov.hpp
   algorithms/max_flow.hpp
-  binio.hpp
-  CMakeLists.txt
   provenance.hpp
   graph_base.hpp
-  attic/mmap_mmio.hpp
-  attic/compressed.hpp
   disjoint_set.hpp
   dfs_range.hpp
   proxysort.hpp
@@ -86,8 +64,6 @@ target_sources(bgl
   plain_range.hpp
   filtered_bfs_range.hpp
   aos.hpp
-  contrib/matplotlibcpp.h
-  contrib/catch.hpp
   util.hpp
   detail/numeric.hpp
   edge_range.hpp)

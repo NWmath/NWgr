@@ -61,4 +61,3 @@ target_link_libraries(bicc.exe bench)
 add_executable(bicc2.exe bicc2.cpp)
 target_link_libraries(bicc2.exe bench)
 
-add_subdirectory(scripts)
