@@ -1,17 +1,27 @@
 {
+    "env": {
+        "myDefaultIncludePath": [
+            "${workspaceFolder}",
+            "${workspaceFolder}/include",
+            "${workspaceFolder}/include/**"
+        ],
+        "myCompilerPath": "/usr/local/bin/g++-10"
+    },
     "configurations": [
         {
             "name": "Mac",
+            "configurationProvider": "ms-vscode.cmake-tools",
+            "intelliSenseMode": "gcc-x86",
             "includePath": [
-                "${workspaceFolder}/**"
+                "${workspaceFolder}",
+                "${workspaceFolder}/include",
+                "${workspaceFolder}/include/**",
+                "${workspaceFolder}/../NWut/include",
+                "/usr/local/include"
             ],
-            "defines": [],
-            "macFrameworkPath": [],
-            "compilerPath": "/usr/local/bin/gcc-10",
-            "cStandard": "c11",
-            "cppStandard": "gnu++14",
-            "intelliSenseMode": "clang-x64",
-            "configurationProvider": "ms-vscode.cmake-tools"
+            "compilerPath": "/usr/local/bin/g++-10",
+            "cppStandard": "c++20",
+            "cStandard": "c11"
         }
     ],
     "version": 4

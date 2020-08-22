@@ -83,17 +83,18 @@ concept TopologyGraph = ranges::random_access_range<G> &&
 #endif
 
 #include <ranges>
-#include "vovos.hpp" 
+#include "vovos.hpp"
 #include "aolos.hpp" 
 #include "compressed.hpp" 
 
+#include <concepts>
 
 template <class T>
 concept Graph = std::ranges::random_access_range<T>;
 
-template <Graph T>
-auto foo() {
-  T A(5);
+template <class T>
+auto foo(const T& A) requires Graph<T> {
+
   auto _b = std::ranges::begin(A);
   auto _e = std::ranges::end(A);
   auto _f = A[0];
@@ -115,12 +116,12 @@ auto foo() {
 
 int main() {
 
-  foo<nw::graph::vector_of_vector_of_structs<>>();
-  foo<nw::graph::vov<>>();
+  foo(nw::graph::vector_of_vector_of_structs(5));
+  foo(nw::graph::vov<>(5));
 
 
-  foo<nw::graph::array_of_list_of_structs<>>();
-  foo<nw::graph::adj_list<>>();
+  foo(nw::graph::array_of_list_of_structs(5));
+  foo(nw::graph::adj_list(5));
 
 
 

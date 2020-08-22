@@ -48,6 +48,7 @@ set_tests_properties(mis_test_test jp_coloring_test_test page_rank_test_test
 
 # These need to be converted to Catch2 tests
 nw_graph_add_exe(ranges_test)
+nw_graph_add_exe(simple_ranges_test)
 
 nw_graph_add_exe(dijkstra_test_0)
 nw_graph_add_exe(edge_list_test_1)

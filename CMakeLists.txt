@@ -31,10 +31,10 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 # -----------------------------------------------------------------------------
 # Build types and default flags
 # -----------------------------------------------------------------------------
-set(CMAKE_CXX_FLAGS_DEBUG "-O0 -g -fno-elide-constructors -fconcepts-diagnostics-depth=3" CACHE STRING "" FORCE)
-set(CMAKE_CXX_FLAGS_RELEASE "-fconcepts-diagnostics-depth=3 -Ofast -march=native -DNDEBUG" CACHE STRING "" FORCE)
-set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-fconcepts-diagnostics-depth=3 -Ofast -g -march=native" CACHE STRING "" FORCE)
-set(CMAKE_CXX_FLAGS_MINSIZEREL "-fconcepts-diagnostics-depth=3 -Os -march=native -DNDEBUG" CACHE STRING "" FORCE)
+set(CMAKE_CXX_FLAGS_DEBUG "-O0 -g -fno-elide-constructors -fconcepts-diagnostics-depth=1" CACHE STRING "" FORCE)
+set(CMAKE_CXX_FLAGS_RELEASE "-fconcepts-diagnostics-depth=1 -Ofast -march=native -DNDEBUG" CACHE STRING "" FORCE)
+set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-fconcepts-diagnostics-depth=1 -Ofast -g -march=native" CACHE STRING "" FORCE)
+set(CMAKE_CXX_FLAGS_MINSIZEREL "-fconcepts-diagnostics-depth=1 -Os -march=native -DNDEBUG" CACHE STRING "" FORCE)
 
 # Default to Release build
 if (NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
