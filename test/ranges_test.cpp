@@ -82,17 +82,104 @@ concept TopologyGraph = ranges::random_access_range<G> &&
   //  IV. Maybe rather than begin()/end() -> neighbors()? or out_edges()?
 #endif
 
+#include <concepts>
 #include <ranges>
 #include "vovos.hpp"
 #include "aolos.hpp" 
 #include "compressed.hpp" 
+#include "util/intersection_size.hpp"
 
-#include <concepts>
 
-template <class T>
-concept Graph = std::ranges::random_access_range<T>;
 
-template <class T>
+template <typename T>
+using inner_range = std::ranges::range_value_t<T>;
+
+template <typename T>
+using inner_value = std::ranges::range_value_t<inner_range<T>>;
+
+template <typename T>
+using vertex_id_t = nw::graph::vertex_id_t;
+
+template <typename T>
+using index_t = nw::graph::vertex_id_t;
+
+template <typename T>
+concept Adjacence =
+  requires (T graph, inner_value<T> vertex) {
+    { target (vertex) } -> std::convertible_to<vertex_id_t<T>>;
+  };
+
+template <typename T>
+concept Incidence =
+  requires (T graph, inner_value<T> edge) {
+    { source (edge) } -> std::convertible_to<vertex_id_t<T>>;
+    { target (edge) } -> std::convertible_to<vertex_id_t<T>>;
+  };
+
+template <typename T>
+concept Graph = 
+  std::ranges::random_access_range<T> &&
+  std::ranges::forward_range<inner_range<T>> &&
+  std::convertible_to<vertex_id_t<T>, index_t<T>>;
+
+template <typename T>
+concept IncidenceGraph = Graph<T> && Incidence<T>;
+
+template <typename T>
+concept AdjacenceGraph = Graph<T> && Adjacence<T>;
+
+
+template <Graph GraphT>
+size_t triangle_count(const GraphT& A) {
+  size_t triangles = 0;
+  auto   first     = A.begin();
+  auto   last      = A.end();
+
+  for (auto G = first; first != last; ++first) {
+    for (auto v = (*first).begin(); v != (*first).end(); ++v) {
+      triangles += nw::graph::intersection_size(*first, G[std::get<0>(*v)]);
+    }
+  }
+
+  return triangles;
+}
+
+
+template <typename Graph_t>
+auto bfs(const Graph_t& graph, vertex_id_t<Graph_t> root) requires Graph<Graph_t> {
+
+  std::deque<vertex_id_t<Graph_t>>  q1, q2;
+  std::vector<vertex_id_t<Graph_t>>   level(graph.size(), std::numeric_limits<vertex_id_t<Graph_t>>::max());
+  std::vector<vertex_id_t<Graph_t>> parents(graph.size(), std::numeric_limits<vertex_id_t<Graph_t>>::max());
+  size_t                   lvl = 0;
+
+  q1.push_back(root);
+  level[root]   = lvl++;
+  parents[root] = root;
+
+  auto g = graph.begin();
+
+  while (!q1.empty()) {
+
+    std::for_each(q1.begin(), q1.end(), [&](vertex_id_t<Graph_t> u) {
+      std::for_each(g[u].begin(), g[u].end(), [&](auto&& x) {
+        vertex_id_t<Graph_t> v = std::get<0>(x);
+        if (level[v] == std::numeric_limits<vertex_id_t<Graph_t>>::max()) {
+          q2.push_back(v);
+          level[v]   = lvl;
+          parents[v] = u;
+        }
+      });
+    });
+    std::swap(q1, q2);
+    q2.clear();
+    ++lvl;
+  }
+  return parents;
+}
+
+
+template <typename T>
 auto foo(const T& A) requires Graph<T> {
 
   auto _b = std::ranges::begin(A);
@@ -110,11 +197,18 @@ auto foo(const T& A) requires Graph<T> {
 
   for (auto& j : A[0]) {
 
-  }
+  } 
+
 }
 
 
 int main() {
+
+  triangle_count(nw::graph::vov<>(5));
+  triangle_count(nw::graph::adj_list<>(5));
+
+  bfs(nw::graph::vov<>(5), 0);
+  bfs(nw::graph::adj_list<>(5), 0);
 
   foo(nw::graph::vector_of_vector_of_structs(5));
   foo(nw::graph::vov<>(5));
