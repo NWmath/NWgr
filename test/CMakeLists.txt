@@ -4,6 +4,9 @@ message("Supported features = ${CMAKE_CXX_COMPILE_FEATURES}")
 macro (nw_graph_add_exe EXENAME)
   add_executable(${EXENAME} ${EXENAME}.cpp)
   target_link_libraries(${EXENAME} nw_graph)
+  target_include_directories(${EXENAME} SYSTEM INTERFACE)
+  target_include_directories(${EXENAME} INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/../include)
+  target_include_directories(${EXENAME} INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/../../NWut/include)
   # add_test(NAME ${EXENAME}_test COMMAND ${EXENAME})
 endmacro (nw_graph_add_exe)
 
@@ -44,6 +47,8 @@ set_tests_properties(mis_test_test jp_coloring_test_test page_rank_test_test
   PROPERTIES WILL_FAIL TRUE)
 
 # These need to be converted to Catch2 tests
+nw_graph_add_exe(ranges_test)
+
 nw_graph_add_exe(dijkstra_test_0)
 nw_graph_add_exe(edge_list_test_1)
 nw_graph_add_exe(idxsoa_1)

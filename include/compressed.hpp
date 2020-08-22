@@ -199,6 +199,9 @@ public:    // fixme
     using pointer           = value_type*;
     using iterator_category = std::random_access_iterator_tag;
 
+    outer_iterator(const outer_iterator&) = default;
+    outer_iterator(outer_iterator&) = default;
+
     outer_iterator(std::vector<vertex_id_t>::iterator indices, typename struct_of_arrays<Attributes...>::iterator indexed,
                    vertex_id_t i)
         : indices_(indices), indexed_(indexed), i_(i) {}

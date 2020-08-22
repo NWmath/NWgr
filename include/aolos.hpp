@@ -22,27 +22,20 @@ template <directedness edge_directedness, typename... Attributes>
 class edge_list;
 
 template <typename... Attributes>
-class array_of_list_of_structs {
+class array_of_list_of_structs : public std::vector<std::forward_list<std::tuple<Attributes...>>> {
 
 public:
-  array_of_list_of_structs(size_t N) : storage_(N) {}
+  using base = std::vector<std::forward_list<std::tuple<Attributes...>>>;
+
+  array_of_list_of_structs(size_t N) : base(N) {}
 
   using inner_iterator      = typename std::forward_list<std::tuple<Attributes...>>::iterator;
   using inner_container_ref = typename std::forward_list<std::tuple<Attributes...>>&;
   using outer_iterator      = typename std::vector<std::forward_list<std::tuple<Attributes...>>>::iterator;
 
-  auto   begin() { return storage_.begin(); }
-  auto   end() { return storage_.end(); }
-  auto   begin() const { return storage_.begin(); }
-  auto   end() const { return storage_.end(); }
-  size_t size() { return storage_.end() - storage_.begin(); }
-
   void open_for_push_back() {}
   void close_for_push_back() {}
-  void push_back(size_t i, Attributes... attrs) { storage_[i].emplace_front(attrs...); }
-
-private:
-  std::vector<std::forward_list<std::tuple<Attributes...>>> storage_;
+  void push_back(size_t i, Attributes... attrs) { base::operator[](i).emplace_front(attrs...); }
 };
 
 template <typename... Attributes>

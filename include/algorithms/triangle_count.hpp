@@ -100,7 +100,8 @@ std::size_t triangle_count_async(std::size_t threads, Op&& op) {
   return triangles;
 }
 
-template <typename GraphT>
+
+template <class GraphT>
 size_t triangle_count_v0(GraphT& A) {
   size_t triangles = 0;
   auto   first     = A.begin();
@@ -113,6 +114,7 @@ size_t triangle_count_v0(GraphT& A) {
   }
   return triangles;
 }
+
 
 template <typename GraphT>
 size_t triangle_count_v1(GraphT& A) {
