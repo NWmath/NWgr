@@ -11,3 +11,6 @@ target_link_Libraries(exec nw_graph)
 
 add_executable(tbb tbb.cpp)
 target_link_Libraries(tbb nw_graph)
+
+add_executable(bfs bfs.cpp)
+target_link_Libraries(bfs nw_graph)

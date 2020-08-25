@@ -3,7 +3,6 @@
 #include <iostream>
 #include <vector>
 
-//#include "binio.hpp"
 #include "compressed.hpp"
 #include "edge_list.hpp"
 #include "mmio.hpp"
@@ -15,7 +14,6 @@
 #include "tbb/iterators.h"
 #endif
 
-//#include "util/timer.hpp"
 using namespace nw::graph;
 using namespace nw::util;
 
