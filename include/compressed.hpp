@@ -1,4 +1,12 @@
-
+//
+// This file is part of BGL17 (aka NWGraph aka GraphPack aka the Graph Standard Library)
+// (c) Pacific Northwest National Laboratory 2018, 2019, 2020
+//
+// Licensed under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License
+// https://creativecommons.org/licenses/by-nc-sa/4.0/
+//
+// Author: Andrew Lumsdaine
+//
 
 #ifndef NW_GRAPH_COMPRESSED_HPP
 #define NW_GRAPH_COMPRESSED_HPP
@@ -18,14 +26,12 @@
 #include <istream>
 #include <numeric>
 
-#if defined(EXECUTION_POLICY)
 #if defined(CL_SYCL_LANGUAGE_VERSION)
 #include <dpstd/algorithm>
 #include <dpstd/execution>
 #include <dpstd/numeric>
 #else
 #include <execution>
-#endif
 #endif
 
 #if defined(BGL17_NEED_EXCLUSIVE_SCAN)
@@ -383,7 +389,6 @@ public:    // fixme
     std::iota(perm.begin(), perm.end(), 0);
     auto d = degrees_.begin() + 1;
 
-#if defined(EXECUTION_POLICY)
     if (direction == "descending") {
       std::sort(std::execution::par_unseq, perm.begin(), perm.end(), [&](auto a, auto b) { return d[a] > d[b]; });
     } else if (direction == "ascending") {
@@ -391,15 +396,6 @@ public:    // fixme
     } else {
       std::cout << "Unknown direction: " << direction << std::endl;
     }
-#else
-    if (direction == "descending") {
-      std::sort(perm.begin(), perm.end(), [&](auto a, auto b) { return d[a] > d[b]; });
-    } else if (direction == "ascending") {
-      std::sort(perm.begin(), perm.end(), [&](auto a, auto b) { return d[a] < d[b]; });
-    } else {
-      std::cout << "Unknown direction: " << direction << std::endl;
-    }
-#endif
 
     std::vector<vertex_id_t> new_indices_(indices_);
     auto                     n = new_indices_.begin() + 1;
@@ -409,12 +405,7 @@ public:    // fixme
       n[j]           = d[perm[j]];
       iperm[perm[j]] = j;
     }
-#if defined(EXECUTION_POLICY)
     std::inclusive_scan(std::execution::par_unseq, new_indices_.begin(), new_indices_.end(), new_indices_.begin());
-#else
-    std::partial_sum(new_indices_.begin(), new_indices_.end(), new_indices_.begin());
-#endif
-
 
     to_be_indexed_.permute(indices_, new_indices_, perm);
     indices_ = std::move(new_indices_);
@@ -427,16 +418,9 @@ public:    // fixme
 
     auto s = std::get<0>(to_be_indexed_).begin();
 
-#if defined(EXECUTION_POLICY)
     for (size_t i = 0; i < perm.size(); ++i) {
       std::sort(std::execution::par_unseq, s + indices_[i], s + indices_[i + 1]);
     }
-
-#else
-    for (size_t i = 0; i < perm.size(); ++i) {
-      std::sort(s + indices_[i], s + indices_[i + 1]);
-    }
-#endif
 
     if (g_debug_compressed) {
       stream_indices(std::cout);
