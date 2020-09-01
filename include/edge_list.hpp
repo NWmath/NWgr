@@ -427,6 +427,15 @@ public:
                         std::get<Is + 1>(cs.to_be_indexed_).begin())));
   }
 
+  template <int idx, class T, size_t... Is>
+  void fill_helper(adjacency<idx, Attributes...>& cs, std::index_sequence<Is...> is, T& Tmp) {
+    (..., (
+              std::copy(std::execution::par_unseq,
+                        std::get<Is + 2>(dynamic_cast<base&>(Tmp)).begin(), std::get<Is + 2>(dynamic_cast<base&>(Tmp)).end(),
+                        std::get<Is + 1>(cs.to_be_indexed_).begin())));
+  }
+
+
   template <int idx>
   void fill(adjacency<idx, Attributes...>& cs) {
     if constexpr (edge_directedness == directed) {
@@ -434,9 +443,6 @@ public:
 #if !defined(EDGELIST_AOS)
       stable_sort_by<idx>();
       auto degree = degrees<idx>();
-
-#if defined(EXECUTION_POLICY)
-      // std::exclusive_scan(std::execution::par, degrees.begin(), degrees.end(), degrees.begin(), (vertex_id_t) 0);
 
       cs.indices_.resize(max_[idx] + 1 + 1);
 
@@ -451,24 +457,6 @@ public:
         fill_helper<idx>(cs, std::make_integer_sequence<size_t, sizeof...(Attributes)>());
       }
 
-#else
-      cs.indices_.resize(max_[idx] + 1 + 1);
-
-      std::inclusive_scan(degree.begin(), degree.end(), cs.indices_.begin() + 1);
-      //std::partial_sum(degree.begin(), degree.end(), cs.indices_.begin()+1);
-
-      cs.to_be_indexed_.resize(size());
-
-      const int kdx = (idx + 1) % 2;
-      std::copy(std::get<kdx>(dynamic_cast<base&>(*this)).begin(), std::get<kdx>(dynamic_cast<base&>(*this)).end(),
-                std::get<0>(cs.to_be_indexed_).begin());
-
-      if constexpr (sizeof...(Attributes) > 0) {
-        fill_helper<idx>(cs, std::make_integer_sequence<size_t, sizeof...(Attributes)>());
-      }
-
-#endif    // EXECUTION_POLICY
-
 #else    // IS AOS
       stable_sort_by<idx>();
       cs.open_for_push_back();
@@ -481,55 +469,43 @@ public:
 
     } else {    // undirected
 
-#if 0
-      std::vector<index_t> degrees(max_[idx] + 1 + 1); std::for_each(base::begin(), base::end(), [&](auto& elt) {
-        std::apply([&](vertex_id_t& i, vertex_id_t& j, Attributes... attrs) { ++degrees[i]; ++degrees[j];  }, elt);
-      });
-      exclusive_scan(degrees.begin(), degrees.end(), degrees.begin(), (vertex_id_t) 0);
-      cs.indices_ = std::move(degrees);
-      std::for_each(base::begin(), base::end(), [&](auto& elt) {
-        std::apply([&](vertex_id_t& i, vertex_id_t& j, Attributes... attrs) {
-          cs.push_at(i, j, attrs...);
-          }, elt);
-      });
-      // std::shift_right(cs.indices_.begin(), cs.indices_.end()-1, 1);
-      std::move_backward(cs.indices_.begin(), cs.indices_.end()-1, cs.indices_.end());
-      cs.indices_[0] = 0;
-
-#else
       edge_list<edge_directedness, Attributes...> Tmp(0);
-      Tmp.reserve(2 * base::size());
-      Tmp.open_for_push_back();
+      Tmp.resize(2*base::size());
+      {
+        auto _ = g_time_edge_list ? nw::util::life_timer(__func__ + std::string(" adj fill create Tmp")) : nw::util::empty_timer();
+
+        std::copy(std::execution::par_unseq, base::begin(), base::end(), Tmp.begin());
+        std::transform(std::execution::par_unseq, base::begin(), base::end(), Tmp.begin()+base::size(), [&](auto&& elt) {
+          auto flt = elt;
+          std::swap(std::get<0>(flt), std::get<1>(flt));
+          return flt;
+        });
+
+        Tmp.max_[0] = Tmp.max_[1] = std::max(max_[0], max_[1]);
+        Tmp.min_[0] = Tmp.min_[1] = std::min(min_[0], min_[1]);
+      }
 
       {
-        auto _ = g_time_edge_list ? nw::util::life_timer(__func__ + std::string(" adj fill push_back")) : nw::util::empty_timer();
+        auto _ = g_time_edge_list ? nw::util::life_timer(__func__ + std::string(" adj fill prepare cs")) : nw::util::empty_timer();
+        Tmp.stable_sort_by<idx>();
+        auto degree = Tmp.degrees<idx>();
+        cs.indices_.resize(Tmp.max_[idx] + 1 + 1);
 
-        std::for_each(base::begin(), base::end(), [&](auto&& elt) {
-          std::apply([&](vertex_id_t i, vertex_id_t j, Attributes... attrs) { Tmp.push_back(i, j, attrs...); }, elt);
-          std::apply([&](vertex_id_t i, vertex_id_t j, Attributes... attrs) { Tmp.push_back(j, i, attrs...); }, elt);
-        });
-        Tmp.close_for_push_back();
+        std::inclusive_scan(std::execution::par, degree.begin(), degree.end(), cs.indices_.begin() + 1);
+        cs.to_be_indexed_.resize(Tmp.size());
       }
+      {
+        auto _ = g_time_edge_list ? nw::util::life_timer(__func__ + std::string(" adj fill copy to cs")) : nw::util::empty_timer();
 
-      Tmp.stable_sort_by<idx>();
-      cs.open_for_push_back();
 
-      if constexpr (idx == 0) {
-	  auto _ = g_time_edge_list ? nw::util::life_timer(__func__ + std::string(" adj fill push_back zero too")) : nw::util::empty_timer();
+      const int kdx = (idx + 1) % 2;
+      std::copy(std::execution::par_unseq, std::get<kdx>(dynamic_cast<base&>(Tmp)).begin(),
+                std::get<kdx>(dynamic_cast<base&>(Tmp)).end(), std::get<0>(cs.to_be_indexed_).begin());
 
-        std::for_each(Tmp.begin(), Tmp.end(), [&](auto&& elt) {
-          std::apply([&](vertex_id_t i, vertex_id_t j, Attributes... attrs) { cs.push_back(i, j, attrs...); }, elt);
-        });
-      } else if constexpr (idx == 1) {
-        auto _ = g_time_edge_list ? nw::util::life_timer(__func__ + std::string(" adj fill push_back one too")) : nw::util::empty_timer();
-
-        std::for_each(Tmp.begin(), Tmp.end(), [&](auto&& elt) {
-          std::apply([&](vertex_id_t i, vertex_id_t j, Attributes... attrs) { cs.push_back(j, i, attrs...); }, elt);
-        });
+      if constexpr (sizeof...(Attributes) > 0) {
+        fill_helper<idx>(cs, std::make_integer_sequence<size_t, sizeof...(Attributes)>(), Tmp);
       }
-
-      cs.close_for_push_back();
-#endif
+            }
     }
   }
 
