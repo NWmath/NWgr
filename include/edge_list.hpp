@@ -487,8 +487,9 @@ public:
 
       {
         auto _ = g_time_edge_list ? nw::util::life_timer(__func__ + std::string(" adj fill prepare cs")) : nw::util::empty_timer();
-        Tmp.stable_sort_by<idx>();
-        auto degree = Tmp.degrees<idx>();
+        // Tmp.stable_sort_by<idx>();
+	Tmp.sort_by<idx>();
+        auto degree = Tmp.degrees<idx>(); // Can have a fast version if we know it is sorted
         cs.indices_.resize(Tmp.max_[idx] + 1 + 1);
 
         std::inclusive_scan(std::execution::par, degree.begin(), degree.end(), cs.indices_.begin() + 1);
