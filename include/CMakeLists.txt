@@ -116,16 +116,16 @@ endif ()
 # -----------------------------------------------------------------------------
 # Handle requests for parallel execution
 # -----------------------------------------------------------------------------
-if (NW_GRAPH_EXECUTION_POLICY)
-  set(THREADS_PREFER_PTHREAD_FLAG ON)
-  find_package(TBB REQUIRED)
-  find_package(Threads REQUIRED)
-  target_compile_definitions(nw_graph INTERFACE EXECUTION_POLICY)
-  target_link_libraries(nw_graph INTERFACE TBB::tbb Threads::Threads)
-  if (NW_GRAPH_USE_TBBMALLOC)
-    target_link_libraries(nw_graph INTERFACE TBB::tbbmalloc) 
-  endif ()
-endif()
+
+set(THREADS_PREFER_PTHREAD_FLAG ON)
+find_package(TBB REQUIRED)
+find_package(Threads REQUIRED)
+target_compile_definitions(nw_graph INTERFACE EXECUTION_POLICY)
+target_link_libraries(nw_graph INTERFACE TBB::tbb Threads::Threads)
+if (NW_GRAPH_USE_TBBMALLOC)
+  target_link_libraries(nw_graph INTERFACE TBB::tbbmalloc) 
+endif ()
+
 
 # -----------------------------------------------------------------------------
 # Handle Apple-specific things

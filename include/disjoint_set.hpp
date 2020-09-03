@@ -20,7 +20,6 @@
 #include <string.h>
 #include <vector>
 
-#ifdef EXECUTION_POLICY
 #if defined(CL_SYCL_LANGUAGE_VERSION)
 #include <dpstd/execution>
 #include <dpstd/iterators.h>
@@ -35,7 +34,6 @@ namespace nw::graph {
 template <class T>
 using counting_iterator = tbb::counting_iterator<T>;
 }
-#endif
 #endif
 
 namespace nw {
@@ -162,12 +160,11 @@ public:
   /**
 		 * Set id is equal to element id.
 		 */
-  void allToSingletons() {
+  template <class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
+  void allToSingletons(ExecutionPolicy&& policy = {}) {
     size_t i = 0;
     std::for_each(
-#if defined(EXECUTION_POLICY)
-        std::execution::par_unseq,
-#endif
+        policy,
         this->sets_, this->sets_ + this->maxid_, [&i, this]() {
           this->sets[i] = i;
           ++i;

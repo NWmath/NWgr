@@ -19,7 +19,6 @@
 #include "plain_range.hpp"
 #include "provenance.hpp"
 
-#if defined(EXECUTION_POLICY)
 #if defined(CL_SYCL_LANGUAGE_VERSION)
 #include <dpstd/algorithm>
 #include <dpstd/execution>
@@ -27,7 +26,6 @@
 #else
 #include <execution>
 #include <tbb/parallel_sort.h>
-#endif
 #endif
 
 #if defined(BGL17_NEED_EXCLUSIVE_SCAN)
@@ -126,7 +124,6 @@ public:
       x.min_[0] = min_[1];
       x.min_[1] = min_[0];
 
-#if defined(EXECUTION_POLICY)
       std::copy(std::execution::par_unseq, base::begin(), base::end(), x.begin());
       const int jdx = (kdx + 1) % 2;
 
@@ -138,20 +135,6 @@ public:
       std::sort(std::execution::par_unseq, x.begin(), x.end(), [](const element& a, const element& b) -> bool {
         return std::tie(std::get<kdx>(a), std::get<jdx>(a)) < std::tie(std::get<kdx>(b), std::get<jdx>(b));
       });
-
-#else
-      std::copy(base::begin(), base::end(), x.begin());
-      const int jdx = (kdx + 1) % 2;
-
-      std::for_each(x.begin(), x.end(), [](auto&& f) {
-        if (std::get<jdx>(f) < std::get<kdx>(f)) {
-          std::swap(std::get<jdx>(f), std::get<kdx>(f));
-        }
-      });
-      std::sort(x.begin(), x.end(), [](const element& a, const element& b) -> bool {
-        return std::tie(std::get<kdx>(a), std::get<jdx>(a)) < std::tie(std::get<kdx>(b), std::get<jdx>(b));
-      });
-#endif
 
       x.uniq();
       x.close_for_push_back();
@@ -213,11 +196,8 @@ public:
     if (min_[0] != 0 || min_[1] != 0) {
       vertex_id_t the_min = std::min(min_[0], min_[1]);
 
-#if defined(EXECUTION_POLICY)
       std::for_each(std::execution::par, base::begin(), base::end(), [&](auto&& x) {
-#else
-      std::for_each(base::begin(), base::end(), [&](auto&& x) {
-#endif
+
         std::get<0>(x) -= the_min;
         std::get<1>(x) -= the_min;
       });
@@ -260,11 +240,8 @@ public:
     prv.push_back(nw::graph::demangle(typeid(*this).name(), nullptr, nullptr, &status) + "::" + __func__,
                   std::string("index ") + std::to_string(idx));
 
-#if defined(EXECUTION_POLICY)
     std::sort(std::execution::par_unseq, base::begin(), base::end(),
-#else
-    std::sort(base::begin(), base::end(),
-#endif
+
               [](const element& a, const element& b) -> bool { return (std::get<idx>(a) < std::get<idx>(b)); });
   }
 
@@ -274,11 +251,7 @@ public:
     prv.push_back(nw::graph::demangle(typeid(*this).name(), nullptr, nullptr, &status) + "::" + __func__,
                   std::string("index ") + std::to_string(idx));
 
-#if defined(EXECUTION_POLICY)
     std::stable_sort(std::execution::par_unseq, base::begin(), base::end(),
-#else
-    std::stable_sort(base::begin(), base::end(),
-#endif
                      [](const element& a, const element& b) -> bool { return (std::get<idx>(a) < std::get<idx>(b)); });
   }
 
@@ -296,19 +269,11 @@ public:
     // print_types(*base::begin(), std::declval<typename base::iterator::reference>());
 
     if constexpr (idx == 0) {
-#if defined(EXECUTION_POLICY)
       std::sort(std::execution::par_unseq, base::begin(), base::end()
-#else
-      std::sort(base::begin(), base::end()
-#endif
                 //            , [](auto&& a, auto&& b) -> bool { return a < b; }
       );
     } else {
-#if defined(EXECUTION_POLICY)
       std::sort(std::execution::par_unseq, base::begin(), base::end(),
-#else
-      std::sort(base::begin(), base::end(),
-#endif
                 [](const element& a, const element& b) -> bool {
                   // print_types(a, b);
                   return std::tie(std::get<1>(a), std::get<0>(a)) < std::tie(std::get<1>(b), std::get<0>(b));
@@ -324,11 +289,7 @@ public:
 
     const int jdx = (idx + 1) % 2;
 
-#if defined(EXECUTION_POLICY)
     std::stable_sort(std::execution::par_unseq, base::begin(), base::end(),
-#else
-    std::stable_sort(base::begin(), base::end(),
-#endif
                      [](const element& a, const element& b) -> bool {
                        return std::tie(std::get<idx>(a), std::get<jdx>(a)) < std::tie(std::get<idx>(b), std::get<jdx>(b));
                      });
@@ -389,7 +350,6 @@ public:
       std::for_each(base::begin(), base::end(),
                     [&](auto&& elt) { if (comp((std::get<idx>(elt), std::get<kdx>(elt))) { ++degrees[std::get<idx>(elt)]; } });
 
-#if defined(EXECUTION_POLICY)
       exclusive_scan(/* std::execution::par, */ degrees.begin(), degrees.end(), degrees.begin(), (vertex_id_t)0);
       cs.indices_.resize(max_ + 1 + 1);
 
@@ -398,19 +358,6 @@ public:
 
       std::copy_if(std::execution::par_unseq, std::get<kdx>(base::storage_).begin(), std::get<kdx>(base::storage_).end(),
                    std::get<idx>(cs.to_be_indexed_.storage_).begin());
-#else
-      std::exclusive_scan(degrees.begin(), degrees.end(), degrees.begin(), (vertex_id_t)0);
-      cs.indices_.resize(max_ + 1 + 1);
-      std::copy(degrees.begin(), degrees.end(), cs.indices_.begin());
-
-      auto foo = size();
-
-      cs.to_be_indexed_.resize(size());
-
-      std::copy(std::get<1>(base::storage_).begin(), std::get<1>(base::storage_).end(),
-                std::get<0>(cs.to_be_indexed_.storage_).begin());
-
-#endif    // EXECUTION_POLICY
     }
   }
 #endif    // FILL_IF
@@ -418,11 +365,7 @@ public:
   template <int idx, size_t... Is>
   void fill_helper(adjacency<idx, Attributes...>& cs, std::index_sequence<Is...> is) {
     (..., (
-#if defined(EXECUTION_POLICY)
               std::copy(std::execution::par_unseq,
-#else
-              std::copy(
-#endif    // defined(EXECUTION_POLICY)
                         std::get<Is + 2>(dynamic_cast<base&>(*this)).begin(), std::get<Is + 2>(dynamic_cast<base&>(*this)).end(),
                         std::get<Is + 1>(cs.to_be_indexed_).begin())));
   }
@@ -435,7 +378,6 @@ public:
       stable_sort_by<idx>();
       auto degree = degrees<idx>();
 
-#if defined(EXECUTION_POLICY)
       // std::exclusive_scan(std::execution::par, degrees.begin(), degrees.end(), degrees.begin(), (vertex_id_t) 0);
 
       cs.indices_.resize(max_[idx] + 1 + 1);
@@ -451,23 +393,6 @@ public:
         fill_helper<idx>(cs, std::make_integer_sequence<size_t, sizeof...(Attributes)>());
       }
 
-#else
-      cs.indices_.resize(max_[idx] + 1 + 1);
-
-      std::inclusive_scan(degree.begin(), degree.end(), cs.indices_.begin() + 1);
-      //std::partial_sum(degree.begin(), degree.end(), cs.indices_.begin()+1);
-
-      cs.to_be_indexed_.resize(size());
-
-      const int kdx = (idx + 1) % 2;
-      std::copy(std::get<kdx>(dynamic_cast<base&>(*this)).begin(), std::get<kdx>(dynamic_cast<base&>(*this)).end(),
-                std::get<0>(cs.to_be_indexed_).begin());
-
-      if constexpr (sizeof...(Attributes) > 0) {
-        fill_helper<idx>(cs, std::make_integer_sequence<size_t, sizeof...(Attributes)>());
-      }
-
-#endif    // EXECUTION_POLICY
 
 #else    // IS AOS
       stable_sort_by<idx>();
@@ -633,22 +558,14 @@ public:
                       nw::graph::demangle(typeid(cessor).name(), nullptr, nullptr, &status));
 
     if constexpr ((idx == 0 && cessor == predecessor) || (idx == 1 && cessor == successor)) {
-#if defined(EXECUTION_POLICY)
       std::for_each(std::execution::par_unseq, base::begin(), base::end(),
-#else
-      std::for_each(base::begin(), base::end(),
-#endif
                     [](auto&& f) {
                       if (std::get<0>(f) < std::get<1>(f)) {
                         std::swap(std::get<0>(f), std::get<1>(f));
                       }
                     });
     } else if constexpr ((idx == 0 && cessor == successor) || (idx == 1 && cessor == predecessor)) {
-#if defined(EXECUTION_POLICY)
       std::for_each(std::execution::par_unseq, base::begin(), base::end(),
-#else
-      std::for_each(base::begin(), base::end(),
-#endif
                     [](auto&& f) {
                       if (std::get<1>(f) < std::get<0>(f)) {
                         std::swap(std::get<1>(f), std::get<0>(f));
@@ -665,7 +582,6 @@ public:
                       nw::graph::demangle(typeid(cessor).name(), nullptr, nullptr, &status));
 
     if constexpr ((idx == 0 && cessor == predecessor) || (idx == 1 && cessor == successor)) {
-#if defined(EXECUTION_POLICY)
       auto past_the_end = std::remove_if(std::execution::par_unseq, base::begin(), base::end(),
                                          [](auto&& x) { return std::get<0>(x) < std::get<1>(x); });
 
@@ -675,14 +591,6 @@ public:
                                          [](auto&& x) { return std::get<1>(x) < std::get<0>(x); });
       base::erase(past_the_end, base::end());
     }
-#else
-      auto past_the_end = std::remove_if(base::begin(), base::end(), [](auto&& x) { return std::get<0>(x) < std::get<1>(x); });
-      base::erase(past_the_end, base::end());
-    } else if constexpr ((idx == 0 && cessor == successor) || (idx == 1 && cessor == predecessor)) {
-      auto past_the_end = std::remove_if(base::begin(), base::end(), [](auto&& x) { return std::get<1>(x) < std::get<0>(x); });
-      base::erase(past_the_end, base::end());
-    }
-#endif
   }
 
   // Make entries unique -- in place -- remove adjacent redundancies
@@ -691,13 +599,8 @@ public:
     int status = -4;
     prv.push_back(nw::graph::demangle(typeid(*this).name(), nullptr, nullptr, &status) + "::" + __func__);
 
-#if defined(EXECUTION_POLICY)
     auto past_the_end =
         std::unique(std::execution::par_unseq, base::begin(), base::end(),
-#else
-    auto past_the_end =
-        std::unique(base::begin(), base::end(),
-#endif
                     [](auto&& x, auto&& y) { return std::get<0>(x) == std::get<0>(y) && std::get<1>(x) == std::get<1>(y); });
 
     // base::erase(past_the_end, base::end());
@@ -708,11 +611,7 @@ public:
     int status = -4;
     prv.push_back(nw::graph::demangle(typeid(*this).name(), nullptr, nullptr, &status) + "::" + __func__);
 
-#if defined(EXECUTION_POLICY)
     auto past_the_end = std::remove_if(/*std::execution::par_unseq,*/ base::begin(), base::end(),
-#else
-    auto past_the_end = std::remove_if(base::begin(), base::end(),
-#endif
                                        [](auto&& x) { return std::get<0>(x) == std::get<1>(x); });
     // base::erase(past_the_end, base::end());
     base::resize(past_the_end - base::begin());
@@ -722,7 +621,6 @@ public:
   auto degrees() {
     std::vector<index_t> degree(max_[d_idx] + 1);
 
-#if defined(EXECUTION_POLICY)
     if constexpr (edge_directedness == directed) {
       std::vector<std::atomic<vertex_id_t>> tmp(degree.size());
       std::for_each(std::execution::par_unseq, base::begin(), base::end(), [&](auto&& x) { ++tmp[std::get<d_idx>(x)]; });
@@ -735,17 +633,6 @@ public:
       });
       std::copy(std::execution::par_unseq, tmp.begin(), tmp.end(), degree.begin());
     }
-#else
-    if constexpr (edge_directedness == directed) {
-      std::for_each(base::begin(), base::end(), [&](auto&& x) { ++degree[std::get<d_idx>(x)]; });
-    } else if constexpr (edge_directedness == undirected) {
-      const auto d_kdx = (d_idx + 1) % 2;
-      std::for_each(base::begin(), base::end(), [&](auto&& x) {
-        ++degree[std::get<d_idx>(x)];
-        ++degree[std::get<d_kdx>(x)];
-      });
-    }
-#endif
     return degree;
   }
 
@@ -764,31 +651,19 @@ public:
   auto perm_by_degree(Vector&& degree, std::string direction = "ascending") {
     std::vector<vertex_id_t> perm(degree.size());
 
-#if defined(EXECUTION_POLICY)
     tbb::parallel_for(tbb::blocked_range(0ul, perm.size()), [&](auto&& r) {
       for (auto i = r.begin(), e = r.end(); i != e; ++i) {
         perm[i] = i;
       }
     });
-#else
-    std::iota(perm.begin(), perm.end(), 0);
-#endif
 
     auto d = degree.begin();
 
-#if defined(EXECUTION_POLICY)
     if (direction == "descending") {
       std::sort(std::execution::par_unseq, perm.begin(), perm.end(), [&](auto a, auto b) { return d[a] > d[b]; });
     } else if (direction == "ascending") {
       std::sort(std::execution::par_unseq, perm.begin(), perm.end(), [&](auto a, auto b) { return d[a] < d[b]; });
     }
-#else
-    if (direction == "descending") {
-      std::sort(perm.begin(), perm.end(), [&](auto a, auto b) { return d[a] > d[b]; });
-    } else if (direction == "ascending") {
-      std::sort(perm.begin(), perm.end(), [&](auto a, auto b) { return d[a] < d[b]; });
-    }
-#endif
     else {
       std::cout << "Unknown direction: " << direction << std::endl;
     }
@@ -800,23 +675,13 @@ public:
   void relabel(Vector&& perm) {
     std::vector<vertex_id_t> iperm(perm.size());
 
-#if defined(EXECUTION_POLICY)
     tbb::parallel_for(tbb::blocked_range(0ul, iperm.size()), [&](auto&& r) {
       for (auto i = r.begin(), e = r.end(); i != e; ++i) {
         iperm[perm[i]] = i;
       }
     });
-#else
-    for (size_t j = 0; j < perm.size(); ++j) {    // FIXME!!!
-      iperm[perm[j]] = j;
-    }
-#endif
 
-#if defined(EXECUTION_POLICY)
     std::for_each(std::execution::par_unseq, base::begin(), base::end(),
-#else
-    std::for_each(base::begin(), base::end(),
-#endif
                   [&](auto&& x) {
                     std::get<0>(x) = iperm[std::get<0>(x)];
                     std::get<1>(x) = iperm[std::get<1>(x)];

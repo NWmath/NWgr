@@ -70,7 +70,6 @@ TEST_CASE("triangle counting", "[tc]") {
     REQUIRE(triangles == 45);
   }
 
-#ifdef EXECUTION_POLICY
   SECTION("v6") {
     size_t triangles = triangle_count_v6(A.begin(), A.end());
     std::cout << triangles << " triangles (v6)\n";
@@ -107,5 +106,4 @@ TEST_CASE("triangle counting", "[tc]") {
     REQUIRE(triangles == 45);
   }
 
-#endif
 }

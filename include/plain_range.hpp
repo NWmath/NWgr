@@ -19,8 +19,6 @@
 #include <tuple>
 #include <vector>
 
-#if defined(EXECUTION_POLICY)
-
 #if defined(CL_SYCL_LANGUAGE_VERSION)
 #include <dpstd/execution>
 #include <dpstd/iterators.h>
@@ -39,7 +37,6 @@ template <class T>
 using counting_iterator = tbb::counting_iterator<T>;
 }
 }
-#endif
 #endif
 
 namespace nw {

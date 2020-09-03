@@ -25,7 +25,6 @@
 #include "edge_range.hpp"
 #include "util/parallel_for.hpp"
 
-#if defined(EXECUTION_POLICY)
 #if defined(CL_SYCL_LANGUAGE_VERSION)
 #include <dpstd/iterators.h>
 namespace nw::graph {
@@ -38,7 +37,6 @@ namespace nw::graph {
 template <class T>
 using counting_iterator = tbb::counting_iterator<T>;
 }
-#endif
 #endif
 
 namespace nw {
@@ -250,9 +248,7 @@ void page_rank_v4(Graph& graph, const std::vector<vertex_id_t>& degrees, std::ve
   const Real base_score = (1.0 - damping_factor) / page_rank.size();
 
   std::fill(
-#if defined(EXECUTION_POLICY)
       std::execution::par_unseq,
-#endif
       page_rank.begin(), page_rank.end(), init_score);
 
   std::vector<Real>                outgoing_contrib(page_rank.size());
@@ -261,9 +257,7 @@ void page_rank_v4(Graph& graph, const std::vector<vertex_id_t>& degrees, std::ve
   for (size_t iter = 0; iter < max_iters; ++iter) {
 
     std::transform(
-#if defined(EXECUTION_POLICY)
         std::execution::par_unseq,
-#endif
         page_rank.begin(), page_rank.end(), degrees.begin(), outgoing_contrib.begin(), [&](auto&& x, auto&& y) {
           ;
           return x / (y + 0);
@@ -301,8 +295,6 @@ void page_rank_v4(Graph& graph, const std::vector<vertex_id_t>& degrees, std::ve
     if (error < threshold) break;
   }
 }
-
-#if defined(EXECUTION_POLICY)
 
 template <typename Graph, typename Real = double>
 [[gnu::noinline]] void page_rank_v6(Graph& graph, const std::vector<vertex_id_t>& degrees, std::vector<Real>& page_rank,
@@ -373,9 +365,7 @@ void page_rank_v7(Graph& graph, const std::vector<vertex_id_t>& degrees, std::ve
     nw::util::life_timer _("fill");
 
     std::fill(
-#if defined(EXECUTION_POLICY)
         std::execution::par_unseq,
-#endif
         page_rank.begin(), page_rank.end(), init_score);
   }
   std::vector<Real> outgoing_contrib(page_rank.size());
@@ -385,9 +375,7 @@ void page_rank_v7(Graph& graph, const std::vector<vertex_id_t>& degrees, std::ve
     for (size_t iter = 0; iter < max_iters; ++iter) {
 
       std::transform(
-#if defined(EXECUTION_POLICY)
           std::execution::par,
-#endif
           page_rank.begin(), page_rank.end(), degrees.begin(), outgoing_contrib.begin(), [&](auto&& x, auto&& y) {
             ;
             return x / (y + 0);
@@ -396,9 +384,7 @@ void page_rank_v7(Graph& graph, const std::vector<vertex_id_t>& degrees, std::ve
       auto G = graph.begin();
 
       double error = std::transform_reduce(
-#if defined(EXECUTION_POLICY)
           std::execution::par_unseq,
-#endif
           counting_iterator<vertex_id_t>(0), counting_iterator<vertex_id_t>(page_rank.size()), Real(0.0), std::plus<Real>(),
 
           [&](auto i) {
@@ -427,9 +413,7 @@ void page_rank_v8(Graph& graph, const std::vector<vertex_id_t>& degrees, std::ve
   const Real base_score = (1.0 - damping_factor) / page_rank.size();
 
   std::fill(
-#if defined(EXECUTION_POLICY)
       std::execution::par_unseq,
-#endif
       page_rank.begin(), page_rank.end(), init_score);
 
   std::vector<Real> outgoing_contrib(page_rank.size());
@@ -437,9 +421,7 @@ void page_rank_v8(Graph& graph, const std::vector<vertex_id_t>& degrees, std::ve
   for (size_t iter = 0; iter < max_iters; ++iter) {
 
     std::transform(
-#if defined(EXECUTION_POLICY)
         std::execution::par_unseq,
-#endif
         page_rank.begin(), page_rank.end(), degrees.begin(), outgoing_contrib.begin(), [&](auto&& x, auto&& y) {
           ;
           return x / (y + 0);
@@ -448,9 +430,7 @@ void page_rank_v8(Graph& graph, const std::vector<vertex_id_t>& degrees, std::ve
     auto G = graph.begin();
 
     double error = std::transform_reduce(
-#if defined(EXECUTION_POLICY)
         std::execution::par_unseq,
-#endif
         counting_iterator<vertex_id_t>(0), counting_iterator<vertex_id_t>(page_rank.size()), Real(0.0), std::plus<Real>(),
 
         [&](auto i) {
@@ -822,7 +802,7 @@ template <typename Graph, typename Real>
     }
   }
 }
-#endif
+
 
 template <class Graph, typename Real>
 [[gnu::noinline]] std::size_t page_rank_v14(Graph&& graph, const std::vector<vertex_id_t>& degrees, std::vector<Real>& page_rank,
