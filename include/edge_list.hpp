@@ -429,19 +429,16 @@ public:
 
   template <int idx, class T, size_t... Is>
   void fill_helper(adjacency<idx, Attributes...>& cs, std::index_sequence<Is...> is, T& Tmp) {
-    (..., (
-              std::copy(std::execution::par_unseq,
-                        std::get<Is + 2>(dynamic_cast<base&>(Tmp)).begin(), std::get<Is + 2>(dynamic_cast<base&>(Tmp)).end(),
-                        std::get<Is + 1>(cs.to_be_indexed_).begin())));
+    (..., (std::copy(std::execution::par_unseq, std::get<Is + 2>(dynamic_cast<base&>(Tmp)).begin(),
+                     std::get<Is + 2>(dynamic_cast<base&>(Tmp)).end(), std::get<Is + 1>(cs.to_be_indexed_).begin())));
   }
-
 
   template <int idx>
   void fill(adjacency<idx, Attributes...>& cs) {
     if constexpr (edge_directedness == directed) {
 
 #if !defined(EDGELIST_AOS)
-      stable_sort_by<idx>();
+      sort_by<idx>();
       auto degree = degrees<idx>();
 
       cs.indices_.resize(max_[idx] + 1 + 1);
@@ -469,13 +466,16 @@ public:
 
     } else {    // undirected
 
-      edge_list<edge_directedness, Attributes...> Tmp(0);
-      Tmp.resize(2*base::size());
+      // edge_list<edge_directedness, Attributes...> Tmp(0); // BUG!!!!
+
+      edge_list<directed, Attributes...> Tmp(0);    // undirected == directed with doubled (and swapped) edges
+
+      Tmp.resize(2 * base::size());
       {
         auto _ = g_time_edge_list ? nw::util::life_timer(__func__ + std::string(" adj fill create Tmp")) : nw::util::empty_timer();
 
         std::copy(std::execution::par_unseq, base::begin(), base::end(), Tmp.begin());
-        std::transform(std::execution::par_unseq, base::begin(), base::end(), Tmp.begin()+base::size(), [&](auto&& elt) {
+        std::transform(std::execution::par_unseq, base::begin(), base::end(), Tmp.begin() + base::size(), [&](auto&& elt) {
           auto flt = elt;
           std::swap(std::get<0>(flt), std::get<1>(flt));
           return flt;
@@ -487,9 +487,12 @@ public:
 
       {
         auto _ = g_time_edge_list ? nw::util::life_timer(__func__ + std::string(" adj fill prepare cs")) : nw::util::empty_timer();
-        // Tmp.stable_sort_by<idx>();
-	Tmp.sort_by<idx>();
-        auto degree = Tmp.degrees<idx>(); // Can have a fast version if we know it is sorted
+
+        // Tmp.stable_sort_by<idx>();  // may allocate extra memory
+
+        Tmp.template sort_by<idx>();
+
+        auto degree = Tmp.template degrees<idx>();    // Can have a fast version if we know it is sorted -- using equal_range
         cs.indices_.resize(Tmp.max_[idx] + 1 + 1);
 
         std::inclusive_scan(std::execution::par, degree.begin(), degree.end(), cs.indices_.begin() + 1);
@@ -498,15 +501,14 @@ public:
       {
         auto _ = g_time_edge_list ? nw::util::life_timer(__func__ + std::string(" adj fill copy to cs")) : nw::util::empty_timer();
 
+        const int kdx = (idx + 1) % 2;
+        std::copy(std::execution::par_unseq, std::get<kdx>(dynamic_cast<base&>(Tmp)).begin(),
+                  std::get<kdx>(dynamic_cast<base&>(Tmp)).end(), std::get<0>(cs.to_be_indexed_).begin());
 
-      const int kdx = (idx + 1) % 2;
-      std::copy(std::execution::par_unseq, std::get<kdx>(dynamic_cast<base&>(Tmp)).begin(),
-                std::get<kdx>(dynamic_cast<base&>(Tmp)).end(), std::get<0>(cs.to_be_indexed_).begin());
-
-      if constexpr (sizeof...(Attributes) > 0) {
-        fill_helper<idx>(cs, std::make_integer_sequence<size_t, sizeof...(Attributes)>(), Tmp);
+        if constexpr (sizeof...(Attributes) > 0) {
+          fill_helper<idx>(cs, std::make_integer_sequence<size_t, sizeof...(Attributes)>(), Tmp);
+        }
       }
-            }
     }
   }
 
