@@ -111,7 +111,8 @@ void compress(std::vector<T>& comp) {
 }
 
 template <typename T>
-T findDominantComponentID(const std::vector<T>& comp, size_t nsamples = 1024) {
+T find_dominant_component_id(const std::vector<T>& comp, size_t nsamples = 1024) {
+  if (0 == comp.size()) return 0;
   std::unordered_map<T, size_t>                              sample_counts(32);
   typedef typename std::unordered_map<T, size_t>::value_type kvp_type;
   std::mt19937                                               gen;
@@ -329,7 +330,7 @@ std::vector<vertex_id_t> Afforest(Graph& g, Graph2& t_graph, size_t neighbor_bou
       [&](auto u) { link(g, u, comp, neighbor_bound); });
   compress(comp);
   // Sample certain vertices to find dominant component id
-  vertex_id_t dominant_c = findDominantComponentID(comp);
+  vertex_id_t dominant_c = find_dominant_component_id(comp);
   // link the rest vertices outside of dominant component
   std::for_each(
       std::execution::par_unseq,
@@ -357,7 +358,7 @@ std::vector<vertex_id_t> ccv5(Graph& g) {
   std::for_each(
       std::execution::par_unseq,
       counting_iterator<vertex_id_t>(0), counting_iterator<vertex_id_t>(N), [&](auto u) { pull(g, u, comp); });
-  vertex_id_t dominant_c = findDominantComponentID(comp);
+  vertex_id_t dominant_c = find_dominant_component_id(comp);
   std::for_each(
       std::execution::par_unseq,
       counting_iterator<vertex_id_t>(0), counting_iterator<vertex_id_t>(N), [&](auto u) {
