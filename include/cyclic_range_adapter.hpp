@@ -4,7 +4,7 @@
 #include "util.hpp"
 #include "util/types.hpp"
 #include <iterator>
-#include <tbb/tbb_stddef.h>
+#include <tbb/tbb.h>
 
 namespace nw {
 namespace graph {
