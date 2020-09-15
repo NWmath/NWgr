@@ -11,11 +11,9 @@
 #ifndef NW_GRAPH_WORKLIST_HPP
 #define NW_GRAPH_WORKLIST_HPP
 
-#if defined(EXECUTION_POLICY)
 #include "tbb/concurrent_priority_queue.h"
 #include "tbb/concurrent_queue.h"
 #include "tbb/concurrent_vector.h"
-#endif
 
 #include "util/types.hpp"
 #include "util.hpp"
@@ -79,7 +77,6 @@ private:
   Queue  Q_;
 };
 
-#if defined(EXECUTION_POLICY)
 //****************************************************************************
 template <typename Graph, typename Workitem = vertex_id_t, typename Queue = tbb::concurrent_queue<Workitem>>
 class tbbworklist_range {
@@ -247,7 +244,6 @@ private:
   Workitem                      dummy_;
   //std::atomic<int> counter;
 };
-#endif
 
 }    // namespace graph
 }    // namespace nw

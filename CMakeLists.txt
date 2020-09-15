@@ -61,7 +61,6 @@ if (NW_GRAPH_SANITIZE)
   set(CMAKE_LINKER_FLAGS "${CMAKE_LINKER_FLAGS} -fsanitize=${NW_GRAPH_SANITIZE}")
 endif (NW_GRAPH_SANITIZE)
 
-option(NW_GRAPH_EXECUTION_POLICY "with(out) C++ parallel execution policy" ON)
 option(NW_GRAPH_BUILD_TESTS "Determines whether to build tests." ON)
 option(NW_GRAPH_BUILD_APBS "Determines whether to build abstraction penalty benchmarks." OFF)
 option(NW_GRAPH_BUILD_BENCH "Determines whether to build performance benchmarks." ON)

@@ -8,9 +8,7 @@
 #include "util/timer.hpp"
 #include "util/traits.hpp"
 
-#if defined (EXECUTION_POLICY)
 #include <tbb/global_control.h>
-#endif
 #include <iomanip>
 #include <map>
 #include <random>
@@ -21,11 +19,8 @@
 namespace nw::graph {
 namespace bench {
 
-#if defined (EXECUTION_POLICY)
+
 constexpr inline bool WITH_TBB = true;
-#else
-constexpr inline bool WITH_TBB = false;
-#endif
 
 auto set_n_threads(long n) {
   if constexpr (WITH_TBB) {

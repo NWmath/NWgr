@@ -32,12 +32,10 @@
 #include <ostream>
 #include <vector>
 
-#if defined(EXECUTION_POLICY)
 #if defined(CL_SYCL_LANGUAGE_VERSION)
 #include <dpstd/execution>
 #else
 #include <execution>
-#endif
 #endif
 
 namespace nw {
@@ -75,12 +73,7 @@ namespace graph {
     void push_back(const Attributes&... attrs) { base::push_back({attrs...}); }
 
     bool operator==(array_of_structs& a) {
-
-#if defined(EXECUTION_POLICY)
       return std::equal(std::execution::par, base::begin(), base::end(), a.begin());
-#else
-      return std::equal(base::begin(), base::end(), a.begin());
-#endif
     }
     bool operator!=(const storage_type& a) { return !operator==(a); }
 

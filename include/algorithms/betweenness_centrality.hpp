@@ -1412,8 +1412,8 @@ auto bc2_v1(Graph& graph, const std::vector<vertex_id_t> sources) {
   return bc;
 }
 
-template <typename Graph, typename score_t = float, typename accum_t = size_t>
-auto bc2_v2(Graph& graph, const std::vector<vertex_id_t>& sources) {
+template <typename Graph, typename score_t = float, typename accum_t = size_t, class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
+auto bc2_v2(Graph& graph, const std::vector<vertex_id_t>& sources, ExecutionPolicy&& policy = {}) {
 
   auto                 g = graph.begin();
   vertex_id_t          N = graph.max() + 1;
@@ -1424,7 +1424,7 @@ auto bc2_v2(Graph& graph, const std::vector<vertex_id_t>& sources) {
 
     std::vector<std::atomic<vertex_id_t>> depths(N);
 
-    std::fill(std::execution::par_unseq, depths.begin(), depths.end(), std::numeric_limits<vertex_id_t>::max());
+    std::fill(policy, depths.begin(), depths.end(), std::numeric_limits<vertex_id_t>::max());
 
     std::vector<accum_t> path_counts(N, 0);
 
@@ -1443,7 +1443,7 @@ auto bc2_v2(Graph& graph, const std::vector<vertex_id_t>& sources) {
     while (count > 0) {
       count = 0;
 
-      std::for_each(std::execution::par_unseq, S[phase].begin(), S[phase].end(), [&](auto&& v) {
+      std::for_each(policy, S[phase].begin(), S[phase].end(), [&](auto&& v) {
         tbb::parallel_for(g[v], [&](auto&& elt) {
           for (auto&& [w] : elt) {
 
@@ -1470,7 +1470,7 @@ auto bc2_v2(Graph& graph, const std::vector<vertex_id_t>& sources) {
     std::vector<std::atomic<score_t>> delta(N);
 
     while (--phase > 0) {
-      std::for_each(std::execution::par_unseq, S[phase].begin(), S[phase].end(), [&](auto&& w) {
+      std::for_each(policy, S[phase].begin(), S[phase].end(), [&](auto&& w) {
         std::for_each(P[w].begin(), P[w].end(), [&](auto&& v) {
           delta[v] = delta[v] + static_cast<score_t>(path_counts[v]) / static_cast<score_t>(path_counts[w]) * (1 + delta[w]);
         });
@@ -1480,14 +1480,14 @@ auto bc2_v2(Graph& graph, const std::vector<vertex_id_t>& sources) {
     }
   }
 
-  score_t biggest_score = *max_element(std::execution::par_unseq, bc.begin(), bc.end());
-  std::for_each(std::execution::par_unseq, bc.begin(), bc.end(), [&](score_t& j) { j = j / biggest_score; });
+  score_t biggest_score = *max_element(policy, bc.begin(), bc.end());
+  std::for_each(policy, bc.begin(), bc.end(), [&](score_t& j) { j = j / biggest_score; });
 
   return bc;
 }
 
-template <typename Graph, typename score_t = float, typename accum_t = size_t>
-auto bc2_v3(Graph& graph, const std::vector<vertex_id_t>& sources) {
+template <typename Graph, typename score_t = float, typename accum_t = size_t, class OuterExecutionPolicy = std::execution::parallel_unsequenced_policy, class InnerExecutionPolicy = std::execution::parallel_unsequenced_policy>
+auto bc2_v3(Graph& graph, const std::vector<vertex_id_t>& sources, OuterExecutionPolicy&& outer_policy = {}, InnerExecutionPolicy&& inner_policy = {}) {
 
   auto        g = graph.begin();
   vertex_id_t N = graph.max() + 1;
@@ -1505,7 +1505,7 @@ auto bc2_v3(Graph& graph, const std::vector<vertex_id_t>& sources) {
     std::vector<std::atomic<vertex_id_t>> levels(N);
     std::vector<std::atomic<bool>>        succ(M);    // use tbb:: bit map ?
 
-    std::fill(std::execution::par_unseq, levels.begin(), levels.end(), std::numeric_limits<vertex_id_t>::max());
+    std::fill(outer_policy, levels.begin(), levels.end(), std::numeric_limits<vertex_id_t>::max());
 
     std::vector<std::atomic<accum_t>>                             path_counts(N);    // move outside loop?
     std::vector<tbb::concurrent_vector<vertex_id_t>>              q1(num_bins);
@@ -1520,8 +1520,8 @@ auto bc2_v3(Graph& graph, const std::vector<vertex_id_t>& sources) {
 
     bool done = false;
     while (!done) {
-      std::for_each(std::execution::par_unseq, q1.begin(), q1.end(), [&](auto& q) {
-        std::for_each(std::execution::par_unseq, q.begin(), q.end(), [&](vertex_id_t u) {
+      std::for_each(outer_policy, q1.begin(), q1.end(), [&](auto& q) {
+        std::for_each(inner_policy, q.begin(), q.end(), [&](vertex_id_t u) {
           // tbb::parallel_for(g[u], [&](auto&& gu) {
           auto gu = g[u];
           for (auto x = gu.begin(); x != gu.end(); ++x) {
@@ -1562,8 +1562,8 @@ auto bc2_v3(Graph& graph, const std::vector<vertex_id_t>& sources) {
     std::vector<score_t> deltas(N);
 
     std::for_each(retired.rbegin(), retired.rend(), [&](auto&& vvv) {
-      std::for_each(std::execution::par_unseq, vvv.begin(), vvv.end(), [&](auto&& vv) {
-        std::for_each(std::execution::par_unseq, vv.begin(), vv.end(), [&](auto&& u) {
+      std::for_each(outer_policy, vvv.begin(), vvv.end(), [&](auto&& vv) {
+        std::for_each(inner_policy, vv.begin(), vv.end(), [&](auto&& u) {
           score_t delta = 0;
           for (auto x = g[u].begin(); x != g[u].end(); ++x) {
             vertex_id_t v = std::get<0>(*x);
@@ -1578,14 +1578,14 @@ auto bc2_v3(Graph& graph, const std::vector<vertex_id_t>& sources) {
     });
   }
 
-  score_t biggest_score = *max_element(std::execution::par_unseq, bc.begin(), bc.end());
-  std::for_each(std::execution::par_unseq, bc.begin(), bc.end(), [&](score_t& j) { j = j / biggest_score; });
+  score_t biggest_score = *max_element(outer_policy, bc.begin(), bc.end());
+  std::for_each(outer_policy, bc.begin(), bc.end(), [&](score_t& j) { j = j / biggest_score; });
 
   return bc;
 }
 
-template <class score_t, class accum_t, class Graph>
-auto bc2_v4(Graph&& graph, const std::vector<vertex_id_t>& sources, int threads) {
+template <class score_t, class accum_t, class Graph, class OuterExecutionPolicy = std::execution::parallel_unsequenced_policy, class InnerExecutionPolicy = std::execution::parallel_unsequenced_policy>
+auto bc2_v4(Graph&& graph, const std::vector<vertex_id_t>& sources, int threads, OuterExecutionPolicy&& outer_policy={}, InnerExecutionPolicy&& inner_policy={}) {
   auto                 g     = graph.begin();
   vertex_id_t          N     = graph.max() + 1;
   size_t               M     = graph.to_be_indexed_.size();
@@ -1601,7 +1601,7 @@ auto bc2_v4(Graph&& graph, const std::vector<vertex_id_t>& sources, int threads)
     std::vector<std::atomic<vertex_id_t>> levels(N);
     nw::graph::AtomicBitVector                succ(M);
 
-    std::fill(std::execution::par_unseq, levels.begin(), levels.end(), std::numeric_limits<vertex_id_t>::max());
+    std::fill(outer_policy, levels.begin(), levels.end(), std::numeric_limits<vertex_id_t>::max());
 
     std::vector<std::atomic<accum_t>>                             path_counts(N);    // move outside loop?
     std::vector<tbb::concurrent_vector<vertex_id_t>>              q1(num_bins);
@@ -1616,8 +1616,8 @@ auto bc2_v4(Graph&& graph, const std::vector<vertex_id_t>& sources, int threads)
 
     bool done = false;
     while (!done) {
-      std::for_each(std::execution::par_unseq, q1.begin(), q1.end(), [&](auto&& q) {
-        std::for_each(std::execution::par_unseq, q.begin(), q.end(), [&](auto&& u) {
+      std::for_each(outer_policy, q1.begin(), q1.end(), [&](auto&& q) {
+        std::for_each(inner_policy, q.begin(), q.end(), [&](auto&& u) {
           for (auto&& [v] : g[u]) {
             auto&& neg_one = std::numeric_limits<vertex_id_t>::max();
             if (nw::graph::acquire(levels[v]) == neg_one && nw::graph::cas(levels[v], neg_one, lvl)) {
@@ -1651,8 +1651,8 @@ auto bc2_v4(Graph&& graph, const std::vector<vertex_id_t>& sources, int threads)
     std::vector<score_t> deltas(N);
 
     std::for_each(retired.rbegin(), retired.rend(), [&](auto&& vvv) {
-      std::for_each(std::execution::par_unseq, vvv.begin(), vvv.end(), [&](auto&& vv) {
-        std::for_each(std::execution::par_unseq, vv.begin(), vv.end(), [&](auto&& u) {
+      std::for_each(outer_policy, vvv.begin(), vvv.end(), [&](auto&& vv) {
+        std::for_each(inner_policy, vv.begin(), vv.end(), [&](auto&& u) {
           score_t delta = 0;
           for (auto x = g[u].begin(); x != g[u].end(); ++x) {
             auto&& v = std::get<0>(*x);
@@ -1667,14 +1667,14 @@ auto bc2_v4(Graph&& graph, const std::vector<vertex_id_t>& sources, int threads)
     });
   }
 
-  score_t biggest_score = *max_element(std::execution::par_unseq, bc.begin(), bc.end());
-  std::for_each(std::execution::par_unseq, bc.begin(), bc.end(), [&](score_t& j) { j = j / biggest_score; });
+  score_t biggest_score = *max_element(outer_policy, bc.begin(), bc.end());
+  std::for_each(outer_policy, bc.begin(), bc.end(), [&](score_t& j) { j = j / biggest_score; });
 
   return bc;
 }
 
-template <class score_t, class accum_t, class Graph>
-auto bc2_v5(Graph&& graph, const std::vector<vertex_id_t>& sources, int threads) {
+template <class score_t, class accum_t, class Graph, class OuterExecutionPolicy = std::execution::parallel_unsequenced_policy, class InnerExecutionPolicy = std::execution::parallel_unsequenced_policy>
+auto bc2_v5(Graph&& graph, const std::vector<vertex_id_t>& sources, int threads, OuterExecutionPolicy&& outer_policy = {}, InnerExecutionPolicy&& inner_policy = {}) {
   vertex_id_t          N     = graph.max() + 1;
   size_t               M     = graph.to_be_indexed_.size();
   auto&&               edges = std::get<0>(*(graph[0]).begin());
@@ -1694,7 +1694,7 @@ auto bc2_v5(Graph&& graph, const std::vector<vertex_id_t>& sources, int threads)
           nw::graph::AtomicBitVector   succ(M);
 
           // Initialize the levels to infinity.
-          std::fill(std::execution::par_unseq, levels.begin(), levels.end(), std::numeric_limits<vertex_id_t>::max());
+          std::fill(outer_policy, levels.begin(), levels.end(), std::numeric_limits<vertex_id_t>::max());
 
           std::vector<accum_t>                                          path_counts(N);
           std::vector<tbb::concurrent_vector<vertex_id_t>>              q1(num_bins);
@@ -1709,8 +1709,8 @@ auto bc2_v5(Graph&& graph, const std::vector<vertex_id_t>& sources, int threads)
 
           bool done = false;
           while (!done) {
-            std::for_each(std::execution::par_unseq, q1.begin(), q1.end(), [&](auto&& q) {
-              std::for_each(std::execution::par_unseq, q.begin(), q.end(), [&](auto&& u) {
+            std::for_each(outer_policy, q1.begin(), q1.end(), [&](auto&& q) {
+              std::for_each(inner_policy, q.begin(), q.end(), [&](auto&& u) {
                 for (auto&& [v] : graph[u]) {
                   auto&& infinity = std::numeric_limits<vertex_id_t>::max();
                   auto&& lvl_v    = nw::graph::acquire(levels[v]);
@@ -1752,8 +1752,8 @@ auto bc2_v5(Graph&& graph, const std::vector<vertex_id_t>& sources, int threads)
           std::vector<score_t> deltas(N);
 
           std::for_each(retired.rbegin(), retired.rend(), [&](auto&& vvv) {
-            std::for_each(std::execution::par_unseq, vvv.begin(), vvv.end(), [&](auto&& vv) {
-              std::for_each(std::execution::par_unseq, vv.begin(), vv.end(), [&](auto&& u) {
+            std::for_each(outer_policy, vvv.begin(), vvv.end(), [&](auto&& vv) {
+              std::for_each(inner_policy, vv.begin(), vv.end(), [&](auto&& u) {
                 score_t delta = 0;
                 for (auto&& [v] : graph[u]) {
                   if (succ.get(&v - &edges)) {
@@ -1772,8 +1772,8 @@ auto bc2_v5(Graph&& graph, const std::vector<vertex_id_t>& sources, int threads)
     f.wait();
   }
 
-  auto max = std::reduce(std::execution::par_unseq, bc.begin(), bc.end(), 0.0f, nw::graph::max{});
-  std::for_each(std::execution::par_unseq, bc.begin(), bc.end(), [&](auto&& j) { j /= max; });
+  auto max = std::reduce(outer_policy, bc.begin(), bc.end(), 0.0f, nw::graph::max{});
+  std::for_each(outer_policy, bc.begin(), bc.end(), [&](auto&& j) { j /= max; });
 
   return bc;
 }
