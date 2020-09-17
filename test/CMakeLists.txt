@@ -37,7 +37,7 @@ nw_graph_add_test(mis_test)
 nw_graph_add_test(bk)
 nw_graph_add_test(triangle_test)
 nw_graph_add_test(back_edge_test)
-nw_graph_add_test(rcm_test)
+nw_graph_add_test(size_test)
 
 # exptected failures for now
 set_tests_properties(mis_test_test jp_coloring_test_test page_rank_test_test

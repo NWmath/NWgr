@@ -383,13 +383,15 @@ public:
 #if !defined(EDGELIST_AOS)
       sort_by<idx>();
       auto degree = degrees<idx>();
-
-      cs.indices_.resize(max_[idx] + 1 + 1);
+      
+      const int kdx = (idx + 1) % 2;
+      cs.indices_.resize(std::max(max_[idx], max_[kdx]) + 1 + 1);
+      //cs.indices_.resize(max_[idx] + 1 + 1);
 
       std::inclusive_scan(std::execution::par, degree.begin(), degree.end(), cs.indices_.begin() + 1);
       cs.to_be_indexed_.resize(size());
 
-      const int kdx = (idx + 1) % 2;
+      //const int kdx = (idx + 1) % 2;
       std::copy(policy, std::get<kdx>(dynamic_cast<base&>(*this)).begin(),
                 std::get<kdx>(dynamic_cast<base&>(*this)).end(), std::get<0>(cs.to_be_indexed_).begin());
 
@@ -400,7 +402,7 @@ public:
 #else    // IS AOS
       stable_sort_by<idx>();
       cs.open_for_push_back();
-
+      
       std::for_each(base::begin(), base::end(), [&](auto&& elt) {
         std::apply([&](vertex_id_t i, vertex_id_t j, Attributes... attrs) { cs.push_back(i, j, attrs...); }, elt);
       });
