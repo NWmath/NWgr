@@ -14,7 +14,7 @@
 #include "util.hpp"
 #include "util/print_types.hpp"
 #include "util/types.hpp"
-#include <tbb/tbb_stddef.h>
+#include <tbb/tbb.h>
 #include <tuple>
 
 namespace nw {
