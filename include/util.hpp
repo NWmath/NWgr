@@ -27,11 +27,7 @@
 namespace nw {
 namespace graph {
 
-#ifdef EXECUTION_POLICY
 template <typename T = std::size_t>
-#else
-template <typename T = std::atomic<std::size_t>>
-#endif
 
 class counting_output_iterator : public std::iterator<std::output_iterator_tag, std::ptrdiff_t> {
 public:

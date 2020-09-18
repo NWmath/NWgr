@@ -20,7 +20,6 @@
 #include <random>
 #include <unordered_map>
 
-#if defined(EXECUTION_POLICY)
 #if defined(CL_SYCL_LANGUAGE_VERSION)
 #include <dpstd/algorithm>
 #include <dpstd/execution>
@@ -37,7 +36,6 @@ namespace nw::graph {
 template <class T>
 using counting_iterator = tbb::counting_iterator<T>;
 }
-#endif
 #endif
 
 namespace nw {
@@ -63,7 +61,6 @@ struct atomwrapper {
   }
 };
 
-#if defined(EXECUTION_POLICY)
 
 // BFS-based connected component algorithm
 template <typename Graph, typename T>
@@ -71,9 +68,7 @@ void compute_connected_components(Graph A, std::vector<T>& component_ids) {
   size_t         N                        = A.size();
   std::atomic<T> global_component_counter = -1;
   std::for_each(
-#if defined(EXECUTION_POLICY)
       std::execution::par_unseq,
-#endif
       counting_iterator<T>(0), counting_iterator<T>(N), [&](auto vtx) {
         if (std::numeric_limits<T>::max() == component_ids[vtx]) {
           global_component_counter++;
@@ -108,9 +103,7 @@ void hook(T u, T v, std::vector<T>& comp) {
 template <typename T>
 void compress(std::vector<T>& comp) {
   std::for_each(
-#if defined(EXECUTION_POLICY)
       std::execution::par_unseq,
-#endif
       counting_iterator<T>(0), counting_iterator<T>(comp.size()), [&](auto n) {
         while (comp[n] != comp[comp[n]])
           comp[n] = comp[comp[n]];
@@ -193,9 +186,7 @@ std::vector<vertex_id_t> compute_connected_components_v1(Graph& g) {
   std::vector<atomwrapper<vertex_id_t>> comp(N);
 
   std::for_each(
-#if defined(EXECUTION_POLICY)
       std::execution::par_unseq,
-#endif
       counting_iterator<vertex_id_t>(0), counting_iterator<vertex_id_t>(N), [&](auto n) { comp[n]._a.store(n); });
 
   bool change = true;
@@ -211,9 +202,7 @@ std::vector<vertex_id_t> compute_connected_components_v1(Graph& g) {
       auto first = range.begin();
       auto last = range.end();
       std::for_each(
-    #if defined(EXECUTION_POLICY)
     std::execution::par_unseq,
-    #endif
       first, last, [&](auto&& ite) {
         auto u = std::get<0>(*ite);
         auto v = std::get<1>(*ite);
@@ -235,9 +224,7 @@ std::vector<vertex_id_t> compute_connected_components_v1(Graph& g) {
         });
     */
     std::for_each(
-#if defined(EXECUTION_POLICY)
         std::execution::par_unseq,
-#endif
         counting_iterator<vertex_id_t>(0), counting_iterator<vertex_id_t>(N), [&](auto u) {
           vertex_id_t v;
           for (auto j = g.begin()[u].begin(); j != g.begin()[u].end(); ++j) {
@@ -262,9 +249,7 @@ std::vector<vertex_id_t> compute_connected_components_v1(Graph& g) {
   }
   std::vector<vertex_id_t> res(N);
   std::for_each(
-#if defined(EXECUTION_POLICY)
       std::execution::par_unseq,
-#endif
       counting_iterator<vertex_id_t>(0), counting_iterator<vertex_id_t>(N), [&](auto n) {
         auto m = n;
         //    while (comp[m]._a.load() != m)  m = comp[m]._a.load();
@@ -291,9 +276,7 @@ std::vector<vertex_id_t> compute_connected_components_v2(Graph& g) {
   size_t                   N = g.size();
   std::vector<vertex_id_t> comp(g.size());
   std::for_each(
-#if defined(EXECUTION_POLICY)
       std::execution::par_unseq,
-#endif
       counting_iterator<vertex_id_t>(0), counting_iterator<vertex_id_t>(g.size()), [&](auto n) { comp[n] = n; });
 
   bool change = true;
@@ -306,14 +289,10 @@ std::vector<vertex_id_t> compute_connected_components_v2(Graph& g) {
     change = false;
 
     std::for_each(
-#if defined(EXECUTION_POLICY)
         std::execution::par_unseq,
-#endif
         counting_iterator<vertex_id_t>(0), counting_iterator<vertex_id_t>(N), [&](auto u) { change = pull(g, u, comp); });
     std::for_each(
-#if defined(EXECUTION_POLICY)
         std::execution::par_unseq,
-#endif
         counting_iterator<vertex_id_t>(0), counting_iterator<vertex_id_t>(N), [&](auto u) { push(g, u, comp); });
 
     compress(comp);
@@ -325,15 +304,11 @@ template <typename Graph>
 std::vector<vertex_id_t> ccv1(Graph& g) {
   std::vector<vertex_id_t> comp(g.size());
   std::for_each(
-#if defined(EXECUTION_POLICY)
       std::execution::par_unseq,
-#endif
       counting_iterator<vertex_id_t>(0), counting_iterator<vertex_id_t>(g.size()), [&](auto n) { comp[n] = n; });
 
   std::for_each(
-#if defined(EXECUTION_POLICY)
       std::execution::par_unseq,
-#endif
       counting_iterator<vertex_id_t>(0), counting_iterator<vertex_id_t>(g.size()), [&](auto u) { push(g, u, comp); });
   compress(comp);
   return comp;
@@ -344,16 +319,12 @@ std::vector<vertex_id_t> Afforest(Graph& g, Graph2& t_graph, size_t neighbor_bou
   std::vector<vertex_id_t> comp(g.size());
   // set component id of vertex v to v
   std::for_each(
-#if defined(EXECUTION_POLICY)
       std::execution::par_unseq,
-#endif
       counting_iterator<vertex_id_t>(0), counting_iterator<vertex_id_t>(g.size()), [&](auto n) { comp[n] = n; });
   // approximate the dominant component by linking certain neighbors of each
   // vertex v (a sparse subgraph)
   std::for_each(
-#if defined(EXECUTION_POLICY)
       std::execution::par_unseq,
-#endif
       counting_iterator<vertex_id_t>(0), counting_iterator<vertex_id_t>(g.size()),
       [&](auto u) { link(g, u, comp, neighbor_bound); });
   compress(comp);
@@ -361,9 +332,7 @@ std::vector<vertex_id_t> Afforest(Graph& g, Graph2& t_graph, size_t neighbor_bou
   vertex_id_t dominant_c = findDominantComponentID(comp);
   // link the rest vertices outside of dominant component
   std::for_each(
-#if defined(EXECUTION_POLICY)
       std::execution::par_unseq,
-#endif
       counting_iterator<vertex_id_t>(0), counting_iterator<vertex_id_t>(g.size()), [&](auto u) {
         if (dominant_c != comp[u]) {
           push(g, u, comp);
@@ -382,21 +351,15 @@ std::vector<vertex_id_t> ccv5(Graph& g) {
   size_t                   N = g.size();
   std::vector<vertex_id_t> comp(g.size());
   std::for_each(
-#if defined(EXECUTION_POLICY)
       std::execution::par_unseq,
-#endif
       counting_iterator<vertex_id_t>(0), counting_iterator<vertex_id_t>(g.size()), [&](auto n) { comp[n] = n; });
 
   std::for_each(
-#if defined(EXECUTION_POLICY)
       std::execution::par_unseq,
-#endif
       counting_iterator<vertex_id_t>(0), counting_iterator<vertex_id_t>(N), [&](auto u) { pull(g, u, comp); });
   vertex_id_t dominant_c = findDominantComponentID(comp);
   std::for_each(
-#if defined(EXECUTION_POLICY)
       std::execution::par_unseq,
-#endif
       counting_iterator<vertex_id_t>(0), counting_iterator<vertex_id_t>(N), [&](auto u) {
         if (dominant_c != comp[u]) push(g, u, comp);
       });
@@ -410,9 +373,7 @@ auto sv_v6(/* const */ Graph& g) {
   std::vector<vertex_id_t> comp(g.size());
 
   std::for_each(
-#if defined(EXECUTION_POLICY)
       std::execution::par_unseq,
-#endif
       counting_iterator<vertex_id_t>(0), counting_iterator<vertex_id_t>(g.size()), [&](auto n) { comp[n] = n; });
 
   bool change = true;
@@ -428,9 +389,7 @@ auto sv_v6(/* const */ Graph& g) {
     change = false;
 
     std::for_each(
-#if defined(EXECUTION_POLICY)
         std::execution::par_unseq,
-#endif
         counting_iterator<vertex_id_t>(0), counting_iterator<vertex_id_t>(g.size()), [&](auto u) {
           for (auto&& [v] : G[u]) {
             vertex_id_t comp_u = comp[u];
@@ -460,9 +419,7 @@ auto sv_v8(/* const */ Graph& g) {
   std::vector<vertex_id_t> comp(g.size());
 
   std::for_each(
-#if defined(EXECUTION_POLICY)
       std::execution::par_unseq,
-#endif
       counting_iterator<vertex_id_t>(0), counting_iterator<vertex_id_t>(g.size()), [&](auto n) { comp[n] = n; });
 
   bool change = true;
@@ -477,9 +434,7 @@ auto sv_v8(/* const */ Graph& g) {
     change = false;
 
     std::for_each(
-#if defined(EXECUTION_POLICY)
         std::execution::par_unseq,
-#endif
         counting_iterator<vertex_id_t>(0), counting_iterator<vertex_id_t>(g.size()), [&](auto u) {
           auto Gu = G[u];
           // tbb::parallel_for(G[u], [&] (auto& Gu) {
@@ -513,9 +468,7 @@ auto sv_v9(/* const */ Graph& g) {
   std::vector<vertex_id_t> comp(g.size());
 
   std::for_each(
-#if defined(EXECUTION_POLICY)
       std::execution::par_unseq,
-#endif
       counting_iterator<vertex_id_t>(0), counting_iterator<vertex_id_t>(g.size()), [&](auto n) { comp[n] = n; });
 
   bool change = true;
@@ -551,7 +504,7 @@ auto sv_v9(/* const */ Graph& g) {
 
   return comp;
 }
-#endif
+
 }    // namespace graph
 }    // namespace nw
 #endif    // CONNECTED_COMPONENT_HPP

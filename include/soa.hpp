@@ -26,14 +26,12 @@
 #include "util/print_types.hpp"
 #include "util/types.hpp"
 
-#if defined(EXECUTION_POLICY)
 #if defined(CL_SYCL_LANGUAGE_VERSION)
 #include <dpstd/algorithm>
 #include <dpstd/execution>
 #else
 #include <algorithm>
 #include <execution>
-#endif
 #endif
 
 namespace nw {
@@ -213,15 +211,15 @@ struct struct_of_arrays : std::tuple<std::vector<Attributes>...> {
     std::apply([&](auto&... vs) { (deserialize(infile, vs), ...); }, *this);
   }
 
-  template <class T>
+  template <class T, class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
   void permute(const std::vector<index_t>& indices, const std::vector<index_t>& new_indices, const std::vector<vertex_id_t>& perm,
-               T& vs) {
+               T& vs, ExecutionPolicy&& ex_policy = {}) {
     T ws(vs.size());
     for (size_t i = 0, e = indices.size() - 1; i < e; ++i) {
       vertex_id_t j = perm[i];
-      std::copy(std::execution::par_unseq, vs.begin() + indices[j], vs.begin() + indices[j + 1], ws.begin() + new_indices[i]);
+      std::copy(ex_policy, vs.begin() + indices[j], vs.begin() + indices[j + 1], ws.begin() + new_indices[i]);
     }
-    std::copy(std::execution::par_unseq, ws.begin(), ws.end(), vs.begin());
+    std::copy(ex_policy, ws.begin(), ws.end(), vs.begin());
   }
 
   void permute(const std::vector<index_t>& indices, const std::vector<index_t>& new_indices, const std::vector<vertex_id_t>& perm) {

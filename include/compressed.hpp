@@ -18,14 +18,12 @@
 #include <istream>
 #include <numeric>
 
-#if defined(EXECUTION_POLICY)
 #if defined(CL_SYCL_LANGUAGE_VERSION)
 #include <dpstd/algorithm>
 #include <dpstd/execution>
 #include <dpstd/numeric>
 #else
 #include <execution>
-#endif
 #endif
 
 #if defined(BGL17_NEED_EXCLUSIVE_SCAN)
@@ -265,7 +263,7 @@ public:    // fixme
 
   void close_for_push_back() {
     if (to_be_indexed_.size() == 0) return;
-    // std::exclusive_scan(std::execution::par, indices_.begin(), indices_.end(), indices_.begin(), 0);
+    //std::exclusive_scan(std::execution::par, indices_.begin(), indices_.end(), indices_.begin(), 0);
     std::exclusive_scan(indices_.begin(), indices_.end(), indices_.begin(), 0);
     assert(indices_.back() == to_be_indexed_.size());
     is_open_ = false;
@@ -374,29 +372,20 @@ public:    // fixme
     return degrees_;
   }
 
-  void sort_by_degree(std::string direction = "descending") {
+  template <class Graph, class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
+  void sort_by_degree(std::string direction = "descending", ExecutionPolicy&& ex_policy = {}) {
     std::vector              degrees_ = degrees();
     std::vector<vertex_id_t> perm(indices_.size() - 1);
     std::iota(perm.begin(), perm.end(), 0);
     auto d = degrees_.begin() + 1;
 
-#if defined(EXECUTION_POLICY)
     if (direction == "descending") {
-      std::sort(std::execution::par_unseq, perm.begin(), perm.end(), [&](auto a, auto b) { return d[a] > d[b]; });
+      std::sort(ex_policy, perm.begin(), perm.end(), [&](auto a, auto b) { return d[a] > d[b]; });
     } else if (direction == "ascending") {
-      std::sort(std::execution::par_unseq, perm.begin(), perm.end(), [&](auto a, auto b) { return d[a] < d[b]; });
+      std::sort(ex_policy, perm.begin(), perm.end(), [&](auto a, auto b) { return d[a] < d[b]; });
     } else {
       std::cout << "Unknown direction: " << direction << std::endl;
     }
-#else
-    if (direction == "descending") {
-      std::sort(perm.begin(), perm.end(), [&](auto a, auto b) { return d[a] > d[b]; });
-    } else if (direction == "ascending") {
-      std::sort(perm.begin(), perm.end(), [&](auto a, auto b) { return d[a] < d[b]; });
-    } else {
-      std::cout << "Unknown direction: " << direction << std::endl;
-    }
-#endif
 
     std::vector<vertex_id_t> new_indices_(indices_);
     auto                     n = new_indices_.begin() + 1;
@@ -406,12 +395,8 @@ public:    // fixme
       n[j]           = d[perm[j]];
       iperm[perm[j]] = j;
     }
-#if defined(EXECUTION_POLICY)
-    std::inclusive_scan(std::execution::par_unseq, new_indices_.begin(), new_indices_.end(), new_indices_.begin());
-#else
-    std::partial_sum(new_indices_.begin(), new_indices_.end(), new_indices_.begin());
-#endif
 
+    std::inclusive_scan(ex_policy, new_indices_.begin(), new_indices_.end(), new_indices_.begin());
 
     to_be_indexed_.permute(indices_, new_indices_, perm);
     indices_ = std::move(new_indices_);
@@ -424,16 +409,9 @@ public:    // fixme
 
     auto s = std::get<0>(to_be_indexed_).begin();
 
-#if defined(EXECUTION_POLICY)
     for (size_t i = 0; i < perm.size(); ++i) {
-      std::sort(std::execution::par_unseq, s + indices_[i], s + indices_[i + 1]);
+      std::sort(ex_policy, s + indices_[i], s + indices_[i + 1]);
     }
-
-#else
-    for (size_t i = 0; i < perm.size(); ++i) {
-      std::sort(s + indices_[i], s + indices_[i + 1]);
-    }
-#endif
 
     if (g_debug_compressed) {
       stream_indices(std::cout);
@@ -502,7 +480,7 @@ public:
   using vertex_id_t = nw::graph::vertex_id_t;
 
   adjacency(size_t N = 0, size_t M = 0) : indexed_struct_of_arrays<vertex_id_t, Attributes...>(N, M) {}
-  adjacency(edge_list<directed, Attributes...>& A) : indexed_struct_of_arrays<vertex_id_t, Attributes...>(A.max()[idx] + 1) {
+  adjacency(edge_list<directed, Attributes...>& A) : indexed_struct_of_arrays<vertex_id_t, Attributes...>(std::max(A.max()[0], A.max()[1]) + 1) {
     A.fill(*this);
   }
   adjacency(edge_list<undirected, Attributes...>& A)
