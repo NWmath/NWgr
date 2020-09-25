@@ -1,5 +1,5 @@
 ##########################################################################
-#	CMake Build Rules for the NW Graph (v0.3)                              #
+#	CMake Build Rules for the NW Graph (v0.3)                        #
 ##########################################################################
 # Basic Usage:                                                           #
 #   cmake ..								 #
@@ -26,8 +26,8 @@ project(
 # -----------------------------------------------------------------------------
 # Extend the module path so we can find our custom modules
 # -----------------------------------------------------------------------------
-list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
-
+#list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/../NWut/cmake)
 # -----------------------------------------------------------------------------
 # Build types and default flags
 # -----------------------------------------------------------------------------
@@ -82,4 +82,10 @@ endif()
 
 if (NW_GRAPH_BUILD_BENCH)
   add_subdirectory(bench)
+endif()
+
+#Artifacts
+option(NW_GRAPH_BUILD_HPEC "Determines whether to build HPEC artifact." OFF)
+if (NW_GRAPH_BUILD_HPEC)
+   add_subdirectory(${CMAKE_SOURCE_DIR}/../Artifacts/hpec hpec)
 endif()

@@ -23,8 +23,8 @@ namespace bench {
 constexpr const char BUILD_TYPE[]      = "@CMAKE_BUILD_TYPE@";
 constexpr const char CXX_VERSION[]     = "@CMAKE_CXX_COMPILER_VERSION@";
 constexpr const char CXX_COMPILER_ID[] = "@CMAKE_CXX_COMPILER_ID@";
-constexpr const char CXX_COMPILER[]    = "@BGL17_CXX_COMPILER@";
-constexpr const char USE_TBBMALLOC[]   = "@BGL17_USE_TBBMALLOC@";
+constexpr const char CXX_COMPILER[]    = "@NWGRAPH_CXX_COMPILER@";
+constexpr const char USE_TBBMALLOC[]   = "@NWGRAPH_USE_TBBMALLOC@";
 
 }
 }

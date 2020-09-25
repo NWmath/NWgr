@@ -8,8 +8,8 @@
 // Author: Luke D'Alessandro
 //
 
-#ifndef BGL17_LOG_HPP
-#define BGL17_LOG_HPP
+#ifndef NW_GRAPH_LOG_HPP
+#define NW_GRAPH_LOG_HPP
 
 
 #include "config.h"
@@ -34,7 +34,7 @@ namespace bench {
 
 struct Log {
   std::string uuid_;
-  char host_[16];
+  char host_[20];
   std::string date_;
   std::string git_branch_;
   std::string git_version_;
@@ -56,7 +56,7 @@ struct Log {
 
     if (int e = gethostname(host_, sizeof(host_))) {
       std::cerr << "truncated host name\n";
-      exit(e);
+      //exit(e);
     }
 
     if (path != "-") {
@@ -134,7 +134,7 @@ struct Log {
     }
 
     os_ << std::setw(uuid_size_ + 2) << std::left << uuid_;
-    os_ << std::setw(10) << std::left << "BGL17";
+    os_ << std::setw(10) << std::left << "NWGRAPH";
     os_ << std::setw(10) << std::left << git_branch_;
     os_ << std::setw(10) << std::left << git_version_;
     os_ << std::setw(cxx_size_)        << std::left << CXX_COMPILER;
