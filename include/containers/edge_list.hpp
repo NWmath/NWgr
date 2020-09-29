@@ -473,7 +473,7 @@ public:
 
         // Tmp.stable_sort_by<idx>();  // may allocate extra memory
 
-        Tmp.template sort_by<idx>();
+        Tmp.template lexical_sort_by<idx>();
 
         auto degree = Tmp.template degrees<idx>();    // Can have a fast version if we know it is sorted -- using equal_range
         //NOTICE: bipartite graph cannot resize indices_ based on the max of column 0/1
