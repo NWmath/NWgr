@@ -268,18 +268,17 @@ public:
     // static_assert(std::is_same_v<decltype(*base::begin()), typename base::value_type>);
     // print_types(*base::begin(), std::declval<typename base::iterator::reference>());
 
-    if constexpr (idx == 0) {
-      std::sort(policy, base::begin(), base::end()
-                //            , [](auto&& a, auto&& b) -> bool { return a < b; }
-      );
-    } else {
-      std::sort(policy, base::begin(), base::end(),
-                [](const element& a, const element& b) -> bool {
+#if defined(EXECUTION_POLICY)
+      std::sort(std::execution::par_unseq, base::begin(), base::end(),
+#else
+      std::sort(base::begin(), base::end(),
+#endif
+        [](const element& a, const element& b) -> bool {
                   // print_types(a, b);
-                  return std::tie(std::get<1>(a), std::get<0>(a)) < std::tie(std::get<1>(b), std::get<0>(b));
-                });
+          return std::tie(std::get<idx>(a), std::get<jdx>(a)) < std::tie(std::get<idx>(b), std::get<jdx>(b));
+        });
     }
-  }
+  
 
   template <int idx, class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
   void lexical_stable_sort_by(ExecutionPolicy&& policy = {}) {
@@ -381,11 +380,13 @@ public:
     if constexpr (edge_directedness == directed) {
 
 #if !defined(EDGELIST_AOS)
-      sort_by<idx>(policy);
+      //sort_by<idx>();
+      lexical_sort_by<idx>();
       auto degree = degrees<idx>();
       
       const int kdx = (idx + 1) % 2;
-      cs.indices_.resize(std::max(max_[idx], max_[kdx]) + 1 + 1);
+      //NOTICE: bipartite graph cannot resize indices_ based on the max of column 0/1
+      //cs.indices_.resize(std::max(max_[idx], max_[kdx]) + 1 + 1);
       //cs.indices_.resize(max_[idx] + 1 + 1);
 
       std::inclusive_scan(std::execution::par, degree.begin(), degree.end(), cs.indices_.begin() + 1);
@@ -438,7 +439,8 @@ public:
         Tmp.template sort_by<idx>();
 
         auto degree = Tmp.template degrees<idx>();    // Can have a fast version if we know it is sorted -- using equal_range
-        cs.indices_.resize(Tmp.max_[idx] + 1 + 1);
+        //NOTICE: bipartite graph cannot resize indices_ based on the max of column 0/1
+        //cs.indices_.resize(Tmp.max_[idx] + 1 + 1);
 
         std::inclusive_scan(std::execution::par, degree.begin(), degree.end(), cs.indices_.begin() + 1);
         cs.to_be_indexed_.resize(Tmp.size());
