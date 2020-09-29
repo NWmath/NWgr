@@ -21,13 +21,18 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <unistd.h>
+#include <future>
+#include <thread>
 
+#include "MatrixMarketFile.hpp"
 #include "edge_list.hpp"
+
+#include <tbb/concurrent_vector.h>
 
 namespace nw {
 namespace graph {
 
-void mm_fill(std::istream& inputStream, edge_list<directed>& A, size_t nNonzeros, bool file_symmetry, bool pattern) {
+/*void mm_fill(std::istream& inputStream, edge_list<directed>& A, size_t nNonzeros, bool file_symmetry, bool pattern) {
   A.reserve((file_symmetry ? 2 : 1) * nNonzeros);
   A.open_for_push_back();
   for (size_t i = 0; i < nNonzeros; ++i) {
@@ -159,7 +164,7 @@ edge_list<sym, Attributes...> read_mm(const std::string& filename) {
   A.set_origin(filename);
 
   return A;
-}
+}*/
 
 template <typename T>
 auto read_mm_vector(std::istream& inputStream) {
@@ -224,7 +229,7 @@ auto read_mm_vector(const std::string& filename) {
   return v;
 }
 
-bool is_mm(const std::string filename) {
+/*bool is_mm(const std::string filename) {
   std::ifstream            input_stream(filename);
   std::vector<std::string> header(5);
 
@@ -259,7 +264,7 @@ directedness get_mm_symmetry(const std::string filename) {
   } else {
     return directed;
   }
-}
+}*/
 
 template <size_t w_idx, directedness sym, typename... Attributes>
 void aos_stream(std::ofstream& outputStream, edge_list<sym, Attributes...> A, const std::string& file_symmetry,
@@ -338,6 +343,188 @@ void write_mm(const std::string& filename, adjacency<idx, Attributes...>& A, con
   std::ofstream outputStream(filename);
   adjacency_stream<w_idx>(outputStream, A, file_symmetry, w_type);
 }
+
+static size_t block_min(int thread, size_t M, int threads) {
+  size_t         block = M / threads;
+  int            rem = M % threads;
+  return thread*block + std::min(thread, rem);
+}
+
+template <typename T>
+std::tuple<size_t, std::array<vertex_id_t, 2>, std::array<vertex_id_t, 2>>
+mm_load(mmio::MatrixMarketFile& mmio, std::vector<std::vector<std::tuple<size_t, size_t, T>>>& sub_lists, std::vector<std::vector<std::tuple<size_t, size_t, T>>>& sub_loops, bool keep_loops, size_t threads) {
+  //mmio::MatrixMarketFile mmio(filename);
+  std::array<vertex_id_t, 2> Gi_min = {std::numeric_limits<vertex_id_t>::max(), std::numeric_limits<vertex_id_t>::max()};
+  std::array<vertex_id_t, 2> Gi_max = {0, 0};
+  std::vector<std::future<std::tuple<size_t, std::array<vertex_id_t, 2>, std::array<vertex_id_t, 2>>>> futures(threads);
+  for (std::size_t tid = 0; tid < threads; ++tid) {
+    futures[tid] = std::async(std::launch::async, 
+      [&](size_t thread) {
+        size_t GN = mmio.getNCols();
+        size_t GM = mmio.getNEdges();
+
+        // figure out which edges I'm going to read from the file
+        size_t min = block_min(thread, GM, threads);
+        size_t max = block_min(thread + 1, GM, threads);
+
+        std::array<vertex_id_t, 2> i_min = {std::numeric_limits<vertex_id_t>::max(), std::numeric_limits<vertex_id_t>::max()};
+        std::array<vertex_id_t, 2> i_max = {0, 0};
+
+        // slightly oversize to try and avoid resizing
+        static constexpr double scale = 1.1;
+        sub_lists[thread].reserve(scale*(max-min));
+        size_t count = 0;
+
+        // read edge data from the file
+        for (auto&& [u, v, w] : mmio::edges<T>(mmio, min, max)) {
+          i_min[0] = std::min((vertex_id_t)u, i_min[0]);
+          i_min[1] = std::min((vertex_id_t)v, i_min[1]);
+          i_max[0] = std::max((vertex_id_t)u, i_max[0]);
+          i_max[1] = std::max((vertex_id_t)v, i_max[1]);
+
+          if(u == v && keep_loops) {
+            if(mmio.isPattern()) {
+              sub_loops[thread].push_back(std::tuple(u, v, T(1)));
+            } else {
+              sub_loops[thread].push_back(std::tuple(u, v, w));
+            }
+          }
+          else {
+            if(mmio.isPattern()) {
+              sub_lists[thread].push_back(std::tuple(u, v, T(1)));
+            } else {
+              sub_lists[thread].push_back(std::tuple(u, v, w));
+            }
+            ++count;
+          }
+        }
+        return std::tuple(count, i_min, i_max);
+      }, tid);
+  }
+  std::size_t entries = 0;
+  for (auto&& f : futures) {
+    auto res = f.get();
+    entries += std::get<0>(res);
+    Gi_min[0] = std::min(std::get<1>(res)[0], Gi_min[0]);
+    Gi_min[1] = std::min(std::get<1>(res)[1], Gi_min[1]);
+    Gi_max[0] = std::max(std::get<2>(res)[0], Gi_max[0]);
+    Gi_max[1] = std::max(std::get<2>(res)[1], Gi_max[1]);
+  }
+  
+  return std::tuple(entries, Gi_min, Gi_max);
+}
+
+std::tuple<size_t, std::array<vertex_id_t, 2>, std::array<vertex_id_t, 2>>
+mm_load(mmio::MatrixMarketFile& mmio, std::vector<std::vector<std::tuple<size_t, size_t>>>& sub_lists, std::vector<std::vector<std::tuple<size_t, size_t>>>& sub_loops, bool keep_loops, size_t threads) {
+  //mmio::MatrixMarketFile mmio(filename);
+  std::array<vertex_id_t, 2> Gi_min = {std::numeric_limits<vertex_id_t>::max(), std::numeric_limits<vertex_id_t>::max()};
+  std::array<vertex_id_t, 2> Gi_max = {0, 0};
+  std::vector<std::future<std::tuple<size_t, std::array<vertex_id_t, 2>, std::array<vertex_id_t, 2>>>> futures(threads);
+  for (std::size_t tid = 0; tid < threads; ++tid) {
+    futures[tid] = std::async(std::launch::async, 
+      [&](size_t thread) {
+        
+        size_t GN = mmio.getNCols();
+        size_t GM = mmio.getNEdges();
+
+        // figure out which edges I'm going to read from the file
+        size_t min = block_min(thread, GM, threads);
+        size_t max = block_min(thread + 1, GM, threads);
+
+        std::array<vertex_id_t, 2> i_min = {std::numeric_limits<vertex_id_t>::max(), std::numeric_limits<vertex_id_t>::max()};
+        std::array<vertex_id_t, 2> i_max = {0, 0};
+
+        // slightly oversize to try and avoid resizing
+        static constexpr double scale = 1.1;
+        sub_lists[thread].reserve(scale*(max-min));
+        size_t count = 0;
+
+        // read edge data from the file
+        for (auto&& [u, v] : mmio::edges<>(mmio, min, max)) {
+          i_min[0] = std::min((vertex_id_t)u, i_min[0]);
+          i_min[1] = std::min((vertex_id_t)v, i_min[1]);
+          i_max[0] = std::max((vertex_id_t)u, i_max[0]);
+          i_max[1] = std::max((vertex_id_t)v, i_max[1]);
+
+          if(u == v && keep_loops) {
+            sub_loops[thread].push_back(std::tuple(u,v));
+          } else {
+            sub_lists[thread].push_back(std::tuple(u, v));
+            ++count;
+          }
+        }
+        return std::tuple(count, i_min, i_max);
+      }, tid);
+  }
+  std::size_t entries = 0;
+  for (auto&& f : futures) {
+    auto res = f.get();
+    entries += std::get<0>(res);
+    Gi_min[0] = std::min(std::get<1>(res)[0], Gi_min[0]);
+    Gi_min[1] = std::min(std::get<1>(res)[1], Gi_min[1]);
+    Gi_max[0] = std::max(std::get<2>(res)[0], Gi_max[0]);
+    Gi_max[1] = std::max(std::get<2>(res)[1], Gi_max[1]);
+  }
+  return std::tuple(entries, Gi_min, Gi_max);
+}
+
+
+
+template <directedness sym, typename... Attributes>
+edge_list<sym, Attributes...> read_mm(const std::string& filename, bool keep_loops = true, size_t threads = (size_t) std::thread::hardware_concurrency()) {
+  mmio::MatrixMarketFile mmio(filename);
+  if(!mmio.isSymmetric() && sym == undirected) {
+    std::cerr << "warning: requested undirected edge list, but mtx file is general" << std::endl;
+  }
+  
+  edge_list<sym, Attributes...> A(mmio.getNCols());
+  std::vector<std::vector<std::tuple<size_t, size_t, Attributes...>>> sub_lists(threads);
+  std::vector<std::vector<std::tuple<size_t, size_t, Attributes...>>> sub_loops(threads);
+  
+  auto info = mm_load(mmio, sub_lists, sub_loops, keep_loops, threads);
+  if(mmio.isSymmetric() && sym == directed) {
+    A.resize(std::get<0>(info)*2);
+  }
+  else {
+    A.resize(std::get<0>(info));
+  }
+  A.min_ = std::get<1>(info);
+  A.max_ = std::get<2>(info);
+
+  mmio.release();
+
+  size_t offset = 0;
+  for(size_t t = 0; t < threads; ++t) {
+    std::copy(std::execution::par_unseq, sub_lists[t].begin(), sub_lists[t].end(), A.begin() + offset);
+    offset += sub_lists[t].size();
+  }
+  if(mmio.isSymmetric() && sym == directed) {
+    std::transform(A.begin(), A.begin()+offset, A.begin()+offset, [&](auto&& e){
+      std::tuple<size_t, size_t, Attributes...> copy(e);
+      std::swap(std::get<0>(copy), std::get<1>(copy));
+      return copy;
+    });
+    offset *= 2;
+  }
+  
+  if(keep_loops) {
+    size_t loops = 0;
+    for(size_t t = 0; t < threads; ++t) {
+      loops += sub_loops[t].size();
+    }
+    A.resize(A.size() + loops);
+
+    for(size_t t = 0; t < threads; ++t) {
+      std::copy(std::execution::par_unseq, sub_loops[t].begin(), sub_loops[t].end(), A.begin() + offset);
+      offset += sub_loops[t].size();
+    }
+  }
+  A.close_for_push_back();
+  A.set_origin(filename);
+  
+  return A;
+}
+
 
 }    // namespace graph
 }    // namespace nw
