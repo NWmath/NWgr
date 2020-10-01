@@ -148,6 +148,14 @@ struct struct_of_arrays : std::tuple<std::vector<Attributes>...> {
 
   iterator end() const { return begin() + size(); }
 
+  void copy(std::vector<Attributes>... attrs) {
+    std::apply([&](auto&... vs) { (std::copy(attrs.begin(), attrs.end(), vs.begin()), ...); }, *this);
+  }
+
+  void copy(std::tuple<std::vector<Attributes>...> attrs) {
+    std::apply([&](Attributes... attr) { copy(attr...); }, attrs);
+  }
+
   void push_back(Attributes... attrs) {
     std::apply([&](auto&... vs) { (vs.push_back(attrs), ...); }, *this);
   }

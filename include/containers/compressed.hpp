@@ -269,6 +269,19 @@ public:    // fixme
     is_open_ = false;
   }
 
+  void open_for_copy() {
+    is_open_ = true;
+  }
+
+  void close_for_copy() {
+    is_open_ = false;
+  }
+
+  void copy(std::vector<vertex_id_t>& indices, std::vector<vertex_id_t>& to_be_indexed) {
+    std::copy(indices.begin(), indices.end(), indices_.begin());
+    to_be_indexed_.copy(to_be_indexed);
+  }
+
   void push_back(vertex_id_t i, const Attributes&... attrs) {
     ++indices_[i];
     to_be_indexed_.push_back(attrs...);
@@ -366,8 +379,8 @@ public:    // fixme
     }
   }
 
-  std::vector<vertex_id_t> degrees() const {
-    std::vector<vertex_id_t> degrees_(indices_);
+  std::vector<index_t> degrees() const {
+    std::vector<index_t> degrees_(indices_.size());
     std::adjacent_difference(indices_.begin(), indices_.end(), degrees_.begin());
     return degrees_;
   }
@@ -489,7 +502,10 @@ public:
       : indexed_struct_of_arrays<vertex_id_t, Attributes...>(std::max(A.max()[0], A.max()[1]) + 1) {
     A.fill(*this, policy);
   }
-
+  
+  void fill(std::vector<vertex_id_t>& indices, std::vector<vertex_id_t>& to_be_indexed) {
+    *this->copy(indices, to_be_indexed);
+  }
   //  size_t size() const { return indexed_struct_of_arrays<vertex_id_t, Attributes...>::size(); }
 
 #if 0
