@@ -300,6 +300,7 @@ public:    // fixme
   }
 
   void close_for_copy() {
+    indices_[N_] = to_be_indexed_.size();
     is_open_ = false;
   }
 
