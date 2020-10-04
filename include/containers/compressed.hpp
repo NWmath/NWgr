@@ -66,10 +66,22 @@ public:    // fixme
 
   indexed_struct_of_arrays(size_t N) : N_(N), indices_(N + 1) {}
   indexed_struct_of_arrays(size_t N, size_t M) : N_(N), indices_(N + 1), to_be_indexed_(M) {}
+<<<<<<< HEAD:include/containers/compressed.hpp
   //move constructor, assume indices_[N_] == to_be_indexed_.size();
   indexed_struct_of_arrays(std::vector<vertex_id_t>&& indices, std::vector<vertex_id_t>&& to_be_indexed)
   : N_(indices.size() - 1), indices_(indices), to_be_indexed_(to_be_indexed) {
     assert(indices_[N_] == to_be_indexed_.size());
+=======
+  //copy constructor, assume indices_[N_] == to_be_indexed_.size();
+  indexed_struct_of_arrays(std::vector<vertex_id_t>& indices, std::vector<vertex_id_t>& to_be_indexed)
+  : N_(indices.size() - 1), indices_(indices), to_be_indexed_(to_be_indexed) {
+    assert(indices_[N_] == to_be_indexed.size());
+  }
+  //move constructor, assume indices_[N_] == to_be_indexed_.size();
+  indexed_struct_of_arrays(std::vector<vertex_id_t>&& indices, std::vector<vertex_id_t>&& to_be_indexed)
+  : N_(indices.size() - 1), indices_(indices), to_be_indexed_(to_be_indexed) {
+    assert(indices_[N_] == to_be_indexed.size());
+>>>>>>> c01b6f9 (add copy and move constructor of adjacency list):include/compressed.hpp
   }
 
   /// A linear edge iterator that supports random-access operations.
@@ -278,8 +290,8 @@ public:    // fixme
   }
 
   void move(std::vector<vertex_id_t>&& indices, std::vector<vertex_id_t>&& to_be_indexed) {
-    indices_.swap(indices); //equivalent to 
-    //indices_ = std::move(indices); 
+    //indices_.swap(indices); //equivalent to 
+    indices_ = std::move(indices); 
     to_be_indexed_.move(to_be_indexed);
     assert(indices_.back() == to_be_indexed_.size());
   }
@@ -625,6 +637,9 @@ public:
   //move constructor
   adjacency(std::vector<vertex_id_t>&& indices, std::vector<vertex_id_t>&& to_be_indexed) :
   indexed_struct_of_arrays<vertex_id_t, Attributes...>(std::move(indices), std::move(to_be_indexed)) {}
+  //copy constructor
+  adjacency(std::vector<vertex_id_t>& indices, std::vector<vertex_id_t>& to_be_indexed) :
+  indexed_struct_of_arrays<vertex_id_t, Attributes...>(indices, to_be_indexed) {}
 
   //  size_t size() const { return indexed_struct_of_arrays<vertex_id_t, Attributes...>::size(); }
 
