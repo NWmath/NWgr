@@ -45,6 +45,10 @@ struct struct_of_arrays : std::tuple<std::vector<Attributes>...> {
 
   struct_of_arrays() = default;
   struct_of_arrays(size_t M) : base(std::vector<Attributes>(M)...) {}
+  //single vector move constructor in constant time
+  struct_of_arrays(std::vector<Attributes>&&... soa): base((soa)...) {}
+  //tuple of vectors move constructor in constant time
+  struct_of_arrays(std::tuple<std::vector<Attributes>...>&& soa_s) : base(soa_s) {}
 
   template <class... RandomAccessIterators>
   class It {
@@ -147,6 +151,14 @@ struct struct_of_arrays : std::tuple<std::vector<Attributes>...> {
   iterator end() { return begin() + size(); }
 
   iterator end() const { return begin() + size(); }
+
+  void move(std::vector<Attributes>&... attrs) {
+    std::apply([&](auto&... vs) { (vs.swap(attrs), ...); }, *this);
+  }
+
+  void move(std::tuple<std::vector<Attributes>...>& attrs) {
+    std::apply([&](Attributes... attr) { move(attr...); }, attrs);
+  }
 
   void copy(std::vector<Attributes>... attrs) {
     std::apply([&](auto&... vs) { (std::copy(attrs.begin(), attrs.end(), vs.begin()), ...); }, *this);

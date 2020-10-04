@@ -66,6 +66,16 @@ public:    // fixme
 
   indexed_struct_of_arrays(size_t N) : N_(N), indices_(N + 1) {}
   indexed_struct_of_arrays(size_t N, size_t M) : N_(N), indices_(N + 1), to_be_indexed_(M) {}
+  //copy constructor, assume indices_[N_] == to_be_indexed_.size();
+  indexed_struct_of_arrays(std::vector<vertex_id_t>& indices, std::vector<vertex_id_t>& to_be_indexed)
+  : N_(indices.size() - 1), indices_(indices), to_be_indexed_(to_be_indexed) {
+    assert(indices_[N_] == to_be_indexed.size());
+  }
+  //move constructor, assume indices_[N_] == to_be_indexed_.size();
+  indexed_struct_of_arrays(std::vector<vertex_id_t>&& indices, std::vector<vertex_id_t>&& to_be_indexed)
+  : N_(indices.size() - 1), indices_(indices), to_be_indexed_(to_be_indexed) {
+    assert(indices_[N_] == to_be_indexed.size());
+  }
 
   /// A linear edge iterator that supports random-access operations.
   ///
@@ -241,6 +251,9 @@ public:    // fixme
   vertex_id_t size() const { return indices_.size() - 1; }
   vertex_id_t max() const { return indices_.size() - 2; }
 
+  std::vector<vertex_id_t> get_indices() const { return indices_; }
+  struct_of_arrays<Attributes...> get_to_be_indexed() const { return to_be_indexed_; }
+
   vertex_id_t source(edge_id_t edge) const {
     auto i = std::upper_bound(indices_.begin(), indices_.end(), edge);
     return i - indices_.begin() - 1;
@@ -269,18 +282,19 @@ public:    // fixme
     is_open_ = false;
   }
 
-  void open_for_copy() {
-    is_open_ = true;
-  }
-
-  void close_for_copy() {
-    indices_[N_] = to_be_indexed_.size();
-    is_open_ = false;
+  void move(std::vector<vertex_id_t>&& indices, std::vector<vertex_id_t>&& to_be_indexed) {
+    //indices_.swap(indices); //equivalent to 
+    indices_ = std::move(indices); 
+    to_be_indexed_.move(to_be_indexed);
+    if (indices_.back() == to_be_indexed_.size())
+      indices_.push_back(to_be_indexed_.size());
   }
 
   void copy(std::vector<vertex_id_t>& indices, std::vector<vertex_id_t>& to_be_indexed) {
     std::copy(indices.begin(), indices.end(), indices_.begin());
     to_be_indexed_.copy(to_be_indexed);
+    if (indices_.back() == to_be_indexed_.size())
+      indices_.push_back(to_be_indexed_.size());
   }
 
   void push_back(vertex_id_t i, const Attributes&... attrs) {
@@ -503,10 +517,14 @@ public:
       : indexed_struct_of_arrays<vertex_id_t, Attributes...>(std::max(A.max()[0], A.max()[1]) + 1) {
     A.fill(*this, policy);
   }
-  
-  void fill(std::vector<vertex_id_t>& indices, std::vector<vertex_id_t>& to_be_indexed) {
-    *this->copy(indices, to_be_indexed);
-  }
+  //copy constructor
+  adjacency(std::vector<vertex_id_t>& indices, std::vector<vertex_id_t>& to_be_indexed) :
+  indexed_struct_of_arrays<vertex_id_t, Attributes...>(indices, to_be_indexed) {}
+
+  //move constructor
+  adjacency(std::vector<vertex_id_t>&& indices, std::vector<vertex_id_t>&& to_be_indexed) :
+  indexed_struct_of_arrays<vertex_id_t, Attributes...>(indices, to_be_indexed) {}
+
   //  size_t size() const { return indexed_struct_of_arrays<vertex_id_t, Attributes...>::size(); }
 
 #if 0
