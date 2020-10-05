@@ -690,6 +690,21 @@ public:
                   });
   }
 
+  template <int idx, class Vector = std::vector<vertex_id_t>, class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
+  void relabel(Vector&& perm, ExecutionPolicy&& policy = {}) {
+    std::vector<vertex_id_t> iperm(perm.size());
+
+    tbb::parallel_for(tbb::blocked_range(0ul, iperm.size()), [&](auto&& r) {
+      for (auto i = r.begin(), e = r.end(); i != e; ++i) {
+        iperm[perm[i]] = i;
+      }
+    });
+
+    std::for_each(policy, base::begin(), base::end(),[&](auto&& x) {
+      std::get<idx>(x) = iperm[std::get<idx>(x)];
+    });
+  }
+
   template <int idx, class Vector = std::vector<int>>
   void relabel_by_degree(std::string direction = "ascending", Vector&& degree = std::vector<int>(0)) {
     int status = -4;
