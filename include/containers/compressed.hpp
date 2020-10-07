@@ -400,8 +400,27 @@ public:    // fixme
     return degrees_;
   }
 
-  template <class Graph, class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
-  void sort_by_degree(std::string direction = "descending", ExecutionPolicy&& ex_policy = {}) {
+template <class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
+void permute(std::vector<vertex_id_t>& iperm, ExecutionPolicy&& ex_policy = {}) {
+  auto b = std::get<0>(to_be_indexed_).begin();
+
+  for (size_t i = 0; i < std::get<0>(to_be_indexed_).size(); ++i) {
+    b[i] = iperm[b[i]];
+  }
+
+  auto s = std::get<0>(to_be_indexed_).begin();
+
+  for (size_t i = 0; i < iperm.size(); ++i) {
+    std::sort(ex_policy, s + indices_[i], s + indices_[i + 1]);
+  }
+
+  if (g_debug_compressed) {
+    stream_indices(std::cout);
+  }
+}
+
+template <class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
+  std::vector<vertex_id_t> sort_by_degree(std::string direction = "descending", ExecutionPolicy&& ex_policy = {}) {
     std::vector              degrees_ = degrees();
     std::vector<vertex_id_t> perm(indices_.size() - 1);
     std::iota(perm.begin(), perm.end(), 0);
@@ -437,15 +456,16 @@ public:    // fixme
 
     auto s = std::get<0>(to_be_indexed_).begin();
 
-    for (size_t i = 0; i < perm.size(); ++i) {
+    for (size_t i = 0; i < iperm.size(); ++i) {
       std::sort(ex_policy, s + indices_[i], s + indices_[i + 1]);
     }
 
     if (g_debug_compressed) {
       stream_indices(std::cout);
     }
+    return iperm;
   }
-
+  
   void stream_indices(std::ostream& out = std::cout) {
     auto s = std::get<0>(to_be_indexed_).begin();
     out << "\n+++\n";

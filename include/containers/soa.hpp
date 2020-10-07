@@ -232,7 +232,7 @@ struct struct_of_arrays : std::tuple<std::vector<Attributes>...> {
   }
 
   template <class T, class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
-  void permute(const std::vector<index_t>& indices, const std::vector<index_t>& new_indices, const std::vector<vertex_id_t>& perm,
+  void permute(std::vector<vertex_id_t>& indices, std::vector<vertex_id_t>& new_indices, std::vector<vertex_id_t>& perm,
                T& vs, ExecutionPolicy&& ex_policy = {}) {
     T ws(vs.size());
     for (size_t i = 0, e = indices.size() - 1; i < e; ++i) {
@@ -242,7 +242,7 @@ struct struct_of_arrays : std::tuple<std::vector<Attributes>...> {
     std::copy(ex_policy, ws.begin(), ws.end(), vs.begin());
   }
 
-  void permute(const std::vector<index_t>& indices, const std::vector<index_t>& new_indices, const std::vector<vertex_id_t>& perm) {
+  void permute(std::vector<vertex_id_t>& indices, std::vector<vertex_id_t>& new_indices, std::vector<vertex_id_t>& perm) {
     std::apply([&](auto&... vs) { (permute(indices, new_indices, perm, vs), ...); }, *this);
   }
 

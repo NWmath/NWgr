@@ -353,7 +353,7 @@ std::vector<vertex_id_t> ccv5(Graph& g) {
   std::vector<vertex_id_t> comp(g.size());
   std::for_each(
       std::execution::par_unseq,
-      counting_iterator<vertex_id_t>(0), counting_iterator<vertex_id_t>(g.size()), [&](auto n) { comp[n] = n; });
+      counting_iterator<vertex_id_t>(0), counting_iterator<vertex_id_t>(N), [&](auto n) { comp[n] = n; });
 
   std::for_each(
       std::execution::par_unseq,
