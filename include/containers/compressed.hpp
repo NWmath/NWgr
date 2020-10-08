@@ -66,15 +66,10 @@ public:    // fixme
 
   indexed_struct_of_arrays(size_t N) : N_(N), indices_(N + 1) {}
   indexed_struct_of_arrays(size_t N, size_t M) : N_(N), indices_(N + 1), to_be_indexed_(M) {}
-  //copy constructor, assume indices_[N_] == to_be_indexed_.size();
-  indexed_struct_of_arrays(std::vector<vertex_id_t>& indices, std::vector<vertex_id_t>& to_be_indexed)
-  : N_(indices.size() - 1), indices_(indices), to_be_indexed_(to_be_indexed) {
-    assert(indices_[N_] == to_be_indexed.size());
-  }
   //move constructor, assume indices_[N_] == to_be_indexed_.size();
   indexed_struct_of_arrays(std::vector<vertex_id_t>&& indices, std::vector<vertex_id_t>&& to_be_indexed)
   : N_(indices.size() - 1), indices_(indices), to_be_indexed_(to_be_indexed) {
-    assert(indices_[N_] == to_be_indexed.size());
+    assert(indices_[N_] == to_be_indexed_.size());
   }
 
   /// A linear edge iterator that supports random-access operations.
@@ -283,18 +278,16 @@ public:    // fixme
   }
 
   void move(std::vector<vertex_id_t>&& indices, std::vector<vertex_id_t>&& to_be_indexed) {
-    //indices_.swap(indices); //equivalent to 
-    indices_ = std::move(indices); 
+    indices_.swap(indices); //equivalent to 
+    //indices_ = std::move(indices); 
     to_be_indexed_.move(to_be_indexed);
-    if (indices_.back() == to_be_indexed_.size())
-      indices_.push_back(to_be_indexed_.size());
+    assert(indices_.back() == to_be_indexed_.size());
   }
 
   void copy(std::vector<vertex_id_t>& indices, std::vector<vertex_id_t>& to_be_indexed) {
     std::copy(indices.begin(), indices.end(), indices_.begin());
     to_be_indexed_.copy(to_be_indexed);
-    if (indices_.back() == to_be_indexed_.size())
-      indices_.push_back(to_be_indexed_.size());
+    assert(indices_.back() == to_be_indexed_.size());
   }
 
   void push_back(vertex_id_t i, const Attributes&... attrs) {
@@ -423,7 +416,12 @@ template <class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
   std::vector<vertex_id_t> sort_by_degree(std::string direction = "descending", ExecutionPolicy&& ex_policy = {}) {
     std::vector              degrees_ = degrees();
     std::vector<vertex_id_t> perm(indices_.size() - 1);
-    std::iota(perm.begin(), perm.end(), 0);
+    tbb::parallel_for(tbb::blocked_range(0ul, perm.size()), [&](auto&& r) {
+      for (auto i = r.begin(), e = r.end(); i != e; ++i) {
+        perm[i] = i;
+      }
+    });
+    //std::iota(perm.begin(), perm.end(), 0);
     auto d = degrees_.begin() + 1;
 
     if (direction == "descending") {
@@ -444,8 +442,7 @@ template <class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
     }
 
     std::inclusive_scan(ex_policy, new_indices_.begin(), new_indices_.end(), new_indices_.begin());
-
-    to_be_indexed_.permute(indices_, new_indices_, perm);
+    to_be_indexed_.permute(indices_, new_indices_, iperm);
     indices_ = std::move(new_indices_);
 
     auto b = std::get<0>(to_be_indexed_).begin();
@@ -537,13 +534,11 @@ public:
       : indexed_struct_of_arrays<vertex_id_t, Attributes...>(std::max(A.max()[0], A.max()[1]) + 1) {
     A.fill(*this, policy);
   }
-  //copy constructor
-  adjacency(std::vector<vertex_id_t>& indices, std::vector<vertex_id_t>& to_be_indexed) :
-  indexed_struct_of_arrays<vertex_id_t, Attributes...>(indices, to_be_indexed) {}
-
   //move constructor
   adjacency(std::vector<vertex_id_t>&& indices, std::vector<vertex_id_t>&& to_be_indexed) :
-  indexed_struct_of_arrays<vertex_id_t, Attributes...>(indices, to_be_indexed) {}
+  indexed_struct_of_arrays<vertex_id_t, Attributes...>(std::move(indices), std::move(to_be_indexed)) {
+    std::cout << "adj move constuctor\n";
+  }
 
   //  size_t size() const { return indexed_struct_of_arrays<vertex_id_t, Attributes...>::size(); }
 
