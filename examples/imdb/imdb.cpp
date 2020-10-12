@@ -24,7 +24,9 @@ int main() {
   auto                          titles_shp = titles.shape();
   std::map<std::string, size_t> titles_map;
   for (size_t i = 0; i < titles_shp[0]; ++i) {
-    titles_map[titles(i, 0)] = i;
+    if (titles(i, 1) == "movie") {
+      titles_map[titles(i, 0)] = i;
+    }
   }
   t0.stop();
   std::cout << t0 << std::endl;
@@ -59,15 +61,26 @@ int main() {
   size_t title_counter = 0;
   size_t name_counter  = 0;
   for (size_t i = 1; i < shp[0]; ++i) {
-    auto title = title_principals(i, 0);
-    auto name  = title_principals(i, 2);
-    if (titles_map.find(title) == titles_map.end()) {
-      titles_map[title] = title_counter++;
+    if (title_principals(i, 3) == "actor" || title_principals(i, 3) == "actress") {
+
+      auto title = title_principals(i, 0);
+      auto name  = title_principals(i, 2);
+
+      if (name == "nm0837064") {
+	auto idx = titles_map[title];
+	auto aa = titles(idx, 2);
+	std::cout << title << " " << aa << std::endl;
+      }
+#if 0
+      if (titles_map.find(title) == titles_map.end()) {
+	titles_map[title] = title_counter++;
+      }
+      if (names_map.find(name) == names_map.end()) {
+	names_map[name] = name_counter++;
+      }
+#endif
+      edges.push_back(titles_map[title], names_map[name]);
     }
-    if (names_map.find(name) == names_map.end()) {
-      names_map[name] = name_counter++;
-    }
-    edges.push_back(titles_map[title], names_map[name]);
   }
   edges.close_for_push_back();
 
