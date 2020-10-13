@@ -156,6 +156,7 @@ int main() {
   path_to_bacon("Oona O'Neill");
   path_to_bacon("William Rufus Shafter");
   path_to_bacon("William Heise");
+  path_to_bacon("William Shatner");
 
   return 0;
 }
