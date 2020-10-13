@@ -32,7 +32,7 @@
 namespace nw {
 namespace graph {
 
-/*void mm_fill(std::istream& inputStream, edge_list<directed>& A, size_t nNonzeros, bool file_symmetry, bool pattern) {
+void mm_fill(std::istream& inputStream, edge_list<directed>& A, size_t nNonzeros, bool file_symmetry, bool pattern) {
   A.reserve((file_symmetry ? 2 : 1) * nNonzeros);
   A.open_for_push_back();
   for (size_t i = 0; i < nNonzeros; ++i) {
@@ -164,7 +164,7 @@ edge_list<sym, Attributes...> read_mm(const std::string& filename) {
   A.set_origin(filename);
 
   return A;
-}*/
+}
 
 template <typename T>
 auto read_mm_vector(std::istream& inputStream) {
@@ -229,7 +229,7 @@ auto read_mm_vector(const std::string& filename) {
   return v;
 }
 
-/*bool is_mm(const std::string filename) {
+bool is_mm(const std::string filename) {
   std::ifstream            input_stream(filename);
   std::vector<std::string> header(5);
 
@@ -264,7 +264,7 @@ directedness get_mm_symmetry(const std::string filename) {
   } else {
     return directed;
   }
-}*/
+}
 
 template <size_t w_idx, directedness sym, typename... Attributes>
 void aos_stream(std::ofstream& outputStream, edge_list<sym, Attributes...> A, const std::string& file_symmetry,
@@ -352,7 +352,7 @@ static size_t block_min(int thread, size_t M, int threads) {
 
 template <typename T>
 std::tuple<size_t, std::array<vertex_id_t, 2>, std::array<vertex_id_t, 2>>
-mm_load(mmio::MatrixMarketFile& mmio, std::vector<std::vector<std::tuple<size_t, size_t, T>>>& sub_lists, std::vector<std::vector<std::tuple<size_t, size_t, T>>>& sub_loops, bool keep_loops, size_t threads) {
+par_load_mm(mmio::MatrixMarketFile& mmio, std::vector<std::vector<std::tuple<size_t, size_t, T>>>& sub_lists, std::vector<std::vector<std::tuple<size_t, size_t, T>>>& sub_loops, bool keep_loops, size_t threads) {
   //mmio::MatrixMarketFile mmio(filename);
   std::array<vertex_id_t, 2> Gi_min = {std::numeric_limits<vertex_id_t>::max(), std::numeric_limits<vertex_id_t>::max()};
   std::array<vertex_id_t, 2> Gi_max = {0, 0};
@@ -415,8 +415,7 @@ mm_load(mmio::MatrixMarketFile& mmio, std::vector<std::vector<std::tuple<size_t,
 }
 
 std::tuple<size_t, std::array<vertex_id_t, 2>, std::array<vertex_id_t, 2>>
-mm_load(mmio::MatrixMarketFile& mmio, std::vector<std::vector<std::tuple<size_t, size_t>>>& sub_lists, std::vector<std::vector<std::tuple<size_t, size_t>>>& sub_loops, bool keep_loops, size_t threads) {
-  //mmio::MatrixMarketFile mmio(filename);
+par_load_mm(mmio::MatrixMarketFile& mmio, std::vector<std::vector<std::tuple<size_t, size_t>>>& sub_lists, std::vector<std::vector<std::tuple<size_t, size_t>>>& sub_loops, bool keep_loops, size_t threads) {
   std::array<vertex_id_t, 2> Gi_min = {std::numeric_limits<vertex_id_t>::max(), std::numeric_limits<vertex_id_t>::max()};
   std::array<vertex_id_t, 2> Gi_max = {0, 0};
   std::vector<std::future<std::tuple<size_t, std::array<vertex_id_t, 2>, std::array<vertex_id_t, 2>>>> futures(threads);
@@ -471,17 +470,17 @@ mm_load(mmio::MatrixMarketFile& mmio, std::vector<std::vector<std::tuple<size_t,
 
 
 template <directedness sym, typename... Attributes>
-edge_list<sym, Attributes...> read_mm(const std::string& filename, bool keep_loops = true, size_t threads = (size_t) std::thread::hardware_concurrency()) {
+edge_list<sym, Attributes...> par_read_mm(const std::string& filename, bool keep_loops = true, size_t threads = (size_t) std::thread::hardware_concurrency()) {
   mmio::MatrixMarketFile mmio(filename);
   if(!mmio.isSymmetric() && sym == undirected) {
     std::cerr << "warning: requested undirected edge list, but mtx file is general" << std::endl;
   }
-  
+
   edge_list<sym, Attributes...> A(mmio.getNCols());
   std::vector<std::vector<std::tuple<size_t, size_t, Attributes...>>> sub_lists(threads);
   std::vector<std::vector<std::tuple<size_t, size_t, Attributes...>>> sub_loops(threads);
   
-  auto info = mm_load(mmio, sub_lists, sub_loops, keep_loops, threads);
+  auto info = par_load_mm(mmio, sub_lists, sub_loops, keep_loops, threads);
   if(mmio.isSymmetric() && sym == directed) {
     A.resize(std::get<0>(info)*2);
   }
@@ -492,33 +491,49 @@ edge_list<sym, Attributes...> read_mm(const std::string& filename, bool keep_loo
   A.max_ = std::get<2>(info);
 
   mmio.release();
-
-  size_t offset = 0;
-  for(size_t t = 0; t < threads; ++t) {
-    std::copy(std::execution::par_unseq, sub_lists[t].begin(), sub_lists[t].end(), A.begin() + offset);
-    offset += sub_lists[t].size();
-  }
-  if(mmio.isSymmetric() && sym == directed) {
-    std::transform(A.begin(), A.begin()+offset, A.begin()+offset, [&](auto&& e){
-      std::tuple<size_t, size_t, Attributes...> copy(e);
-      std::swap(std::get<0>(copy), std::get<1>(copy));
-      return copy;
-    });
-    offset *= 2;
-  }
   
+  std::vector<size_t> offsets(threads+1);
+  offsets[0] = 0;
+  for(size_t tid = 1; tid < threads; ++tid) {
+    offsets[tid] = offsets[tid-1] + sub_lists[tid-1].size();
+  }
+  offsets[threads] = offsets[threads-1] + sub_lists[threads-1].size();
+  
+  std::vector<std::future<void>> futures(threads);
+  for (std::size_t tid = 0; tid < threads; ++tid) {
+    futures[tid] = std::async(std::launch::async,
+      [&](size_t thread) {
+	std::copy(std::execution::par_unseq, sub_lists[thread].begin(), sub_lists[thread].end(), A.begin() + offsets[thread]);
+        if(mmio.isSymmetric() && sym == directed) {
+          std::transform(std::execution::par_unseq, A.begin() + offsets[thread], A.begin() + offsets[thread+1], A.begin() + offsets[threads] + offsets[thread], [&](auto&& e){
+            std::tuple<size_t, size_t, Attributes...> copy(e);
+            std::swap(std::get<0>(copy), std::get<1>(copy));
+            return copy;
+          });
+	}
+      return;
+      }, tid);
+  }
+  for (auto&& f : futures) {
+    f.get();
+  }
+
   if(keep_loops) {
     size_t loops = 0;
     for(size_t t = 0; t < threads; ++t) {
       loops += sub_loops[t].size();
     }
     A.resize(A.size() + loops);
-
+    size_t offset = offsets[threads];
+    if(mmio.isSymmetric() && sym == directed) {
+      offset *= 2;
+    }
     for(size_t t = 0; t < threads; ++t) {
       std::copy(std::execution::par_unseq, sub_loops[t].begin(), sub_loops[t].end(), A.begin() + offset);
       offset += sub_loops[t].size();
     }
   }
+ 
   A.close_for_push_back();
   A.set_origin(filename);
   
