@@ -1,10 +1,21 @@
+//
+// This file is part of NWGraph
+// Pacific Northwest National Laboratory and University of Washington
+// 2018, 2019, 202
+//
+// Licensed under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License
+// https://creativecommons.org/licenses/by-nc-sa/4.0/
+//
+// Author: Andrew Lumsdaine
+//
 
+#include <cassert>
+#include <deque>
 #include <fstream>
 #include <iostream>
-
-#include <deque>
 #include <map>
 #include <queue>
+#include <random>
 #include <string>
 #include <vector>
 
@@ -12,10 +23,14 @@
 
 using json = nlohmann::json;
 
+#include "algorithms/betweenness_centrality.hpp"
+#include "algorithms/page_rank.hpp"
 #include "bfs_edge_range.hpp"
 #include "compressed.hpp"
 #include "edge_list.hpp"
+#include "proxysort.hpp"
 #include "util/timer.hpp"
+
 
 std::string delink(const std::string& link) {
   auto opening = link.find("[[");
@@ -34,10 +49,28 @@ std::string delink(const std::string& link) {
   return delinked.substr(bar + 1);
 }
 
+
+template <class Graph>
+auto build_random_sources(Graph&& graph, size_t n, long seed) {
+  using Id = typename nw::graph::vertex_id<std::decay_t<Graph>>::type;
+
+  auto sources = std::vector<Id>(n);
+  auto degrees = graph.degrees();
+  auto gen     = std::mt19937(seed);
+  auto dis     = std::uniform_int_distribution<Id>(0, graph.max());
+
+  for (auto& id : sources) {
+    for (id = dis(gen); degrees[id] == 0; id = dis(gen)) {
+    }
+  }
+  return sources;
+}
+
+
 int main() {
   std::ifstream ifs("../data/oracle.json");
 
-  nw::util::timer   t3("read oracle.json");
+  nw::util::timer   t2("read oracle.json");
   std::vector<json> jsons;
   while (!ifs.eof() && ifs.peek() != EOF) {
     std::string str;
@@ -67,17 +100,21 @@ int main() {
 
     if (titles_map.find(title) == titles_map.end()) {
       titles.emplace_back(title);
-      titles_map[title] = titles.size() - 1;
+      titles_map[title] = title_counter++;
+      assert(titles.size() == title_counter);
     }
 
     for (auto& k : j["cast"]) {
       auto name = delink(k);
 
       if (names_map.find(name) == names_map.end()) {
-        names.emplace_back(name);
-        names_map[name] = names.size() - 1;
-      }
 
+        names.emplace_back(name);
+        names_map[name] = name_counter++;
+
+        assert(names.size() == name_counter);
+        assert(names[name_counter - 1] == name);
+      }
       edges.push_back(titles_map[title], names_map[name]);
     }
   }
@@ -85,6 +122,22 @@ int main() {
 
   t3.stop();
   std::cout << t3 << std::endl;
+
+  nw::util::timer t3a("verify names and titles");
+
+  for (auto&& [k, v] : names_map) {
+    if (names[v] != k) {
+      std::cout << names[v] << " != " << k << " ( " << v << " )" << std::endl;
+    }
+  }
+  for (auto&& [k, v] : titles_map) {
+    if (titles[v] != k) {
+      std::cout << titles[v] << " != " << k << " ( " << v << " )" << std::endl;
+    }
+  }
+
+  t3a.stop();
+  std::cout << t3a << std::endl;
 
   nw::util::timer t4("build biadjacencies");
 
@@ -133,14 +186,13 @@ int main() {
     together_in[v] = k;
   }
 
-  auto path_to_bacon = [&](const std::string& name) {
-    size_t the_actor = names_map[name];
-    std::cout << name << " has a Bacon number of " << distance[the_actor] << std::endl;
+  auto path_to_bacon_idx = [&](size_t the_actor) {
+    std::cout << names[the_actor] << " has a Bacon number of " << distance[the_actor] << std::endl;
 
     size_t d = distance[the_actor];
     while (the_actor != kevin_bacon) {
-      std::cout << names[the_actor] << " starred with " << names[parents[the_actor]] << " in " << titles[together_in[the_actor]]
-                << std::endl;
+      std::cout << "  " << names[the_actor] << " starred with " << names[parents[the_actor]] << " in "
+                << titles[together_in[the_actor]] << std::endl;
       the_actor = parents[the_actor];
       if (d-- == 0) {
         break;
@@ -148,6 +200,26 @@ int main() {
     }
   };
 
+  auto path_to_bacon = [&](const std::string& name) {
+    size_t the_actor = names_map[name];
+    if (names[the_actor] != name) {
+      std::cout << names[the_actor] << " != " << name << " ( " << the_actor << " )" << std::endl;
+    }
+    path_to_bacon_idx(the_actor);
+  };
+
+  std::cout << std::endl;
+
+  size_t max_distance = *(std::max_element(distance.begin(), distance.end()));
+  std::cout << "Furthest distance is " << max_distance << std::endl;
+
+  for (size_t i = 0; i < distance.size(); ++i) {
+    if (distance[i] == max_distance) {
+      path_to_bacon_idx(i);
+    }
+  }
+
+  std::cout << std::endl;
   path_to_bacon("Kevin Bacon");
   path_to_bacon("Kyra Sedgwick");
   path_to_bacon("David Suchet");
@@ -155,8 +227,48 @@ int main() {
   path_to_bacon("Danica McKellar");
   path_to_bacon("Oona O'Neill");
   path_to_bacon("William Rufus Shafter");
-  path_to_bacon("William Heise");
   path_to_bacon("William Shatner");
+
+  if constexpr (false) {
+    auto                L_t = nw::graph::adjacency<1, size_t>(s_overlap);
+    std::vector<double> page_rank(L.size());
+
+    page_rank_v8(L_t, L.degrees(), page_rank, 0.85, 1.e-4, 20);
+
+    auto perm = nw::util::proxysort<size_t>(page_rank, std::greater<float>());
+    for (size_t i = 0; i < 10; ++i) {
+      std::cout << std::to_string(perm[i]) + ": " << names[perm[i]] << std::endl;
+    }
+  }
+
+  if constexpr (false) {
+
+    nw::graph::edge_list<nw::graph::undirected> t_overlap;
+    t_overlap.open_for_push_back();
+
+    for (size_t i = 0; i < H.size(); ++i) {
+      for (auto&& [k] : H[i]) {
+        for (auto&& [j] : G[k]) {
+          if (j > i) {
+            t_overlap.push_back(i, j);
+          }
+        }
+      }
+    }
+
+    t_overlap.close_for_push_back();
+
+    auto L_t = nw::graph::adjacency<0>(t_overlap);
+
+    auto sources = build_random_sources(L_t, 1024, 98195);
+
+    auto tweens = nw::graph::bc2_v2<decltype(L_t), double, double>(L_t, sources);
+
+    auto perm = nw::util::proxysort<size_t>(tweens, std::greater<float>());
+    for (size_t i = 0; i < 10; ++i) {
+      std::cout << std::to_string(perm[i]) + ": " << names[perm[i]] << std::endl;
+    }
+  }
 
   return 0;
 }
