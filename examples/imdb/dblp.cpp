@@ -12,12 +12,10 @@
 
 using json = nlohmann::json;
 
-
 #include "bfs_edge_range.hpp"
 #include "compressed.hpp"
 #include "edge_list.hpp"
 #include "util/timer.hpp"
-
 
 std::string delink(const std::string& link) {
   auto opening = link.find("[[");
@@ -28,14 +26,13 @@ std::string delink(const std::string& link) {
   if (opening == std::string::npos) {
     return link + " hm";
   }
-  auto delinked = link.substr(opening + 2, closing-opening-2);
-  auto bar = delinked.find("|");
+  auto delinked = link.substr(opening + 2, closing - opening - 2);
+  auto bar      = delinked.find("|");
   if (bar == std::string::npos) {
     return delinked;
   }
-  return delinked.substr(bar+1);
+  return delinked.substr(bar + 1);
 }
-
 
 int main() {
 
@@ -43,13 +40,13 @@ int main() {
   //  json jf = json::parse(ifs);
 
   json jf = json::parse(ifs);
-    
+
   nw::util::timer t3("build hypergraph");
 
   std::map<std::string, size_t> titles_map;
   std::map<std::string, size_t> names_map;
-  std::vector<std::string> titles;
-  std::vector<std::string> names;
+  std::vector<std::string>      titles;
+  std::vector<std::string>      names;
 
   nw::graph::edge_list<nw::graph::directed> edges;
   edges.open_for_push_back();
@@ -58,21 +55,21 @@ int main() {
   size_t name_counter  = 0;
 
   for (auto& j : jf) {
-    auto title = j[0];
+    auto title   = j[0];
     auto authors = j[1];
-    
+
     if (titles_map.find(title) == titles_map.end()) {
       titles.emplace_back(title);
-      titles_map[title] = titles.size()-1;
+      titles_map[title] = titles.size() - 1;
     }
-    
+
     for (auto& name : authors) {
-      
+
       if (names_map.find(name) == names_map.end()) {
-	names.emplace_back(name);
-	names_map[name] = names.size()-1;
+        names.emplace_back(name);
+        names_map[name] = names.size() - 1;
       }
-      
+
       edges.push_back(titles_map[title], names_map[name]);
     }
   }
@@ -122,7 +119,7 @@ int main() {
   t6.stop();
   std::cout << t6 << std::endl;
 
-  size_t kevin_bacon   = names_map["Donald E. Knuth"];
+  size_t kevin_bacon = names_map["Donald E. Knuth"];
 
   std::vector<size_t> distance(L.size());
   std::vector<size_t> parents(L.size());
@@ -134,16 +131,17 @@ int main() {
     together_in[v] = k;
   }
 
-  auto path_to_bacon = [&] (const std::string& name) {
-    size_t the_actor  = names_map[name];
+  auto path_to_bacon = [&](const std::string& name) {
+    size_t the_actor = names_map[name];
     std::cout << name << " has a Knuth number of " << distance[the_actor] << std::endl;
-    
+
     size_t d = distance[the_actor];
     while (the_actor != kevin_bacon) {
-      std::cout << names[the_actor] << " co-authored " << titles[together_in[the_actor]] << " with "<< names[parents[the_actor]] << std::endl;
+      std::cout << names[the_actor] << " co-authored " << titles[together_in[the_actor]] << " with " << names[parents[the_actor]]
+                << std::endl;
       the_actor = parents[the_actor];
       if (d-- == 0) {
-	break;
+        break;
       }
     }
   };
@@ -154,6 +152,5 @@ int main() {
   path_to_bacon("Bill Gates");
   path_to_bacon("Jack Dongarra");
 
-    
   return 0;
 }

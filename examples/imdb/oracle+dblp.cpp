@@ -12,12 +12,10 @@
 
 using json = nlohmann::json;
 
-
 #include "bfs_edge_range.hpp"
 #include "compressed.hpp"
 #include "edge_list.hpp"
 #include "util/timer.hpp"
-
 
 std::string delink(const std::string& link) {
   auto opening = link.find("[[");
@@ -28,14 +26,13 @@ std::string delink(const std::string& link) {
   if (opening == std::string::npos) {
     return link + " hm";
   }
-  auto delinked = link.substr(opening + 2, closing-opening-2);
-  auto bar = delinked.find("|");
+  auto delinked = link.substr(opening + 2, closing - opening - 2);
+  auto bar      = delinked.find("|");
   if (bar == std::string::npos) {
     return delinked;
   }
-  return delinked.substr(bar+1);
+  return delinked.substr(bar + 1);
 }
-
 
 int main() {
 
@@ -44,24 +41,22 @@ int main() {
   std::vector<json> jsons;
   while (!ifs.eof() && ifs.peek() != EOF) {
 
-
     std::string str;
     std::getline(ifs, str);
     json jf = json::parse(str);
 
     jsons.emplace_back(jf);
-
   }
-    
+
   std::ifstream ifs2("../data/dblp.json");
-  json jf = json::parse(ifs2);
+  json          jf = json::parse(ifs2);
 
   nw::util::timer t3("build hypergraph");
 
   std::map<std::string, size_t> titles_map;
   std::map<std::string, size_t> names_map;
-  std::vector<std::string> titles;
-  std::vector<std::string> names;
+  std::vector<std::string>      titles;
+  std::vector<std::string>      names;
 
   nw::graph::edge_list<nw::graph::directed> edges;
   edges.open_for_push_back();
@@ -71,46 +66,45 @@ int main() {
 
   for (auto& j : jsons) {
     auto title = j["title"];
-    
+
     if (titles_map.find(title) == titles_map.end()) {
       titles.emplace_back(title);
-      titles_map[title] = titles.size()-1;
+      titles_map[title] = titles.size() - 1;
     }
-    
+
     for (auto& k : j["cast"]) {
       auto name = delink(k);
-      
+
       if (names_map.find(name) == names_map.end()) {
-	names.emplace_back(name);
-	names_map[name] = names.size()-1;
+        names.emplace_back(name);
+        names_map[name] = names.size() - 1;
       }
-      
+
       edges.push_back(titles_map[title], names_map[name]);
     }
   }
   edges.close_for_push_back();
 
   for (auto& j : jf) {
-    auto title = j[0];
+    auto title   = j[0];
     auto authors = j[1];
-    
+
     if (titles_map.find(title) == titles_map.end()) {
       titles.emplace_back(title);
-      titles_map[title] = titles.size()-1;
+      titles_map[title] = titles.size() - 1;
     }
-    
+
     for (auto& name : authors) {
-      
+
       if (names_map.find(name) == names_map.end()) {
-	names.emplace_back(name);
-	names_map[name] = names.size()-1;
+        names.emplace_back(name);
+        names_map[name] = names.size() - 1;
       }
-      
+
       edges.push_back(titles_map[title], names_map[name]);
     }
   }
   edges.close_for_push_back();
-
 
   t3.stop();
   std::cout << t3 << std::endl;
@@ -156,7 +150,7 @@ int main() {
   t6.stop();
   std::cout << t6 << std::endl;
 
-  size_t kevin_bacon   = names_map["Donald E. Knuth"];
+  size_t kevin_bacon = names_map["Kevin Bacon"];
 
   std::vector<size_t> distance(L.size());
   std::vector<size_t> parents(L.size());
@@ -168,17 +162,17 @@ int main() {
     together_in[v] = k;
   }
 
-  auto path_to_bacon = [&] (const std::string& name) {
-    size_t the_actor  = names_map[name];
+  auto path_to_bacon = [&](const std::string& name) {
+    size_t the_actor = names_map[name];
     std::cout << name << " has a Bacon number of " << distance[the_actor] << std::endl;
-    
+
     size_t d = distance[the_actor];
     while (the_actor != kevin_bacon) {
-      std::cout << names[the_actor] << " starred with " << names[parents[the_actor]] << " in "
-		<< titles[together_in[the_actor]] << std::endl;
+      std::cout << names[the_actor] << " starred with " << names[parents[the_actor]] << " in " << titles[together_in[the_actor]]
+                << std::endl;
       the_actor = parents[the_actor];
       if (d-- == 0) {
-	break;
+        break;
       }
     }
   };
@@ -187,6 +181,7 @@ int main() {
   path_to_bacon("Donald E. Knuth");
   path_to_bacon("Bill Gates");
   path_to_bacon("Jack Dongarra");
+  path_to_bacon("Andrew Lumsdaine");
 
   path_to_bacon("Kyra Sedgwick");
   path_to_bacon("David Suchet");
@@ -195,6 +190,6 @@ int main() {
   path_to_bacon("Oona O'Neill");
   path_to_bacon("William Rufus Shafter");
   path_to_bacon("William Heise");
-    
+
   return 0;
 }

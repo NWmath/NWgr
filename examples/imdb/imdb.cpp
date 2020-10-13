@@ -67,9 +67,9 @@ int main() {
       auto name  = title_principals(i, 2);
 
       if (name == "nm0837064") {
-	auto idx = titles_map[title];
-	auto aa = titles(idx, 2);
-	std::cout << title << " " << aa << std::endl;
+        auto idx = titles_map[title];
+        auto aa  = titles(idx, 2);
+        std::cout << title << " " << aa << std::endl;
       }
 #if 0
       if (titles_map.find(title) == titles_map.end()) {
