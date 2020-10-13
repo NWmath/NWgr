@@ -122,7 +122,7 @@ int main() {
   t6.stop();
   std::cout << t6 << std::endl;
 
-  size_t kevin_bacon   = names_map["Hector Garcia-Molina"];
+  size_t kevin_bacon   = names_map["Donald E. Knuth"];
 
   std::vector<size_t> distance(L.size());
   std::vector<size_t> parents(L.size());
@@ -136,7 +136,7 @@ int main() {
 
   auto path_to_bacon = [&] (const std::string& name) {
     size_t the_actor  = names_map[name];
-    std::cout << name << " has a Garcia-Molina number of " << distance[the_actor] << std::endl;
+    std::cout << name << " has a Knuth number of " << distance[the_actor] << std::endl;
     
     size_t d = distance[the_actor];
     while (the_actor != kevin_bacon) {
@@ -148,9 +148,10 @@ int main() {
     }
   };
 
+  path_to_bacon("Donald E. Knuth");
   path_to_bacon("Hector Garcia-Molina");
   path_to_bacon("Gene Golub");
-  path_to_bacon("Andrew Lumsdaine");
+  path_to_bacon("Bill Gates");
   path_to_bacon("Jack Dongarra");
 
     
