@@ -44,3 +44,6 @@ target_link_libraries(oracle.exe nw_graph nlohmann_json::nlohmann_json)
 add_executable(dblp.exe dblp.cpp)
 target_link_libraries(dblp.exe nw_graph nlohmann_json::nlohmann_json)
 
+add_executable(oracle+dblp.exe oracle+dblp.cpp)
+target_link_libraries(oracle+dblp.exe nw_graph nlohmann_json::nlohmann_json)
+
