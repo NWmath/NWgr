@@ -39,20 +39,10 @@ std::string delink(const std::string& link) {
 
 int main() {
 
-  std::ifstream ifs("../data/oracle.json");
+  std::ifstream ifs("../data/dblp.json");
   //  json jf = json::parse(ifs);
 
-  std::vector<json> jsons;
-  while (!ifs.eof() && ifs.peek() != EOF) {
-
-
-    std::string str;
-    std::getline(ifs, str);
-    json jf = json::parse(str);
-
-    jsons.emplace_back(jf);
-
-  }
+  json jf = json::parse(ifs);
     
   nw::util::timer t3("build hypergraph");
 
@@ -67,16 +57,16 @@ int main() {
   size_t title_counter = 0;
   size_t name_counter  = 0;
 
-  for (auto& j : jsons) {
-    auto title = j["title"];
+  for (auto& j : jf) {
+    auto title = j[0];
+    auto authors = j[1];
     
     if (titles_map.find(title) == titles_map.end()) {
       titles.emplace_back(title);
       titles_map[title] = titles.size()-1;
     }
     
-    for (auto& k : j["cast"]) {
-      auto name = delink(k);
+    for (auto& name : authors) {
       
       if (names_map.find(name) == names_map.end()) {
 	names.emplace_back(name);
@@ -132,7 +122,7 @@ int main() {
   t6.stop();
   std::cout << t6 << std::endl;
 
-  size_t kevin_bacon   = names_map["Kevin Bacon"];
+  size_t kevin_bacon   = names_map["Hector Garcia-Molina"];
 
   std::vector<size_t> distance(L.size());
   std::vector<size_t> parents(L.size());
@@ -146,12 +136,11 @@ int main() {
 
   auto path_to_bacon = [&] (const std::string& name) {
     size_t the_actor  = names_map[name];
-    std::cout << name << " has a Bacon number of " << distance[the_actor] << std::endl;
+    std::cout << name << " has a Garcia-Molina number of " << distance[the_actor] << std::endl;
     
     size_t d = distance[the_actor];
     while (the_actor != kevin_bacon) {
-      std::cout << names[the_actor] << " starred with " << names[parents[the_actor]] << " in "
-		<< titles[together_in[the_actor]] << std::endl;
+      std::cout << names[the_actor] << " co-authored " << titles[together_in[the_actor]] << " with "<< names[parents[the_actor]] << std::endl;
       the_actor = parents[the_actor];
       if (d-- == 0) {
 	break;
@@ -159,14 +148,11 @@ int main() {
     }
   };
 
-  path_to_bacon("Kevin Bacon");
-  path_to_bacon("Kyra Sedgwick");
-  path_to_bacon("David Suchet");
-  path_to_bacon("Julie Kavner");
-  path_to_bacon("Danica McKellar");
-  path_to_bacon("Oona O'Neill");
-  path_to_bacon("William Rufus Shafter");
-  path_to_bacon("William Heise");
+  path_to_bacon("Hector Garcia-Molina");
+  path_to_bacon("Gene Golub");
+  path_to_bacon("Andrew Lumsdaine");
+  path_to_bacon("Jack Dongarra");
+
     
   return 0;
 }

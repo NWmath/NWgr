@@ -32,7 +32,7 @@ int main(int argc, char*argv[]) {
   nw::graph::edge_list<nw::graph::undirected> s_overlap;
   s_overlap.open_for_push_back();
   
-  size_t s = 1;
+  size_t s = 2;
 
 #pragma omp parallel for schedule(dynamic, 64)
 
