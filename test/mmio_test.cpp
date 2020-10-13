@@ -56,6 +56,26 @@ TEST_CASE("constructing graphs using mmio-testing with auto", "[mmio]") {
   }
 }
 
+TEST_CASE("constructing graphs using par_mmio", "[parmmio]") {
+
+  SECTION("reading an undirected graph") {
+    edge_list<undirected> A = par_read_mm<undirected>(DATA_FILE, true, 2);
+    A.stream();
+  }
+  SECTION("reading a directed graph") {
+    edge_list<directed> B = par_read_mm<directed>(DATA_FILE, true, 2);
+    B.stream();
+  }
+  SECTION("undirected with attributes") {
+    edge_list<undirected, double> C = par_read_mm<undirected, double>(DATA_FILE, true, 2);
+    C.stream();
+  }
+  SECTION("directed with attributes") {
+    edge_list<directed, double> D = par_read_mm<directed, double>(DATA_FILE, true, 2);
+    D.stream();
+  }
+}
+
 TEST_CASE("writing graphsusing mmio", "[mmio]") {
   edge_list<directed, double> A(5);
   A.push_back(0, 1, 1);
