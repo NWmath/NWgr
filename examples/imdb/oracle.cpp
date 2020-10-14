@@ -155,9 +155,9 @@ int main() {
   for (size_t i = 0; i < H.size(); ++i) {
     for (auto&& [k] : H[i]) {
       for (auto&& [j] : G[k]) {
-        if (j > i) {
-          s_overlap.push_back(i, j, k);
-        }
+	//	if (j > i) {
+	  s_overlap.push_back(i, j, k);
+	  //	}
       }
     }
   }

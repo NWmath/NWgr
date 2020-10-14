@@ -58,6 +58,11 @@ int main() {
     auto title   = j[0];
     auto authors = j[1];
 
+    //    std::cout << title << std::endl;
+    //    for (auto& name : authors) {
+    //      std::cout << "   " << name << std::endl;
+    //    }
+
     if (titles_map.find(title) == titles_map.end()) {
       titles.emplace_back(title);
       titles_map[title] = titles.size() - 1;
@@ -68,6 +73,10 @@ int main() {
       if (names_map.find(name) == names_map.end()) {
         names.emplace_back(name);
         names_map[name] = names.size() - 1;
+      }
+
+      if (names[names_map[name]] != name) {
+	std::cout << names[names_map[name]] << " != " << name << " ( " << names_map[name] << " )" << std::endl;
       }
 
       edges.push_back(titles_map[title], names_map[name]);
@@ -93,16 +102,9 @@ int main() {
   s_overlap.open_for_push_back();
 
   for (size_t i = 0; i < H.size(); ++i) {
-
-    if ((i % 8192) == 0) {
-      std::cout << i << std::endl;
-    }
-
     for (auto&& [k] : H[i]) {
       for (auto&& [j] : G[k]) {
-        if (j > i) {
-          s_overlap.push_back(i, j, k);
-        }
+	s_overlap.push_back(i, j, k);
       }
     }
   }
@@ -119,7 +121,8 @@ int main() {
   t6.stop();
   std::cout << t6 << std::endl;
 
-  size_t kevin_bacon = names_map["Donald E. Knuth"];
+  //  size_t kevin_bacon = names_map["Donald E. Knuth"];
+  size_t kevin_bacon = names_map["Paul Erd\u00f6s"];
 
   std::vector<size_t> distance(L.size());
   std::vector<size_t> parents(L.size());
@@ -133,7 +136,7 @@ int main() {
 
   auto path_to_bacon = [&](const std::string& name) {
     size_t the_actor = names_map[name];
-    std::cout << name << " has a Knuth number of " << distance[the_actor] << std::endl;
+    std::cout << name << " has a " << names[kevin_bacon] << " number of " << distance[the_actor] << std::endl;
 
     size_t d = distance[the_actor];
     while (the_actor != kevin_bacon) {
@@ -146,11 +149,14 @@ int main() {
     }
   };
 
+  path_to_bacon(names[kevin_bacon]);
+
   path_to_bacon("Donald E. Knuth");
   path_to_bacon("Hector Garcia-Molina");
-  path_to_bacon("Gene Golub");
-  path_to_bacon("Bill Gates");
+  path_to_bacon("Gene H. Golub");
+  path_to_bacon("William R. Gates");
   path_to_bacon("Jack Dongarra");
+  path_to_bacon("Andrew Lumsdaine");
 
   return 0;
 }

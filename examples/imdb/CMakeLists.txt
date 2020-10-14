@@ -31,6 +31,7 @@ if(OpenMP_CXX_FOUND)
 endif()
 
 
+set(CMAKE_CXX_CLANG_TIDY clang-tidy -checks=-*,readability-*)
 
 add_executable(imdb.exe imdb.cpp)
 target_link_libraries(imdb.exe nw_graph xtensor)
