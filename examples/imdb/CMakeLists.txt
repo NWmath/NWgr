@@ -41,8 +41,6 @@ if (NOT xtensor_FOUND)
 endif()
 
 
-# find_package(nlohmann_json 3.2.0 REQUIRED)
-
 find_package(nlohmann_json 3.2.0 QUIET)
 if (NOT nlohmann_json_FOUND)
   message("Installed json not found -- fetching")
