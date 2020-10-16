@@ -1,5 +1,4 @@
 {% if meta.typedefs %}
-
   <h3>Types</h3>
   <table class='definition-table'>
     <tr class='headers'>
@@ -7,25 +6,19 @@
       <th>Definition</th>
       <th>Notes</th>
     </tr>
-    {% for type in meta.typedefs %}
+    {% set the_typedefs = (meta.typedefs|jsonize)%}
+    {% for k,type in the_typedefs.items() %}
       <tr>
-
-        <td class='type'>{% highlight 'c++' %}{{ type.0 }}{% endhighlight %}</td>
-
-{#
-
-
-        <td class='decl'>{{ type.1.definition | escape}}</td>
-        {% if type.1.description or type.1.annotation %}
+        <td class='type'>{% highlight 'c++' %}{{ k }}{% endhighlight %}</td>
+        <td class='decl'>{{ type.definition | escape}}</td>
+        {% if type.description or type.annotation %}
           <td class='defn'>
-            {{ type.1.description | markdownify }}
-            {% if type.1.annotation %}
-              <span class='annotation'>({{ type.1.annotation | join(', ') }})</span>
+            {{ type.description | markdownify }}
+            {% if type.annotation %}
+              <span class='annotation'>({{ type.annotation | join(', ') }})</span>
             {% endif %}
           </td>
         {% endif %}
-#}
-
       </tr>
     {% endfor %}
   </table>
