@@ -1,0 +1,46 @@
+{% extends '!layout.html' %}
+
+{%-  block document %}
+<div class="documentwrapper">
+  
+  {%- if render_sidebar %}
+  <div class="bodywrapper">
+  {%- endif %}
+
+    <div class="body" role="main">
+
+      <header class="post-header">
+	<h2>{{ meta.title }}</h2>
+      </header>
+
+      {% include 'defined_in_header.html' %}
+      
+      {% if meta['declaration'] %}
+      {% highlight 'c++' %}{{ meta['declaration'] }}{% endhighlight %}
+      {% endif %}
+      
+      {{ meta['brief'] | markdownify }}
+      
+      {{ meta['description'] | markdownify }}
+      
+      <h2>Values</h2>
+      
+      <table class='definition-table'>
+	{% for value in meta['values'] %}
+        <tr>
+          <td class='decl'>{{ value['name'] }}</td>
+          <td class='defn'>{{ value['description'] | markdownify }}</td>
+        </tr>
+	{% endfor %}
+      </table>
+
+      {{ content }}
+      
+      {#  {% include external_examples.html name=meta.example header="Example" %}  #}
+
+    </div>
+  {%- if render_sidebar %}
+  </div>
+  {%- endif %}
+</div>
+{%- endblock %}

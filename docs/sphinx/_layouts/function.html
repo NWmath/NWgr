@@ -1,0 +1,70 @@
+{% extends '!layout.html' %}
+
+{{ meta }}
+
+
+{%-  block document %}
+<div class="documentwrapper">
+  
+  {%- if render_sidebar %}
+  <div class="bodywrapper">
+  {%- endif %}
+
+    <div class="body" role="main">
+
+      <h2>{{ meta.title }}</h2>
+
+      {% include 'defined_in_header.html' %} 
+
+      {{ meta['brief'] | markdownify }}
+
+      {% include 'overloads.html' %}  
+
+{#
+      {% for entity in (meta['entities']|jsonize) %}
+
+      {{ entity }}
+
+
+      {% case entity.kind %}
+        {% when 'parameters'%}
+          <h3>Parameters</h3>
+          {% if entity.list %}
+            <table class='parameter-table'>
+            {% for item in entity.list %}
+                <tr>
+                  <td class='decl'>{{ item.name }}</td>
+                  <td class='defn'>
+                      {% if item.annotation %}
+                      <span class='annotation'>({{item.annotation | join(', ')}})</span>
+                      {% endif %}
+                      {{ item.description | markdownify }}
+                  </td>
+                </tr>
+            {% endfor %}
+            </table>
+          {% else %}
+            <p>(none)</p>
+          {% endif %}
+        {% when 'result'%}
+          <h3>Return value</h3>
+          {% if entity['description'] %}
+            {{ entity['description'] | markdownify }}
+          {% else %}
+            <p>(none)</p>
+          {% endif %}
+        {% else %}
+      {% endcase %}
+
+    {% endfor %}
+
+#}
+
+    {{ content }}
+
+    {# {% include 'external_examples.html' name=meta.example header="Example" %}  #}
+
+</div>
+{% endblock %}
+
+

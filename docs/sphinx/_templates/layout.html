@@ -1,0 +1,28 @@
+{% if meta is defined and meta is not none %}
+{%- extends (meta.layout+".html")|default('!layout.html') %}
+{% else %}
+{%- extends "!layout.html" %}
+{% endif %}
+
+{% block rootrellink %}
+        <li><a href="{{ pathto('index') }}">BGL17 home</a>&#160;|</li>
+        <li><a href="{{ pathto('contents') }}">Documentation</a> &#187;</li>
+{% endblock %}
+
+
+{% block header %}
+<div class="pageheader">
+  <ul>
+    <li><a href="{{ pathto('index') }}">Home</a></li>
+    <li><a href="{{ pathto('usage/installation') }}">Get it</a></li>
+    <li><a href="{{ pathto('contents') }}">Docs</a></li>
+    <li><a href="{{ pathto('develop') }}">Extend/Develop</a></li>
+  </ul>
+  <div>
+    <a href="{{ pathto('index') }}">
+      <img src="{{ pathto('_static/bgl17header.png', 1) }}" alt="BGL17" />
+    </a>
+  </div>
+</div>
+{% endblock %}
+

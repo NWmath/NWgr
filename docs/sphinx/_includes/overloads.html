@@ -1,0 +1,55 @@
+{% if meta.overloads %}
+  {% set the_overloads = (meta.overloads|jsonize) %}
+
+  <table class='declaration-table'>
+  {% for k,v in the_overloads.items() %}
+
+      <tr>
+        <td>
+          {% highlight 'c++' %}{{ v['signature_with_names'] }}{% endhighlight %}
+        </td>
+        <td>({{ loop.index }})</td>
+      </tr>
+  {% endfor %}
+
+
+  </table>
+
+  {{ meta.description | markdownify }}
+
+  <ol>
+  {% for k,entity in the_overloads.items() %}
+    <li>
+      {% if entity['annotation'] %}
+        <span class='annotation'>({{entity['annotation'] | join(", ")}})</span>
+      {% endif %}
+      {{entity['description']}}
+      {% if entity['arguments'] or entity['return'] %}
+        <br/>
+      {% endif %}
+
+      {% if entity['arguments'] %}
+        <b>Parameters:</b>
+        <ul>
+          {% for arg in entity['arguments'] %}
+	  <li> <code>{{arg['type'] | escape}}</code>
+            {% if (arg['name'] != "") %}
+              <code>{{arg['name'] | escape}}</code>
+            {% else %}
+              <i>unnamed</i>
+            {% endif %}
+            {% if arg.description and (arg.description != "__OPTIONAL__") %}
+              : {{arg.description | escape}}
+            {% endif %}
+          </li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+      {% if entity['return'] and (entity['return'] != "__OPTIONAL__") %}
+        <b>Returns:</b> {{entity['return'] | escape}}
+      {% endif %}
+    </li>
+  {% endfor %}
+  </ol>
+
+{% endif %}

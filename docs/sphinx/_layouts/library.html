@@ -1,0 +1,42 @@
+{% extends '!layout.html' %}
+
+{%-  block document %}
+<div class="documentwrapper">
+  
+  {%- if render_sidebar %}
+  <div class="bodywrapper">
+  {%- endif %}
+
+    <div class="body" role="main">
+
+      <header class="post-header">
+	<h2>{{ meta.title }}</h2>
+      </header>
+
+      {% if meta and meta['brief'] %} {{ meta['brief'] | markdownify }} {% endif %}
+
+      {% if meta and meta['description'] %} {{ meta['description'] | markdownify }} {% endif %}
+
+      {{ content }}
+
+      {% include 'associated_typedefs.html' %}
+
+      {% include 'associated_enumerations.html' %} 
+      
+      {% include 'associated_classes.html' %}      
+
+      {% include 'associated_functions.html' %}    
+
+      {% if meta['library-type'] and meta['library-type'] == 'library' %}
+      {% include 'associated_libraries.html' %}
+      {% endif %}
+
+    </div>
+
+  {%- if render_sidebar %}
+  </div>
+  {%- endif %}
+</div>
+{%- endblock %}
+
+
