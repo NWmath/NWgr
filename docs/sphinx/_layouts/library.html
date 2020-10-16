@@ -1,6 +1,7 @@
 {% extends '!layout.html' %}
 
 {%-  block document %}
+
 <div class="documentwrapper">
   
   {%- if render_sidebar %}
@@ -12,6 +13,16 @@
       <header class="post-header">
 	<h2>{{ meta.title }}</h2>
       </header>
+
+<h4>
+Library.html
+<h4>
+
+{% set siblings = (pagename | siblings) %}
+{% set enums = (siblings | layout_class) %}
+
+{{siblings}}
+
 
       {% if meta and meta['brief'] %} {{ meta['brief'] | markdownify }} {% endif %}
 

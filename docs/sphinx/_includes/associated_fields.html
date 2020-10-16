@@ -1,28 +1,29 @@
-{#
-
 {% if meta.fields %}
+{% set the_fields = (meta.fields|jsonize) %}
+
   <h3>Member Fields</h3>
+
   <table class='definition-table'>
     <tr class='headers'>
       <th>Field</th>
       <th>Type</th>
       <th>Notes</th>
     </tr>
-    {% for type in meta.fields %}
+
+    {% for k,v in the_fields.items() %}
       <tr>
-        <td class='field'>{{ type.0 }}</td>
-        <td class='decl'>{{ type.1.type | escape }}</td>
-        {% if type.1..description or type.1.annotation %}
+        <td class='field'>{{ k }}</td>
+        <td class='decl'>{{ v.type | escape }}</td>
+        {% if v.description or v.annotation %}
           <td class='defn'>
-            {{ type[1].description | markdownify }}
-            {% if type[1].annotation %}
-              <span class='annotation'>({{ type.1.annotation | join: ", " }})</span>
+            {{ v.description | markdownify }}
+            {% if v.annotation %}
+              <span class='annotation'>({{ v.annotation | join(", ")}})</span>
             {% endif %}
           </td>
         {% endif %}
       </tr>
     {% endfor %}
   </table>
-{% endif %}
 
-#}
+{% endif %}

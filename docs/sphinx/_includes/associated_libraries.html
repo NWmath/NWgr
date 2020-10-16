@@ -2,8 +2,8 @@
 
 {% set siblings = (pagename | siblings) %}
 {% set sub_libs = (siblings | layout_library) %}
-{% set libraries = (siblings | library_library) %}
-{% set sourcefiles = (siblings | library_sourcefile) %}
+{% set libraries = (sub_libs | library_library) %}
+{% set sourcefiles = (sub_libs | library_sourcefile ) %}
 
 {% if (sourcefiles|length ) > 0 %}
 <h3>Sources</h3>

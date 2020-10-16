@@ -1,27 +1,27 @@
-{# from hyde
 
-{% include derive_family.html %}
+{% set siblings = (pagename | siblings) %}
+{% set classes = (siblings | layout_class) %}
 
-{% assign classes = siblings | where_exp:"p","p.layout == 'class'" | sort: "title" %}
 
-{% if classes.size > 0 %}
+{% if (classes|length) > 0 %}
   <h3>Classes</h3>
   <table class='associated-table'>
-    {% for p in classes %}
+  {% for k,v in classes.items() %}
+    {% set p = v[0] %}
       <tr>
         <td class='name'>
-          <div><a href="{{p.url}}">{{ p.title | escape }}</a></div>
+          <div><a href="{{k|relpath}}">{{ p.title | escape }}</a></div>
         </td>
         <td class='brief'>
           {% if p.brief %}
             {{ p.brief | markdownify }}
-          {% elsif p.description %}
+          {% elif p.description %}
             {{ p.description | markdownify }}
           {% else %}
             {{ '_No details given_' | markdownify }}
           {% endif %}
           {% if p.annotation %}
-            <span class='annotation'>({{p.annotation | join: ", "}})</span>
+            <span class='annotation'>({{p.annotation | join(", ")}})</span>
           {% endif %}
         </td>
       </tr>
@@ -29,4 +29,3 @@
   </table>
 {% endif %}
 
-#}
