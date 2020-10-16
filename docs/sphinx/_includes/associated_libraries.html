@@ -1,31 +1,29 @@
-{# 
 
-{% include derive_family.html %}
 
-{% assign sub_libs = siblings | where_exp:"p","p.layout == 'library'" %}
+{% set siblings = (pagename | siblings) %}
+{% set sub_libs = (siblings | layout_library) %}
+{% set libraries = (siblings | library_library) %}
+{% set sourcefiles = (siblings | library_sourcefile) %}
 
-{% assign libraries = sub_libs | where_exp:"p","p.library-type == 'library'" | sort:"title" %}
-
-{% assign sourcefiles = sub_libs | where_exp:"p","p.library-type == 'sourcefile'" | sort:"title" %}
-
-{% if sourcefiles.size > 0 %}
+{% if (sourcefiles|length ) > 0 %}
 <h3>Sources</h3>
 <table class='associated-table'>
-  {% for p in sourcefiles %}
+  {% for k,v in sourcefiles.items() %}
+    {% set p = v[0] %}
     <tr>
         <td class='name'>
-          <div><a href="{{p.url}}"><code>{{ p.title | escape }}</code></a></div>
+          <div><a href="{{k|relpath}}/index.html"><code>{{ p.title | escape }}</code></a></div>
         </td>
         <td class='brief'>
             {% if p.brief %}
                 {{ p.brief | markdownify }}
-            {% elsif p.description %}
+            {% elif p.description %}
                 {{ p.description | markdownify }}
             {% else %}
                 {{ '_No details given_' | markdownify }}
             {% endif %}
             {% if p.annotation %}
-                <span class='annotation'>({{p.annotation | join: ", "}})</span>
+                <span class='annotation'>({{p.annotation | join(", ")}})</span>
             {% endif %}
         </td>
     </tr>
@@ -33,29 +31,29 @@
 </table>
 {% endif %}
 
-{% if libraries.size > 0 %}
+
+{% if (libraries|length) > 0 %}
 <h3>Subcomponents</h3>
 <table class='associated-table'>
-  {% for p in libraries %}
+  {% for k,v in libraries.items() %}
+    {% set p = v[0] %}
     <tr>
         <td class='name'>
-          <div><a href="{{p.url}}">{{ p.title | escape }}</a></div>
+          <div><a href="{{k}}">{{ p.title | escape }}</a></div>
         </td>
         <td class='brief'>
             {% if p.brief %}
                 {{ p.brief | markdownify }}
-            {% elsif p.description %}
+            {% elif p.description %}
                 {{ p.description | markdownify }}
             {% else %}
                 {{ '_No details given_' | markdownify }}
             {% endif %}
             {% if p.annotation %}
-                <span class='annotation'>({{p.annotation | join: ", "}})</span>
+                <span class='annotation'>({{p.annotation | join(", ")}})</span>
             {% endif %}
         </td>
     </tr>
   {% endfor %}
 </table>
 {% endif %}
-
-#}
