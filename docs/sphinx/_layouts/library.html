@@ -14,16 +14,6 @@
 	<h2>{{ meta.title }}</h2>
       </header>
 
-<h4>
-Library.html
-<h4>
-
-{% set siblings = (pagename | siblings) %}
-{% set enums = (siblings | layout_class) %}
-
-{{siblings}}
-
-
       {% if meta and meta['brief'] %} {{ meta['brief'] | markdownify }} {% endif %}
 
       {% if meta and meta['description'] %} {{ meta['description'] | markdownify }} {% endif %}

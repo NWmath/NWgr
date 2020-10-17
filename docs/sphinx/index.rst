@@ -10,6 +10,8 @@ Welcome to NW Graph's documentation!
    :maxdepth: 2
    :caption: Contents:
 
+   overview/index.rst
+   examples/index.rst
    libref/index.md
 
 
