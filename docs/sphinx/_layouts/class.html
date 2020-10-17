@@ -1,6 +1,8 @@
 {% extends '!layout.html' %}
+{% set title = meta['title'] %}
 
 {%-  block document %}
+
 <div class="documentwrapper">
   
   {%- if render_sidebar %}
@@ -8,7 +10,7 @@
   {%- endif %}
 
     <div class="body" role="main">
-      <h2>{{ meta.title }}</h2>
+      <h2>{{ meta.title | e }}</h2>
 
       {% include 'defined_in_header.html' %}
 
@@ -19,7 +21,7 @@
         {% for item in meta['declaration'] %}
         <tr>
           <td>
-            {% highlight 'cpp' %}{{ item }}{% endhighlight %}
+            {% highlight 'c++' %}{{ item }}{% endhighlight %}
           </td>
         </tr>
         {% endfor %}

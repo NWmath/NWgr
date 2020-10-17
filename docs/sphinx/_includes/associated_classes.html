@@ -2,7 +2,6 @@
 {% set siblings = (pagename | siblings) %}
 {% set classes = (siblings | layout_class) %}
 
-
 {% if (classes|length) > 0 %}
   <h3>Classes</h3>
   <table class='associated-table'>
@@ -10,7 +9,8 @@
     {% set p = v[0] %}
       <tr>
         <td class='name'>
-          <div><a href="{{k|relpath}}.html">{{ p.title | escape }}</a></div>
+          {% set pt = pathto(k+"/index") %}
+          <div><a href="{{pt}}">{{ p.title | escape }}</a></div>
         </td>
         <td class='brief'>
           {% if p.brief %}

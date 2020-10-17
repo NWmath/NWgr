@@ -36,7 +36,9 @@
 
   <tr>
     <td class='decl'>
-      <div><a href="{{k}}">{{ p.title | escape }}</a></div>
+      {% set pt = pathto(k) %}
+
+      <div><a href="{{pt}}">{{ p.title | escape }}</a></div>
     </td>
     <td class='defn'>
       {% if p.brief %}

@@ -1,7 +1,5 @@
 {% extends '!layout.html' %}
-
-{{ meta }}
-
+{% set title = meta['title'] %}
 
 {%-  block document %}
 <div class="documentwrapper">
@@ -13,10 +11,6 @@
     <div class="body" role="main">
 
       <h2>{{ meta.title }}</h2>
-
-<h4>
-Function.html
-<h4>
 
       {% include 'defined_in_header.html' %} 
 
