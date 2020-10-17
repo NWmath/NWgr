@@ -20,7 +20,7 @@ def initDict(libref):
 
                 value = list(yaml.safe_load_all(open(local_pagename)))
                 
-                print('   ====>>>  saving page: ', local_pagename)
+                # print('   ====>>>  walking page: ', local_pagename)
 
                 sources.update({key:value})
 
@@ -107,7 +107,7 @@ def siblings(path):
     if (os.path.basename(path) == 'index'):
         search_key = os.path.dirname(path)
 
-    print('siblings search key', search_key)
+    # print(':::::::))) siblings search key', search_key)
 
     descendents = dict(filter(lambda item: 
                               search_key == os.path.split(item[0])[0],
@@ -165,9 +165,6 @@ local_html_context = {
 
 
 def hydeme_context():
-
-    print('   *********  sources ********', sources)
-
     return local_html_context
     
 

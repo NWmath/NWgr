@@ -18,7 +18,7 @@ sys.path.insert(0, os.path.abspath('.'))
 # -- Project information -----------------------------------------------------
 
 project = 'NW Graph'
-copyright = '2020, Andrew Lumsdaine'
+copyright = '2020, PNNL, UW'
 author = 'Andrew Lumsdaine'
 
 # The full version, including alpha/beta/rc tags
@@ -26,7 +26,6 @@ release = '0.10.15'
 
 
 # -- General configuration ---------------------------------------------------
-
 
 sys.path.append(os.path.abspath('_extensions'))
 
@@ -40,7 +39,6 @@ extensions = [
 
 source_suffix = {
     '.rst': 'restructuredtext',
-    '.txt': 'markdown',
     '.md': 'markdown',
 }
 
