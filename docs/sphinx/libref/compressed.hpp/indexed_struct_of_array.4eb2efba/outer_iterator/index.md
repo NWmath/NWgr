@@ -1,6 +1,6 @@
 ---
 layout: class
-title: compressed.hpp
+title: outer_iterator
 owner: __MISSING__
 brief: __MISSING__
 tags:

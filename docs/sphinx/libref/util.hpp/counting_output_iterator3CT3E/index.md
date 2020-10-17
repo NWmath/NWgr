@@ -1,6 +1,6 @@
 ---
 layout: class
-title: util.hpp
+title: counting_output_iterator<T>
 owner: __MISSING__
 brief: __MISSING__
 tags:

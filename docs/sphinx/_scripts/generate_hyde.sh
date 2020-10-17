@@ -27,7 +27,7 @@ pushd ${EXE_DIR} > /dev/null
 
 #HYDE_ROOT=/Users/lums658/Contrib/hyde
 
-HYDE_ROOT=/tmp/foo/NWgr/docs/sphinx/_hyde
+HYDE_ROOT=/home/nwmath/hyde
 
 
 HYDE_PATH=`find_hyde "${HYDE_ROOT}/build"`
@@ -49,7 +49,7 @@ for CUR_LIB in ${NWGRAPH_SRC} ${NWGRAPH_SRC}/algorithms ${NWGRAPH_SRC}/util  ${N
 	
 	echo "Processing $CUR_FILE"
 	
-	CUR_COMMAND="${HYDE_PATH} -hyde-verbose -hyde-src-root=${HYDE_SRC_ROOT} -hyde-yaml-dir=${HYDE_DST_ROOT} -hyde-update --auto-toolchain-includes "$CUR_FILE" -- -std=c++17 ${NWGRAPH_INCLUDES}"
+	CUR_COMMAND="${HYDE_PATH} -hyde-very-verbose -hyde-src-root=${HYDE_SRC_ROOT} -hyde-yaml-dir=${HYDE_DST_ROOT} -hyde-update --auto-toolchain-includes "$CUR_FILE" -- -std=c++17 ${NWGRAPH_INCLUDES}"
 
 	echo $CUR_COMMAND
 	eval $CUR_COMMAND

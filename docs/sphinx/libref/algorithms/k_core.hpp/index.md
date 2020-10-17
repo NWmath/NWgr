@@ -1,6 +1,6 @@
 ---
 layout: library
-title: k_core.hpp
+title: algorithms/k_core.hpp
 owner: __MISSING__
 brief: __MISSING__
 tags:

@@ -1,6 +1,6 @@
 ---
 layout: class
-title: edge_list.hpp
+title: edge_list<edge_directedness, Attributes>
 owner: __MISSING__
 brief: __MISSING__
 tags:

@@ -1,6 +1,6 @@
 ---
 layout: class
-title: filtered_bfs_range.hpp
+title: filtered_bfs_edge_range_iterator
 owner: __MISSING__
 brief: __MISSING__
 tags:

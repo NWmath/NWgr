@@ -1,6 +1,6 @@
 ---
 layout: library
-title: connected_components.hpp
+title: algorithms/connected_components.hpp
 owner: __MISSING__
 brief: __MISSING__
 tags:

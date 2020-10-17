@@ -1,6 +1,6 @@
 ---
 layout: class
-title: k_core.hpp
+title: pair_hash
 owner: __MISSING__
 brief: __MISSING__
 tags:

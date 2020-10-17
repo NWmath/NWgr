@@ -34,8 +34,8 @@ sys.path.append(os.path.abspath('_extensions'))
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
-#    'me'
-    'myst_parser'
+    'myst_parser',
+    'hydeme'
 ]
 
 source_suffix = {
@@ -70,65 +70,6 @@ html_theme_path = [ "_themes" ]
 
 # -- Jinja stuff -------------------------------------------------------------
 
-import json
+import hydeme
 
-def jsonize(path):
-    return json.loads(path)
-
-
-def basename(path):
-    if path:
-      return os.path.basename(path)
-    else:
-      return ""
-
-
-def markdownify(path):
-    return path
-
-
-def frob_slash(path):
-    return path.replace('/', '2F')
-
-
-def parent(path):
-    (foo, bar) = os.path.split(os.path.dirname(path))
-    return bar
-
-
-def add_jinja_filters(app):
-    # Make sure we're outputting HTML                                                                                               
-    if app.builder.format != 'html':
-        return
-
-    app.builder.templates.environment.add_extension('jinja2_highlight.HighlightExtension')
-
-#    app.builder.templates.environment.filters['basename']    = basename
-    app.builder.templates.environment.filters['jsonize']     = jsonize
-    app.builder.templates.environment.filters['markdownify'] = markdownify
-#    app.builder.templates.environment.filters['frob_slash']  = frob_slash
-#    app.builder.templates.environment.filters['parent']      = parent
-#    app.builder.templates.environment.filters['siblings']    = siblings
-
-
-
-def rstjinja(app, docname, source):
-    """                                                                                                                             
-    Render our pages as a jinja template for fancy templating goodness.                                                             
-    """
-    # Make sure we're outputting HTML                                                                                               
-    if app.builder.format != 'html':
-        return
-    src = source[0]
-    rendered = app.builder.templates.render_string(
-        src, app.config.html_context
-    )
-    source[0] = rendered
-
-
-def setup(app):
-    '''                                                                                                                             
-    Adds extra jinja filters.                                                                                                       
-    '''
-    app.connect("builder-inited", add_jinja_filters)
-    app.connect("source-read", rstjinja)
+html_context = hydeme.hydeme_context()

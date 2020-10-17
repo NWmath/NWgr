@@ -1,29 +1,12 @@
 
-
 {% set siblings = (pagename | siblings) %}
-
-{{ siblings }}
-
 {% set methods = (siblings | layout_method) %}
 
 {% set ctor_name = meta.title %}
 {% set dtor_name = "~" ~ meta.title %}
 {% if meta.ctor != 'unspecified' or meta.dtor != 'unspecified' or (methods|length) > 0 %}
-
-
-{% endif %}
-
-
-{% for k,p in methods.items() %}
-
-kk: {{k}}
-<p>
-  pp: {{p}}
-
-{% endfor %}
-
-
 <h3>Member Functions</h3>
+{% endif %}
 
 <table class='definition-table'>
 {% for k,pp in methods.items() %}

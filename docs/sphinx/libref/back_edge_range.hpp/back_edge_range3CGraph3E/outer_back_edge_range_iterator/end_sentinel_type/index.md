@@ -1,6 +1,6 @@
 ---
 layout: class
-title: back_edge_range.hpp
+title: end_sentinel_type
 owner: __MISSING__
 brief: __MISSING__
 tags:

@@ -1,6 +1,6 @@
 ---
 layout: library
-title: dijkstra.hpp
+title: algorithms/dijkstra.hpp
 owner: __MISSING__
 brief: __MISSING__
 tags:

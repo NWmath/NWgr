@@ -1,6 +1,6 @@
 ---
 layout: library
-title: jones_plassmann_coloring.hpp
+title: algorithms/jones_plassmann_coloring.hpp
 owner: __MISSING__
 brief: __MISSING__
 tags:

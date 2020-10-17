@@ -1,6 +1,6 @@
 ---
 layout: class
-title: neighbor_range.hpp
+title: neighbor_range<Graph>
 owner: __MISSING__
 brief: __MISSING__
 tags:

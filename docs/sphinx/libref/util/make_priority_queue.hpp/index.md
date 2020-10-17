@@ -1,6 +1,6 @@
 ---
 layout: library
-title: make_priority_queue.hpp
+title: util/make_priority_queue.hpp
 owner: __MISSING__
 brief: __MISSING__
 tags:

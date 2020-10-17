@@ -1,6 +1,6 @@
 ---
 layout: class
-title: traits.hpp
+title: edge_id<>
 owner: __MISSING__
 brief: __MISSING__
 tags:

@@ -1,6 +1,6 @@
 ---
 layout: library
-title: traits.hpp
+title: util/traits.hpp
 owner: __MISSING__
 brief: __MISSING__
 tags:

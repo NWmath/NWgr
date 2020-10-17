@@ -1,6 +1,6 @@
 ---
 layout: library
-title: atomic.hpp
+title: util/atomic.hpp
 owner: __MISSING__
 brief: __MISSING__
 tags:

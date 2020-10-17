@@ -1,6 +1,6 @@
 ---
 layout: class
-title: aos.hpp
+title: array_of_structs<Attributes>
 owner: __MISSING__
 brief: __MISSING__
 tags:

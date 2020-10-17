@@ -1,6 +1,6 @@
 ---
 layout: library
-title: spanning_tree.hpp
+title: algorithms/spanning_tree.hpp
 owner: __MISSING__
 brief: __MISSING__
 tags:

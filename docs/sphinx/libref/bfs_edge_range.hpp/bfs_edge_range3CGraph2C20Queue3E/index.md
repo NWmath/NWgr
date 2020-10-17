@@ -1,6 +1,6 @@
 ---
 layout: class
-title: bfs_edge_range.hpp
+title: bfs_edge_range<Graph, Queue>
 owner: __MISSING__
 brief: __MISSING__
 tags:

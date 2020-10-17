@@ -1,6 +1,6 @@
 ---
 layout: class
-title: vovos.hpp
+title: vov<Attributes>
 owner: __MISSING__
 brief: __MISSING__
 tags:

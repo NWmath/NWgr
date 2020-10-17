@@ -1,6 +1,6 @@
 ---
 layout: library
-title: util
+title: util/AtomicBitVector.hpp
 owner: __MISSING__
 brief: __MISSING__
 tags:

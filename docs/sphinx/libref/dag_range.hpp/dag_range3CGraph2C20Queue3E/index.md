@@ -1,6 +1,6 @@
 ---
 layout: class
-title: dag_range.hpp
+title: dag_range<Graph, Queue>
 owner: __MISSING__
 brief: __MISSING__
 tags:

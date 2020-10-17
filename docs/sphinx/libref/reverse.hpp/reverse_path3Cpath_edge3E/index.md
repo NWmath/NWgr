@@ -1,6 +1,6 @@
 ---
 layout: class
-title: reverse.hpp
+title: reverse_path<path_edge>
 owner: __MISSING__
 brief: __MISSING__
 tags:

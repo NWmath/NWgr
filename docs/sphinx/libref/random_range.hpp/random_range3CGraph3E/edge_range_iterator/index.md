@@ -1,6 +1,6 @@
 ---
 layout: class
-title: random_range.hpp
+title: edge_range_iterator
 owner: __MISSING__
 brief: __MISSING__
 tags:

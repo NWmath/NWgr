@@ -1,6 +1,6 @@
 ---
 layout: library
-title: page_rank.hpp
+title: algorithms/page_rank.hpp
 owner: __MISSING__
 brief: __MISSING__
 tags:

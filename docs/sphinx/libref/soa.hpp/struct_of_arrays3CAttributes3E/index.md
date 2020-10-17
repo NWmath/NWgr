@@ -1,6 +1,6 @@
 ---
 layout: class
-title: soa.hpp
+title: struct_of_arrays<Attributes>
 owner: __MISSING__
 brief: __MISSING__
 tags:

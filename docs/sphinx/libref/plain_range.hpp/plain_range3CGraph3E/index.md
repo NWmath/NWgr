@@ -1,6 +1,6 @@
 ---
 layout: class
-title: plain_range.hpp
+title: plain_range<Graph>
 owner: __MISSING__
 brief: __MISSING__
 tags:

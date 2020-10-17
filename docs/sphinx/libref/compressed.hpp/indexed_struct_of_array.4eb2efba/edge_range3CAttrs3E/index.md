@@ -1,6 +1,6 @@
 ---
 layout: class
-title: compressed.hpp
+title: edge_range<Attrs>
 owner: __MISSING__
 brief: __MISSING__
 tags:

@@ -1,6 +1,6 @@
 ---
 layout: class
-title: util
+title: non_zero_iterator
 owner: __MISSING__
 brief: __MISSING__
 tags:

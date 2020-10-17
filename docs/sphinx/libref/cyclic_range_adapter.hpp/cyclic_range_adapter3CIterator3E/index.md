@@ -1,6 +1,6 @@
 ---
 layout: class
-title: cyclic_range_adapter.hpp
+title: cyclic_range_adapter<Iterator>
 owner: __MISSING__
 brief: __MISSING__
 tags:

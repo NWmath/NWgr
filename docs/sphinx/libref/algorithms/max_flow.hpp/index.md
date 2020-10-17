@@ -1,6 +1,6 @@
 ---
 layout: library
-title: max_flow.hpp
+title: algorithms/max_flow.hpp
 owner: __MISSING__
 brief: __MISSING__
 tags:

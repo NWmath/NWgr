@@ -1,6 +1,6 @@
 ---
 layout: class
-title: bfs_range.hpp
+title: bottomup_bfs_range<Graph>
 owner: __MISSING__
 brief: __MISSING__
 tags:

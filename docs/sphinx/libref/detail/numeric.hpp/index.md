@@ -1,6 +1,6 @@
 ---
 layout: library
-title: detail
+title: detail/numeric.hpp
 owner: __MISSING__
 brief: __MISSING__
 tags:

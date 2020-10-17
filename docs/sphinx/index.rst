@@ -10,6 +10,8 @@ Welcome to NW Graph's documentation!
    :maxdepth: 2
    :caption: Contents:
 
+   libref/index.md
+
 
 
 Indices and tables

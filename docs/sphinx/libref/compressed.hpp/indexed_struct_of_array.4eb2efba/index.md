@@ -1,6 +1,6 @@
 ---
 layout: class
-title: compressed.hpp
+title: indexed_struct_of_arrays<Attributes>
 owner: __MISSING__
 brief: __MISSING__
 tags:

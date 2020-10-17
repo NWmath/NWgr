@@ -1,6 +1,6 @@
 ---
 layout: class
-title: aolos.hpp
+title: adj_list<Attributes>
 owner: __MISSING__
 brief: __MISSING__
 tags:

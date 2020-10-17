@@ -1,6 +1,6 @@
 ---
 layout: class
-title: soa.hpp
+title: It<RandomAccessIterators>
 owner: __MISSING__
 brief: __MISSING__
 tags:

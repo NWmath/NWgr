@@ -1,6 +1,6 @@
 ---
 layout: class
-title: dag_range.hpp
+title: dag_range_iterator
 owner: __MISSING__
 brief: __MISSING__
 tags:

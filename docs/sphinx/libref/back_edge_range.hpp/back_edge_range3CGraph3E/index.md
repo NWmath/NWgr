@@ -1,6 +1,6 @@
 ---
 layout: class
-title: back_edge_range.hpp
+title: back_edge_range<Graph>
 owner: __MISSING__
 brief: __MISSING__
 tags:

@@ -1,6 +1,6 @@
 ---
 layout: class
-title: new_dfs_range.hpp
+title: dfs_range<Graph, Stack>
 owner: __MISSING__
 brief: __MISSING__
 tags:

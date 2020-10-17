@@ -1,6 +1,6 @@
 ---
 layout: class
-title: traits.hpp
+title: remove_atomic<T>
 owner: __MISSING__
 brief: __MISSING__
 tags:

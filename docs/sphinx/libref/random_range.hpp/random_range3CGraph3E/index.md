@@ -1,6 +1,6 @@
 ---
 layout: class
-title: random_range.hpp
+title: random_range<Graph>
 owner: __MISSING__
 brief: __MISSING__
 tags:

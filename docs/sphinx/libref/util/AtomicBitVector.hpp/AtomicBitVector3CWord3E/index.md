@@ -1,6 +1,6 @@
 ---
 layout: class
-title: util
+title: AtomicBitVector<Word>
 owner: __MISSING__
 brief: __MISSING__
 tags:

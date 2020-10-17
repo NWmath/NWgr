@@ -1,6 +1,6 @@
 ---
 layout: class
-title: back_edge_range.hpp
+title: outer_back_edge_range_iterator
 owner: __MISSING__
 brief: __MISSING__
 tags:

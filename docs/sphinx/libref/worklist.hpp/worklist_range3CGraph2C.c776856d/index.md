@@ -1,6 +1,6 @@
 ---
 layout: class
-title: worklist.hpp
+title: worklist_range<Graph, Workitem, Queue>
 owner: __MISSING__
 brief: __MISSING__
 tags:

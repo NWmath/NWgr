@@ -1,6 +1,6 @@
 ---
 layout: class
-title: max_flow.hpp
+title: tree_edge
 owner: __MISSING__
 brief: __MISSING__
 tags:

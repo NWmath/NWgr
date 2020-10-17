@@ -1,6 +1,6 @@
 ---
 layout: class
-title: traits.hpp
+title: vertex_id<T>
 owner: __MISSING__
 brief: __MISSING__
 tags:

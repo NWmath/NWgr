@@ -1,6 +1,6 @@
 ---
 layout: class
-title: compressed.hpp
+title: adjacency<idx, Attributes>
 owner: __MISSING__
 brief: __MISSING__
 tags:

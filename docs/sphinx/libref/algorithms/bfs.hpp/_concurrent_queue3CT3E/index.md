@@ -1,6 +1,6 @@
 ---
 layout: class
-title: bfs.hpp
+title: _concurrent_queue<T>
 owner: __MISSING__
 brief: __MISSING__
 tags:

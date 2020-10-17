@@ -1,6 +1,6 @@
 ---
 layout: library
-title: algorithms
+title: algorithms/betweenness_centrality.hpp
 owner: __MISSING__
 brief: __MISSING__
 tags:

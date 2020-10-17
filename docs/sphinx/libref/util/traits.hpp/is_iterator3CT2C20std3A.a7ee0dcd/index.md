@@ -1,6 +1,6 @@
 ---
 layout: class
-title: traits.hpp
+title: is_iterator<T, std::enable_if_t<!std::is_same_v<typename std::iterator_traits<T>::value_type, void>> >
 owner: __MISSING__
 brief: __MISSING__
 tags:

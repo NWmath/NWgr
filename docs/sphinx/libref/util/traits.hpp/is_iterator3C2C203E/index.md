@@ -1,6 +1,6 @@
 ---
 layout: class
-title: traits.hpp
+title: is_iterator<, >
 owner: __MISSING__
 brief: __MISSING__
 tags:

@@ -1,6 +1,6 @@
 ---
 layout: class
-title: worklist.hpp
+title: worklist_range_iterator
 owner: __MISSING__
 brief: __MISSING__
 tags:

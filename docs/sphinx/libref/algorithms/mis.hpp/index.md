@@ -1,6 +1,6 @@
 ---
 layout: library
-title: mis.hpp
+title: algorithms/mis.hpp
 owner: __MISSING__
 brief: __MISSING__
 tags:

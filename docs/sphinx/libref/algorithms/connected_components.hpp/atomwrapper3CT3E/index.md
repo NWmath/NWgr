@@ -1,6 +1,6 @@
 ---
 layout: class
-title: connected_components.hpp
+title: atomwrapper<T>
 owner: __MISSING__
 brief: __MISSING__
 tags:

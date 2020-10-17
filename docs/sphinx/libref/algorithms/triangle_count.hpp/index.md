@@ -1,6 +1,6 @@
 ---
 layout: library
-title: triangle_count.hpp
+title: algorithms/triangle_count.hpp
 owner: __MISSING__
 brief: __MISSING__
 tags:

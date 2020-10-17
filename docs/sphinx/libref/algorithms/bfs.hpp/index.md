@@ -1,6 +1,6 @@
 ---
 layout: library
-title: bfs.hpp
+title: algorithms/bfs.hpp
 owner: __MISSING__
 brief: __MISSING__
 tags:

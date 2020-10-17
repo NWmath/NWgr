@@ -1,6 +1,6 @@
 ---
 layout: library
-title: boykov_kolmogorov.hpp
+title: algorithms/boykov_kolmogorov.hpp
 owner: __MISSING__
 brief: __MISSING__
 tags:

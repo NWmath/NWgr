@@ -1,6 +1,6 @@
 ---
 layout: class
-title: bfs_range.hpp
+title: iterator
 owner: __MISSING__
 brief: __MISSING__
 tags:

@@ -1,6 +1,6 @@
 ---
 layout: class
-title: graph_base.hpp
+title: other_direction<directed>
 owner: __MISSING__
 brief: __MISSING__
 tags:

@@ -1,6 +1,6 @@
 ---
 layout: class
-title: provenance.hpp
+title: provenance
 owner: __MISSING__
 brief: __MISSING__
 tags:

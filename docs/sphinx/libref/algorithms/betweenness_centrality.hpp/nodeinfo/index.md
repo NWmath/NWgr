@@ -1,6 +1,6 @@
 ---
 layout: class
-title: algorithms
+title: nodeinfo
 owner: __MISSING__
 brief: __MISSING__
 tags:

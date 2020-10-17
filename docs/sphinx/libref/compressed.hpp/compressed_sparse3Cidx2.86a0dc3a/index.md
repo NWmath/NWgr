@@ -1,6 +1,6 @@
 ---
 layout: class
-title: compressed.hpp
+title: compressed_sparse<idx, sym, Attributes>
 owner: __MISSING__
 brief: __MISSING__
 tags:

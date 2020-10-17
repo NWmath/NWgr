@@ -1,6 +1,6 @@
 ---
 layout: class
-title: disjoint_set.hpp
+title: disjoint_set<T>
 owner: __MISSING__
 brief: __MISSING__
 tags:

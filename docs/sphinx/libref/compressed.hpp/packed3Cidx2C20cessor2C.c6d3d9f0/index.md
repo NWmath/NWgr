@@ -1,6 +1,6 @@
 ---
 layout: class
-title: compressed.hpp
+title: packed<idx, cessor, Attributes>
 owner: __MISSING__
 brief: __MISSING__
 tags:

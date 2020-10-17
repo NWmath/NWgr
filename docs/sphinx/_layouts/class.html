@@ -11,16 +11,9 @@
     <div class="body" role="main">
       <h2>{{ meta.title }}</h2>
 
-<h4>
-Class.html
-<h4>
-
-
       {% include 'defined_in_header.html' %}
 
       {{ meta['brief'] | markdownify }}
-
-      {{meta}}
 
       {% if meta['declaration']['first'] != empty %}
       <table class='declaration-table'>
@@ -39,9 +32,6 @@ Class.html
       {{ meta['description'] | markdownify }}
       
       {% include 'associated_enumerations.html' %}
-      
-
-
 
       {% include 'associated_typedefs.html' %}
       

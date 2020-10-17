@@ -1,6 +1,6 @@
 ---
 layout: library
-title: print_types.hpp
+title: util/print_types.hpp
 owner: __MISSING__
 brief: __MISSING__
 tags:

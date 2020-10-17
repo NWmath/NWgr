@@ -1,6 +1,6 @@
 ---
 layout: class
-title: util.hpp
+title: max
 owner: __MISSING__
 brief: __MISSING__
 tags:

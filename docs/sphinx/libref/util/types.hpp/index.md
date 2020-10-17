@@ -1,6 +1,6 @@
 ---
 layout: library
-title: types.hpp
+title: util/types.hpp
 owner: __MISSING__
 brief: __MISSING__
 tags:

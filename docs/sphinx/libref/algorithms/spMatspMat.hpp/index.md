@@ -1,6 +1,6 @@
 ---
 layout: library
-title: spMatspMat.hpp
+title: algorithms/spMatspMat.hpp
 owner: __MISSING__
 brief: __MISSING__
 tags:

@@ -1,6 +1,6 @@
 ---
 layout: class
-title: vovos.hpp
+title: vector_of_vector_of_structs<Attributes>
 owner: __MISSING__
 brief: __MISSING__
 tags:

@@ -1,6 +1,6 @@
 ---
 layout: class
-title: traits.hpp
+title: is_iterator<const T *, void>
 owner: __MISSING__
 brief: __MISSING__
 tags:

@@ -1,6 +1,6 @@
 ---
 layout: class
-title: edge_range.hpp
+title: edge_range<Graph, Is>
 owner: __MISSING__
 brief: __MISSING__
 tags:

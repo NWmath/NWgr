@@ -1,6 +1,6 @@
 ---
 layout: class
-title: splittable_range_adapter.hpp
+title: splittable_range_adapter<Iterator>
 owner: __MISSING__
 brief: __MISSING__
 tags:
