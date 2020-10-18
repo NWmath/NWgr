@@ -38,6 +38,58 @@ using counting_iterator = tbb::counting_iterator<T>;
 
 namespace nw {
 namespace graph {
+template<typename Graph, typename GraphT>
+bool BFSVerifier(Graph& g, GraphT& g_t, vertex_id_t source, std::vector<vertex_id_t>& parent) {
+  std::vector<vertex_id_t> depth(g.max() + 1, std::numeric_limits<vertex_id_t>::max());
+  depth[source] = 0;
+  std::vector<vertex_id_t> to_visit;
+  to_visit.reserve(g.max() + 1);
+  to_visit.push_back(source);
+  auto out_neigh = g.begin();
+  auto in_neigh  = g_t.begin();
+  for (auto it = to_visit.begin(); it != to_visit.end(); it++) {
+    vertex_id_t u = *it;
+    for (auto edge : out_neigh[u]) {
+      vertex_id_t v = std::get<0>(edge);
+      if (depth[v] == std::numeric_limits<vertex_id_t>::max()) {
+        depth[v] = depth[u] + 1;
+        to_visit.push_back(v);
+      }
+    }
+  }
+  for (vertex_id_t u = 0; u < g.max() + 1; ++u) {
+    if ((depth[u] != std::numeric_limits<vertex_id_t>::max()) && (parent[u] != std::numeric_limits<vertex_id_t>::max())) {
+      if (u == source) {
+        if (!((parent[u] == u) && (depth[u] == 0))) {
+          std::cout << "Source wrong " << u << " " << parent[u] << " " << depth[u] << std::endl;
+          return false;
+        }
+        continue;
+      }
+      bool parent_found = false;
+      for (auto edge : in_neigh[u]) {
+        vertex_id_t v = std::get<0>(edge);
+        if (v == parent[u]) {
+          //if(it != out_neigh[v].end()) {
+          if (depth[v] != depth[u] - 1) {
+            std::cout << "Wrong depths for " << u << " & " << v << std::endl;
+            return false;
+          }
+          parent_found = true;
+          break;
+        }
+      }
+      if (!parent_found) {
+        std::cout << "Couldn't find edge from " << parent[u] << " to " << u << std::endl;
+        return false;
+      }
+    } else if (depth[u] != parent[u]) {
+      std::cout << "Reachability mismatch " << u << " " << depth[u] << " " << parent[u] << std::endl;
+      return false;
+    }
+  }
+  return true;
+}
 
 template <typename Graph>
 auto bfs_v0(Graph& graph, vertex_id_t root) {
