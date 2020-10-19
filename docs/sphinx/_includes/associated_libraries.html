@@ -8,7 +8,7 @@
 {% if (sourcefiles|length ) > 0 %}
 <h3>Sources</h3>
 <table class='associated-table'>
-  {% for k,v in sourcefiles.items() %}
+  {% for k,v in (sourcefiles|dictsort) %}
     {% set p = v[0] %}
     <tr>
         <td class='name'>

@@ -5,11 +5,12 @@
 {% if (functions|length) > 0 %}
 <h3>Functions</h3>
 <table class='associated-table'>
-  {% for k,v in functions.items() %}
+  {% for k,v in (functions|dictsort) %}
     {% set p = v[0] %}
     <tr>
         <td class='name'>
-          <div><a href="{{k|relpath}}">{{ p.title | escape }}</a></div>
+          {% set pt = pathto(k) %}
+          <div><a href="{{pt}}">{{ p.title | escape }}</a></div>
         </td>
         <td class='brief'>
             {% if p.brief %}

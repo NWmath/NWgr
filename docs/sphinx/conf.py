@@ -57,6 +57,7 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store', '_includes.hyde', '_layo
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
+html_theme_path = [ "_themes" ]
 html_theme = 'sphinx13'
 
 # Add any paths that contain custom static files (such as style sheets) here,
@@ -64,7 +65,10 @@ html_theme = 'sphinx13'
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
 
-html_theme_path = [ "_themes" ]
+html_css_files = [
+    'css/hyde.css'
+]
+
 
 # -- Jinja stuff -------------------------------------------------------------
 

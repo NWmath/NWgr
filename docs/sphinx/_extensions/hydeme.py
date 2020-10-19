@@ -126,7 +126,6 @@ def add_jinja_filters(app):
 
     app.builder.templates.environment.add_extension('jinja2_highlight.HighlightExtension')
 
-
     app.builder.templates.environment.filters['jsonize']     = jsonize
     app.builder.templates.environment.filters['markdownify'] = markdownify
 
@@ -144,6 +143,7 @@ def add_jinja_filters(app):
     app.builder.templates.environment.filters['layout_class']     = layout_class
     app.builder.templates.environment.filters['layout_function']  = layout_function
     app.builder.templates.environment.filters['layout_method']    = layout_method
+
 
 def rstjinja(app, docname, source):
     """
