@@ -128,25 +128,25 @@ query the Bacon number of various actors to find their relationship to Kevin Bac
 
 .. code:: 
 
-Kevin Bacon has a Bacon number of 0
-Kyra Sedgwick has a Bacon number of 1
-  Kyra Sedgwick starred with Kevin Bacon in Murder in the First (film)
-David Suchet has a Bacon number of 2
-  David Suchet starred with Lori Singer in The Falcon and the Snowman
-  Lori Singer starred with Kevin Bacon in Footloose (1984 film)
-Julie Kavner has a Bacon number of 2
-  Julie Kavner starred with Dianne Wiest in Radio Days
-  Dianne Wiest starred with Kevin Bacon in Footloose (1984 film)
-Samuel L. Jackson has a Bacon number of 2
-  Samuel L. Jackson starred with Chris Penn in True Romance
-  Chris Penn starred with Kevin Bacon in Footloose (1984 film)
-William Shatner has a Bacon number of 2
-  William Shatner starred with Sarah Jessica Parker in Escape from Planet Earth
-  Sarah Jessica Parker starred with Kevin Bacon in Footloose (1984 film)
-Oona O'Neill has a Bacon number of 3
-  Oona O'Neill starred with Beverly Ross in Broken English (1981 film)
-  Beverly Ross starred with Vittorio Gassman in A Wedding
-  Vittorio Gassman starred with Kevin Bacon in Sleepers
+    Kevin Bacon has a Bacon number of 0
+    Kyra Sedgwick has a Bacon number of 1
+      Kyra Sedgwick starred with Kevin Bacon in Murder in the First (film)
+    David Suchet has a Bacon number of 2
+      David Suchet starred with Lori Singer in The Falcon and the Snowman
+      Lori Singer starred with Kevin Bacon in Footloose (1984 film)
+    Julie Kavner has a Bacon number of 2
+      Julie Kavner starred with Dianne Wiest in Radio Days
+      Dianne Wiest starred with Kevin Bacon in Footloose (1984 film)
+    Samuel L. Jackson has a Bacon number of 2
+      Samuel L. Jackson starred with Chris Penn in True Romance
+      Chris Penn starred with Kevin Bacon in Footloose (1984 film)
+    William Shatner has a Bacon number of 2
+      William Shatner starred with Sarah Jessica Parker in Escape from Planet Earth
+      Sarah Jessica Parker starred with Kevin Bacon in Footloose (1984 film)
+    Oona O'Neill has a Bacon number of 3
+      Oona O'Neill starred with Beverly Ross in Broken English (1981 film)
+      Beverly Ross starred with Vittorio Gassman in A Wedding
+      Vittorio Gassman starred with Kevin Bacon in Sleepers
 
 
 We can also check the Bacon numbers
