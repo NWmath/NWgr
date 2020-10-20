@@ -1,4 +1,44 @@
+{% extends '!layout.html' %}
 {% set title = meta['title'] %}
-<h4>
-Directory.html
-<h4>
+
+{%-  block document %}
+
+<div class="documentwrapper">
+  
+  {%- if render_sidebar %}
+  <div class="bodywrapper">
+    {%- endif %}
+    
+    <div id="hyde-content">
+      <div class="post">
+	<header class="post-header">
+	  <h1>{{ meta.title }}</h1>
+	</header>
+	<article class="post-content">
+	  
+	  {% if meta and meta['brief'] %} {{ meta['brief'] | markdownify }} {% endif %}
+	  
+	  {% if meta and meta['description'] %} {{ meta['description'] | markdownify }} {% endif %}
+	  
+	  {{ content }}
+	  
+	  {% include 'associated_typedefs.html' %}
+
+	  {% include 'associated_enumerations.html' %} 
+	  
+	  {% include 'associated_classes.html' %}      
+	  
+	  {% include 'associated_functions.html' %}    
+	  
+	  {% include 'associated_libraries.html' %}
+	  
+	</article>
+      </div>
+    </div>  
+    {%- if render_sidebar %}
+  </div>
+  {%- endif %}
+</div>
+{%- endblock %}
+
+

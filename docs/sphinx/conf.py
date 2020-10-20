@@ -66,7 +66,7 @@ html_theme = 'sphinx13'
 html_static_path = ['_static']
 
 html_css_files = [
-    'css/hyde.css'
+    'css/hyde_light.css'
 ]
 
 

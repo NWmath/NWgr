@@ -3,6 +3,7 @@
 {% set classes = (siblings | layout_class) %}
 
 {% if (classes|length) > 0 %}
+<div id="hyde-content">
   <h3>Classes</h3>
   <table class='associated-table'>
   {% for k,v in classes.items() %}
@@ -27,5 +28,6 @@
       </tr>
     {% endfor %}
   </table>
+</div>
 {% endif %}
 

@@ -3,6 +3,7 @@
 {% set functions = (siblings | layout_function) %}
 
 {% if (functions|length) > 0 %}
+<div id="hyde-content">
 <h3>Functions</h3>
 <table class='associated-table'>
   {% for k,v in (functions|dictsort) %}
@@ -27,4 +28,5 @@
     </tr>
   {% endfor %}
 </table>
+</div>
 {% endif %}

@@ -1,18 +1,19 @@
 
-
 {% set siblings = (pagename | siblings) %}
 {% set sub_libs = (siblings | layout_library) %}
 {% set libraries = (sub_libs | library_library) %}
 {% set sourcefiles = (sub_libs | library_sourcefile ) %}
 
 {% if (sourcefiles|length ) > 0 %}
+<div id="hyde-content">
 <h3>Sources</h3>
 <table class='associated-table'>
   {% for k,v in (sourcefiles|dictsort) %}
     {% set p = v[0] %}
     <tr>
         <td class='name'>
-          <div><a href="{{k|relpath}}/index.html"><code>{{ p.title | escape }}</code></a></div>
+          {% set pt = pathto(k+"/index") %}
+          <div><a href="{{pt}}"><code>{{ p.title | escape }}</code></a></div>
         </td>
         <td class='brief'>
             {% if p.brief %}
@@ -56,4 +57,5 @@
     </tr>
   {% endfor %}
 </table>
+<div id=hyde-content>
 {% endif %}

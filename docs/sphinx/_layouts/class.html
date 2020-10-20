@@ -7,49 +7,57 @@
   
   {%- if render_sidebar %}
   <div class="bodywrapper">
-  {%- endif %}
-
-    <div class="body" role="main">
-      <h2>{{ meta.title | e }}</h2>
-
-      {% include 'defined_in_header.html' %}
-
-      {{ meta['brief'] | markdownify }}
-
-      {% if meta['declaration']['first'] != empty %}
-      <table class='declaration-table'>
-        {% for item in meta['declaration'] %}
-        <tr>
-          <td>
-            {% highlight 'c++' %}{{ item }}{% endhighlight %}
-          </td>
-        </tr>
-        {% endfor %}
-      </table>
-      {% else %}
-      {% highlight 'c++' %}{{ meta['declaration'] }}{% endhighlight %}
-      {% endif %}
-
-      {{ meta['description'] | markdownify }}
-      
-      {% include 'associated_enumerations.html' %}
-
-      {% include 'associated_typedefs.html' %}
-      
-      {% include 'associated_fields.html' %}
-      
-      {% include 'associated_methods.html' %}
-      
-      {% include 'associated_functions.html' %}
-      
-      {% include 'associated_classes.html' %}
-      
-      {{ content }}
-      
-      {# {% include external_examples.html name=meta.example header="Example" %} #}
-
+    {%- endif %}
+    
+    <div id="hyde-content">
+      <div class="post">
+	<header class="post-header">
+	  <h1 class='code'>{{ meta.title | e }}</h1>
+	</header>
+	<article class="post-content">
+	  {% include 'defined_in_header.html' %}
+	  
+	  <br/>
+	  
+	  {{ meta['brief'] | markdownify }}
+	  
+	  {% if meta['declaration']['first'] != empty %}
+	  
+	  <table class='declaration-table'>
+            {% for item in meta['declaration'] %}
+            <tr>
+              <td>
+		{% highlight 'c++' %}{{ item }}{% endhighlight %}
+              </td>
+            </tr>
+            {% endfor %}
+	  </table>
+	  
+	  {% else %}
+	  {% highlight 'c++' %}{{ meta['declaration'] }}{% endhighlight %}
+	  {% endif %}
+	  
+	  {{ meta['description'] | markdownify }}
+	  
+	  {% include 'associated_enumerations.html' %}
+	  
+	  {% include 'associated_typedefs.html' %}
+	  
+	  {% include 'associated_fields.html' %}
+	  
+	  {% include 'associated_methods.html' %}
+	  
+	  {% include 'associated_functions.html' %}
+	  
+	  {% include 'associated_classes.html' %}
+	  
+	  {{ content }}
+	  
+	  {# {% include external_examples.html name=meta.example header="Example" %} #}
+	</article>	  
+      </div>
     </div>
-  {%- if render_sidebar %}
+    {%- if render_sidebar %}
   </div>
   {%- endif %}
 </div>

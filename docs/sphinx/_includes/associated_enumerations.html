@@ -3,6 +3,7 @@
 {% set enums = (siblings | layout_enum) %}
 
 {% if (enums|length) > 0 %}
+<div id="hyde-content">
   <h3>Enumerations</h3>
   <table class='associated-table'>
   {% for k,v in enums.items() %}
@@ -26,4 +27,5 @@
     </tr>
   {% endfor %}
   </table>
+<div id=hyde-content>
 {% endif %}

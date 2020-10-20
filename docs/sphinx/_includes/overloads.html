@@ -1,6 +1,7 @@
 {% if meta.overloads %}
   {% set the_overloads = (meta.overloads|jsonize) %}
 
+<div id="hyde-content">
   <table class='declaration-table'>
   {% for k,v in the_overloads.items() %}
 
@@ -11,8 +12,6 @@
         <td>({{ loop.index }})</td>
       </tr>
   {% endfor %}
-
-
   </table>
 
   {{ meta.description | markdownify }}
@@ -51,5 +50,5 @@
     </li>
   {% endfor %}
   </ol>
-
+</div>
 {% endif %}

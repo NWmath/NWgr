@@ -1,8 +1,8 @@
 {% if meta.fields %}
 {% set the_fields = (meta.fields|jsonize) %}
 
+<div id="hyde-content">
   <h3>Member Fields</h3>
-
   <table class='definition-table'>
     <tr class='headers'>
       <th>Field</th>
@@ -25,5 +25,5 @@
       </tr>
     {% endfor %}
   </table>
-
+</div>
 {% endif %}

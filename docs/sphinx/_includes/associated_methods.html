@@ -2,11 +2,14 @@
 {% set siblings = (pagename | siblings) %}
 {% set methods = (siblings | layout_method) %}
 
+<div id="hyde-content">
+
 {% set ctor_name = meta.title %}
 {% set dtor_name = "~" ~ meta.title %}
 {% if meta.ctor != 'unspecified' or meta.dtor != 'unspecified' or (methods|length) > 0 %}
 <h3>Member Functions</h3>
 {% endif %}
+
 
 <table class='definition-table'>
 {% for k,pp in methods.items() %}
@@ -56,7 +59,7 @@
   {% endif %}
 {% endfor %}
 </table>
-
+<div id=hyde-content>
 
 
 
