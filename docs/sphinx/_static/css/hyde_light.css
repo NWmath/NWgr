@@ -168,7 +168,7 @@
   font-weight: 400;
 }
 #hyde-content a {
-  color: #006000;
+  color: #000060;
   text-decoration: none;
 }
 #hyde-content a:hover {
@@ -231,7 +231,7 @@
   vertical-align: middle;
 }
 #hyde-content .icon > svg path {
-  fill: #006000;
+  fill: #000060;
 }
 #hyde-content .site-header {
   background-color: #e4e4e4;
@@ -276,7 +276,7 @@
   display: none;
 }
 #hyde-content .site-nav .page-link {
-  color: #006000;
+  color: #000060;
   line-height: 1.5;
 }
 #hyde-content .site-nav .page-link:not(:last-child) {
@@ -644,7 +644,7 @@
   display: inline;
 }
 #hyde-content span.annotation {
-  color: green;
+  color: blue;
   font-style: italic;
 }
 #hyde-content .parameter-table {
@@ -720,8 +720,8 @@
   }
 }
 #hyde-content .icon-box {
-  background: #006000;
-  color: #006000;
+  background: #000060;
+  color: #000060;
   border-radius: 1em;
 }
 @media screen and (max-width: 600px) {
