@@ -1,0 +1,110 @@
+FROM ubuntu:19.10
+
+RUN DEBIAN_FRONTEND=noninteractive \
+    apt-get -y update    \
+               &&        \
+    apt-get -y install   \
+               apt-utils \
+               man       \
+               manpages  \
+               make      \
+               ssh       \
+               tcsh      \
+               emacs     \
+               sudo      \
+               libtbb2   \
+               libtbb-dev \
+               &&        \
+    apt-get -y clean
+
+
+RUN DEBIAN_FRONTEND=noninteractive	\
+    		apt-get -y install	\
+    	        libboost-system-dev	\
+		libboost-filesystem-dev \
+		libyaml-cpp-dev 	\
+		cmake			\
+		ninja-build		\
+		libllvm9  		\
+		llvm-9			\
+		llvm-9-dev		\
+		clang-tools-9		\
+		libclang-common-9-dev  	\
+		clang-9  		\
+		libclang-9-dev 		
+
+
+RUN DEBIAN_FRONTEND=noninteractive	\
+    		apt-get -y install	\
+		git
+
+
+RUN DEBIAN_FRONTEND=noninteractive \
+    apt-get -y install     \
+    	       python3     \
+       	       python3-pip \
+               &&	   \
+    apt-get -y clean
+
+
+RUN DEBIAN_FRONTEND=noninteractive \
+               apt-get -y install  \
+	       pdf2svg 	  	   \
+    	       texlive-xetex       \
+	       xzdec	           \
+	       texlive-font-utils  \
+	       texlive-fonts-extra \
+	       texlive-fonts-recommended
+
+RUN echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true | sudo debconf-set-selections
+RUN apt-get -y install ttf-mscorefonts-installer
+COPY xkcd-script.ttf /usr/local/share/fonts/
+
+RUN fc-cache
+
+RUN paperconfig --paper letter
+
+#RUN tlmgr init-usertree
+#RUN tlmgr option repository ftp://tug.org/historic/systems/texlive/2018/tlnet-final
+
+RUN apt-get -y clean
+
+RUN pip3 install -U sphinx
+
+RUN pip3 install -U sphinxcontrib.bibtex 
+RUN pip3 install -U sphinxcontrib.tikz
+RUN pip3 install -U sphinxcontrib.proof 
+RUN pip3 install -U sphinxcontrib.datatemplates
+RUN pip3 install -U recommonmark 
+RUN pip3 install -U hieroglyph 
+RUN pip3 install -U nbsphinx
+RUN pip3 install -U jinja2_highlight
+
+RUN sed -i.bak "/NOQA/ a \ \ \ \ \ \ \ \ self.environment.add_extension(\'jinja2_highlight.HighlightExtension\')" /usr/local/lib/python3.7/dist-packages/sphinx/jinja2glue.py
+
+USER root
+
+RUN \
+       update-alternatives --install /usr/bin/python python /usr/bin/python3 10					\
+    && update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 90 --slave /usr/bin/g++ g++ /usr/bin/g++-9 \
+    && update-alternatives --install /usr/bin/cc cc /usr/bin/gcc 30						\
+    && update-alternatives --install /usr/bin/c++ c++ /usr/bin/g++ 30						\
+    && update-alternatives --install /usr/bin/clang   clang   /usr/bin/clang-9   40				\
+    && update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-9 40				\
+    && update-alternatives --install /usr/bin/c++     c++     /usr/bin/clang++-9 50				\
+    && update-alternatives --install /usr/bin/cc      cc      /usr/bin/clang-9   50
+
+RUN useradd -m nwmath
+
+USER nwmath
+RUN mkdir /home/nwmath/nwmath
+WORKDIR /home/nwmath
+RUN git clone https://github.com/adobe/hyde.git
+WORKDIR /home/nwmath/hyde
+RUN git submodule update --init`
+RUN mkdir build
+WORKDIR /home/nwmath/hyde/build
+RUN cmake .. -GNinja && ninja
+
+
+ENV SHELL       /bin/bash
