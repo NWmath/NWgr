@@ -23,6 +23,7 @@
 
 using json = nlohmann::json;
 
+
 #include "algorithms/betweenness_centrality.hpp"
 #include "algorithms/page_rank.hpp"
 #include "bfs_edge_range.hpp"
@@ -228,10 +229,14 @@ int main() {
   path_to_bacon("Kyra Sedgwick");
   path_to_bacon("David Suchet");
   path_to_bacon("Julie Kavner");
-  path_to_bacon("Danica McKellar");
-  path_to_bacon("Oona O'Neill");
-  path_to_bacon("William Rufus Shafter");
+  path_to_bacon("Samuel L. Jackson");
   path_to_bacon("William Shatner");
+  path_to_bacon("Oona O'Neill");
+
+#if 0
+  path_to_bacon("Danica McKellar");
+  path_to_bacon("William Rufus Shafter");
+
 
   if constexpr (false) {
     auto                L_t = nw::graph::adjacency<1, size_t>(s_overlap);
@@ -245,15 +250,16 @@ int main() {
     }
   }
 
-
-
-  auto sources = build_random_sources(L, 1024, 98195);
-  auto tweens = nw::graph::bc2_v2<decltype(L), double, double>(L, sources);
-
-  auto perm = nw::util::proxysort<size_t>(tweens, std::greater<float>());
-  for (size_t i = 0; i < 10; ++i) {
-    std::cout << std::to_string(perm[i]) + ": " << names[perm[i]] << std::endl;
+  if constexpr (false) {
+    auto sources = build_random_sources(L, 1024, 98195);
+    auto tweens = nw::graph::bc2_v2<decltype(L), double, double>(L, sources);
+    
+    auto perm = nw::util::proxysort<size_t>(tweens, std::greater<float>());
+    for (size_t i = 0; i < 10; ++i) {
+      std::cout << std::to_string(perm[i]) + ": " << names[perm[i]] << std::endl;
+    }
   }
+#endif
 
   return 0;
 }
