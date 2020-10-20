@@ -411,9 +411,16 @@
 #hyde-content .page-content {
   padding: 15px 0;
 }
+
 #hyde-content .brief {
     margin-bottom: 15px;
     margin-top: 15px;
+}
+
+#hyde-content .post-brief {
+  margin-left: 0;
+    margin-bottom: 15px;
+    margin-top: 10px;
 }
 
 #hyde-content .post {

@@ -16,7 +16,9 @@
 	</header>
 	<article class="post-content">
 	  
+	  <div class="post-brief">
 	  {% if meta and meta['brief'] %} {{ meta['brief'] | markdownify }} {% endif %}
+	  </div>
 	  
 	  {% if meta and meta['description'] %} {{ meta['description'] | markdownify }} {% endif %}
 	  

@@ -17,10 +17,10 @@
 	<article class="post-content">
 	  {% include 'defined_in_header.html' %}
 	  
-	  <br/>
-	  
+	  <div class="post-brief">
 	  {{ meta['brief'] | markdownify }}
-	  
+	  </div>
+
 	  {% if meta['declaration']['first'] != empty %}
 	  
 	  <table class='declaration-table'>
