@@ -48,6 +48,12 @@ def layout_library(path):
                               path.items())) 
     return descendents
 
+def layout_directory(path):
+    descendents = dict(filter(lambda item: 
+                              item[1][0]['layout'] == 'directory',
+                              path.items())) 
+    return descendents
+
 
 def layout_enum(path):
     descendents = dict(filter(lambda item: 
@@ -138,6 +144,7 @@ def add_jinja_filters(app):
     app.builder.templates.environment.filters['library_library']     = library_library
     app.builder.templates.environment.filters['library_sourcefile']   = library_sourcefile
 
+    app.builder.templates.environment.filters['layout_directory']   = layout_directory
     app.builder.templates.environment.filters['layout_library']   = layout_library
     app.builder.templates.environment.filters['layout_enum']      = layout_enum
     app.builder.templates.environment.filters['layout_class']     = layout_class
