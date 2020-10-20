@@ -109,6 +109,7 @@ int main() {
     }
   }
 
+  // NB: may be clobbering values 
   s_overlap.close_for_push_back();
 
   t5.stop();
@@ -157,6 +158,10 @@ int main() {
   path_to_bacon("William R. Gates");
   path_to_bacon("Jack Dongarra");
   path_to_bacon("Andrew Lumsdaine");
+  path_to_bacon("Assefaw Hadish Gebremedhin");
+  path_to_bacon("Kevin Deweese");
+  path_to_bacon("Jesun Sahariar Firoz");
+
 
   return 0;
 }

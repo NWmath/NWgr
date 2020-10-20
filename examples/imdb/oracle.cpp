@@ -115,6 +115,7 @@ int main() {
         assert(names.size() == name_counter);
         assert(names[name_counter - 1] == name);
       }
+
       edges.push_back(titles_map[title], names_map[name]);
     }
   }
@@ -141,8 +142,11 @@ int main() {
 
   nw::util::timer t4("build biadjacencies");
 
-  auto G = nw::graph::adjacency<0>(edges);
-  auto H = nw::graph::adjacency<1>(edges);
+  // NB: edge_list may have different max index values (min, max) for each "side"
+
+  // edges are pairs of ( title, name )
+  auto G = nw::graph::adjacency<0>(edges);  // title: names
+  auto H = nw::graph::adjacency<1>(edges);  // names: title
 
   t4.stop();
   std::cout << t4 << std::endl;
@@ -152,12 +156,12 @@ int main() {
   nw::graph::edge_list<nw::graph::undirected, size_t> s_overlap;
   s_overlap.open_for_push_back();
 
-  for (size_t i = 0; i < H.size(); ++i) {
-    for (auto&& [k] : H[i]) {
-      for (auto&& [j] : G[k]) {
-	//	if (j > i) {
-	  s_overlap.push_back(i, j, k);
-	  //	}
+  for (size_t i = 0; i < H.size(); ++i) {  // foreach name
+    for (auto&& [k] : H[i]) {              //   foreach title
+      for (auto&& [j] : G[k]) {            //     foreach name
+	if (j > i) {
+  	  s_overlap.push_back(i, j, k);    //       edge from i -- j with value k
+	}
       }
     }
   }
@@ -241,33 +245,14 @@ int main() {
     }
   }
 
-  if constexpr (false) {
 
-    nw::graph::edge_list<nw::graph::undirected> t_overlap;
-    t_overlap.open_for_push_back();
 
-    for (size_t i = 0; i < H.size(); ++i) {
-      for (auto&& [k] : H[i]) {
-        for (auto&& [j] : G[k]) {
-          if (j > i) {
-            t_overlap.push_back(i, j);
-          }
-        }
-      }
-    }
+  auto sources = build_random_sources(L, 1024, 98195);
+  auto tweens = nw::graph::bc2_v2<decltype(L), double, double>(L, sources);
 
-    t_overlap.close_for_push_back();
-
-    auto L_t = nw::graph::adjacency<0>(t_overlap);
-
-    auto sources = build_random_sources(L_t, 1024, 98195);
-
-    auto tweens = nw::graph::bc2_v2<decltype(L_t), double, double>(L_t, sources);
-
-    auto perm = nw::util::proxysort<size_t>(tweens, std::greater<float>());
-    for (size_t i = 0; i < 10; ++i) {
-      std::cout << std::to_string(perm[i]) + ": " << names[perm[i]] << std::endl;
-    }
+  auto perm = nw::util::proxysort<size_t>(tweens, std::greater<float>());
+  for (size_t i = 0; i < 10; ++i) {
+    std::cout << std::to_string(perm[i]) + ": " << names[perm[i]] << std::endl;
   }
 
   return 0;

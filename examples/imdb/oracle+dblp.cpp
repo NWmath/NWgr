@@ -131,9 +131,9 @@ int main() {
 
     for (auto&& [k] : H[i]) {
       for (auto&& [j] : G[k]) {
-        if (j > i) {
+	//        if (j > i) {
           s_overlap.push_back(i, j, k);
-        }
+	  //        }
       }
     }
   }

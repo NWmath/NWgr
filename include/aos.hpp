@@ -21,6 +21,8 @@
 #ifndef NW_GRAPH_AOS_HPP
 #define NW_GRAPH_AOS_HPP
 
+#include <execution>
+
 #include <algorithm>
 #include <cassert>
 
