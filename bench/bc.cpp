@@ -51,74 +51,7 @@ void print_n_ranks(const Vector& centrality, size_t n) {
   }
 }
 
-template <class score_t, class accum_t, class Graph>
-bool BCVerifier(Graph&& g, std::vector<vertex_id_t> &trial_sources, std::vector<score_t> &scores_to_test) {
-  std::vector<score_t> scores(g.max() + 1, 0);
-  for(auto& source : trial_sources) {
-    std::vector<int> depths(g.max() + 1, -1);
-    depths[source] = 0;
-    std::vector<accum_t> path_counts(g.max() + 1, 0);
-    path_counts[source] = 1;
-    std::vector<vertex_id_t> to_visit;
-    to_visit.reserve(g.max() + 1);
-    to_visit.push_back(source);
-    auto out_neigh = g.begin();
-    for(auto it = to_visit.begin(); it != to_visit.end(); it++) {
-      vertex_id_t u = *it;
-      for(auto edge : out_neigh[u]) {
-    vertex_id_t v = std::get<0>(edge);
-    if(depths[v] == -1) {
-      depths[v] = depths[u] + 1;
-      to_visit.push_back(v);
-    }
-    if(depths[v] == depths[u] + 1) {
-      path_counts[v] += path_counts[u];
-    }
-      }
-    }
 
-    std::vector<std::vector<vertex_id_t>> verts_at_depth;
-    for(size_t i = 0; i < g.max() + 1; ++i) {
-      if(depths[i] != -1) {
-    if(depths[i] >= static_cast<int>(verts_at_depth.size())) {
-      verts_at_depth.resize(depths[i] + 1);
-    }
-    verts_at_depth[depths[i]].push_back(i);
-      }
-    }
-
-    std::vector<score_t> deltas(g.max() + 1, 0);
-    for(int depth=verts_at_depth.size()-1; depth >= 0; depth--) {
-      for(vertex_id_t u : verts_at_depth[depth]) {
-    for(auto edge : out_neigh[u]) {
-      vertex_id_t v = std::get<0>(edge);
-      if(depths[v] == depths[u] + 1) {
-        deltas[u] += static_cast<double>(path_counts[u]) /
-          static_cast<double>(path_counts[v]) * (1 + deltas[v]);
-      }
-    }
-    scores[u] += deltas[u];
-      }
-    }
-  }
-
-  score_t biggest_score = *std::max_element(scores.begin(), scores.end());
-  for(size_t i = 0; i < g.max() + 1; ++i) {
-    scores[i] = scores[i] / biggest_score;
-  }
-
-  bool all_ok = true;
-
-  for(size_t i = 0; i < scores.size(); ++i) {
-    accum_t delta = abs(scores_to_test[i] - scores[i]);
-    if(delta > 1e-6) {
-      std::cout << i << ": " << scores[i] << " != " << scores_to_test[i] << " " << scores[i] - scores_to_test[i] << std::endl;
-      all_ok = false;
-    }
-  }
-
-  return all_ok;
-}
 
 int main(int argc, char* argv[]) {
   std::vector strings = std::vector<std::string>(argv + 1, argv + argc);
