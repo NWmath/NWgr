@@ -1,9 +1,11 @@
 ---
 layout: library
 title: bfs_range.hpp
-owner: __MISSING__
-brief: __MISSING__
+owner: Andrew Lumsdaine
+brief: A range adapter that traverses the underlying graph in breadth-first order
 tags:
   - sourcefile
 library-type: sourcefile
 ---
+
+

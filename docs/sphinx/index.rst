@@ -14,6 +14,7 @@ Contents
 .. toctree::
    :maxdepth: 2
 
+   userguide/index.rst
    examples/index.rst
    libref/index.md
 
