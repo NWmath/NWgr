@@ -16,14 +16,14 @@ typedefs:
     definition: typename std::forward_list<std::tuple<Attributes...>>::iterator
     description: __MISSING__
   outer_iterator:
-    definition: typename std::vector<std::forward_list<std::tuple<Attributes...>> >::iterator
+    definition: typename std::vector<std::forward_list<std::tuple<Attributes...>>>::iterator
     description: __MISSING__
 fields:
   storage_:
     annotation:
       - private
     description: __MISSING__
-    type: std::vector<std::forward_list<std::tuple<Attributes...>> >
+    type: std::vector<std::forward_list<std::tuple<Attributes...>>>
 namespace:
   - nw
   - graph

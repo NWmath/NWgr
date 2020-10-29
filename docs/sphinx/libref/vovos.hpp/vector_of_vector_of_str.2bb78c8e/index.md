@@ -10,7 +10,7 @@ declaration: "template <typename... Attributes>\nclass nw::graph::vector_of_vect
 dtor: unspecified
 typedefs:
   base:
-    definition: std::vector<std::forward_list<std::tuple<Attributes...>> >
+    definition: std::vector<std::forward_list<std::tuple<Attributes...>>>
     description: __MISSING__
   inner_container_ref:
     definition: typename std::forward_list<std::tuple<Attributes...>> &
@@ -19,7 +19,7 @@ typedefs:
     definition: typename std::forward_list<std::tuple<Attributes...>>::iterator
     description: __MISSING__
   outer_iterator:
-    definition: typename std::vector<std::forward_list<std::tuple<Attributes...>> >::iterator
+    definition: typename std::vector<std::forward_list<std::tuple<Attributes...>>>::iterator
     description: __MISSING__
 namespace:
   - nw

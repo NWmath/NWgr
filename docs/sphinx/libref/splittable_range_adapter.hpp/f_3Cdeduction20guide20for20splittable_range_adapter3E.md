@@ -15,17 +15,17 @@ overloads:
     description: __MISSING__
     return: __OPTIONAL__
     signature_with_names: "template <class Iterator, class Range>\nauto <deduction guide for splittable_range_adapter>(Range && range) -> splittable_range_adapter<Iterator>"
-  "template <class Iterator, class Range>\nauto <deduction guide for splittable_range_adapter>(Range &&, std::unsigned long) -> splittable_range_adapter<Iterator>":
+  "template <class Iterator, class Range>\nauto <deduction guide for splittable_range_adapter>(Range &&, std::size_t) -> splittable_range_adapter<Iterator>":
     arguments:
       - description: __OPTIONAL__
         name: range
         type: Range &&
       - description: __OPTIONAL__
         name: cutoff
-        type: std::unsigned long
+        type: std::size_t
     description: __MISSING__
     return: __OPTIONAL__
-    signature_with_names: "template <class Iterator, class Range>\nauto <deduction guide for splittable_range_adapter>(Range && range, std::unsigned long cutoff) -> splittable_range_adapter<Iterator>"
+    signature_with_names: "template <class Iterator, class Range>\nauto <deduction guide for splittable_range_adapter>(Range && range, std::size_t cutoff) -> splittable_range_adapter<Iterator>"
   "template <class Iterator>\nauto <deduction guide for splittable_range_adapter>(Iterator, Iterator) -> splittable_range_adapter<Iterator>":
     arguments:
       - description: __OPTIONAL__
@@ -37,7 +37,7 @@ overloads:
     description: __MISSING__
     return: __OPTIONAL__
     signature_with_names: "template <class Iterator>\nauto <deduction guide for splittable_range_adapter>(Iterator begin, Iterator end) -> splittable_range_adapter<Iterator>"
-  "template <class Iterator>\nauto <deduction guide for splittable_range_adapter>(Iterator, Iterator, std::unsigned long) -> splittable_range_adapter<Iterator>":
+  "template <class Iterator>\nauto <deduction guide for splittable_range_adapter>(Iterator, Iterator, std::size_t) -> splittable_range_adapter<Iterator>":
     arguments:
       - description: __OPTIONAL__
         name: begin
@@ -47,10 +47,10 @@ overloads:
         type: Iterator
       - description: __OPTIONAL__
         name: cutoff
-        type: std::unsigned long
+        type: std::size_t
     description: __MISSING__
     return: __OPTIONAL__
-    signature_with_names: "template <class Iterator>\nauto <deduction guide for splittable_range_adapter>(Iterator begin, Iterator end, std::unsigned long cutoff) -> splittable_range_adapter<Iterator>"
+    signature_with_names: "template <class Iterator>\nauto <deduction guide for splittable_range_adapter>(Iterator begin, Iterator end, std::size_t cutoff) -> splittable_range_adapter<Iterator>"
   "template <class Iterator>\nauto <deduction guide for splittable_range_adapter>(const splittable_range_adapter<Iterator> &) -> splittable_range_adapter<Iterator>":
     arguments:
       - description: __OPTIONAL__
