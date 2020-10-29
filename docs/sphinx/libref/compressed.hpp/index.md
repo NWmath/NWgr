@@ -1,9 +1,11 @@
 ---
 layout: library
 title: compressed.hpp
-owner: __MISSING__
-brief: __MISSING__
+owner: Andrew Lumsdaine
+brief: Classes for compressed adjacency structures
 tags:
   - sourcefile
 library-type: sourcefile
 ---
+
+Compressed adjacency structures are important for highly-efficient graph computations.  The structures here are based on the same ideas as "compressed sparse row" or "compressed sparse column".

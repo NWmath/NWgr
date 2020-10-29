@@ -18,10 +18,12 @@ overloads:
     signature_with_names: compressed_sparse<idx, sym, Attributes...>(edge_list<sym, Attributes...> & A)
   compressed_sparse<idx, sym, Attributes...>(size_t):
     arguments:
-      - description: __OPTIONAL__
+      - description: Construct compressed_sparse from edge_list
         name: N
         type: size_t
     description: __MISSING__
     return: __OPTIONAL__
     signature_with_names: compressed_sparse<idx, sym, Attributes...>(size_t N)
 ---
+
+Compressed_sparse should be considered deprecated.
