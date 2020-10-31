@@ -55,6 +55,27 @@ templates_path = [ '_templates', '_layouts', '_includes']
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store', '_includes.hyde', '_layouts.hyde', '_templates.sav', 'attic', '_hyde']
 
 
+# -- Options for MathJax -----------------------------------------------------
+
+mathjax_options = {
+}
+mathjax_config = {
+    'TeX': {
+    'Macros': {
+      'RR': "{\\mathbb R}",
+      'Real': "{\\mathbb R}",
+      'Complex': "{\\mathbb C}",        
+      'mat' :["{\\mathbf{#1}}",1],
+      'vec' :["{\\mathbf{#1}}",1],       
+      'bold': ["{\\bf #1}",1],
+        'Spc': ["\\mathbb{#1}",1],
+        'norm': ["|| #1 ||",1]        
+    }
+  }
+}
+
+
+
 # -- Options for HTML output -------------------------------------------------
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
