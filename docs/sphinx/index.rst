@@ -7,15 +7,33 @@
 Welcome to NW Graph's documentation!
 ====================================
 
-========
-Contents
-========
+==========
+User Guide
+==========
 
 .. toctree::
    :maxdepth: 2
 
    userguide/index.rst
+
+
+========
+Examples
+========
+
+.. toctree::
+   :maxdepth: 2
+
    examples/index.rst
+
+
+================
+Reference Manual
+================
+
+.. toctree::
+   :maxdepth: 2
+
    libref/index.md
 
 
