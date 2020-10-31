@@ -52,7 +52,9 @@ templates_path = [ '_templates', '_layouts', '_includes']
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path.
-exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store', '_includes.hyde', '_layouts.hyde', '_templates.sav', 'attic', '_hyde']
+exclude_patterns = [
+    '_build', 'Thumbs.db', '.DS_Store', 'attic', '_hyde', '_test'
+]
 
 
 highlight_language = 'c++'
