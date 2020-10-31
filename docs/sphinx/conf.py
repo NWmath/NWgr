@@ -33,7 +33,7 @@ sys.path.append(os.path.abspath('_extensions'))
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
-    'sphinx.ext.mathjax',
+    'sphinx.ext.mathjax', 'sphinx.ext.intersphinx', 'sphinx.ext.viewcode', 'sphinx.ext.graphviz',
     'sphinxcontrib.bibtex',
     'myst_parser',
     'sphinx_copybutton', 
@@ -53,6 +53,10 @@ templates_path = [ '_templates', '_layouts', '_includes']
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path.
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store', '_includes.hyde', '_layouts.hyde', '_templates.sav', 'attic', '_hyde']
+
+
+highlight_language = 'c++'
+pygments_style = 'emacs'
 
 
 # -- Options for MathJax -----------------------------------------------------
@@ -93,6 +97,15 @@ html_static_path = ['_static']
 html_css_files = [
     'css/hyde_light.css'
 ]
+
+# html_favicon = nwgraph.ico
+# html_additional_pages = []
+# html_copy_source = True
+# html_show_source_link = True
+
+# -- Options for the C++ Domain ----------------------------------------------
+
+cpp_index_common_prefix = ['nw::', 'nw::graph::']
 
 
 # -- Jinja stuff -------------------------------------------------------------

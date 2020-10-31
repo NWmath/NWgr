@@ -52,12 +52,24 @@ undirected.
 
 Below are 
 two examples of modeling a problem using a graph.  
-First, 
-nn electrical circuit is modeled in Fig.~\ref{fig:graph-model-circuit} and the distances between airports is modeled in Fig.~\ref{fig:graph-model-airports}.  In the first case, two-terminal circuit elements connect to each other at given nodes.  We thus model circuit connection points (also the terminology used in circuit modeling) as graph nodes, and the connections between them as edges.  In the case of circuits, orientation of circuit elements matters and so we may choose (at least at this stage of the modeling process) to use directe edges in the graph.  In the second case, we begin with a table of airports and the distance in kilometers between pairs of them.  We model this situation as a graph by identifying graph nodes with airports and graph edges with pairs of cities that are given as pairs in the distance table.  The  reduction of these models to sets of entities is shown in Fig.~\ref{fig:math-graph-models}.
+
+In the first case, two-terminal circuit elements connect to each other at given nodes.  We thus model circuit connection points (also the terminology used in circuit modeling) as graph nodes, and the connections between them as edges.  In the case of circuits, orientation of circuit elements matters and so we may choose (at least at this stage of the modeling process) to use directed edges in the graph.  
 
 
-.. list-table:: Graphs
+.. list-table:: 
    :widths: 350 233 133
+
+   * -
+     -
+     -
+   * -
+      Electrical circuit consisting of nodes and circuit elements.
+
+     -
+      Graphical representation of the electrical circuit.
+
+     -
+      Set-theoretical (mathematical) representation.
 
    * -
       .. figure:: ../_static/images/circuit.pdf
@@ -66,16 +78,12 @@ nn electrical circuit is modeled in Fig.~\ref{fig:graph-model-circuit} and the d
         :alt: alternate text
         :figclass: align-center
 
-      Electrical circuit consisting of nodes and circuit elements.
-
      -
       .. figure:: ../_static/images/circuit-graph.pdf
         :width: 200px
         :align: center
         :alt: alternate text
         :figclass: align-center
-
-      Graphical representation of the electrical circuit.
 
      -
       .. math::
@@ -101,10 +109,23 @@ nn electrical circuit is modeled in Fig.~\ref{fig:graph-model-circuit} and the d
 
 
 
+In the second case, we begin with a table of airports and the distance in kilometers between pairs of them.  We model this situation as a graph by identifying graph nodes with airports and graph edges with pairs of cities that are given as pairs in the distance table.  
 
-
-.. list-table:: Graphs
+.. list-table:: 
    :widths: 333 233 133
+
+   * -
+     -
+     -
+
+   * -
+        Table of airport codes and distance in km between the airports.
+
+     -
+        Graphical representation of the tabular data.
+
+     -
+        Set-theoretical (mathematical) representation.
 
    * -
       .. figure:: ../_static/images/airport-tables.pdf
@@ -113,16 +134,12 @@ nn electrical circuit is modeled in Fig.~\ref{fig:graph-model-circuit} and the d
         :alt: alternate text
         :figclass: align-center
 
-        Table of airport codes and distance in km between the airports.
-
      -
       .. figure:: ../_static/images/airport-graph.pdf
         :width: 200px
         :align: center
         :alt: alternate text
         :figclass: align-center
-
-        Graphical representation of the tabular data.
 
      -
       .. math::
