@@ -20,6 +20,7 @@ Contents
 
 
 
+
 ==================
 Indices and tables
 ==================
@@ -28,3 +29,8 @@ Indices and tables
 * :ref:`modindex`
 * :ref:`search`
 
+
+.. toctree::
+   :hidden:
+
+   libref/libref.rst

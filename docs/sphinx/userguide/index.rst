@@ -45,7 +45,7 @@ ordered pairs, denoted as :math:`(v_i, v_j)`, which have equality defined such t
 `(v_i,v_j) = (v_m,v_n) \leftrightarrow v_i = v_m \wedge v_j = v_n`. Or, the edges may
 be unordered sets, denoted as :math:`\{v_i, v_j\}` which have equality defined as :math:`(v_i,v_j)
 = (v_m,v_n) \leftrightarrow\left( v_i = v_m \wedge v_j = v_n\right) \vee \left( v_i =
-v_n \wedge v_j = v_m\right) `.  If a graph is defined with ordered edges we say the
+v_n \wedge v_j = v_m\right)` .  If a graph is defined with ordered edges we say the
 graph is directed; if the graph is defined with unordered edgese say the graph is
 undirected.
 
