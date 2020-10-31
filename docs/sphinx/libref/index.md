@@ -10,4 +10,10 @@ icon: book
 tab: __MISSING__
 ---
 
+```{index} NW Graph Library
+```
+
+```{index} Library Reference
+```
+
 # NW Graph Library Reference
