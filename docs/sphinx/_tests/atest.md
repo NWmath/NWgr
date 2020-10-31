@@ -8,14 +8,14 @@ tags:
 library-type: library
 icon: book
 tab: __MISSING__
-
+---
 
 ```{index} one
 ```
 
 
-```{index}{{ owner }}
-```
+.. ```{index}{{ owner }}
+.. ```
 
 {index}`try index inline`
 
