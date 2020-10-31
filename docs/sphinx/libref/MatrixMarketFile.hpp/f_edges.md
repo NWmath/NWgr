@@ -24,3 +24,6 @@ overloads:
 namespace:
   - mmio
 ---
+
+```{index} MatrixMarketFile::edges
+```
