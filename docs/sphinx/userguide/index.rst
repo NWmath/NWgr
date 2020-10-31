@@ -42,7 +42,7 @@ generality we label the entities in :math:`V` as :math:`v_i` so that :math:`V = 
 v_{n-1} \}`.  The set of edges (also labeled) can be constructed using the labeled
 entities from :math:`V` so that :math:`E = \{ e_0, e_1, \ldots e_{m-1} \}`.  The edges may be
 ordered pairs, denoted as :math:`(v_i, v_j)`, which have equality defined such that
-`(v_i,v_j) = (v_m,v_n) \leftrightarrow v_i = v_m \wedge v_j = v_n`. Or, the edges may
+:math:`(v_i,v_j) = (v_m,v_n) \leftrightarrow v_i = v_m \wedge v_j = v_n`. Or, the edges may
 be unordered sets, denoted as :math:`\{v_i, v_j\}` which have equality defined as :math:`(v_i,v_j)
 = (v_m,v_n) \leftrightarrow\left( v_i = v_m \wedge v_j = v_n\right) \vee \left( v_i =
 v_n \wedge v_j = v_m\right)` .  If a graph is defined with ordered edges we say the
@@ -66,7 +66,7 @@ nn electrical circuit is modeled in Fig.~\ref{fig:graph-model-circuit} and the d
         :alt: alternate text
         :figclass: align-center
 
-        Electrical circuit consisting of nodes nad circuit elements.
+      Electrical circuit consisting of nodes and circuit elements.
 
      -
       .. figure:: ../_static/images/circuit-graph.pdf
@@ -75,12 +75,12 @@ nn electrical circuit is modeled in Fig.~\ref{fig:graph-model-circuit} and the d
         :alt: alternate text
         :figclass: align-center
 
-        Graphical representation of the electrical circuit.
+      Graphical representation of the electrical circuit.
 
      -
       .. math::
 
-         \begin{array}[t]{rcl}
+         \small\begin{array}[t]{rcl}
          G & = & \{ V, E \} \\
          V & = & \{ \textrm{0}, \textrm{Vdd}, \textrm{n0}, \textrm{n1}, \textrm{n2}, \textrm{Vout} \} \\
          E & = & \{
@@ -99,7 +99,7 @@ nn electrical circuit is modeled in Fig.~\ref{fig:graph-model-circuit} and the d
 	 \:&\:\\
          \end{array}
 
-         
+
 
 
 
