@@ -1,4 +1,4 @@
-import os,sys,yaml,json
+import os,sys,yaml,json,re
 
 sources = {}
 
@@ -17,8 +17,16 @@ def initDict(libref):
                 else:
                     key   = os.path.splitext(local_pagename)[0]
 
+                str = open(local_pagename).read()
 
-                value = list(yaml.safe_load_all(open(local_pagename)))
+                match = re.search(r"^-{3,}(.*?)-{3,}", str, re.M | re.DOTALL)
+
+
+                str = match.group(0)
+
+                value = list(yaml.safe_load_all(str))
+
+                # value = list(yaml.safe_load_all(open(local_pagename)))
                 
                 # print('   ====>>>  walking page: ', local_pagename)
 
