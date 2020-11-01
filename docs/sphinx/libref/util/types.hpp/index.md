@@ -14,3 +14,7 @@ typedefs:
     definition: uint32_t
     description: __MISSING__
 ---
+
+```{index}  util/types.hpp
+```
+

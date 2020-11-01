@@ -51,3 +51,7 @@ fields:
 namespace:
   - mmio
 ---
+
+```{index}  MatrixMarketFile
+```
+

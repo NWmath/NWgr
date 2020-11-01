@@ -10,4 +10,3 @@ library-type: sourcefile
 
 ```{index} MatrixMarketFile.hpp
 ```
-

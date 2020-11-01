@@ -18,3 +18,7 @@ namespace:
   - nw
   - graph
 ---
+
+```{index}  provenance
+```
+

@@ -23,3 +23,7 @@ namespace:
   - nw
   - graph
 ---
+
+```{index}  graph_base
+```
+

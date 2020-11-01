@@ -34,3 +34,7 @@ namespace:
   - nw
   - graph
 ---
+
+```{index}  topdown_bfs_range<Graph, Queue>
+```
+

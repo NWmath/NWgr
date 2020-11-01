@@ -7,3 +7,7 @@ tags:
   - sourcefile
 library-type: sourcefile
 ---
+
+```{index}  util/demangle.hpp
+```
+

@@ -12,3 +12,7 @@ dtor: unspecified
 namespace:
   - std
 ---
+
+```{index}  tuple_size<nw::graph::struct_of_arrays<Attributes...>>
+```
+

@@ -17,3 +17,7 @@ namespace:
   - nw
   - graph
 ---
+
+```{index}  vertex_id<T>
+```
+

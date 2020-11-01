@@ -18,3 +18,7 @@ namespace:
   - nw
   - graph
 ---
+
+```{index}  worklist_range_iterator
+```
+

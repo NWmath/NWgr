@@ -13,3 +13,7 @@ namespace:
   - graph
   - filtered_bfs
 ---
+
+```{index}  end_sentinel_type
+```
+

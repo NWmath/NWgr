@@ -32,3 +32,7 @@ namespace:
   - nw
   - graph
 ---
+
+```{index}  bfs_edge_range<Graph, Queue>
+```
+

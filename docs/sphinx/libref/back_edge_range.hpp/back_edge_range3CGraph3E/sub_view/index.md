@@ -23,3 +23,7 @@ namespace:
   - nw
   - graph
 ---
+
+```{index}  sub_view
+```
+

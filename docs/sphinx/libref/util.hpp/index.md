@@ -11,3 +11,6 @@ typedefs:
     definition: decltype(select<Is...>(std::declval<Tuple>()))
     description: __MISSING__
 ---
+
+```{index} util.hpp
+```

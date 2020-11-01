@@ -19,3 +19,7 @@ namespace:
   - nw
   - graph
 ---
+
+```{index}  outer_back_edge_range_iterator
+```
+

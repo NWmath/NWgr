@@ -32,3 +32,7 @@ namespace:
   - nw
   - graph
 ---
+
+```{index}  tbbworklist_range<Graph, Workitem, Queue>
+```
+

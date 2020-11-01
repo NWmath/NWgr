@@ -11,3 +11,7 @@ typedefs:
     definition: tbb::counting_iterator<T>
     description: __MISSING__
 ---
+
+```{index}  algorithms/bfs.hpp
+```
+

@@ -13,3 +13,7 @@ namespace:
   - nw
   - graph
 ---
+
+```{index}  is_iterator<T, std::enable_if_t<!std::is_same_v<typename std::iterator_traits<T>::value_type, void>> >
+```
+

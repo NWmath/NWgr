@@ -47,3 +47,7 @@ namespace:
   - nw
   - graph
 ---
+
+```{index}  random_range<Graph>
+```
+

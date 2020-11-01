@@ -38,3 +38,7 @@ namespace:
   - nw
   - graph
 ---
+
+```{index}  non_zero_range
+```
+

@@ -44,3 +44,7 @@ namespace:
   - nw
   - graph
 ---
+
+```{index}  permutation_iterator<Iterator, Permutation>
+```
+

@@ -7,3 +7,7 @@ tags:
   - sourcefile
 library-type: sourcefile
 ---
+
+```{index}  algorithms/triangle_count.hpp
+```
+

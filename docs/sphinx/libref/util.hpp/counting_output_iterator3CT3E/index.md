@@ -18,3 +18,7 @@ namespace:
   - nw
   - graph
 ---
+
+```{index}  counting_output_iterator<T>
+```
+

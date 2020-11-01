@@ -16,3 +16,7 @@ namespace:
   - nw
   - graph
 ---
+
+```{index}  counter<T>
+```
+

@@ -54,3 +54,7 @@ namespace:
   - nw
   - graph
 ---
+
+```{index}  iterator
+```
+

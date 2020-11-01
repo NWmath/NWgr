@@ -28,3 +28,7 @@ namespace:
   - nw
   - graph
 ---
+
+```{index}  array_of_list_of_structs<Attributes>
+```
+

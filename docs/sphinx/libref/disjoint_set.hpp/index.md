@@ -14,3 +14,6 @@ typedefs:
     definition: nw::graph::vertex_id_t
     description: __MISSING__
 ---
+
+```{index} disjoint_set.hpp
+```

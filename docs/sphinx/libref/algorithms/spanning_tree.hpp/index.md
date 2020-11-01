@@ -7,3 +7,7 @@ tags:
   - sourcefile
 library-type: sourcefile
 ---
+
+```{index}  algorithms/spanning_tree.hpp
+```
+

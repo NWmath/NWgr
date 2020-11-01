@@ -47,3 +47,7 @@ namespace:
   - nw
   - graph
 ---
+
+```{index}  indexed_struct_of_arrays<Attributes>
+```
+

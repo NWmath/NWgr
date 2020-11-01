@@ -23,3 +23,7 @@ namespace:
   - nw
   - graph
 ---
+
+```{index}  tbbworklist_range_iterator
+```
+

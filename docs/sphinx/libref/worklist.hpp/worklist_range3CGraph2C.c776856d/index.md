@@ -27,3 +27,7 @@ namespace:
   - nw
   - graph
 ---
+
+```{index}  worklist_range<Graph, Workitem, Queue>
+```
+

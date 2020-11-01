@@ -13,3 +13,7 @@ namespace:
   - nw
   - graph
 ---
+
+```{index}  is_iterator<T *, void>
+```
+

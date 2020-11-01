@@ -28,3 +28,7 @@ namespace:
   - nw
   - graph
 ---
+
+```{index}  dag_range_iterator
+```
+

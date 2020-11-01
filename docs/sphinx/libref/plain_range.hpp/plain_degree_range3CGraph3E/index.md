@@ -18,3 +18,7 @@ namespace:
   - nw
   - graph
 ---
+
+```{index}  plain_degree_range<Graph>
+```
+

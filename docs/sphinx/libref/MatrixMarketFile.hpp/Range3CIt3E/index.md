@@ -22,3 +22,7 @@ fields:
 namespace:
   - mmio
 ---
+
+```{index}  Range<It>
+```
+

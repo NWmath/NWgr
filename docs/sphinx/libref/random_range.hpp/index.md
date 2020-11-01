@@ -7,3 +7,6 @@ tags:
   - sourcefile
 library-type: sourcefile
 ---
+
+```{index} random_range.hpp
+```

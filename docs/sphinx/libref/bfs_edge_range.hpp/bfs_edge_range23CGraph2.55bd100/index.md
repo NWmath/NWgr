@@ -32,3 +32,7 @@ namespace:
   - nw
   - graph
 ---
+
+```{index}  bfs_edge_range2<Graph, PriorityQueue>
+```
+

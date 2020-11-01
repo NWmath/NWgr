@@ -36,3 +36,7 @@ namespace:
   - nw
   - graph
 ---
+
+```{index}  edge_list<edge_directedness, Attributes>
+```
+

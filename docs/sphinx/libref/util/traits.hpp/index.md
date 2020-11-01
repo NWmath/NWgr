@@ -14,3 +14,7 @@ typedefs:
     definition: typename remove_atomic<T>::type
     description: __MISSING__
 ---
+
+```{index}  util/traits.hpp
+```
+

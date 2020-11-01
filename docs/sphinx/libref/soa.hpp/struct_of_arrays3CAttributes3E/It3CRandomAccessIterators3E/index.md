@@ -39,3 +39,7 @@ namespace:
   - nw
   - graph
 ---
+
+```{index}  It<RandomAccessIterators>
+```
+

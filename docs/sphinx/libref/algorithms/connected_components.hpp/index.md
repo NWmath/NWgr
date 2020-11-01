@@ -14,3 +14,7 @@ typedefs:
     definition: typename std::unordered_map<T, size_t>::value_type
     description: __MISSING__
 ---
+
+```{index}  algorithms/connected_components.hpp
+```
+

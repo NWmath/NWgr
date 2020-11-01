@@ -11,3 +11,7 @@ typedefs:
     definition: std::priority_queue<T, Container, std::decay_t<Compare>>
     description: __MISSING__
 ---
+
+```{index}  util/make_priority_queue.hpp
+```
+

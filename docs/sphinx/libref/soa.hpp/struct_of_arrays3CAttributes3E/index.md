@@ -22,3 +22,7 @@ namespace:
   - nw
   - graph
 ---
+
+```{index}  struct_of_arrays<Attributes>
+```
+

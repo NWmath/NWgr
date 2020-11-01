@@ -7,3 +7,6 @@ tags:
   - sourcefile
 library-type: sourcefile
 ---
+
+```{index} splittable_range_adapter.hpp
+```

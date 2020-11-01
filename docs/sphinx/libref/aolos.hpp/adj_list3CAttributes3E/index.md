@@ -19,3 +19,7 @@ namespace:
   - nw
   - graph
 ---
+
+```{index}  adj_list<Attributes>
+```
+

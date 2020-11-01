@@ -46,3 +46,7 @@ namespace:
   - graph
   - filtered_bfs
 ---
+
+```{index}  filtered_bfs_edge_range<Graph, Queue, Filter>
+```
+

@@ -14,3 +14,7 @@ typedefs:
     definition: std::unordered_map<Neighbors, bool, pair_hash>
     description: __MISSING__
 ---
+
+```{index}  algorithms/k_core.hpp
+```
+

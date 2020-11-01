@@ -7,3 +7,6 @@ tags:
   - sourcefile
 library-type: sourcefile
 ---
+
+```{index} new_dfs_range.hpp
+```

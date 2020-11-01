@@ -38,3 +38,7 @@ namespace:
   - nw
   - graph
 ---
+
+```{index}  bfs_edge_range2_iterator
+```
+

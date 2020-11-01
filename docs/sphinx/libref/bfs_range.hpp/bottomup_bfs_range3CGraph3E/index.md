@@ -44,3 +44,7 @@ namespace:
   - nw
   - graph
 ---
+
+```{index}  bottomup_bfs_range<Graph>
+```
+

@@ -42,3 +42,7 @@ namespace:
   - nw
   - graph
 ---
+
+```{index}  cyclic_range_adapter<Iterator>
+```
+

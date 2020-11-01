@@ -47,3 +47,7 @@ namespace:
   - nw
   - graph
 ---
+
+```{index}  dag_range<Graph, Queue>
+```
+

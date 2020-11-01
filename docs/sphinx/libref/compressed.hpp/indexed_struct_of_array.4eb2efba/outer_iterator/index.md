@@ -44,3 +44,7 @@ namespace:
   - nw
   - graph
 ---
+
+```{index}  outer_iterator
+```
+

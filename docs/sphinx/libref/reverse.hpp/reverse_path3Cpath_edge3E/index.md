@@ -28,3 +28,7 @@ namespace:
   - nw
   - graph
 ---
+
+```{index}  reverse_path<path_edge>
+```
+

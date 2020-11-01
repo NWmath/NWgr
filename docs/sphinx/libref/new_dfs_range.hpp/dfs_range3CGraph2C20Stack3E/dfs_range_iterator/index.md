@@ -23,3 +23,7 @@ namespace:
   - nw
   - graph
 ---
+
+```{index}  dfs_range_iterator
+```
+

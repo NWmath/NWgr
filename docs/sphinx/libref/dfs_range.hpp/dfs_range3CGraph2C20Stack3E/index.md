@@ -32,3 +32,7 @@ namespace:
   - nw
   - graph
 ---
+
+```{index}  dfs_range<Graph, Stack>
+```
+

@@ -25,3 +25,7 @@ namespace:
   - nw
   - graph
 ---
+
+```{index}  vector_of_vector_of_structs<Attributes>
+```
+

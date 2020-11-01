@@ -33,3 +33,7 @@ namespace:
   - nw
   - graph
 ---
+
+```{index}  edge_range<Graph, Is>
+```
+

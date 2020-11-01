@@ -29,3 +29,7 @@ namespace:
   - nw
   - graph
 ---
+
+```{index}  nodeinfo
+```
+

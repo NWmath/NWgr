@@ -44,3 +44,7 @@ namespace:
   - nw
   - graph
 ---
+
+```{index}  edge_iterator<Attrs>
+```
+

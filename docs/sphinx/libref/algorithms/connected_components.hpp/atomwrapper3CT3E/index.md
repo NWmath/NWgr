@@ -16,3 +16,7 @@ namespace:
   - nw
   - graph
 ---
+
+```{index}  atomwrapper<T>
+```
+

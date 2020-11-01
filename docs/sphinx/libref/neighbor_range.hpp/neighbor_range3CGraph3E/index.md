@@ -22,3 +22,7 @@ namespace:
   - nw
   - graph
 ---
+
+```{index}  neighbor_range<Graph>
+```
+

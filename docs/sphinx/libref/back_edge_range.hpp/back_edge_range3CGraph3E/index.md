@@ -46,3 +46,7 @@ namespace:
   - nw
   - graph
 ---
+
+```{index}  back_edge_range<Graph>
+```
+

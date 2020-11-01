@@ -28,3 +28,7 @@ namespace:
   - nw
   - graph
 ---
+
+```{index}  splittable_range_adapter<Iterator>
+```
+

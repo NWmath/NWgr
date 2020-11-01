@@ -12,3 +12,7 @@ namespace:
   - nw
   - graph
 ---
+
+```{index}  end_sentinel_type
+```
+

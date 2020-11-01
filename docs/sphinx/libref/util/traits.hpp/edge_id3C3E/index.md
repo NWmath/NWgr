@@ -17,3 +17,7 @@ namespace:
   - nw
   - graph
 ---
+
+```{index}  edge_id<>
+```
+

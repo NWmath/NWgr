@@ -14,3 +14,7 @@ typedefs:
     definition: std::tuple<vertex_id_t, weight_t>
     description: __MISSING__
 ---
+
+```{index}  algorithms/dijkstra.hpp
+```
+

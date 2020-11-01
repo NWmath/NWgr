@@ -16,3 +16,7 @@ namespace:
   - nw
   - graph
 ---
+
+```{index}  compressed_sparse<idx, sym, Attributes>
+```
+

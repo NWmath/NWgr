@@ -19,3 +19,7 @@ namespace:
   - nw
   - graph
 ---
+
+```{index}  Spinlock
+```
+

@@ -18,3 +18,7 @@ namespace:
   - nw
   - graph
 ---
+
+```{index}  _priority_queue<T, Container, Compare>
+```
+

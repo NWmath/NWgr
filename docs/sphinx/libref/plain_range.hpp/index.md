@@ -11,3 +11,6 @@ typedefs:
     definition: tbb::counting_iterator<T>
     description: __MISSING__
 ---
+
+```{index} plain_range.hpp
+```

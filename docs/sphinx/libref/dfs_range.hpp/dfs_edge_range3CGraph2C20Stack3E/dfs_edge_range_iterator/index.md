@@ -38,3 +38,7 @@ namespace:
   - nw
   - graph
 ---
+
+```{index}  dfs_edge_range_iterator
+```
+

@@ -26,3 +26,7 @@ namespace:
   - nw
   - graph
 ---
+
+```{index}  tree_edge
+```
+

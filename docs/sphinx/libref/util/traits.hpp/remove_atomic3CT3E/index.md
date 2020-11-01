@@ -17,3 +17,7 @@ namespace:
   - nw
   - graph
 ---
+
+```{index}  remove_atomic<T>
+```
+

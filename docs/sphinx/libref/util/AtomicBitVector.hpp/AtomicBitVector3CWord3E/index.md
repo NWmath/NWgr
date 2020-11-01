@@ -27,3 +27,7 @@ namespace:
   - nw
   - graph
 ---
+
+```{index}  AtomicBitVector<Word>
+```
+

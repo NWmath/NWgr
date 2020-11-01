@@ -13,3 +13,7 @@ namespace:
   - nw
   - graph
 ---
+
+```{index}  max
+```
+

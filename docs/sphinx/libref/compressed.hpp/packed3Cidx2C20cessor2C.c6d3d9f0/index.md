@@ -16,3 +16,7 @@ namespace:
   - nw
   - graph
 ---
+
+```{index}  packed<idx, cessor, Attributes>
+```
+

@@ -27,3 +27,7 @@ namespace:
   - nw
   - graph
 ---
+
+```{index}  disjoint_set<T>
+```
+
