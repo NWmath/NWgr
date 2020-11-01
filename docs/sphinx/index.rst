@@ -3,9 +3,10 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-====================================
-Welcome to NW Graph's documentation!
-====================================
+==========================================
+Welcome to the Documentation for NW Graph!
+==========================================
+
 
 ==========
 User Guide
@@ -14,7 +15,12 @@ User Guide
 .. toctree::
    :maxdepth: 2
 
-   userguide/index.rst
+   userguide/getting_started.rst
+   userguide/theory.rst
+   userguide/bridge.rst
+   userguide/programming.rst
+   userguide/performance.rst
+   userguide/primer.rst
 
 
 ========
@@ -25,6 +31,7 @@ Examples
    :maxdepth: 2
 
    examples/index.rst
+
 
 
 ================
@@ -39,16 +46,18 @@ Reference Manual
 
 
 
-==================
-Indices and tables
-==================
+=====
+Index
+=====
 
 * :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+
 
 
 .. toctree::
    :hidden:
 
    libref/libref.rst
+
+.. * :ref:`modindex`
+.. * :ref:`search`
