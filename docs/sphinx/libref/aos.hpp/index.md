@@ -1,8 +1,8 @@
 ---
 layout: library
 title: aos.hpp
-owner: __MISSING__
-brief: __MISSING__
+owner: Andrew Lumsdaine
+brief: Array of structs
 tags:
   - sourcefile
 library-type: sourcefile
@@ -10,3 +10,6 @@ library-type: sourcefile
 
 ```{index} aos.hpp
 ```
+
+Array of structs container implemented with std::vector< std::tuple< Attributes...>>
+

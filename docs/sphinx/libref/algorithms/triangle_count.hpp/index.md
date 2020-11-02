@@ -1,8 +1,8 @@
 ---
 layout: library
 title: algorithms/triangle_count.hpp
-owner: __MISSING__
-brief: __MISSING__
+owner: Andrew Lumsdaine, Luke D'Alessandro
+brief: Algorithm implementations for finding the number of triangles (length 3 cycles) in a graph
 tags:
   - sourcefile
 library-type: sourcefile

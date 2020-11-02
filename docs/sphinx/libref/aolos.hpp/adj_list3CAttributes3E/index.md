@@ -1,8 +1,8 @@
 ---
 layout: class
 title: adj_list<Attributes>
-owner: __MISSING__
-brief: __MISSING__
+owner: Andrew Lumsdaine
+brief: Incidence Graph implementation relying upon the array_of_list_of_structs container
 tags:
   - class
 defined_in_file: aolos.hpp

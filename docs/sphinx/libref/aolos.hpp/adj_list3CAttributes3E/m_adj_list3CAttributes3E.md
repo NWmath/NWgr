@@ -1,7 +1,7 @@
 ---
 layout: method
 title: adj_list<Attributes...>
-owner: __MISSING__
+owner: Andrew Lumsdaine
 brief: __MISSING__
 tags:
   - method

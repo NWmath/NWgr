@@ -1,8 +1,8 @@
 ---
 layout: library
 title: aolos.hpp
-owner: __MISSING__
-brief: __MISSING__
+owner: Andrew Lumsdaine
+brief: Array of list of structs
 tags:
   - sourcefile
 library-type: sourcefile
@@ -10,3 +10,6 @@ library-type: sourcefile
 
 ```{index} aolos.hpp
 ```
+
+Incidence graph implementation with std::vector for outer range, and std::forward_list of structs for inner range.
+

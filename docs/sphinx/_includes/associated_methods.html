@@ -15,8 +15,9 @@
 {% for k,pp in methods.items() %}
   {% set p = pp[0] %}
   {% if p.is_ctor %}
+  {% set pt = pathto(k) %}
     <tr>
-        <td class='decl' colspan='2'><a href='{{k}}'>(constructor)</a></td>
+        <td class='decl' colspan='2'><a href='{{pt}}'>(constructor)</a></td>
     </tr>
   {% endif %}
 {% endfor %}

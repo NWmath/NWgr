@@ -1,8 +1,8 @@
 ---
 layout: class
 title: array_of_list_of_structs<Attributes>
-owner: __MISSING__
-brief: __MISSING__
+owner: Andrew Lumsdaine
+brief: container class for std::vector< std::forward_list< std::tuple< Attributes...>>>
 tags:
   - class
 defined_in_file: aolos.hpp
