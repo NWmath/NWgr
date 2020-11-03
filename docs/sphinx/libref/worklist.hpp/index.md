@@ -1,8 +1,8 @@
 ---
 layout: library
 title: worklist.hpp
-owner: __MISSING__
-brief: __MISSING__
+owner: Andrew Lumsdaine, Kevin Deweese
+brief: Classes for worklist data structures
 tags:
   - sourcefile
 library-type: sourcefile

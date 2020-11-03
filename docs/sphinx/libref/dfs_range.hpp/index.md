@@ -1,8 +1,8 @@
 ---
 layout: library
 title: dfs_range.hpp
-owner: __MISSING__
-brief: __MISSING__
+owner: Andrew Lumsdaine
+brief: DFS edge range adapter
 tags:
   - sourcefile
 library-type: sourcefile
@@ -10,3 +10,4 @@ library-type: sourcefile
 
 ```{index} 
 ```
+Range adapter for accessing edges in depth first search order.

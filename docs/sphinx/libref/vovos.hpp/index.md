@@ -1,8 +1,8 @@
 ---
 layout: library
 title: vovos.hpp
-owner: __MISSING__
-brief: __MISSING__
+owner: Andrew Lumsdaine
+brief: Vector of vectors data structure
 tags:
   - sourcefile
 library-type: sourcefile

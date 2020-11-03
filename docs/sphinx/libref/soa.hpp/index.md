@@ -1,8 +1,8 @@
 ---
 layout: library
 title: soa.hpp
-owner: __MISSING__
-brief: __MISSING__
+owner: Andrew Lumsdaine
+brief: Struct of arrays
 tags:
   - sourcefile
 library-type: sourcefile

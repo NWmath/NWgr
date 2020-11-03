@@ -1,8 +1,8 @@
 ---
 layout: library
 title: dag_range.hpp
-owner: __MISSING__
-brief: __MISSING__
+owner: Andrew Lumsdaine
+brief: 
 tags:
   - sourcefile
 library-type: sourcefile

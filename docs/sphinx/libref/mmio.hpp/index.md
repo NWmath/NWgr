@@ -1,8 +1,8 @@
 ---
 layout: library
 title: mmio.hpp
-owner: __MISSING__
-brief: __MISSING__
+owner: Andrew Lumsdaine
+brief: Matrix market file I/O
 tags:
   - sourcefile
 library-type: sourcefile

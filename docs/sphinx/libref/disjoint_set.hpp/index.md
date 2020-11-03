@@ -1,8 +1,8 @@
 ---
 layout: library
 title: disjoint_set.hpp
-owner: __MISSING__
-brief: __MISSING__
+owner: Andrew Lumsdaine, Xu Tony Lu
+brief: Disjoint-set (union-find) data structures
 tags:
   - sourcefile
 library-type: sourcefile
