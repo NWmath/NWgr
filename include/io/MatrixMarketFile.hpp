@@ -22,7 +22,7 @@
 #include <unistd.h>
 
 extern "C" {
-#include "mmio.h"
+#include "mmio_nist.h"
 }
 
 namespace mmio {
