@@ -13,7 +13,7 @@
 #include <algorithms/triangle_count.hpp>
 #include <compressed.hpp>
 #include <edge_list.hpp>
-#include <mmio.hpp>
+#include <io/mmio.hpp>
 #include <execution>
 #include <unordered_set>
 #include "common/test_header.hpp"

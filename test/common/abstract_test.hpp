@@ -3,7 +3,7 @@
 
 #include "test_header.hpp"
 #include "compressed.hpp"
-#include "mmio.hpp"
+#include "io/mmio.hpp"
 
 using namespace nw::graph;
 using namespace nw::util;

@@ -1,19 +1,19 @@
 ---
 layout: function
 title: triangle_count_v0
-owner: __MISSING__
-brief: __MISSING__
+owner: Andrew Lumsdaine
+brief: Naive two-dimensional triangle counting
 tags:
   - function
 defined_in_file: algorithms/triangle_count.hpp
 overloads:
   "template <typename GraphT>\nsize_t triangle_count_v0(GraphT &)":
     arguments:
-      - description: __OPTIONAL__
+      - description: Adjacency graph
         name: A
         type: GraphT &
-    description: __OPTIONAL__
-    return: __OPTIONAL__
+    description: Range based triangle counting that intersects the neighborhoods of two neighborhoods. Performs more work than necessary by intersecting the entire neighbor range of each vertex.
+    return: The number of triangles in the graph
     signature_with_names: "template <typename GraphT>\nsize_t triangle_count_v0(GraphT & A)"
 namespace:
   - nw

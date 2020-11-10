@@ -14,7 +14,7 @@
 #include "aos.hpp"
 #include "common/test_header.hpp"
 #include "compressed.hpp"
-#include "mmio.hpp"
+#include "io/mmio.hpp"
 #include "util.hpp"
 #include <algorithm>
 #include <cstdint>

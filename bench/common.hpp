@@ -4,7 +4,7 @@
 #include "graph_base.hpp"
 #include "edge_list.hpp"
 #include "edge_range.hpp"
-#include "mmio.hpp"
+#include "io/mmio.hpp"
 #include "util/timer.hpp"
 #include "util/traits.hpp"
 
@@ -89,10 +89,10 @@ edge_list<Directedness, Attributes...> load_graph(std::string file) {
   }
 }
 
-template <int Adj, directedness Directedness, class... Attributes>
-adjacency<Adj, Attributes...> build_adjacency(edge_list<Directedness, Attributes...>& graph) {
+template <int Adj, class ExecutionPolicy = std::execution::parallel_unsequenced_policy, directedness Directedness, class... Attributes>
+adjacency<Adj, Attributes...> build_adjacency(edge_list<Directedness, Attributes...>& graph, ExecutionPolicy&& policy = {}) {
   nw::util::life_timer _("build adjacency");
-  return { graph };
+  return { graph, policy };
 }
 
 template <class Graph>

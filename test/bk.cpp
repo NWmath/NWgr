@@ -14,7 +14,7 @@
 #include <algorithms/boykov_kolmogorov.hpp>
 #include <compressed.hpp>
 #include <edge_list.hpp>
-#include <mmio.hpp>
+#include <io/mmio.hpp>
 #include <vector>
 
 using namespace nw::graph;

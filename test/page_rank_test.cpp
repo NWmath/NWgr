@@ -18,7 +18,7 @@
 #include <compressed.hpp>
 #include <edge_list.hpp>
 
-#include <mmio.hpp>
+#include <io/mmio.hpp>
 
 #include "common/abstract_test.hpp"
 #include <algorithms/page_rank.hpp>
@@ -69,7 +69,7 @@ TEST_CASE("PageRank") {
                                 0.0144766, 0.0195506, 0.0144766,  0.0145342, 0.0144766, 0.0314621, 0.0210849, 0.0210187, 0.0150202,
                                 0.0256012, 0.0195538, 0.0262432,  0.0245261, 0.0370686, 0.0718675, 0.101166};
 
-  SECTION("adjacency") {
+  SECTioN("adjacency") {
     adjacency<1, RealT> graph(A);
     //std::cout << "Number vertices: " << graph.size() << std::endl;
     std::vector<RealT> page_rank(graph.size());
@@ -97,7 +97,7 @@ TEST_CASE("PageRank") {
       REQUIRE(page_rank[idx] == Approx(answer[idx]).epsilon(tolerance));
     }
   }
-  SECTION("adj_list") {
+  SECTioN("adj_list") {
     adj_list<RealT> graph(A);
     //std::cout << "Number vertices: " << graph.size() << std::endl;
     std::vector<RealT> page_rank(graph.size());

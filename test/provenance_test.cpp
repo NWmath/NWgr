@@ -1,7 +1,7 @@
 
 
 #include "edge_list.hpp"
-#include "mmio.hpp"
+#include "io/mmio.hpp"
 #include <cxxabi.h>
 #include <iostream>
 #include <typeinfo>

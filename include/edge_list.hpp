@@ -381,7 +381,7 @@ public:
     if constexpr (edge_directedness == directed) {
 
 #if !defined(EDGELIST_AOS)
-      sort_by<idx>();
+      sort_by<idx>(policy);
       auto degree = degrees<idx>();
       
       const int kdx = (idx + 1) % 2;
@@ -400,7 +400,7 @@ public:
       }
 
 #else    // IS AOS
-      stable_sort_by<idx>();
+      stable_sort_by<idx>(policy);
       cs.open_for_push_back();
       
       std::for_each(base::begin(), base::end(), [&](auto&& elt) {

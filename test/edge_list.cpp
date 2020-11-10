@@ -62,14 +62,14 @@ TEST_CASE("sort", "[edge_list]") {
 
   REQUIRE(A.size() == 3);
 
-  SECTION("sort 0") {
+  SECTioN("sort 0") {
     A.sort_by<0>();
     REQUIRE(std::get<0>(A[0]) == 1);
     REQUIRE(std::get<0>(A[1]) == 2);
     REQUIRE(std::get<0>(A[2]) == 3);
   }
 
-  SECTION("sort 1") {
+  SECTioN("sort 1") {
     A.sort_by<1>();
     REQUIRE(std::get<1>(A[0]) == 1);
     REQUIRE(std::get<1>(A[1]) == 2);

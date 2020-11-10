@@ -14,7 +14,7 @@
 #include "aos.hpp"
 #include "common/test_header.hpp"
 #include "compressed.hpp"
-#include "mmio.hpp"
+#include "io/mmio.hpp"
 #include "util.hpp"
 #include <algorithm>
 #include <cstdint>
@@ -41,7 +41,7 @@ TEST_CASE("connected component", "[cc]") {
   std::vector<vertex_id_t> component_ids(N, std::numeric_limits<vertex_id_t>::max());
 
 
-  SECTION("v1 cc_push") {
+  SECTioN("v1 cc_push") {
     component_ids = ccv1(A);
     for (auto component_id : component_ids) {
       //std::cout << component_id << std::endl;
@@ -49,28 +49,28 @@ TEST_CASE("connected component", "[cc]") {
     }
   }
 
-  SECTION("v2 cc_pull") {
+  SECTioN("v2 cc_pull") {
     component_ids = compute_connected_components_v2(A);
     for (auto component_id : component_ids) {
       //std::cout << component_id << std::endl;
       REQUIRE(component_id == 0);
     }
   }
-  SECTION("v5 cc_pull + subgraph sampling") {
+  SECTioN("v5 cc_pull + subgraph sampling") {
     component_ids = ccv5(A);
     for (auto component_id : component_ids) {
       //std::cout << component_id << std::endl;
       REQUIRE(component_id == 0);
     }
   }
-  SECTION("v6 sv") {
+  SECTioN("v6 sv") {
     component_ids = sv_v6(A);
     for (auto component_id : component_ids) {
       //std::cout << component_id << std::endl;
       REQUIRE(component_id == 0);
     }
   }
-  SECTION("v8 sv") {
+  SECTioN("v8 sv") {
     component_ids = sv_v8(A);
     for (auto component_id : component_ids) {
       //std::cout << component_id << std::endl;

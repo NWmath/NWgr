@@ -14,7 +14,7 @@
 #include "compressed.hpp"
 #include "edge_list.hpp"
 
-#include "mmio.hpp"
+#include "io/mmio.hpp"
 #include "plain_range.hpp"
 
 using namespace nw::graph;

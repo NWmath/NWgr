@@ -65,7 +65,7 @@ TEST_CASE("BFS traversal", "[bfs]") {
   std::vector<size_t> distance(N);
   std::vector<size_t> predecessor(N);
 /*
-  SECTION("default seed") {
+  SECTioN("default seed") {
     vertex_id_t seed = 0;
     distance[seed]      = 0;
     bfs_edge_range ranges(A, seed);
@@ -80,7 +80,7 @@ TEST_CASE("BFS traversal", "[bfs]") {
     REQUIRE(validate(aos_a, seed, distance, predecessor));
   }
 */
-  SECTION("another seed") {
+  SECTioN("another seed") {
     vertex_id_t seed = 1;
     distance[seed]      = 0;
     bfs_edge_range ranges(A, seed);
@@ -98,7 +98,7 @@ TEST_CASE("BFS traversal", "[bfs]") {
     REQUIRE(validate(aos_a, seed, distance, predecessor));
   }
 /*
-  SECTION("Top-down BFS default seed using bfs_range") {
+  SECTioN("Top-down BFS default seed using bfs_range") {
     vertex_id_t seed = 0;
     distance[seed]      = 0;
     bfs_range ranges(A, seed);
@@ -112,7 +112,7 @@ TEST_CASE("BFS traversal", "[bfs]") {
 
     REQUIRE(validate(aos_a, seed, distance, predecessor));
   }
-    SECTION("Top-down BFS another seed using bfs_range") {
+    SECTioN("Top-down BFS another seed using bfs_range") {
     vertex_id_t seed = 7;
     distance[seed]      = 0;
     bfs_range ranges(A, seed);
@@ -127,7 +127,7 @@ TEST_CASE("BFS traversal", "[bfs]") {
     REQUIRE(validate(aos_a, seed, distance, predecessor));
   }
 
-    SECTION("Bottom-up BFS default seed using bottomup_bfs_range") {
+    SECTioN("Bottom-up BFS default seed using bottomup_bfs_range") {
     vertex_id_t seed = 0;
     distance[seed]      = 0;
     bottomup_bfs_range ranges(A, seed);
@@ -153,7 +153,7 @@ TEST_CASE("BFS traversal", "[bfs]") {
     REQUIRE(validate(aos_a, seed, distance, predecessor));
   }
   
-    SECTION("Bottom-up BFS another seed using bottomup_bfs_range") {
+    SECTioN("Bottom-up BFS another seed using bottomup_bfs_range") {
     vertex_id_t seed = 1;
     distance[seed]      = 0;
     bottomup_bfs_range ranges(A, seed);

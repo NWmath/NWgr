@@ -10,7 +10,7 @@
 
 #include "binio.hpp"
 #include "edge_list.hpp"
-#include "mmio.hpp"
+#include "io/mmio.hpp"
 #include <iostream>
 
 using namespace nw::graph;

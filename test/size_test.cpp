@@ -12,7 +12,7 @@
 #include <compressed.hpp>
 #include <aolos.hpp>
 #include <edge_list.hpp>
-#include <mmio.hpp>
+#include <io/mmio.hpp>
 #include <vector>
 
 #include "common/test_header.hpp"

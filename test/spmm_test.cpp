@@ -16,7 +16,7 @@
 #include <algorithms/spMatspMat.hpp>
 #include <aos.hpp>
 #include <compressed.hpp>
-#include <mmio.hpp>
+#include <io/mmio.hpp>
 #include <util.hpp>
 
 using namespace nw::graph;

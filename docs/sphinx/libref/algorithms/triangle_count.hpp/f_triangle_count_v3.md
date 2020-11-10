@@ -1,19 +1,19 @@
 ---
 layout: function
 title: triangle_count_v3
-owner: __MISSING__
-brief: __MISSING__
+owner: Andrew Lumsdaine, Luke D'Alessandro
+brief: One-dimensional triangle counting
 tags:
   - function
 defined_in_file: algorithms/triangle_count.hpp
 overloads:
   "template <class Graph>\nsize_t triangle_count_v3(Graph &&)":
     arguments:
-      - description: __OPTIONAL__
+      - description: Adjacency graph
         name: A
         type: Graph &&
-    description: __OPTIONAL__
-    return: __OPTIONAL__
+    description: Edge range based triangle counting that uses a range-based for loop, compound intializer, and random access to the outer range.
+    return: The number of triangles in the graph
     signature_with_names: "template <class Graph>\nsize_t triangle_count_v3(Graph && A)"
 namespace:
   - nw

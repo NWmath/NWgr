@@ -13,7 +13,7 @@
 #include <aolos.hpp>
 #include <compressed.hpp>
 #include <edge_list.hpp>
-#include <mmio.hpp>
+#include <io/mmio.hpp>
 #include <new_dfs_range.hpp>
 #include <vector>
 
@@ -43,7 +43,7 @@ TEST_CASE("k core", "[k-core]") {
   E_list.push_back(2, 7);
   E_list.push_back(3, 6);
 
-  SECTION("adjacency") {
+  SECTioN("adjacency") {
     adjacency<0> A(E_list);
     auto         core   = k_core(A, k);
     auto         filter = std::get<0>(core);
@@ -60,7 +60,7 @@ TEST_CASE("k core", "[k-core]") {
       }
     }
   }
-  SECTION("adj_list") {
+  SECTioN("adj_list") {
     adj_list A(E_list);
     auto     core   = k_core(A, k);
     auto     filter = std::get<0>(core);
@@ -111,7 +111,7 @@ TEST_CASE("disconnected", "[disconnected]") {
   E_list.push_back(3, 8);
   E_list.push_back(4, 7);
 
-  SECTION("adjacency") {
+  SECTioN("adjacency") {
     adjacency<0> A(E_list);
     auto         core   = k_core(A, k);
     auto         filter = std::get<0>(core);
@@ -128,7 +128,7 @@ TEST_CASE("disconnected", "[disconnected]") {
       }
     }
   }
-  SECTION("adj_list") {
+  SECTioN("adj_list") {
     adj_list A(E_list);
     auto     core   = k_core(A, k);
     auto     filter = std::get<0>(core);

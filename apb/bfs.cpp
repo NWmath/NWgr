@@ -5,10 +5,10 @@
 
 #include "compressed.hpp"
 #include "edge_list.hpp"
-#include "mmio.hpp"
+#include "io/mmio.hpp"
 #include "edge_range.hpp"
 
-#if defined(CL_SYCL_LANGUAGE_VERSION)
+#if defined(CL_SYCL_LANGUAGE_VERSioN)
 #include <dpstd/iterator>
 #else
 #include "tbb/iterators.h"

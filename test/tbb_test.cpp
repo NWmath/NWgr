@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-#if defined(CL_SYCL_LANGUAGE_VERSION)
+#if defined(CL_SYCL_LANGUAGE_VERSioN)
 #  include <dpstd/execution>
 #  include <dpstd/iterators.h>
 template<class T>

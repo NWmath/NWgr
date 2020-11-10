@@ -17,11 +17,11 @@ using namespace nw::graph;
 using namespace nw::util;
 
 TEST_CASE("array of list of structures", "[array_of_list_of_structs]") {
-  SECTION("construct") { array_of_list_of_structs A(5); }
+  SECTioN("construct") { array_of_list_of_structs A(5); }
 }
 
 TEST_CASE("adjacency list", "[adj_list]") {
-  SECTION("construct") {
+  SECTioN("construct") {
     adj_list A(5);
     A.push_back(3, 4);
     adj_list<double> B(5);
@@ -30,7 +30,7 @@ TEST_CASE("adjacency list", "[adj_list]") {
     C.push_back(3, 1, 4.159, {86.7, 5.309});
   }
 
-  SECTION("traverse") {
+  SECTioN("traverse") {
     adj_list<int> A(6);
     A.push_back(0, 1, 1);
     A.push_back(1, 2, 2);

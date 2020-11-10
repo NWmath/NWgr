@@ -11,7 +11,7 @@
 
 #include "compressed.hpp"
 #include "edge_list.hpp"
-#include "mmio.hpp"
+#include "io/mmio.hpp"
 #include "util/timer.hpp"
 
 int main(int argc, char* argv[]) {
