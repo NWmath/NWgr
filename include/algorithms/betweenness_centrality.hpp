@@ -1420,8 +1420,6 @@ auto bc2_v2(Graph& graph, const std::vector<vertex_id_t>& sources, ExecutionPoli
   std::vector<score_t> bc(N, 0);
 
   for (vertex_id_t root : sources) {
-    std::cout << "source: " << root << std::endl;
-
     std::vector<std::atomic<vertex_id_t>> depths(N);
 
     std::fill(policy, depths.begin(), depths.end(), std::numeric_limits<vertex_id_t>::max());
@@ -1596,8 +1594,6 @@ auto bc2_v4(Graph&& graph, const std::vector<vertex_id_t>& sources, int threads,
   const vertex_id_t bin_mask = num_bins - 1;
 
   for (vertex_id_t root : sources) {
-    std::cout << "source: " << root << std::endl;
-
     std::vector<std::atomic<vertex_id_t>> levels(N);
     nw::graph::AtomicBitVector                succ(M);
 
@@ -1688,8 +1684,6 @@ auto bc2_v5(Graph&& graph, const std::vector<vertex_id_t>& sources, int threads,
     futures[s_idx] = std::async(
         std::launch::async,
         [&](vertex_id_t root) {
-          std::cout << "source: " + std::to_string(root) + "\n";
-
           std::vector<vertex_id_t> levels(N);
           nw::graph::AtomicBitVector   succ(M);
 
