@@ -46,8 +46,8 @@ public:
   auto end() const { return base::c.begin(); }
 };
 
-template <class distance_t, class Graph, class Id, class T>
-auto delta_stepping_m1(Graph&& graph, Id source, T) {
+template <class distance_t, class Graph, class Id>
+auto delta_stepping_m1(Graph&& graph, Id source) {
   std::vector<distance_t> tdist(graph.max() + 1, std::numeric_limits<distance_t>::max());
   size_t                  top_bin = 0;
 
