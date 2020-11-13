@@ -1,8 +1,8 @@
 ---
 layout: class
 title: pair_hash
-owner: __MISSING__
-brief: __MISSING__
+owner: Andrew Lumsdaine, Kevin Deweese
+brief: Unordered pair hash function
 tags:
   - class
 defined_in_file: algorithms/k_core.hpp
@@ -16,4 +16,4 @@ namespace:
 
 ```{index}  pair_hash
 ```
-
+Hash function for inserting unordered neighbors into unordered_map.

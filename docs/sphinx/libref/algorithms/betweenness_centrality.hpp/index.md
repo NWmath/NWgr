@@ -2,7 +2,7 @@
 layout: library
 title: algorithms/betweenness_centrality.hpp
 owner: Andrew Lumsdaine, Kevin Deweese
-brief: Algorithm implementations for finding betwenness centrality and approximate betweenness centrality
+brief: (Approximate) betweenness centrality
 tags:
   - sourcefile
 library-type: sourcefile
