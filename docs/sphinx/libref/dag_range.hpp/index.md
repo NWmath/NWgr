@@ -2,7 +2,7 @@
 layout: library
 title: dag_range.hpp
 owner: Andrew Lumsdaine
-brief: 
+brief: __MISSING__
 tags:
   - sourcefile
 library-type: sourcefile

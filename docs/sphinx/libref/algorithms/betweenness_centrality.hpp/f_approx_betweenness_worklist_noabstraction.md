@@ -2,7 +2,7 @@
 layout: function
 title: approx_betweenness_worklist_noabstraction
 owner: Andrew Lumsdaine, Kevin Deweese
-brief: Weighted approximate betweenness centrality 
+brief: Weighted approximate betweenness centrality
 tags:
   - function
 defined_in_file: algorithms/betweenness_centrality.hpp
