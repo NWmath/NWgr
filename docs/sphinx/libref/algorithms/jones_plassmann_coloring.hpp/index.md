@@ -1,8 +1,8 @@
 ---
 layout: library
 title: algorithms/jones_plassmann_coloring.hpp
-owner: __MISSING__
-brief: __MISSING__
+owner: Andrew Lumsdaine, Jesun Firoz
+brief: Jones-Plassman coloring
 tags:
   - sourcefile
 library-type: sourcefile
@@ -10,4 +10,4 @@ library-type: sourcefile
 
 ```{index}  algorithms/jones_plassmann_coloring.hpp
 ```
-
+Jones-Plassman algorithm for minimum vertex coloring.

@@ -1,22 +1,22 @@
 ---
 layout: function
 title: spMatspMat
-owner: __MISSING__
-brief: __MISSING__
+owner: Andrew Lumsdaine, Scott McMillan
+brief: A*B
 tags:
   - function
 defined_in_file: algorithms/spMatspMat.hpp
 overloads:
   "template <typename ScalarT, typename LGraphT, typename RGraphT, typename MapOpT, typename ReduceOpT>\nedge_list<directed, ScalarT> spMatspMat(LGraphT &, RGraphT &)":
     arguments:
-      - description: __OPTIONAL__
+      - description: Left matrix
         name: A
         type: LGraphT &
-      - description: __OPTIONAL__
+      - description: Right matrix
         name: B
         type: RGraphT &
-    description: __OPTIONAL__
-    return: __OPTIONAL__
+    description: A*B
+    return: edge_list containing matrix product
     signature_with_names: "template <typename ScalarT, typename LGraphT, typename RGraphT, typename MapOpT, typename ReduceOpT>\nedge_list<directed, ScalarT> spMatspMat(LGraphT & A, RGraphT & B)"
 namespace:
   - nw

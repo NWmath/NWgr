@@ -1,8 +1,8 @@
 ---
 layout: library
 title: algorithms/connected_components.hpp
-owner: __MISSING__
-brief: __MISSING__
+owner: Andrew Lumsdaine, Xu Tony Liu
+brief: Connected components
 tags:
   - sourcefile
 library-type: sourcefile
@@ -18,3 +18,4 @@ typedefs:
 ```{index}  algorithms/connected_components.hpp
 ```
 
+Algorithm implmentations for finding the number of connected components in a graph.

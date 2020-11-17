@@ -1,8 +1,8 @@
 ---
 layout: library
 title: algorithms/dijkstra.hpp
-owner: __MISSING__
-brief: __MISSING__
+owner: Andrew Lumsdaine
+brief: Dijkstra's algorithm
 tags:
   - sourcefile
 library-type: sourcefile
@@ -17,4 +17,4 @@ typedefs:
 
 ```{index}  algorithms/dijkstra.hpp
 ```
-
+Dijkstra's algorithm for finding single source shortest path.
