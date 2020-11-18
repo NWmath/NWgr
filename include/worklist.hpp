@@ -16,7 +16,7 @@
 #include "tbb/concurrent_vector.h"
 
 #include "util/types.hpp"
-#include "util.hpp"
+#include "util/util.hpp"
 #include <cassert>
 #include <list>
 #include <queue>

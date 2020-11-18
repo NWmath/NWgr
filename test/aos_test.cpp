@@ -27,7 +27,7 @@ void test_assignment(Iterator iter, size_t index = 0) {
 }
 
 TEST_CASE("array of structures", "[aos]") {
-  SECTioN("push back") {
+  SECTION("push back") {
     array_of_structs<size_t>                         A;
     array_of_structs<size_t, size_t>                 B;
     array_of_structs<size_t, size_t, double>         C;
@@ -40,7 +40,7 @@ TEST_CASE("array of structures", "[aos]") {
     D.push_back(95141.3, 867, 5309, 3.14159);
   }
 
-  SECTioN("assignment through iterator") {
+  SECTION("assignment through iterator") {
     array_of_structs<size_t>                         A;
     array_of_structs<size_t, size_t>                 B;
     array_of_structs<size_t, size_t, double>         C;
@@ -69,7 +69,7 @@ TEST_CASE("array of structures", "[aos]") {
 }
 
 TEST_CASE("struct of arrays", "[soa]") {
-  SECTioN("push back") {
+  SECTION("push back") {
     struct_of_arrays<size_t>                         E;
     struct_of_arrays<size_t, size_t>                 F;
     struct_of_arrays<size_t, size_t, double>         G;
@@ -99,7 +99,7 @@ TEST_CASE("struct of arrays", "[soa]") {
     REQUIRE(std::get<3>(h[3]) == 33.14159);
   }
 
-  SECTioN("assignment through iterator") {
+  SECTION("assignment through iterator") {
     struct_of_arrays<size_t>                         E;
     struct_of_arrays<size_t, size_t>                 F;
     struct_of_arrays<size_t, size_t, double>         G;

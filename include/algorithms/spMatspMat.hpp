@@ -18,7 +18,7 @@
 
 #include "edge_list.hpp"
 #include "plain_range.hpp"
-#include "util.hpp"
+#include "util/util.hpp"
 
 namespace nw {
 namespace graph {

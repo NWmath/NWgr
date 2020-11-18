@@ -17,7 +17,7 @@
 #include <aos.hpp>
 #include <compressed.hpp>
 #include <io/mmio.hpp>
-#include <util.hpp>
+#include <util/util.hpp>
 
 using namespace nw::graph;
 using namespace nw::util;

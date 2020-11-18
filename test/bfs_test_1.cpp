@@ -97,12 +97,12 @@ TEST_CASE("BFS traversal", "[bfs]") {
   directed_csr_graph_t A(aos_a);
 
 
-  SECTioN("default seed") {
+  SECTION("default seed") {
     auto&& [distance, predecessor] = bfs_m1(A, 0);
     REQUIRE(validate(aos_a, 0, distance, predecessor));
   }
 
-  SECTioN("another seed") {
+  SECTION("another seed") {
     auto&& [distance, predecessor] = bfs_m1(A, 1);
     REQUIRE(validate(aos_a, 1, distance, predecessor));
   }

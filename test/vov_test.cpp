@@ -21,11 +21,11 @@ using namespace nw::util;
 
 
 TEST_CASE("vector of vector of structures", "[vector_of_vector_of_structs]") {
-  SECTioN("construct") { vector_of_vector_of_structs A(5); }
+  SECTION("construct") { vector_of_vector_of_structs A(5); }
 }
 
 TEST_CASE("vector of vectors", "[vov]") {
-  SECTioN("construct") {
+  SECTION("construct") {
     vov A(5);
     A.push_back(3, 4);
     vov<double> B(5);
@@ -33,7 +33,7 @@ TEST_CASE("vector of vectors", "[vov]") {
     vov<double, std::complex<float>> C(5);
     C.push_back(3, 1, 4.159, {86.7, 5.309});
   }
-  SECTioN("edge_list") {
+  SECTION("edge_list") {
     edge_list<directed, double> A{{0, 0, 8.0}, {0, 1, 6.7}, {1, 2, 5.3}, {3, 0, 0.9}};
     vov<double>                 B(A);
     std::cout << "edgelist ->vov" << std::endl;
@@ -46,7 +46,7 @@ TEST_CASE("vector of vectors", "[vov]") {
     });
     std::cout << std::endl;
   }
-  SECTioN("iterate") {
+  SECTION("iterate") {
     vov<double> A(5);
     A.push_back(0, 0, 3);
     A.push_back(1, 4, 1.5);

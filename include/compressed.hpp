@@ -9,7 +9,7 @@
 #include "proxysort.hpp"
 #include "soa.hpp"
 #include "splittable_range_adapter.hpp"
-#include "util.hpp"
+#include "util/util.hpp"
 #include "util/types.hpp"
 
 #include <algorithm>

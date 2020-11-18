@@ -43,7 +43,7 @@ TEST_CASE("k core", "[k-core]") {
   E_list.push_back(2, 7);
   E_list.push_back(3, 6);
 
-  SECTioN("adjacency") {
+  SECTION("adjacency") {
     adjacency<0> A(E_list);
     auto         core   = k_core(A, k);
     auto         filter = std::get<0>(core);
@@ -60,7 +60,7 @@ TEST_CASE("k core", "[k-core]") {
       }
     }
   }
-  SECTioN("adj_list") {
+  SECTION("adj_list") {
     adj_list A(E_list);
     auto     core   = k_core(A, k);
     auto     filter = std::get<0>(core);
@@ -111,7 +111,7 @@ TEST_CASE("disconnected", "[disconnected]") {
   E_list.push_back(3, 8);
   E_list.push_back(4, 7);
 
-  SECTioN("adjacency") {
+  SECTION("adjacency") {
     adjacency<0> A(E_list);
     auto         core   = k_core(A, k);
     auto         filter = std::get<0>(core);
@@ -128,7 +128,7 @@ TEST_CASE("disconnected", "[disconnected]") {
       }
     }
   }
-  SECTioN("adj_list") {
+  SECTION("adj_list") {
     adj_list A(E_list);
     auto     core   = k_core(A, k);
     auto     filter = std::get<0>(core);

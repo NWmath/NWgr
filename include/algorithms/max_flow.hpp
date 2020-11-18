@@ -15,7 +15,7 @@
 #include "back_edge_range.hpp"
 #include "filtered_bfs_range.hpp"
 #include "reverse.hpp"
-#include "util.hpp"
+#include "util/util.hpp"
 #include <algorithm>
 #include <iostream>
 #include <tuple>

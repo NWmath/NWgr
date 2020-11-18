@@ -34,73 +34,73 @@ TEST_CASE("triangle counting", "[tc]") {
 
   csr_graph A(aos_a);
 
-  SECTioN("v0") {
+  SECTION("v0") {
     size_t triangles = triangle_count_v0(A);
     std::cout << triangles << " triangles (v0)\n";
     REQUIRE(triangles == 45);
   }
 
-  SECTioN("v1") {
+  SECTION("v1") {
     size_t triangles = triangle_count_v1(A);
     std::cout << triangles << " triangles (v1)\n";
     REQUIRE(triangles == 45);
   }
 
-  SECTioN("v2") {
+  SECTION("v2") {
     size_t triangles = triangle_count_v2(A);
     std::cout << triangles << " triangles (v2)\n";
     REQUIRE(triangles == 45);
   }
 
-  SECTioN("v3") {
+  SECTION("v3") {
     size_t triangles = triangle_count_v3(A);
     std::cout << triangles << " triangles (v3)\n";
     REQUIRE(triangles == 45);
   }
 
-  SECTioN("v4") {
+  SECTION("v4") {
     size_t triangles = triangle_count_v4(A.begin(), A.end());
     std::cout << triangles << " triangles (v4)\n";
     REQUIRE(triangles == 45);
   }
 
-  SECTioN("v5") {
+  SECTION("v5") {
     size_t triangles = triangle_count_v5(A.begin(), A.end());
     std::cout << triangles << " triangles (v5)\n";
     REQUIRE(triangles == 45);
   }
 
-  SECTioN("v6") {
+  SECTION("v6") {
     size_t triangles = triangle_count_v6(A.begin(), A.end());
     std::cout << triangles << " triangles (v6)\n";
     REQUIRE(triangles == 45);
   }
 
-  SECTioN("v7") {
+  SECTION("v7") {
     size_t triangles = triangle_count_v7(A);
     std::cout << triangles << " triangles (v7)\n";
     REQUIRE(triangles == 45);
   }
 
-  SECTioN("v10") {
+  SECTION("v10") {
     size_t triangles = triangle_count_v10(A);
     std::cout << triangles << " triangles (v10)\n";
     REQUIRE(triangles == 45);
   }
 
-  SECTioN("v12") {
+  SECTION("v12") {
     size_t triangles = triangle_count_v12(A, 1);
     std::cout << triangles << " triangles (v12)\n";
     REQUIRE(triangles == 45);
   }
 
-  SECTioN("v13") {
+  SECTION("v13") {
     size_t triangles = triangle_count_v13(A, 1);
     std::cout << triangles << " triangles (v13)\n";
     REQUIRE(triangles == 45);
   }
 
-  SECTioN("v14") {
+  SECTION("v14") {
     size_t triangles = triangle_count_v14(A);
     std::cout << triangles << " triangles (v14)\n";
     REQUIRE(triangles == 45);

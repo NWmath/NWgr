@@ -1,7 +1,7 @@
 #ifndef NW_GRAPH_CYCLIC_RANGE_ADAPTER_HPP
 #define NW_GRAPH_CYCLIC_RANGE_ADAPTER_HPP
 
-#include "util.hpp"
+#include "util/util.hpp"
 #include "util/types.hpp"
 #include <iterator>
 #include <tbb/tbb.h>

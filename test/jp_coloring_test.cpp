@@ -15,7 +15,7 @@
 #include "common/test_header.hpp"
 #include "compressed.hpp"
 #include "io/mmio.hpp"
-#include "util.hpp"
+#include "util/util.hpp"
 #include <algorithm>
 #include <cstdint>
 #include <iostream>

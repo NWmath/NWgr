@@ -14,7 +14,7 @@ TEST_CASE("max/min weight spanning tree", "[mst]") {
     A_list.push_back(std::get<0>(y), std::get<1>(y), std::get<2>(y));
   }
 
-  SECTioN("min weight") {
+  SECTION("min weight") {
     edge_list<undirected, double> T_list = kruskal(A_list);
 
     double totalweight = 0.0;
@@ -25,7 +25,7 @@ TEST_CASE("max/min weight spanning tree", "[mst]") {
     REQUIRE(totalweight == 39);
   }
 
-  SECTioN("max weight") {
+  SECTION("max weight") {
     auto                          compare = [](auto t1, auto t2) { return std::get<2>(t1) > std::get<2>(t2); };
     edge_list<undirected, double> T_list  = kruskal(A_list, compare);
 

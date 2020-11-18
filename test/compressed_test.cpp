@@ -28,34 +28,34 @@ using namespace nw::util;
 // data/USAir97.mtx:%%MatrixMarket matrix coordinate real symmetric
 
 TEST_CASE("compressed class I/O", "[compressed_io]") {
-  SECTioN("I/O (read real symmetric to edge_list and convert to compressed graph)") {
+  SECTION("I/O (read real symmetric to edge_list and convert to compressed graph)") {
     auto A = read_mm<directed>(DATA_DIR "tree.mmio");
     auto B = read_mm<undirected>(DATA_DIR "tree.mmio");
 
     auto C = read_mm<directed>(DATA_DIR "USAir97.mtx");
     auto D = read_mm<undirected>(DATA_DIR "USAir97.mtx");
   }
-  SECTioN("I/O (read pattern symmetric to edge_list and convert to compressed graph)") {
+  SECTION("I/O (read pattern symmetric to edge_list and convert to compressed graph)") {
     auto A = read_mm<directed>(DATA_DIR "karate.mtx");
     auto B = read_mm<undirected>(DATA_DIR "karate.mtx");
   }
-  SECTioN("I/O (read real unsymmetric to edge_list and convert to compressed graph)") {
+  SECTION("I/O (read real unsymmetric to edge_list and convert to compressed graph)") {
     auto A = read_mm<directed>(DATA_DIR "tree.mmio");
     auto B = read_mm<undirected>(DATA_DIR "tree.mmio");
   }
-  SECTioN("I/O (read pattern unsymmetric to edge_list and convert to compressed graph)") {}
-  SECTioN("I/O (read to edge_list and convert to compressed matrix)") {}
+  SECTION("I/O (read pattern unsymmetric to edge_list and convert to compressed graph)") {}
+  SECTION("I/O (read to edge_list and convert to compressed matrix)") {}
 }
 
 #if 0
 TEST_CASE("compressed class iteration", "[compressed]") {
-  SECTioN("push_back") {
+  SECTION("push_back") {
 
   }
-  SECTioN("read") {
+  SECTION("read") {
 
   }
-  SECTioN("modify value") {
+  SECTION("modify value") {
   }
 }
 

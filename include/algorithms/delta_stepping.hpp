@@ -22,7 +22,7 @@
 #include "util/atomic.hpp"
 #include "util/types.hpp"
 
-#include "util.hpp"
+#include "util/util.hpp"
 #include "util/parallel_for.hpp"
 #include "util/timer.hpp"
 #include "util/types.hpp"
@@ -47,7 +47,7 @@ public:
 };
 
 template <class distance_t, class Graph, class Id>
-auto delta_stepping_m1(Graph&& graph, Id source) {
+auto delta_stepping_m1(Graph&& graph, Id source, distance_t) {
   std::vector<distance_t> tdist(graph.max() + 1, std::numeric_limits<distance_t>::max());
   size_t                  top_bin = 0;
 

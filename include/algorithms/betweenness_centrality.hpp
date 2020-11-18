@@ -11,7 +11,7 @@
 #ifndef BETWEENNESS_CENTRALITY_HPP
 #define BETWEENNESS_CENTRALITY_HPP
 
-#include "util.hpp"
+#include "util/util.hpp"
 #include "util/types.hpp"
 #include "util/AtomicBitVector.hpp"
 #include "util/atomic.hpp"

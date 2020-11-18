@@ -13,7 +13,7 @@
 
 #include "cyclic_range_adapter.hpp"
 #include "edge_range.hpp"
-#include "util.hpp"
+#include "util/util.hpp"
 #include "util/intersection_size.hpp"
 #include "util/parallel_for.hpp"
 #include "util/timer.hpp"

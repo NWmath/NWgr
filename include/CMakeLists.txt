@@ -31,20 +31,18 @@ target_sources(nw_graph
   bfs_edge_range.hpp
   back_edge_range.hpp
   neighbor_range.hpp
-  mmio.hpp
+  io/mmio.hpp
   new_dfs_range.hpp
   vovos.hpp
   worklist.hpp
   algorithms/k_core.hpp
   algorithms/mis.hpp
-  algorithms/boykov_kolmogorov3.hpp
   algorithms/triangle_count.hpp
   algorithms/connected_components.hpp
   algorithms/page_rank.hpp
   algorithms/betweenness_centrality.hpp
   algorithms/dijkstra.hpp
   algorithms/jones_plassmann_coloring.hpp
-  algorithms/boykov_kolmogorov2.hpp
   algorithms/bfs.hpp
   algorithms/spMatspMat.hpp
   algorithms/dag_based_mis.hpp
@@ -59,12 +57,12 @@ target_sources(nw_graph
   proxysort.hpp
   compressed.hpp
   aolos.hpp
-  util_par.hpp
+  util/util_par.hpp
   reverse.hpp
   plain_range.hpp
   filtered_bfs_range.hpp
   aos.hpp
-  util.hpp
+  util/util.hpp
   detail/numeric.hpp
   edge_range.hpp)
 
