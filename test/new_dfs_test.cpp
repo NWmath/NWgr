@@ -9,11 +9,12 @@
 //
 
 #include <algorithm>
-#include <compressed.hpp>
-#include <edge_list.hpp>
-#include <io/mmio.hpp>
-#include <new_dfs_range.hpp>
 #include <vector>
+
+#include "containers/compressed.hpp"
+#include "containers/edge_list.hpp"
+#include "adaptors/new_dfs_range.hpp"
+#include "io/mmio.hpp"
 
 #include "common/test_header.hpp"
 

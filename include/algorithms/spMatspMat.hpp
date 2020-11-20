@@ -16,8 +16,8 @@
 #include <map>
 #include <tuple>
 
-#include "edge_list.hpp"
-#include "plain_range.hpp"
+#include "containers/edge_list.hpp"
+#include "adaptors/plain_range.hpp"
 #include "util/util.hpp"
 
 namespace nw {

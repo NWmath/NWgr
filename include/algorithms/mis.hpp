@@ -11,7 +11,7 @@
 #ifndef NW_GRAPH_MIS_HPP
 #define NW_GRAPH_MIS_HPP
 
-#include "bfs_range.hpp"
+#include "adaptors/bfs_range.hpp"
 
 namespace nw {
 namespace graph {

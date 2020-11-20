@@ -8,10 +8,12 @@
 // Author: Andrew Lumsdaine
 //
 
-#include "common/test_header.hpp"
-#include <aolos.hpp>
-#include <bfs_edge_range.hpp>
 #include <complex>
+
+#include "containers/aolos.hpp"
+#include "adaptors/bfs_edge_range.hpp"
+
+#include "common/test_header.hpp"
 
 using namespace nw::graph;
 using namespace nw::util;

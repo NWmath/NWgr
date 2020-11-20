@@ -9,13 +9,14 @@
 //
 
 #include <algorithm>
-#include <algorithms/k_core.hpp>
-#include <aolos.hpp>
-#include <compressed.hpp>
-#include <edge_list.hpp>
-#include <io/mmio.hpp>
-#include <new_dfs_range.hpp>
 #include <vector>
+
+#include "algorithms/k_core.hpp"
+#include "containers/aolos.hpp"
+#include "containers/compressed.hpp"
+#include "containers/edge_list.hpp"
+#include "io/mmio.hpp"
+#include "adaptors/new_dfs_range.hpp"
 
 #include "common/test_header.hpp"
 

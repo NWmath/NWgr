@@ -13,8 +13,8 @@
 
 #include "util/types.hpp"
 #include "util/util.hpp"
-#include "edge_range.hpp"
-#include "new_dfs_range.hpp"
+#include "adaptors/edge_range.hpp"
+#include "adaptors/new_dfs_range.hpp"
 #include <algorithm>
 #include <tuple>
 #include <unordered_map>

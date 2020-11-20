@@ -11,8 +11,8 @@
 #ifndef NW_GRAPH_TRIANGLE_COUNT_HPP
 #define NW_GRAPH_TRIANGLE_COUNT_HPP
 
-#include "cyclic_range_adapter.hpp"
-#include "edge_range.hpp"
+#include "adaptors/cyclic_range_adapter.hpp"
+#include "adaptors/edge_range.hpp"
 #include "util/util.hpp"
 #include "util/intersection_size.hpp"
 #include "util/parallel_for.hpp"

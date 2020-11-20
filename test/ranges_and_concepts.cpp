@@ -1,10 +1,23 @@
-#include "common/abstract_test.hpp"
+//
+// This file is part of Standard Graph Library (SGL)
+// (c) Pacific Northwest National Laboratory 2018
+//
+// Licensed under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License
+// https://creativecommons.org/licenses/by-nc-sa/4.0/
+//
+// Author: Andrew Lumsdaine
+//
+
 #include <concepts>
-#include "edge_list.hpp"
-#include "compressed.hpp"
+
+#include "containers/edge_list.hpp"
+#include "containers/compressed.hpp"
+#include "containers/vovos.hpp"
+#include "containers/aolos.hpp"
 #include "graph_concepts.hpp"
-#include "vovos.hpp"
-#include "aolos.hpp"
+
+#include "common/abstract_test.hpp"
+
 /*template<typename GraphT>
 requires AdjacencyGraph<GraphT>
 void test_func(GraphT& G) {

@@ -3,12 +3,12 @@
 #ifndef NW_GRAPH_COMPRESSED_HPP
 #define NW_GRAPH_COMPRESSED_HPP
 
-#include "aos.hpp"
-#include "edge_list.hpp"
+#include "containers/aos.hpp"
+#include "containers/edge_list.hpp"
 #include "graph_base.hpp"
-#include "proxysort.hpp"
-#include "soa.hpp"
-#include "splittable_range_adapter.hpp"
+#include "util/proxysort.hpp"
+#include "containers/soa.hpp"
+#include "adaptors/splittable_range_adapter.hpp"
 #include "util/util.hpp"
 #include "util/types.hpp"
 

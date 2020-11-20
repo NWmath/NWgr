@@ -11,13 +11,13 @@
 #ifndef NW_GRAPH_EDGE_LIST_HPP
 #define NW_GRAPH_EDGE_LIST_HPP
 
-#include "aos.hpp"
-#include "soa.hpp"
+#include "containers/aos.hpp"
+#include "containers/soa.hpp"
 
-#include "compressed.hpp"
+#include "containers/compressed.hpp"
 #include "graph_base.hpp"
-#include "plain_range.hpp"
-#include "provenance.hpp"
+#include "adaptors/plain_range.hpp"
+#include "util/provenance.hpp"
 
 #if defined(CL_SYCL_LANGUAGE_VERSION)
 #include <dpstd/algorithm>

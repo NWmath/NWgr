@@ -14,16 +14,15 @@
 #include <random>
 #include <vector>
 
-#include <aolos.hpp>
-#include <compressed.hpp>
-#include <edge_list.hpp>
-
-#include <io/mmio.hpp>
+#include "containers/aolos.hpp"
+#include "containers/compressed.hpp"
+#include "containers/edge_list.hpp"
+#include "io/mmio.hpp"
+#include "algorithms/page_rank.hpp"
+#include "util/timer.hpp"
+#include "util/util.hpp"
 
 #include "common/abstract_test.hpp"
-#include <algorithms/page_rank.hpp>
-#include <util/timer.hpp>
-#include <util/util.hpp>
 
 using namespace nw::graph;
 using namespace nw::util;

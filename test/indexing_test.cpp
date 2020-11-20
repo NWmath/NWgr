@@ -1,7 +1,17 @@
+//
+// This file is part of BGL17 (aka NWGraph aka GraphPack aka the Graph Standard Library)
+// (c) Pacific Northwest National Laboratory 2018
+//
+// Licensed under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License
+// https://creativecommons.org/licenses/by-nc-sa/4.0/
+//
+// Author: Andrew Lumsdaine
+//
+
 #include <iostream>
 
-#include "edge_range.hpp"
-#include "edge_list.hpp"
+#include "adaptors/edge_range.hpp"
+#include "containers/edge_list.hpp"
 #include "util/print_types.hpp"
 
 using namespace nw::graph;

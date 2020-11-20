@@ -16,7 +16,7 @@
 #include "util/AtomicBitVector.hpp"
 #include "util/atomic.hpp"
 #include "util/parallel_for.hpp"
-#include "worklist.hpp"
+#include "adaptors/worklist.hpp"
 
 #include <algorithm>
 

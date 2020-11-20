@@ -12,9 +12,9 @@
 #define NW_GRAPH_MAX_FLOW_HPP
 
 #include "util/types.hpp"
-#include "back_edge_range.hpp"
-#include "filtered_bfs_range.hpp"
-#include "reverse.hpp"
+#include "adaptors/back_edge_range.hpp"
+#include "adaptors/filtered_bfs_range.hpp"
+#include "adaptors/reverse.hpp"
 #include "util/util.hpp"
 #include <algorithm>
 #include <iostream>

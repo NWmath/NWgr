@@ -16,8 +16,8 @@
 #error "test_header is included multiple times. test header must be included only once"
 #endif
 
-#include "compressed.hpp"
-#include "edge_list.hpp"
+#include "containers/compressed.hpp"
+#include "containers/edge_list.hpp"
 #include "io/mmio.hpp"
 
 #define CATCH_CONFIG_MAIN  // This tells Catch to provide a main() - only do this in one cpp file

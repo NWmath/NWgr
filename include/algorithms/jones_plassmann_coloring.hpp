@@ -12,9 +12,9 @@
 #ifndef JONES_PLASSMANN_COLORING_HPP
 #define JONES_PLASSMANN_COLORING_HPP
 
-#include "dag_range.hpp"
-#include "edge_range.hpp"
-#include "plain_range.hpp"
+#include "adaptors/dag_range.hpp"
+#include "adaptors/edge_range.hpp"
+#include "adaptors/plain_range.hpp"
 
 // #define PRINT_DEBUG 1
 

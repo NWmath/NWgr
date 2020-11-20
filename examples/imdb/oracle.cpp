@@ -26,10 +26,10 @@ using json = nlohmann::json;
 
 #include "algorithms/betweenness_centrality.hpp"
 #include "algorithms/page_rank.hpp"
-#include "bfs_edge_range.hpp"
-#include "compressed.hpp"
-#include "edge_list.hpp"
-#include "proxysort.hpp"
+#include "adaptors/bfs_edge_range.hpp"
+#include "containers/compressed.hpp"
+#include "containers/edge_list.hpp"
+#include "util/proxysort.hpp"
 #include "util/timer.hpp"
 
 

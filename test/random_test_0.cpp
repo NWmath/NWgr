@@ -11,11 +11,10 @@
 #include <iostream>
 #include <queue>
 
-#include "compressed.hpp"
-#include "edge_list.hpp"
-
+#include "containers/compressed.hpp"
+#include "containers/edge_list.hpp"
 #include "io/mmio.hpp"
-#include "random_range.hpp"
+#include "adaptors/random_range.hpp"
 
 using namespace nw::graph;
 using namespace nw::util;

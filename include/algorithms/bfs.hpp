@@ -12,7 +12,7 @@
 #define NW_GRAPH_BFS_HPP
 
 #include "util/types.hpp"
-#include "compressed.hpp"
+#include "containers/compressed.hpp"
 #include "util/AtomicBitVector.hpp"
 #include "util/atomic.hpp"
 #include "util/parallel_for.hpp"

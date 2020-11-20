@@ -17,8 +17,8 @@
 #include <type_traits>
 #include <vector>
 
-#include "compressed.hpp"
-#include "edge_list.hpp"
+#include "containers/compressed.hpp"
+#include "containers/edge_list.hpp"
 #include "util/atomic.hpp"
 #include "util/types.hpp"
 

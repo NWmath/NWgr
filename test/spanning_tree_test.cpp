@@ -1,7 +1,19 @@
+
+//
+// This file is part of Standard Graph Library (SGL)
+// (c) Pacific Northwest National Laboratory 2018
+//
+// Licensed under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License
+// https://creativecommons.org/licenses/by-nc-sa/4.0/
+//
+// Author: Kevin Deweese
+//
+
+#include "algorithms/spanning_tree.hpp"
+#include "containers/edge_list.hpp"
+#include "io/mmio.hpp"
+
 #include "common/test_header.hpp"
-#include <algorithms/spanning_tree.hpp>
-#include <edge_list.hpp>
-#include <io/mmio.hpp>
 
 using namespace nw::graph;
 using namespace nw::util;

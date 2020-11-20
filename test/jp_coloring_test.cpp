@@ -8,19 +8,19 @@
 // Author: Jesun Sahariar Firoz
 //
 
-
-
-#include "algorithms/jones_plassmann_coloring.hpp"
-#include "aos.hpp"
-#include "common/test_header.hpp"
-#include "compressed.hpp"
-#include "io/mmio.hpp"
-#include "util/util.hpp"
 #include <algorithm>
 #include <cstdint>
 #include <iostream>
 #include <limits>
 #include <list>
+
+#include "algorithms/jones_plassmann_coloring.hpp"
+#include "containers/aos.hpp"
+#include "containers/compressed.hpp"
+#include "io/mmio.hpp"
+#include "util/util.hpp"
+
+#include "common/test_header.hpp"
 
 using namespace nw::graph;
 using namespace nw::util;

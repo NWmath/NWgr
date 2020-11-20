@@ -2,8 +2,8 @@
 #define NW_GRAPH_BENCH_COMMON_HPP
 
 #include "graph_base.hpp"
-#include "edge_list.hpp"
-#include "edge_range.hpp"
+#include "containers/edge_list.hpp"
+#include "adaptors/edge_range.hpp"
 #include "io/mmio.hpp"
 #include "util/timer.hpp"
 #include "util/traits.hpp"
