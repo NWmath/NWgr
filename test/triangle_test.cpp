@@ -11,10 +11,10 @@
 #include <iostream>
 #include <queue>
 
-#include <algorithms/triangle_count.hpp>
-#include <compressed.hpp>
-#include <edge_list.hpp>
-#include <mmio.hpp>
+#include "algorithms/triangle_count.hpp"
+#include "containers/compressed.hpp"
+#include "containers/edge_list.hpp"
+#include "io/mmio.hpp"
 
 #include "common/test_header.hpp"
 

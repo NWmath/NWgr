@@ -12,9 +12,9 @@
 #define CONNECTED_COMPONENT_HPP
 
 #include "util/types.hpp"
-#include "bfs_edge_range.hpp"
-#include "disjoint_set.hpp"
-#include "edge_range.hpp"
+#include "adaptors/bfs_edge_range.hpp"
+#include "util/disjoint_set.hpp"
+#include "adaptors/edge_range.hpp"
 #include <atomic>
 #include <iostream>
 #include <random>

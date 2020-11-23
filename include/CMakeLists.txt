@@ -21,30 +21,28 @@ add_library(nw_graph INTERFACE)
 # Extend this as needed.
 target_sources(nw_graph
   INTERFACE
-  dag_range.hpp
-  random_range.hpp
-  soa.hpp
-  bfs_range.hpp
-  edge_list.hpp
+  adaptors/dag_range.hpp
+  adaptors/random_range.hpp
+  containers/soa.hpp
+  adaptors/bfs_range.hpp
+  containers/edge_list.hpp
   util/print_types.hpp
   util/types.hpp
-  bfs_edge_range.hpp
-  back_edge_range.hpp
-  neighbor_range.hpp
-  mmio.hpp
-  new_dfs_range.hpp
-  vovos.hpp
-  worklist.hpp
+  adaptors/bfs_edge_range.hpp
+  adaptors/back_edge_range.hpp
+  adaptors/neighbor_range.hpp
+  io/mmio.hpp
+  adaptors/new_dfs_range.hpp
+  containers/vovos.hpp
+  adaptors/worklist.hpp
   algorithms/k_core.hpp
   algorithms/mis.hpp
-  algorithms/boykov_kolmogorov3.hpp
   algorithms/triangle_count.hpp
   algorithms/connected_components.hpp
   algorithms/page_rank.hpp
   algorithms/betweenness_centrality.hpp
   algorithms/dijkstra.hpp
   algorithms/jones_plassmann_coloring.hpp
-  algorithms/boykov_kolmogorov2.hpp
   algorithms/bfs.hpp
   algorithms/spMatspMat.hpp
   algorithms/dag_based_mis.hpp
@@ -52,21 +50,21 @@ target_sources(nw_graph
   algorithms/spanning_tree.hpp
   algorithms/boykov_kolmogorov.hpp
   algorithms/max_flow.hpp
-  provenance.hpp
+  util/provenance.hpp
   graph_base.hpp
-  disjoint_set.hpp
-  dfs_range.hpp
-  proxysort.hpp
-  compressed.hpp
-  aolos.hpp
-  util_par.hpp
-  reverse.hpp
-  plain_range.hpp
-  filtered_bfs_range.hpp
-  aos.hpp
-  util.hpp
+  util/disjoint_set.hpp
+  adaptors/dfs_range.hpp
+  util/proxysort.hpp
+  containers/compressed.hpp
+  containers/aolos.hpp
+  util/util_par.hpp
+  adaptors/reverse.hpp
+  adaptors/plain_range.hpp
+  adaptors/filtered_bfs_range.hpp
+  containers/aos.hpp
+  util/util.hpp
   detail/numeric.hpp
-  edge_range.hpp)
+  adaptors/edge_range.hpp)
 
 target_include_directories(nw_graph INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})
 target_include_directories(nw_graph INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/../../NWut/include)

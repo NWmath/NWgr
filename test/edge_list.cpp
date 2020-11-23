@@ -10,8 +10,9 @@
 
 #define EDGELIST_AOS
 
+#include "containers/edge_list.hpp"
+
 #include "common/test_header.hpp"
-#include <edge_list.hpp>
 
 using namespace nw::graph;
 using namespace nw::util;

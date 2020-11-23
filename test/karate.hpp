@@ -1,7 +1,7 @@
 #ifndef KARATE_HPP
 #define KARATE_HPP
 
-#include "edge_list.hpp"
+#include "containers/edge_list.hpp"
 
 
 nw::graph::edge_list<nw::graph::directed> karate_d{{2, 1},   {3, 1},   {4, 1},   {5, 1},   {6, 1},   {7, 1},   {8, 1},   {9, 1},   {11, 1},  {12, 1},

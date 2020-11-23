@@ -9,15 +9,16 @@
 //
 
 #include <iostream>
-
-#include <algorithms/triangle_count.hpp>
-#include <compressed.hpp>
-#include <edge_list.hpp>
-#include <mmio.hpp>
 #include <execution>
 #include <unordered_set>
-#include "common/test_header.hpp"
+
+#include "algorithms/triangle_count.hpp"
+#include "containers/compressed.hpp"
+#include "containers/edge_list.hpp"
+#include "io/mmio.hpp"
 #include "rcm.hpp"
+
+#include "common/test_header.hpp"
 
 using namespace nw::graph;
 using namespace nw::util;

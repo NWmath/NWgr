@@ -14,8 +14,8 @@
 #include <algorithm>
 #include <tuple>
 
-#include "disjoint_set.hpp"
-#include "util.hpp"
+#include "util/disjoint_set.hpp"
+#include "util/util.hpp"
 #include "util/types.hpp"
 
 namespace nw {

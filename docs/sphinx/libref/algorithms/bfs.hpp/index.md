@@ -1,8 +1,8 @@
 ---
 layout: library
 title: algorithms/bfs.hpp
-owner: __MISSING__
-brief: __MISSING__
+owner: Andrew Lumsdaine
+brief: Breadth First Search
 tags:
   - sourcefile
 library-type: sourcefile
@@ -14,4 +14,4 @@ typedefs:
 
 ```{index}  algorithms/bfs.hpp
 ```
-
+Algorithm implmentations for performing breadth first search.

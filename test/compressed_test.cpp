@@ -8,14 +8,13 @@
 // Author: Andrew Lumsdaine
 //
 
-#include "compressed.hpp"
-#include "edge_list.hpp"
+#include <iostream>
 
-#include "mmio.hpp"
+#include "containers/compressed.hpp"
+#include "containers/edge_list.hpp"
+#include "io/mmio.hpp"
 
 #include "common/test_header.hpp"
-
-#include <iostream>
 
 using namespace nw::graph;
 using namespace nw::util;

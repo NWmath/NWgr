@@ -2,8 +2,8 @@
 #define SGL_ABSTRACT_TEST
 
 #include "test_header.hpp"
-#include "compressed.hpp"
-#include "mmio.hpp"
+#include "containers/compressed.hpp"
+#include "io/mmio.hpp"
 
 using namespace nw::graph;
 using namespace nw::util;

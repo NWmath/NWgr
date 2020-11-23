@@ -1,19 +1,19 @@
 ---
 layout: function
 title: backedge_property
-owner: __MISSING__
-brief: __MISSING__
+owner: Andrew Lumsdaine, Kevin Deweese
+brief: Back edge property
 tags:
   - function
 defined_in_file: algorithms/max_flow.hpp
 overloads:
   "template <size_t Idx, typename Edge>\nauto backedge_property(Edge)":
     arguments:
-      - description: __OPTIONAL__
+      - description: Incident edge
         name: edge
         type: Edge
-    description: __OPTIONAL__
-    return: __OPTIONAL__
+    description: Selects a desired property from edge tuple.
+    return: Edge property value
     signature_with_names: "template <size_t Idx, typename Edge>\nauto backedge_property(Edge edge)"
 namespace:
   - nw

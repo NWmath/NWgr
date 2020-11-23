@@ -12,9 +12,10 @@
 #include <queue>
 #include <vector>
 
-#include "aos.hpp"
-#include "common/abstract_test.hpp"
+#include "containers/aos.hpp"
 #include "algorithms/bfs.hpp"
+
+#include "common/abstract_test.hpp"
 
 #define PRINT_OUT
 

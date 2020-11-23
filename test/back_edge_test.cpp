@@ -8,12 +8,13 @@
 // Author: Kevin Deweese
 //
 
+#include "adaptors/back_edge_range.hpp"
+#include "containers/compressed.hpp"
+#include "containers/edge_list.hpp"
+#include "adaptors/filtered_bfs_range.hpp"
+#include "adaptors/reverse.hpp"
+
 #include "common/test_header.hpp"
-#include <back_edge_range.hpp>
-#include <compressed.hpp>
-#include <edge_list.hpp>
-#include <filtered_bfs_range.hpp>
-#include <reverse.hpp>
 
 using namespace nw::graph;
 using namespace nw::util;

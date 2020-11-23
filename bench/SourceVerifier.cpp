@@ -27,7 +27,7 @@ static constexpr const char USAGE[] =
 #include "common.hpp"
 #include <docopt.h>
 #include <random>
-#include "mmio.hpp"
+#include "io/mmio.hpp"
 
 using namespace nw::graph::bench;
 using namespace nw::graph;

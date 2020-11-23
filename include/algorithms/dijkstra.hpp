@@ -17,8 +17,7 @@
 #include <tuple>
 #include <vector>
 
-
-#include "bfs_edge_range.hpp"
+#include "adaptors/bfs_edge_range.hpp"
 #include "util/types.hpp"
 
 namespace nw {

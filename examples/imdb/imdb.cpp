@@ -10,9 +10,9 @@
 
 #include "xtensor/xcsv.hpp"
 
-#include "bfs_edge_range.hpp"
-#include "compressed.hpp"
-#include "edge_list.hpp"
+#include "adaptors/bfs_edge_range.hpp"
+#include "containers/compressed.hpp"
+#include "containers/edge_list.hpp"
 #include "util/timer.hpp"
 
 int main() {

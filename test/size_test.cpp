@@ -9,11 +9,12 @@
 //
 
 #include <algorithm>
-#include <compressed.hpp>
-#include <aolos.hpp>
-#include <edge_list.hpp>
-#include <mmio.hpp>
 #include <vector>
+
+#include "containers/compressed.hpp"
+#include "containers/aolos.hpp"
+#include "containers/edge_list.hpp"
+#include "io/mmio.hpp"
 
 #include "common/test_header.hpp"
 

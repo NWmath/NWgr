@@ -1,8 +1,8 @@
 ---
 layout: library
 title: algorithms/page_rank.hpp
-owner: __MISSING__
-brief: __MISSING__
+owner: Andrew Lumsdaine, Scott McMillan
+brief: Page rank
 tags:
   - sourcefile
 library-type: sourcefile
@@ -14,4 +14,4 @@ typedefs:
 
 ```{index}  algorithms/page_rank.hpp
 ```
-
+Page rank estimates the importance of vertices in a graph by the probability that a graph traversal will end up at a specfic vertex during a random walk.

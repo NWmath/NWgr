@@ -12,12 +12,12 @@
 #define NW_GRAPH_K_CORE_HPP
 
 #include "util/types.hpp"
-#include "edge_range.hpp"
+#include "util/util.hpp"
+#include "adaptors/edge_range.hpp"
+#include "adaptors/new_dfs_range.hpp"
 #include <algorithm>
-#include <new_dfs_range.hpp>
 #include <tuple>
 #include <unordered_map>
-#include <util.hpp>
 #include <utility>
 
 namespace nw {

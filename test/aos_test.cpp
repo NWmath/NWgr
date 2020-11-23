@@ -8,9 +8,11 @@
 // Author: Andrew Lumsdaine
 //
 
-#include "aos.hpp"
-#include "common/test_header.hpp"
 #include <iterator>
+
+#include "containers/aos.hpp"
+
+#include "common/test_header.hpp"
 
 using namespace nw::graph;
 using namespace nw::util;

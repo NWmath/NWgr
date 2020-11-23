@@ -1,8 +1,8 @@
 ---
 layout: library
 title: algorithms/mis.hpp
-owner: __MISSING__
-brief: __MISSING__
+owner: Andrew Lumsdaine, Jesun Firoz
+brief: Maximal independent set
 tags:
   - sourcefile
 library-type: sourcefile
@@ -10,4 +10,4 @@ library-type: sourcefile
 
 ```{index}  algorithms/mis.hpp
 ```
-
+Maximal independent set.

@@ -11,9 +11,10 @@
 #include <iostream>
 #include <queue>
 
-#include "aos.hpp"
-#include "bfs_range.hpp"
-#include "bfs_edge_range.hpp"
+#include "containers/aos.hpp"
+#include "adaptors/bfs_range.hpp"
+#include "adaptors/bfs_edge_range.hpp"
+
 #include "common/abstract_test.hpp"
 
 using namespace nw::graph;

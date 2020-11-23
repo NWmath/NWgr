@@ -20,9 +20,9 @@
 #include <vector>
 
 #include "util/types.hpp"
-#include "compressed.hpp"
-#include "edge_list.hpp"
-#include "edge_range.hpp"
+#include "containers/compressed.hpp"
+#include "containers/edge_list.hpp"
+#include "adaptors/edge_range.hpp"
 #include "util/parallel_for.hpp"
 
 #if defined(CL_SYCL_LANGUAGE_VERSION)

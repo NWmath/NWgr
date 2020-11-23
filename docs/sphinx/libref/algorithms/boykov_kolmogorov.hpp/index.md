@@ -1,8 +1,8 @@
 ---
 layout: library
 title: algorithms/boykov_kolmogorov.hpp
-owner: __MISSING__
-brief: __MISSING__
+owner: Andrew Lumsdaine, Kevin Deweese
+brief: Boykov Kolmogorov Max Flow
 tags:
   - sourcefile
 library-type: sourcefile

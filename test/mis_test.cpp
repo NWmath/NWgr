@@ -8,16 +8,18 @@
 // Author: Jesun Sahariar Firoz
 //
 
-#include "algorithms/dag_based_mis.hpp"
-#include "algorithms/mis.hpp"
-#include "aos.hpp"
-#include "common/test_header.hpp"
-#include "compressed.hpp"
-#include "mmio.hpp"
-#include "util.hpp"
 #include <algorithm>
 #include <cassert>
 #include <iostream>
+
+#include "algorithms/dag_based_mis.hpp"
+#include "algorithms/mis.hpp"
+#include "containers/aos.hpp"
+#include "containers/compressed.hpp"
+#include "io/mmio.hpp"
+#include "util/util.hpp"
+
+#include "common/test_header.hpp"
 
 using namespace nw::graph;
 using namespace nw::util;

@@ -8,8 +8,9 @@
 // Author: Andrew Lumsdaine
 //
 
+#include "containers/compressed.hpp"
+
 #include "common/test_header.hpp"
-#include "compressed.hpp"
 
 using namespace nw::graph;
 using namespace nw::util;

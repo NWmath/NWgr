@@ -1,6 +1,6 @@
 ---
 layout: library
-title: The NW Graph Library
+title: __MISSING__
 owner: Andrew Lumsdaine
 brief: A generic library for graph algorithms in data structures, using features and idioms of modern C++
 tags:

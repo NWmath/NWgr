@@ -8,9 +8,10 @@
 // Author: Andrew Lumsdaine
 //
 
-#include "edge_list.hpp"
-#include "mmio.hpp"
 #include <iostream>
+
+#include "containers/edge_list.hpp"
+#include "io/mmio.hpp"
 
 using namespace nw::graph;
 using namespace nw::util;

@@ -1,8 +1,18 @@
-
+//
+// This file is part of Standard Graph Library (SGL)
+// (c) Pacific Northwest National Laboratory 2018
+//
+// Licensed under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License
+// https://creativecommons.org/licenses/by-nc-sa/4.0/
+//
+// Author: Andrew Lumsdaine
+//
 
 #include <iostream>
+#include <tbb/tbb.h>
+#include <tuple>
 
-#if defined(CL_SYCL_LANGUAGE_VERSION)
+#if defined(CL_SYCL_LANGUAGE_VERSioN)
 #  include <dpstd/execution>
 #  include <dpstd/iterators.h>
 template<class T>
@@ -14,13 +24,10 @@ template<class T>
 using counting_iterator = tbb::counting_iterator<T>;
 #endif
 
-#include <tbb/tbb.h>
-
-#include "compressed.hpp"
-#include "edge_list.hpp"
-#include "edge_range.hpp"
-#include "plain_range.hpp"
-#include <tuple>
+#include "containers/compressed.hpp"
+#include "containers/edge_list.hpp"
+#include "adaptors/edge_range.hpp"
+#include "adaptors/plain_range.hpp"
 
 using namespace nw::graph;
 using namespace nw::util;

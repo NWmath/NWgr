@@ -8,8 +8,8 @@
 // Author: Andrew Lumsdaine
 //
 
-#include "compressed.hpp"
-#include "edge_list.hpp"
+#include "containers/compressed.hpp"
+#include "containers/edge_list.hpp"
 #include "linalg.hpp"
 
 using namespace nw::graph;

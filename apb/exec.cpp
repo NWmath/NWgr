@@ -5,9 +5,9 @@
 
 #include "compressed.hpp"
 #include "edge_list.hpp"
-#include "mmio.hpp"
+#include "io/mmio.hpp"
 
-#if defined(CL_SYCL_LANGUAGE_VERSION)
+#if defined(CL_SYCL_LANGUAGE_VERSioN)
 #include <dpstd/iterators.h>
 namespace nw::graph {
 template <class T>

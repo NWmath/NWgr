@@ -8,14 +8,16 @@
 // Author: Kevin Deweese
 //
 
-#include "common/test_header.hpp"
-#include <algorithm>
-#include <back_edge_range.hpp>
-#include <algorithms/boykov_kolmogorov.hpp>
-#include <compressed.hpp>
-#include <edge_list.hpp>
-#include <mmio.hpp>
 #include <vector>
+#include <algorithm>
+
+#include "adaptors/back_edge_range.hpp"
+#include "algorithms/boykov_kolmogorov.hpp"
+#include "containers/compressed.hpp"
+#include "containers/edge_list.hpp"
+#include "io/mmio.hpp"
+
+#include "common/test_header.hpp"
 
 using namespace nw::graph;
 using namespace nw::util;
