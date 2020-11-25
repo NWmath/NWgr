@@ -295,6 +295,8 @@ int main(int argc, char* argv[]) {
             break;
            case 9: record([&] { return sv_v9(graph); }); //sv
             break;
+           case 10: record([&] { return lpcc(std::execution::par_unseq, graph); }); //sv
+            break;
            default:
             std::cout << "Unknown version v" << id << "\n";
           }

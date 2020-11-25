@@ -13,6 +13,7 @@
 
 #include "util/types.hpp"
 #include "util/atomic.hpp"
+#include "util/AtomicBitVector.hpp"
 #include "bfs_edge_range.hpp"
 #include "disjoint_set.hpp"
 #include "edge_range.hpp"
@@ -43,6 +44,16 @@ using counting_iterator = tbb::counting_iterator<T>;
 
 namespace nw {
 namespace graph {
+
+template<class T>
+inline bool writeMin(T& old, T& next) {
+  T    prev;
+  bool success = false;
+  do
+    prev = old;
+  while (prev > next && !(success = nw::graph::cas(old, prev, next)));
+  return success;
+}
 
 template <typename T>
 inline bool compare_and_swap(T& x, T old_val, T new_val) {
@@ -359,6 +370,43 @@ std::vector<vertex_id_t> ccv1(Graph& g) {
       std::execution::par_unseq,
       counting_iterator<vertex_id_t>(0), counting_iterator<vertex_id_t>(g.size()), [&](auto u) { push(g, u, comp); });
   compress(comp);
+  return comp;
+}
+
+template<typename Execution, typename Graph>
+std::vector<vertex_id_t> lpcc(Execution& exec, Graph& g) {
+  //nw::util::life_timer _(__func__);
+  size_t     num_nodes = g.size();
+  std::vector<vertex_id_t> comp(num_nodes);
+  std::for_each(exec,
+      counting_iterator<vertex_id_t>(0), counting_iterator<vertex_id_t>(num_nodes), [&](auto n) { comp[n] = n; });
+
+  nw::graph::AtomicBitVector   visited(num_nodes);
+  std::vector<vertex_id_t> frontier(num_nodes), next;
+  //initial node frontier includes every node
+  std::iota(frontier.begin(), frontier.end(), 0);
+
+  while (!frontier.empty()) {
+    std::for_each(frontier.begin(), frontier.end(), [&](auto& v) {
+      //all neighbors of hypernodes are hyperedges
+      auto labelV = comp[v];
+      for (auto &&[u] : g[v]) {
+        //so we check compid of each neighbor
+        if (labelV < comp[u]) {
+          if (writeMin(comp[u], labelV)) {
+            if (0 == visited.atomic_get(u) && 0 == visited.atomic_set(u))
+              next.push_back(u);
+          }
+        }
+      } //for
+    });
+    //reset bitmap
+    visited.clear();
+    frontier.clear();
+    frontier.swap(next);
+    //std::cout << "size:" << frontier.size() << std::endl;
+  } //while
+
   return comp;
 }
 
