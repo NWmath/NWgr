@@ -374,37 +374,62 @@ std::vector<vertex_id_t> ccv1(Graph& g) {
 }
 
 template<typename Execution, typename Graph>
-std::vector<vertex_id_t> lpcc(Execution& exec, Graph& g) {
+std::vector<vertex_id_t> lpcc(Execution& exec, Graph& g, int num_bins = 32) {
   //nw::util::life_timer _(__func__);
   size_t     num_nodes = g.size();
   std::vector<vertex_id_t> comp(num_nodes);
-  std::for_each(exec,
-      counting_iterator<vertex_id_t>(0), counting_iterator<vertex_id_t>(num_nodes), [&](auto n) { comp[n] = n; });
-
   nw::graph::AtomicBitVector   visited(num_nodes);
-  std::vector<vertex_id_t> frontier(num_nodes), next;
-  //initial node frontier includes every node
-  std::iota(frontier.begin(), frontier.end(), 0);
+  std::vector<vertex_id_t> cur(num_nodes), next;
+  std::for_each(exec,
+  counting_iterator<vertex_id_t>(0), counting_iterator<vertex_id_t>(num_nodes), [&](auto n) { 
+    comp[n] = n;
+    cur[n] = n;
+  });
 
-  while (!frontier.empty()) {
-    std::for_each(frontier.begin(), frontier.end(), [&](auto& v) {
-      //all neighbors of hypernodes are hyperedges
-      auto labelV = comp[v];
-      for (auto &&[u] : g[v]) {
-        //so we check compid of each neighbor
-        if (labelV < comp[u]) {
-          if (writeMin(comp[u], labelV)) {
-            if (0 == visited.atomic_get(u) && 0 == visited.atomic_set(u))
-              next.push_back(u);
+  std::vector<vertex_id_t> frontier[num_bins];
+  auto propagate = [&](auto& g, auto& cur, auto& bitmap, auto& labels) {
+    tbb::parallel_for(tbb::blocked_range<vertex_id_t>(0ul, cur.size()), [&](tbb::blocked_range<vertex_id_t>& r) {
+      int worker_index = tbb::task_arena::current_thread_index();
+      for (auto i = r.begin(), e = r.end(); i < e; ++i) {
+        vertex_id_t x = cur[i];
+        vertex_id_t labelx = labels[x];
+        //all neighbors of hyperedges are hypernode, vice versa
+        std::for_each(g[x].begin(), g[x].end(), [&](auto &&j) {
+          auto y = std::get<0>(j);
+          if (labelx < labels[y]) {
+            if (writeMin(labels[y], labelx)) {
+              if (0 == bitmap.atomic_get(y) && 0 == bitmap.atomic_set(y))
+                frontier[worker_index].push_back(y);
+            }
           }
-        }
+        });
       } //for
+    }, tbb::auto_partitioner());
+  };
+  std::vector<size_t> size_array(num_bins);
+  auto curtonext = [&](auto& next) {
+    size_t size = 0;
+    for (int i = 0; i < num_bins; ++i) {
+      //calculate the size of each thread-local frontier
+      size_array[i] = size;
+      //accumulate the total size of all thread-local frontiers
+      size += frontier[i].size();
+    }
+    //resize next frontier
+    next.resize(size); 
+    std::for_each(exec, tbb::counting_iterator(0), tbb::counting_iterator(num_bins), [&](auto i) {
+      //copy each thread-local frontier to next frontier based on their size offset
+      auto begin = std::next(next.begin(), size_array[i]);
+      std::copy(exec, frontier[i].begin(), frontier[i].end(), begin);
+      frontier[i].clear();
     });
-    //reset bitmap
+  };
+  while (!cur.empty()) {
+    propagate(g, cur, visited, comp);
+    curtonext(next);
     visited.clear();
-    frontier.clear();
-    frontier.swap(next);
-    //std::cout << "size:" << frontier.size() << std::endl;
+    cur.clear();
+    cur.swap(next);
   } //while
 
   return comp;
