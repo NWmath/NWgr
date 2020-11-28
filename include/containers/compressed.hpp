@@ -387,82 +387,158 @@ public:    // fixme
     }
   }
 
+  /*
+  * Serial version to compute degree of each vertex.
+  * Use adjacent_difference to compute the degrees of each vertex:
+  * degs[0] = 0 after the computation hence
+  * we need to erase the first element of the vector
+  */
   std::vector<index_t> degrees() const {
-    std::vector<index_t> degrees_(indices_.size());
-    std::adjacent_difference(indices_.begin(), indices_.end(), degrees_.begin());
-    return degrees_;
+    std::vector<index_t> degs(indices_.size());
+    std::adjacent_difference(indices_.begin(), indices_.end(), degs.begin());
+    degs.erase( degs.begin() );
+
+    if (g_debug_compressed) {
+      for (size_t i = 0, e = indices_.size() - 1; i < e; ++i) 
+        assert(degs[i] == indices_[i + 1] - indices_[i]);
+    }
+    return degs;
   }
-
-template <class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
-void permute(std::vector<vertex_id_t>& iperm, ExecutionPolicy&& ex_policy = {}) {
-  auto b = std::get<0>(to_be_indexed_).begin();
-
-  for (size_t i = 0; i < std::get<0>(to_be_indexed_).size(); ++i) {
-    b[i] = iperm[b[i]];
-  }
-
-  auto s = std::get<0>(to_be_indexed_).begin();
-
-  for (size_t i = 0; i < iperm.size(); ++i) {
-    std::sort(ex_policy, s + indices_[i], s + indices_[i + 1]);
-  }
-
-  if (g_debug_compressed) {
-    stream_indices(std::cout);
-  }
-}
-
-template <class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
-  std::vector<vertex_id_t> sort_by_degree(std::string direction = "descending", ExecutionPolicy&& ex_policy = {}) {
-    std::vector              degrees_ = degrees();
-    std::vector<vertex_id_t> perm(indices_.size() - 1);
-    tbb::parallel_for(tbb::blocked_range(0ul, perm.size()), [&](auto&& r) {
+  /*
+  * Parallel version to compute degree of each vertex.
+  */
+  template <class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
+  std::vector<index_t> degrees(ExecutionPolicy&& ex_policy = {}) const {
+    std::vector<index_t> degs(indices_.size() - 1);
+    tbb::parallel_for(tbb::blocked_range(0ul, indices_.size() - 1), [&](auto&& r) {
       for (auto i = r.begin(), e = r.end(); i != e; ++i) {
-        perm[i] = i;
+        degs[i] = indices_[i + 1] - indices_[i];
       }
     });
-    //std::iota(perm.begin(), perm.end(), 0);
-    auto d = degrees_.begin() + 1;
-
-    if (direction == "descending") {
-      std::sort(ex_policy, perm.begin(), perm.end(), [&](auto a, auto b) { return d[a] > d[b]; });
-    } else if (direction == "ascending") {
-      std::sort(ex_policy, perm.begin(), perm.end(), [&](auto a, auto b) { return d[a] < d[b]; });
-    } else {
-      std::cout << "Unknown direction: " << direction << std::endl;
+    if (g_debug_compressed) {
+      for (size_t i = 0, e = indices_.size() - 1; i < e; ++i) 
+        assert(degs[i] == indices_[i + 1] - indices_[i]);
     }
+    return degs;
+  }
 
-    std::vector<vertex_id_t> new_indices_(indices_);
-    auto                     n = new_indices_.begin() + 1;
-    std::vector<vertex_id_t> iperm(perm.size());
-
-    for (size_t j = 0; j < perm.size(); ++j) {
-      n[j]           = d[perm[j]];
-      iperm[perm[j]] = j;
-    }
-
-    std::inclusive_scan(ex_policy, new_indices_.begin(), new_indices_.end(), new_indices_.begin());
-    to_be_indexed_.permute(indices_, new_indices_, iperm);
-    indices_ = std::move(new_indices_);
-
-    auto b = std::get<0>(to_be_indexed_).begin();
-
-    for (size_t i = 0; i < std::get<0>(to_be_indexed_).size(); ++i) {
-      b[i] = iperm[b[i]];
-    }
-
+  /*
+  * Based on the new_id_perm of the vertices, relabel each vertex i into new_id_perm[i]
+  * and then sort each neighbor list.
+  */
+  template <class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
+  void relabel_to_be_indexed(const std::vector<vertex_id_t>& new_id_perm, ExecutionPolicy&& ex_policy = {}) {
+    /*
     auto s = std::get<0>(to_be_indexed_).begin();
+    tbb::parallel_for(tbb::blocked_range(0ul, indices_.size() - 1), [&](auto&& r) {
+      for (auto i = r.begin(), e = r.end(); i != e; ++i) {
+        for (size_t j = indices_[i]; j < indices_[i + 1]; ++j) {
+          vertex_id_t v = s[j];
+          s[j] = new_id_perm[s[j]];
+        }
+        std::sort(ex_policy, s + indices_[i], s + indices_[i + 1]);
+      }
+    });
+    */
+    auto s = std::get<0>(to_be_indexed_).begin();
+    tbb::parallel_for(tbb::blocked_range(0ul, std::get<0>(to_be_indexed_).size()), [&](auto&& r) {
+      for (auto i = r.begin(), e = r.end(); i != e; ++i) {
+          s[i] = new_id_perm[s[i]];
+      }
+    });
 
-    for (size_t i = 0; i < iperm.size(); ++i) {
+    s = std::get<0>(to_be_indexed_).begin();
+
+    for (size_t i = 0, e = indices_.size() - 1; i < e; ++i) {
       std::sort(ex_policy, s + indices_[i], s + indices_[i + 1]);
     }
 
     if (g_debug_compressed) {
       stream_indices(std::cout);
     }
-    return iperm;
   }
   
+  /*
+  * This function permutes the indices of the adjacency and to_be_indexed
+  * but does NOT relabel the ids in the to_be_indexed.
+  * */
+  template <class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
+  std::vector<vertex_id_t> permute_by_degree(std::string direction = "descending", ExecutionPolicy&& ex_policy = {}) {
+    //1. get the degrees of all the vertices
+    size_t                   n = indices_.size() - 1;
+    std::vector              degs = degrees<ExecutionPolicy>(ex_policy);
+    //2. populate permutation with vertex id
+    std::vector<vertex_id_t> perm(n);
+    tbb::parallel_for(tbb::blocked_range(0ul, n), [&](auto&& r) {
+      for (auto i = r.begin(), e = r.end(); i != e; ++i) {
+        perm[i] = i;
+      }
+    });
+
+    //3. do a proxy sort on the permutation based on the degree of each vertex
+    // in descending or ascending order
+    // this will permutate the vertex id in perm based on the degrees
+    if (direction == "descending") {
+      std::sort(ex_policy, perm.begin(), perm.end(), [&](auto a, auto b) { return degs[a] > degs[b]; });
+    } else if (direction == "ascending") {
+      std::sort(ex_policy, perm.begin(), perm.end(), [&](auto a, auto b) { return degs[a] < degs[b]; });
+    } else {
+      std::cout << "Unknown direction: " << direction << std::endl;
+      //return an empty perm array if unknown direction
+      return std::vector<vertex_id_t>{};
+    }
+
+    //4. allocate a vector for new_indices
+    std::vector<vertex_id_t> new_indices(indices_);
+    auto                     new_tmp = new_indices.begin() + 1;
+    std::vector<vertex_id_t> new_id_perm(n);
+
+    //5. permutate the old indices based on the degree of the new_id 
+    // to get the new_id_perm
+    tbb::parallel_for(tbb::blocked_range(0ul, n), [&](auto&& r) {
+      for (auto old_id = r.begin(), e = r.end(); old_id != e; ++old_id) {
+        auto new_id         = perm[old_id];
+        new_tmp[old_id]     = degs[new_id];
+        new_id_perm[new_id] = old_id;
+      }
+    });
+    
+    //6. Computes an inclusive prefix sum operation for the new_indices
+    // before the computation, new_indices stores the degree of each vertex (with new id)
+    std::inclusive_scan(ex_policy, new_indices.begin(), new_indices.end(), new_indices.begin());
+    //7. Permute each neighborhood of each vertex in to_be_indexed_ to their new place
+    // based on the new_id_perm
+    to_be_indexed_.permute(indices_, new_indices, new_id_perm);
+
+    //8. Overwrite the old indices_ with new_indices
+    indices_ = std::move(new_indices);
+
+    if (g_debug_compressed) {
+      auto newdegs = degrees();
+      for (size_t i = 0; i < n; ++i) {
+        //std::cout << i << ":" << newdegs[i] << std::endl;
+        assert(degs[i] == newdegs[new_id_perm[i]]);
+      }
+      stream_indices(std::cout);
+    }
+    return new_id_perm;
+  }
+  
+  /*
+  * Permute the adjacency based on the degree of each vertex
+  * There are two major steps: 1. permute the indices_ and the to_be_indexed_
+  * 2. relabel the to_be_indexed_ if needed (which is not needed if it is part of bi-adjacency)
+  * WARNING:
+  * If sort_by_degree on a bi-adjacency, do NOT use sort_by_degree.
+  * Call permute_by_degree on adjacency<idx>, 
+  * then call relabel_to_be_indexed on adjacency<(idx + 1) % 2>.
+  */
+  template <class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
+  void sort_by_degree(std::string direction = "descending", ExecutionPolicy&& ex_policy = {}) {
+    auto&& perm = permute_by_degree(direction, ex_policy);
+    relabel_to_be_indexed(perm, ex_policy);
+  }
+
   void stream_indices(std::ostream& out = std::cout) {
     auto s = std::get<0>(to_be_indexed_).begin();
     out << "\n+++\n";
