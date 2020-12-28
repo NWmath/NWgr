@@ -14,6 +14,9 @@
 
 #include "common/test_header.hpp"
 
+#include "util/print_types.hpp"
+
+
 using namespace nw::graph;
 using namespace nw::util;
 
@@ -61,11 +64,21 @@ TEST_CASE("struct of arrays", "[soa]") {
   }
 
   SECTION("initializer list") {
-    struct_of_arrays<size_t>                         E  ({ 1, 2, 3 });
+    struct_of_arrays<size_t>                         E  { 8, 6, 7, 5, 3, 0, 9};
+    struct_of_arrays<size_t, size_t>                 F { {0, 8}, {1, 6}, {2, 7} };
+    struct_of_arrays<size_t, size_t, double>         G { {0, 8, 6.7}, {5,3, 0.9}, {8, 6, 7.5309} };
+    struct_of_arrays<double, size_t, size_t, double> H { {3, 0, 8, 6.7}, {.1, 5, 3, 0.9}, {4.159, 8, 6, 7.5309} };
 
-    struct_of_arrays<size_t>                         F  { 1, 2, 3 };
-
-    struct_of_arrays<size_t>                         G  { {1}, {2}, {3} };
+    REQUIRE(std::get<0>(E[3]) == 5);
+    REQUIRE(std::get<0>(F[2]) == 2);
+    REQUIRE(std::get<1>(F[2]) == 7);
+    REQUIRE(std::get<0>(G[2]) == 8);
+    REQUIRE(std::get<1>(G[2]) == 6);
+    REQUIRE(std::get<2>(G[2]) == 7.5309);
+    REQUIRE(std::get<0>(H[2]) == 4.159);
+    REQUIRE(std::get<1>(H[2]) == 8);
+    REQUIRE(std::get<2>(H[2]) == 6);
+    REQUIRE(std::get<3>(H[2]) == 7.5309);
   }
 
   SECTION("assignment through iterator") {
@@ -96,9 +109,31 @@ TEST_CASE("struct of arrays", "[soa]") {
     test_assignment<2>(h, 3);
     test_assignment<3>(h, 3);
   }
+}
 
-  SECTION("assignment through iterator") {
-    
+
+template <typename SOA>
+void foo(SOA& s) {
+  SOA t(s);
+  REQUIRE(std::get<0>(s[0]) == std::get<0>(t[0]));
+}
+
+template <typename SOA>
+void bar(const SOA& s) {
+  SOA t(s);  
+  REQUIRE(std::get<0>(s[0]) == std::get<0>(t[0]));
+}
+
+
+TEST_CASE("struct of arrays const", "[c_soa]") {
+  SECTION("const iterator") {
+    struct_of_arrays<size_t>                         E  { 8, 6, 7, 5, 3, 0, 9};
+    struct_of_arrays<size_t, size_t>                 F { {0, 8}, {1, 6}, {2, 7} };
+    struct_of_arrays<size_t, size_t, double>         G { {0, 8, 6.7}, {5,3, 0.9}, {8, 6, 7.5309} };
+    struct_of_arrays<double, size_t, size_t, double> H { {3, 0, 8, 6.7}, {.1, 5, 3, 0.9}, {4.159, 8, 6, 7.5309} };
+    foo(E);
+    bar(E);
+
   }
 }
 

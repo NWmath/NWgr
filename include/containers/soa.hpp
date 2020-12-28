@@ -23,7 +23,8 @@
 #include <utility>
 #include <vector>
 
-#include "util.hpp"
+#include "util/print_types.hpp"
+#include "util/util.hpp"
 
 #if defined(CL_SYCL_LANGUAGE_VERSION)
 #include <dpstd/algorithm>
@@ -47,8 +48,6 @@ struct struct_of_arrays : std::tuple<std::vector<Attributes>...> {
     std::tuple<RandomAccessIterators...> start;
     std::size_t                          cursor = 0;
 
-    It(const std::tuple<RandomAccessIterators...>& iters, std::size_t init) : start(iters), cursor(init) {}
-
   public:
     using value_type        = typename std::tuple<typename std::iterator_traits<RandomAccessIterators>::value_type...>;
     using difference_type   = std::ptrdiff_t;
@@ -58,11 +57,14 @@ struct struct_of_arrays : std::tuple<std::vector<Attributes>...> {
 
     It()          = default;
     It(const It&) = default;
+
     It& operator=(const It&) = default;
+
     It(It&&)                 = default;
     It& operator=(It&&) = default;
 
-    explicit It(const RandomAccessIterators... iters) : start(iters...) {}
+    It(const std::tuple<RandomAccessIterators...>& iters, std::size_t init = 0) : start(iters), cursor(init) {}
+    It(const RandomAccessIterators... iters, std::size_t init = 0) : start(iters...), cursor(init) {}
 
     friend void swap(It a, It b) {
       std::apply([&](auto&&... is) { (std::swap(*a.start[is], *b.start[is]), ...); },
@@ -130,17 +132,17 @@ struct struct_of_arrays : std::tuple<std::vector<Attributes>...> {
     bool operator<=(const It& x) const { return cursor <= x.cursor; }
   };
 
-  using iterator               = It<typename std::vector<Attributes>::iterator...>;
+  using iterator = It<typename std::vector<Attributes>::iterator...>;
 
-  using value_type             = iterator::value_type;
-  using reference              = iterator::reference;
-  using size_type              = std::size_t;
-  using difference_type        = iterator::difference_type;
-  using pointer                = iterator::pointer;
+  using value_type      = typename iterator::value_type;
+  using reference       = typename iterator::reference;
+  using size_type       = std::size_t;
+  using difference_type = typename iterator::difference_type;
+  using pointer         = typename iterator::pointer;
 
-  using const_iterator         = It<typename std::vector<Attributes>::iterator...>;
-  using const_reference        = const_iterator::reference;
-  using const_pointer          = const_iterator::pointer;
+  using const_iterator  = It<typename std::vector<Attributes>::const_iterator...>;
+  using const_reference = typename const_iterator::reference;
+  using const_pointer   = typename const_iterator::pointer;
 
   using reverse_iterator       = std::reverse_iterator<iterator>;
   using const_reverse_iterator = std::reverse_iterator<const_iterator>;
@@ -156,13 +158,23 @@ struct struct_of_arrays : std::tuple<std::vector<Attributes>...> {
     return std::apply([](auto&... vs) { return iterator(vs.begin()...); }, *this);
   }
 
-  iterator begin() const {
-    return std::apply([](auto&... vs) { return iterator(vs.begin()...); }, *this);
+  const_iterator begin() const {
+    return std::apply([](auto&... vs) { return const_iterator(vs.begin()...); }, *this);
   }
 
   iterator end() { return begin() + size(); }
 
-  iterator end() const { return begin() + size(); }
+  const_iterator end() const { return begin() + size(); }
+
+  reference operator[](std::size_t i) {
+    return begin()[i];
+    // return std::apply([&](auto&&... r) { return std::forward_as_tuple(std::forward<decltype(r)>(r)[i]...); }, *this);
+  }
+
+  const_reference operator[](std::size_t i) const {
+    return begin()[i];
+    // return std::apply([&](auto&&... r) { return std::forward_as_tuple(std::forward<decltype(r)>(r)[i]...); }, *this);
+  }
 
   void push_back(Attributes... attrs) {
     std::apply([&](auto&... vs) { (vs.push_back(attrs), ...); }, *this);
