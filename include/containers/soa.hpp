@@ -15,6 +15,7 @@
 
 #include <fstream>
 #include <functional>
+#include <initializer_list>
 #include <iostream>
 #include <istream>
 #include <iterator>
@@ -22,9 +23,7 @@
 #include <utility>
 #include <vector>
 
-#include "util/util.hpp"
-#include "util/print_types.hpp"
-#include "util/types.hpp"
+#include "util.hpp"
 
 #if defined(CL_SYCL_LANGUAGE_VERSION)
 #include <dpstd/algorithm>
@@ -43,9 +42,6 @@ struct struct_of_arrays : std::tuple<std::vector<Attributes>...> {
   using storage_type = std::tuple<std::vector<Attributes>...>;
   using base         = std::tuple<std::vector<Attributes>...>;
 
-  struct_of_arrays() = default;
-  struct_of_arrays(size_t M) : base(std::vector<Attributes>(M)...) {}
-
   template <class... RandomAccessIterators>
   class It {
     std::tuple<RandomAccessIterators...> start;
@@ -55,9 +51,9 @@ struct struct_of_arrays : std::tuple<std::vector<Attributes>...> {
 
   public:
     using value_type        = typename std::tuple<typename std::iterator_traits<RandomAccessIterators>::value_type...>;
+    using difference_type   = std::ptrdiff_t;
     using reference         = typename std::tuple<typename std::iterator_traits<RandomAccessIterators>::reference...>;
     using pointer           = typename std::tuple<typename std::iterator_traits<RandomAccessIterators>::pointer...>;
-    using difference_type   = std::ptrdiff_t;
     using iterator_category = std::random_access_iterator_tag;
 
     It()          = default;
@@ -134,7 +130,27 @@ struct struct_of_arrays : std::tuple<std::vector<Attributes>...> {
     bool operator<=(const It& x) const { return cursor <= x.cursor; }
   };
 
-  using iterator = It<typename std::vector<Attributes>::iterator...>;
+  using iterator               = It<typename std::vector<Attributes>::iterator...>;
+
+  using value_type             = iterator::value_type;
+  using reference              = iterator::reference;
+  using size_type              = std::size_t;
+  using difference_type        = iterator::difference_type;
+  using pointer                = iterator::pointer;
+
+  using const_iterator         = It<typename std::vector<Attributes>::iterator...>;
+  using const_reference        = const_iterator::reference;
+  using const_pointer          = const_iterator::pointer;
+
+  using reverse_iterator       = std::reverse_iterator<iterator>;
+  using const_reverse_iterator = std::reverse_iterator<const_iterator>;
+
+  struct_of_arrays() = default;
+  struct_of_arrays(size_t M) : base(std::vector<Attributes>(M)...) {}
+
+  struct_of_arrays(std::initializer_list<value_type> l) {
+    for_each(l.begin(), l.end(), [&](value_type x) { push_back(x); });
+  }
 
   iterator begin() {
     return std::apply([](auto&... vs) { return iterator(vs.begin()...); }, *this);
