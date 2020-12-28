@@ -11,12 +11,10 @@
 #ifndef NW_GRAPH_EDGE_LIST_HPP
 #define NW_GRAPH_EDGE_LIST_HPP
 
-#include "containers/aos.hpp"
 #include "containers/soa.hpp"
 
 #include "containers/compressed.hpp"
 #include "graph_base.hpp"
-#include "adaptors/plain_range.hpp"
 #include "util/provenance.hpp"
 
 #if defined(CL_SYCL_LANGUAGE_VERSION)
@@ -65,17 +63,8 @@ class adj_list;
 
 template <directedness edge_directedness = undirected, typename... Attributes>
 
-// #define EDGELIST_AOS
-
-#if defined(EDGELIST_AOS)
-class edge_list : public graph_base, public array_of_structs<vertex_id_t, vertex_id_t, Attributes...> {
-  using base = array_of_structs<vertex_id_t, vertex_id_t, Attributes...>;
-#else
 class edge_list : public graph_base, public struct_of_arrays<vertex_id_t, vertex_id_t, Attributes...> {
   using base = struct_of_arrays<vertex_id_t, vertex_id_t, Attributes...>;
-
-#endif
-
   using element = std::tuple<vertex_id_t, vertex_id_t, Attributes...>;
 
 public:
@@ -115,7 +104,7 @@ public:
 
       // edge_list<to_dir, Attributes...> x(*this);
 
-      edge_list<to_dir, Attributes...> x(graph_base::lim[0]);
+      edge_list<to_dir, Attributes...> x(graph_base::vertex_cardinality[0]);
 
       x.resize(base::size());
       x.open_for_push_back();
@@ -152,7 +141,7 @@ public:
       x.open_for_push_back();
 
 #else
-      edge_list<to_dir, Attributes...> x(2 * graph_base::lim[0]);
+      edge_list<to_dir, Attributes...> x(2 * graph_base::vertex_cardinality[0]);
       x.open_for_push_back();
 
 #if 1
@@ -207,8 +196,8 @@ public:
       min_[1] -= the_min;
     }
 
-    lim[0] = max_[0] + 1;
-    lim[1] = max_[1] + 1;
+    vertex_cardinality[0] = max_[0] + 1;
+    vertex_cardinality[1] = max_[1] + 1;
   }
 
   void push_back(vertex_id_t i, vertex_id_t j, Attributes... attrs) {
@@ -704,7 +693,7 @@ public:
     outfile.write(reinterpret_cast<const char*>(magic), sizeof(magic));
     size_t d = edge_directedness;
     outfile.write(reinterpret_cast<const char*>(&d), sizeof(d));
-    outfile.write(reinterpret_cast<const char*>(lim), sizeof(lim));
+    outfile.write(reinterpret_cast<const char*>(vertex_cardinality), sizeof(vertex_cardinality));
     outfile.write(reinterpret_cast<const char*>(&min_), sizeof(min_));
     outfile.write(reinterpret_cast<const char*>(&max_), sizeof(max_));
     base::serialize(outfile);
@@ -725,7 +714,7 @@ public:
                        std::to_string(d)
                 << std::endl;
     }
-    infile.read(reinterpret_cast<char*>(lim), sizeof(lim));
+    infile.read(reinterpret_cast<char*>(vertex_cardinality), sizeof(vertex_cardinality));
     infile.read(reinterpret_cast<char*>(&min_), sizeof(min_));
     infile.read(reinterpret_cast<char*>(&max_), sizeof(max_));
     base::deserialize(infile);
@@ -746,7 +735,7 @@ public:
     int status = -4;
     std::cout << "% ";
     std::cout << nw::graph::demangle(typeid(*this).name(), nullptr, nullptr, &status) + ": " +
-                     "lim = " + std::to_string(graph_base::lim[0]) + " ";
+                     "lim = " + std::to_string(graph_base::vertex_cardinality[0]) + " ";
     std::cout << std::string("(min, max) = (") + std::to_string(min_[0]) + ", " + std::to_string(min_[1]) + ", " +
                      std::to_string(max_[0]) + ", " + std::to_string(max_[1]) + ")" + " ";
     std::cout << std::string("base::size() = ") + std::to_string(base::size());

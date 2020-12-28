@@ -51,11 +51,11 @@ public:
 
 class graph_base {
 public:
-  graph_base(size_t d0) : lim{d0, d0}, is_open(false) {}
-  graph_base(size_t d0, size_t d1) : lim{d0, d1}, is_open(false) {}
+  graph_base(size_t d0) : vertex_cardinality{d0, d0}, is_open(false) {}
+  graph_base(size_t d0, size_t d1) : vertex_cardinality{d0, d1}, is_open(false) {}
 
 protected:
-  size_t lim[2];     // ordinal limits
+  size_t vertex_cardinality[2];     // ordinal limits
   bool   is_open;    // can we mutate graph
 };
 
