@@ -1,13 +1,20 @@
+//
+// This file is part of NWGraph 
+// (c) Pacific Northwest National Laboratory 2018-2020
+// (c) University of Washington 2018-2020
+//
+// Licensed under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License
+// https://creativecommons.org/licenses/by-nc-sa/4.0/
+//
+// Author: Andrew Lumsdaine
+//
 
 
 #ifndef NW_GRAPH_COMPRESSED_HPP
 #define NW_GRAPH_COMPRESSED_HPP
 
 #include "adaptors/splittable_range_adapter.hpp"
-#include "containers/aos.hpp"
-#include "containers/edge_list.hpp"
 #include "containers/soa.hpp"
-#include "graph_base.hpp"
 #include "util/defaults.hpp"
 #include "util/proxysort.hpp"
 #include "util/util.hpp"
@@ -288,7 +295,7 @@ public:    // fixme
   const_sub_view operator[](index_t i) const { return begin()[i]; }
 
   index_t size() const { return indices_.size() - 1; }
-  index_t max() const { return indices_.size() - 2; }
+  // index_t max() const { return indices_.size() - 2; }
 
   index_t source(difference_type edge) const {
     auto i = std::upper_bound(indices_.begin(), indices_.end(), edge);
@@ -494,46 +501,6 @@ public:    // fixme
   }
 };
 
-template <typename vertex_id_type, typename... Attributes>
-class index_compressed : public graph_base, public indexed_struct_of_arrays<vertex_id_type, Attributes...> {
-  using base = indexed_struct_of_arrays<vertex_id_type, Attributes...>;
-
-public:
-  using vertex_id_t = vertex_id_type;
-
-  index_compressed(size_t N) : graph_base(N), base(N) {}
-
-  void close_for_push_back() { base::close_for_push_back(); };
-
-  auto num_edges() { return base::to_be_indexed_.size(); }
-};
-
-template <typename... Attributes>
-using compressed = index_compressed<default_vertex_id_t, default_vertex_id_t, Attributes...>;
-
-#if 0
-template <int idx, typename... Attributes>
-class adjacency : public indexed_struct_of_arrays<index_t, Attributes...> {
-public:
-  // The first index_t isn't considered an attribute.
-  using attributes_t = std::tuple<Attributes...>;
-  static constexpr std::size_t getNAttr() { return sizeof...(Attributes); }
-  using index_t = nw::graph::index_t;
-
-  adjacency(size_t N = 0, size_t M = 0) : indexed_struct_of_arrays<index_t, Attributes...>(N, M) {}
-
-  template <class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
-  adjacency(edge_list<directed, Attributes...>& A, ExecutionPolicy&& policy = {}) : indexed_struct_of_arrays<index_t, Attributes...>(std::max(A.max()[0], A.max()[1]) + 1) {
-    A.fill(*this, policy);
-  }
-
-  template <class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
-  adjacency(edge_list<undirected, Attributes...>& A, ExecutionPolicy&& policy = {})
-      : indexed_struct_of_arrays<index_t, Attributes...>(std::max(A.max()[0], A.max()[1]) + 1) {
-    A.fill(*this, policy);
-  }
-};
-#endif
 
 }    // namespace graph
 }    // namespace nw

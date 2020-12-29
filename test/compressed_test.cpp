@@ -10,7 +10,7 @@
 
 #include <iostream>
 
-#include "containers/compressed.hpp"
+#include "containers/adjacency.hpp"
 #include "containers/edge_list.hpp"
 #include "common/test_header.hpp"
 

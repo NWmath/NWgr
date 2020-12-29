@@ -1,6 +1,7 @@
 //
 // This file is part of BGL17 (aka NWGraph aka GraphPack aka the Graph Standard Library)
-// (c) Pacific Northwest National Laboratory 2018
+// (c) Pacific Northwest National Laboratory 2018-2020
+// (c) University of Washington 2018-2020
 //
 // Licensed under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License
 // https://creativecommons.org/licenses/by-nc-sa/4.0/
@@ -11,35 +12,37 @@
 #ifndef NW_GRAPH_GRAPH_BASE_HPP
 #define NW_GRAPH_GRAPH_BASE_HPP
 
+#include <array>
 #include <cstddef>
 
 namespace nw {
 namespace graph {
 
-enum directedness { undirected, directed };    // Really about packed / tri
-enum view_shape {
-  rectangular,
-  lower_triangular,
-  unit_lower_triangular,
-  strict_lower_triangular,
-  upper_triangular,
-  unit_upper_triangular,
-  strict_upper_triangular,
-  row_vector,
-  column_vector,
-  unoriented_vector
-};
 enum succession { successor, predecessor };
+enum directedness { undirected, directed };
+
+template <succession success>
+struct other_succession {
+  const succession cessor;
+};
+
+template <>
+struct other_succession<successor> {
+  const succession cessor = predecessor;
+};
+
+template <>
+struct other_succession<predecessor> {
+  const succession cessor = successor;
+};
 
 template <directedness dir>
-class other_direction {
-public:
+struct other_direction {
   const directedness direction;
 };
 
 template <>
-class other_direction<undirected> {
-public:
+struct other_direction<undirected> {
   const directedness direction = directed;
 };
 
@@ -49,10 +52,21 @@ public:
   const directedness direction = undirected;
 };
 
-class graph_base {
+class unipartite_graph_base {
 public:
-  graph_base(size_t d0) : vertex_cardinality{d0, d0}, num_edges_(0), is_open(false) {}
-  graph_base(size_t d0, size_t d1) : vertex_cardinality{d0, d1}, num_edges_(0), is_open(false) {}
+  unipartite_graph_base(size_t d0 = 0) : vertex_cardinality {d0}, num_edges_(0), is_open(false) {}
+
+  auto num_edges() { return num_edges_; }
+
+protected:
+  std::array<size_t, 1> vertex_cardinality;
+  std::size_t           num_edges_;
+  bool                  is_open;    // can we mutate graph
+};
+
+class bipartite_graph_base {
+public:
+  bipartite_graph_base(size_t d0 = 0, size_t d1 = 0) : vertex_cardinality{d0, d1}, num_edges_(0), is_open(false) {}
 
   auto num_edges() { return num_edges_; }
 
@@ -62,17 +76,8 @@ protected:
   bool                  is_open;    // can we mutate graph
 };
 
-template <directedness sym, typename... Attributes>
-class sparse_aos;
 
-template <int idx, directedness sym, typename... Attributes>
-class compressed_sparse;
 
-template <int idx, directedness sym, typename... Attributes>
-class vov_sparse;
-
-template <int idx, directedness sym, typename... Attributes>
-class adj_sparse;
 
 }    // namespace graph
 }    // namespace nw
