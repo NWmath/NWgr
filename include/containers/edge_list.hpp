@@ -30,11 +30,12 @@
 #include "detail/numeric.hpp"
 #endif
 
+#include "util/defaults.hpp"
 #include "util/demangle.hpp"
 #include "util/print_types.hpp"
 #include "util/timer.hpp"
-#include "util/types.hpp"
 #include <algorithm>
+#include <concepts>
 #include <limits>
 #include <numeric>
 #include <tuple>
@@ -61,57 +62,48 @@ class packed;
 template <typename... Attributes>
 class adj_list;
 
-template <directedness edge_directedness = undirected, typename... Attributes>
+template <std::unsigned_integral vertex_id_type, directedness edge_directedness = undirected, typename... Attributes>
+class index_edge_list : public graph_base, public struct_of_arrays<vertex_id_type, vertex_id_type, Attributes...> {
+public:
+  using vertex_id_t = vertex_id_type;
 
-class edge_list : public graph_base, public struct_of_arrays<vertex_id_t, vertex_id_t, Attributes...> {
-  using base = struct_of_arrays<vertex_id_t, vertex_id_t, Attributes...>;
+private:
+  using base    = struct_of_arrays<vertex_id_t, vertex_id_t, Attributes...>;
   using element = std::tuple<vertex_id_t, vertex_id_t, Attributes...>;
 
 public:
-  edge_list(size_t N)
-      : graph_base(N), min_({std::numeric_limits<vertex_id_t>::max(), std::numeric_limits<vertex_id_t>::max()}), max_({0, 0}) {}
+  index_edge_list(size_t N) : graph_base(N){};
 
-  edge_list(std::initializer_list<element> l)
-      : graph_base(l.size()), min_({std::numeric_limits<vertex_id_t>::max(), std::numeric_limits<vertex_id_t>::max()}),
-        max_({0, 0}) {
+  index_edge_list() : graph_base(0) { open_for_push_back(); }
+
+  index_edge_list(std::initializer_list<element> l) : graph_base(0) {
     open_for_push_back();
 
     for_each(l.begin(), l.end(), [&](element x) { push_back(x); });
 
-    std::cout << "min " << min_[0] << " " << min_[1] << " "
-              << " max " << max_[0] << " " << max_[1] << std::endl;
+    if (g_debug_edge_list) {
+      std::cout << " max " << vertex_cardinality[0] << " " << vertex_cardinality[1] << std::endl;
+    }
 
     close_for_push_back();
 
-    std::cout << "min " << min_[0] << " " << min_[1] << " "
-              << " max " << max_[0] << " " << max_[1] << std::endl;
+    if (g_debug_edge_list) {
+      std::cout << " max " << vertex_cardinality[0] << " " << vertex_cardinality[1] << std::endl;
+    }
   }
 
-  edge_list()
-      : graph_base(0), min_({std::numeric_limits<vertex_id_t>::max(), std::numeric_limits<vertex_id_t>::max()}), max_({0, 0}) {
-    open_for_push_back();
-  }
-
-  //edge_list(const edge_list&) = default;
-
-  //edge_list<directed, Attributes...> convert (const edge_list<undirected, Attributes...>&) ;
-  //edge_list<undirected, Attributes...> convert(const edge_list<directed, Attributes...>&);
   template <directedness to_dir, int kdx = 0, class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
   auto convert_directedness(ExecutionPolicy&& policy = {}) {
     if constexpr (edge_directedness == to_dir) {
-      return edge_list(*this);
+      return index_edge_list(*this);
     } else if constexpr (edge_directedness == directed && to_dir == undirected) {
 
-      // edge_list<to_dir, Attributes...> x(*this);
-
-      edge_list<to_dir, Attributes...> x(graph_base::vertex_cardinality[0]);
+      index_edge_list<vertex_id_type, to_dir, Attributes...> x(graph_base::vertex_cardinality[0]);
 
       x.resize(base::size());
       x.open_for_push_back();
-      x.max_[0] = max_[1];
-      x.max_[1] = max_[0];
-      x.min_[0] = min_[1];
-      x.min_[1] = min_[0];
+      x.vertex_cardinality[0] = vertex_cardinality[1];
+      x.vertex_cardinality[1] = vertex_cardinality[0];
 
       std::copy(policy, base::begin(), base::end(), x.begin());
       const int jdx = (kdx + 1) % 2;
@@ -136,12 +128,7 @@ public:
       return x;
     } else if constexpr (edge_directedness == undirected && to_dir == directed) {
 
-#if 0
-      edge_list<to_dir, Attributes...> x(2*graph_base::lim[0]);
-      x.open_for_push_back();
-
-#else
-      edge_list<to_dir, Attributes...> x(2 * graph_base::vertex_cardinality[0]);
+      index_edge_list<vertex_id_type, to_dir, Attributes...> x(2 * graph_base::vertex_cardinality[0]);
       x.open_for_push_back();
 
 #if 1
@@ -166,7 +153,7 @@ public:
         x.push_back(j);
       }
 #endif
-#endif
+
       int status = -4;
       x.close_for_push_back();
       x.prv = prv;
@@ -175,37 +162,23 @@ public:
                           std::to_string(to_dir));
       return x;
     }
-    return edge_list<to_dir, Attributes...>(0);
+    return index_edge_list<vertex_id_type, to_dir, Attributes...>(0);
   }
 
-  void open_for_push_back() {}
+  void open_for_push_back() { is_open = true; }
 
   void close_for_push_back() {
+    vertex_cardinality[0] = vertex_cardinality[0] + 1;
+    vertex_cardinality[1] = vertex_cardinality[1] + 1;
 
-    if (min_[0] != 0 || min_[1] != 0) {
-      vertex_id_t the_min = std::min(min_[0], min_[1]);
-
-      std::for_each(std::execution::par, base::begin(), base::end(), [&](auto&& x) {
-
-        std::get<0>(x) -= the_min;
-        std::get<1>(x) -= the_min;
-      });
-      max_[0] -= the_min;
-      min_[0] -= the_min;
-      max_[1] -= the_min;
-      min_[1] -= the_min;
-    }
-
-    vertex_cardinality[0] = max_[0] + 1;
-    vertex_cardinality[1] = max_[1] + 1;
+    is_open = false;
   }
 
   void push_back(vertex_id_t i, vertex_id_t j, Attributes... attrs) {
-    min_[0] = std::min(i, min_[0]);
-    min_[1] = std::min(j, min_[1]);
+    assert(is_open == true);
 
-    max_[0] = std::max(i, max_[0]);
-    max_[1] = std::max(j, max_[1]);
+    vertex_cardinality[0] = std::max<vertex_id_t>(i, vertex_cardinality[0]);
+    vertex_cardinality[1] = std::max<vertex_id_t>(j, vertex_cardinality[1]);
 
     base::push_back(i, j, attrs...);
   }
@@ -214,11 +187,8 @@ public:
     vertex_id_t i = std::get<0>(elem);
     vertex_id_t j = std::get<1>(elem);
 
-    min_[0] = std::min(i, min_[0]);
-    min_[1] = std::min(j, min_[1]);
-
-    max_[0] = std::max(i, max_[0]);
-    max_[1] = std::max(j, max_[1]);
+    vertex_cardinality[0] = std::max(i, vertex_cardinality[0]);
+    vertex_cardinality[1] = std::max(j, vertex_cardinality[1]);
 
     base::push_back(elem);
   }
@@ -262,11 +232,10 @@ public:
                 //            , [](auto&& a, auto&& b) -> bool { return a < b; }
       );
     } else {
-      std::sort(policy, base::begin(), base::end(),
-                [](const element& a, const element& b) -> bool {
-                  // print_types(a, b);
-                  return std::tie(std::get<1>(a), std::get<0>(a)) < std::tie(std::get<1>(b), std::get<0>(b));
-                });
+      std::sort(policy, base::begin(), base::end(), [](const element& a, const element& b) -> bool {
+        // print_types(a, b);
+        return std::tie(std::get<1>(a), std::get<0>(a)) < std::tie(std::get<1>(b), std::get<0>(b));
+      });
     }
   }
 
@@ -278,10 +247,9 @@ public:
 
     const int jdx = (idx + 1) % 2;
 
-    std::stable_sort(policy, base::begin(), base::end(),
-                     [](const element& a, const element& b) -> bool {
-                       return std::tie(std::get<idx>(a), std::get<jdx>(a)) < std::tie(std::get<idx>(b), std::get<jdx>(b));
-                     });
+    std::stable_sort(policy, base::begin(), base::end(), [](const element& a, const element& b) -> bool {
+      return std::tie(std::get<idx>(a), std::get<jdx>(a)) < std::tie(std::get<idx>(b), std::get<jdx>(b));
+    });
   }
 
   template <int idx, directedness sym>
@@ -329,18 +297,19 @@ public:
     }
   }
 
-  template <int idx, typename Comparator = decltype(std::less<vertex_id_t>{}), class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
+  template <int idx, typename Comparator = decltype(std::less<vertex_id_t>{}),
+            class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
   void fill_if(adjacency<idx, Attributes...>& cs, Comparator comp, ExecutionPolicy&& policy = {}) {
     const kdx = (idx + 1) % 2;
 
     if constexpr (edge_directedness == directed) {
 
-      std::vector<index_t> degrees(max_ + 1 + 1);
+      std::vector<index_t> degrees(vertex_cardinality + 1 + 1);
       std::for_each(base::begin(), base::end(),
                     [&](auto&& elt) { if (comp((std::get<idx>(elt), std::get<kdx>(elt))) { ++degrees[std::get<idx>(elt)]; } });
 
       exclusive_scan(/* std::execution::par, */ degrees.begin(), degrees.end(), degrees.begin(), (vertex_id_t)0);
-      cs.indices_.resize(max_ + 1 + 1);
+      cs.indices_.resize(vertex_cardinality + 1 + 1);
 
       std::copy(policy, degrees.begin(), degrees.end(), cs.indices_.begin());
       cs.to_be_indexed_.resize(size());
@@ -353,16 +322,14 @@ public:
 
   template <int idx, class ExecutionPolicy = std::execution::parallel_unsequenced_policy, size_t... Is>
   void fill_helper(adjacency<idx, Attributes...>& cs, std::index_sequence<Is...> is, ExecutionPolicy&& policy = {}) {
-    (..., (
-              std::copy(policy,
-                        std::get<Is + 2>(dynamic_cast<base&>(*this)).begin(), std::get<Is + 2>(dynamic_cast<base&>(*this)).end(),
-                        std::get<Is + 1>(cs.to_be_indexed_).begin())));
+    (..., (std::copy(policy, std::get<Is + 2>(dynamic_cast<base&>(*this)).begin(),
+                     std::get<Is + 2>(dynamic_cast<base&>(*this)).end(), std::get<Is + 1>(cs.to_be_indexed_).begin())));
   }
 
   template <int idx, class T, class ExecutionPolicy = std::execution::parallel_unsequenced_policy, size_t... Is>
   void fill_helper(adjacency<idx, Attributes...>& cs, std::index_sequence<Is...> is, T& Tmp, ExecutionPolicy&& policy = {}) {
-    (..., (std::copy(policy, std::get<Is + 2>(dynamic_cast<base&>(Tmp)).begin(),
-                     std::get<Is + 2>(dynamic_cast<base&>(Tmp)).end(), std::get<Is + 1>(cs.to_be_indexed_).begin())));
+    (..., (std::copy(policy, std::get<Is + 2>(dynamic_cast<base&>(Tmp)).begin(), std::get<Is + 2>(dynamic_cast<base&>(Tmp)).end(),
+                     std::get<Is + 1>(cs.to_be_indexed_).begin())));
   }
 
   template <int idx, class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
@@ -372,17 +339,17 @@ public:
 #if !defined(EDGELIST_AOS)
       sort_by<idx>(policy);
       auto degree = degrees<idx>();
-      
+
       const int kdx = (idx + 1) % 2;
-      cs.indices_.resize(std::max(max_[idx], max_[kdx]) + 1 + 1);
-      //cs.indices_.resize(max_[idx] + 1 + 1);
+      cs.indices_.resize(std::max(vertex_cardinality[idx], vertex_cardinality[kdx]) + 1 + 1);
+      //cs.indices_.resize(vertex_cardinality[idx] + 1 + 1);
 
       std::inclusive_scan(std::execution::par, degree.begin(), degree.end(), cs.indices_.begin() + 1);
-      cs.to_be_indexed_.resize(size());
+      cs.to_be_indexed_.resize(base::to_be_indexed.size());
 
       //const int kdx = (idx + 1) % 2;
-      std::copy(policy, std::get<kdx>(dynamic_cast<base&>(*this)).begin(),
-                std::get<kdx>(dynamic_cast<base&>(*this)).end(), std::get<0>(cs.to_be_indexed_).begin());
+      std::copy(policy, std::get<kdx>(dynamic_cast<base&>(*this)).begin(), std::get<kdx>(dynamic_cast<base&>(*this)).end(),
+                std::get<0>(cs.to_be_indexed_).begin());
 
       if constexpr (sizeof...(Attributes) > 0) {
         fill_helper<idx>(cs, std::make_integer_sequence<size_t, sizeof...(Attributes)>());
@@ -391,7 +358,7 @@ public:
 #else    // IS AOS
       stable_sort_by<idx>(policy);
       cs.open_for_push_back();
-      
+
       std::for_each(base::begin(), base::end(), [&](auto&& elt) {
         std::apply([&](vertex_id_t i, vertex_id_t j, Attributes... attrs) { cs.push_back(i, j, attrs...); }, elt);
       });
@@ -400,9 +367,10 @@ public:
 
     } else {    // undirected
 
-      // edge_list<edge_directedness, Attributes...> Tmp(0); // BUG!!!!
+      // index_edge_list<edge_directedness, Attributes...> Tmp(0); // BUG!!!!
 
-      edge_list<directed, Attributes...> Tmp(0);    // undirected == directed with doubled (and swapped) edges
+      index_edge_list<vertex_id_type, directed, Attributes...> Tmp(
+          0);    // undirected == directed with doubled (and swapped) edges
 
       Tmp.resize(2 * base::size());
       {
@@ -415,8 +383,7 @@ public:
           return flt;
         });
 
-        Tmp.max_[0] = Tmp.max_[1] = std::max(max_[0], max_[1]);
-        Tmp.min_[0] = Tmp.min_[1] = std::min(min_[0], min_[1]);
+        Tmp.vertex_cardinality[0] = Tmp.vertex_cardinality[1] = std::max(vertex_cardinality[0], vertex_cardinality[1]);
       }
 
       {
@@ -427,7 +394,7 @@ public:
         Tmp.template sort_by<idx>();
 
         auto degree = Tmp.template degrees<idx>();    // Can have a fast version if we know it is sorted -- using equal_range
-        cs.indices_.resize(Tmp.max_[idx] + 1 + 1);
+        cs.indices_.resize(Tmp.vertex_cardinality[idx] + 1 + 1);
 
         std::inclusive_scan(std::execution::par, degree.begin(), degree.end(), cs.indices_.begin() + 1);
         cs.to_be_indexed_.resize(Tmp.size());
@@ -436,8 +403,8 @@ public:
         auto _ = g_time_edge_list ? nw::util::life_timer(__func__ + std::string(" adj fill copy to cs")) : nw::util::empty_timer();
 
         const int kdx = (idx + 1) % 2;
-        std::copy(policy, std::get<kdx>(dynamic_cast<base&>(Tmp)).begin(),
-                  std::get<kdx>(dynamic_cast<base&>(Tmp)).end(), std::get<0>(cs.to_be_indexed_).begin());
+        std::copy(policy, std::get<kdx>(dynamic_cast<base&>(Tmp)).begin(), std::get<kdx>(dynamic_cast<base&>(Tmp)).end(),
+                  std::get<0>(cs.to_be_indexed_).begin());
 
         if constexpr (sizeof...(Attributes) > 0) {
           fill_helper<idx>(cs, std::make_integer_sequence<size_t, sizeof...(Attributes)>(), Tmp);
@@ -458,7 +425,7 @@ public:
       al.close_for_push_back();
 
     } else {
-      edge_list<edge_directedness, Attributes...> Tmp(0);
+      index_edge_list<vertex_id_type, edge_directedness, Attributes...> Tmp(0);
       Tmp.reserve(2 * base::size());
       Tmp.open_for_push_back();
       std::for_each(base::begin(), base::end(), [&](auto&& elt) {
@@ -477,10 +444,13 @@ public:
     }
   }
 
-  size_t size() const { return base::size(); }
-  size_t length() const { return base::size(); }
+  // size_t size() const { return base::size(); }
+  // size_t length() const { return base::size(); }
 
-  auto max() const { return max_; }
+  auto num_edges() const { return base::size(); }
+
+
+  auto max() const { return vertex_cardinality; }
 
   void symmetrize_in_place() {
     int status = -4;
@@ -546,19 +516,17 @@ public:
                       nw::graph::demangle(typeid(cessor).name(), nullptr, nullptr, &status));
 
     if constexpr ((idx == 0 && cessor == predecessor) || (idx == 1 && cessor == successor)) {
-      std::for_each(policy, base::begin(), base::end(),
-                    [](auto&& f) {
-                      if (std::get<0>(f) < std::get<1>(f)) {
-                        std::swap(std::get<0>(f), std::get<1>(f));
-                      }
-                    });
+      std::for_each(policy, base::begin(), base::end(), [](auto&& f) {
+        if (std::get<0>(f) < std::get<1>(f)) {
+          std::swap(std::get<0>(f), std::get<1>(f));
+        }
+      });
     } else if constexpr ((idx == 0 && cessor == successor) || (idx == 1 && cessor == predecessor)) {
-      std::for_each(policy, base::begin(), base::end(),
-                    [](auto&& f) {
-                      if (std::get<1>(f) < std::get<0>(f)) {
-                        std::swap(std::get<1>(f), std::get<0>(f));
-                      }
-                    });
+      std::for_each(policy, base::begin(), base::end(), [](auto&& f) {
+        if (std::get<1>(f) < std::get<0>(f)) {
+          std::swap(std::get<1>(f), std::get<0>(f));
+        }
+      });
     }
   }
 
@@ -570,13 +538,13 @@ public:
                       nw::graph::demangle(typeid(cessor).name(), nullptr, nullptr, &status));
 
     if constexpr ((idx == 0 && cessor == predecessor) || (idx == 1 && cessor == successor)) {
-      auto past_the_end = std::remove_if(policy, base::begin(), base::end(),
-                                         [](auto&& x) { return std::get<0>(x) < std::get<1>(x); });
+      auto past_the_end =
+          std::remove_if(policy, base::begin(), base::end(), [](auto&& x) { return std::get<0>(x) < std::get<1>(x); });
 
       base::erase(past_the_end, base::end());
     } else if constexpr ((idx == 0 && cessor == successor) || (idx == 1 && cessor == predecessor)) {
-      auto past_the_end = std::remove_if(policy, base::begin(), base::end(),
-                                         [](auto&& x) { return std::get<1>(x) < std::get<0>(x); });
+      auto past_the_end =
+          std::remove_if(policy, base::begin(), base::end(), [](auto&& x) { return std::get<1>(x) < std::get<0>(x); });
       base::erase(past_the_end, base::end());
     }
   }
@@ -588,9 +556,9 @@ public:
     int status = -4;
     prv.push_back(nw::graph::demangle(typeid(*this).name(), nullptr, nullptr, &status) + "::" + __func__);
 
-    auto past_the_end =
-        std::unique(policy, base::begin(), base::end(),
-                    [](auto&& x, auto&& y) { return std::get<0>(x) == std::get<0>(y) && std::get<1>(x) == std::get<1>(y); });
+    auto past_the_end = std::unique(policy, base::begin(), base::end(), [](auto&& x, auto&& y) {
+      return std::get<0>(x) == std::get<0>(y) && std::get<1>(x) == std::get<1>(y);
+    });
 
     // base::erase(past_the_end, base::end());
     base::resize(past_the_end - base::begin());
@@ -608,7 +576,7 @@ public:
 
   template <int d_idx = 0, class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
   auto degrees(ExecutionPolicy&& policy = {}) {
-    std::vector<index_t> degree(max_[d_idx] + 1);
+    std::vector<vertex_id_t> degree(vertex_cardinality[d_idx] + 1);
 
     if constexpr (edge_directedness == directed) {
       std::vector<std::atomic<vertex_id_t>> tmp(degree.size());
@@ -652,8 +620,7 @@ public:
       std::sort(policy, perm.begin(), perm.end(), [&](auto a, auto b) { return d[a] > d[b]; });
     } else if (direction == "ascending") {
       std::sort(policy, perm.begin(), perm.end(), [&](auto a, auto b) { return d[a] < d[b]; });
-    }
-    else {
+    } else {
       std::cout << "Unknown direction: " << direction << std::endl;
     }
 
@@ -670,11 +637,10 @@ public:
       }
     });
 
-    std::for_each(policy, base::begin(), base::end(),
-                  [&](auto&& x) {
-                    std::get<0>(x) = iperm[std::get<0>(x)];
-                    std::get<1>(x) = iperm[std::get<1>(x)];
-                  });
+    std::for_each(policy, base::begin(), base::end(), [&](auto&& x) {
+      std::get<0>(x) = iperm[std::get<0>(x)];
+      std::get<1>(x) = iperm[std::get<1>(x)];
+    });
   }
 
   template <int idx, class Vector = std::vector<int>>
@@ -687,15 +653,13 @@ public:
     relabel(perm);
   }
 
-  constexpr static const char magic[16] = "BGL17 edge_list";
+  constexpr static const char magic[27] = "NW Graph index_edge_list";
 
   void serialize(std::ostream& outfile) const {
     outfile.write(reinterpret_cast<const char*>(magic), sizeof(magic));
     size_t d = edge_directedness;
     outfile.write(reinterpret_cast<const char*>(&d), sizeof(d));
     outfile.write(reinterpret_cast<const char*>(vertex_cardinality), sizeof(vertex_cardinality));
-    outfile.write(reinterpret_cast<const char*>(&min_), sizeof(min_));
-    outfile.write(reinterpret_cast<const char*>(&max_), sizeof(max_));
     base::serialize(outfile);
   }
 
@@ -715,8 +679,6 @@ public:
                 << std::endl;
     }
     infile.read(reinterpret_cast<char*>(vertex_cardinality), sizeof(vertex_cardinality));
-    infile.read(reinterpret_cast<char*>(&min_), sizeof(min_));
-    infile.read(reinterpret_cast<char*>(&max_), sizeof(max_));
     base::deserialize(infile);
     close_for_push_back();
   }
@@ -735,9 +697,7 @@ public:
     int status = -4;
     std::cout << "% ";
     std::cout << nw::graph::demangle(typeid(*this).name(), nullptr, nullptr, &status) + ": " +
-                     "lim = " + std::to_string(graph_base::vertex_cardinality[0]) + " ";
-    std::cout << std::string("(min, max) = (") + std::to_string(min_[0]) + ", " + std::to_string(min_[1]) + ", " +
-                     std::to_string(max_[0]) + ", " + std::to_string(max_[1]) + ")" + " ";
+                     "vertex_cardinality = " + std::to_string(graph_base::vertex_cardinality[0]) + " ";
     std::cout << std::string("base::size() = ") + std::to_string(base::size());
     std::cout << std::endl;
   }
@@ -751,18 +711,18 @@ public:
 
   void stream(std::ostream& os = std::cout) { stream_edges(os); }
 
-  bool operator==(edge_list<edge_directedness, Attributes...>& e) {
-    return min_ == e.min_ && max_ == e.max_ && base::operator==(e);    //*this == e;
+  bool operator==(index_edge_list<vertex_id_type, edge_directedness, Attributes...>& e) {
+    return vertex_cardinality == e.vertex_cardinality && base::operator==(e);    //*this == e;
   }
 
-  bool operator!=(edge_list<edge_directedness, Attributes...>& e) { return !operator==(e); }
+  bool operator!=(index_edge_list<vertex_id_type, edge_directedness, Attributes...>& e) { return !operator==(e); }
 
 public:
   provenance prv;
-
-public:
-  std::array<vertex_id_t, 2> min_, max_;
 };
+
+template <directedness edge_directedness = undirected, typename... Attributes>
+using edge_list = index_edge_list<default_vertex_id_t, edge_directedness, Attributes...>;
 
 }    // namespace graph
 }    // namespace nw

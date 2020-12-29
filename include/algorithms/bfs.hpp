@@ -280,12 +280,16 @@ auto bfs_v9(Graph& graph, vertex_id_t root) {
 }
 
 template <class Graph>
-[[gnu::noinline]] auto bfs_top_down(Graph&& graph, vertex_id_t root) {
+[[gnu::noinline]] auto bfs_top_down(Graph&& graph, Graph::vertex_id_t root) {
+  using vertex_id_t = Graph::vertex_id_t;
+
   constexpr const std::size_t                      num_bins = 32;
   const std::size_t                                N        = graph.max() + 1;
   std::vector<tbb::concurrent_vector<vertex_id_t>> q1(num_bins);
   std::vector<tbb::concurrent_vector<vertex_id_t>> q2(num_bins);
   std::vector<vertex_id_t>                         parents(N);
+
+  constexpr const auto null_vertex = null_vertex_v<vertex_id_t>();
 
   std::fill(std::execution::par_unseq, parents.begin(), parents.end(), null_vertex);
 

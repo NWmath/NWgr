@@ -51,11 +51,14 @@ public:
 
 class graph_base {
 public:
-  graph_base(size_t d0) : vertex_cardinality{d0, d0}, is_open(false) {}
-  graph_base(size_t d0, size_t d1) : vertex_cardinality{d0, d1}, is_open(false) {}
+  graph_base(size_t d0) : vertex_cardinality{d0, d0}, num_edges_(0), is_open(false) {}
+  graph_base(size_t d0, size_t d1) : vertex_cardinality{d0, d1}, num_edges_(0), is_open(false) {}
+
+  auto num_edges() { return num_edges_; }
 
 protected:
-  size_t vertex_cardinality[2];     // ordinal limits
+  std::array<size_t,2> vertex_cardinality;     // ordinal limits
+  std::size_t num_edges_;
   bool   is_open;    // can we mutate graph
 };
 

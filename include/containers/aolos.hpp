@@ -8,8 +8,8 @@
 #ifndef NW_GRAPH_AOLOS_HPP
 #define NW_GRAPH_AOLOS_HPP
 
-#include "graph_base.hpp"
 #include "edge_list.hpp"
+#include "graph_base.hpp"
 #include <cassert>
 #include <forward_list>
 #include <tuple>
@@ -49,10 +49,12 @@ template <typename... Attributes>
 class adj_list : public array_of_list_of_structs<size_t, Attributes...> {
 public:
   adj_list(size_t N) : array_of_list_of_structs<size_t, Attributes...>(N) {}
-  adj_list(edge_list<directed, Attributes...>& A) : array_of_list_of_structs<size_t, Attributes...>(std::max(A.max()[0], A.max()[1]) + 1) {
+  adj_list(edge_list<directed, Attributes...>& A)
+      : array_of_list_of_structs<size_t, Attributes...>(std::max(A.max()[0], A.max()[1]) + 1) {
     A.fill(*this);
   }
-  adj_list(edge_list<undirected, Attributes...>& A) : array_of_list_of_structs<size_t, Attributes...>(std::max(A.max()[0], A.max()[1]) + 1) {
+  adj_list(edge_list<undirected, Attributes...>& A)
+      : array_of_list_of_structs<size_t, Attributes...>(std::max(A.max()[0], A.max()[1]) + 1) {
     A.fill(*this);
   }
 

@@ -344,6 +344,9 @@ void write_mm(const std::string& filename, adjacency<idx, Attributes...>& A, con
   adjacency_stream<w_idx>(outputStream, A, file_symmetry, w_type);
 }
 
+
+#if 0
+
 static size_t block_min(int thread, size_t M, int threads) {
   size_t         block = M / threads;
   int            rem = M % threads;
@@ -468,7 +471,6 @@ par_load_mm(mmio::MatrixMarketFile& mmio, std::vector<std::vector<std::tuple<siz
 }
 
 
-
 template <directedness sym, typename... Attributes>
 edge_list<sym, Attributes...> par_read_mm(const std::string& filename, bool keep_loops = true, size_t threads = (size_t) std::thread::hardware_concurrency()) {
   mmio::MatrixMarketFile mmio(filename);
@@ -539,7 +541,7 @@ edge_list<sym, Attributes...> par_read_mm(const std::string& filename, bool keep
   
   return A;
 }
-
+#endif
 
 }    // namespace graph
 }    // namespace nw
