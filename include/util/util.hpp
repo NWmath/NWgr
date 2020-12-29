@@ -118,18 +118,15 @@ constexpr auto select(Tuple&& t) -> std::tuple<std::tuple_element_t<Is, std::dec
 template <class Tuple, std::size_t... Is>
 using select_t = decltype(select<Is...>(std::declval<Tuple>()));
 
-
 template <typename vertex_id_type>
 struct null_vertex_s {
   constexpr static vertex_id_type value = std::numeric_limits<vertex_id_type>::max();
 };
 
-
 template <typename vertex_id_type>
 inline constexpr auto null_vertex_v() {
   return null_vertex_s<vertex_id_type>::value;
 }
-
 
 template <typename InputIterator, typename RandomAccessIterator,
           typename = std::enable_if_t<nw::graph::is_tuple_v<typename InputIterator::value_type>>>

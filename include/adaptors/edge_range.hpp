@@ -11,9 +11,9 @@
 #ifndef NW_GRAPH_EDGE_RANGE_HPP
 #define NW_GRAPH_EDGE_RANGE_HPP
 
-#include "util/util.hpp"
 #include "util/print_types.hpp"
 #include "util/types.hpp"
+#include "util/util.hpp"
 #include <tbb/tbb.h>
 #include <tuple>
 

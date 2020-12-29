@@ -163,12 +163,10 @@ public:
   template <class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
   void allToSingletons(ExecutionPolicy&& policy = {}) {
     size_t i = 0;
-    std::for_each(
-        policy,
-        this->sets_, this->sets_ + this->maxid_, [&i, this]() {
-          this->sets[i] = i;
-          ++i;
-        });
+    std::for_each(policy, this->sets_, this->sets_ + this->maxid_, [&i, this]() {
+      this->sets[i] = i;
+      ++i;
+    });
   }
   template <typename L>
   static void allToSingletons(L* arr, const size_t size) {

@@ -1,8 +1,8 @@
 #ifndef NW_GRAPH_CYCLIC_RANGE_ADAPTER_HPP
 #define NW_GRAPH_CYCLIC_RANGE_ADAPTER_HPP
 
-#include "util/util.hpp"
 #include "util/types.hpp"
+#include "util/util.hpp"
 #include <iterator>
 #include <tbb/tbb.h>
 
@@ -106,4 +106,4 @@ constexpr decltype(auto) cyclic(Range&& range, Cutoff cutoff) {
 }
 }    // namespace graph
 }    // namespace nw
-#endif // NW_GRAPH_CYCLIC_RANGE_ADAPTER_HPP
+#endif    // NW_GRAPH_CYCLIC_RANGE_ADAPTER_HPP

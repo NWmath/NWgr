@@ -369,8 +369,7 @@ public:
 
       // index_edge_list<edge_directedness, Attributes...> Tmp(0); // BUG!!!!
 
-      index_edge_list<vertex_id_type, directed, Attributes...> Tmp(
-          0);    // undirected == directed with doubled (and swapped) edges
+      index_edge_list<vertex_id_type, directed, Attributes...> Tmp(0);    // undirected == directed with doubled (and swapped) edges
 
       Tmp.resize(2 * base::size());
       {
@@ -448,7 +447,6 @@ public:
   // size_t length() const { return base::size(); }
 
   auto num_edges() const { return base::size(); }
-
 
   auto max() const { return vertex_cardinality; }
 

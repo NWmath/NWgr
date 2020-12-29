@@ -11,9 +11,9 @@
 #ifndef NW_GRAPH_PLAIN_RANGE_HPP
 #define NW_GRAPH_PLAIN_RANGE_HPP
 
-#include "util/util.hpp"
 #include "util/print_types.hpp"
 #include "util/types.hpp"
+#include "util/util.hpp"
 #include <cassert>
 #include <queue>
 #include <tuple>
@@ -27,7 +27,7 @@ namespace graph {
 template <class T>
 using counting_iterator = dpstd::counting_iterator<T>;
 }
-}
+}    // namespace nw
 #else
 #include <execution>
 #include <tbb/iterators.h>
@@ -36,12 +36,11 @@ namespace graph {
 template <class T>
 using counting_iterator = tbb::counting_iterator<T>;
 }
-}
+}    // namespace nw
 #endif
 
 namespace nw {
 namespace graph {
-
 
 template <typename Graph>
 class plain_range {

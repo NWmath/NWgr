@@ -18,8 +18,8 @@
 #include <tuple>
 #include <utility>
 
-#include "util/util.hpp"
 #include "util/types.hpp"
+#include "util/util.hpp"
 
 namespace nw {
 namespace graph {

@@ -8,9 +8,8 @@ namespace std {
 
 #if defined(BGL17_NEED_EXCLUSIVE_SCAN)
 
-template<class _InputIterator, class _OutputIterator, class _Tp, class _BinaryOp>
-_OutputIterator exclusive_scan(_InputIterator __first, _InputIterator __last, _OutputIterator __result, _Tp __init,
-                               _BinaryOp __b) {
+template <class _InputIterator, class _OutputIterator, class _Tp, class _BinaryOp>
+_OutputIterator exclusive_scan(_InputIterator __first, _InputIterator __last, _OutputIterator __result, _Tp __init, _BinaryOp __b) {
   if (__first != __last) {
     _Tp __saved = __init;
     do {
@@ -23,7 +22,7 @@ _OutputIterator exclusive_scan(_InputIterator __first, _InputIterator __last, _O
   return __result;
 }
 
-template<class _InputIterator, class _OutputIterator, class _Tp>
+template <class _InputIterator, class _OutputIterator, class _Tp>
 _OutputIterator exclusive_scan(_InputIterator __first, _InputIterator __last, _OutputIterator __result, _Tp __init) {
   return exclusive_scan(__first, __last, __result, __init, std::plus<>());
 }
@@ -31,7 +30,7 @@ _OutputIterator exclusive_scan(_InputIterator __first, _InputIterator __last, _O
 #endif
 
 #if defined(BGL17_NEED_INCLUSIVE_SCAN)
-template<typename _InputIterator, typename _OutputIterator, typename _BinaryOperation, typename _Tp>
+template <typename _InputIterator, typename _OutputIterator, typename _BinaryOperation, typename _Tp>
 _OutputIterator inclusive_scan(_InputIterator __first, _InputIterator __last, _OutputIterator __result,
                                _BinaryOperation __binary_op, _Tp __init) {
   for (; __first != __last; ++__first)
@@ -39,7 +38,7 @@ _OutputIterator inclusive_scan(_InputIterator __first, _InputIterator __last, _O
   return __result;
 }
 
-template<typename _InputIterator, typename _OutputIterator, typename _BinaryOperation>
+template <typename _InputIterator, typename _OutputIterator, typename _BinaryOperation>
 _OutputIterator inclusive_scan(_InputIterator __first, _InputIterator __last, _OutputIterator __result,
                                _BinaryOperation __binary_op) {
   if (__first != __last) {
@@ -51,14 +50,14 @@ _OutputIterator inclusive_scan(_InputIterator __first, _InputIterator __last, _O
   return __result;
 }
 
-template<typename _InputIterator, typename _OutputIterator>
+template <typename _InputIterator, typename _OutputIterator>
 _OutputIterator inclusive_scan(_InputIterator __first, _InputIterator __last, _OutputIterator __result) {
   return std::inclusive_scan(__first, __last, __result, std::plus<>());
 }
 #endif
 
 #if defined(BGL17_NEED_REDUCE)
-template<typename _InputIterator, typename _Tp, typename _BinaryOperation>
+template <typename _InputIterator, typename _Tp, typename _BinaryOperation>
 _Tp reduce(_InputIterator __first, _InputIterator __last, _Tp __init, _BinaryOperation __binary_op) {
   using value_type = typename iterator_traits<_InputIterator>::value_type;
   static_assert(is_invocable_r_v<_Tp, _BinaryOperation&, _Tp&, _Tp&>);
@@ -78,12 +77,12 @@ _Tp reduce(_InputIterator __first, _InputIterator __last, _Tp __init, _BinaryOpe
   return __init;
 }
 
-template<typename _InputIterator, typename _Tp>
+template <typename _InputIterator, typename _Tp>
 _Tp reduce(_InputIterator __first, _InputIterator __last, _Tp __init) {
   return std::reduce(__first, __last, std::move(__init), std::plus<>());
 }
 
-template<typename _InputIterator>
+template <typename _InputIterator>
 typename iterator_traits<_InputIterator>::value_type reduce(_InputIterator __first, _InputIterator __last) {
   using value_type = typename iterator_traits<_InputIterator>::value_type;
   return std::reduce(__first, __last, value_type{}, std::plus<>());

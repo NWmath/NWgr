@@ -11,10 +11,10 @@
 #ifndef CONNECTED_COMPONENT_HPP
 #define CONNECTED_COMPONENT_HPP
 
-#include "util/types.hpp"
 #include "adaptors/bfs_edge_range.hpp"
-#include "util/disjoint_set.hpp"
 #include "adaptors/edge_range.hpp"
+#include "util/disjoint_set.hpp"
+#include "util/types.hpp"
 #include <atomic>
 #include <iostream>
 #include <random>
@@ -61,28 +61,25 @@ struct atomwrapper {
   }
 };
 
-
 // BFS-based connected component algorithm
 template <typename Graph, typename T>
 void compute_connected_components(Graph A, std::vector<T>& component_ids) {
   size_t         N                        = A.size();
   std::atomic<T> global_component_counter = -1;
-  std::for_each(
-      std::execution::par_unseq,
-      counting_iterator<T>(0), counting_iterator<T>(N), [&](auto vtx) {
-        if (std::numeric_limits<T>::max() == component_ids[vtx]) {
-          global_component_counter++;
-          component_ids[vtx] = global_component_counter.load();
-          //      std::cout << "--------vertex--------------" << vtx << "
-          //      component_ids[vtx]: " << component_ids[vtx] << std::endl;
-          bfs_edge_range3 ranges(A, vtx);
-          for (auto ite = ranges.begin(); ite != ranges.end(); ++ite) {
-            // auto u = std::get<0>(*ite);
-            auto v           = std::get<1>(*ite);
-            component_ids[v] = global_component_counter.load();
-          }
-        }
-      });
+  std::for_each(std::execution::par_unseq, counting_iterator<T>(0), counting_iterator<T>(N), [&](auto vtx) {
+    if (std::numeric_limits<T>::max() == component_ids[vtx]) {
+      global_component_counter++;
+      component_ids[vtx] = global_component_counter.load();
+      //      std::cout << "--------vertex--------------" << vtx << "
+      //      component_ids[vtx]: " << component_ids[vtx] << std::endl;
+      bfs_edge_range3 ranges(A, vtx);
+      for (auto ite = ranges.begin(); ite != ranges.end(); ++ite) {
+        // auto u = std::get<0>(*ite);
+        auto v           = std::get<1>(*ite);
+        component_ids[v] = global_component_counter.load();
+      }
+    }
+  });
 }
 
 template <typename T>
@@ -102,12 +99,10 @@ void hook(T u, T v, std::vector<T>& comp) {
 
 template <typename T>
 void compress(std::vector<T>& comp) {
-  std::for_each(
-      std::execution::par_unseq,
-      counting_iterator<T>(0), counting_iterator<T>(comp.size()), [&](auto n) {
-        while (comp[n] != comp[comp[n]])
-          comp[n] = comp[comp[n]];
-      });
+  std::for_each(std::execution::par_unseq, counting_iterator<T>(0), counting_iterator<T>(comp.size()), [&](auto n) {
+    while (comp[n] != comp[comp[n]])
+      comp[n] = comp[comp[n]];
+  });
 }
 
 template <typename T>
@@ -185,9 +180,8 @@ std::vector<vertex_id_t> compute_connected_components_v1(Graph& g) {
   // atomwrapper<vertex_id_t>(-1));
   std::vector<atomwrapper<vertex_id_t>> comp(N);
 
-  std::for_each(
-      std::execution::par_unseq,
-      counting_iterator<vertex_id_t>(0), counting_iterator<vertex_id_t>(N), [&](auto n) { comp[n]._a.store(n); });
+  std::for_each(std::execution::par_unseq, counting_iterator<vertex_id_t>(0), counting_iterator<vertex_id_t>(N),
+                [&](auto n) { comp[n]._a.store(n); });
 
   bool change = true;
   for (size_t num_iter = 0; num_iter < 2; ++num_iter) {
@@ -223,50 +217,46 @@ std::vector<vertex_id_t> compute_connected_components_v1(Graph& g) {
           }
         });
     */
-    std::for_each(
-        std::execution::par_unseq,
-        counting_iterator<vertex_id_t>(0), counting_iterator<vertex_id_t>(N), [&](auto u) {
-          vertex_id_t v;
-          for (auto j = g.begin()[u].begin(); j != g.begin()[u].end(); ++j) {
-            v = std::get<0>(*j);
-            //      if (v != comp[v]._a.load()) continue;
-            auto p1 = comp[u]._a.load();
-            auto p2 = comp[v]._a.load();
-            while (p1 != p2) {
-              auto high   = std::max(p1, p2);
-              auto low    = p1 + p2 - high;
-              auto p_high = comp[high]._a.load();
-              if (p_high == low || comp[high]._a.compare_exchange_weak(p_high, comp[low]._a)) {
-                change = true;
-                break;
-              }
-              high = comp[high]._a.load();
-              p1   = comp[high]._a.load();
-              p2   = comp[low]._a.load();
-            }    // while
+    std::for_each(std::execution::par_unseq, counting_iterator<vertex_id_t>(0), counting_iterator<vertex_id_t>(N), [&](auto u) {
+      vertex_id_t v;
+      for (auto j = g.begin()[u].begin(); j != g.begin()[u].end(); ++j) {
+        v = std::get<0>(*j);
+        //      if (v != comp[v]._a.load()) continue;
+        auto p1 = comp[u]._a.load();
+        auto p2 = comp[v]._a.load();
+        while (p1 != p2) {
+          auto high   = std::max(p1, p2);
+          auto low    = p1 + p2 - high;
+          auto p_high = comp[high]._a.load();
+          if (p_high == low || comp[high]._a.compare_exchange_weak(p_high, comp[low]._a)) {
+            change = true;
+            break;
           }
-        });
+          high = comp[high]._a.load();
+          p1   = comp[high]._a.load();
+          p2   = comp[low]._a.load();
+        }    // while
+      }
+    });
   }
   std::vector<vertex_id_t> res(N);
-  std::for_each(
-      std::execution::par_unseq,
-      counting_iterator<vertex_id_t>(0), counting_iterator<vertex_id_t>(N), [&](auto n) {
-        auto m = n;
-        //    while (comp[m]._a.load() != m)  m = comp[m]._a.load();
-        while (comp[m]._a.load() != comp[comp[m]._a.load()]._a.load()) {
-          comp[m]._a.store(comp[comp[m]._a.load()]._a.load());
-          m = comp[m]._a.load();
-        }
-        res[n] = comp[n]._a.load();
-        // std::cout << n <<":" <<  res[n] << std::endl;
-        /*
+  std::for_each(std::execution::par_unseq, counting_iterator<vertex_id_t>(0), counting_iterator<vertex_id_t>(N), [&](auto n) {
+    auto m = n;
+    //    while (comp[m]._a.load() != m)  m = comp[m]._a.load();
+    while (comp[m]._a.load() != comp[comp[m]._a.load()]._a.load()) {
+      comp[m]._a.store(comp[comp[m]._a.load()]._a.load());
+      m = comp[m]._a.load();
+    }
+    res[n] = comp[n]._a.load();
+    // std::cout << n <<":" <<  res[n] << std::endl;
+    /*
           atomwrapper<vertex_id_t> m(std::atomic<vertex_id_t>(n));
           while ( comp[m._a.load()] != comp[comp[m._a.load()]._a.load()]) {
             m._a.store(comp[m._a.load()]);
           }
           res[n] = comp[m._a.load()].a_.load();
         */
-      });
+  });
   // compress(comp);
   return res;
 }    // compute_connected_components_v1
@@ -275,9 +265,8 @@ template <typename Graph>
 std::vector<vertex_id_t> compute_connected_components_v2(Graph& g) {
   size_t                   N = g.size();
   std::vector<vertex_id_t> comp(g.size());
-  std::for_each(
-      std::execution::par_unseq,
-      counting_iterator<vertex_id_t>(0), counting_iterator<vertex_id_t>(g.size()), [&](auto n) { comp[n] = n; });
+  std::for_each(std::execution::par_unseq, counting_iterator<vertex_id_t>(0), counting_iterator<vertex_id_t>(g.size()),
+                [&](auto n) { comp[n] = n; });
 
   bool change = true;
 
@@ -288,12 +277,10 @@ std::vector<vertex_id_t> compute_connected_components_v2(Graph& g) {
     }
     change = false;
 
-    std::for_each(
-        std::execution::par_unseq,
-        counting_iterator<vertex_id_t>(0), counting_iterator<vertex_id_t>(N), [&](auto u) { change = pull(g, u, comp); });
-    std::for_each(
-        std::execution::par_unseq,
-        counting_iterator<vertex_id_t>(0), counting_iterator<vertex_id_t>(N), [&](auto u) { push(g, u, comp); });
+    std::for_each(std::execution::par_unseq, counting_iterator<vertex_id_t>(0), counting_iterator<vertex_id_t>(N),
+                  [&](auto u) { change = pull(g, u, comp); });
+    std::for_each(std::execution::par_unseq, counting_iterator<vertex_id_t>(0), counting_iterator<vertex_id_t>(N),
+                  [&](auto u) { push(g, u, comp); });
 
     compress(comp);
   }
@@ -303,13 +290,11 @@ std::vector<vertex_id_t> compute_connected_components_v2(Graph& g) {
 template <typename Graph>
 std::vector<vertex_id_t> ccv1(Graph& g) {
   std::vector<vertex_id_t> comp(g.size());
-  std::for_each(
-      std::execution::par_unseq,
-      counting_iterator<vertex_id_t>(0), counting_iterator<vertex_id_t>(g.size()), [&](auto n) { comp[n] = n; });
+  std::for_each(std::execution::par_unseq, counting_iterator<vertex_id_t>(0), counting_iterator<vertex_id_t>(g.size()),
+                [&](auto n) { comp[n] = n; });
 
-  std::for_each(
-      std::execution::par_unseq,
-      counting_iterator<vertex_id_t>(0), counting_iterator<vertex_id_t>(g.size()), [&](auto u) { push(g, u, comp); });
+  std::for_each(std::execution::par_unseq, counting_iterator<vertex_id_t>(0), counting_iterator<vertex_id_t>(g.size()),
+                [&](auto u) { push(g, u, comp); });
   compress(comp);
   return comp;
 }
@@ -318,29 +303,25 @@ template <typename Graph, typename Graph2>
 std::vector<vertex_id_t> Afforest(Graph& g, Graph2& t_graph, size_t neighbor_bound = 2) {
   std::vector<vertex_id_t> comp(g.size());
   // set component id of vertex v to v
-  std::for_each(
-      std::execution::par_unseq,
-      counting_iterator<vertex_id_t>(0), counting_iterator<vertex_id_t>(g.size()), [&](auto n) { comp[n] = n; });
+  std::for_each(std::execution::par_unseq, counting_iterator<vertex_id_t>(0), counting_iterator<vertex_id_t>(g.size()),
+                [&](auto n) { comp[n] = n; });
   // approximate the dominant component by linking certain neighbors of each
   // vertex v (a sparse subgraph)
-  std::for_each(
-      std::execution::par_unseq,
-      counting_iterator<vertex_id_t>(0), counting_iterator<vertex_id_t>(g.size()),
-      [&](auto u) { link(g, u, comp, neighbor_bound); });
+  std::for_each(std::execution::par_unseq, counting_iterator<vertex_id_t>(0), counting_iterator<vertex_id_t>(g.size()),
+                [&](auto u) { link(g, u, comp, neighbor_bound); });
   compress(comp);
   // Sample certain vertices to find dominant component id
   vertex_id_t dominant_c = findDominantComponentID(comp);
   // link the rest vertices outside of dominant component
-  std::for_each(
-      std::execution::par_unseq,
-      counting_iterator<vertex_id_t>(0), counting_iterator<vertex_id_t>(g.size()), [&](auto u) {
-        if (dominant_c != comp[u]) {
-          push(g, u, comp);
-          if (t_graph.size() != 0) {
-            push(t_graph, u, comp);
-          }
-        }
-      });
+  std::for_each(std::execution::par_unseq, counting_iterator<vertex_id_t>(0), counting_iterator<vertex_id_t>(g.size()),
+                [&](auto u) {
+                  if (dominant_c != comp[u]) {
+                    push(g, u, comp);
+                    if (t_graph.size() != 0) {
+                      push(t_graph, u, comp);
+                    }
+                  }
+                });
   compress(comp);
 
   return comp;
@@ -350,19 +331,15 @@ template <typename Graph>
 std::vector<vertex_id_t> ccv5(Graph& g) {
   size_t                   N = g.size();
   std::vector<vertex_id_t> comp(g.size());
-  std::for_each(
-      std::execution::par_unseq,
-      counting_iterator<vertex_id_t>(0), counting_iterator<vertex_id_t>(g.size()), [&](auto n) { comp[n] = n; });
+  std::for_each(std::execution::par_unseq, counting_iterator<vertex_id_t>(0), counting_iterator<vertex_id_t>(g.size()),
+                [&](auto n) { comp[n] = n; });
 
-  std::for_each(
-      std::execution::par_unseq,
-      counting_iterator<vertex_id_t>(0), counting_iterator<vertex_id_t>(N), [&](auto u) { pull(g, u, comp); });
+  std::for_each(std::execution::par_unseq, counting_iterator<vertex_id_t>(0), counting_iterator<vertex_id_t>(N),
+                [&](auto u) { pull(g, u, comp); });
   vertex_id_t dominant_c = findDominantComponentID(comp);
-  std::for_each(
-      std::execution::par_unseq,
-      counting_iterator<vertex_id_t>(0), counting_iterator<vertex_id_t>(N), [&](auto u) {
-        if (dominant_c != comp[u]) push(g, u, comp);
-      });
+  std::for_each(std::execution::par_unseq, counting_iterator<vertex_id_t>(0), counting_iterator<vertex_id_t>(N), [&](auto u) {
+    if (dominant_c != comp[u]) push(g, u, comp);
+  });
 
   compress(comp);
   return comp;
@@ -372,9 +349,8 @@ template <typename Graph>
 auto sv_v6(/* const */ Graph& g) {
   std::vector<vertex_id_t> comp(g.size());
 
-  std::for_each(
-      std::execution::par_unseq,
-      counting_iterator<vertex_id_t>(0), counting_iterator<vertex_id_t>(g.size()), [&](auto n) { comp[n] = n; });
+  std::for_each(std::execution::par_unseq, counting_iterator<vertex_id_t>(0), counting_iterator<vertex_id_t>(g.size()),
+                [&](auto n) { comp[n] = n; });
 
   bool change = true;
 
@@ -388,21 +364,20 @@ auto sv_v6(/* const */ Graph& g) {
     }
     change = false;
 
-    std::for_each(
-        std::execution::par_unseq,
-        counting_iterator<vertex_id_t>(0), counting_iterator<vertex_id_t>(g.size()), [&](auto u) {
-          for (auto&& [v] : G[u]) {
-            vertex_id_t comp_u = comp[u];
-            vertex_id_t comp_v = comp[v];
-            if (comp_u == comp_v) continue;
-            vertex_id_t high_comp = comp_u > comp_v ? comp_u : comp_v;
-            vertex_id_t low_comp  = comp_u + (comp_v - high_comp);
-            if (high_comp == comp[high_comp]) {
-              change          = true;
-              comp[high_comp] = low_comp;
-            }
-          }
-        });
+    std::for_each(std::execution::par_unseq, counting_iterator<vertex_id_t>(0), counting_iterator<vertex_id_t>(g.size()),
+                  [&](auto u) {
+                    for (auto&& [v] : G[u]) {
+                      vertex_id_t comp_u = comp[u];
+                      vertex_id_t comp_v = comp[v];
+                      if (comp_u == comp_v) continue;
+                      vertex_id_t high_comp = comp_u > comp_v ? comp_u : comp_v;
+                      vertex_id_t low_comp  = comp_u + (comp_v - high_comp);
+                      if (high_comp == comp[high_comp]) {
+                        change          = true;
+                        comp[high_comp] = low_comp;
+                      }
+                    }
+                  });
 
     for (vertex_id_t n = 0; n < g.size(); n++) {
       while (comp[n] != comp[comp[n]]) {
@@ -418,9 +393,8 @@ template <typename Graph>
 auto sv_v8(/* const */ Graph& g) {
   std::vector<vertex_id_t> comp(g.size());
 
-  std::for_each(
-      std::execution::par_unseq,
-      counting_iterator<vertex_id_t>(0), counting_iterator<vertex_id_t>(g.size()), [&](auto n) { comp[n] = n; });
+  std::for_each(std::execution::par_unseq, counting_iterator<vertex_id_t>(0), counting_iterator<vertex_id_t>(g.size()),
+                [&](auto n) { comp[n] = n; });
 
   bool change = true;
 
@@ -433,25 +407,24 @@ auto sv_v8(/* const */ Graph& g) {
     }
     change = false;
 
-    std::for_each(
-        std::execution::par_unseq,
-        counting_iterator<vertex_id_t>(0), counting_iterator<vertex_id_t>(g.size()), [&](auto u) {
-          auto Gu = G[u];
-          // tbb::parallel_for(G[u], [&] (auto& Gu) {
-          for (auto&& [v] : Gu) {
-            vertex_id_t comp_u = comp[u];
-            vertex_id_t comp_v = comp[v];
-            if (comp_u == comp_v) continue;
-            vertex_id_t high_comp = std::max(comp_u, comp_v);
+    std::for_each(std::execution::par_unseq, counting_iterator<vertex_id_t>(0), counting_iterator<vertex_id_t>(g.size()),
+                  [&](auto u) {
+                    auto Gu = G[u];
+                    // tbb::parallel_for(G[u], [&] (auto& Gu) {
+                    for (auto&& [v] : Gu) {
+                      vertex_id_t comp_u = comp[u];
+                      vertex_id_t comp_v = comp[v];
+                      if (comp_u == comp_v) continue;
+                      vertex_id_t high_comp = std::max(comp_u, comp_v);
 
-            vertex_id_t low_comp = comp_u + (comp_v - high_comp);
-            if (high_comp == comp[high_comp]) {
-              change          = true;
-              comp[high_comp] = low_comp;
-            }
-          }
-          // });
-        });
+                      vertex_id_t low_comp = comp_u + (comp_v - high_comp);
+                      if (high_comp == comp[high_comp]) {
+                        change          = true;
+                        comp[high_comp] = low_comp;
+                      }
+                    }
+                    // });
+                  });
 
     for (vertex_id_t n = 0; n < g.size(); n++) {
       while (comp[n] != comp[comp[n]]) {
@@ -467,9 +440,8 @@ template <typename Graph>
 auto sv_v9(/* const */ Graph& g) {
   std::vector<vertex_id_t> comp(g.size());
 
-  std::for_each(
-      std::execution::par_unseq,
-      counting_iterator<vertex_id_t>(0), counting_iterator<vertex_id_t>(g.size()), [&](auto n) { comp[n] = n; });
+  std::for_each(std::execution::par_unseq, counting_iterator<vertex_id_t>(0), counting_iterator<vertex_id_t>(g.size()),
+                [&](auto n) { comp[n] = n; });
 
   bool change = true;
 

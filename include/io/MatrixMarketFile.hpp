@@ -12,13 +12,12 @@
 
 #include <cstdio>
 #include <cstring>
-#include <filesystem>
-#include <tuple>
-#include <cstdio>
-#include <sys/mman.h>
-#include <sys/types.h>
-#include <sys/stat.h>
 #include <fcntl.h>
+#include <filesystem>
+#include <sys/mman.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <tuple>
 #include <unistd.h>
 
 extern "C" {
@@ -27,34 +26,30 @@ extern "C" {
 
 namespace mmio {
 template <typename It>
-class Range
-{
+class Range {
   It begin_;
   It end_;
 
- public:
+public:
   Range(It begin, It end) : begin_(begin), end_(end) {}
   It begin() const { return begin_; }
-  It   end() const { return end_; }
+  It end() const { return end_; }
 };
 
-class MatrixMarketFile final
-{
-  int  fd_ = -1;                                // .mtx file descriptor
-  int   n_ = 0;                                 // number of rows
-  int   m_ = 0;                                 // number of columns
-  int nnz_ = 0;                                 // number of edges
+class MatrixMarketFile final {
+  int fd_  = -1;    // .mtx file descriptor
+  int n_   = 0;     // number of rows
+  int m_   = 0;     // number of columns
+  int nnz_ = 0;     // number of edges
 
-  char* base_ = nullptr;                        // base pointer to mmap-ed file
-  long     i_ = 0;                              // byte offset of the first edge
-  long     e_ = 0;                              // bytes in the mmap-ed file
-  
+  char* base_ = nullptr;    // base pointer to mmap-ed file
+  long  i_    = 0;          // byte offset of the first edge
+  long  e_    = 0;          // bytes in the mmap-ed file
+
   MM_typecode type_;
 
- public:
-  MatrixMarketFile(std::filesystem::path path)
-    : fd_(open(path.c_str(), O_RDONLY))
-  {
+public:
+  MatrixMarketFile(std::filesystem::path path) : fd_(open(path.c_str(), O_RDONLY)) {
     if (fd_ < 0) {
       fprintf(stderr, "open failed, %d: %s\n", errno, strerror(errno));
       std::terminate();
@@ -67,10 +62,10 @@ class MatrixMarketFile final
     }
 
     switch (mm_read_banner(f, &type_)) {
-    case MM_PREMATURE_EOF:    // if all items are not present on first line of file.
-    case MM_NO_HEADER:        // if the file does not begin with "%%MatrixMarket".
-    case MM_UNSUPPORTED_TYPE: // if not recongizable description.
-      goto error;
+      case MM_PREMATURE_EOF:       // if all items are not present on first line of file.
+      case MM_NO_HEADER:           // if the file does not begin with "%%MatrixMarket".
+      case MM_UNSUPPORTED_TYPE:    // if not recongizable description.
+        goto error;
     }
 
     if (!mm_is_coordinate(type_)) {
@@ -78,8 +73,8 @@ class MatrixMarketFile final
     }
 
     switch (mm_read_mtx_crd_size(f, &n_, &m_, &nnz_)) {
-    case MM_PREMATURE_EOF:    // if an end-of-file is encountered before processing these three values.
-      goto error;
+      case MM_PREMATURE_EOF:    // if an end-of-file is encountered before processing these three values.
+        goto error;
     }
 
     i_ = ftell(f);
@@ -99,13 +94,10 @@ class MatrixMarketFile final
     std::terminate();
   };
 
-  ~MatrixMarketFile() {
-    release();
-  };
+  ~MatrixMarketFile() { release(); };
 
   /// Release the memory mapping and file descriptor early.
-  void release()
-  { 
+  void release() {
     if (base_ && munmap(base_, e_)) {
       fprintf(stderr, "munmap failed, %d: %s\n", errno, strerror(errno));
     }
@@ -118,34 +110,21 @@ class MatrixMarketFile final
   };
 
   /// ADL
-  friend void release(MatrixMarketFile& mm) {
-    mm.release();
-  }
+  friend void release(MatrixMarketFile& mm) { mm.release(); }
 
-  int getNRows() const {
-    return n_;
-  }
+  int getNRows() const { return n_; }
 
-  int getNCols() const {
-    return m_;
-  }
+  int getNCols() const { return m_; }
 
-  int getNEdges() const {
-    return nnz_;
-  }
+  int getNEdges() const { return nnz_; }
 
-  bool isPattern() const {
-    return mm_is_pattern(type_);
-  }
+  bool isPattern() const { return mm_is_pattern(type_); }
 
-  bool isSymmetric() const {
-    return mm_is_symmetric(type_);
-  }
+  bool isSymmetric() const { return mm_is_symmetric(type_); }
 
   // Iterator over edges in the file.
   template <typename... Vs>
-  class iterator
-  {
+  class iterator {
     const char* i_;
 
     /// Read the next token in the stream as a U, and update the pointer.
@@ -153,27 +132,25 @@ class MatrixMarketFile final
     /// This horrible code is required because normal stream processing is very
     /// slow, while this tokenized version is just sort of slow.
     template <typename U>
-    static constexpr U get(const char* (&i)) {
-      U v;
+    static constexpr U get(const char*(&i)) {
+      U     v;
       char* e;
       if constexpr (std::is_same_v<U, int>) {
         v = std::strtol(i, &e, 10);
-      }
-      else {
+      } else {
         v = std::strtod(i, &e);
       }
       i = e;
       return v;
     }
 
-   public:
-    iterator(const char* i) : i_(i) {
-    }
+  public:
+    iterator(const char* i) : i_(i) {}
 
     std::tuple<int, int, Vs...> operator*() const {
       const char* i = i_;
-      int u = get<int>(i) - 1;
-      int v = get<int>(i) - 1;
+      int         u = get<int>(i) - 1;
+      int         v = get<int>(i) - 1;
       return std::tuple(u, v, get<Vs>(i)...);
     }
 
@@ -182,24 +159,22 @@ class MatrixMarketFile final
       return *this;
     }
 
-    bool operator!=(const iterator& b) const {
-      return i_ != b.i_;
-    }
+    bool operator!=(const iterator& b) const { return i_ != b.i_; }
   };
 
   template <typename... Vs>
   iterator<Vs...> begin() const {
-    return { base_ + i_ };
+    return {base_ + i_};
   }
 
   template <typename... Vs>
   iterator<Vs...> end() const {
-    return { base_ + e_ };
+    return {base_ + e_};
   }
 
   template <typename... Vs>
   iterator<Vs...> at(long edge) const {
-    if (edge == 0)  return begin<Vs...>();
+    if (edge == 0) return begin<Vs...>();
     if (edge == nnz_) return end<Vs...>();
 
     // Use the edge id to come up with an approximation of the byte to start
@@ -210,7 +185,7 @@ class MatrixMarketFile final
       --approx;
     }
     ++approx;
-    return { base_ + approx };
+    return {base_ + approx};
   }
 };
 
@@ -218,4 +193,4 @@ template <typename... Vs>
 auto edges(const MatrixMarketFile& mm, int j, int k) {
   return Range(mm.template at<Vs...>(j), mm.template at<Vs...>(k));
 }
-}
+}    // namespace mmio

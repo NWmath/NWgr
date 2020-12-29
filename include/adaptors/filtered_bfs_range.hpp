@@ -10,8 +10,8 @@
 #ifndef NW_GRAPH_FILTERED_BFS_RANGE_HPP
 #define NW_GRAPH_FILTERED_BFS_RANGE_HPP
 
-#include "util/util.hpp"
 #include "util/types.hpp"
+#include "util/util.hpp"
 #include <cassert>
 #include <functional>
 #include <queue>
