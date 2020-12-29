@@ -131,6 +131,8 @@ void page_rank_range_for(GraphT& graph, std::vector<RealT>& page_rank, RealT dam
 template <typename Graph, typename Real = double>
 void page_rank_vc(Graph& graph, std::vector<Real>& page_rank, const Real damping_factor = 0.85, const Real threshold = 1.e-4,
                   const size_t max_iters = std::numeric_limits<unsigned int>::max()) {
+  using vertex_id_t = typename Graph::vertex_id_t;
+
   const Real init_score = 1.0 / page_rank.size();
   const Real base_score = (1.0 - damping_factor) / page_rank.size();
 
@@ -171,9 +173,10 @@ void page_rank_vc(Graph& graph, std::vector<Real>& page_rank, const Real damping
 }
 
 template <typename Graph, typename Real = double>
-void page_rank_v1(Graph& graph, const std::vector<vertex_id_t>& degrees, std::vector<Real>& page_rank,
+void page_rank_v1(Graph& graph, const std::vector<typename Graph::vertex_id_t>& degrees, std::vector<Real>& page_rank,
                   const Real damping_factor = 0.85, const Real threshold = 1.e-4,
                   const size_t max_iters = std::numeric_limits<unsigned int>::max()) {
+  using vertex_id_t = typename Graph::vertex_id_t;
 
   const Real init_score = 1.0 / page_rank.size();
   const Real base_score = (1.0 - damping_factor) / page_rank.size();
@@ -208,9 +211,10 @@ void page_rank_v1(Graph& graph, const std::vector<vertex_id_t>& degrees, std::ve
 }
 
 template <typename Graph, typename Real = double>
-void page_rank_v2(Graph& graph, const std::vector<vertex_id_t>& degrees, std::vector<Real>& page_rank,
+void page_rank_v2(Graph& graph, const std::vector<typename Graph::vertex_id_t>& degrees, std::vector<Real>& page_rank,
                   const Real damping_factor = 0.85, const Real threshold = 1.e-4,
                   const size_t max_iters = std::numeric_limits<unsigned int>::max()) {
+  using vertex_id_t = typename Graph::vertex_id_t;
 
   const Real init_score = 1.0 / page_rank.size();
   const Real base_score = (1.0 - damping_factor) / page_rank.size();
@@ -241,9 +245,11 @@ void page_rank_v2(Graph& graph, const std::vector<vertex_id_t>& degrees, std::ve
 }
 
 template <typename Graph, typename Real = double>
-void page_rank_v4(Graph& graph, const std::vector<vertex_id_t>& degrees, std::vector<Real>& page_rank,
+void page_rank_v4(Graph& graph, const std::vector<typename Graph::vertex_id_t>& degrees, std::vector<Real>& page_rank,
                   const Real damping_factor = 0.85, const Real threshold = 1.e-4,
                   const size_t max_iters = std::numeric_limits<unsigned int>::max(), size_t num_threads = 1) {
+  using vertex_id_t = typename Graph::vertex_id_t;
+
   const Real init_score = 1.0 / page_rank.size();
   const Real base_score = (1.0 - damping_factor) / page_rank.size();
 
@@ -294,9 +300,10 @@ void page_rank_v4(Graph& graph, const std::vector<vertex_id_t>& degrees, std::ve
 }
 
 template <typename Graph, typename Real = double>
-[[gnu::noinline]] void page_rank_v6(Graph& graph, const std::vector<vertex_id_t>& degrees, std::vector<Real>& page_rank,
-                                    const Real damping_factor = 0.85, const Real threshold = 1.e-4,
+[[gnu::noinline]] void page_rank_v6(Graph& graph, const std::vector<typename Graph::vertex_id_t>& degrees,
+                                    std::vector<Real>& page_rank, const Real damping_factor = 0.85, const Real threshold = 1.e-4,
                                     const size_t max_iters = std::numeric_limits<unsigned int>::max(), size_t num_threads = 1) {
+
   const Real init_score = 1.0 / page_rank.size();
   const Real base_score = (1.0 - damping_factor) / page_rank.size();
 
@@ -352,9 +359,11 @@ template <typename Graph, typename Real = double>
 }
 
 template <typename Graph, typename Real = double>
-void page_rank_v7(Graph& graph, const std::vector<vertex_id_t>& degrees, std::vector<Real>& page_rank,
+void page_rank_v7(Graph& graph, const std::vector<typename Graph::vertex_id_t>& degrees, std::vector<Real>& page_rank,
                   const Real damping_factor = 0.85, const Real threshold = 1.e-4,
                   const size_t max_iters = std::numeric_limits<unsigned int>::max(), size_t num_threads = 1) {
+  using vertex_id_t = typename Graph::vertex_id_t;
+
   const Real init_score = 1.0 / page_rank.size();
   const Real base_score = (1.0 - damping_factor) / page_rank.size();
 
@@ -400,9 +409,11 @@ void page_rank_v7(Graph& graph, const std::vector<vertex_id_t>& degrees, std::ve
 }
 
 template <typename Graph, typename Real = double>
-void page_rank_v8(Graph& graph, const std::vector<vertex_id_t>& degrees, std::vector<Real>& page_rank,
+void page_rank_v8(Graph& graph, const std::vector<typename Graph::vertex_id_t>& degrees, std::vector<Real>& page_rank,
                   const Real damping_factor = 0.85, const Real threshold = 1.e-4,
                   const size_t max_iters = std::numeric_limits<unsigned int>::max(), size_t num_threads = 1) {
+  using vertex_id_t = typename Graph::vertex_id_t;
+
   const Real init_score = 1.0 / page_rank.size();
   const Real base_score = (1.0 - damping_factor) / page_rank.size();
 
@@ -437,8 +448,11 @@ void page_rank_v8(Graph& graph, const std::vector<vertex_id_t>& degrees, std::ve
 }
 
 template <typename Graph, typename Real>
-[[gnu::noinline]] void page_rank_v9(Graph& graph, const std::vector<vertex_id_t>& degrees, std::vector<Real>& page_rank,
-                                    Real damping_factor, Real threshold, size_t max_iters, size_t num_threads) {
+[[gnu::noinline]] void page_rank_v9(Graph& graph, const std::vector<typename Graph::vertex_id_t>& degrees,
+                                    std::vector<Real>& page_rank, Real damping_factor, Real threshold, size_t max_iters,
+                                    size_t num_threads) {
+  using vertex_id_t = typename Graph::vertex_id_t;
+
   std::size_t N          = page_rank.size();
   Real        init_score = 1.0 / N;
   Real        base_score = (1.0 - damping_factor) / N;
@@ -478,8 +492,9 @@ template <typename Graph, typename Real>
 }
 
 template <typename Graph, typename Real>
-[[gnu::noinline]] void page_rank_v10(Graph& graph, const std::vector<vertex_id_t>& degrees, std::vector<Real>& page_rank,
-                                     Real damping_factor, Real threshold, size_t max_iters, size_t num_threads) {
+[[gnu::noinline]] void page_rank_v10(Graph& graph, const std::vector<typename Graph::vertex_id_t>& degrees,
+                                     std::vector<Real>& page_rank, Real damping_factor, Real threshold, size_t max_iters,
+                                     size_t num_threads) {
   std::size_t N          = graph.size();
   Real        init_score = 1.0 / N;
   Real        base_score = (1.0 - damping_factor) / N;
@@ -536,8 +551,9 @@ template <typename Graph, typename Real>
 }
 
 template <typename Graph, typename Real>
-[[gnu::noinline]] void page_rank_v11(Graph& graph, const std::vector<vertex_id_t>& degrees, std::vector<Real>& page_rank,
-                                     Real damping_factor, Real threshold, size_t max_iters, size_t num_threads) {
+[[gnu::noinline]] void page_rank_v11(Graph& graph, const std::vector<typename Graph::vertex_id_t>& degrees,
+                                     std::vector<Real>& page_rank, Real damping_factor, Real threshold, size_t max_iters,
+                                     size_t num_threads) {
   std::size_t N          = graph.size();
   Real        init_score = 1.0 / N;
   Real        base_score = (1.0 - damping_factor) / N;
@@ -598,8 +614,9 @@ template <typename Graph, typename Real>
 }
 
 template <typename Graph, typename Real>
-[[gnu::noinline]] void page_rank_v12(Graph& graph, const std::vector<vertex_id_t>& degrees, std::vector<Real>& page_rank,
-                                     Real damping_factor, Real threshold, size_t max_iters, size_t num_threads) {
+[[gnu::noinline]] void page_rank_v12(Graph& graph, const std::vector<typename Graph::vertex_id_t>& degrees,
+                                     std::vector<Real>& page_rank, Real damping_factor, Real threshold, size_t max_iters,
+                                     size_t num_threads) {
   std::size_t N          = graph.size();
   Real        init_score = 1.0 / N;
   Real        base_score = (1.0 - damping_factor) / N;
@@ -658,8 +675,10 @@ template <typename Graph, typename Real>
 }
 
 template <typename Graph, typename Real>
-[[gnu::noinline]] void page_rank_v3(Graph& graph, const std::vector<vertex_id_t>& degrees, std::vector<Real>& page_rank,
-                                    Real damping_factor, Real threshold, size_t max_iters) {
+[[gnu::noinline]] void page_rank_v3(Graph& graph, const std::vector<typename Graph::vertex_id_t>& degrees,
+                                    std::vector<Real>& page_rank, Real damping_factor, Real threshold, size_t max_iters) {
+  using vertex_id_t = typename Graph::vertex_id_t;
+
   std::size_t N          = graph.size();
   Real        init_score = 1.0 / N;
   Real        base_score = (1.0 - damping_factor) / N;
@@ -724,8 +743,9 @@ template <typename Graph, typename Real>
 }
 
 template <typename Graph, typename Real>
-[[gnu::noinline]] void page_rank_v13(Graph& graph, const std::vector<vertex_id_t>& degrees, std::vector<Real>& page_rank,
-                                     Real damping_factor, Real threshold, size_t max_iters, size_t num_threads) {
+[[gnu::noinline]] void page_rank_v13(Graph& graph, const std::vector<typename Graph::vertex_id_t>& degrees,
+                                     std::vector<Real>& page_rank, Real damping_factor, Real threshold, size_t max_iters,
+                                     size_t num_threads) {
   std::size_t N          = graph.size();
   Real        init_score = 1.0 / N;
   Real        base_score = (1.0 - damping_factor) / N;
@@ -795,8 +815,8 @@ template <typename Graph, typename Real>
 }
 
 template <class Graph, typename Real>
-[[gnu::noinline]] std::size_t page_rank_v14(Graph&& graph, const std::vector<vertex_id_t>& degrees, std::vector<Real>& page_rank,
-                                            Real damping_factor, Real threshold, size_t max_iters) {
+[[gnu::noinline]] std::size_t page_rank_v14(Graph&& graph, const std::vector<typename Graph::vertex_id_t>& degrees,
+                                            std::vector<Real>& page_rank, Real damping_factor, Real threshold, size_t max_iters) {
   std::size_t N          = graph.size();
   Real        init_score = 1.0 / N;
   Real        base_score = (1.0 - damping_factor) / N;
