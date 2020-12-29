@@ -20,6 +20,7 @@
 #include <istream>
 #include <iterator>
 #include <ostream>
+#include <tuple>
 #include <utility>
 #include <vector>
 
@@ -60,7 +61,7 @@ struct struct_of_arrays : std::tuple<std::vector<Attributes>...> {
 
     It& operator=(const It&) = default;
 
-    It(It&&)                 = default;
+    It(It&&)    = default;
     It& operator=(It&&) = default;
 
     It(const std::tuple<RandomAccessIterators...>& iters, std::size_t init = 0) : start(iters), cursor(init) {}
@@ -237,7 +238,7 @@ struct struct_of_arrays : std::tuple<std::vector<Attributes>...> {
     std::apply([&](auto&... vs) { (deserialize(infile, vs), ...); }, *this);
   }
 
-  template <class T, class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
+  template <typename index_t, typename vertex_id_t, class T, class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
   void permute(const std::vector<index_t>& indices, const std::vector<index_t>& new_indices, const std::vector<vertex_id_t>& perm,
                T& vs, ExecutionPolicy&& ex_policy = {}) {
     T ws(vs.size());
@@ -248,6 +249,7 @@ struct struct_of_arrays : std::tuple<std::vector<Attributes>...> {
     std::copy(ex_policy, ws.begin(), ws.end(), vs.begin());
   }
 
+  template <typename index_t, typename vertex_id_t>
   void permute(const std::vector<index_t>& indices, const std::vector<index_t>& new_indices, const std::vector<vertex_id_t>& perm) {
     std::apply([&](auto&... vs) { (permute(indices, new_indices, perm, vs), ...); }, *this);
   }

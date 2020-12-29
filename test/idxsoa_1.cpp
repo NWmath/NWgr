@@ -20,7 +20,7 @@ using namespace nw::util;
 
 int main(int argc, char* argv[]) {
 
-  indexed_struct_of_arrays<size_t> pre_A(7);
+  indexed_struct_of_arrays<size_t, size_t> pre_A(7);
 
   {
     std::cout << "Nu" << std::endl;
