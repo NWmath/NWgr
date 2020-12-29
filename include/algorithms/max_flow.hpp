@@ -14,7 +14,6 @@
 #include "adaptors/back_edge_range.hpp"
 #include "adaptors/filtered_bfs_range.hpp"
 #include "adaptors/reverse.hpp"
-#include "util/types.hpp"
 #include "util/util.hpp"
 #include <algorithm>
 #include <iostream>

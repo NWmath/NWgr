@@ -12,7 +12,6 @@
 #define NW_GRAPH_PLAIN_RANGE_HPP
 
 #include "util/print_types.hpp"
-#include "util/types.hpp"
 #include "util/util.hpp"
 #include <cassert>
 #include <queue>

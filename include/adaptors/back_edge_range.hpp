@@ -7,7 +7,6 @@
 //
 // Author: Kevin Deweese
 //
-#include "util/types.hpp"
 #include "util/util.hpp"
 
 #include <functional>

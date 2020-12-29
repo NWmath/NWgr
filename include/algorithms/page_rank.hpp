@@ -23,7 +23,6 @@
 #include "containers/compressed.hpp"
 #include "containers/edge_list.hpp"
 #include "util/parallel_for.hpp"
-#include "util/types.hpp"
 
 #if defined(CL_SYCL_LANGUAGE_VERSION)
 #include <dpstd/iterators.h>

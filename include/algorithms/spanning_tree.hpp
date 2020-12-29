@@ -15,7 +15,6 @@
 #include <tuple>
 
 #include "util/disjoint_set.hpp"
-#include "util/types.hpp"
 #include "util/util.hpp"
 
 namespace nw {

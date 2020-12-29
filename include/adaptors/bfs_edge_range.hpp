@@ -18,7 +18,6 @@
 // template<template <typename...> class Graph, typename PriorityQueue, typename...Attributes>
 // class bfs_edge_range<Graph<Attributes...>> {
 
-#include "util/types.hpp"
 #include <cassert>
 #include <queue>
 #include <tuple>

@@ -11,8 +11,6 @@
 #ifndef NW_GRAPH_UTIL_PAR_HPP
 #define NW_GRAPH_UTIL_PAR_HPP
 
-#include "util/types.hpp"
-
 #include <atomic>
 #include <cstddef>
 #include <iterator>

@@ -18,7 +18,6 @@
 #include <vector>
 
 #include "adaptors/bfs_edge_range.hpp"
-#include "util/types.hpp"
 
 namespace nw {
 namespace graph {

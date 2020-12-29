@@ -16,7 +16,6 @@
 #include "util/intersection_size.hpp"
 #include "util/parallel_for.hpp"
 #include "util/timer.hpp"
-#include "util/types.hpp"
 #include "util/util.hpp"
 
 #include <atomic>

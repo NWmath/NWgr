@@ -18,7 +18,6 @@
 #include "adaptors/dag_range.hpp"
 #include "adaptors/edge_range.hpp"
 #include "adaptors/plain_range.hpp"
-#include "util/types.hpp"
 
 // #define PRINT_DEBUG 1
 
