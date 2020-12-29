@@ -14,7 +14,6 @@
 #include "adaptors/bfs_edge_range.hpp"
 #include "adaptors/edge_range.hpp"
 #include "util/disjoint_set.hpp"
-#include "util/types.hpp"
 #include <atomic>
 #include <iostream>
 #include <random>

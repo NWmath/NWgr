@@ -13,7 +13,6 @@
 
 #include "adaptors/edge_range.hpp"
 #include "adaptors/new_dfs_range.hpp"
-#include "util/types.hpp"
 #include "util/util.hpp"
 #include <algorithm>
 #include <tuple>

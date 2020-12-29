@@ -11,8 +11,6 @@
 #ifndef NW_GRAPH_DAG_RANGE_HPP
 #define NW_GRAPH_DAG_RANGE_HPP
 
-#include "util/types.hpp"
-
 #include <queue>
 #include <vector>
 

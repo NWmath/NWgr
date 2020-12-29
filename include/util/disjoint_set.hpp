@@ -11,7 +11,6 @@
 #ifndef NW_GRAPH_DISJOINT_SET_HPP
 #define NW_GRAPH_DISJOINT_SET_HPP
 
-#include "util/types.hpp"
 #include <cassert>
 #include <iostream>
 #include <map>

@@ -11,7 +11,6 @@
 #ifndef NW_GRAPH_DFS_RANGE_HPP
 #define NW_GRAPH_DFS_RANGE_HPP
 
-#include "util/types.hpp"
 #include "util/util.hpp"
 #include <cassert>
 #include <stack>

@@ -2,7 +2,6 @@
 #ifndef NW_GRAPH_TRAITS_HPP
 #define NW_GRAPH_TRAITS_HPP
 
-#include "util/types.hpp"
 #include <atomic>
 #include <iterator>
 #include <tbb/blocked_range.h>

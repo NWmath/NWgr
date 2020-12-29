@@ -22,7 +22,6 @@
 #include <type_traits>
 
 #include "util/traits.hpp"
-#include "util/types.hpp"
 
 namespace nw {
 namespace graph {

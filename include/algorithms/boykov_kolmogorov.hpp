@@ -18,7 +18,6 @@
 #include <tuple>
 #include <utility>
 
-#include "util/types.hpp"
 #include "util/util.hpp"
 
 namespace nw {
