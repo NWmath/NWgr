@@ -12,7 +12,7 @@
 #include <cstddef>
 #include <cstdint>
 #include <memory>
-#include <tbb/tbb.h>
+#include <tbb/tbb_stddef.h>
 #include <tuple>
 
 namespace nw {

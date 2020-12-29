@@ -499,6 +499,8 @@ class index_compressed : public graph_base, public indexed_struct_of_arrays<vert
   using base = indexed_struct_of_arrays<vertex_id_type, Attributes...>;
 
 public:
+  using vertex_id_t = vertex_id_type;
+
   index_compressed(size_t N) : graph_base(N), base(N) {}
 
   void close_for_push_back() { base::close_for_push_back(); };

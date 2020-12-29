@@ -14,7 +14,7 @@
 #include "util/print_types.hpp"
 #include "util/types.hpp"
 #include "util/util.hpp"
-#include <tbb/tbb.h>
+#include <tbb/tbb_stddef.h>
 #include <tuple>
 
 namespace nw {
@@ -24,6 +24,8 @@ template <class Graph, std::size_t... Is>
 class edge_range {
   static_assert(((Is < Graph::getNAttr()) && ...), "Attribute index out of range");
   static constexpr size_t cutoff_ = 16;
+
+  using vertex_id_t = typename Graph::vertex_id_t;
 
   typename Graph::iterator outer_base_;
   typename Graph::iterator outer_begin_;

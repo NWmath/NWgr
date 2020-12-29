@@ -29,8 +29,10 @@ namespace graph {
 
 enum three_colors { black, white, grey };
 
-template <typename Graph, typename Queue = std::queue<vertex_id_t>>
+template <typename Graph, typename Queue = std::queue<typename Graph::vertex_id_t>>
 class bfs_edge_range {
+private:
+  using vertex_id_t = typename Graph::vertex_id_t;
 
 public:
   bfs_edge_range(Graph& graph, vertex_id_t seed = 0) : the_graph_(graph), colors_(graph.size(), white) {
@@ -118,6 +120,8 @@ private:
 template <typename Graph, typename PriorityQueue>
 class bfs_edge_range2 {
 private:
+  using vertex_id_t = typename Graph::vertex_id_t;
+
 public:
   bfs_edge_range2(Graph& graph, PriorityQueue& Q, std::tuple<size_t, size_t> seed = {0, 0})
       : the_graph_(graph), Q_(Q), colors_(graph.end() - graph.begin(), white) {
@@ -199,8 +203,11 @@ private:
   std::vector<three_colors> colors_;
 };
 
-template <typename Graph, typename Queue = std::queue<vertex_id_t>>
+template <typename Graph, typename Queue = std::queue<typename Graph::vertex_id_t>>
 class bfs_edge_range3 {
+private:
+  using vertex_id_t = typename Graph::vertex_id_t;
+
 public:
   bfs_edge_range3(Graph& graph, vertex_id_t seed = 0) : the_graph_(graph), colors_(graph.end() - graph.begin(), white) {
     Q_[0].push(seed);
