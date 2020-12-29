@@ -26,6 +26,7 @@
 
 #include "MatrixMarketFile.hpp"
 #include "containers/edge_list.hpp"
+#include "containers/adjacency.hpp"
 
 #include <tbb/concurrent_vector.h>
 

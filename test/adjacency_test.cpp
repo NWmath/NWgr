@@ -12,7 +12,7 @@
 #include <vector>
 
 #include "adaptors/bfs_edge_range.hpp"
-#include "containers/compressed.hpp"
+#include "containers/adjacency.hpp"
 #include "containers/edge_list.hpp"
 #include "io/mmio.hpp"
 

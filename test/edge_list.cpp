@@ -11,14 +11,22 @@
 #define EDGELIST_AOS
 
 #include "containers/edge_list.hpp"
-
 #include "common/test_header.hpp"
+#include "build.hpp"
 
 using namespace nw::graph;
 using namespace nw::util;
 
 
 static constexpr size_t N = 1024;
+
+TEST_CASE("push_back_zz", "[edge_list]") {
+  edge_list<directed, double> A(N);
+  for (auto && j: A) {
+    ;
+  }
+}
+
 
 TEST_CASE("push_back", "[edge_list]") {
   edge_list<directed, double> A(N);
@@ -64,14 +72,14 @@ TEST_CASE("sort", "[edge_list]") {
   REQUIRE(A.size() == 3);
 
   SECTION("sort 0") {
-    A.sort_by<0>();
+    sort_by<0>(A);
     REQUIRE(std::get<0>(A[0]) == 1);
     REQUIRE(std::get<0>(A[1]) == 2);
     REQUIRE(std::get<0>(A[2]) == 3);
   }
 
   SECTION("sort 1") {
-    A.sort_by<1>();
+    sort_by<1>(A);
     REQUIRE(std::get<1>(A[0]) == 1);
     REQUIRE(std::get<1>(A[1]) == 2);
     REQUIRE(std::get<1>(A[2]) == 3);
