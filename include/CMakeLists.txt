@@ -27,7 +27,6 @@ target_sources(nw_graph
   adaptors/bfs_range.hpp
   containers/edge_list.hpp
   util/print_types.hpp
-  util/types.hpp
   adaptors/bfs_edge_range.hpp
   adaptors/back_edge_range.hpp
   adaptors/neighbor_range.hpp
@@ -51,12 +50,14 @@ target_sources(nw_graph
   algorithms/boykov_kolmogorov.hpp
   algorithms/max_flow.hpp
   util/provenance.hpp
+  build.hpp
   graph_base.hpp
   util/disjoint_set.hpp
   adaptors/dfs_range.hpp
   util/proxysort.hpp
   containers/compressed.hpp
   containers/aolos.hpp
+  containers/adjacency.hpp
   util/util_par.hpp
   adaptors/reverse.hpp
   adaptors/plain_range.hpp
