@@ -53,6 +53,7 @@ class index_edge_list : public graph_base_t, public struct_of_arrays<vertex_id_t
 public:
   using vertex_id_t = vertex_id_type;
   static const directedness edge_directedness = direct;
+  using attributes_t = std::tuple<Attributes...>;
 
 private:
   using graph_base = graph_base_t;
@@ -131,12 +132,12 @@ public:
   }
 
 
-  // size_t size() const { return base::size(); }
+  size_t size() const { return base::size(); }
   // size_t length() const { return base::size(); }
+  // auto max() const { return graph_base::vertex_cardinality; }
 
   auto num_edges() const { return base::size(); }
-  auto max() const { return graph_base::vertex_cardinality; }
-
+  auto num_vertices() const { return graph_base::vertex_cardinality; }
 
   constexpr static const char magic[27] = "NW Graph index_edge_list";
 

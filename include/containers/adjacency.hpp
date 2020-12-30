@@ -9,10 +9,16 @@
 // Author: Andrew Lumsdaine
 //
 
+#ifndef NW_GRAPH_ADJACENCY_HPP
+#define NW_GRAPH_ADJACENCY_HPP
+
+
 #include "util/defaults.hpp"
 #include "graph_base.hpp"
 #include "containers/compressed.hpp"
 #include "containers/edge_list.hpp"
+
+#include "build.hpp"
 
 #include <concepts>
 
@@ -42,6 +48,7 @@ using compressed = index_compressed<default_index_t, default_vertex_id_t, Attrib
 
 template <int idx, std::unsigned_integral index_type, std::unsigned_integral vertex_id_type, typename... Attributes>
 class index_adjacency : public index_compressed<index_type, vertex_id_type, Attributes...> {
+  using base = index_compressed<index_type, vertex_id_type, Attributes...>;
 
 public:
   using index_t = index_type;
@@ -54,14 +61,13 @@ public:
   index_adjacency(size_t N = 0, size_t M = 0) : indexed_struct_of_arrays<vertex_id_t, Attributes...>(N, M) {}
 
   template <class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
-  index_adjacency(index_edge_list<vertex_id_type, unipartite_graph_base, directed, Attributes...>& A, ExecutionPolicy&& policy = {}) : indexed_struct_of_arrays<index_t, Attributes...>(std::max(A.max()[0], A.max()[1]) + 1) {
-    A.fill(*this, policy);
+  index_adjacency(index_edge_list<vertex_id_type, unipartite_graph_base, directed, Attributes...>& A, ExecutionPolicy&& policy = {}) : base(A.num_vertices()[0]) {
+    fill(A, *this, policy);
   }
 
   template <class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
-  index_adjacency(index_edge_list<vertex_id_type, unipartite_graph_base, undirected, Attributes...>& A, ExecutionPolicy&& policy = {})
-      : indexed_struct_of_arrays<index_t, Attributes...>(std::max(A.max()[0], A.max()[1]) + 1) {
-    A.fill(*this, policy);
+  index_adjacency(index_edge_list<vertex_id_type, unipartite_graph_base, undirected, Attributes...>& A, ExecutionPolicy&& policy = {}) : base(A.num_vertices()[0]) {
+    fill(A, *this, policy);
   }
 };
 
@@ -72,3 +78,5 @@ using adjacency = index_adjacency<idx, default_index_t, default_vertex_id_t, Att
 
 }
 }
+
+#endif // NW_GRAPH_ADJACENCY_HPP
