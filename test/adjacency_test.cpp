@@ -11,7 +11,7 @@
 #include <algorithm>
 #include <vector>
 
-#include "adaptors/bfs_edge_range.hpp"
+#include "adaptors/edge_range.hpp"
 #include "containers/adjacency.hpp"
 #include "containers/edge_list.hpp"
 #include "io/mmio.hpp"
@@ -25,28 +25,30 @@ using namespace nw::util;
 TEST_CASE("adjacency", "[adjacency]") {
   size_t n_vtx = 5;
 
-  edge_list<undirected, int> A_list(n_vtx);
+  edge_list<directed, double> A_list(n_vtx);
   A_list.push_back(0, 1, 1);
   A_list.push_back(1, 2, 2);
   A_list.push_back(2, 3, 3);
   A_list.push_back(3, 4, 4);
 
-  adjacency<0, int> A(A_list);
+  adjacency<0, double> A(A_list);
 
-  bfs_edge_range ranges(A, 0);
-  for (auto ite = ranges.begin(); ite != ranges.end(); ++ite) {
-    auto u = std::get<0>(*ite);
-    auto v = std::get<1>(*ite);
-    auto w = std::get<2>(*ite);
-    std::cout << "edge " << u << " to " << v << " change weight " << w << " to " << -w << std::endl;
-    w = -w;
+  for (auto&& [u, v, w] : make_edge_range<0>(A)) {
+    std::cout << "edge " << u << " to " << v << " has weight " << w << std::endl;
   }
 
-  bfs_edge_range reverse_ranges(A, 4);
-  for (auto ite = reverse_ranges.begin(); ite != ranges.end(); ++ite) {
-    auto u = std::get<0>(*ite);
-    auto v = std::get<1>(*ite);
-    auto w = std::get<2>(*ite);
-    std::cout << "edge " << u << " to " << v << " with weight " << w << std::endl;
+  edge_list<undirected, double> B_list(n_vtx);
+  B_list.push_back(0, 1, 10);
+  B_list.push_back(1, 2, 20);
+  B_list.push_back(2, 3, 30);
+  B_list.push_back(3, 4, 40);
+
+  adjacency<0, double> B(B_list);
+
+  B.stream_indices();
+
+  for (auto&& [u, v, w] : make_edge_range<0>(B)) {
+    std::cout << "edge " << u << " to " << v << " has weight " << w << std::endl;
   }
+
 }
