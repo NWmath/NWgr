@@ -55,7 +55,7 @@ public:
   static const directedness edge_directedness = direct;
   using attributes_t = std::tuple<Attributes...>;
 
-private:
+  // private:
   using graph_base = graph_base_t;
   using base    = struct_of_arrays<vertex_id_t, vertex_id_t, Attributes...>;
   using element = std::tuple<vertex_id_t, vertex_id_t, Attributes...>;
