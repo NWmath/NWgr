@@ -65,10 +65,10 @@ public:
 public:
   constexpr static const bool is_unipartite = std::is_same<graph_base, unipartite_graph_base>::value;
 
-  index_edge_list(const index_edge_list&) = default;
-  index_edge_list operator=(const index_edge_list&) = default;
-  index_edge_list(const index_edge_list&&)          = default;
-  index_edge_list operator=(const index_edge_list&&) = default;
+  constexpr index_edge_list(const index_edge_list&)            = default;
+  constexpr index_edge_list& operator=(const index_edge_list&) = default;
+  constexpr index_edge_list(index_edge_list&&)                 = default;
+  constexpr index_edge_list& operator=(index_edge_list&&)      = default;
 
   index_edge_list(size_t N = 0) requires(std::is_same<graph_base, unipartite_graph_base>::value) : graph_base(N) {
     open_for_push_back();
