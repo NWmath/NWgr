@@ -36,6 +36,9 @@ static constexpr const char USAGE[] =
       -V, --verbose         run in verbose mode
 )";
 
+#include "containers/edge_list.hpp"
+#include "containers/adjacency.hpp"
+
 #include "algorithms/triangle_count.hpp"
 #include "Log.hpp"
 #include "common.hpp"
@@ -47,40 +50,44 @@ using namespace nw::graph;
 using namespace nw::util;
 
 template <class Vector>
-static void relabel(edge_list<undirected>& A, Vector&& degrees, const std::string& direction) {
+static void tc_relabel(edge_list<undirected>& A, Vector&& degrees, const std::string& direction) {
   life_timer _(__func__);
-  A.relabel_by_degree<0>(direction, degrees);
+  relabel_by_degree<0>(A, direction, degrees);
 }
 
 template <std::size_t id = 0>
 static void clean(edge_list<undirected>& A, const std::string& succession) {
   life_timer _(__func__);
-  A.swap_to_triangular<id>(succession);
-  A.lexical_sort_by<id>();
-  A.uniq();
-  A.remove_self_loops();
+  swap_to_triangular<id>(A, succession);
+  lexical_sort_by<id>(A);
+  uniq(A);
+  remove_self_loops(A);
 }
 
 static auto compress(edge_list<undirected>& A) {
   life_timer _(__func__);
-  compressed_sparse<undirected> B(A.max()[0] + 1);
-  A.fill_sorted(B);
+  adjacency<0> B(A.num_vertices());
+  push_back_fill(A, B);
   return B;
 }
 
+
+
 // heuristic to see if sufficently dense power-law graph
 template <class EdgeList, class Vector>
-static bool worth_relabeling(EdgeList&& el, Vector&& degree) {
-  int64_t average_degree = el.size() / (el.max()[0]+1);
+static bool worth_relabeling(const EdgeList& el, const Vector& degree) {
+  using vertex_id_t = typename EdgeList::vertex_id_t;
+
+  int64_t average_degree = el.size() / (el.num_vertices()[0]);
   if (average_degree < 10)
     return false;
 
-  int64_t num_samples = std::min<int64_t>(1000L, el.max()[0]+1);
+  int64_t num_samples = std::min<int64_t>(1000L, el.num_vertices()[0]);
   int64_t sample_total = 0;
   std::vector<int64_t> samples(num_samples);
 
   std::mt19937 rng;
-  std::uniform_int_distribution<vertex_id_t> udist (0, el.max()[0]);
+  std::uniform_int_distribution<vertex_id_t> udist (0, el.num_vertices()[0]-1);
 
   for (int64_t trial=0; trial < num_samples; trial++) {
     samples[trial] = degree[udist(rng)];
@@ -94,7 +101,9 @@ static bool worth_relabeling(EdgeList&& el, Vector&& degree) {
 
 // Taken from GAP and adapted to BGL.
 template <class Graph>
-static std::size_t TCVerifier(Graph&& graph) {
+static std::size_t TCVerifier(Graph& graph) {
+  using vertex_id_t = typename Graph::vertex_id_t;
+
   life_timer _(__func__);
   std::size_t total = 0;
   std::vector<std::tuple<vertex_id_t>> intersection;
@@ -141,14 +150,14 @@ int main(int argc, char* argv[]) {
     std::cout << "processing " << file << "\n";
 
     auto el_a = load_graph<undirected>(file);
-    auto degrees = el_a.degrees();
+    auto degree = degrees(el_a);
 
     // Run and time relabeling. This operates directly on the incoming edglist.
     bool relabeled = false;
     auto&& [relabel_time] = time_op([&] {
       if (args["--relabel"].asBool()) {
-        if (args["--heuristic"].asBool() == false || worth_relabeling(el_a, degrees)) {
-          relabel(el_a, degrees, direction);
+        if (args["--heuristic"].asBool() == false || worth_relabeling(el_a, degree)) {
+          tc_relabel(el_a, degree, direction);
           relabeled = true;
         }
       }

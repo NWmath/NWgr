@@ -26,6 +26,7 @@ namespace nw {
 namespace graph {
 
 
+#if 0
 template <std::unsigned_integral index_type, std::unsigned_integral vertex_id_type, typename... Attributes>
 class index_compressed : public unipartite_graph_base, public indexed_struct_of_arrays<index_type, vertex_id_type, Attributes...> {
   using base = indexed_struct_of_arrays<index_type, vertex_id_type, Attributes...>;
@@ -44,11 +45,11 @@ public:
 
 template <typename... Attributes>
 using compressed = index_compressed<default_index_t, default_vertex_id_t, Attributes...>;
-
+#endif
 
 template <int idx, std::unsigned_integral index_type, std::unsigned_integral vertex_id_type, typename... Attributes>
-class index_adjacency : public index_compressed<index_type, vertex_id_type, Attributes...> {
-  using base = index_compressed<index_type, vertex_id_type, Attributes...>;
+class index_adjacency : public unipartite_graph_base, public indexed_struct_of_arrays<index_type, vertex_id_type, Attributes...> {
+  using base = indexed_struct_of_arrays<index_type, vertex_id_type, Attributes...>;
 
 public:
   using index_t = index_type;
@@ -58,7 +59,8 @@ public:
   using attributes_t = std::tuple<Attributes...>;
   static constexpr std::size_t getNAttr() { return sizeof...(Attributes); }
 
-  index_adjacency(size_t N = 0, size_t M = 0) : indexed_struct_of_arrays<vertex_id_t, Attributes...>(N, M) {}
+  index_adjacency(size_t N = 0, size_t M = 0) : base(N, M) {}
+  index_adjacency(std::array<size_t, 1> N, size_t M = 0) : base(N[0], M) {}
 
   template <class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
   index_adjacency(index_edge_list<vertex_id_type, unipartite_graph_base, directed, Attributes...>& A, ExecutionPolicy&& policy = {}) : base(A.num_vertices()[0]) {
