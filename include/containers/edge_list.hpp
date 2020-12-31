@@ -172,7 +172,7 @@ public:
                        std::to_string(d)
                 << std::endl;
     }
-    infile.read(reinterpret_cast<char*>(graph_base::vertex_cardinality), sizeof(graph_base::vertex_cardinality));
+    infile.read(reinterpret_cast<char*>(&graph_base::vertex_cardinality[0]), sizeof(graph_base::vertex_cardinality));
     base::deserialize(infile);
     close_for_push_back();
   }

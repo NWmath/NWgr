@@ -162,7 +162,6 @@ edge_list<sym, Attributes...> read_mm(const std::string& filename) {
   std::ifstream inputFile(filename);
 
   edge_list<sym, Attributes...> A = read_mm<sym, Attributes...>(inputFile);
-  A.set_origin(filename);
 
   return A;
 }

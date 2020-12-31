@@ -2,8 +2,8 @@
 # The date library from MIT provides C++20 std date functionality in C++17
 # -----------------------------------------------------------------------------
 include(Date)
-find_package(Filesystem REQUIRED Final Experimental)
-message(STATUS ${CXX_FILESYSTEM_IS_EXPERIMENTAL})
+# find_package(Filesystem REQUIRED Final Experimental)
+# message(STATUS ${CXX_FILESYSTEM_IS_EXPERIMENTAL})
 
 # -----------------------------------------------------------------------------
 # Generate the configuration files used for logging, and -I its built path.
@@ -20,13 +20,13 @@ target_sources(bench INTERFACE
   Log.hpp
   config.h)
 target_include_directories(bench INTERFACE ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
-target_link_libraries(bench INTERFACE nw_graph docopt date::date std::filesystem)
+target_link_libraries(bench INTERFACE nw_graph docopt date::date )
 
 # -----------------------------------------------------------------------------
 # NW_GRAPH driver to process edgelists.
 # -----------------------------------------------------------------------------
 add_executable(process_edge_list ProcessEdgelist.cpp)
-target_link_libraries(process_edge_list nw_graph docopt)
+target_link_libraries(process_edge_list nw_graph docopt )
 
 # -----------------------------------------------------------------------------
 # NW_GRAPH driver to verify that we're correctly generating source lists.
