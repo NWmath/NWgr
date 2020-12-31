@@ -46,30 +46,36 @@ static bool g_time_edge_list  = false;
 void debug_edge_list(bool flag = true) { g_debug_edge_list = flag; }
 void time_edge_list(bool flag = true) { g_time_edge_list = flag; }
 
-template <std::unsigned_integral vertex_id_type, typename graph_base_t, directedness direct  = undirected, typename... Attributes>
+template <std::unsigned_integral vertex_id_type, typename graph_base_t, directedness direct = undirected, typename... Attributes>
 class index_edge_list : public graph_base_t, public struct_of_arrays<vertex_id_type, vertex_id_type, Attributes...> {
 public:
-  using vertex_id_t = vertex_id_type;
+  using vertex_id_t                           = vertex_id_type;
   static const directedness edge_directedness = direct;
-  using attributes_t = std::tuple<Attributes...>;
+  using attributes_t                          = std::tuple<Attributes...>;
 
-
-  using my_type = index_edge_list<vertex_id_type, graph_base_t, direct, Attributes...>;
-  using directed_type = index_edge_list<vertex_id_type, graph_base_t, directed, Attributes...>;
+  using my_type         = index_edge_list<vertex_id_type, graph_base_t, direct, Attributes...>;
+  using directed_type   = index_edge_list<vertex_id_type, graph_base_t, directed, Attributes...>;
   using undirected_type = index_edge_list<vertex_id_type, graph_base_t, undirected, Attributes...>;
-
 
   // private:
   using graph_base = graph_base_t;
-  using base    = struct_of_arrays<vertex_id_t, vertex_id_t, Attributes...>;
-  using element = std::tuple<vertex_id_t, vertex_id_t, Attributes...>;
+  using base       = struct_of_arrays<vertex_id_t, vertex_id_t, Attributes...>;
+  using element    = std::tuple<vertex_id_t, vertex_id_t, Attributes...>;
 
 public:
+  constexpr static const bool is_unipartite = std::is_same<graph_base, unipartite_graph_base>::value;
 
-  constexpr static const bool is_unipartite = std::is_same<graph_base,unipartite_graph_base>::value;
+  index_edge_list(const index_edge_list&) = default;
+  index_edge_list operator=(const index_edge_list&) = default;
+  index_edge_list(const index_edge_list&&)          = default;
+  index_edge_list operator=(const index_edge_list&&) = default;
 
-  index_edge_list(size_t N = 0) requires(std::is_same<graph_base,unipartite_graph_base>::value) : graph_base(N){ open_for_push_back(); }
-  index_edge_list(size_t M = 0, size_t N = 0) requires(std::is_same<graph_base,bipartite_graph_base>::value) : graph_base(M, N){open_for_push_back();}
+  index_edge_list(size_t N = 0) requires(std::is_same<graph_base, unipartite_graph_base>::value) : graph_base(N) {
+    open_for_push_back();
+  }
+  index_edge_list(size_t M = 0, size_t N = 0) requires(std::is_same<graph_base, bipartite_graph_base>::value) : graph_base(M, N) {
+    open_for_push_back();
+  }
 
   index_edge_list(std::initializer_list<element> l) {
     open_for_push_back();
@@ -78,9 +84,9 @@ public:
 
     if (g_debug_edge_list) {
       if constexpr (is_unipartite) {
-	std::cout << " max " << graph_base::vertex_cardinality[0] << std::endl;
+        std::cout << " max " << graph_base::vertex_cardinality[0] << std::endl;
       } else {
-	std::cout << " max " << graph_base::vertex_cardinality[0] << " " << graph_base::vertex_cardinality[1] << std::endl;
+        std::cout << " max " << graph_base::vertex_cardinality[0] << " " << graph_base::vertex_cardinality[1] << std::endl;
       }
     }
 
@@ -88,9 +94,9 @@ public:
 
     if (g_debug_edge_list) {
       if constexpr (is_unipartite) {
-	std::cout << " max " << graph_base::vertex_cardinality[0] << std::endl;
+        std::cout << " max " << graph_base::vertex_cardinality[0] << std::endl;
       } else {
-	std::cout << " max " << graph_base::vertex_cardinality[0] << " " << graph_base::vertex_cardinality[1] << std::endl;
+        std::cout << " max " << graph_base::vertex_cardinality[0] << " " << graph_base::vertex_cardinality[1] << std::endl;
       }
     }
   }
@@ -99,7 +105,7 @@ public:
 
   void close_for_push_back() {
     graph_base::vertex_cardinality[0] = graph_base::vertex_cardinality[0] + 1;
-    
+
     if constexpr (false == is_unipartite) {
       graph_base::vertex_cardinality[1] = graph_base::vertex_cardinality[1] + 1;
     }
@@ -130,10 +136,9 @@ public:
       graph_base::vertex_cardinality[0] = std::max(i, graph_base::vertex_cardinality[0]);
       graph_base::vertex_cardinality[1] = std::max(j, graph_base::vertex_cardinality[1]);
     }
-    
+
     base::push_back(elem);
   }
-
 
   size_t size() const { return base::size(); }
   // size_t length() const { return base::size(); }
@@ -184,7 +189,7 @@ public:
                      "graph_base::vertex_cardinality = " + std::to_string(graph_base::graph_base::vertex_cardinality[0]) + " ";
     if constexpr (false == is_unipartite) {
       std::cout << std::to_string(graph_base::graph_base::vertex_cardinality[1]) + " ";
-    }   
+    }
     std::cout << std::string("base::size() = ") + std::to_string(base::size());
     std::cout << std::endl;
   }
@@ -210,7 +215,6 @@ using edge_list = index_edge_list<default_vertex_id_t, unipartite_graph_base, ed
 
 template <directedness edge_directedness = undirected, typename... Attributes>
 using bi_edge_list = index_edge_list<default_vertex_id_t, bipartite_graph_base, edge_directedness, Attributes...>;
-
 
 }    // namespace graph
 }    // namespace nw
