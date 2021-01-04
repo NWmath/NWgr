@@ -46,6 +46,7 @@ set_tests_properties(mis_test_test jp_coloring_test_test page_rank_test_test
 
 # Example programs (not catch2)
 nw_graph_add_exe(concepts_eg)
+nw_graph_add_exe(containers_eg)
 nw_graph_add_exe(dijkstra_eg)
 nw_graph_add_exe(edge_list_eg)
 nw_graph_add_exe(index_soa_eg)

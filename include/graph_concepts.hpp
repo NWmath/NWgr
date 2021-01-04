@@ -81,9 +81,9 @@ using inner_value = std::ranges::range_value_t<inner_range<G>>;
 
 template <typename G>
 concept graph = std::semiregular<G>&& requires(G g) {
-  graph_traits<G>::vertex_id_t;
-  graph_traits<G>::num_vertices_t;
-  graph_traits<G>::num_edges_t;
+  typename graph_traits<G>::vertex_id_t;
+  typename graph_traits<G>::num_vertices_t;
+  typename graph_traits<G>::num_edges_t;
 
   { num_vertices(g) }
   ->std::convertible_to<typename graph_traits<G>::num_vertices_t>;

@@ -56,24 +56,29 @@ public:
 
 class unipartite_graph_base {
 public:
+  using vertex_cardinality_t = std::array<size_t, 1>;
+
   unipartite_graph_base(size_t d0 = 0) : vertex_cardinality {d0}, is_open(false) {}
 
   // auto num_edges() { return num_edges_; }
 
+
 protected:
-  std::array<size_t, 1> vertex_cardinality;
-  bool                  is_open;    // can we mutate graph
+  vertex_cardinality_t vertex_cardinality;
+  bool                 is_open;    // can we mutate graph
 };
 
 class bipartite_graph_base {
 public:
+  using vertex_cardinality_t = std::array<size_t, 2>;
+
   bipartite_graph_base(size_t d0 = 0, size_t d1 = 0) : vertex_cardinality{d0, d1}, is_open(false) {}
 
   // auto num_edges() { return num_edges_; }
 
 protected:
-  std::array<size_t, 2> vertex_cardinality;    // ordinal limits
-  bool                  is_open;    // can we mutate graph
+  vertex_cardinality_t vertex_cardinality;    // ordinal limits
+  bool                 is_open;    // can we mutate graph
 };
 
 
