@@ -155,7 +155,7 @@ class MatrixMarketFile final
     template <typename U>
     static constexpr U get(const char* (&i)) {
       U v;
-      char* e;
+      char* e = nullptr;
       if constexpr (std::is_same_v<U, int>) {
         v = std::strtol(i, &e, 10);
       }
