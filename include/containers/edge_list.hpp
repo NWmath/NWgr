@@ -48,19 +48,26 @@ void time_edge_list(bool flag = true) { g_time_edge_list = flag; }
 
 template <std::unsigned_integral vertex_id_type, typename graph_base_t, directedness direct = directedness::undirected, typename... Attributes>
 class index_edge_list : public graph_base_t, public struct_of_arrays<vertex_id_type, vertex_id_type, Attributes...> {
+
 public:
+  // private:
+  using graph_base = graph_base_t;
   using vertex_id_t                           = vertex_id_type;
+
+  using base       = struct_of_arrays<vertex_id_t, vertex_id_t, Attributes...>;
+  using element    = std::tuple<vertex_id_t, vertex_id_t, Attributes...>;
+
+
   static const directedness edge_directedness = direct;
   using attributes_t                          = std::tuple<Attributes...>;
+  using num_vertices_t = graph_base::vertex_cardinality_t;
+  using num_edges_t = base::difference_type;
+
 
   using my_type         = index_edge_list<vertex_id_type, graph_base_t, direct, Attributes...>;
   using directed_type   = index_edge_list<vertex_id_type, graph_base_t, directedness::directed, Attributes...>;
   using undirected_type = index_edge_list<vertex_id_type, graph_base_t, directedness::undirected, Attributes...>;
 
-  // private:
-  using graph_base = graph_base_t;
-  using base       = struct_of_arrays<vertex_id_t, vertex_id_t, Attributes...>;
-  using element    = std::tuple<vertex_id_t, vertex_id_t, Attributes...>;
 
 public:
   constexpr static const bool is_unipartite = std::is_same<graph_base, unipartite_graph_base>::value;

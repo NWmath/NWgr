@@ -20,6 +20,17 @@ struct graph_traits {
 };
 
 
+  template <typename G>
+  auto num_vertices(const G& g) {
+    return g.num_vertices();
+  }
+
+  template <typename G>
+  auto num_edges(const G& g) {
+    return g.num_edges();
+  }
+
+
 }
 }
 

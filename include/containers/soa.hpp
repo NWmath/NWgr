@@ -119,6 +119,10 @@ struct struct_of_arrays : std::tuple<std::vector<Attributes>...> {
       return std::apply([&](auto&&... r) { return std::forward_as_tuple(*(std::forward<decltype(r)>(r) + cursor)...); }, start);
     }
 
+    reference operator*() const {
+      return std::apply([&](auto&&... r) { return std::forward_as_tuple(*(std::forward<decltype(r)>(r) + cursor)...); }, start);
+    }
+
     reference operator[](std::size_t i) {
       return std::apply([&](auto&&... r) { return std::forward_as_tuple(std::forward<decltype(r)>(r)[i + cursor]...); }, start);
     }

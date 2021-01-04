@@ -26,6 +26,7 @@ class vector_of_vector_of_structs : public std::vector<std::forward_list<std::tu
 
 public:
   using base = std::vector<std::forward_list<std::tuple<Attributes...>>>;
+  using vertex_id_t = base::difference_type;
 
   vector_of_vector_of_structs(size_t N) : base(N) {}
 
@@ -44,8 +45,11 @@ template <typename... Attributes>
 class vov : public vector_of_vector_of_structs<size_t, Attributes...> {
   using base = vector_of_vector_of_structs<size_t, Attributes...>;
 
+
 public:
   using attributes_t = std::tuple<Attributes...>;
+  using vertex_id_t = base::difference_type;
+
   static constexpr std::size_t getNAttr() { return sizeof...(Attributes); }
 
   vov(size_t N) : vector_of_vector_of_structs<size_t, Attributes...>(N) {}
@@ -54,12 +58,12 @@ public:
   vov(/* const */ edge_list<dir, Attributes...>& A) : vector_of_vector_of_structs<size_t, Attributes...>(0) {
     dynamic_cast<base&>(*this).open_for_push_back();
 
-    if constexpr (dir == directed) {
+    if constexpr (dir == directedness::directed) {
       (*this).resize(A.max()[0] + 1);
       std::for_each(A.begin(), A.end(), [&](auto&& elt) {
         std::apply([&](vertex_id_t i, vertex_id_t j, Attributes... attrs) { (*this).push_back(i, j, attrs...); }, elt);
       });
-    } else if constexpr (dir == undirected) {
+    } else if constexpr (dir == directedness::undirected) {
       (*this).resize(2 * (A.max()[0] + 1));
       std::for_each(A.begin(), A.end(), [&](auto&& elt) {
         std::apply([&](vertex_id_t i, vertex_id_t j, Attributes... attrs) { (*this).push_back(i, j, attrs...); }, elt);
