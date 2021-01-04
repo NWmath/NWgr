@@ -30,6 +30,9 @@ static constexpr const char USAGE[] =
       -V, --verbose         run in verbose mode
 )";
 
+#include "containers/edge_list.hpp"
+#include "containers/adjacency.hpp"
+#include "adaptors/plain_range.hpp"
 #include "algorithms/connected_components.hpp"
 #include "Log.hpp"
 #include "common.hpp"
@@ -48,6 +51,7 @@ using namespace nw::graph::bench;
 using namespace nw::graph;
 using namespace nw::util;
 
+using vertex_id_t = default_vertex_id_t;
 
 template<typename Vector>
 static void link(vertex_id_t u, vertex_id_t v, Vector& comp) {
@@ -97,7 +101,7 @@ static vertex_id_t sample_frequent_element(const Vector& comp, size_t num_sample
 template<typename Execution, typename Graph1, typename Graph2>
 static auto afforest(Execution&& exec, Graph1&& graph, Graph2&& t_graph, size_t neighbor_rounds = 2)
 {
-  std::vector<std::atomic<vertex_id_t>> comp(graph.max() + 1);
+  std::vector<std::atomic<vertex_id_t>> comp(graph.size() + 1);
   std::for_each(exec, cins::counting_iterator(0ul), cins::counting_iterator(comp.size()),
                 [&](vertex_id_t n) { comp[n] = n; });
   auto g = graph.begin();
@@ -154,24 +158,6 @@ static void print_top_n(Graph&& g, Vector&& comp, size_t n = 5) {
   std::cout << "There are " << count.size() << " components\n";
 }
 
-static auto read_graphs(std::string path, bool symmetric, bool verbose) {
-  if (symmetric) {
-    auto aos_a = load_graph<undirected>(path);
-    if (verbose) {
-      aos_a.stream_stats();
-    }
-    return std::tuple(build_adjacency<0>(aos_a), adjacency<1>(0));
-  }
-  else {
-    auto aos_a = load_graph<directed>(path);
-    if (verbose) {
-      aos_a.stream_stats();
-    }
-    return std::tuple(build_adjacency<0>(aos_a), build_adjacency<1>(aos_a));
-  }
-}
-
-
 // Verifies CC result by performing a BFS from a vertex in each component
 // - Asserts search does not reach a vertex with a different component label
 // - If the graph is directed, it performs the search as if it was undirected
@@ -183,9 +169,9 @@ static bool CCVerifier(Graph&& graph, Transpose&& xpose, Vector&& comp) {
   for (auto&& [n] : plain_range(graph)) {
     label_to_source[comp[n]] = n;
   }
-  std::vector<bool> visited(graph.max() + 1);
+  std::vector<bool> visited(graph.size() + 1);
   std::vector<NodeID> frontier;
-  frontier.reserve(graph.max() + 1);
+  frontier.reserve(graph.size() + 1);
   auto g = graph.begin();
   auto x = xpose.begin();
   for (auto&& [curr_label, source] : label_to_source)
@@ -225,7 +211,7 @@ static bool CCVerifier(Graph&& graph, Transpose&& xpose, Vector&& comp) {
     }
   }
   if (0 < i){
-    std::cout << "unvisited " << i << " " << graph.max() + 1 << " ";
+    std::cout << "unvisited " << i << " " << graph.size() + 1 << " ";
     return false;
   }
   return true;
@@ -268,19 +254,19 @@ int main(int argc, char* argv[]) {
     auto reader = [&](std::string file, bool symmetric, bool verbose) {
       if (symmetric) {
         auto aos_a = load_graph<undirected>(file);
-        auto degrees = aos_a.degrees();
+        auto degree = degrees(aos_a);
 
         // Run relabeling. This operates directly on the incoming edglist.
         if (args["--relabel"].asBool()) {
-          aos_a.relabel_by_degree<0>(args["--direction"].asString(), degrees);
+          relabel_by_degree<0>(aos_a, args["--direction"].asString(), degree);
         }
       // Clean up the edgelist to deal with the normal issues related to
       // undirectedness.
         if (args["--clean"].asBool()) {
-          aos_a.swap_to_triangular<0>(args["--succession"].asString());
-          aos_a.lexical_sort_by<0>();
-          aos_a.uniq();
-          aos_a.remove_self_loops();
+          swap_to_triangular<0>(aos_a, args["--succession"].asString());
+          lexical_sort_by<0>(aos_a);
+          uniq(aos_a);
+          remove_self_loops(aos_a);
         }
 
         adjacency<0> graph(aos_a);
@@ -290,20 +276,20 @@ int main(int argc, char* argv[]) {
       } //if
       else {
         auto aos_a = load_graph<directed>(file);
-        auto degrees = aos_a.degrees();
+        auto degree = degrees(aos_a);
 
         // Run and time relabeling. This operates directly on the incoming edglist.
         if (args["--relabel"].asBool()) {
-          aos_a.relabel_by_degree<0>(args["--direction"].asString(), degrees);
+          relabel_by_degree<0>(aos_a, args["--direction"].asString(), degree);
         }
 
         // Clean up the edgelist to deal with the normal issues related to
         // undirectedness.
         if (args["--clean"].asBool()) {
-          aos_a.swap_to_triangular<0>(args["--succession"].asString());
-          aos_a.lexical_sort_by<0>();
-          aos_a.uniq();
-          aos_a.remove_self_loops();
+          swap_to_triangular<0>(aos_a, args["--succession"].asString());
+          lexical_sort_by<0>(aos_a);
+          uniq(aos_a);
+          remove_self_loops(aos_a);
         }
       
         adjacency<0> graph(aos_a);
@@ -356,24 +342,25 @@ int main(int argc, char* argv[]) {
         auto record = [&](auto&& op) {
           times.record(file, id, thread, std::forward<decltype(op)>(op), verifier, symmetric);
         };
+        using Graph = adjacency<0>;
 
         for (int j = 0, e = trials; j < e; ++j) {
           switch (id) {
            case 0: record([&] { return afforest(std::execution::seq, graph, t_graph); });
             break;
-           case 1: record([&] { return ccv1(graph); }); //push
+           case 1: record([&] { return ccv1<Graph, vertex_id_t>(graph); }); //push
             break;
-           case 2: record([&] { return compute_connected_components_v2(graph); }); //pull
+           case 2: record([&] { return compute_connected_components_v2<Graph, vertex_id_t>(graph); }); //pull
             break;
-           case 5: record([&] { return ccv5(graph); }); //pull + afforest
+           case 5: record([&] { return ccv5<Graph, vertex_id_t>(graph); }); //pull + afforest
             break;
-           case 6: record([&] { return sv_v6(graph); }); //sv
+           case 6: record([&] { return sv_v6<Graph, vertex_id_t>(graph); }); //sv
             break;
            case 7: record([&] { return afforest(std::execution::par_unseq, graph, t_graph); });
             break;
-           case 8: record([&] { return sv_v8(graph); }); //sv
+           case 8: record([&] { return sv_v8<Graph, vertex_id_t>(graph); }); //sv
             break;
-           case 9: record([&] { return sv_v9(graph); }); //sv
+           case 9: record([&] { return sv_v9<Graph, vertex_id_t>(graph); }); //sv
             break;
            default:
             std::cout << "Unknown version v" << id << "\n";

@@ -15,6 +15,7 @@
 
 #include "adaptors/splittable_range_adapter.hpp"
 #include "containers/soa.hpp"
+#include "graph_base.hpp"
 #include "util/defaults.hpp"
 #include "util/proxysort.hpp"
 #include "util/util.hpp"
