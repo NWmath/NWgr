@@ -55,6 +55,9 @@ public:
   using index_t = index_type;
   using vertex_id_t = vertex_id_type;
 
+  using num_vertices_t = std::array<vertex_id_t, 2>;
+  using num_edges_t = index_t;
+
   // The first index_t isn't considered an attribute.
   using attributes_t = std::tuple<Attributes...>;
   static constexpr std::size_t getNAttr() { return sizeof...(Attributes); }
@@ -63,20 +66,29 @@ public:
   index_adjacency(std::array<size_t, 1> N, size_t M = 0) : base(N[0], M) {}
 
   template <class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
-  index_adjacency(index_edge_list<vertex_id_type, unipartite_graph_base, directed, Attributes...>& A, ExecutionPolicy&& policy = {}) : base(A.num_vertices()[0]) {
+  index_adjacency(index_edge_list<vertex_id_type, unipartite_graph_base, directedness::directed, Attributes...>& A, ExecutionPolicy&& policy = {}) : base(A.num_vertices()[0]) {
     fill<idx>(A, *this, policy);
   }
 
   template <class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
-  index_adjacency(index_edge_list<vertex_id_type, unipartite_graph_base, undirected, Attributes...>& A, ExecutionPolicy&& policy = {}) : base(A.num_vertices()[0]) {
+  index_adjacency(index_edge_list<vertex_id_type, unipartite_graph_base, directedness::undirected, Attributes...>& A, ExecutionPolicy&& policy = {}) : base(A.num_vertices()[0]) {
     fill<idx>(A, *this, policy);
   }
+
+  num_vertices_t num_vertices() { return { base::size() } ; };
+  num_edges_t num_edges() { return base::to_be_indexed.size(); };
 };
 
 
 
 template <int idx, typename... Attributes>
 using adjacency = index_adjacency<idx, default_index_t, default_vertex_id_t, Attributes...>;  
+
+
+template <int idx, typename edge_list_t>
+auto make_adjacency(edge_list_t& el) {
+  return adjacency<idx>(el);
+}
 
 }
 }
