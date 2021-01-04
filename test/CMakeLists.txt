@@ -44,7 +44,8 @@ nw_graph_add_test(vov_test)
 set_tests_properties(mis_test_test jp_coloring_test_test page_rank_test_test
   PROPERTIES WILL_FAIL TRUE)
 
-# These need to be converted to Catch2 tests
+# Example programs (not catch2)
+nw_graph_add_exe(concepts_eg)
 nw_graph_add_exe(dijkstra_eg)
 nw_graph_add_exe(edge_list_eg)
 nw_graph_add_exe(index_soa_eg)
@@ -60,7 +61,7 @@ nw_graph_add_exe(tbb_eg)
 # nw_graph_add_exe(binio_eg)
 # nw_graph_add_exe(io_eg)
 # nw_graph_add_exe(math_eg)
-# nw_graph_add_exe(ranges_eg)
+# nw_graph_add_exe(ranges_and_concepts_eg)
 # nw_graph_add_exe(symmetrize_eg)
 
 

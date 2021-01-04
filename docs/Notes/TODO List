@@ -47,6 +47,8 @@ TODO List
 - Q: non-default move constructors needed for adjacency ?
   => XL
 
+- Change enums to class enums
+
 
 =====
 Small
@@ -56,6 +58,10 @@ Small
 
 =====
 
+- struct of arrays view of other containers to build graph
+  - struct of arrays view of containers as edge list
+  - struct of arrays view of containers as compressed 
+  - reorder vs indirect
 
 
 - Graph containers should have read/write flags (static)
