@@ -186,9 +186,9 @@ public:
     int status = -4;
     std::cout << "% ";
     std::cout << nw::graph::demangle(typeid(*this).name(), nullptr, nullptr, &status) + ": " +
-                     "graph_base::vertex_cardinality = " + std::to_string(graph_base::graph_base::vertex_cardinality[0]) + " ";
+                     "graph_base::vertex_cardinality = " + std::to_string(graph_base::vertex_cardinality[0]) + " ";
     if constexpr (false == is_unipartite) {
-      std::cout << std::to_string(graph_base::graph_base::vertex_cardinality[1]) + " ";
+      std::cout << std::to_string(graph_base::vertex_cardinality[1]) + " ";
     }
     std::cout << std::string("base::size() = ") + std::to_string(base::size());
     std::cout << std::endl;
