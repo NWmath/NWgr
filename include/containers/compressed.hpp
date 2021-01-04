@@ -413,9 +413,9 @@ public:    // fixme
 
   template <succession cessor>
   void triangularize() {
-    if constexpr (cessor == predecessor) {
+    if constexpr (cessor == succession::predecessor) {
       triangularize_(std::less<index_t>{});
-    } else if constexpr (cessor == successor) {
+    } else if constexpr (cessor == succession::successor) {
       triangularize_(std::greater<index_t>{});
     } else {
     }

@@ -46,7 +46,7 @@ static bool g_time_edge_list  = false;
 void debug_edge_list(bool flag = true) { g_debug_edge_list = flag; }
 void time_edge_list(bool flag = true) { g_time_edge_list = flag; }
 
-template <std::unsigned_integral vertex_id_type, typename graph_base_t, directedness direct = undirected, typename... Attributes>
+template <std::unsigned_integral vertex_id_type, typename graph_base_t, directedness direct = directedness::undirected, typename... Attributes>
 class index_edge_list : public graph_base_t, public struct_of_arrays<vertex_id_type, vertex_id_type, Attributes...> {
 public:
   using vertex_id_t                           = vertex_id_type;
@@ -54,8 +54,8 @@ public:
   using attributes_t                          = std::tuple<Attributes...>;
 
   using my_type         = index_edge_list<vertex_id_type, graph_base_t, direct, Attributes...>;
-  using directed_type   = index_edge_list<vertex_id_type, graph_base_t, directed, Attributes...>;
-  using undirected_type = index_edge_list<vertex_id_type, graph_base_t, undirected, Attributes...>;
+  using directed_type   = index_edge_list<vertex_id_type, graph_base_t, directedness::directed, Attributes...>;
+  using undirected_type = index_edge_list<vertex_id_type, graph_base_t, directedness::undirected, Attributes...>;
 
   // private:
   using graph_base = graph_base_t;
@@ -131,10 +131,10 @@ public:
     vertex_id_t j = std::get<1>(elem);
 
     if constexpr (is_unipartite) {
-      graph_base::vertex_cardinality[0] = std::max(std::max(i, j), graph_base::vertex_cardinality[0]);
+      graph_base::vertex_cardinality[0] = std::max<vertex_id_t>(std::max(i, j), graph_base::vertex_cardinality[0]);
     } else {
-      graph_base::vertex_cardinality[0] = std::max(i, graph_base::vertex_cardinality[0]);
-      graph_base::vertex_cardinality[1] = std::max(j, graph_base::vertex_cardinality[1]);
+      graph_base::vertex_cardinality[0] = std::max<vertex_id_t>(i, graph_base::vertex_cardinality[0]);
+      graph_base::vertex_cardinality[1] = std::max<vertex_id_t>(j, graph_base::vertex_cardinality[1]);
     }
 
     base::push_back(elem);
@@ -165,11 +165,11 @@ public:
   void deserialize(std::istream& infile) {
     char spell[sizeof(magic) + 1];
     infile.read(reinterpret_cast<char*>(spell), sizeof(magic));
-    size_t d = edge_directedness;
+    directedness d = edge_directedness;
     infile.read(reinterpret_cast<char*>(&d), sizeof(d));
     if (d != edge_directedness) {
-      std::cout << std::string("Warning: Expected directedness ") + std::to_string(edge_directedness) + " but got " +
-                       std::to_string(d)
+      std::cout << std::string("Warning: Expected directedness ") + std::to_string((int)edge_directedness) + " but got " +
+	std::to_string((int)d)
                 << std::endl;
     }
     infile.read(reinterpret_cast<char*>(&graph_base::vertex_cardinality[0]), sizeof(graph_base::vertex_cardinality));
@@ -210,10 +210,10 @@ public:
   bool operator!=(index_edge_list<vertex_id_type, graph_base_t, edge_directedness, Attributes...>& e) { return !operator==(e); }
 };
 
-template <directedness edge_directedness = undirected, typename... Attributes>
+template <directedness edge_directedness = directedness::undirected, typename... Attributes>
 using edge_list = index_edge_list<default_vertex_id_t, unipartite_graph_base, edge_directedness, Attributes...>;
 
-template <directedness edge_directedness = undirected, typename... Attributes>
+template <directedness edge_directedness = directedness::undirected, typename... Attributes>
 using bi_edge_list = index_edge_list<default_vertex_id_t, bipartite_graph_base, edge_directedness, Attributes...>;
 
 }    // namespace graph

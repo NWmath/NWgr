@@ -18,8 +18,10 @@
 namespace nw {
 namespace graph {
 
-enum succession { successor, predecessor };
-enum directedness { undirected, directed };
+enum class succession { successor, predecessor };
+enum class directedness { undirected, directed };
+
+
 
 template <succession success>
 struct other_succession {
@@ -27,13 +29,13 @@ struct other_succession {
 };
 
 template <>
-struct other_succession<successor> {
-  const succession cessor = predecessor;
+struct other_succession<succession::successor> {
+  const succession cessor = succession::predecessor;
 };
 
 template <>
-struct other_succession<predecessor> {
-  const succession cessor = successor;
+struct other_succession<succession::predecessor> {
+  const succession cessor = succession::successor;
 };
 
 template <directedness dir>
@@ -42,14 +44,14 @@ struct other_direction {
 };
 
 template <>
-struct other_direction<undirected> {
-  const directedness direction = directed;
+struct other_direction<directedness::undirected> {
+  const directedness direction = directedness::directed;
 };
 
 template <>
-class other_direction<directed> {
+class other_direction<directedness::directed> {
 public:
-  const directedness direction = undirected;
+  const directedness direction = directedness::undirected;
 };
 
 class unipartite_graph_base {

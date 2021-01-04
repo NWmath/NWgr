@@ -112,7 +112,7 @@ void fill_helper(edge_list_t& el, adjacency_t& cs, std::index_sequence<Is...> is
 
 template <int idx, class edge_list_t, class adjacency_t, class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
 void fill(edge_list_t& el, adjacency_t& cs, ExecutionPolicy&& policy = {}) {
-  if constexpr (edge_list_t::edge_directedness == directed) {
+  if constexpr (edge_list_t::edge_directedness == directedness::directed) {
 
     sort_by<idx>(el, policy);
     auto degree = degrees<idx>(el);
@@ -174,25 +174,25 @@ void fill(edge_list_t& el, adjacency_t& cs, ExecutionPolicy&& policy = {}) {
 template <int idx, class edge_list_t>
 void swap_to_triangular(edge_list_t& el, const std::string& cessor = "predecessor") {
   if (cessor == "predecessor") {
-    swap_to_triangular<idx, edge_list_t, predecessor>(el);
+    swap_to_triangular<idx, edge_list_t, succession::predecessor>(el);
   } else if (cessor == "successor") {
-    swap_to_triangular<idx, edge_list_t, successor>(el);
+    swap_to_triangular<idx, edge_list_t, succession::successor>(el);
   } else {
     std::cout << "Bad succession: " + cessor << std::endl;
   }
 }
 
-template <int idx, class edge_list_t, succession cessor = predecessor,
+template <int idx, class edge_list_t, succession cessor = succession::predecessor,
           class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
 void swap_to_triangular(edge_list_t& el, ExecutionPolicy&& policy = {}) {
 
-  if constexpr ((idx == 0 && cessor == predecessor) || (idx == 1 && cessor == successor)) {
+  if constexpr ((idx == 0 && cessor == succession::predecessor) || (idx == 1 && cessor == succession::successor)) {
     std::for_each(policy, el.begin(), el.end(), [](auto&& f) {
       if (std::get<0>(f) < std::get<1>(f)) {
         std::swap(std::get<0>(f), std::get<1>(f));
       }
     });
-  } else if constexpr ((idx == 0 && cessor == successor) || (idx == 1 && cessor == predecessor)) {
+  } else if constexpr ((idx == 0 && cessor == succession::successor) || (idx == 1 && cessor == succession::predecessor)) {
     std::for_each(policy, el.begin(), el.end(), [](auto&& f) {
       if (std::get<1>(f) < std::get<0>(f)) {
         std::swap(std::get<1>(f), std::get<0>(f));
@@ -235,11 +235,11 @@ auto degrees(edge_list_t& el, ExecutionPolicy&& policy = {}) {
 
   std::vector<typename edge_list_t::vertex_id_t> degree(d_size);
 
-  if constexpr (edge_list_t::edge_directedness == directed) {
+  if constexpr (edge_list_t::edge_directedness == directedness::directed) {
     std::vector<std::atomic<typename edge_list_t::vertex_id_t>> tmp(degree.size());
     std::for_each(policy, el.begin(), el.end(), [&](auto&& x) { ++tmp[std::get<d_idx>(x)]; });
     std::copy(policy, tmp.begin(), tmp.end(), degree.begin());
-  } else if constexpr (edge_list_t::edge_directedness == undirected) {
+  } else if constexpr (edge_list_t::edge_directedness == directedness::undirected) {
     std::vector<std::atomic<typename edge_list_t::vertex_id_t>> tmp(degree.size());
     std::for_each(policy, el.begin(), el.end(), [&](auto&& x) {
       ++tmp[std::get<0>(x)];
