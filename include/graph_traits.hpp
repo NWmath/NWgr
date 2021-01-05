@@ -30,6 +30,11 @@ struct graph_traits {
     return g.num_edges();
   }
 
+  template <typename G>
+  auto begin(const G& g) {
+    return g.begin();
+  }
+
 
 }
 }

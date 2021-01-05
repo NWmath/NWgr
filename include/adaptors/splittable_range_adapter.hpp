@@ -15,6 +15,8 @@ class splittable_range_adapter {
   std::size_t cutoff_ = 16384;
 
 public:
+  using iterator = Iterator;
+
   template <class Range>
   explicit splittable_range_adapter(Range&& range) : splittable_range_adapter(range.begin(), range.end()) {}
 

@@ -32,10 +32,10 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/../NWut/cmake)
 # -----------------------------------------------------------------------------
 # Build types and default flags
 # -----------------------------------------------------------------------------
-set(CMAKE_CXX_FLAGS_DEBUG "-O0 -g -fno-elide-constructors -fsanitize=address" CACHE STRING "" FORCE)
-set(CMAKE_CXX_FLAGS_RELEASE "-Ofast -march=native -DNDEBUG" CACHE STRING "" FORCE)
-set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-Ofast -g -march=native" CACHE STRING "" FORCE)
-set(CMAKE_CXX_FLAGS_MINSIZEREL "-Os -march=native -DNDEBUG" CACHE STRING "" FORCE)
+set(CMAKE_CXX_FLAGS_DEBUG "-O0 -g -fno-elide-constructors -fsanitize=address -fconcepts-diagnostics-depth=3" CACHE STRING "" FORCE)
+set(CMAKE_CXX_FLAGS_RELEASE "-Ofast -march=native -DNDEBUG -fconcepts-diagnostics-depth=3" CACHE STRING "" FORCE)
+set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-Ofast -g -march=native -fconcepts-diagnostics-depth=3" CACHE STRING "" FORCE)
+set(CMAKE_CXX_FLAGS_MINSIZEREL "-Os -march=native -DNDEBUG -fconcepts-diagnostics-depth=3" CACHE STRING "" FORCE)
 
 # Default to Release build
 if (NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
