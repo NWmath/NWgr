@@ -192,11 +192,13 @@ public:    // fixme
     index_t                                            i_;
 
   public:
-    using difference_type   = index_t;
+    using difference_type   = std::make_signed_t<index_t>;
     using value_type        = sub_view;
     using reference         = value_type&;
     using pointer           = value_type*;
     using iterator_category = std::random_access_iterator_tag;
+
+    outer_iterator() = default;
 
     outer_iterator(std::vector<index_t>::iterator indices, typename struct_of_arrays<Attributes...>::iterator indexed, index_t i)
         : indices_(indices), indexed_(indexed), i_(i) {}
@@ -206,8 +208,30 @@ public:    // fixme
       return *this;
     }
 
+    outer_iterator operator++(int) const {
+      outer_iterator tmp(*this);
+      ++i_;
+      return tmp;;
+    }
+
+    outer_iterator& operator--() {
+      --i_;
+      return *this;
+    }
+
+    outer_iterator operator--(int) const {
+      outer_iterator tmp(*this);
+      --i_;
+      return tmp;;
+    }
+
     outer_iterator& operator+=(difference_type n) {
       i_ += n;
+      return *this;
+    }
+
+    outer_iterator& operator-=(difference_type n) {
+      i_ -= n;
       return *this;
     }
 
@@ -219,13 +243,19 @@ public:    // fixme
     bool operator==(const outer_iterator& b) const { return i_ == b.i_; }
     bool operator!=(const outer_iterator& b) const { return i_ != b.i_; }
     bool operator<(const outer_iterator& b) const { return i_ < b.i_; }
+    bool operator>(const outer_iterator& b) const { return i_ > b.i_; }
+    bool operator<=(const outer_iterator& b) const { return i_ <= b.i_; }
+    bool operator>=(const outer_iterator& b) const { return i_ >= b.i_; }
 
-    value_type operator*() { return {indexed_ + indices_[i_], indexed_ + indices_[i_ + 1]}; }
-    value_type operator*() const { return {indexed_ + indices_[i_], indexed_ + indices_[i_ + 1]}; }
 
-    value_type operator[](index_t n) { return {indexed_ + indices_[i_ + n], indexed_ + indices_[i_ + n + 1]}; }
+    reference operator*() { return {indexed_ + indices_[i_], indexed_ + indices_[i_ + 1]}; }
+    const reference operator*() const { return {indexed_ + indices_[i_], indexed_ + indices_[i_ + 1]}; }
 
-    value_type operator[](index_t n) const { return {indexed_ + indices_[i_ + n], indexed_ + indices_[i_ + n + 1]}; }
+    pointer operator->()       { return nullptr; } 
+    pointer operator->() const { return nullptr; } 
+
+    reference operator[](index_t n) { return {indexed_ + indices_[i_ + n], indexed_ + indices_[i_ + n + 1]}; }
+    const reference operator[](index_t n) const { return {indexed_ + indices_[i_ + n], indexed_ + indices_[i_ + n + 1]}; }
   };
 
   class const_outer_iterator {
@@ -234,11 +264,13 @@ public:    // fixme
     index_t                                                  i_;
 
   public:
-    using difference_type   = index_t;
+    using difference_type   = std::make_signed_t<index_t>;
     using value_type        = const_sub_view;
     using reference         = const value_type&;
     using pointer           = const value_type*;
     using iterator_category = std::random_access_iterator_tag;
+
+    const_outer_iterator() = default;
 
     const_outer_iterator(std::vector<index_t>::const_iterator                     indices,
                          typename struct_of_arrays<Attributes...>::const_iterator indexed, index_t i)
@@ -249,8 +281,30 @@ public:    // fixme
       return *this;
     }
 
+    const_outer_iterator operator++(int) const {
+      const_outer_iterator tmp(*this);
+      ++i_;
+      return tmp;;
+    }
+
+    const_outer_iterator& operator--() {
+      --i_;
+      return *this;
+    }
+
+    const_outer_iterator operator--(int) const {
+      const_outer_iterator tmp(*this);
+      --i_;
+      return tmp;;
+    }
+
     const_outer_iterator& operator+=(difference_type n) {
       i_ += n;
+      return *this;
+    }
+
+    const_outer_iterator& operator-=(difference_type n) {
+      i_ -= n;
       return *this;
     }
 
@@ -262,13 +316,20 @@ public:    // fixme
     bool operator==(const const_outer_iterator& b) const { return i_ == b.i_; }
     bool operator!=(const const_outer_iterator& b) const { return i_ != b.i_; }
     bool operator<(const const_outer_iterator& b) const { return i_ < b.i_; }
+    bool operator>(const const_outer_iterator& b) const { return i_ > b.i_; }
+    bool operator<=(const const_outer_iterator& b) const { return i_ <= b.i_; }
+    bool operator>=(const const_outer_iterator& b) const { return i_ >= b.i_; }
 
-    value_type operator*() { return {indexed_ + indices_[i_], indexed_ + indices_[i_ + 1]}; }
-    value_type operator*() const { return {indexed_ + indices_[i_], indexed_ + indices_[i_ + 1]}; }
 
-    value_type operator[](index_t n) { return {indexed_ + indices_[i_ + n], indexed_ + indices_[i_ + n + 1]}; }
 
-    value_type operator[](index_t n) const { return {indexed_ + indices_[i_ + n], indexed_ + indices_[i_ + n + 1]}; }
+    reference operator*() { return {indexed_ + indices_[i_], indexed_ + indices_[i_ + 1]}; }
+    reference operator*() const { return {indexed_ + indices_[i_], indexed_ + indices_[i_ + 1]}; }
+
+    pointer operator->()       { return nullptr; } 
+    pointer operator->() const { return nullptr; } 
+
+    reference operator[](index_t n) { return {indexed_ + indices_[i_ + n], indexed_ + indices_[i_ + n + 1]}; }
+    reference operator[](index_t n) const { return {indexed_ + indices_[i_ + n], indexed_ + indices_[i_ + n + 1]}; }
   };
 
   using iterator = outer_iterator;
@@ -501,6 +562,20 @@ public:    // fixme
     std::cout << std::endl;
   }
 };
+
+
+
+  //template <typename index_t, typename... Attributes>
+  //auto operator+(typename std::iter_difference_t<typename indexed_struct_of_arrays<index_t, Attributes...>::outer_iterator> n, const typename indexed_struct_of_arrays<index_t, Attributes...>::outer_iterator i) {
+  //  return i + n;
+  //}
+
+template <std::signed_integral T, typename I>
+I operator+(T n, const I i) { return i + n; }
+
+
+ // 'std::iter_difference_t<nw::graph::indexed_struct_of_arrays<unsigned int, unsigned int>::outer_iterator>' {aka 'const int'} and 'const nw::graph::indexed_struct_of_arrays<unsigned int, unsigned int>::outer_iterator')
+
 
 
 }    // namespace graph

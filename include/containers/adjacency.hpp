@@ -75,8 +75,8 @@ public:
     fill<idx>(A, *this, policy);
   }
 
-  num_vertices_t num_vertices() { return { base::size() } ; };
-  num_edges_t num_edges() { return base::to_be_indexed.size(); };
+  num_vertices_t num_vertices() const { return { base::size() } ; };
+  num_edges_t num_edges() const { return base::to_be_indexed.size(); };
 };
 
 

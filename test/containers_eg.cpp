@@ -79,9 +79,30 @@ int main() {
   nw::graph::edge_list<nw::graph::directedness::directed> e { { 0, 0}, { 0, 4}, {4, 4}, {4, 0} };
 
 
+  static_assert(std::is_constructible_v<decltype(e)>);
+  static_assert(std::ranges::forward_range<nw::graph::edge_list<nw::graph::directedness::directed>>);
+  static_assert(std::ranges::forward_range<nw::graph::edge_list<nw::graph::directedness::directed>>);
+
+
   t0(e);
+  t1(e);
+  t2(std::move(e));
 
   auto a = make_adjacency<0>(e);
+
+  static_assert(std::is_constructible_v<decltype(a)>);
+  static_assert(std::is_default_constructible_v<typename decltype(a)::outer_iterator>);
+  static_assert(std::is_copy_constructible_v<typename decltype(a)::outer_iterator>);
+  static_assert(std::is_move_constructible_v<typename decltype(a)::outer_iterator>);
+  static_assert(std::is_constructible_v<typename decltype(a)::outer_iterator>);
+
+  static_assert(nw::graph::adjacency_graph<decltype(a)>);
+
+
+  t3(a);
+  t4(a);
+  t5(a);
+
 
   
 
