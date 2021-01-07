@@ -25,7 +25,7 @@ using namespace nw::util;
 TEST_CASE("adjacency", "[adjacency]") {
   size_t n_vtx = 5;
 
-  edge_list<directed, double> A_list(n_vtx);
+  edge_list<directedness::directed, double> A_list(n_vtx);
   A_list.push_back(0, 1, 1);
   A_list.push_back(1, 2, 2);
   A_list.push_back(2, 3, 3);
@@ -37,7 +37,7 @@ TEST_CASE("adjacency", "[adjacency]") {
     std::cout << "edge " << u << " to " << v << " has weight " << w << std::endl;
   }
 
-  edge_list<undirected, double> B_list(n_vtx);
+  edge_list<directedness::undirected, double> B_list(n_vtx);
   B_list.push_back(0, 1, 10);
   B_list.push_back(1, 2, 20);
   B_list.push_back(2, 3, 30);

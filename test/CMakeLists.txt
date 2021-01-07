@@ -8,12 +8,16 @@ endmacro (nw_graph_add_exe)
 
 macro (nw_graph_add_test TESTNAME)
   add_executable(${TESTNAME}.exe ${TESTNAME}.cpp)
-  target_link_libraries(${TESTNAME}.exe nw_graph Catch2::Catch2)
+  target_link_libraries(${TESTNAME}.exe nw_graph Catch2::Catch2 catch_main)
   target_compile_definitions(${TESTNAME}.exe PRIVATE DATA_DIR="${CMAKE_SOURCE_DIR}/data/")
   target_compile_definitions(${TESTNAME}.exe PRIVATE DATA_FILE="${CMAKE_SOURCE_DIR}/data/line.mmio")
   add_test(NAME ${TESTNAME}_test COMMAND ${TESTNAME}.exe)
   #  catch_discover_tests(${TESTNAME})
 endmacro (nw_graph_add_test)
+
+
+add_library(catch_main STATIC catch_main.cpp)
+target_link_libraries(catch_main Catch2::Catch2)
 
 # Add Catch2 tests
 nw_graph_add_test(adjacency_test)
