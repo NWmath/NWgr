@@ -76,7 +76,7 @@ public:
   }
 
   num_vertices_t num_vertices() const { return { base::size() } ; };
-  num_edges_t num_edges() const { return base::to_be_indexed.size(); };
+  num_edges_t num_edges() const { return base::to_be_indexed_.size(); };
 };
 
 

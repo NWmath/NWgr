@@ -247,15 +247,14 @@ public:    // fixme
     bool operator<=(const outer_iterator& b) const { return i_ <= b.i_; }
     bool operator>=(const outer_iterator& b) const { return i_ >= b.i_; }
 
+    value_type operator*()       { return { indexed_ + indices_[i_], indexed_ + indices_[i_ + 1] }; }
+    value_type operator*() const { return { indexed_ + indices_[i_], indexed_ + indices_[i_ + 1] }; }
 
-    reference operator*() { return {indexed_ + indices_[i_], indexed_ + indices_[i_ + 1]}; }
-    const reference operator*() const { return {indexed_ + indices_[i_], indexed_ + indices_[i_ + 1]}; }
+          pointer operator->()       { return nullptr; } 
+    const pointer operator->() const { return nullptr; } 
 
-    pointer operator->()       { return nullptr; } 
-    pointer operator->() const { return nullptr; } 
-
-    reference operator[](index_t n) { return {indexed_ + indices_[i_ + n], indexed_ + indices_[i_ + n + 1]}; }
-    const reference operator[](index_t n) const { return {indexed_ + indices_[i_ + n], indexed_ + indices_[i_ + n + 1]}; }
+          reference operator[](index_t n)       { return { indexed_ + indices_[i_ + n], indexed_ + indices_[i_ + n + 1] }; }
+    const reference operator[](index_t n) const { return { indexed_ + indices_[i_ + n], indexed_ + indices_[i_ + n + 1] }; }
   };
 
   class const_outer_iterator {
