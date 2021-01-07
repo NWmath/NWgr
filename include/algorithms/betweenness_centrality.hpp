@@ -1774,7 +1774,8 @@ auto bc2_v5(Graph&& graph, const std::vector<vertex_id_t>& sources, int threads,
           while (!done) {
             std::for_each(outer_policy, q1.begin(), q1.end(), [&](auto&& q) {
               std::for_each(inner_policy, q.begin(), q.end(), [&](auto&& u) {
-                for (auto&& [v] : graph[u]) {
+                for (auto&& i : graph[u]) {
+                  auto v = std::get<0>(i);
                   auto&& infinity = std::numeric_limits<vertex_id_t>::max();
                   auto&& lvl_v    = nw::graph::acquire(levels[v]);
 
@@ -1818,7 +1819,8 @@ auto bc2_v5(Graph&& graph, const std::vector<vertex_id_t>& sources, int threads,
             std::for_each(outer_policy, vvv.begin(), vvv.end(), [&](auto&& vv) {
               std::for_each(inner_policy, vv.begin(), vv.end(), [&](auto&& u) {
                 score_t delta = 0;
-                for (auto&& [v] : graph[u]) {
+                for (auto&& i : graph[u]) {
+                  auto v = std::get<0>(i);
                   if (succ.get(&v - &edges)) {
                     delta += path_counts[u] / path_counts[v] * (1.0f + deltas[v]);
                   }
