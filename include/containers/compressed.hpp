@@ -1,5 +1,5 @@
 //
-// This file is part of NWGraph 
+// This file is part of NWGraph
 // (c) Pacific Northwest National Laboratory 2018-2020
 // (c) University of Washington 2018-2020
 //
@@ -8,7 +8,6 @@
 //
 // Author: Andrew Lumsdaine
 //
-
 
 #ifndef NW_GRAPH_COMPRESSED_HPP
 #define NW_GRAPH_COMPRESSED_HPP
@@ -194,7 +193,7 @@ public:    // fixme
   public:
     using difference_type   = std::make_signed_t<index_t>;
     using value_type        = sub_view;
-    using reference         = value_type&;
+    using reference         = value_type&; // sub_view; 
     using pointer           = value_type*;
     using iterator_category = std::random_access_iterator_tag;
 
@@ -211,7 +210,8 @@ public:    // fixme
     outer_iterator operator++(int) const {
       outer_iterator tmp(*this);
       ++i_;
-      return tmp;;
+      return tmp;
+      ;
     }
 
     outer_iterator& operator--() {
@@ -222,7 +222,8 @@ public:    // fixme
     outer_iterator operator--(int) const {
       outer_iterator tmp(*this);
       --i_;
-      return tmp;;
+      return tmp;
+      ;
     }
 
     outer_iterator& operator+=(difference_type n) {
@@ -247,14 +248,14 @@ public:    // fixme
     bool operator<=(const outer_iterator& b) const { return i_ <= b.i_; }
     bool operator>=(const outer_iterator& b) const { return i_ >= b.i_; }
 
-    value_type operator*()       { return { indexed_ + indices_[i_], indexed_ + indices_[i_ + 1] }; }
-    value_type operator*() const { return { indexed_ + indices_[i_], indexed_ + indices_[i_ + 1] }; }
+    reference operator*() { return {indexed_ + indices_[i_], indexed_ + indices_[i_ + 1]}; }
+    reference operator*() const { return {indexed_ + indices_[i_], indexed_ + indices_[i_ + 1]}; }
 
-          pointer operator->()       { return nullptr; } 
-    const pointer operator->() const { return nullptr; } 
+    pointer       operator->() { return nullptr; }
+    const pointer operator->() const { return nullptr; }
 
-          reference operator[](index_t n)       { return { indexed_ + indices_[i_ + n], indexed_ + indices_[i_ + n + 1] }; }
-    const reference operator[](index_t n) const { return { indexed_ + indices_[i_ + n], indexed_ + indices_[i_ + n + 1] }; }
+    reference       operator[](index_t n) { return {indexed_ + indices_[i_ + n], indexed_ + indices_[i_ + n + 1]}; }
+    reference operator[](index_t n) const { return {indexed_ + indices_[i_ + n], indexed_ + indices_[i_ + n + 1]}; }
   };
 
   class const_outer_iterator {
@@ -283,7 +284,8 @@ public:    // fixme
     const_outer_iterator operator++(int) const {
       const_outer_iterator tmp(*this);
       ++i_;
-      return tmp;;
+      return tmp;
+      ;
     }
 
     const_outer_iterator& operator--() {
@@ -294,7 +296,8 @@ public:    // fixme
     const_outer_iterator operator--(int) const {
       const_outer_iterator tmp(*this);
       --i_;
-      return tmp;;
+      return tmp;
+      ;
     }
 
     const_outer_iterator& operator+=(difference_type n) {
@@ -319,13 +322,11 @@ public:    // fixme
     bool operator<=(const const_outer_iterator& b) const { return i_ <= b.i_; }
     bool operator>=(const const_outer_iterator& b) const { return i_ >= b.i_; }
 
-
-
     reference operator*() { return {indexed_ + indices_[i_], indexed_ + indices_[i_ + 1]}; }
     reference operator*() const { return {indexed_ + indices_[i_], indexed_ + indices_[i_ + 1]}; }
 
-    pointer operator->()       { return nullptr; } 
-    pointer operator->() const { return nullptr; } 
+    pointer operator->() { return nullptr; }
+    pointer operator->() const { return nullptr; }
 
     reference operator[](index_t n) { return {indexed_ + indices_[i_ + n], indexed_ + indices_[i_ + n + 1]}; }
     reference operator[](index_t n) const { return {indexed_ + indices_[i_ + n], indexed_ + indices_[i_ + n + 1]}; }
@@ -562,20 +563,17 @@ public:    // fixme
   }
 };
 
-
-
-  //template <typename index_t, typename... Attributes>
-  //auto operator+(typename std::iter_difference_t<typename indexed_struct_of_arrays<index_t, Attributes...>::outer_iterator> n, const typename indexed_struct_of_arrays<index_t, Attributes...>::outer_iterator i) {
-  //  return i + n;
-  //}
+//template <typename index_t, typename... Attributes>
+//auto operator+(typename std::iter_difference_t<typename indexed_struct_of_arrays<index_t, Attributes...>::outer_iterator> n, const typename indexed_struct_of_arrays<index_t, Attributes...>::outer_iterator i) {
+//  return i + n;
+//}
 
 template <std::signed_integral T, typename I>
-I operator+(T n, const I i) { return i + n; }
+I operator+(T n, const I i) {
+  return i + n;
+}
 
-
- // 'std::iter_difference_t<nw::graph::indexed_struct_of_arrays<unsigned int, unsigned int>::outer_iterator>' {aka 'const int'} and 'const nw::graph::indexed_struct_of_arrays<unsigned int, unsigned int>::outer_iterator')
-
-
+// 'std::iter_difference_t<nw::graph::indexed_struct_of_arrays<unsigned int, unsigned int>::outer_iterator>' {aka 'const int'} and 'const nw::graph::indexed_struct_of_arrays<unsigned int, unsigned int>::outer_iterator')
 
 }    // namespace graph
 }    // namespace nw

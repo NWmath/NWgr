@@ -46,36 +46,34 @@ static bool g_time_edge_list  = false;
 void debug_edge_list(bool flag = true) { g_debug_edge_list = flag; }
 void time_edge_list(bool flag = true) { g_time_edge_list = flag; }
 
-template <std::unsigned_integral vertex_id_type, typename graph_base_t, directedness direct = directedness::undirected, typename... Attributes>
+template <std::unsigned_integral vertex_id_type, typename graph_base_t, directedness direct = directedness::undirected,
+          typename... Attributes>
 class index_edge_list : public graph_base_t, public struct_of_arrays<vertex_id_type, vertex_id_type, Attributes...> {
 
 public:
   // private:
-  using graph_base = graph_base_t;
-  using vertex_id_t                           = vertex_id_type;
+  using graph_base  = graph_base_t;
+  using vertex_id_t = vertex_id_type;
 
-  using base       = struct_of_arrays<vertex_id_t, vertex_id_t, Attributes...>;
-  using element    = std::tuple<vertex_id_t, vertex_id_t, Attributes...>;
-
+  using base    = struct_of_arrays<vertex_id_t, vertex_id_t, Attributes...>;
+  using element = std::tuple<vertex_id_t, vertex_id_t, Attributes...>;
 
   static const directedness edge_directedness = direct;
   using attributes_t                          = std::tuple<Attributes...>;
-  using num_vertices_t = graph_base::vertex_cardinality_t;
-  using num_edges_t = base::difference_type;
-
+  using num_vertices_t                        = graph_base::vertex_cardinality_t;
+  using num_edges_t                           = base::difference_type;
 
   using my_type         = index_edge_list<vertex_id_type, graph_base_t, direct, Attributes...>;
   using directed_type   = index_edge_list<vertex_id_type, graph_base_t, directedness::directed, Attributes...>;
   using undirected_type = index_edge_list<vertex_id_type, graph_base_t, directedness::undirected, Attributes...>;
 
-
 public:
   constexpr static const bool is_unipartite = std::is_same<graph_base, unipartite_graph_base>::value;
 
-  constexpr index_edge_list(const index_edge_list&)            = default;
+  constexpr index_edge_list(const index_edge_list&) = default;
   constexpr index_edge_list& operator=(const index_edge_list&) = default;
   constexpr index_edge_list(index_edge_list&&)                 = default;
-  constexpr index_edge_list& operator=(index_edge_list&&)      = default;
+  constexpr index_edge_list& operator=(index_edge_list&&) = default;
 
   index_edge_list(size_t N = 0) requires(std::is_same<graph_base, unipartite_graph_base>::value) : graph_base(N) {
     open_for_push_back();
@@ -176,7 +174,7 @@ public:
     infile.read(reinterpret_cast<char*>(&d), sizeof(d));
     if (d != edge_directedness) {
       std::cout << std::string("Warning: Expected directedness ") + std::to_string((int)edge_directedness) + " but got " +
-	std::to_string((int)d)
+                       std::to_string((int)d)
                 << std::endl;
     }
     infile.read(reinterpret_cast<char*>(&graph_base::vertex_cardinality[0]), sizeof(graph_base::vertex_cardinality));
