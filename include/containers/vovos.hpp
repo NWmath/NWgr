@@ -14,7 +14,6 @@
 #include <tuple>
 #include <vector>
 
-
 #include "edge_list.hpp"
 #include "graph_base.hpp"
 
@@ -25,7 +24,7 @@ template <typename... Attributes>
 class vector_of_vector_of_structs : public std::vector<std::forward_list<std::tuple<Attributes...>>> {
 
 public:
-  using base = std::vector<std::forward_list<std::tuple<Attributes...>>>;
+  using base        = std::vector<std::forward_list<std::tuple<Attributes...>>>;
   using vertex_id_t = base::difference_type;
 
   vector_of_vector_of_structs(size_t N) : base(N) {}
@@ -45,10 +44,9 @@ template <typename... Attributes>
 class vov : public vector_of_vector_of_structs<size_t, Attributes...> {
   using base = vector_of_vector_of_structs<size_t, Attributes...>;
 
-
 public:
   using attributes_t = std::tuple<Attributes...>;
-  using vertex_id_t = base::difference_type;
+  using vertex_id_t  = base::difference_type;
 
   static constexpr std::size_t getNAttr() { return sizeof...(Attributes); }
 
