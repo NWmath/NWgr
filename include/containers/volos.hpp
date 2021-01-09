@@ -5,15 +5,20 @@
 // Author: Andrew Lumsdaine (c) 2018
 //
 
-#ifndef NW_GRAPH_AOLOS_HPP
-#define NW_GRAPH_AOLOS_HPP
+#ifndef NW_GRAPH_VOLOS_HPP
+#define NW_GRAPH_VOLOS_HPP
 
-#include "edge_list.hpp"
-#include "graph_base.hpp"
+
 #include <cassert>
 #include <forward_list>
 #include <tuple>
 #include <vector>
+
+
+#include "graph_base.hpp"
+#include "edge_list.hpp"
+#include "graph_traits.hpp"
+
 
 namespace nw {
 namespace graph {
@@ -72,6 +77,40 @@ private:
 template <int idx, typename... Attributes>
 using adj_list = index_adj_list<idx, default_vertex_id_t, Attributes...>;
 
+
+template <typename... Attributes>
+struct graph_traits<std::vector<std::forward_list<std::tuple<Attributes...>>>> {
+  using tuple_type = std::tuple<Attributes...>;
+  using inner_type = std::forward_list<tuple_type>;
+  using outer_type = std::vector<inner_type>;
+
+  using outer_iterator = typename outer_type::iterator;
+  using inner_iterator = typename inner_type::iterator;
+
+  using vertex_id_t = std::tuple_element<0, tuple_type>::type;
+  using vertex_size_t = typename outer_type::size_type;
+  using num_vertices_t = std::array<vertex_size_t, 1>;
+};
+
+
+template <typename... Attributes>
+struct graph_traits<std::forward_list<std::tuple<Attributes...>>> {
+  using tuple_type = std::tuple<Attributes...>;
+
+  using vertex_id_t = std::tuple_element<0, tuple_type>::type;
+};
+
+
+
+template <typename... Attributes>
+graph_traits<std::vector<std::forward_list<std::tuple<Attributes...>>>>::num_vertices_t
+num_vertices(const typename std::vector<std::forward_list<std::tuple<Attributes...>>>& g) {
+  return { g.size() };
+}
+
 }    // namespace graph
 }    // namespace nw
-#endif    // NW_GRAPH_AOLOS_HPP
+
+
+
+#endif    // NW_GRAPH_VOLOS_HPP

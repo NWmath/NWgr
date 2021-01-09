@@ -2,11 +2,19 @@
 
 #include <deque>
 #include <vector>
-#include "graph_concepts.hpp"
+#include <forward_list>
+#include <tuple>
+
+
+#include "graph_traits.hpp"
+
+#include "containers/volos.hpp"
 #include "containers/edge_list.hpp"
 #include "containers/adjacency.hpp"
 #include "containers/vovos.hpp"
 
+
+#include "graph_concepts.hpp"
 
 template <nw::graph::edge_list_graph edge_list_t>
 auto t0 (edge_list_t el) {
@@ -70,36 +78,52 @@ auto bfs_vv(Graph& graph, typename nw::graph::graph_traits<Graph>::vertex_id_t r
 }
 
 
+template <typename T>
+void adjacency_container_test(T a) {
+  static_assert(std::is_constructible_v<T>);
+  static_assert(std::is_default_constructible_v<typename T::outer_iterator>);
+  static_assert(std::is_copy_constructible_v<typename T::outer_iterator>);
+  static_assert(std::is_move_constructible_v<typename T::outer_iterator>);
+  static_assert(std::is_constructible_v<typename T::outer_iterator>);
+}
+
+
+
+template <typename T>
+void adjacency_concept_test(T a) {
+
+  static_assert(nw::graph::adjacency_graph<T>);
+
+  t3(a);
+  t4(a);
+  t5(std::move(a));
+}
+
 
 int main() {
 
   //  nw::graph::edge_list a { {0, 0}, {0, 4} };  // compiler dumps core
 
-
   nw::graph::edge_list<nw::graph::directedness::directed> e { { 0, 0}, { 0, 4}, {4, 4}, {4, 0} };
-
 
   static_assert(std::is_constructible_v<decltype(e)>);
   static_assert(std::ranges::forward_range<nw::graph::edge_list<nw::graph::directedness::directed>>);
 
+  static_assert(nw::graph::edge_list_graph<decltype(e)>);
 
   t0(e);
   t1(e);
   t2(std::move(e));
 
-  auto a = make_adjacency<0>(e);
 
-  static_assert(std::is_constructible_v<decltype(a)>);
-  static_assert(std::is_default_constructible_v<typename decltype(a)::outer_iterator>);
-  static_assert(std::is_copy_constructible_v<typename decltype(a)::outer_iterator>);
-  static_assert(std::is_move_constructible_v<typename decltype(a)::outer_iterator>);
-  static_assert(std::is_constructible_v<typename decltype(a)::outer_iterator>);
+  adjacency_concept_test(std::vector<std::forward_list<std::tuple<int, int, double>>>());
 
-  static_assert(nw::graph::adjacency_graph<decltype(a)>);
-  t3(a);
-  t4(a);
-  t5(std::move(a));
+  adjacency_concept_test(nw::graph::adjacency<0>());
+  // auto a = make_adjacency<0>(e);
+  // adjacency_concept_test(a);
 
+
+  adjacency_concept_test(nw::graph::adj_list<0>());
 
   
 

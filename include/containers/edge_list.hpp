@@ -221,6 +221,20 @@ using edge_list = index_edge_list<default_vertex_id_t, unipartite_graph_base, ed
 template <directedness edge_directedness = directedness::undirected, typename... Attributes>
 using bi_edge_list = index_edge_list<default_vertex_id_t, bipartite_graph_base, edge_directedness, Attributes...>;
 
+
+template <std::unsigned_integral vertex_id_type, typename graph_base_t, directedness direct = directedness::undirected,
+          typename... Attributes>
+auto num_edges(const index_edge_list<vertex_id_type, graph_base_t, direct, Attributes...>& g) {
+  return g.num_edges();
+}
+
+template <std::unsigned_integral vertex_id_type, typename graph_base_t, directedness direct = directedness::undirected,
+          typename... Attributes>
+auto num_vertices(const index_edge_list<vertex_id_type, graph_base_t, direct, Attributes...>& g) {
+  return g.num_vertices();
+}
+
+
 }    // namespace graph
 }    // namespace nw
 

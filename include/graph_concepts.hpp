@@ -1,67 +1,17 @@
+//
+// This file is part of BGL17 NW Graph aka GraphPack aka the Graph Standard Library
+// (c) Pacific Northwest National Laboratory 2018-2020
+// (c) University of Washington 2018-2020
+//
+// Licensed under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License
+// https://creativecommons.org/licenses/by-nc-sa/4.0/
+//
+// Author: Andrew Lumsdaine
+//
 
 
 #ifndef NW_GRAPH_GRAPH_CONCEPTS_HPP
 #define NW_GRAPH_GRAPH_CONCEPTS_HPP
-
-
-// #include "graph_base.hpp"
-
-#if 0
-
-template <typename T>
-using inner_range = std::ranges::range_value_t<T>;
-
-template <typename T>
-using inner_value = std::ranges::range_value_t<inner_range<T>>;
-
-template <typename T>
-using vertex_id_t = nw::graph::vertex_id_t;
-
-template <typename T>
-using index_t = nw::graph::vertex_id_t;
-
-template <typename T>
-concept Adjacence =
-  requires (T graph, inner_value<T> vertex) {
-    { target (vertex) } -> std::convertible_to<vertex_id_t<T>>;
-  };
-
-template <typename T>
-concept Incidence =
-  requires (T graph, inner_value<T> edge) {
-    { source (edge) } -> std::convertible_to<vertex_id_t<T>>;
-    { target (edge) } -> std::convertible_to<vertex_id_t<T>>;
-  };
-
-template <typename T>
-concept Graph = 
-  std::ranges::random_access_range<T> &&
-  std::ranges::forward_range<inner_range<T>> &&
-  std::convertible_to<vertex_id_t<T>, index_t<T>>;
-
-template <typename T>
-concept IncidenceGraph = Graph<T> && Incidence<T>;
-
-template <typename T>
-concept AdjacenceGraph = Graph<T> && Adjacence<T>;
-
-
-namespace nw {
-namespace graph {
-
-template <typename E>
-concept edge_list_c = std::ranges::random_access_range<E>&& requires(E e) {
-  typename E::vertex_id_t;
-  typename E::attributes_t;
-  typename E::element;
-  e.size();
-  { std::is_same_v<decltype(E::edge_directedness), directedness> };
-
-};
-
-}    // namespace graph
-}    // namespace nw
-#endif
 
 #include <concepts>
 #include <iterator>
@@ -77,64 +27,57 @@ template <typename G>
 using inner_range = std::iterator_traits<typename G::iterator>::value_type;
 // using inner_range = std::ranges::range_value_t<G>;
 
-
 template <typename G>
 using inner_value = std::iterator_traits<typename inner_range<G>::iterator>::value_type;
 // using inner_value = std::ranges::range_value_t<inner_range<G>>;
-
 
 template <typename G>
 concept graph = std::semiregular<G>&& requires(G g) {
   typename graph_traits<G>::vertex_id_t;
   typename graph_traits<G>::num_vertices_t;
-  typename graph_traits<G>::num_edges_t;
 
   { num_vertices(g) }
   ->std::convertible_to<typename graph_traits<G>::num_vertices_t>;
-  { num_edges(g) }
-  ->std::convertible_to<typename graph_traits<G>::num_edges_t>;
+
+  //  typename graph_traits<G>::num_edges_t;
+  //  { num_edges(g) }
+  //  ->std::convertible_to<typename graph_traits<G>::num_edges_t>;
 };
 
+template <typename R, typename G = R>
+concept vertex_list_c = std::forward_iterator<typename R::iterator>
+                        // std::ranges::forward_range<R>
+                        && (
+                               requires(std::iterator_traits<typename R::iterator>::value_type e) {
+                                 { std::get<0>(e) }
+                                 ->std::convertible_to<typename graph_traits<G>::vertex_id_t>;    // target
+                               } ||
+                               requires(std::iterator_traits<typename R::iterator>::value_type e) {
+                                 { adjacent(e) }
+                                 ->std::convertible_to<typename graph_traits<G>::vertex_id_t>;
+                               });
 
-template <typename G>
-concept vertex_list_c = std::random_access_iterator<typename G::iterator> 
-// std::ranges::forward_range<G> 
-&&
+template <typename R, typename G = R>
+concept edge_list_c = std::forward_iterator<typename G::iterator> &&
                       (
-                          requires(G g,  std::iterator_traits<typename G::iterator>::value_type e) {
+                          requires(std::iterator_traits<typename R::iterator>::value_type e) {
                             { std::get<0>(e) }
+                            ->std::convertible_to<typename graph_traits<G>::vertex_id_t>;    // source
+                            { std::get<1>(e) }
                             ->std::convertible_to<typename graph_traits<G>::vertex_id_t>;    // target
                           } ||
-                          requires(G g, std::iterator_traits<typename G::iterator>::value_type e) {
+                          requires(std::iterator_traits<typename R::iterator>::value_type e) {
+                            { source(e) }
+                            ->std::convertible_to<typename graph_traits<G>::vertex_id_t>;
                             { target(e) }
                             ->std::convertible_to<typename graph_traits<G>::vertex_id_t>;
                           });
 
 template <typename G>
-concept edge_list_c = std::forward_iterator<typename G::iterator> 
-  &&
-                    (
-		     requires(G g, std::iterator_traits<typename G::iterator>::value_type e) {
-                          { std::get<0>(e) }
-                          ->std::convertible_to<typename graph_traits<G>::vertex_id_t>;    // source
-                          { std::get<1>(e) }
-                          ->std::convertible_to<typename graph_traits<G>::vertex_id_t>;    // target
-                        } ||
-                        requires(G g, std::iterator_traits<typename G::iterator>::value_type e) {
-                          { source(e) }
-                          ->std::convertible_to<typename graph_traits<G>::vertex_id_t>;
-                          { target(e) }
-                          ->std::convertible_to<typename graph_traits<G>::vertex_id_t>;
-                        });
-
-
-template <typename G>
 concept edge_list_graph = graph<G>&& edge_list_c<G>;
 
-
 template <typename G>
-concept adjacency_graph = graph<G>&& std::random_access_iterator<typename G::iterator> 
-&& vertex_list_c<inner_range<G>> &&
+concept adjacency_graph = graph<G>&& std::random_access_iterator<typename G::iterator>&& vertex_list_c<inner_range<G>, G> &&
                           (
                               requires(G g, typename graph_traits<G>::vertex_id_t u) {
                                 { adjacent_vertices(g, u) }
@@ -146,7 +89,7 @@ concept adjacency_graph = graph<G>&& std::random_access_iterator<typename G::ite
                               });
 
 template <typename G>
-concept incidence_graph = graph<G>&& std::random_access_iterator<typename G::iterator>&& edge_list_c<inner_range<G>> &&
+concept incidence_graph = graph<G>&& std::random_access_iterator<typename G::iterator>&& edge_list_c<inner_range<G>, G> &&
                           (
                               requires(G g, typename graph_traits<G>::vertex_id_t u) {
                                 { out_edges(g, u) }

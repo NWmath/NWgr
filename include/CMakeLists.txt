@@ -56,7 +56,7 @@ target_sources(nw_graph
   adaptors/dfs_range.hpp
   util/proxysort.hpp
   containers/compressed.hpp
-  containers/aolos.hpp
+  containers/volos.hpp
   containers/adjacency.hpp
   util/util_par.hpp
   adaptors/reverse.hpp

@@ -14,9 +14,6 @@
 
 #include <type_traits>
 
-
-
-
 namespace nw {
 namespace graph {
 
@@ -39,8 +36,7 @@ void lexical_sort_by(edge_list_t& el, ExecutionPolicy&& policy = {}) {
   const int jdx = (idx + 1) % 2;
 
   if constexpr (idx == 0) {
-    std::sort(policy, el.begin(), el.end()
-    );
+    std::sort(policy, el.begin(), el.end());
   } else {
     std::sort(policy, el.begin(), el.end(), [](const auto& a, const auto& b) -> bool {
       return std::tie(std::get<1>(a), std::get<0>(a)) < std::tie(std::get<1>(b), std::get<0>(b));
@@ -58,8 +54,6 @@ void lexical_stable_sort_by(edge_list_t& el, ExecutionPolicy&& policy = {}) {
   });
 }
 
-
-
 #if 0
 template <class edge_list_t, class adjacency_t>
 void push_back_fill_x(edge_list_t& el, adjacency_t& cs) {
@@ -72,42 +66,32 @@ void push_back_fill_x(edge_list_t& el, adjacency_t& cs) {
 
 #endif
 
-
 template <class adjacency_t, typename... Ts>
 auto push_back_fill_helper(adjacency_t& cs, std::tuple<Ts...> const& theTuple) {
 
-    std::apply(
-	       [&](Ts const&... args) {
-		 cs.push_back(args...);
-	       }, theTuple);
+  std::apply([&](Ts const&... args) { cs.push_back(args...); }, theTuple);
 }
- 
 
 template <class edge_list_t, class adjacency_t>
 void push_back_fill(edge_list_t& el, adjacency_t& cs) {
-    cs.open_for_push_back();
+  cs.open_for_push_back();
 
-    std::for_each(el.begin(), el.end(), [&](auto&& elt) {
-      push_back_fill_helper(cs, elt);
-    });
+  std::for_each(el.begin(), el.end(), [&](auto&& elt) { push_back_fill_helper(cs, elt); });
 
-    cs.close_for_push_back();
-  }
-
-
-
-template <class edge_list_t, class adjacency_t, class ExecutionPolicy = std::execution::parallel_unsequenced_policy, size_t... Is>
-void fill_helper(edge_list_t& el, adjacency_t& cs, std::index_sequence<Is...> is,
-                 ExecutionPolicy&& policy = {}) {
-  (..., (std::copy(policy, std::get<Is + 2>(dynamic_cast<edge_list_t::base&>(el)).begin(), std::get<Is + 2>(dynamic_cast<edge_list_t::base&>(el)).end(),
-                   std::get<Is + 1>(cs.to_be_indexed_).begin())));
+  cs.close_for_push_back();
 }
 
-template <class edge_list_t, class adjacency_t, class T, class ExecutionPolicy = std::execution::parallel_unsequenced_policy, size_t... Is>
-void fill_helper(edge_list_t& el, adjacency_t& cs, std::index_sequence<Is...> is, T& Tmp,
-                 ExecutionPolicy&& policy = {}) {
-  (..., (std::copy(policy, std::get<Is + 2>(dynamic_cast<edge_list_t::base&>(Tmp)).begin(), std::get<Is + 2>(dynamic_cast<edge_list_t::base&>(Tmp)).end(),
-                   std::get<Is + 1>(cs.to_be_indexed_).begin())));
+template <class edge_list_t, class adjacency_t, class ExecutionPolicy = std::execution::parallel_unsequenced_policy, size_t... Is>
+void fill_helper(edge_list_t& el, adjacency_t& cs, std::index_sequence<Is...> is, ExecutionPolicy&& policy = {}) {
+  (..., (std::copy(policy, std::get<Is + 2>(dynamic_cast<edge_list_t::base&>(el)).begin(),
+                   std::get<Is + 2>(dynamic_cast<edge_list_t::base&>(el)).end(), std::get<Is + 1>(cs.to_be_indexed_).begin())));
+}
+
+template <class edge_list_t, class adjacency_t, class T, class ExecutionPolicy = std::execution::parallel_unsequenced_policy,
+          size_t... Is>
+void fill_helper(edge_list_t& el, adjacency_t& cs, std::index_sequence<Is...> is, T& Tmp, ExecutionPolicy&& policy = {}) {
+  (..., (std::copy(policy, std::get<Is + 2>(dynamic_cast<edge_list_t::base&>(Tmp)).begin(),
+                   std::get<Is + 2>(dynamic_cast<edge_list_t::base&>(Tmp)).end(), std::get<Is + 1>(cs.to_be_indexed_).begin())));
 }
 
 template <int idx, class edge_list_t, class adjacency_t, class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
@@ -122,14 +106,14 @@ void fill(edge_list_t& el, adjacency_t& cs, ExecutionPolicy&& policy = {}) {
     if constexpr (edge_list_t::is_unipartite) {
       cs.indices_.resize(el.num_vertices()[idx] + 1);
     } else {
-      cs.indices_.resize(el.num_vertices()[kdx] + 1); // ???
+      cs.indices_.resize(el.num_vertices()[kdx] + 1);    // ???
     }
 
     std::inclusive_scan(std::execution::par, degree.begin(), degree.end(), cs.indices_.begin() + 1);
     cs.to_be_indexed_.resize(el.size());
 
-    std::copy(policy, std::get<kdx>(dynamic_cast<edge_list_t::base&>(el)).begin(), std::get<kdx>(dynamic_cast<edge_list_t::base&>(el)).end(),
-              std::get<0>(cs.to_be_indexed_).begin());
+    std::copy(policy, std::get<kdx>(dynamic_cast<edge_list_t::base&>(el)).begin(),
+              std::get<kdx>(dynamic_cast<edge_list_t::base&>(el)).end(), std::get<0>(cs.to_be_indexed_).begin());
 
     if constexpr (std::tuple_size<typename edge_list_t::attributes_t>::value > 0) {
       fill_helper(el, cs, std::make_integer_sequence<size_t, std::tuple_size<typename edge_list_t::attributes_t>::value>());
@@ -139,10 +123,11 @@ void fill(edge_list_t& el, adjacency_t& cs, ExecutionPolicy&& policy = {}) {
 
     assert(edge_list_t::is_unipartite == true);
 
-    typename edge_list_t::directed_type Tmp(el.num_vertices()[0]); // directedness doesn't matter for the Tmp, so just use same type as el
-                                                          // EXCEPT -- degrees does something different if undirected
-    Tmp.resize(2*el.size());
- 
+    typename edge_list_t::directed_type Tmp(
+        el.num_vertices()[0]);    // directedness doesn't matter for the Tmp, so just use same type as el
+                                  // EXCEPT -- degrees does something different if undirected
+    Tmp.resize(2 * el.size());
+
     std::copy(policy, el.begin(), el.end(), Tmp.begin());
 
     std::transform(policy, el.begin(), el.end(), Tmp.begin() + el.size(), [&](auto&& elt) {
@@ -150,26 +135,24 @@ void fill(edge_list_t& el, adjacency_t& cs, ExecutionPolicy&& policy = {}) {
       std::swap(std::get<0>(flt), std::get<1>(flt));
       return flt;
     });
-    
+
     sort_by<idx>(Tmp);    // stable_sort may allocate extra memory
-    
+
     auto degree = degrees<idx>(Tmp);    // Can have a fast version if we know it is sorted -- using equal_range
     cs.indices_.resize(el.num_vertices()[0] + 1);
-    
+
     std::inclusive_scan(std::execution::par, degree.begin(), degree.end(), cs.indices_.begin() + 1);
     cs.to_be_indexed_.resize(Tmp.size());
 
     const int kdx = (idx + 1) % 2;
-    std::copy(policy, std::get<kdx>(dynamic_cast<edge_list_t::base&>(Tmp)).begin(), std::get<kdx>(dynamic_cast<edge_list_t::base&>(Tmp)).end(),
-	      std::get<0>(cs.to_be_indexed_).begin());
-    
+    std::copy(policy, std::get<kdx>(dynamic_cast<edge_list_t::base&>(Tmp)).begin(),
+              std::get<kdx>(dynamic_cast<edge_list_t::base&>(Tmp)).end(), std::get<0>(cs.to_be_indexed_).begin());
+
     if constexpr (std::tuple_size<typename edge_list_t::attributes_t>::value > 0) {
       fill_helper(el, cs, std::make_integer_sequence<size_t, std::tuple_size<typename edge_list_t::attributes_t>::value>(), Tmp);
     }
   }
 }
-
-
 
 template <int idx, class edge_list_t>
 void swap_to_triangular(edge_list_t& el, const std::string& cessor = "predecessor") {
@@ -222,7 +205,6 @@ void remove_self_loops(edge_list_t& el) {
   el.resize(past_the_end - el.begin());
 }
 
-
 template <int d_idx = 0, class edge_list_t, class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
 auto degrees(edge_list_t& el, ExecutionPolicy&& policy = {}) {
 
@@ -256,7 +238,7 @@ auto perm_by_degree(edge_list_t& el, std::string direction = "ascending") {
   return perm_by_degree<idx>(el, degree, direction);
 }
 
-template <int idx = 0,  class edge_list_t, class Vector, class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
+template <int idx = 0, class edge_list_t, class Vector, class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
 auto perm_by_degree(edge_list_t& el, Vector&& degree, std::string direction = "ascending", ExecutionPolicy&& policy = {}) {
 
   std::vector<typename edge_list_t::vertex_id_t> perm(degree.size());
@@ -299,7 +281,8 @@ void relabel(edge_list_t& el, Vector&& perm, ExecutionPolicy&& policy = {}) {
 template <int idx, class edge_list_t, class Vector = std::vector<int>>
 void relabel_by_degree(edge_list_t& el, std::string direction = "ascending", Vector&& degree = std::vector<int>(0)) {
 
-  std::vector<typename edge_list_t::vertex_id_t> perm = degree.size() == 0 ? perm_by_degree<0>(el, direction) : perm_by_degree<0>(el, degree, direction);
+  std::vector<typename edge_list_t::vertex_id_t> perm =
+      degree.size() == 0 ? perm_by_degree<0>(el, direction) : perm_by_degree<0>(el, degree, direction);
 
   relabel(el, perm);
 }
