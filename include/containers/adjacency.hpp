@@ -89,6 +89,12 @@ auto make_adjacency(edge_list_t& el) {
   return adjacency<idx>(el);
 }
 
+template <int idx, std::unsigned_integral index_type, std::unsigned_integral vertex_id_type, typename... Attributes>
+auto num_vertices(const index_adjacency<idx, index_type, vertex_id_type, Attributes...>& g) {
+  return g.num_vertices();
+}
+
+
 }    // namespace graph
 }    // namespace nw
 

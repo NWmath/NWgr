@@ -33,7 +33,7 @@
 namespace nw {
 namespace graph {
 
-void mm_fill(std::istream& inputStream, edge_list<directed>& A, size_t nNonzeros, bool file_symmetry, bool pattern) {
+  void mm_fill(std::istream& inputStream, edge_list<directedness::directed>& A, size_t nNonzeros, bool file_symmetry, bool pattern) {
   A.reserve((file_symmetry ? 2 : 1) * nNonzeros);
   A.open_for_push_back();
   for (size_t i = 0; i < nNonzeros; ++i) {
@@ -53,7 +53,7 @@ void mm_fill(std::istream& inputStream, edge_list<directed>& A, size_t nNonzeros
 }
 
 template <typename T>
-void mm_fill(std::istream& inputStream, edge_list<directed, T>& A, size_t nNonzeros, bool file_symmetry, bool pattern) {
+void mm_fill(std::istream& inputStream, edge_list<directedness::directed, T>& A, size_t nNonzeros, bool file_symmetry, bool pattern) {
 
   A.reserve((file_symmetry ? 2 : 1) * nNonzeros);
   A.open_for_push_back();
@@ -78,7 +78,7 @@ void mm_fill(std::istream& inputStream, edge_list<directed, T>& A, size_t nNonze
   A.close_for_push_back();
 }
 
-void mm_fill(std::istream& inputStream, edge_list<undirected>& A, size_t nNonzeros, bool file_symmetry, bool pattern) {
+  void mm_fill(std::istream& inputStream, edge_list<directedness::undirected>& A, size_t nNonzeros, bool file_symmetry, bool pattern) {
 
   A.reserve(nNonzeros);
   A.open_for_push_back();
@@ -99,7 +99,7 @@ void mm_fill(std::istream& inputStream, edge_list<undirected>& A, size_t nNonzer
 }
 
 template <typename T>
-void mm_fill(std::istream& inputStream, edge_list<undirected, T>& A, size_t nNonzeros, bool file_symmetry, bool pattern) {
+void mm_fill(std::istream& inputStream, edge_list<directedness::undirected, T>& A, size_t nNonzeros, bool file_symmetry, bool pattern) {
   // assert(file_symmetry);
   A.reserve(nNonzeros);
   A.open_for_push_back();
@@ -260,9 +260,9 @@ directedness get_mm_symmetry(const std::string filename) {
     throw;
   }
   if (header[4] == "symmetric") {
-    return undirected;
+    return directedness::undirected;
   } else {
-    return directed;
+    return directedness::directed;
   }
 }
 

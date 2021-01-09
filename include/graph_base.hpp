@@ -21,8 +21,6 @@ namespace graph {
 enum class succession { successor, predecessor };
 enum class directedness { undirected, directed };
 
-
-
 template <succession success>
 struct other_succession {
   const succession cessor;
@@ -58,10 +56,9 @@ class unipartite_graph_base {
 public:
   using vertex_cardinality_t = std::array<size_t, 1>;
 
-  unipartite_graph_base(size_t d0 = 0) : vertex_cardinality {d0}, is_open(false) {}
+  unipartite_graph_base(size_t d0 = 0) : vertex_cardinality{d0}, is_open(false) {}
 
   // auto num_edges() { return num_edges_; }
-
 
 protected:
   vertex_cardinality_t vertex_cardinality;
@@ -78,11 +75,8 @@ public:
 
 protected:
   vertex_cardinality_t vertex_cardinality;    // ordinal limits
-  bool                 is_open;    // can we mutate graph
+  bool                 is_open;               // can we mutate graph
 };
-
-
-
 
 }    // namespace graph
 }    // namespace nw
