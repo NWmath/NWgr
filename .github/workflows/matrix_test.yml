@@ -18,9 +18,9 @@ jobs:
       matrix:
         compiler: [ gcc-10, clang-11]
         os: [ macos-10.15, macos-11.0, ubuntu-20.04 ]
-	
+
     runs-on: ${{ matrix.os }}
-    
+
     steps:
     - name: Checkout NWgr
       uses: actions/checkout@v2
