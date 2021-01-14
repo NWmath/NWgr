@@ -42,7 +42,7 @@ jobs:
 
     - name: install tbb (Mac)
       run: |
-        sudo brew install tbb
+        brew install tbb
       if: matrix.os == 'macos-10.15' || matrix.os == 'macos-11.0'
 
     - name: setup gcc 
