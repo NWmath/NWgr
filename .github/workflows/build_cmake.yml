@@ -20,13 +20,14 @@ jobs:
 
     - name: Checkout NWgr
       uses: actions/checkout@v2
+      with:
+        path: NWgr
 
     - name: Checkout NWut
       uses: actions/checkout@v2
       with:
         repository: NWmath/NWut
-        token: ${{ secrets.GITHUB_TOKEN }}
-        path: ../NWut
+        path: NWut
 
     - name: prep
       run: |
