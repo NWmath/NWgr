@@ -13,11 +13,29 @@
 #ifndef NW_GRAPH_GRAPH_CONCEPTS_HPP
 #define NW_GRAPH_GRAPH_CONCEPTS_HPP
 
+#include <array>
 #include <concepts>
 #include <iterator>
+#include <ranges>
 #include <tuple>
 
 #include "graph_traits.hpp"
+
+
+
+namespace nw {
+namespace graph {
+
+template <std::ranges::random_access_range G>
+std::array<typename G::size_type, 1> num_vertices(const G& g) {
+  return { size(g) };
+}
+
+
+
+}
+}
+
 
 namespace nw {
 namespace graph {
@@ -36,8 +54,7 @@ concept graph = std::semiregular<G>&& requires(G g) {
   typename graph_traits<G>::vertex_id_t;
   typename graph_traits<G>::num_vertices_t;
 
-  { num_vertices(g) }
-  ->std::convertible_to<typename graph_traits<G>::num_vertices_t>;
+  { num_vertices(g) } -> std::convertible_to<typename graph_traits<G>::num_vertices_t>;
 
   //  typename graph_traits<G>::num_edges_t;
   //  { num_edges(g) }
@@ -74,10 +91,10 @@ concept edge_list_c = std::forward_iterator<typename G::iterator> &&
                           });
 
 template <typename G>
-concept edge_list_graph = graph<G>&& edge_list_c<G>;
+concept edge_list_graph = graph<G> && edge_list_c<G>;
 
 template <typename G>
-concept adjacency_graph = graph<G>&& std::random_access_iterator<typename G::iterator>&& vertex_list_c<inner_range<G>, G> &&
+concept adjacency_graph = graph<G> && std::random_access_iterator<typename G::iterator> && vertex_list_c<inner_range<G>, G> &&
                           (
                               requires(G g, typename graph_traits<G>::vertex_id_t u) {
                                 { adjacent_vertices(g, u) }
@@ -89,7 +106,7 @@ concept adjacency_graph = graph<G>&& std::random_access_iterator<typename G::ite
                               });
 
 template <typename G>
-concept incidence_graph = graph<G>&& std::random_access_iterator<typename G::iterator>&& edge_list_c<inner_range<G>, G> &&
+concept incidence_graph = graph<G> && std::random_access_iterator<typename G::iterator> && edge_list_c<inner_range<G>, G> &&
                           (
                               requires(G g, typename graph_traits<G>::vertex_id_t u) {
                                 { out_edges(g, u) }
