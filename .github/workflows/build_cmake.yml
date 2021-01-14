@@ -40,11 +40,12 @@ jobs:
 
     - name: cmake
       run: |
+        cd NWgr
         mkdir build
         cd build
         cmake .. -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_CXX_COMPILER=g++-10
 
     - name: make
       run: |
-        cd build
+        cd NWgr/build
         make -k
