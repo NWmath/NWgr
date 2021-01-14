@@ -49,3 +49,4 @@ jobs:
       run: |
         cd NWgr/build
         make -k
+
