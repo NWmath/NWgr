@@ -21,9 +21,10 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: Checkout NWut
-      uses: actions/checkout@master
+      uses: actions/checkout@v2
       with:
         repository: NWmath/NWut
+	ref: master
 
     - name: prep
       run: |
