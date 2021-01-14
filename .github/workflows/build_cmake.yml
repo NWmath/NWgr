@@ -25,6 +25,7 @@ jobs:
       with:
         repository: NWmath/NWut
 	ref: master
+	path: NWut
 
     - name: prep
       run: |
