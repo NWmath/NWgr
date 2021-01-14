@@ -100,13 +100,15 @@ struct graph_traits<std::forward_list<std::tuple<Attributes...>>> {
   using vertex_id_t = std::tuple_element<0, tuple_type>::type;
 };
 
-
+#if 0
 
 template <typename... Attributes>
 graph_traits<std::vector<std::forward_list<std::tuple<Attributes...>>>>::num_vertices_t
 num_vertices(const typename std::vector<std::forward_list<std::tuple<Attributes...>>>& g) {
   return { g.size() };
 }
+#endif
+
 
 }    // namespace graph
 }    // namespace nw

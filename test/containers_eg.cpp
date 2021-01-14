@@ -44,7 +44,7 @@ auto t5 (adjacency_t&& el) {
 
 
 template <nw::graph::adjacency_graph Graph>
-auto bfs_vv(Graph& graph, typename nw::graph::graph_traits<Graph>::vertex_id_t root) {
+auto bfs_vv(const Graph& graph, typename nw::graph::graph_traits<Graph>::vertex_id_t root) {
   using vertex_id_t = typename nw::graph::graph_traits<Graph>::vertex_id_t;
 
   std::deque<vertex_id_t>  q1, q2;
@@ -126,6 +126,7 @@ int main() {
   adjacency_concept_test(nw::graph::adj_list<0>());
 
   
+  bfs_vv(nw::graph::adj_list<0>(), 0);
 
   // bfs_vv(a, 0);
 
