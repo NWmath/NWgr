@@ -50,6 +50,13 @@ jobs:
         brew install tbb
       if: matrix.os == 'macos-10.15' || matrix.os == 'macos-11.0'
 
+    - name: compiler prep (Ubuntu)
+      run: |
+        sudo update-alternatives --remove-all cc
+        sudo update-alternatives --remove-all c++
+      if: matrix.os == 'ubuntu-20.04'
+
+
     - name: setup gcc (Ubuntu)
       run: |
         sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-10 100 --slave /usr/bin/g++ g++ /usr/bin/g++-10
