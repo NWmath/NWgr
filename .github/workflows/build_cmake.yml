@@ -26,6 +26,7 @@ jobs:
       with:
         repository: NWmath/NWut
         token: ${{ secrets.GITHUB_TOKEN }}
+        path: NWut
 
     - name: prep
       run: |
