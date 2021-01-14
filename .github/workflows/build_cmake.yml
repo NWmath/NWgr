@@ -20,14 +20,14 @@ jobs:
 
     - name: Checkout
       uses: actions/checkout@v2
-      with:
-        path: NWgr
+
 
     - name: Checkout tools reutils
       uses: actions/checkout@v2
       with:
         repository: NWmath/NWut
         path: NWut
+	ref: master
 
     - name: Check out my other private repo
 
