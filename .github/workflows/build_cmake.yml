@@ -27,6 +27,7 @@ jobs:
       uses: actions/checkout@v2
       with:
         repository: NWmath/NWut
+        ref: master
         path: NWut
 
     - name: prep
