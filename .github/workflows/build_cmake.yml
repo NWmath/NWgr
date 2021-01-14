@@ -18,7 +18,8 @@ jobs:
 
     steps:
 
-    - uses: actions/checkout@v2
+    - name: Checkout NWgr
+      uses: actions/checkout@v2
 
     - name: Checkout NWut
       uses: actions/checkout@v2
