@@ -14,23 +14,13 @@ env:
 jobs:
   build:
 
+    uses: actions/checkout@v2
+
     runs-on: ubuntu-20.04
 
     steps:
 
-    - name: Checkout
-      uses: actions/checkout@v2
-
-
-    - name: Checkout tools reutils
-      uses: actions/checkout@v2
-      with:
-        repository: NWmath/NWut
-        path: NWut
-	ref: master
-
-    - name: Check out my other private repo
-
+    - name: Checkout NWut
       uses: actions/checkout@master
       with:
         repository: NWmath/NWut
