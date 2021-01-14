@@ -1,0 +1,74 @@
+# Workflow to test matrix builds
+
+name: Build matrix 
+
+on:
+  push: 
+    branches: [ master, pre_release ]
+  workflow_dispatch: 
+    branches: [ master, pre_release ]
+
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
+
+jobs:
+  build:
+
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ macos-10.15 macos-11.0 ubuntu-20.04 ]
+	compiler: [ gcc-10 clang-11 ]
+
+    steps:
+
+    - name: Checkout NWgr
+      uses: actions/checkout@v2
+      with:
+        path: NWgr
+
+    - name: Checkout NWut
+      uses: actions/checkout@v2
+      with:
+        repository: NWmath/NWut
+        token: ${{ secrets.PULL_FROM_NWMATH }}
+        ref: master
+        path: NWut
+
+    - name: install tbb (Ubuntu)
+      run: |
+        sudo apt-get install -y libtbb2 libtbb-dev
+      if: matrix.os == ubuntu-20.04
+
+    - name: install tbb (Mac)
+      run: |
+        sudo brew install tbb
+      if: matrix.os == macos-10.15 || matrix.os == macos-11.0
+
+    - name: setup gcc 
+      run: |
+        sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-10 90 --slave /usr/bin/g++ g++ /usr/bin/g++-10
+        sudo update-alternatives --install /usr/bin/cc  cc /usr/bin/gcc 30
+        sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/g++ 30
+      if: matrix.os == ubuntu-20.04 && matrix.compiler == gcc-10
+	
+    - name: setup clang
+      run: |
+        sudo apt-get install -y clang-11
+        sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-11 90 --slave /usr/bin/clang++ clang++ /usr/bin/clang++-11
+        sudo update-alternatives --install /usr/bin/cc  cc /usr/bin/clang 30
+        sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++ 30
+      if: matrix.os == ubuntu-20.04 && matrix.compiler == clang-11
+
+    - name: cmake
+      run: |
+        cd NWgr
+        mkdir build
+        cd build
+        cmake .. -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_CXX_COMPILER=${{ matrix.compiler }}
+
+    - name: make
+      run: |
+        cd NWgr/build
+#        make -k
+
