@@ -16,6 +16,8 @@ jobs:
 
     runs-on: ubuntu-20.04
 
+    steps:
+
     - name: Checkout
       uses: actions/checkout@v2
       with:
@@ -26,9 +28,6 @@ jobs:
       with:
         repository: NWmath/NWut
         path: NWut
-
-    steps:
-    - uses: actions/checkout@v2
 
     - name: Check out my other private repo
 
