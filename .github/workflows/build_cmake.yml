@@ -25,7 +25,7 @@ jobs:
       uses: actions/checkout@v2
       with:
         repository: NWmath/NWut
-	repo-token: ${{ secrets.GITHUB_TOKEN }}
+        token: ${{ secrets.GITHUB_TOKEN }}
 
     - name: prep
       run: |
