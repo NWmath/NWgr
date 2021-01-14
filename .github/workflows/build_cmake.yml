@@ -4,9 +4,9 @@ name: Build with gcc-10
 
 on:
   push: 
-    branches: [ master ]
+    branches: [ master, pre_release ]
   workflow_dispatch: 
-    branches: [ master ]
+    branches: [ master, pre_release ]
 
 jobs:
   build:
@@ -18,7 +18,7 @@ jobs:
 
     - name: prep
       run: |
-        sudo pip3 install conan
+        sudo apt-get install -y libtbb2 libtbb-dev
         sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-10 90 --slave /usr/bin/g++ g++ /usr/bin/g++-10
         sudo update-alternatives --install /usr/bin/cc  cc /usr/bin/gcc 30
         sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/g++ 30
@@ -27,7 +27,7 @@ jobs:
       run: |
         mkdir build
         cd build
-        cmake .. -DCMAKE_BUILD_TYPE=RelWithDebInfo
+        cmake .. -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_CXX_COMPILER=g++-10
 
     - name: make
       run: |
