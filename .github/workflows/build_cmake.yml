@@ -8,6 +8,9 @@ on:
   workflow_dispatch: 
     branches: [ master, pre_release ]
 
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
+
 jobs:
   build:
 
@@ -20,7 +23,6 @@ jobs:
       uses: actions/checkout@master
       with:
         repository: NWmath/NWut
-        token: ${{ secrets.my_pat }}
 
     - name: prep
       run: |
