@@ -236,8 +236,10 @@ struct struct_of_arrays : std::tuple<std::vector<Attributes>...> {
                T& vs, ExecutionPolicy&& ex_policy = {}) {
     T ws(vs.size());
     for (size_t i = 0, e = indices.size() - 1; i < e; ++i) {
+      //i is the old id
+      //j is the new id from the permutation array
       vertex_id_t j = perm[i];
-      std::copy(ex_policy, vs.begin() + indices[j], vs.begin() + indices[j + 1], ws.begin() + new_indices[i]);
+      std::copy(ex_policy, vs.begin() + indices[i], vs.begin() + indices[i + 1], ws.begin() + new_indices[j]);
     }
     std::copy(ex_policy, ws.begin(), ws.end(), vs.begin());
   }
