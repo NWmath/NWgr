@@ -52,10 +52,11 @@ public:
       : begin_(rhs.begin_), end_(rhs.end_), cutoff_(rhs.cutoff_), cycle_(rhs.cycle_ + rhs.stride_), stride_(rhs.stride_ *= 2) {}
 
   struct iterator {
+    Iterator        begin_;
     Iterator        i_;
     difference_type stride_;
 
-    decltype(auto) operator*() { return *i_; }
+    decltype(auto) operator*() { return std::make_tuple(i_ - begin_, *i_); }
 
     iterator& operator++() {
       i_ += stride_;
@@ -66,7 +67,7 @@ public:
   };
 
   /// Return an iterator that points to the start of the cycle.
-  iterator begin() { return {begin_ + cycle_, stride_}; }
+  iterator begin() { return {begin_, begin_ + cycle_, stride_}; }
 
   /// Return an iterator that points to the end of the cycle.
   ///
@@ -78,7 +79,7 @@ public:
     difference_type n = end_ - begin_ - cycle_;     // shifted span for cycle
     difference_type r = n % stride_;                // remainder in last stride
     difference_type e = (stride_ - r) % stride_;    // amount past `end_` we'll go
-    return {end_ + e, stride_};
+    return {begin_, end_ + e, stride_};
   }
 
   difference_type size() const {
