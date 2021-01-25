@@ -74,23 +74,6 @@ static void print_top_n(Graph&& g, Vector&& comp, size_t n = 5) {
   std::cout << "There are " << count.size() << " components\n";
 }
 
-static auto read_graphs(std::string path, bool symmetric, bool verbose) {
-  if (symmetric) {
-    auto aos_a = load_graph<undirected>(path);
-    if (verbose) {
-      aos_a.stream_stats();
-    }
-    return std::tuple(build_adjacency<0>(aos_a), adjacency<1>(0));
-  }
-  else {
-    auto aos_a = load_graph<directed>(path);
-    if (verbose) {
-      aos_a.stream_stats();
-    }
-    return std::tuple(build_adjacency<0>(aos_a), build_adjacency<1>(aos_a));
-  }
-}
-
 
 // Verifies CC result by performing a BFS from a vertex in each component
 // - Asserts search does not reach a vertex with a different component label
@@ -295,7 +278,9 @@ int main(int argc, char* argv[]) {
             break;
            case 9: record([&] { return sv_v9(graph); }); //sv
             break;
-           case 10: record([&] { return lpcc(std::execution::par_unseq, graph); }); //sv
+           case 10: record([&] { return lpcc(std::execution::par_unseq, graph, thread); }); //sv
+            break;
+           case 11: record([&] { return lpcc_cyclic(std::execution::par_unseq, graph, thread); }); //sv
             break;
            default:
             std::cout << "Unknown version v" << id << "\n";
