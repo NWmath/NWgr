@@ -6,7 +6,7 @@ brief: __MISSING__
 tags:
   - class
 defined_in_file: graph_base.hpp
-declaration: "template <nw::graph::directedness dir>\nclass nw::graph::other_direction;"
+declaration: "template <nw::graph::directedness dir>\nstruct nw::graph::other_direction;"
 ctor: unspecified
 dtor: unspecified
 fields:

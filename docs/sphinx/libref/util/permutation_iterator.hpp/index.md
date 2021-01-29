@@ -1,6 +1,6 @@
 ---
 layout: library
-title: permutation_iterator.hpp
+title: util/permutation_iterator.hpp
 owner: __MISSING__
 brief: __MISSING__
 tags:
