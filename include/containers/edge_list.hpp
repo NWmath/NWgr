@@ -156,9 +156,9 @@ public:
 
   void serialize(std::ostream& outfile) const {
     outfile.write(reinterpret_cast<const char*>(magic), sizeof(magic));
-    size_t d = edge_directedness;
+    directedness d = edge_directedness;
     outfile.write(reinterpret_cast<const char*>(&d), sizeof(d));
-    outfile.write(reinterpret_cast<const char*>(graph_base::vertex_cardinality), sizeof(graph_base::vertex_cardinality));
+    outfile.write(reinterpret_cast<const char*>(&graph_base::vertex_cardinality[0]), sizeof(graph_base::vertex_cardinality));
     base::serialize(outfile);
   }
 

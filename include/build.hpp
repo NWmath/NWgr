@@ -12,24 +12,35 @@
 #ifndef NW_GRAPH_BUILD_HPP
 #define NW_GRAPH_BUILD_HPP
 
+#include <algorithm>
+#include <atomic>
+#include <execution>
+#include <iostream>
+#include <string>
+#include <tuple>
 #include <type_traits>
+#include <utility>
+#include <vector>
 
 namespace nw {
 namespace graph {
 
-template <int idx, class edge_list_t, class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
+
+using default_execution_policy = std::execution::parallel_unsequenced_policy;
+
+template <int idx, class edge_list_t, class ExecutionPolicy = default_execution_policy>
 void sort_by(edge_list_t& el, ExecutionPolicy&& policy = {}) {
-  std::sort(policy, el.begin(), el.end(),
+  std::sort(std::execution::seq, el.begin(), el.end(),
             [](const auto& a, const auto& b) -> bool { return (std::get<idx>(a) < std::get<idx>(b)); });
 }
 
-template <int idx, class edge_list_t, class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
+template <int idx, class edge_list_t, class ExecutionPolicy = default_execution_policy>
 void stable_sort_by(edge_list_t& el, ExecutionPolicy&& policy = {}) {
   std::stable_sort(policy, el.begin(), el.end(),
                    [](const auto& a, const auto& b) -> bool { return (std::get<idx>(a) < std::get<idx>(b)); });
 }
 
-template <int idx, class edge_list_t, class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
+template <int idx, class edge_list_t, class ExecutionPolicy = default_execution_policy>
 void lexical_sort_by(edge_list_t& el, ExecutionPolicy&& policy = {}) {
   static_assert(std::is_same_v<decltype(el.begin()), typename edge_list_t::iterator>);
 
@@ -44,7 +55,7 @@ void lexical_sort_by(edge_list_t& el, ExecutionPolicy&& policy = {}) {
   }
 }
 
-template <int idx, class edge_list_t, class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
+template <int idx, class edge_list_t, class ExecutionPolicy = default_execution_policy>
 void lexical_stable_sort_by(edge_list_t& el, ExecutionPolicy&& policy = {}) {
 
   const int jdx = (idx + 1) % 2;
@@ -81,20 +92,20 @@ void push_back_fill(edge_list_t& el, adjacency_t& cs) {
   cs.close_for_push_back();
 }
 
-template <class edge_list_t, class adjacency_t, class ExecutionPolicy = std::execution::parallel_unsequenced_policy, size_t... Is>
+template <class edge_list_t, class adjacency_t, class ExecutionPolicy = default_execution_policy, size_t... Is>
 void fill_helper(edge_list_t& el, adjacency_t& cs, std::index_sequence<Is...> is, ExecutionPolicy&& policy = {}) {
   (..., (std::copy(policy, std::get<Is + 2>(dynamic_cast<edge_list_t::base&>(el)).begin(),
                    std::get<Is + 2>(dynamic_cast<edge_list_t::base&>(el)).end(), std::get<Is + 1>(cs.to_be_indexed_).begin())));
 }
 
-template <class edge_list_t, class adjacency_t, class T, class ExecutionPolicy = std::execution::parallel_unsequenced_policy,
+template <class edge_list_t, class adjacency_t, class T, class ExecutionPolicy = default_execution_policy,
           size_t... Is>
 void fill_helper(edge_list_t& el, adjacency_t& cs, std::index_sequence<Is...> is, T& Tmp, ExecutionPolicy&& policy = {}) {
   (..., (std::copy(policy, std::get<Is + 2>(dynamic_cast<edge_list_t::base&>(Tmp)).begin(),
                    std::get<Is + 2>(dynamic_cast<edge_list_t::base&>(Tmp)).end(), std::get<Is + 1>(cs.to_be_indexed_).begin())));
 }
 
-template <int idx, class edge_list_t, class adjacency_t, class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
+template <int idx, class edge_list_t, class adjacency_t, class ExecutionPolicy = default_execution_policy>
 void fill(edge_list_t& el, adjacency_t& cs, ExecutionPolicy&& policy = {}) {
   if constexpr (edge_list_t::edge_directedness == directedness::directed) {
 
@@ -109,7 +120,7 @@ void fill(edge_list_t& el, adjacency_t& cs, ExecutionPolicy&& policy = {}) {
       cs.indices_.resize(el.num_vertices()[kdx] + 1);    // ???
     }
 
-    std::inclusive_scan(std::execution::par, degree.begin(), degree.end(), cs.indices_.begin() + 1);
+    std::inclusive_scan(policy, degree.begin(), degree.end(), cs.indices_.begin() + 1);
     cs.to_be_indexed_.resize(el.size());
 
     std::copy(policy, std::get<kdx>(dynamic_cast<edge_list_t::base&>(el)).begin(),
@@ -141,7 +152,7 @@ void fill(edge_list_t& el, adjacency_t& cs, ExecutionPolicy&& policy = {}) {
     auto degree = degrees<idx>(Tmp);    // Can have a fast version if we know it is sorted -- using equal_range
     cs.indices_.resize(el.num_vertices()[0] + 1);
 
-    std::inclusive_scan(std::execution::par, degree.begin(), degree.end(), cs.indices_.begin() + 1);
+    std::inclusive_scan(policy, degree.begin(), degree.end(), cs.indices_.begin() + 1);
     cs.to_be_indexed_.resize(Tmp.size());
 
     const int kdx = (idx + 1) % 2;
@@ -166,7 +177,7 @@ void swap_to_triangular(edge_list_t& el, const std::string& cessor = "predecesso
 }
 
 template <int idx, class edge_list_t, succession cessor = succession::predecessor,
-          class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
+          class ExecutionPolicy = default_execution_policy>
 void swap_to_triangular(edge_list_t& el, ExecutionPolicy&& policy = {}) {
 
   if constexpr ((idx == 0 && cessor == succession::predecessor) || (idx == 1 && cessor == succession::successor)) {
@@ -186,7 +197,7 @@ void swap_to_triangular(edge_list_t& el, ExecutionPolicy&& policy = {}) {
 
 // Make entries unique -- in place -- remove adjacent redundancies
 // Requires entries to be sorted in both dimensions
-template <class edge_list_t, class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
+template <class edge_list_t, class ExecutionPolicy = default_execution_policy>
 void uniq(edge_list_t& el, ExecutionPolicy&& policy = {}) {
 
   auto past_the_end = std::unique(policy, el.begin(), el.end(), [](auto&& x, auto&& y) {
@@ -205,7 +216,7 @@ void remove_self_loops(edge_list_t& el) {
   el.resize(past_the_end - el.begin());
 }
 
-template <int d_idx = 0, class edge_list_t, class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
+template <int d_idx = 0, class edge_list_t, class ExecutionPolicy = default_execution_policy>
 auto degrees(edge_list_t& el, ExecutionPolicy&& policy = {}) {
 
   size_t d_size = 0;
@@ -219,15 +230,19 @@ auto degrees(edge_list_t& el, ExecutionPolicy&& policy = {}) {
 
   if constexpr (edge_list_t::edge_directedness == directedness::directed) {
     std::vector<std::atomic<typename edge_list_t::vertex_id_t>> tmp(degree.size());
-    std::for_each(policy, el.begin(), el.end(), [&](auto&& x) { ++tmp[std::get<d_idx>(x)]; });
-    std::copy(policy, tmp.begin(), tmp.end(), degree.begin());
+
+    std::for_each(/* policy, */ el.begin(), el.end(), [&](auto&& x) { ++tmp[std::get<d_idx>(x)]; });
+
+    std::copy(/* policy, */ tmp.begin(), tmp.end(), degree.begin());
+
   } else if constexpr (edge_list_t::edge_directedness == directedness::undirected) {
     std::vector<std::atomic<typename edge_list_t::vertex_id_t>> tmp(degree.size());
-    std::for_each(policy, el.begin(), el.end(), [&](auto&& x) {
+
+    std::for_each(/* policy, */ el.begin(), el.end(), [&](auto&& x) {
       ++tmp[std::get<0>(x)];
       ++tmp[std::get<1>(x)];
     });
-    std::copy(policy, tmp.begin(), tmp.end(), degree.begin());
+    std::copy(/* policy, */ tmp.begin(), tmp.end(), degree.begin());
   }
   return degree;
 }
@@ -238,8 +253,8 @@ auto perm_by_degree(edge_list_t& el, std::string direction = "ascending") {
   return perm_by_degree<idx>(el, degree, direction);
 }
 
-template <int idx = 0, class edge_list_t, class Vector, class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
-auto perm_by_degree(edge_list_t& el, Vector&& degree, std::string direction = "ascending", ExecutionPolicy&& policy = {}) {
+template <int idx = 0, class edge_list_t, class Vector, class ExecutionPolicy = default_execution_policy>
+auto perm_by_degree(edge_list_t& el, const Vector& degree, std::string direction = "ascending", ExecutionPolicy&& policy = {}) {
 
   std::vector<typename edge_list_t::vertex_id_t> perm(degree.size());
 
@@ -262,8 +277,8 @@ auto perm_by_degree(edge_list_t& el, Vector&& degree, std::string direction = "a
   return perm;
 }
 
-template <class edge_list_t, class Vector, class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
-void relabel(edge_list_t& el, Vector&& perm, ExecutionPolicy&& policy = {}) {
+template <class edge_list_t, class Vector, class ExecutionPolicy = default_execution_policy>
+void relabel(edge_list_t& el, const Vector& perm, ExecutionPolicy&& policy = {}) {
   std::vector<typename edge_list_t::vertex_id_t> iperm(perm.size());
 
   tbb::parallel_for(tbb::blocked_range(0ul, iperm.size()), [&](auto&& r) {
@@ -279,7 +294,7 @@ void relabel(edge_list_t& el, Vector&& perm, ExecutionPolicy&& policy = {}) {
 }
 
 template <int idx, class edge_list_t, class Vector = std::vector<int>>
-void relabel_by_degree(edge_list_t& el, std::string direction = "ascending", Vector&& degree = std::vector<int>(0)) {
+void relabel_by_degree(edge_list_t& el, std::string direction = "ascending", const Vector& degree = std::vector<int>(0)) {
 
   std::vector<typename edge_list_t::vertex_id_t> perm =
       degree.size() == 0 ? perm_by_degree<0>(el, direction) : perm_by_degree<0>(el, degree, direction);

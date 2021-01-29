@@ -100,6 +100,8 @@ struct graph_traits<std::forward_list<std::tuple<Attributes...>>> {
   using vertex_id_t = std::tuple_element<0, tuple_type>::type;
 };
 
+
+
 #if 0
 
 template <typename... Attributes>

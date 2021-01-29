@@ -48,8 +48,8 @@ auto bfs_vv(const Graph& graph, typename nw::graph::graph_traits<Graph>::vertex_
   using vertex_id_t = typename nw::graph::graph_traits<Graph>::vertex_id_t;
 
   std::deque<vertex_id_t>  q1, q2;
-  std::vector<vertex_id_t> level(graph.num_vertices()[0], std::numeric_limits<vertex_id_t>::max());
-  std::vector<vertex_id_t> parents(graph.num_vertices()[0], std::numeric_limits<vertex_id_t>::max());
+  std::vector<vertex_id_t> level(nw::graph::num_vertices(graph)[0], std::numeric_limits<vertex_id_t>::max());
+  std::vector<vertex_id_t> parents(nw::graph::num_vertices(graph)[0], std::numeric_limits<vertex_id_t>::max());
   size_t                   lvl = 0;
 
   q1.push_back(root);
@@ -100,7 +100,26 @@ void adjacency_concept_test(T a) {
 }
 
 
+
+
+template <std::ranges::random_access_range outer, std::ranges::forward_range inner, typename... Attributes>
+struct graph_traits<outer<inner<std::tuple<Attributes...>>>> {
+  using tuple_type = std::tuple<Attributes...>;
+  using inner_type = inner<std::tuple<Attributes...>>;
+  using outer_type = outer<inner<std::tuple<Attributes...>>>;
+
+  using outer_iterator = typename outer_type::iterator;
+  using inner_iterator = typename inner_type::iterator;
+
+  using vertex_id_t = std::tuple_element<0, tuple_type>::type;
+  using vertex_size_t = typename outer_type::size_type;
+  using num_vertices_t = std::array<vertex_size_t, 1>;
+};
+
+
+
 int main() {
+#if 0
 
   //  nw::graph::edge_list a { {0, 0}, {0, 4} };  // compiler dumps core
 
@@ -128,7 +147,38 @@ int main() {
   
   bfs_vv(nw::graph::adj_list<0>(), 0);
 
-  // bfs_vv(a, 0);
+
+
+  bfs_vv(std::vector<std::forward_list<std::tuple<int, int, double>>>(), 0);
+
+#endif
+
+  std::vector<std::forward_list<std::tuple<int>>> ckt = { { 1, 5 },
+							  { 2, 3},
+							  { 0 },
+							  { },
+							  { }, 
+							  { 2, 4, 3 } };
+
+  bfs_vv(ckt, 0);
+
+  std::vector<std::forward_list<std::tuple<unsigned char>>> ff = { { 2, 1, 5 },
+								   { 2, 0, 3 },
+								   { 0, 1, 5 },
+								   { 1, 5 },
+								   { 5 },
+								   { 2, 3, 4, 0 } };
+
+  bfs_vv(ff, 0);
+
+  std::vector<std::vector<std::tuple<short>>> gg = { { 2, 1, 5 },
+						     { 2, 0, 3 },
+						     { 0, 1, 5 },
+						     { 1, 5 },
+						     { 5 },
+						     { 2, 3, 4, 0 } };
+  
+  bfs_vv(gg, 0);
 
   return 0;
 }
