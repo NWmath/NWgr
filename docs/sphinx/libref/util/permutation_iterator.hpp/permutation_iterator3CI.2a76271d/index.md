@@ -5,7 +5,7 @@ owner: __MISSING__
 brief: __MISSING__
 tags:
   - class
-defined_in_file: permutation_iterator.hpp
+defined_in_file: util/permutation_iterator.hpp
 declaration: "template <class Iterator, class Permutation>\nclass nw::graph::permutation_iterator;"
 dtor: unspecified
 typedefs:

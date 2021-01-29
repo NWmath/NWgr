@@ -5,7 +5,7 @@ owner: __MISSING__
 brief: __MISSING__
 tags:
   - function
-defined_in_file: proxysort.hpp
+defined_in_file: util/proxysort.hpp
 overloads:
   "template <typename IntT, typename Comparator, typename ThingToSort>\nauto proxysort(const ThingToSort &, Comparator)":
     arguments:

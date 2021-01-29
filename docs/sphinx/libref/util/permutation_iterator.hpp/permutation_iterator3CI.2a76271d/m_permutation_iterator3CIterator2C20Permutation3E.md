@@ -5,7 +5,7 @@ owner: __MISSING__
 brief: __MISSING__
 tags:
   - method
-defined_in_file: permutation_iterator.hpp
+defined_in_file: util/permutation_iterator.hpp
 is_ctor: true
 overloads:
   "template <class Index>\npermutation_iterator<Iterator, Permutation>(Iterator, Index, Permutation)":

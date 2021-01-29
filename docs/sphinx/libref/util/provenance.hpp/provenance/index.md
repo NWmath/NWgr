@@ -5,7 +5,7 @@ owner: __MISSING__
 brief: __MISSING__
 tags:
   - class
-defined_in_file: provenance.hpp
+defined_in_file: util/provenance.hpp
 declaration: "\nclass nw::graph::provenance;"
 dtor: unspecified
 fields:
