@@ -24,8 +24,8 @@ template <typename... Attributes>
 class vector_of_vector_of_structs : public std::vector<std::forward_list<std::tuple<Attributes...>>> {
 
 public:
-  using base        = std::vector<std::forward_list<std::tuple<Attributes...>>>;
-  using vertex_id_t = base::difference_type;
+  using base           = std::vector<std::forward_list<std::tuple<Attributes...>>>;
+  using vertex_id_type = base::difference_type;
 
   vector_of_vector_of_structs(size_t N) : base(N) {}
 
@@ -45,8 +45,8 @@ class vov : public vector_of_vector_of_structs<size_t, Attributes...> {
   using base = vector_of_vector_of_structs<size_t, Attributes...>;
 
 public:
-  using attributes_t = std::tuple<Attributes...>;
-  using vertex_id_t  = base::difference_type;
+  using attributes_t   = std::tuple<Attributes...>;
+  using vertex_id_type = base::difference_type;
 
   static constexpr std::size_t getNAttr() { return sizeof...(Attributes); }
 
@@ -59,13 +59,13 @@ public:
     if constexpr (dir == directedness::directed) {
       (*this).resize(A.max()[0] + 1);
       std::for_each(A.begin(), A.end(), [&](auto&& elt) {
-        std::apply([&](vertex_id_t i, vertex_id_t j, Attributes... attrs) { (*this).push_back(i, j, attrs...); }, elt);
+        std::apply([&](vertex_id_type i, vertex_id_type j, Attributes... attrs) { (*this).push_back(i, j, attrs...); }, elt);
       });
     } else if constexpr (dir == directedness::undirected) {
       (*this).resize(2 * (A.max()[0] + 1));
       std::for_each(A.begin(), A.end(), [&](auto&& elt) {
-        std::apply([&](vertex_id_t i, vertex_id_t j, Attributes... attrs) { (*this).push_back(i, j, attrs...); }, elt);
-        std::apply([&](vertex_id_t i, vertex_id_t j, Attributes... attrs) { (*this).push_back(j, i, attrs...); }, elt);
+        std::apply([&](vertex_id_type i, vertex_id_type j, Attributes... attrs) { (*this).push_back(i, j, attrs...); }, elt);
+        std::apply([&](vertex_id_type i, vertex_id_type j, Attributes... attrs) { (*this).push_back(j, i, attrs...); }, elt);
       });
     } else {
       ;

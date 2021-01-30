@@ -11,9 +11,9 @@
 #include <iostream>
 #include <queue>
 
-#include "containers/aos.hpp"
-#include "adaptors/bfs_range.hpp"
 #include "adaptors/bfs_edge_range.hpp"
+#include "adaptors/bfs_range.hpp"
+#include "containers/aos.hpp"
 
 #include "common/abstract_test.hpp"
 
@@ -21,7 +21,7 @@ using namespace nw::graph;
 using namespace nw::util;
 
 //****************************************************************************
-template<typename EdgeListT>
+template <typename EdgeListT>
 bool validate(EdgeListT& aos, size_t seed, std::vector<size_t> const& distance, std::vector<size_t> const& predecessor) {
   bool pass(true);
 
@@ -47,10 +47,10 @@ bool validate(EdgeListT& aos, size_t seed, std::vector<size_t> const& distance, 
   for (size_t vid = 0; vid < distance.size(); ++vid) {
     bool passed = ((vid == seed) && (distance[vid] == 0)) || (distance[vid] == (1 + distance[predecessor[vid]]));
     pass &= passed;
-//    std::cout << vid+1
-//            << ":\t" << distance[vid]
-//              << "\t" << predecessor[vid]+1
-//              << "\t" << (passed ? "PASS" : "FAIL") << std::endl;
+    //    std::cout << vid+1
+    //            << ":\t" << distance[vid]
+    //              << "\t" << predecessor[vid]+1
+    //              << "\t" << (passed ? "PASS" : "FAIL") << std::endl;
   }
 
   return pass;
@@ -65,9 +65,9 @@ TEST_CASE("BFS traversal", "[bfs]") {
   size_t              N = A.size();
   std::vector<size_t> distance(N);
   std::vector<size_t> predecessor(N);
-/*
+  /*
   SECTION("default seed") {
-    vertex_id_t seed = 0;
+    vertex_id_type seed = 0;
     distance[seed]      = 0;
     bfs_edge_range ranges(A, seed);
     auto           ite = ranges.begin();
@@ -82,25 +82,23 @@ TEST_CASE("BFS traversal", "[bfs]") {
   }
 */
   SECTION("another seed") {
-    vertex_id_t seed = 1;
+    vertex_id_type seed = 1;
     distance[seed]      = 0;
     bfs_edge_range ranges(A, seed);
     auto           ite = ranges.begin();
     for (; ite != ranges.end(); ++ite) {
-      auto v         = std::get<0>(*ite);
-      auto u         = std::get<1>(*ite);
-      distance[u]    = distance[v] + 1;
-                  std::cout << u << "-" << v
-            << ":\t" << distance[u]
-            << ":\t" << distance[v] << std::endl;
+      auto v      = std::get<0>(*ite);
+      auto u      = std::get<1>(*ite);
+      distance[u] = distance[v] + 1;
+      std::cout << u << "-" << v << ":\t" << distance[u] << ":\t" << distance[v] << std::endl;
       predecessor[u] = v;
     }
 
     REQUIRE(validate(aos_a, seed, distance, predecessor));
   }
-/*
+  /*
   SECTION("Top-down BFS default seed using bfs_range") {
-    vertex_id_t seed = 0;
+    vertex_id_type seed = 0;
     distance[seed]      = 0;
     bfs_range ranges(A, seed);
     auto      ite = ranges.begin();
@@ -114,7 +112,7 @@ TEST_CASE("BFS traversal", "[bfs]") {
     REQUIRE(validate(aos_a, seed, distance, predecessor));
   }
     SECTION("Top-down BFS another seed using bfs_range") {
-    vertex_id_t seed = 7;
+    vertex_id_type seed = 7;
     distance[seed]      = 0;
     bfs_range ranges(A, seed);
     auto      ite = ranges.begin();
@@ -129,7 +127,7 @@ TEST_CASE("BFS traversal", "[bfs]") {
   }
 
     SECTION("Bottom-up BFS default seed using bottomup_bfs_range") {
-    vertex_id_t seed = 0;
+    vertex_id_type seed = 0;
     distance[seed]      = 0;
     bottomup_bfs_range ranges(A, seed);
     
@@ -155,7 +153,7 @@ TEST_CASE("BFS traversal", "[bfs]") {
   }
   
     SECTION("Bottom-up BFS another seed using bottomup_bfs_range") {
-    vertex_id_t seed = 1;
+    vertex_id_type seed = 1;
     distance[seed]      = 0;
     bottomup_bfs_range ranges(A, seed);
     auto      ite = ranges.begin();
@@ -172,5 +170,5 @@ TEST_CASE("BFS traversal", "[bfs]") {
 
     REQUIRE(validate(aos_a, seed, distance, predecessor));
   }
- */ 
+ */
 }

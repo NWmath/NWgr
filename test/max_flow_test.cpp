@@ -11,11 +11,11 @@
 #include <algorithm>
 #include <vector>
 
+#include "adaptors/filtered_bfs_range.hpp"
+#include "adaptors/reverse.hpp"
 #include "algorithms/max_flow.hpp"
 #include "containers/compressed.hpp"
 #include "containers/edge_list.hpp"
-#include "adaptors/filtered_bfs_range.hpp"
-#include "adaptors/reverse.hpp"
 #include "io/mmio.hpp"
 
 #include "common/test_header.hpp"
@@ -109,7 +109,7 @@ TEST_CASE("max flow 3", "[mf3]") {
   double maxflow = 0;
 
   for (int i = 0; i <= 5; ++i) {
-    auto mf_filter = [&back](vertex_id_t vtx, decltype(back)::inner_iterator edge) {
+    auto mf_filter = [&back](vertex_id_type vtx, decltype(back)::inner_iterator edge) {
       return std::get<2>(*edge) >= std::get<1>(*edge) + std::get<2>(back.get_back_edge(vtx, edge));
     };
     filtered_bfs::filtered_bfs_edge_range ranges(back, source, sink, mf_filter);

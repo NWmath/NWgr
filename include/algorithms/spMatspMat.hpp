@@ -37,7 +37,7 @@ edge_list<directed, ScalarT> spMatspMat(LGraphT& A, RGraphT& B) {
   edges.open_for_push_back();
 
   // compute A * B
-  vertex_id_t i = 0;    // row_it - A.begin();
+  vertex_id_type i = 0;    // row_it - A.begin();
   for (auto row_it = A.begin(); row_it != A.end(); ++row_it, ++i) {
     // clear Row i of C
     std::map<size_t, ScalarT> Ci_tmp;
@@ -106,9 +106,9 @@ edge_list<directed, ScalarT> spMatspMatT(LGraphT& A, RGraphT& BT) {
   edges.open_for_push_back();
 
   // compute A * B' with a series of sparse dot products
-  vertex_id_t row_idx = 0;
+  vertex_id_type row_idx = 0;
   for (auto row_it = A.begin(); row_it != A.end(); ++row_it, ++row_idx) {
-    vertex_id_t col_idx = 0;
+    vertex_id_type col_idx = 0;
     for (auto col_it = BT.begin(); col_it != BT.end(); ++col_it, ++col_idx) {
       // std::cout << "Computing " << row_idx << "," << col_idx << std::endl;
       products.clear();

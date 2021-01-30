@@ -11,8 +11,8 @@
 #include <algorithm>
 #include <vector>
 
-#include "containers/compressed.hpp"
 #include "containers/aolos.hpp"
+#include "containers/compressed.hpp"
 #include "containers/edge_list.hpp"
 #include "io/mmio.hpp"
 
@@ -21,26 +21,26 @@
 using namespace nw::graph;
 
 TEST_CASE("Size Test", "[size test]") {
-    size_t N = 5;
-    edge_list<undirected> E_list(N);
-    E_list.push_back(0, 1);
-    E_list.push_back(1, 2);
-    E_list.push_back(2, 3);
-    
-    adjacency<0> A(E_list);
-    REQUIRE(A.size() == 4);
+  size_t                N = 5;
+  edge_list<undirected> E_list(N);
+  E_list.push_back(0, 1);
+  E_list.push_back(1, 2);
+  E_list.push_back(2, 3);
 
-    adj_list<> A_list(E_list);
-    REQUIRE(A_list.size() == 4);
+  adjacency<0> A(E_list);
+  REQUIRE(A.size() == 4);
 
-    edge_list<directed> E_list2(N);
-    E_list2.push_back(0, 1);
-    E_list2.push_back(1, 2);
-    E_list2.push_back(2, 3);
+  adj_list<> A_list(E_list);
+  REQUIRE(A_list.size() == 4);
 
-    adjacency<0> A2(E_list2);
-    REQUIRE(A2.size() == 4);
+  edge_list<directed> E_list2(N);
+  E_list2.push_back(0, 1);
+  E_list2.push_back(1, 2);
+  E_list2.push_back(2, 3);
 
-    adj_list<> A_list2(E_list2);
-    REQUIRE(A_list2.size() == 4);
+  adjacency<0> A2(E_list2);
+  REQUIRE(A2.size() == 4);
+
+  adj_list<> A_list2(E_list2);
+  REQUIRE(A_list2.size() == 4);
 }

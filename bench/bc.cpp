@@ -9,7 +9,7 @@
 //
 
 static constexpr const char USAGE[] =
- R"(bc2.exe : BGL17 betweenness centrality benchmark driver.
+    R"(bc2.exe : BGL17 betweenness centrality benchmark driver.
   Usage:
       bc2.exe (-h | --help)
       bc2.exe -f FILE [-r NODE | -s FILE ] [-i NUM] [-n NUM] [--seed NUM] [--version ID...] [--log FILE] [--log-header] [-dvV] [THREADS]...
@@ -30,8 +30,8 @@ static constexpr const char USAGE[] =
       -V, --verbose           run in verbose mode
 )";
 
-#include "algorithms/betweenness_centrality.hpp"
 #include "Log.hpp"
+#include "algorithms/betweenness_centrality.hpp"
 #include "common.hpp"
 #include <docopt.h>
 
@@ -39,11 +39,10 @@ using namespace nw::graph::bench;
 using namespace nw::graph;
 using namespace nw::util;
 
+using score_t = float;
+using accum_t = double;
 
-using score_t=float;
-using accum_t=double;
-
-template<typename Vector>
+template <typename Vector>
 void print_n_ranks(const Vector& centrality, size_t n) {
   auto perm = proxysort<size_t>(centrality, std::greater<float>());
   for (size_t i = 0; i < 10; ++i) {
@@ -52,68 +51,68 @@ void print_n_ranks(const Vector& centrality, size_t n) {
 }
 
 template <class score_t, class accum_t, class Graph>
-bool BCVerifier(const Graph& g, std::vector<typename graph_traits<Graph>::vertex_id_t> &trial_sources, std::vector<score_t> &scores_to_test) {
-  using vertex_id_t = typename graph_traits<Graph>::vertex_id_t;
+bool BCVerifier(const Graph& g, std::vector<typename graph_traits<Graph>::vertex_id_type>& trial_sources,
+                std::vector<score_t>& scores_to_test) {
+  using vertex_id_type = typename graph_traits<Graph>::vertex_id_type;
 
   std::vector<score_t> scores(num_vertices(g)[0], 0);
-  for(auto& source : trial_sources) {
+  for (auto& source : trial_sources) {
     std::vector<int> depths(num_vertices(g)[0], -1);
     depths[source] = 0;
     std::vector<accum_t> path_counts(num_vertices(g)[0] + 1, 0);
     path_counts[source] = 1;
-    std::vector<vertex_id_t> to_visit;
+    std::vector<vertex_id_type> to_visit;
     to_visit.reserve(num_vertices(g)[0]);
     to_visit.push_back(source);
     auto out_neigh = g.begin();
-    for(auto it = to_visit.begin(); it != to_visit.end(); it++) {
-      vertex_id_t u = *it;
-      for(auto edge : out_neigh[u]) {
-    vertex_id_t v = std::get<0>(edge);
-    if(depths[v] == -1) {
-      depths[v] = depths[u] + 1;
-      to_visit.push_back(v);
-    }
-    if(depths[v] == depths[u] + 1) {
-      path_counts[v] += path_counts[u];
-    }
+    for (auto it = to_visit.begin(); it != to_visit.end(); it++) {
+      vertex_id_type u = *it;
+      for (auto edge : out_neigh[u]) {
+        vertex_id_type v = std::get<0>(edge);
+        if (depths[v] == -1) {
+          depths[v] = depths[u] + 1;
+          to_visit.push_back(v);
+        }
+        if (depths[v] == depths[u] + 1) {
+          path_counts[v] += path_counts[u];
+        }
       }
     }
 
-    std::vector<std::vector<vertex_id_t>> verts_at_depth;
-    for(size_t i = 0; i < num_vertices(g)[0]; ++i) {
-      if(depths[i] != -1) {
-    if(depths[i] >= static_cast<int>(verts_at_depth.size())) {
-      verts_at_depth.resize(depths[i] + 1);
-    }
-    verts_at_depth[depths[i]].push_back(i);
+    std::vector<std::vector<vertex_id_type>> verts_at_depth;
+    for (size_t i = 0; i < num_vertices(g)[0]; ++i) {
+      if (depths[i] != -1) {
+        if (depths[i] >= static_cast<int>(verts_at_depth.size())) {
+          verts_at_depth.resize(depths[i] + 1);
+        }
+        verts_at_depth[depths[i]].push_back(i);
       }
     }
 
     std::vector<score_t> deltas(num_vertices(g)[0], 0);
-    for(int depth=verts_at_depth.size()-1; depth >= 0; depth--) {
-      for(vertex_id_t u : verts_at_depth[depth]) {
-    for(auto edge : out_neigh[u]) {
-      vertex_id_t v = std::get<0>(edge);
-      if(depths[v] == depths[u] + 1) {
-        deltas[u] += static_cast<double>(path_counts[u]) /
-          static_cast<double>(path_counts[v]) * (1 + deltas[v]);
-      }
-    }
-    scores[u] += deltas[u];
+    for (int depth = verts_at_depth.size() - 1; depth >= 0; depth--) {
+      for (vertex_id_type u : verts_at_depth[depth]) {
+        for (auto edge : out_neigh[u]) {
+          vertex_id_type v = std::get<0>(edge);
+          if (depths[v] == depths[u] + 1) {
+            deltas[u] += static_cast<double>(path_counts[u]) / static_cast<double>(path_counts[v]) * (1 + deltas[v]);
+          }
+        }
+        scores[u] += deltas[u];
       }
     }
   }
 
   score_t biggest_score = *std::max_element(scores.begin(), scores.end());
-  for(size_t i = 0; i < num_vertices(g)[0]; ++i) {
+  for (size_t i = 0; i < num_vertices(g)[0]; ++i) {
     scores[i] = scores[i] / biggest_score;
   }
 
   bool all_ok = true;
 
-  for(size_t i = 0; i < scores.size(); ++i) {
+  for (size_t i = 0; i < scores.size(); ++i) {
     accum_t delta = abs(scores_to_test[i] - scores[i]);
-    if(delta > 1e-6) {
+    if (delta > 1e-6) {
       std::cout << i << ": " << scores[i] << " != " << scores_to_test[i] << " " << scores[i] - scores_to_test[i] << std::endl;
       all_ok = false;
     }
@@ -124,17 +123,17 @@ bool BCVerifier(const Graph& g, std::vector<typename graph_traits<Graph>::vertex
 
 int main(int argc, char* argv[]) {
   std::vector strings = std::vector<std::string>(argv + 1, argv + argc);
-  std::map       args = docopt::docopt(USAGE, strings, true);
+  std::map    args    = docopt::docopt(USAGE, strings, true);
 
   // Read the options
-  bool      verify = args["--verify"].asBool();
-  bool     verbose = args["--verbose"].asBool();
-  bool       debug = args["--debug"].asBool();
-  long      trials = args["-n"].asLong() ?: 1;
-  long  iterations = args["-i"].asLong() ?: 1;
-  std::string file = args["-f"].asString();
+  bool        verify     = args["--verify"].asBool();
+  bool        verbose    = args["--verbose"].asBool();
+  bool        debug      = args["--debug"].asBool();
+  long        trials     = args["-n"].asLong() ?: 1;
+  long        iterations = args["-i"].asLong() ?: 1;
+  std::string file       = args["-f"].asString();
 
-  std::vector     ids = parse_ids(args["--version"].asStringList());
+  std::vector ids     = parse_ids(args["--version"].asStringList());
   std::vector threads = parse_n_threads(args["THREADS"].asStringList());
 
   auto aos_a = load_graph<nw::graph::directedness::directed>(file);
@@ -154,20 +153,18 @@ int main(int argc, char* argv[]) {
   }
 
   // These are one set from web
-  // std::vector<vertex_id_t> sources_vector = { 3355244, 33831269, 45124744, 16137877 };
+  // std::vector<vertex_id_type> sources_vector = { 3355244, 33831269, 45124744, 16137877 };
 
   // Our sources could come from a file,
-  using vertex_id_t = typename graph_traits<decltype(graph)>::vertex_id_t;
+  using vertex_id_type = typename graph_traits<decltype(graph)>::vertex_id_type;
 
-  std::vector<vertex_id_t> sources;
+  std::vector<vertex_id_type> sources;
   if (args["--sources"]) {
     sources = load_sources_from_file(graph, args["--sources"].asString(), trials * iterations);
-  }
-  else if (args["-r"]) {
+  } else if (args["-r"]) {
     sources.resize(trials * iterations);
     std::fill(sources.begin(), sources.end(), args["-r"].asLong());
-  }
-  else {
+  } else {
     sources = build_random_sources(graph, trials * iterations, args["--seed"].asLong());
   }
 
@@ -184,21 +181,26 @@ int main(int argc, char* argv[]) {
       }
 
       for (int i = 0; i < trials; ++i) {
-        std::vector<vertex_id_t> trial_sources(&sources[iterations * i], &sources[iterations * (i + 1)]);
+        std::vector<vertex_id_type> trial_sources(&sources[iterations * i], &sources[iterations * (i + 1)]);
         auto&& [centrality] = times.record(file, id, thread, [&]() -> std::vector<score_t> {
-            switch (id)
-            {
-             case 0: return bc2_v0<decltype(graph), score_t, accum_t>(graph, trial_sources);
-             case 1: return bc2_v1<decltype(graph), score_t, accum_t>(graph, trial_sources);
-             case 2: return bc2_v2<decltype(graph), score_t, accum_t>(graph, trial_sources);
-             case 3: return bc2_v3<decltype(graph), score_t, accum_t>(graph, trial_sources);
-             case 4: return bc2_v4<score_t, accum_t>(graph, trial_sources, thread);
-             case 5: return bc2_v5<score_t, accum_t>(graph, trial_sources, thread);
-             default:
+          switch (id) {
+            case 0:
+              return bc2_v0<decltype(graph), score_t, accum_t>(graph, trial_sources);
+            case 1:
+              return bc2_v1<decltype(graph), score_t, accum_t>(graph, trial_sources);
+            case 2:
+              return bc2_v2<decltype(graph), score_t, accum_t>(graph, trial_sources);
+            case 3:
+              return bc2_v3<decltype(graph), score_t, accum_t>(graph, trial_sources);
+            case 4:
+              return bc2_v4<score_t, accum_t>(graph, trial_sources, thread);
+            case 5:
+              return bc2_v5<score_t, accum_t>(graph, trial_sources, thread);
+            default:
               std::cerr << "Invalid BC version " << id << "\n";
               return {};
-            }
-          });
+          }
+        });
 
         if (verify) {
           BCVerifier<score_t, accum_t>(graph, trial_sources, centrality);
@@ -210,7 +212,7 @@ int main(int argc, char* argv[]) {
   times.print(std::cout);
 
   if (args["--log"]) {
-    auto   file = args["--log"].asString();
+    auto file   = args["--log"].asString();
     bool header = args["--log-header"].asBool();
     log("bc", file, times, header, "Time(s)", "Iterations");
   }

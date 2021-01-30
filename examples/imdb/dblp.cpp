@@ -76,7 +76,7 @@ int main() {
       }
 
       if (names[names_map[name]] != name) {
-	std::cout << names[names_map[name]] << " != " << name << " ( " << names_map[name] << " )" << std::endl;
+        std::cout << names[names_map[name]] << " != " << name << " ( " << names_map[name] << " )" << std::endl;
       }
 
       edges.push_back(titles_map[title], names_map[name]);
@@ -104,12 +104,12 @@ int main() {
   for (size_t i = 0; i < H.size(); ++i) {
     for (auto&& [k] : H[i]) {
       for (auto&& [j] : G[k]) {
-	s_overlap.push_back(i, j, k);
+        s_overlap.push_back(i, j, k);
       }
     }
   }
 
-  // NB: may be clobbering values 
+  // NB: may be clobbering values
   s_overlap.close_for_push_back();
 
   t5.stop();
@@ -161,7 +161,6 @@ int main() {
   path_to_bacon("Assefaw Hadish Gebremedhin");
   path_to_bacon("Kevin Deweese");
   path_to_bacon("Jesun Sahariar Firoz");
-
 
   return 0;
 }

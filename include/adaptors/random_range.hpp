@@ -22,7 +22,7 @@ namespace graph {
 template <typename Graph>
 class random_range {
 public:
-  random_range(Graph& g, size_t length = size_t(0xffffffffffffffffULL), vertex_id_t first = 0, unsigned seed = 2049)
+  random_range(Graph& g, size_t length = size_t(0xffffffffffffffffULL), vertex_id_type first = 0, unsigned seed = 2049)
       : the_graph_(g), starting_vertex(first), length_(length), distribution(0, 1.0), generator(seed),
         dice(std::bind(distribution, generator)) {}
 
@@ -30,7 +30,7 @@ public:
   private:
     random_range<Graph>&           the_range_;
     typename Graph::outer_iterator G;
-    vertex_id_t                    current_vertex;
+    vertex_id_type                 current_vertex;
     size_t                         length_;
 
   public:
@@ -43,7 +43,7 @@ public:
       typename Graph::inner_iterator u_begin = G[current_vertex].begin();
       typename Graph::inner_iterator u_end   = G[current_vertex].end();
       size_t                         N       = u_end - u_begin;
-      vertex_id_t                    pick    = std::floor(N * the_range_.dice());
+      vertex_id_type                 pick    = std::floor(N * the_range_.dice());
 
       current_vertex = std::get<0>(u_begin[pick]);
 
@@ -66,8 +66,8 @@ public:
 private:
   Graph& the_graph_;
 
-  vertex_id_t starting_vertex;
-  size_t      length_;
+  vertex_id_type starting_vertex;
+  size_t         length_;
 
   std::uniform_real_distribution<double> distribution;
   std::default_random_engine             generator;

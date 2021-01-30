@@ -46,26 +46,26 @@ static bool g_time_edge_list  = false;
 void debug_edge_list(bool flag = true) { g_debug_edge_list = flag; }
 void time_edge_list(bool flag = true) { g_time_edge_list = flag; }
 
-template <std::unsigned_integral vertex_id_type, typename graph_base_t, directedness direct = directedness::undirected,
+template <std::unsigned_integral vertex_id_typeype, typename graph_base_t, directedness direct = directedness::undirected,
           typename... Attributes>
-class index_edge_list : public graph_base_t, public struct_of_arrays<vertex_id_type, vertex_id_type, Attributes...> {
+class index_edge_list : public graph_base_t, public struct_of_arrays<vertex_id_typeype, vertex_id_typeype, Attributes...> {
 
 public:
   // private:
-  using graph_base  = graph_base_t;
-  using vertex_id_t = vertex_id_type;
+  using graph_base     = graph_base_t;
+  using vertex_id_type = vertex_id_typeype;
 
-  using base    = struct_of_arrays<vertex_id_t, vertex_id_t, Attributes...>;
-  using element = std::tuple<vertex_id_t, vertex_id_t, Attributes...>;
+  using base    = struct_of_arrays<vertex_id_type, vertex_id_type, Attributes...>;
+  using element = std::tuple<vertex_id_type, vertex_id_type, Attributes...>;
 
   static const directedness edge_directedness = direct;
   using attributes_t                          = std::tuple<Attributes...>;
-  using num_vertices_t                        = graph_base::vertex_cardinality_t;
-  using num_edges_t                           = base::difference_type;
+  using num_vertices_type                        = graph_base::vertex_cardinality_t;
+  using num_edges_type                           = base::difference_type;
 
-  using my_type         = index_edge_list<vertex_id_type, graph_base_t, direct, Attributes...>;
-  using directed_type   = index_edge_list<vertex_id_type, graph_base_t, directedness::directed, Attributes...>;
-  using undirected_type = index_edge_list<vertex_id_type, graph_base_t, directedness::undirected, Attributes...>;
+  using my_type         = index_edge_list<vertex_id_typeype, graph_base_t, direct, Attributes...>;
+  using directed_type   = index_edge_list<vertex_id_typeype, graph_base_t, directedness::directed, Attributes...>;
+  using undirected_type = index_edge_list<vertex_id_typeype, graph_base_t, directedness::undirected, Attributes...>;
 
 public:
   constexpr static const bool is_unipartite = std::is_same<graph_base, unipartite_graph_base>::value;
@@ -118,28 +118,28 @@ public:
     graph_base::is_open = false;
   }
 
-  void push_back(vertex_id_t i, vertex_id_t j, Attributes... attrs) {
+  void push_back(vertex_id_type i, vertex_id_type j, Attributes... attrs) {
     assert(graph_base::is_open == true);
 
     if constexpr (is_unipartite) {
-      graph_base::vertex_cardinality[0] = std::max<vertex_id_t>(std::max(i, j), graph_base::vertex_cardinality[0]);
+      graph_base::vertex_cardinality[0] = std::max<vertex_id_type>(std::max(i, j), graph_base::vertex_cardinality[0]);
     } else {
-      graph_base::vertex_cardinality[0] = std::max<vertex_id_t>(i, graph_base::vertex_cardinality[0]);
-      graph_base::vertex_cardinality[1] = std::max<vertex_id_t>(j, graph_base::vertex_cardinality[1]);
+      graph_base::vertex_cardinality[0] = std::max<vertex_id_type>(i, graph_base::vertex_cardinality[0]);
+      graph_base::vertex_cardinality[1] = std::max<vertex_id_type>(j, graph_base::vertex_cardinality[1]);
     }
 
     base::push_back(i, j, attrs...);
   }
 
   void push_back(const element& elem) {
-    vertex_id_t i = std::get<0>(elem);
-    vertex_id_t j = std::get<1>(elem);
+    vertex_id_type i = std::get<0>(elem);
+    vertex_id_type j = std::get<1>(elem);
 
     if constexpr (is_unipartite) {
-      graph_base::vertex_cardinality[0] = std::max<vertex_id_t>(std::max(i, j), graph_base::vertex_cardinality[0]);
+      graph_base::vertex_cardinality[0] = std::max<vertex_id_type>(std::max(i, j), graph_base::vertex_cardinality[0]);
     } else {
-      graph_base::vertex_cardinality[0] = std::max<vertex_id_t>(i, graph_base::vertex_cardinality[0]);
-      graph_base::vertex_cardinality[1] = std::max<vertex_id_t>(j, graph_base::vertex_cardinality[1]);
+      graph_base::vertex_cardinality[0] = std::max<vertex_id_type>(i, graph_base::vertex_cardinality[0]);
+      graph_base::vertex_cardinality[1] = std::max<vertex_id_type>(j, graph_base::vertex_cardinality[1]);
     }
 
     base::push_back(elem);
@@ -208,32 +208,30 @@ public:
 
   void stream(std::ostream& os = std::cout) { stream_edges(os); }
 
-  bool operator==(index_edge_list<vertex_id_type, graph_base_t, edge_directedness, Attributes...>& e) {
+  bool operator==(index_edge_list<vertex_id_typeype, graph_base_t, edge_directedness, Attributes...>& e) {
     return graph_base::vertex_cardinality == e.graph_base::vertex_cardinality && base::operator==(e);    //*this == e;
   }
 
-  bool operator!=(index_edge_list<vertex_id_type, graph_base_t, edge_directedness, Attributes...>& e) { return !operator==(e); }
+  bool operator!=(index_edge_list<vertex_id_typeype, graph_base_t, edge_directedness, Attributes...>& e) { return !operator==(e); }
 };
 
 template <directedness edge_directedness = directedness::undirected, typename... Attributes>
-using edge_list = index_edge_list<default_vertex_id_t, unipartite_graph_base, edge_directedness, Attributes...>;
+using edge_list = index_edge_list<default_vertex_id_type, unipartite_graph_base, edge_directedness, Attributes...>;
 
 template <directedness edge_directedness = directedness::undirected, typename... Attributes>
-using bi_edge_list = index_edge_list<default_vertex_id_t, bipartite_graph_base, edge_directedness, Attributes...>;
+using bi_edge_list = index_edge_list<default_vertex_id_type, bipartite_graph_base, edge_directedness, Attributes...>;
 
-
-template <std::unsigned_integral vertex_id_type, typename graph_base_t, directedness direct = directedness::undirected,
+template <std::unsigned_integral vertex_id_typeype, typename graph_base_t, directedness direct = directedness::undirected,
           typename... Attributes>
-auto num_edges(const index_edge_list<vertex_id_type, graph_base_t, direct, Attributes...>& g) {
+auto num_edges(const index_edge_list<vertex_id_typeype, graph_base_t, direct, Attributes...>& g) {
   return g.num_edges();
 }
 
-template <std::unsigned_integral vertex_id_type, typename graph_base_t, directedness direct = directedness::undirected,
+template <std::unsigned_integral vertex_id_typeype, typename graph_base_t, directedness direct = directedness::undirected,
           typename... Attributes>
-auto num_vertices(const index_edge_list<vertex_id_type, graph_base_t, direct, Attributes...>& g) {
+auto num_vertices(const index_edge_list<vertex_id_typeype, graph_base_t, direct, Attributes...>& g) {
   return g.num_vertices();
 }
-
 
 }    // namespace graph
 }    // namespace nw

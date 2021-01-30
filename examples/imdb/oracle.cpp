@@ -23,15 +23,13 @@
 
 using json = nlohmann::json;
 
-
+#include "adaptors/bfs_edge_range.hpp"
 #include "algorithms/betweenness_centrality.hpp"
 #include "algorithms/page_rank.hpp"
-#include "adaptors/bfs_edge_range.hpp"
 #include "containers/compressed.hpp"
 #include "containers/edge_list.hpp"
 #include "util/proxysort.hpp"
 #include "util/timer.hpp"
-
 
 std::string delink(const std::string& link) {
   auto opening = link.find("[[");
@@ -50,7 +48,6 @@ std::string delink(const std::string& link) {
   return delinked.substr(bar + 1);
 }
 
-
 template <class Graph>
 auto build_random_sources(Graph&& graph, size_t n, long seed) {
   using Id = typename nw::graph::vertex_id<std::decay_t<Graph>>::type;
@@ -66,7 +63,6 @@ auto build_random_sources(Graph&& graph, size_t n, long seed) {
   }
   return sources;
 }
-
 
 int main() {
   std::ifstream ifs("../data/oracle.json");
@@ -146,8 +142,8 @@ int main() {
   // NB: edge_list may have different max index values (min, max) for each "side"
 
   // edges are pairs of ( title, name )
-  auto G = nw::graph::adjacency<0>(edges);  // title: names
-  auto H = nw::graph::adjacency<1>(edges);  // names: title
+  auto G = nw::graph::adjacency<0>(edges);    // title: names
+  auto H = nw::graph::adjacency<1>(edges);    // names: title
 
   t4.stop();
   std::cout << t4 << std::endl;
@@ -157,12 +153,12 @@ int main() {
   nw::graph::edge_list<nw::graph::undirected, size_t> s_overlap;
   s_overlap.open_for_push_back();
 
-  for (size_t i = 0; i < H.size(); ++i) {  // foreach name
-    for (auto&& [k] : H[i]) {              //   foreach title
-      for (auto&& [j] : G[k]) {            //     foreach name
-	if (j > i) {
-  	  s_overlap.push_back(i, j, k);    //       edge from i -- j with value k
-	}
+  for (size_t i = 0; i < H.size(); ++i) {    // foreach name
+    for (auto&& [k] : H[i]) {                //   foreach title
+      for (auto&& [j] : G[k]) {              //     foreach name
+        if (j > i) {
+          s_overlap.push_back(i, j, k);    //       edge from i -- j with value k
+        }
       }
     }
   }

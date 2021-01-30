@@ -242,19 +242,20 @@ struct struct_of_arrays : std::tuple<std::vector<Attributes>...> {
     std::apply([&](auto&... vs) { (deserialize(infile, vs), ...); }, *this);
   }
 
-  template <typename index_t, typename vertex_id_t, class T, class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
-  void permute(const std::vector<index_t>& indices, const std::vector<index_t>& new_indices, const std::vector<vertex_id_t>& perm,
-               T& vs, ExecutionPolicy&& ex_policy = {}) {
+  template <typename index_t, typename vertex_id_type, class T, class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
+  void permute(const std::vector<index_t>& indices, const std::vector<index_t>& new_indices,
+               const std::vector<vertex_id_type>& perm, T& vs, ExecutionPolicy&& ex_policy = {}) {
     T ws(vs.size());
     for (size_t i = 0, e = indices.size() - 1; i < e; ++i) {
-      vertex_id_t j = perm[i];
+      vertex_id_type j = perm[i];
       std::copy(ex_policy, vs.begin() + indices[j], vs.begin() + indices[j + 1], ws.begin() + new_indices[i]);
     }
     std::copy(ex_policy, ws.begin(), ws.end(), vs.begin());
   }
 
-  template <typename index_t, typename vertex_id_t>
-  void permute(const std::vector<index_t>& indices, const std::vector<index_t>& new_indices, const std::vector<vertex_id_t>& perm) {
+  template <typename index_t, typename vertex_id_type>
+  void permute(const std::vector<index_t>& indices, const std::vector<index_t>& new_indices,
+               const std::vector<vertex_id_type>& perm) {
     std::apply([&](auto&... vs) { (permute(indices, new_indices, perm, vs), ...); }, *this);
   }
 

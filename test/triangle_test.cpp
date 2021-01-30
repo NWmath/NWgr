@@ -21,7 +21,6 @@
 using namespace nw::graph;
 using namespace nw::util;
 
-
 typedef compressed_sparse<0, undirected> csr_graph;
 
 //****************************************************************************
@@ -105,5 +104,4 @@ TEST_CASE("triangle counting", "[tc]") {
     std::cout << triangles << " triangles (v14)\n";
     REQUIRE(triangles == 45);
   }
-
 }

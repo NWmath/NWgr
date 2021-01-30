@@ -16,11 +16,10 @@
 
 #include "util/print_types.hpp"
 
-
 using namespace nw::graph;
 using namespace nw::util;
 
-template<size_t pos, typename Iterator>
+template <size_t pos, typename Iterator>
 void test_assignment(Iterator iter, size_t index = 0) {
   typename std::iterator_traits<Iterator>::reference tuple  = index ? *iter : iter[index];
   std::get<pos>(tuple)                                      = 0;
@@ -30,7 +29,6 @@ void test_assignment(Iterator iter, size_t index = 0) {
   typename std::iterator_traits<Iterator>::reference tuple2 = index ? *iter : iter[index];
   REQUIRE(std::get<pos>(tuple2) == 1);
 }
-
 
 TEST_CASE("struct of arrays", "[soa]") {
   SECTION("push back") {
@@ -64,10 +62,10 @@ TEST_CASE("struct of arrays", "[soa]") {
   }
 
   SECTION("initializer list") {
-    struct_of_arrays<size_t>                         E  { 8, 6, 7, 5, 3, 0, 9};
-    struct_of_arrays<size_t, size_t>                 F { {0, 8}, {1, 6}, {2, 7} };
-    struct_of_arrays<size_t, size_t, double>         G { {0, 8, 6.7}, {5,3, 0.9}, {8, 6, 7.5309} };
-    struct_of_arrays<double, size_t, size_t, double> H { {3, 0, 8, 6.7}, {.1, 5, 3, 0.9}, {4.159, 8, 6, 7.5309} };
+    struct_of_arrays<size_t>                         E{8, 6, 7, 5, 3, 0, 9};
+    struct_of_arrays<size_t, size_t>                 F{{0, 8}, {1, 6}, {2, 7}};
+    struct_of_arrays<size_t, size_t, double>         G{{0, 8, 6.7}, {5, 3, 0.9}, {8, 6, 7.5309}};
+    struct_of_arrays<double, size_t, size_t, double> H{{3, 0, 8, 6.7}, {.1, 5, 3, 0.9}, {4.159, 8, 6, 7.5309}};
 
     REQUIRE(std::get<0>(E[3]) == 5);
     REQUIRE(std::get<0>(F[2]) == 2);
@@ -111,7 +109,6 @@ TEST_CASE("struct of arrays", "[soa]") {
   }
 }
 
-
 template <typename SOA>
 void foo(SOA& s) {
   SOA t(s);
@@ -120,22 +117,17 @@ void foo(SOA& s) {
 
 template <typename SOA>
 void bar(const SOA& s) {
-  SOA t(s);  
+  SOA t(s);
   REQUIRE(std::get<0>(s[0]) == std::get<0>(t[0]));
 }
 
-
 TEST_CASE("struct of arrays const", "[c_soa]") {
   SECTION("const iterator") {
-    struct_of_arrays<size_t>                         E  { 8, 6, 7, 5, 3, 0, 9};
-    struct_of_arrays<size_t, size_t>                 F { {0, 8}, {1, 6}, {2, 7} };
-    struct_of_arrays<size_t, size_t, double>         G { {0, 8, 6.7}, {5,3, 0.9}, {8, 6, 7.5309} };
-    struct_of_arrays<double, size_t, size_t, double> H { {3, 0, 8, 6.7}, {.1, 5, 3, 0.9}, {4.159, 8, 6, 7.5309} };
+    struct_of_arrays<size_t>                         E{8, 6, 7, 5, 3, 0, 9};
+    struct_of_arrays<size_t, size_t>                 F{{0, 8}, {1, 6}, {2, 7}};
+    struct_of_arrays<size_t, size_t, double>         G{{0, 8, 6.7}, {5, 3, 0.9}, {8, 6, 7.5309}};
+    struct_of_arrays<double, size_t, size_t, double> H{{3, 0, 8, 6.7}, {.1, 5, 3, 0.9}, {4.159, 8, 6, 7.5309}};
     foo(E);
     bar(E);
-
   }
 }
-
-
-

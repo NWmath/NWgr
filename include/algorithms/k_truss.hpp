@@ -26,10 +26,7 @@
 #include <vector>
 
 namespace nw {
-namespace graph {
-
-
-}    // namespace graph
+namespace graph {}    // namespace graph
 }    // namespace nw
 
 #endif    // NW_GRAPH_K_TRUSS_HPP

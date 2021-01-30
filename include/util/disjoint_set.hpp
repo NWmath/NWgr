@@ -38,10 +38,10 @@ using counting_iterator = tbb::counting_iterator<T>;
 namespace nw {
 namespace graph {
 
-using vertex_id_t = vertex_id_t;
+using vertex_id_type = vertex_id_type;
 
-vertex_id_t disjoint_find(std::vector<std::pair<vertex_id_t, size_t>>& subsets, vertex_id_t vtx) {
-  vertex_id_t parent = subsets[vtx].first;
+vertex_id_type disjoint_find(std::vector<std::pair<vertex_id_type, size_t>>& subsets, vertex_id_type vtx) {
+  vertex_id_type parent = subsets[vtx].first;
   while (parent != subsets[parent].first) {
     parent = subsets[parent].first;
   }
@@ -53,9 +53,9 @@ vertex_id_t disjoint_find(std::vector<std::pair<vertex_id_t, size_t>>& subsets, 
   return parent;
 }
 
-void disjoint_union(std::vector<std::pair<vertex_id_t, size_t>>& subsets, vertex_id_t u, vertex_id_t v) {
-  vertex_id_t u_root = disjoint_find(subsets, u);
-  vertex_id_t v_root = disjoint_find(subsets, v);
+void disjoint_union(std::vector<std::pair<vertex_id_type, size_t>>& subsets, vertex_id_type u, vertex_id_type v) {
+  vertex_id_type u_root = disjoint_find(subsets, u);
+  vertex_id_type v_root = disjoint_find(subsets, v);
 
   if (subsets[u_root].second < subsets[v_root].second)
     subsets[u_root].first = v_root;
@@ -69,9 +69,9 @@ void disjoint_union(std::vector<std::pair<vertex_id_t, size_t>>& subsets, vertex
   }
 }
 
-bool disjoint_union_find(std::vector<std::pair<vertex_id_t, size_t>>& subsets, vertex_id_t u, vertex_id_t v) {
-  vertex_id_t u_root = disjoint_find(subsets, u);
-  vertex_id_t v_root = disjoint_find(subsets, v);
+bool disjoint_union_find(std::vector<std::pair<vertex_id_type, size_t>>& subsets, vertex_id_type u, vertex_id_type v) {
+  vertex_id_type u_root = disjoint_find(subsets, u);
+  vertex_id_type v_root = disjoint_find(subsets, v);
 
   if (u_root != v_root) {
 

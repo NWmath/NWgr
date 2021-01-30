@@ -20,19 +20,19 @@ namespace graph {
 template <typename path_edge>
 class reverse_path {
 public:
-  reverse_path(std::vector<path_edge>& path, vertex_id_t start, vertex_id_t stop) : path_(path), start_(start), stop_(stop) {}
+  reverse_path(std::vector<path_edge>& path, vertex_id_type start, vertex_id_type stop) : path_(path), start_(start), stop_(stop) {}
 
   std::vector<path_edge> path_;
   double                 update_;
-  vertex_id_t            start_, stop_;
+  vertex_id_type         start_, stop_;
   bool                   done = false;
 
-  bool found(vertex_id_t current) { return current == stop_; }
+  bool found(vertex_id_type current) { return current == stop_; }
 
   class reverse_iterator {
   private:
-    reverse_path& rev_;
-    vertex_id_t   curr_;
+    reverse_path&  rev_;
+    vertex_id_type curr_;
 
   public:
     reverse_iterator(reverse_path& rev) : rev_(rev), curr_(rev.start_) {}
@@ -46,7 +46,7 @@ public:
       return *this;
     }
 
-    auto operator*() { return std::tuple<vertex_id_t>(curr_); }
+    auto operator*() { return std::tuple<vertex_id_type>(curr_); }
 
     class end_sentinel_type {
     public:

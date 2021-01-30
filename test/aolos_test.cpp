@@ -10,8 +10,8 @@
 
 #include <complex>
 
-#include "containers/aolos.hpp"
 #include "adaptors/bfs_edge_range.hpp"
+#include "containers/aolos.hpp"
 
 #include "common/test_header.hpp"
 

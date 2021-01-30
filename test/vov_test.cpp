@@ -10,9 +10,9 @@
 
 #include <complex>
 
-#include "containers/edge_list.hpp"
-#include "adaptors/plain_range.hpp"
 #include "adaptors/edge_range.hpp"
+#include "adaptors/plain_range.hpp"
+#include "containers/edge_list.hpp"
 #include "containers/vovos.hpp"
 #include "util/print_types.hpp"
 
@@ -20,7 +20,6 @@
 
 using namespace nw::graph;
 using namespace nw::util;
-
 
 TEST_CASE("vector of vector of structures", "[vector_of_vector_of_structs]") {
   SECTION("construct") { vector_of_vector_of_structs A(5); }

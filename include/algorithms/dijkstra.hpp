@@ -22,9 +22,8 @@
 namespace nw {
 namespace graph {
 
-
 template <typename DistanceT, typename GraphT>
-std::vector<DistanceT> dijkstra(const GraphT& graph, vertex_id_t source) {
+std::vector<DistanceT> dijkstra(const GraphT& graph, vertex_id_type source) {
   size_t N(graph.end() - graph.begin());
   assert(source < N);
 
@@ -32,7 +31,7 @@ std::vector<DistanceT> dijkstra(const GraphT& graph, vertex_id_t source) {
   distance[source] = 0;
 
   using weight_t        = DistanceT;
-  using weighted_vertex = std::tuple<vertex_id_t, weight_t>;
+  using weighted_vertex = std::tuple<vertex_id_type, weight_t>;
 
   std::priority_queue<weighted_vertex, std::vector<weighted_vertex>, std::greater<weighted_vertex>> Q;
 
@@ -46,18 +45,17 @@ std::vector<DistanceT> dijkstra(const GraphT& graph, vertex_id_t source) {
   return distance;
 }
 
-
 template <typename DistanceT, typename GraphT>
-auto dijkstra_v0(const GraphT& graph, vertex_id_t source) {
+auto dijkstra_v0(const GraphT& graph, vertex_id_type source) {
   size_t N(graph.end() - graph.begin());
   assert(source < N);
 
-  std::vector<DistanceT> distance(N, std::numeric_limits<vertex_id_t>::max());
+  std::vector<DistanceT> distance(N, std::numeric_limits<vertex_id_type>::max());
   distance[source] = 0;
 
   auto g                = graph.begin();
   using weight_t        = DistanceT;
-  using weighted_vertex = std::tuple<vertex_id_t, weight_t>;
+  using weighted_vertex = std::tuple<vertex_id_type, weight_t>;
 
   std::priority_queue<weighted_vertex, std::vector<weighted_vertex>, std::greater<weighted_vertex>> Q;
 

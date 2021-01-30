@@ -11,12 +11,12 @@
 #include <algorithm>
 #include <vector>
 
+#include "adaptors/new_dfs_range.hpp"
 #include "algorithms/k_core.hpp"
 #include "containers/aolos.hpp"
 #include "containers/compressed.hpp"
 #include "containers/edge_list.hpp"
 #include "io/mmio.hpp"
-#include "adaptors/new_dfs_range.hpp"
 
 #include "common/test_header.hpp"
 

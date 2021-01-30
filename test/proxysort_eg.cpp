@@ -29,9 +29,9 @@ void print_n_ranks(const Vector& page_rank, size_t n) {
 
 int main() {
 
-std::vector<float> x { 3., 1., .14, .15, 9};
+  std::vector<float> x{3., 1., .14, .15, 9};
 
-print_n_ranks(x, x.size());
+  print_n_ranks(x, x.size());
 
-return 0;
+  return 0;
 }

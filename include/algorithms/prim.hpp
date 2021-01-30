@@ -16,15 +16,10 @@
 namespace nw {
 namespace graph {
 
-
 template <typename DistanceT, typename GraphT>
-std::vector<DistanceT> prim(const GraphT& graph, vertex_id_t source) {
-
-}
-
-
+std::vector<DistanceT> prim(const GraphT& graph, vertex_id_type source) {}
 
 }    // namespace graph
 }    // namespace nw
 
-#endif  // NW_GRAPH_PRIM_HPP
+#endif    // NW_GRAPH_PRIM_HPP

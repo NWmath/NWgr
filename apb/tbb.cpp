@@ -5,8 +5,8 @@
 
 #include "compressed.hpp"
 #include "edge_list.hpp"
-#include "io/mmio.hpp"
 #include "edge_range.hpp"
+#include "io/mmio.hpp"
 
 #if defined(CL_SYCL_LANGUAGE_VERSioN)
 #include <dpstd/iterators.h>
@@ -25,48 +25,44 @@ using counting_iterator = tbb::counting_iterator<T>;
 using namespace nw::graph;
 using namespace nw::util;
 
-template<typename Adjacency>
+template <typename Adjacency>
 auto apb_adj(Adjacency& graph, size_t ntrial, size_t nthreads = 0) {
 
-  vertex_id_t              N = graph.max() + 1;
-  std::vector<vertex_id_t> degrees(N);
+  vertex_id_type              N = graph.max() + 1;
+  std::vector<vertex_id_type> degrees(N);
 
   {
     auto per = edge_range(graph);
 
     std::cout << "edge_range zero" << std::endl;
 
-    double time = 0;
+    double   time = 0;
     ms_timer t1("iterator based for loop");
-    for(size_t t = 0; t < ntrial; ++t) {
+    for (size_t t = 0; t < ntrial; ++t) {
       degrees.clear();
       degrees.resize(N);
       t1.start();
-   
+
       for (auto j = per.begin(); j != per.end(); ++j) {
         ++degrees[std::get<0>(*j)];
       }
       t1.stop();
       time += t1.elapsed();
     }
-    std::cout << t1.name() << " " << time/ntrial << " ms" << std::endl;
-
+    std::cout << t1.name() << " " << time / ntrial << " ms" << std::endl;
 
     time = 0;
     ms_timer t2("iterator based for_each loop");
-    for(size_t t = 0; t < ntrial; ++t) {
+    for (size_t t = 0; t < ntrial; ++t) {
       degrees.clear();
       degrees.resize(N);
       t2.start();
-   
-      std::for_each(per.begin(), per.end(), [&](auto&& j) {
-        ++degrees[std::get<0>(j)];
-      });
+
+      std::for_each(per.begin(), per.end(), [&](auto&& j) { ++degrees[std::get<0>(j)]; });
       t2.stop();
       time += t2.elapsed();
     }
-    std::cout << t2.name() << " " << time/ntrial << " ms" << std::endl;
-
+    std::cout << t2.name() << " " << time / ntrial << " ms" << std::endl;
 
 #if 0
     double time = 0;
@@ -88,23 +84,17 @@ auto apb_adj(Adjacency& graph, size_t ntrial, size_t nthreads = 0) {
 
     time = 0;
     ms_timer t4("tbb parallel for");
-    for(size_t t = 0; t < ntrial; ++t) {
+    for (size_t t = 0; t < ntrial; ++t) {
       degrees.clear();
       degrees.resize(N);
       t4.start();
-   
-      tbb::parallel_for(per, [&](auto&& x) {
-                   std::for_each(x.begin(), x.end(), [&] (auto&& x) {
-        ++degrees[std::get<0>(x)];
-                                 });
-                 });
 
+      tbb::parallel_for(per, [&](auto&& x) { std::for_each(x.begin(), x.end(), [&](auto&& x) { ++degrees[std::get<0>(x)]; }); });
 
       t4.stop();
       time += t4.elapsed();
     }
-    std::cout << t4.name() << " " << time/ntrial << " ms" << std::endl;
-
+    std::cout << t4.name() << " " << time / ntrial << " ms" << std::endl;
   }
 
   {
@@ -112,37 +102,33 @@ auto apb_adj(Adjacency& graph, size_t ntrial, size_t nthreads = 0) {
 
     std::cout << "edge_range won" << std::endl;
 
-    double time = 0;
+    double   time = 0;
     ms_timer t1("iterator based for loop");
-    for(size_t t = 0; t < ntrial; ++t) {
+    for (size_t t = 0; t < ntrial; ++t) {
       degrees.clear();
       degrees.resize(N);
       t1.start();
-   
+
       for (auto j = per.begin(); j != per.end(); ++j) {
         ++degrees[std::get<1>(*j)];
       }
       t1.stop();
       time += t1.elapsed();
     }
-    std::cout << t1.name() << " " << time/ntrial << " ms" << std::endl;
-
+    std::cout << t1.name() << " " << time / ntrial << " ms" << std::endl;
 
     time = 0;
     ms_timer t2("iterator based for_each loop");
-    for(size_t t = 0; t < ntrial; ++t) {
+    for (size_t t = 0; t < ntrial; ++t) {
       degrees.clear();
       degrees.resize(N);
       t2.start();
-   
-      std::for_each(per.begin(), per.end(), [&](auto&& j) {
-        ++degrees[std::get<1>(j)];
-      });
+
+      std::for_each(per.begin(), per.end(), [&](auto&& j) { ++degrees[std::get<1>(j)]; });
       t2.stop();
       time += t2.elapsed();
     }
-    std::cout << t2.name() << " " << time/ntrial << " ms" << std::endl;
-
+    std::cout << t2.name() << " " << time / ntrial << " ms" << std::endl;
 
 #if 0
     time = 0;
@@ -160,47 +146,41 @@ auto apb_adj(Adjacency& graph, size_t ntrial, size_t nthreads = 0) {
     }
     std::cout << t3.name() << " " << time/ntrial << " ms" << std::endl;
 
-    
 #endif
 
     time = 0;
     ms_timer t4("tbb parallel for");
-    for(size_t t = 0; t < ntrial; ++t) {
+    for (size_t t = 0; t < ntrial; ++t) {
       degrees.clear();
       degrees.resize(N);
       t4.start();
-   
-      tbb::parallel_for(per, [&](auto&& x) {
-                   std::for_each(x.begin(), x.end(), [&] (auto&& x) {
-        ++degrees[std::get<1>(x)];
-                                 });
-                 });
+
+      tbb::parallel_for(per, [&](auto&& x) { std::for_each(x.begin(), x.end(), [&](auto&& x) { ++degrees[std::get<1>(x)]; }); });
       t4.stop();
       time += t4.elapsed();
     }
-    std::cout << t4.name() << " " << time/ntrial << " ms" << std::endl;
-
+    std::cout << t4.name() << " " << time / ntrial << " ms" << std::endl;
   }
 
   {
-    vertex_id_t        N = graph.max() + 1;
+    vertex_id_type     N = graph.max() + 1;
     std::vector<float> x(N), y(N);
     std::iota(x.begin(), x.end(), 0);
     auto per = make_edge_range<0>(graph);
 
     std::cout << "edge_range" << std::endl;
 
-    double time = 0;
+    double   time = 0;
     ms_timer t1("raw for loop");
-    for(size_t t = 0; t < ntrial; ++t) {
+    for (size_t t = 0; t < ntrial; ++t) {
       std::fill(y.begin(), y.end(), 0);
       t1.start();
-   
+
       auto ptr = graph.indices_.data();
       auto idx = std::get<0>(graph.to_be_indexed_).data();
       auto dat = std::get<1>(graph.to_be_indexed_).data();
 
-      for (vertex_id_t i = 0; i < N; ++i) {
+      for (vertex_id_type i = 0; i < N; ++i) {
         for (auto j = ptr[i]; j < ptr[i + 1]; ++j) {
           y[i] += x[idx[j]] * dat[j];
         }
@@ -208,16 +188,15 @@ auto apb_adj(Adjacency& graph, size_t ntrial, size_t nthreads = 0) {
       t1.stop();
       time += t1.elapsed();
     }
-    std::cout << t1.name() << " " << time/ntrial << " ms" << std::endl;
-
+    std::cout << t1.name() << " " << time / ntrial << " ms" << std::endl;
 
     time = 0;
     ms_timer t2("iterator based for loop with iterator based for loop");
-    for(size_t t = 0; t < ntrial; ++t) {
+    for (size_t t = 0; t < ntrial; ++t) {
       std::fill(y.begin(), y.end(), 0);
       t2.start();
 
-      vertex_id_t k = 0;
+      vertex_id_type k = 0;
       for (auto i = graph.begin(); i != graph.end(); ++i) {
         for (auto j = (*i).begin(); j != (*i).end(); ++j) {
           y[k] += x[std::get<0>(*j)] * std::get<1>(*j);
@@ -227,16 +206,15 @@ auto apb_adj(Adjacency& graph, size_t ntrial, size_t nthreads = 0) {
       t2.stop();
       time += t2.elapsed();
     }
-    std::cout << t2.name() << " " << time/ntrial << " ms" << std::endl;
-
+    std::cout << t2.name() << " " << time / ntrial << " ms" << std::endl;
 
     time = 0;
     ms_timer t3("range based for loop with range based for loop with compound initializer");
-    for(size_t t = 0; t < ntrial; ++t) {
+    for (size_t t = 0; t < ntrial; ++t) {
       std::fill(y.begin(), y.end(), 0);
       t3.start();
-   
-      vertex_id_t k = 0;
+
+      vertex_id_type k = 0;
       for (auto&& i : graph) {
         for (auto&& [j, v] : i) {
           y[k] += x[j] * v;
@@ -246,41 +224,35 @@ auto apb_adj(Adjacency& graph, size_t ntrial, size_t nthreads = 0) {
       t3.stop();
       time += t3.elapsed();
     }
-    std::cout << t3.name() << " " << time/ntrial << " ms" << std::endl;
-
+    std::cout << t3.name() << " " << time / ntrial << " ms" << std::endl;
 
     time = 0;
     ms_timer t4("std for_each auto &&");
-    for(size_t t = 0; t < ntrial; ++t) {
+    for (size_t t = 0; t < ntrial; ++t) {
       std::fill(y.begin(), y.end(), 0);
       t4.start();
-   
+
       std::for_each(per.begin(), per.end(), [&](auto&& j) { y[std::get<0>(j)] += x[std::get<1>(j)] * std::get<2>(j); });
       t4.stop();
       time += t4.elapsed();
     }
-    std::cout << t4.name() << " " << time/ntrial << " ms" << std::endl;
-
+    std::cout << t4.name() << " " << time / ntrial << " ms" << std::endl;
 
     time = 0;
     ms_timer t5("tbb parallel for std for_each auto &&");
-    for(size_t t = 0; t < ntrial; ++t) {
+    for (size_t t = 0; t < ntrial; ++t) {
       std::fill(y.begin(), y.end(), 0);
       t5.start();
-   
+
       tbb::parallel_for(per, [&](auto&& j) {
-        std::for_each(j.begin(), j.end(), [&] (auto&& j) {
-          y[std::get<0>(j)] += x[std::get<1>(j)] * std::get<2>(j);
-        });
+        std::for_each(j.begin(), j.end(), [&](auto&& j) { y[std::get<0>(j)] += x[std::get<1>(j)] * std::get<2>(j); });
       });
       t5.stop();
       time += t5.elapsed();
     }
-    std::cout << t5.name() << " " << time/ntrial << " ms" << std::endl;
-
+    std::cout << t5.name() << " " << time / ntrial << " ms" << std::endl;
   }
 }
-
 
 void usage(const std::string& msg = "") { std::cout << std::string("Usage: ") + msg + " " << std::endl; }
 
@@ -290,10 +262,12 @@ int main(int argc, char* argv[]) {
   std::string read_processed_edgelist  = "";
   std::string write_processed_edgelist = "";
 
-  bool         verbose      = false;
-  bool         debug        = false;
-  size_t       nthread      = 1; (void)nthread; // silence warnings
-  size_t       ntrial       = 1; (void)ntrial;  // silence warnings
+  bool   verbose = false;
+  bool   debug   = false;
+  size_t nthread = 1;
+  (void)nthread;    // silence warnings
+  size_t ntrial = 1;
+  (void)ntrial;    // silence warnings
   const size_t max_versions = 16;
 
   for (int argIndex = 1; argIndex < argc; ++argIndex) {
@@ -341,7 +315,7 @@ int main(int argc, char* argv[]) {
 
   auto el_a = [&]() {
     if (read_processed_edgelist != "") {
-      life_timer          _("deserialize");
+      life_timer                  _("deserialize");
       edge_list<directed, double> el_a(0);
       el_a.deserialize(read_processed_edgelist);
       return el_a;

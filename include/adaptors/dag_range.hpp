@@ -19,7 +19,7 @@ namespace graph {
 
 enum ready_to_process { yes, no };
 
-template <typename Graph, typename Queue = std::queue<vertex_id_t>>
+template <typename Graph, typename Queue = std::queue<vertex_id_type>>
 class dag_range {
 
 public:
@@ -44,7 +44,7 @@ public:
   class dag_range_iterator {
   private:
     dag_range<Graph, Queue>&      the_range_;
-    vertex_id_t                   v_;
+    vertex_id_type                v_;
     std::vector<size_t>::iterator successor_iterator;
 
   public:
@@ -90,7 +90,7 @@ public:
     }
 
     auto operator*() {
-      return std::tuple<vertex_id_t, vertex_id_t, ready_to_process>(v_, *successor_iterator, the_range_._ready_to_process);
+      return std::tuple<vertex_id_type, vertex_id_type, ready_to_process>(v_, *successor_iterator, the_range_._ready_to_process);
     }
     class end_sentinel_type {
     public:

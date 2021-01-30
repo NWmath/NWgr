@@ -25,7 +25,6 @@
 namespace nw {
 namespace graph {
 
-
 using default_execution_policy = std::execution::parallel_unsequenced_policy;
 
 template <int idx, class edge_list_t, class ExecutionPolicy = default_execution_policy>
@@ -98,8 +97,7 @@ void fill_helper(edge_list_t& el, adjacency_t& cs, std::index_sequence<Is...> is
                    std::get<Is + 2>(dynamic_cast<edge_list_t::base&>(el)).end(), std::get<Is + 1>(cs.to_be_indexed_).begin())));
 }
 
-template <class edge_list_t, class adjacency_t, class T, class ExecutionPolicy = default_execution_policy,
-          size_t... Is>
+template <class edge_list_t, class adjacency_t, class T, class ExecutionPolicy = default_execution_policy, size_t... Is>
 void fill_helper(edge_list_t& el, adjacency_t& cs, std::index_sequence<Is...> is, T& Tmp, ExecutionPolicy&& policy = {}) {
   (..., (std::copy(policy, std::get<Is + 2>(dynamic_cast<edge_list_t::base&>(Tmp)).begin(),
                    std::get<Is + 2>(dynamic_cast<edge_list_t::base&>(Tmp)).end(), std::get<Is + 1>(cs.to_be_indexed_).begin())));
@@ -178,8 +176,7 @@ void swap_to_triangular(edge_list_t& el, const std::string& cessor = "predecesso
   }
 }
 
-template <int idx, class edge_list_t, succession cessor = succession::predecessor,
-          class ExecutionPolicy = default_execution_policy>
+template <int idx, class edge_list_t, succession cessor = succession::predecessor, class ExecutionPolicy = default_execution_policy>
 void swap_to_triangular(edge_list_t& el, ExecutionPolicy&& policy = {}) {
 
   if constexpr ((idx == 0 && cessor == succession::predecessor) || (idx == 1 && cessor == succession::successor)) {
@@ -228,17 +225,17 @@ auto degrees(edge_list_t& el, ExecutionPolicy&& policy = {}) {
     d_size = el.num_vertices()[d_idx];
   }
 
-  std::vector<typename edge_list_t::vertex_id_t> degree(d_size);
+  std::vector<typename edge_list_t::vertex_id_type> degree(d_size);
 
   if constexpr (edge_list_t::edge_directedness == directedness::directed) {
-    std::vector<std::atomic<typename edge_list_t::vertex_id_t>> tmp(degree.size());
+    std::vector<std::atomic<typename edge_list_t::vertex_id_type>> tmp(degree.size());
 
     std::for_each(/* policy, */ el.begin(), el.end(), [&](auto&& x) { ++tmp[std::get<d_idx>(x)]; });
 
     std::copy(/* policy, */ tmp.begin(), tmp.end(), degree.begin());
 
   } else if constexpr (edge_list_t::edge_directedness == directedness::undirected) {
-    std::vector<std::atomic<typename edge_list_t::vertex_id_t>> tmp(degree.size());
+    std::vector<std::atomic<typename edge_list_t::vertex_id_type>> tmp(degree.size());
 
     std::for_each(/* policy, */ el.begin(), el.end(), [&](auto&& x) {
       ++tmp[std::get<0>(x)];
@@ -258,7 +255,7 @@ auto perm_by_degree(edge_list_t& el, std::string direction = "ascending") {
 template <int idx = 0, class edge_list_t, class Vector, class ExecutionPolicy = default_execution_policy>
 auto perm_by_degree(edge_list_t& el, const Vector& degree, std::string direction = "ascending", ExecutionPolicy&& policy = {}) {
 
-  std::vector<typename edge_list_t::vertex_id_t> perm(degree.size());
+  std::vector<typename edge_list_t::vertex_id_type> perm(degree.size());
 
   tbb::parallel_for(tbb::blocked_range(0ul, perm.size()), [&](auto&& r) {
     for (auto i = r.begin(), e = r.end(); i != e; ++i) {
@@ -281,7 +278,7 @@ auto perm_by_degree(edge_list_t& el, const Vector& degree, std::string direction
 
 template <class edge_list_t, class Vector, class ExecutionPolicy = default_execution_policy>
 void relabel(edge_list_t& el, const Vector& perm, ExecutionPolicy&& policy = {}) {
-  std::vector<typename edge_list_t::vertex_id_t> iperm(perm.size());
+  std::vector<typename edge_list_t::vertex_id_type> iperm(perm.size());
 
   tbb::parallel_for(tbb::blocked_range(0ul, iperm.size()), [&](auto&& r) {
     for (auto i = r.begin(), e = r.end(); i != e; ++i) {
@@ -298,7 +295,7 @@ void relabel(edge_list_t& el, const Vector& perm, ExecutionPolicy&& policy = {})
 template <int idx, class edge_list_t, class Vector = std::vector<int>>
 void relabel_by_degree(edge_list_t& el, std::string direction = "ascending", const Vector& degree = std::vector<int>(0)) {
 
-  std::vector<typename edge_list_t::vertex_id_t> perm =
+  std::vector<typename edge_list_t::vertex_id_type> perm =
       degree.size() == 0 ? perm_by_degree<0>(el, direction) : perm_by_degree<0>(el, degree, direction);
 
   relabel(el, perm);
