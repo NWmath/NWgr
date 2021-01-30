@@ -28,7 +28,7 @@ const size_t INFINITE_D = 100000000;
 enum class tree_mem : bool { source = false, term = true };
 
 template <typename Graph>
-std::tuple<double, std::vector<tree_mem>> bk_maxflow(Graph& A, std::vector<double>& cap) {
+std::tuple<double, std::vector<tree_mem>> bk_maxflow(const Graph& A, std::vector<double>& cap) {
   // std::clock_t start;
   // double grow = 0;
   // double augment = 0;

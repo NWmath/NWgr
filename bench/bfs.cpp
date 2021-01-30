@@ -42,7 +42,7 @@ using namespace nw::graph;
 using namespace nw::util;
 
 template <typename Graph, typename GraphT>
-bool BFSVerifier(Graph& g, GraphT& g_t, vertex_id_t<Graph> source, std::vector<vertex_id_t<Graph>>& parent) {
+bool BFSVerifier(const Graph& g, GraphT& g_t, vertex_id_t<Graph> source, std::vector<vertex_id_t<Graph>>& parent) {
   using vertex_id_type = vertex_id_t<Graph>;
 
   std::vector<vertex_id_type> depth(g.max() + 1, std::numeric_limits<vertex_id_type>::max());

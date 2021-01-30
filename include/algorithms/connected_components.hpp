@@ -126,7 +126,7 @@ T findDominantComponentID(const std::vector<T>& comp, size_t nsamples = 1024) {
 }
 
 template <typename Graph, typename T>
-void push(Graph& g, const T u, std::vector<T>& comp) {
+void push(const Graph& g, const T u, std::vector<T>& comp) {
   for (auto j = g.begin()[u].begin(); j != g.begin()[u].end(); ++j) {
     auto v = std::get<0>(*j);
     hook(u, v, comp);
@@ -134,7 +134,7 @@ void push(Graph& g, const T u, std::vector<T>& comp) {
 }
 
 template <typename Graph, typename T>
-void link(Graph& g, const T u, std::vector<T>& comp, const size_t neighbor_bound) {
+void link(const Graph& g, const T u, std::vector<T>& comp, const size_t neighbor_bound) {
   size_t i = 0;
   for (auto j = g.begin()[u].begin(); j != g.begin()[u].end() && i < neighbor_bound; ++j, ++i) {
     auto v = std::get<0>(*j);
@@ -144,7 +144,7 @@ void link(Graph& g, const T u, std::vector<T>& comp, const size_t neighbor_bound
 
 // fetch the smallest comp_id among u's neighbors
 template <typename Graph, typename T>
-bool pull(Graph& g, const T u, std::vector<T>& comp) {
+bool pull(const Graph& g, const T u, std::vector<T>& comp) {
   T min_compid = comp[u];
   T v;
   for (auto j = g.begin()[u].begin(); j != g.begin()[u].end(); ++j) {
@@ -170,7 +170,7 @@ bool pull(Graph& g, const T u, std::vector<T>& comp) {
 }
 
 template <typename Graph, typename T>
-std::vector<T> compute_connected_components_v1(Graph& g) {
+std::vector<T> compute_connected_components_v1(const Graph& g) {
   size_t N = g.size();
   // std::vector<atomwrapper<T>> comp(N,
   // atomwrapper<T>(-1));
@@ -257,7 +257,7 @@ std::vector<T> compute_connected_components_v1(Graph& g) {
 }    // compute_connected_components_v1
 
 template <typename Graph, typename T>
-std::vector<T> compute_connected_components_v2(Graph& g) {
+std::vector<T> compute_connected_components_v2(const Graph& g) {
   size_t         N = g.size();
   std::vector<T> comp(g.size());
   std::for_each(std::execution::par_unseq, counting_iterator<T>(0), counting_iterator<T>(g.size()), [&](auto n) { comp[n] = n; });
@@ -281,7 +281,7 @@ std::vector<T> compute_connected_components_v2(Graph& g) {
 }    // compute_connected_components_v2
 
 template <typename Graph, typename T>
-std::vector<T> ccv1(Graph& g) {
+std::vector<T> ccv1(const Graph& g) {
   std::vector<T> comp(g.size());
   std::for_each(std::execution::par_unseq, counting_iterator<T>(0), counting_iterator<T>(g.size()), [&](auto n) { comp[n] = n; });
 
@@ -292,7 +292,7 @@ std::vector<T> ccv1(Graph& g) {
 }
 
 template <typename Graph, typename Graph2, typename T>
-std::vector<T> Afforest(Graph& g, Graph2& t_graph, size_t neighbor_bound = 2) {
+std::vector<T> Afforest(const Graph& g, Graph2& t_graph, size_t neighbor_bound = 2) {
   std::vector<T> comp(g.size());
   // set component id of vertex v to v
   std::for_each(std::execution::par_unseq, counting_iterator<T>(0), counting_iterator<T>(g.size()), [&](auto n) { comp[n] = n; });
@@ -318,7 +318,7 @@ std::vector<T> Afforest(Graph& g, Graph2& t_graph, size_t neighbor_bound = 2) {
 }
 
 template <typename Graph, typename T>
-std::vector<T> ccv5(Graph& g) {
+std::vector<T> ccv5(const Graph& g) {
   size_t         N = g.size();
   std::vector<T> comp(g.size());
   std::for_each(std::execution::par_unseq, counting_iterator<T>(0), counting_iterator<T>(g.size()), [&](auto n) { comp[n] = n; });

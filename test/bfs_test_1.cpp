@@ -60,7 +60,7 @@ bool validate(EdgeListT& aos, size_t seed, std::vector<vertex_id_t<EdgeListT>> c
 }
 
 template <typename Graph>
-auto bfs_m1(Graph& graph, vertex_id_t<Graph> root) {
+auto bfs_m1(const Graph& graph, vertex_id_t<Graph> root) {
   using vertex_id_type = vertex_id_t<Graph>;
 
   std::deque<vertex_id_type>  q1, q2;

@@ -67,7 +67,7 @@ class topdown_bfs_range {
   decltype(auto) head() { return queue_.front(); }
 
 public:
-  topdown_bfs_range(Graph& graph, vertex_id_type seed = 0) : graph_(graph), colors_(graph.size()), queue_() {
+  topdown_bfs_range(const Graph& graph, vertex_id_type seed = 0) : graph_(graph), colors_(graph.size()), queue_() {
     init(seed);
     visit(seed);
   }
@@ -137,7 +137,7 @@ class bottomup_bfs_range {
   decltype(auto) next() { return std::tuple(v_, parent_v_); }
 
 public:
-  bottomup_bfs_range(Graph& graph, vertex_id_type seed = 0) : graph_(graph), colors_(graph.size()), v_(seed), parent_v_(seed) {
+  bottomup_bfs_range(const Graph& graph, vertex_id_type seed = 0) : graph_(graph), colors_(graph.size()), v_(seed), parent_v_(seed) {
     colors_[seed] = waiting;
     parent_v_     = graph_[seed][0];
   }

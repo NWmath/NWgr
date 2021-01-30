@@ -29,7 +29,7 @@ namespace graph {
 template <typename Graph, typename Workitem = Graph::vertex_id_type, typename Queue = std::queue<Workitem>>
 class worklist_range {
 public:
-  worklist_range(Graph& graph) : the_graph_(graph) {}
+  worklist_range(const Graph& graph) : the_graph_(graph) {}
 
   worklist_range(const worklist_range&)  = delete;
   worklist_range(const worklist_range&&) = delete;
@@ -80,7 +80,7 @@ private:
 template <typename Graph, typename Workitem = Graph::vertex_id_type, typename Queue = tbb::concurrent_queue<Workitem>>
 class tbbworklist_range {
 public:
-  tbbworklist_range(Graph& graph) : the_graph_(graph) {}
+  tbbworklist_range(const Graph& graph) : the_graph_(graph) {}
 
   tbbworklist_range(const tbbworklist_range&)  = delete;
   tbbworklist_range(const tbbworklist_range&&) = delete;
@@ -145,7 +145,7 @@ private:
 template <typename Graph, typename Workitem = Graph::vertex_id_type, typename Queue = tbb::concurrent_queue<Workitem>>
 class tbbworklist_range2 {
 public:
-  tbbworklist_range2(Graph& graph) : the_graph_(graph), buckets_(10000) {}
+  tbbworklist_range2(const Graph& graph) : the_graph_(graph), buckets_(10000) {}
 
   tbbworklist_range2(const tbbworklist_range2&)  = delete;
   tbbworklist_range2(const tbbworklist_range2&&) = delete;

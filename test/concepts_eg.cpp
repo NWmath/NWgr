@@ -16,7 +16,7 @@ template <nw::graph::edge_list_c edge_list_t>
 auto baz(edge_list_t&& el) {}
 
 template <nw::graph::adjacency_graph Graph>
-auto bfs_vv(Graph& graph, typename nw::graph::graph_traits<Graph>::vertex_id_type root) {
+auto bfs_vv(const Graph& graph, typename nw::graph::graph_traits<Graph>::vertex_id_type root) {
   using vertex_id_type = typename nw::graph::graph_traits<Graph>::vertex_id_type;
 
   std::deque<vertex_id_type>  q1, q2;

@@ -36,7 +36,7 @@ private:
   using vertex_id_type = vertex_id_t<Graph>;
 
 public:
-  bfs_edge_range(Graph& graph, vertex_id_type seed = 0) : the_graph_(graph), colors_(graph.size(), white) {
+  bfs_edge_range(const Graph& graph, vertex_id_type seed = 0) : the_graph_(graph), colors_(graph.size(), white) {
     Q_.push(seed);
     colors_[seed] = grey;
   }
@@ -124,7 +124,7 @@ private:
   using vertex_id_type = typename Graph::vertex_id_type;
 
 public:
-  bfs_edge_range2(Graph& graph, PriorityQueue& Q, std::tuple<size_t, size_t> seed = {0, 0})
+  bfs_edge_range2(const Graph& graph, PriorityQueue& Q, std::tuple<size_t, size_t> seed = {0, 0})
       : the_graph_(graph), Q_(Q), colors_(graph.end() - graph.begin(), white) {
     Q_.push(seed);
     colors_[std::get<0>(seed)] = grey;
@@ -212,7 +212,7 @@ private:
   using vertex_id_type = typename Graph::vertex_id_type;
 
 public:
-  bfs_edge_range3(Graph& graph, vertex_id_type seed = 0) : the_graph_(graph), colors_(graph.end() - graph.begin(), white) {
+  bfs_edge_range3(const Graph& graph, vertex_id_type seed = 0) : the_graph_(graph), colors_(graph.end() - graph.begin(), white) {
     Q_[0].push(seed);
     colors_[seed] = grey;
     //After adding seed, add the neighbors of seed to next queue
