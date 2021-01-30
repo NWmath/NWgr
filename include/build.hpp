@@ -112,8 +112,7 @@ void fill(edge_list_t& el, adjacency_t& cs, ExecutionPolicy&& policy = {}) {
     sort_by<idx>(el, policy);
     auto degree = degrees<idx>(el);
 
-    const int kdx = (idx + 1) % 2;
-
+    // Compress idx
     if constexpr (edge_list_t::is_unipartite) {
       cs.indices_.resize(el.num_vertices()[0] + 1);
     } else {
@@ -123,9 +122,12 @@ void fill(edge_list_t& el, adjacency_t& cs, ExecutionPolicy&& policy = {}) {
     std::inclusive_scan(policy, degree.begin(), degree.end(), cs.indices_.begin() + 1);
     cs.to_be_indexed_.resize(el.size());
 
+    // Copy kdx (the other index)
+    const int kdx = (idx + 1) % 2;
     std::copy(policy, std::get<kdx>(dynamic_cast<edge_list_t::base&>(el)).begin(),
               std::get<kdx>(dynamic_cast<edge_list_t::base&>(el)).end(), std::get<0>(cs.to_be_indexed_).begin());
 
+    // Copy properties
     if constexpr (std::tuple_size<typename edge_list_t::attributes_t>::value > 0) {
       fill_helper(el, cs, std::make_integer_sequence<size_t, std::tuple_size<typename edge_list_t::attributes_t>::value>());
     }
