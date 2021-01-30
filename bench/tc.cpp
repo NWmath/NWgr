@@ -50,13 +50,13 @@ using namespace nw::graph;
 using namespace nw::util;
 
 template <class Vector>
-static void tc_relabel(edge_list<undirected>& A, Vector&& degrees, const std::string& direction) {
+static void tc_relabel(edge_list<nw::graph::directedness::undirected>& A, Vector&& degrees, const std::string& direction) {
   life_timer _(__func__);
   relabel_by_degree<0>(A, direction, degrees);
 }
 
 template <std::size_t id = 0>
-static void clean(edge_list<undirected>& A, const std::string& succession) {
+static void clean(edge_list<nw::graph::directedness::undirected>& A, const std::string& succession) {
   life_timer _(__func__);
   swap_to_triangular<id>(A, succession);
   lexical_sort_by<id>(A);
@@ -64,9 +64,9 @@ static void clean(edge_list<undirected>& A, const std::string& succession) {
   remove_self_loops(A);
 }
 
-static auto compress(edge_list<undirected>& A) {
+static auto compress(edge_list<nw::graph::directedness::undirected>& A) {
   life_timer _(__func__);
-  adjacency<0> B(A.num_vertices());
+  adjacency<0> B(num_vertices(A)[0]);
   push_back_fill(A, B);
   return B;
 }
@@ -149,7 +149,7 @@ int main(int argc, char* argv[]) {
   for (auto&& file : files) {
     std::cout << "processing " << file << "\n";
 
-    auto el_a = load_graph<undirected>(file);
+    auto el_a = load_graph<nw::graph::directedness::undirected>(file);
     auto degree = degrees(el_a);
 
     // Run and time relabeling. This operates directly on the incoming edglist.

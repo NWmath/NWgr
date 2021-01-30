@@ -1,8 +1,11 @@
 #ifndef NW_GRAPH_BENCH_COMMON_HPP
 #define NW_GRAPH_BENCH_COMMON_HPP
 
+
 #include "graph_base.hpp"
+#include "graph_traits.hpp"
 #include "containers/edge_list.hpp"
+#include "containers/adjacency.hpp"
 #include "adaptors/edge_range.hpp"
 #include "io/mmio.hpp"
 #include "util/timer.hpp"
@@ -117,7 +120,7 @@ auto build_random_sources(Graph&& graph, size_t n, long seed)
   auto sources = std::vector<Id>(n);
   auto degrees = build_degrees(graph);
   auto     gen = std::mt19937(seed);
-  auto     dis = std::uniform_int_distribution<Id>(0, graph.max());
+  auto     dis = std::uniform_int_distribution<Id>(0, num_vertices(graph)[0]);
 
   for (auto& id : sources) {
     for (id = dis(gen); degrees[id] == 0; id = dis(gen)) {}
