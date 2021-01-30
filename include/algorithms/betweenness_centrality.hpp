@@ -1296,7 +1296,7 @@ auto bc2_v0(Graph& graph, const std::vector<typename Graph::vertex_id_t> sources
   using vertex_id_t = typename Graph::vertex_id_t;
 
   auto                 g = graph.begin();
-  vertex_id_t          N = graph.max() + 1;
+  vertex_id_t          N = num_vertices(graph)[0];
   std::vector<score_t> bc(N);
 
   for (vertex_id_t root : sources) {
@@ -1362,7 +1362,7 @@ auto bc2_v1(Graph& graph, const std::vector<typename Graph::vertex_id_t> sources
   using vertex_id_t = typename Graph::vertex_id_t;
 
   auto                 g = graph.begin();
-  vertex_id_t          N = graph.max() + 1;
+  vertex_id_t          N = num_vertices(graph)[0];
   std::vector<score_t> bc(N);
 
   for (vertex_id_t root : sources) {
@@ -1430,7 +1430,7 @@ auto bc2_v2(Graph& graph, const std::vector<typename Graph::vertex_id_t>& source
   using vertex_id_t = typename Graph::vertex_id_t;
 
   auto                 g = graph.begin();
-  vertex_id_t          N = graph.max() + 1;
+  vertex_id_t          N = num_vertices(graph)[0];
   std::vector<score_t> bc(N, 0);
 
   for (vertex_id_t root : sources) {
@@ -1506,7 +1506,7 @@ auto bc2_v3(Graph& graph, const std::vector<typename Graph::vertex_id_t>& source
   using vertex_id_t = typename Graph::vertex_id_t;
 
   auto        g = graph.begin();
-  vertex_id_t N = graph.max() + 1;
+  vertex_id_t N = num_vertices(graph)[0];
   size_t      M = graph.to_be_indexed_.size();
 
   auto                 neighbors = (*(graph.begin())).begin();
@@ -1602,12 +1602,12 @@ auto bc2_v3(Graph& graph, const std::vector<typename Graph::vertex_id_t>& source
 
 template <class score_t, class accum_t, class Graph, class OuterExecutionPolicy = std::execution::parallel_unsequenced_policy,
           class InnerExecutionPolicy = std::execution::parallel_unsequenced_policy>
-auto bc2_v4(Graph&& graph, const std::vector<typename Graph::vertex_id_t>& sources, int threads,
+auto bc2_v4(const Graph& graph, const std::vector<typename Graph::vertex_id_t>& sources, int threads,
             OuterExecutionPolicy&& outer_policy = {}, InnerExecutionPolicy&& inner_policy = {}) {
   using vertex_id_t = typename Graph::vertex_id_t;
 
   auto                 g     = graph.begin();
-  vertex_id_t          N     = graph.max() + 1;
+  vertex_id_t          N     = num_vertices(graph)[0];
   size_t               M     = graph.to_be_indexed_.size();
   auto&&               edges = std::get<0>(*(*g).begin());
   std::vector<score_t> bc(N);
@@ -1693,11 +1693,11 @@ auto bc2_v4(Graph&& graph, const std::vector<typename Graph::vertex_id_t>& sourc
 
 template <class score_t, class accum_t, class Graph, class OuterExecutionPolicy = std::execution::parallel_unsequenced_policy,
           class InnerExecutionPolicy = std::execution::parallel_unsequenced_policy>
-auto bc2_v5(Graph&& graph, const std::vector<typename Graph::vertex_id_t>& sources, int threads,
+auto bc2_v5(const Graph& graph, const std::vector<typename Graph::vertex_id_t>& sources, int threads,
             OuterExecutionPolicy&& outer_policy = {}, InnerExecutionPolicy&& inner_policy = {}) {
   using vertex_id_t = typename Graph::vertex_id_t;
 
-  vertex_id_t          N     = graph.max() + 1;
+  vertex_id_t          N     = num_vertices(graph)[0];
   size_t               M     = graph.to_be_indexed_.size();
   auto&&               edges = std::get<0>(*(graph[0]).begin());
   std::vector<score_t> bc(N);

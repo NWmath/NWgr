@@ -11,6 +11,7 @@
 #ifndef NW_GRAPH_BFS_HPP
 #define NW_GRAPH_BFS_HPP
 
+#include "graph_traits.hpp"
 #include "containers/compressed.hpp"
 #include "util/AtomicBitVector.hpp"
 #include "util/atomic.hpp"
@@ -39,7 +40,8 @@ namespace nw {
 namespace graph {
 
 template <typename Graph>
-auto bfs_v0(Graph& graph, vertex_id_t root) {
+auto bfs_v0(Graph& graph, typename graph_traits<Graph>::vertex_id_t root) {
+  using vertex_id_t = graph_traits<Graph>::vertex_id_t;
 
   std::deque<vertex_id_t>  q1, q2;
   std::vector<vertex_id_t> level(graph.max() + 1, std::numeric_limits<vertex_id_t>::max());
@@ -80,7 +82,8 @@ public:
 };
 
 template <typename Graph>
-auto bfs_v4(Graph& graph, vertex_id_t root) {
+auto bfs_v4(Graph& graph, typename graph_traits<Graph>::vertex_id_t root) {
+  using vertex_id_t = graph_traits<Graph>::vertex_id_t;
 
   _concurrent_queue<vertex_id_t> q1, q2;
   std::vector                    level(graph.max() + 1, std::numeric_limits<vertex_id_t>::max());
@@ -112,8 +115,10 @@ auto bfs_v4(Graph& graph, vertex_id_t root) {
   return parents;
 }
 
+
 template <typename Graph>
-auto bfs_v6(Graph& graph, vertex_id_t root) {
+auto bfs_v6(Graph& graph, typename graph_traits<Graph>::vertex_id_t root) {
+  using vertex_id_t = typename graph_traits<Graph>::vertex_id_t;
 
   tbb::concurrent_vector<vertex_id_t> q1, q2;
   std::vector<vertex_id_t>            level(graph.max() + 1, std::numeric_limits<vertex_id_t>::max());
@@ -146,7 +151,8 @@ auto bfs_v6(Graph& graph, vertex_id_t root) {
 }
 
 template <typename Graph>
-auto bfs_v7(Graph& graph, vertex_id_t root) {
+auto bfs_v7(Graph& graph, typename graph_traits<Graph>::vertex_id_t root) {
+  using vertex_id_t = typename graph_traits<Graph>::vertex_id_t;
 
   tbb::concurrent_vector<vertex_id_t>   q1, q2;
   std::vector<std::atomic<vertex_id_t>> level(graph.max() + 1);
@@ -192,7 +198,9 @@ auto bfs_v7(Graph& graph, vertex_id_t root) {
 }
 
 template <typename Graph>
-auto bfs_v8(Graph& graph, vertex_id_t root) {
+auto bfs_v8(Graph& graph, typename graph_traits<Graph>::vertex_id_t root) {
+
+  using vertex_id_t = typename graph_traits<Graph>::vertex_id_t;
 
   _concurrent_queue<vertex_id_t> q1, q2;
   std::vector                    level(graph.max() + 1, std::numeric_limits<vertex_id_t>::max());
@@ -226,7 +234,8 @@ auto bfs_v8(Graph& graph, vertex_id_t root) {
 }
 
 template <typename Graph>
-auto bfs_v9(Graph& graph, vertex_id_t root) {
+auto bfs_v9(Graph& graph, typename graph_traits<Graph>::vertex_id_t root) {
+  using vertex_id_t = typename graph_traits<Graph>::vertex_id_t;
 
   const size_t                                     num_bins = 32;
   const size_t                                     bin_mask = 0x1F;
@@ -279,7 +288,7 @@ auto bfs_v9(Graph& graph, vertex_id_t root) {
 }
 
 template <class Graph>
-[[gnu::noinline]] auto bfs_top_down(Graph&& graph, Graph::vertex_id_t root) {
+[[gnu::noinline]] auto bfs_top_down(Graph&& graph, typename graph_traits<Graph>::vertex_id_t root) {
   using vertex_id_t = Graph::vertex_id_t;
 
   constexpr const std::size_t                      num_bins = 32;
@@ -326,7 +335,7 @@ template <class Graph>
 }
 
 template <class Graph>
-[[gnu::noinline]] auto bfs_top_down_bitmap(Graph&& graph, vertex_id_t root) {
+[[gnu::noinline]] auto bfs_top_down_bitmap(Graph&& graph, typename graph_traits<Graph>::vertex_id_t root) {
   constexpr const std::size_t                      num_bins = 32;
   const std::size_t                                N        = graph.max() + 1;
   std::vector<tbb::concurrent_vector<vertex_id_t>> q1(num_bins);
