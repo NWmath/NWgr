@@ -41,7 +41,7 @@ Neighbors make_my_pair(vertex_id_type x, vertex_id_type y) {
 
 //****************************************************************************
 template <typename Graph>
-std::tuple<Unordered_map, size_t> k_core(Graph& A, int k) {
+std::tuple<Unordered_map, size_t> k_core(const Graph& A, int k) {
   Unordered_map filter;
 
   size_t                      n_vtx     = A.size();

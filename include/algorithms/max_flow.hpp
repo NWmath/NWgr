@@ -30,7 +30,7 @@ auto backedge_property(Edge edge) {
 }
 //****************************************************************************
 template <typename Dict = default_dict, typename flowtype = double, typename Graph>
-flowtype max_flow(Graph& A, vertex_id_type source, vertex_id_type sink, size_t max_iters = DEFAULT_MAX) {
+flowtype max_flow(const Graph& A, vertex_id_type source, vertex_id_type sink, size_t max_iters = DEFAULT_MAX) {
   struct tree_edge {
     flowtype* capacity;
     flowtype* flow;

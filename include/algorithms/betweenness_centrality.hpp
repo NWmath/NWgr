@@ -61,7 +61,7 @@ public:
 };
 //****************************************************************************
 template <typename Graph, typename score_t = float, typename accum_t = size_t>
-std::vector<score_t> betweenness_brandes(Graph& A) {
+std::vector<score_t> betweenness_brandes(const Graph& A) {
   using vertex_id_type = typename Graph::vertex_id_type;
 
   size_t               n_vtx = A.size();
@@ -120,7 +120,7 @@ std::vector<score_t> betweenness_brandes(Graph& A) {
 }
 
 template <typename Graph, typename score_t = float, typename accum_t = size_t>
-std::vector<score_t> approx_betweenness_brandes(Graph& A, std::vector<typename Graph::vertex_id_type>& sources) {
+std::vector<score_t> approx_betweenness_brandes(const Graph& A, std::vector<typename Graph::vertex_id_type>& sources) {
   using vertex_id_type = typename Graph::vertex_id_type;
 
   size_t               n_vtx = A.size();
@@ -177,7 +177,7 @@ std::vector<score_t> approx_betweenness_brandes(Graph& A, std::vector<typename G
 }
 
 template <typename Graph, typename score_t = float, typename accum_t = size_t>
-std::vector<score_t> approx_betweenness_worklist_serial(Graph& A, std::vector<typename Graph::vertex_id_type>& sources) {
+std::vector<score_t> approx_betweenness_worklist_serial(const Graph& A, std::vector<typename Graph::vertex_id_type>& sources) {
   using vertex_id_type = typename Graph::vertex_id_type;
 
   size_t               n_vtx = A.size();
@@ -347,7 +347,7 @@ std::vector<score_t> approx_betweenness_worklist_serial(Graph& A, std::vector<ty
 }
 
 template <typename Graph, typename score_t = float, typename accum_t = size_t>
-std::vector<score_t> approx_betweenness_worklist(Graph& A, std::vector<typename Graph::vertex_id_type>& sources, size_t num_threads,
+std::vector<score_t> approx_betweenness_worklist(const Graph& A, std::vector<typename Graph::vertex_id_type>& sources, size_t num_threads,
                                                  size_t DELTA) {
   using vertex_id_type = typename Graph::vertex_id_type;
 
@@ -677,7 +677,7 @@ std::vector<score_t> approx_betweenness_worklist(Graph& A, std::vector<typename 
 }
 
 template <typename Graph, typename score_t = float, typename accum_t = size_t>
-std::vector<score_t> approx_betweenness_worklist_noabstraction(Graph& A, std::vector<typename Graph::vertex_id_type>& sources,
+std::vector<score_t> approx_betweenness_worklist_noabstraction(const Graph& A, std::vector<typename Graph::vertex_id_type>& sources,
                                                                size_t num_threads, size_t par_thresh, size_t DELTA = 1) {
   using vertex_id_type = typename Graph::vertex_id_type;
 
@@ -1292,7 +1292,7 @@ std::vector<score_t> Brandes(const Graph &g, const std::vector<vertex_id_type> s
 #endif
 
 template <typename Graph, typename score_t = float, typename accum_t = size_t>
-auto bc2_v0(Graph& graph, const std::vector<typename Graph::vertex_id_type> sources) {
+auto bc2_v0(const Graph& graph, const std::vector<typename Graph::vertex_id_type> sources) {
   using vertex_id_type = typename Graph::vertex_id_type;
 
   auto                 g = graph.begin();
@@ -1358,7 +1358,7 @@ auto bc2_v0(Graph& graph, const std::vector<typename Graph::vertex_id_type> sour
 }
 
 template <typename Graph, typename score_t = float, typename accum_t = size_t>
-auto bc2_v1(Graph& graph, const std::vector<typename Graph::vertex_id_type> sources) {
+auto bc2_v1(const Graph& graph, const std::vector<typename Graph::vertex_id_type> sources) {
   using vertex_id_type = typename Graph::vertex_id_type;
 
   auto                 g = graph.begin();
@@ -1426,7 +1426,7 @@ auto bc2_v1(Graph& graph, const std::vector<typename Graph::vertex_id_type> sour
 
 template <typename Graph, typename score_t = float, typename accum_t = size_t,
           class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
-auto bc2_v2(Graph& graph, const std::vector<typename Graph::vertex_id_type>& sources, ExecutionPolicy&& policy = {}) {
+auto bc2_v2(const Graph& graph, const std::vector<typename Graph::vertex_id_type>& sources, ExecutionPolicy&& policy = {}) {
   using vertex_id_type = typename Graph::vertex_id_type;
 
   auto                 g = graph.begin();
@@ -1501,7 +1501,7 @@ auto bc2_v2(Graph& graph, const std::vector<typename Graph::vertex_id_type>& sou
 template <typename Graph, typename score_t = float, typename accum_t = size_t,
           class OuterExecutionPolicy = std::execution::parallel_unsequenced_policy,
           class InnerExecutionPolicy = std::execution::parallel_unsequenced_policy>
-auto bc2_v3(Graph& graph, const std::vector<typename Graph::vertex_id_type>& sources, OuterExecutionPolicy&& outer_policy = {},
+auto bc2_v3(const Graph& graph, const std::vector<typename Graph::vertex_id_type>& sources, OuterExecutionPolicy&& outer_policy = {},
             InnerExecutionPolicy&& inner_policy = {}) {
   using vertex_id_type = typename Graph::vertex_id_type;
 

@@ -98,7 +98,7 @@ static bool worth_relabeling(const EdgeList& el, const Vector& degree) {
 
 // Taken from GAP and adapted to BGL.
 template <class Graph>
-static std::size_t TCVerifier(Graph& graph) {
+static std::size_t TCVerifier(const Graph& graph) {
   using vertex_id_type = typename Graph::vertex_id_type;
 
   life_timer                              _(__func__);

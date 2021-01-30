@@ -32,10 +32,10 @@ class edge_range {
   typename Graph::iterator outer_end_;
 
 public:
-  edge_range(Graph& g, std::size_t offset, std::index_sequence<Is...> = {})
+  edge_range(const Graph& g, std::size_t offset, std::index_sequence<Is...> = {})
       : outer_base_(g.begin()), outer_begin_(g.begin() + offset), outer_end_(g.end()) {}
 
-  edge_range(Graph& g, std::index_sequence<Is...> is = {}) : edge_range(g, 0, is) {}
+  edge_range(const Graph& g, std::index_sequence<Is...> is = {}) : edge_range(g, 0, is) {}
 
   // Split a range.
   edge_range(edge_range& b, tbb::split) : edge_range(b) {
@@ -119,12 +119,12 @@ public:
 };
 
 template <std::size_t... Is, class Graph>
-static inline edge_range<Graph, Is...> make_edge_range(Graph& g, std::size_t offset) {
+static inline edge_range<Graph, Is...> make_edge_range(const Graph& g, std::size_t offset) {
   return {g, offset};
 }
 
 template <std::size_t... Is, class Graph>
-static inline edge_range<Graph, Is...> make_edge_range(Graph& g) {
+static inline edge_range<Graph, Is...> make_edge_range(const Graph& g) {
   return {g};
 }
 
