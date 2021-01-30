@@ -68,7 +68,7 @@ static void link(vertex_id_type u, vertex_id_type v, Vector& comp) {
 }
 
 template <typename Execution, typename Graph, typename Vector>
-static void compress(Execution exec, Graph&& g, Vector& comp) {
+static void compress(Execution exec, const Graph& g, Vector& comp) {
   std::for_each(exec, cins::counting_iterator(0ul), cins::counting_iterator(comp.size()), [&](auto n) {
     while (comp[n] != comp[comp[n]]) {
       auto foo = nw::graph::acquire(comp[n]);
@@ -135,7 +135,7 @@ static auto afforest(Execution&& exec, Graph1&& graph, Graph2&& t_graph, size_t 
 }
 
 template <typename Graph, typename Vector>
-static void print_top_n(Graph&& g, Vector&& comp, size_t n = 5) {
+static void print_top_n(const Graph& g, Vector&& comp, size_t n = 5) {
   std::unordered_map<vertex_id_type, vertex_id_type> count;
   for (auto&& i : comp) {
     count[i] += 1;
@@ -160,7 +160,7 @@ static void print_top_n(Graph&& g, Vector&& comp, size_t n = 5) {
 // - If the graph is directed, it performs the search as if it was undirected
 // - Asserts every vertex is visited (degree-0 vertex should have own label)
 template <class Graph, class Transpose, class Vector>
-static bool CCVerifier(Graph&& graph, Transpose&& xpose, Vector&& comp) {
+static bool CCVerifier(const Graph& graph, Transpose&& xpose, Vector&& comp) {
   using NodeID = typename nw::graph::vertex_id<std::decay_t<Graph>>::type;
   std::unordered_map<NodeID, NodeID> label_to_source;
   for (auto&& [n] : plain_range(graph)) {

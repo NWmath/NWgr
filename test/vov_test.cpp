@@ -38,7 +38,7 @@ TEST_CASE("vector of vectors", "[vov]") {
   }
   SECTION("edge_list") {
     edge_list<nw::graph::directedness::directed, double> A{{0, 0, 8.0}, {0, 1, 6.7}, {1, 2, 5.3}, {3, 0, 0.9}};
-    vov<0, double>                 B(A);
+    vov<0, double>                                       B(A);
     std::cout << "edgelist ->vov" << std::endl;
     //    for (auto&& [i, j, v] : make_edge_range<0>(B)) {
     //std::cout << i << " " << j << " " << v << std::endl;

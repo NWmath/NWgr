@@ -25,7 +25,7 @@ template <typename... Attributes>
 class vector_of_vector_of_structs : public std::vector<std::forward_list<std::tuple<Attributes...>>> {
 
 public:
-  using base           = std::vector<std::forward_list<std::tuple<Attributes...>>>;
+  using base = std::vector<std::forward_list<std::tuple<Attributes...>>>;
 
   vector_of_vector_of_structs(size_t N) : base(N) {}
 
@@ -40,10 +40,9 @@ public:
   auto size() const { return base::size(); }
 };
 
-
 template <int idx, std::unsigned_integral vertex_id, typename... Attributes>
 class index_vov : public unipartite_graph_base, public vector_of_vector_of_structs<vertex_id, Attributes...> {
-using base = vector_of_vector_of_structs<vertex_id, Attributes...>;
+  using base = vector_of_vector_of_structs<vertex_id, Attributes...>;
 
 public:
   using vertex_id_type    = vertex_id;
@@ -51,7 +50,7 @@ public:
   using num_vertices_type = std::array<typename base::size_type, 1>;
   using num_edges_type    = base::size_type;
 
-  using attributes_t   = std::tuple<Attributes...>;
+  using attributes_t = std::tuple<Attributes...>;
 
   static constexpr std::size_t getNAttr() { return sizeof...(Attributes); }
 
@@ -63,9 +62,7 @@ public:
 
 private:
   num_edges_type num_edges_;
-
 };
-
 
 template <int idx, typename... Attributes>
 using vov = index_vov<idx, default_vertex_id_type, Attributes...>;
@@ -79,9 +76,9 @@ struct graph_traits<std::vector<std::vector<std::tuple<Attributes...>>>> {
   using outer_iterator = typename outer_type::iterator;
   using inner_iterator = typename inner_type::iterator;
 
-  using vertex_id_type   = std::tuple_element<0, tuple_type>::type;
-  using vertex_size_type = typename outer_type::size_type;
-  using num_vertices_type   = std::array<vertex_size_type, 1>;
+  using vertex_id_type    = std::tuple_element<0, tuple_type>::type;
+  using vertex_size_type  = typename outer_type::size_type;
+  using num_vertices_type = std::array<vertex_size_type, 1>;
 };
 
 template <typename... Attributes>
@@ -90,7 +87,6 @@ struct graph_traits<std::vector<std::tuple<Attributes...>>> {
 
   using vertex_id_type = std::tuple_element<0, tuple_type>::type;
 };
-
 
 }    // namespace graph
 }    // namespace nw

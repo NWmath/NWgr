@@ -46,13 +46,12 @@ using compressed = index_compressed<default_index_t, default_vertex_id_type, Att
 #endif
 
 template <int idx, std::unsigned_integral index_type, std::unsigned_integral vertex_id, typename... Attributes>
-class index_adjacency : public unipartite_graph_base,
-                        public indexed_struct_of_arrays<index_type, vertex_id, Attributes...> {
+class index_adjacency : public unipartite_graph_base, public indexed_struct_of_arrays<index_type, vertex_id, Attributes...> {
   using base = indexed_struct_of_arrays<index_type, vertex_id, Attributes...>;
 
 public:
-  using index_t        = index_type;
-  using vertex_id_type = vertex_id;
+  using index_t           = index_type;
+  using vertex_id_type    = vertex_id;
   using num_vertices_type = std::array<vertex_id_type, 1>;
   using num_edges_type    = index_t;
 
@@ -65,14 +64,14 @@ public:
 
   template <class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
   index_adjacency(index_edge_list<vertex_id_type, unipartite_graph_base, directedness::directed, Attributes...>& A,
-                  ExecutionPolicy&&                                                                                 policy = {})
+                  ExecutionPolicy&&                                                                              policy = {})
       : base(A.num_vertices()[0]) {
     fill<idx>(A, *this, policy);
   }
 
   template <class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
   index_adjacency(index_edge_list<vertex_id_type, unipartite_graph_base, directedness::undirected, Attributes...>& A,
-                  ExecutionPolicy&&                                                                                   policy = {})
+                  ExecutionPolicy&&                                                                                policy = {})
       : base(A.num_vertices()[0]) {
     fill<idx>(A, *this, policy);
   }

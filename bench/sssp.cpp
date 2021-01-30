@@ -46,7 +46,7 @@ using distance_t = std::uint64_t;
 
 /// Basic sequential sssp (Dijkstra) copied from GAP benchmark suite.
 template <class Graph>
-static auto dijkstra(Graph&& graph, vertex_id_type source) {
+static auto dijkstra(const Graph& graph, vertex_id_type source) {
   // Workqueue
   using WN = std::tuple<vertex_id_type, distance_t>;
   auto mq  = nw::graph::make_priority_queue<WN>([](const WN& a, const WN& b) { return std::get<1>(a) > std::get<1>(b); });
@@ -75,7 +75,7 @@ static auto dijkstra(Graph&& graph, vertex_id_type source) {
 }
 
 template <class Graph, class Dist>
-static bool SSSPVerifier(Graph&& graph, vertex_id_type source, Dist&& dist, bool verbose) {
+static bool SSSPVerifier(const Graph& graph, vertex_id_type source, Dist&& dist, bool verbose) {
   auto oracle = dijkstra(graph, source);
   if (std::equal(dist.begin(), dist.end(), oracle.begin())) {
     return true;
@@ -101,7 +101,7 @@ static bool SSSPVerifier(Graph&& graph, vertex_id_type source, Dist&& dist, bool
 /// and verifies the result, based on the verifier. Returns the time it took to
 /// run, as well as a boolean indicating if we passed verification.
 template <class Graph, class Verifier>
-static std::tuple<double, bool> sssp(int id, Graph&& graph, vertex_id_type source, distance_t delta, Verifier&& verifier) {
+static std::tuple<double, bool> sssp(int id, const Graph& graph, vertex_id_type source, distance_t delta, Verifier&& verifier) {
   switch (id) {
     case 0:
       return time_op_verify([&] { return delta_stepping_v0<distance_t>(std::forward<Graph>(graph), source, delta); },

@@ -27,7 +27,7 @@
 using namespace nw::graph;
 using namespace nw::util;
 
-using csr_graph = adjacency<0> ;
+using csr_graph = adjacency<0>;
 
 TEST_CASE("connected component", "[cc]") {
   /*Read the edgelist*/
@@ -39,7 +39,7 @@ TEST_CASE("connected component", "[cc]") {
   /*Construct the graph*/
   csr_graph A(aos_a);
 
-  size_t                      N = A.size();
+  size_t                              N = A.size();
   std::vector<vertex_id_t<csr_graph>> component_ids(N, std::numeric_limits<vertex_id_t<csr_graph>>::max());
 
   SECTION("v1 cc_push") {

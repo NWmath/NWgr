@@ -27,7 +27,6 @@ enum three_colors { black, white, grey };
 template <typename Graph, typename Queue = std::queue<vertex_id_t<Graph>>, typename Filter = std::function<bool()>>
 class filtered_bfs_edge_range {
 
-
 public:
   using vertex_id_type = vertex_id_t<Graph>;
 

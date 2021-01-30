@@ -422,11 +422,11 @@ template <class Graph, class Transpose>
 }
 
 template <typename OutGraph, typename InGraph>
-[[gnu::noinline]] auto bfs_v11(const OutGraph& out_graph, const InGraph& in_graph, vertex_id_t<OutGraph> root, int num_bins = 32, int alpha = 15,
-                               int beta = 18) {
+[[gnu::noinline]] auto bfs_v11(const OutGraph& out_graph, const InGraph& in_graph, vertex_id_t<OutGraph> root, int num_bins = 32,
+                               int alpha = 15, int beta = 18) {
 
   using vertex_id_type = vertex_id_t<OutGraph>;
-  
+
   const std::size_t                                   n = nw::graph::pow2(nw::graph::ceil_log2(num_bins));
   const std::size_t                                   N = num_vertices(out_graph)[0];
   const std::size_t                                   M = out_graph.to_be_indexed_.size();

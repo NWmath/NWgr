@@ -30,7 +30,6 @@ using num_vertices_t = typename graph_traits<G>::num_vertices_type;
 template <typename G>
 using num_edges_t = typename graph_traits<G>::num_edges_type;
 
-
 }    // namespace graph
 }    // namespace nw
 
