@@ -10,6 +10,7 @@
 #ifndef NW_GRAPH_FILTERED_BFS_RANGE_HPP
 #define NW_GRAPH_FILTERED_BFS_RANGE_HPP
 
+#include "graph_traits.hpp"
 #include "util/util.hpp"
 #include <cassert>
 #include <functional>
@@ -23,10 +24,13 @@ namespace filtered_bfs {
 
 enum three_colors { black, white, grey };
 
-template <typename Graph, typename Queue = std::queue<vertex_id_type>, typename Filter = std::function<bool()>>
+template <typename Graph, typename Queue = std::queue<vertex_id_t<Graph>>, typename Filter = std::function<bool()>>
 class filtered_bfs_edge_range {
 
+
 public:
+  using vertex_id_type = vertex_id_t<Graph>;
+
   filtered_bfs_edge_range(
       Graph& graph, vertex_id_type source, vertex_id_type target,
       Filter filter = [](vertex_id_type v, typename Graph::inner_iterator iter) { return false; })

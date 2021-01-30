@@ -12,6 +12,8 @@
 #ifndef NW_GRAPH_BUILD_HPP
 #define NW_GRAPH_BUILD_HPP
 
+#include "graph_base.hpp"
+
 #include <algorithm>
 #include <atomic>
 #include <execution>
@@ -105,7 +107,7 @@ void fill_helper(edge_list_t& el, adjacency_t& cs, std::index_sequence<Is...> is
 
 template <int idx, class edge_list_t, class adjacency_t, class ExecutionPolicy = default_execution_policy>
 void fill(edge_list_t& el, adjacency_t& cs, ExecutionPolicy&& policy = {}) {
-  if constexpr (edge_list_t::edge_directedness == directedness::directed) {
+  if constexpr (edge_list_t::edge_directedness == nw::graph::directedness::directed) {
 
     sort_by<idx>(el, policy);
     auto degree = degrees<idx>(el);

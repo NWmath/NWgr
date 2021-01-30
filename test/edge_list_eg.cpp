@@ -11,12 +11,13 @@
 #include <iostream>
 #include <queue>
 
-#include "containers/compressed.hpp"
+#include "containers/adjacency.hpp"
 #include "containers/edge_list.hpp"
 #include "io/mmio.hpp"
 
 using namespace nw::graph;
 using namespace nw::util;
+
 
 int main(int argc, char* argv[]) {
 
@@ -25,9 +26,9 @@ int main(int argc, char* argv[]) {
     return -1;
   }
 
-  auto aos_a = read_mm<directed>(argv[1]);
+  auto aos_a = read_mm<nw::graph::directedness::directed>(argv[1]);
 
-  compressed_sparse<0, directed> A(aos_a);
+  adjacency<0> A(aos_a);
   std::cout << "edge list size of directed graph is " << aos_a.size() << std::endl;
   std::cout << "compressed_sparse size of directed graph is " << A.size() << std::endl;
 

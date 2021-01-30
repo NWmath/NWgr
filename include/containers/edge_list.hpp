@@ -46,14 +46,14 @@ static bool g_time_edge_list  = false;
 void debug_edge_list(bool flag = true) { g_debug_edge_list = flag; }
 void time_edge_list(bool flag = true) { g_time_edge_list = flag; }
 
-template <std::unsigned_integral vertex_id_type, typename graph_base_t, directedness direct = directedness::undirected,
+template <std::unsigned_integral vertex_id, typename graph_base_t, directedness direct = directedness::undirected,
           typename... Attributes>
-class index_edge_list : public graph_base_t, public struct_of_arrays<vertex_id_type, vertex_id_type, Attributes...> {
+class index_edge_list : public graph_base_t, public struct_of_arrays<vertex_id, vertex_id, Attributes...> {
 
 public:
   // private:
   using graph_base     = graph_base_t;
-
+  using vertex_id_type = vertex_id;
   using base    = struct_of_arrays<vertex_id_type, vertex_id_type, Attributes...>;
   using element = std::tuple<vertex_id_type, vertex_id_type, Attributes...>;
 

@@ -1,6 +1,6 @@
 //
 // This file is part of BGL17 (aka NWGraph aka GraphPack aka the Graph Standard Library)
-// (c) Pacific Northwest National Laboratory 2018
+// (c) Pacific Northwest National Laboratory 2018-2021
 //
 // Licensed under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License
 // https://creativecommons.org/licenses/by-nc-sa/4.0/
@@ -27,16 +27,18 @@ TEST_CASE("vector of vector of structures", "[vector_of_vector_of_structs]") {
 
 TEST_CASE("vector of vectors", "[vov]") {
   SECTION("construct") {
-    vov A(5);
+    vov<0> A(5);
     A.push_back(3, 4);
-    vov<double> B(5);
+    vov<0, double> B(5);
     B.push_back(3, 1, 4.159);
-    vov<double, std::complex<float>> C(5);
+    vov<0, double, std::complex<float>> C(5);
     C.push_back(3, 1, 4.159, {86.7, 5.309});
+    vov<1, double, std::complex<float>> D(5);
+    D.push_back(3, 1, 4.159, {86.7, 5.309});
   }
   SECTION("edge_list") {
-    edge_list<directed, double> A{{0, 0, 8.0}, {0, 1, 6.7}, {1, 2, 5.3}, {3, 0, 0.9}};
-    vov<double>                 B(A);
+    edge_list<nw::graph::directedness::directed, double> A{{0, 0, 8.0}, {0, 1, 6.7}, {1, 2, 5.3}, {3, 0, 0.9}};
+    vov<0, double>                 B(A);
     std::cout << "edgelist ->vov" << std::endl;
     //    for (auto&& [i, j, v] : make_edge_range<0>(B)) {
     //std::cout << i << " " << j << " " << v << std::endl;
@@ -48,7 +50,7 @@ TEST_CASE("vector of vectors", "[vov]") {
     std::cout << std::endl;
   }
   SECTION("iterate") {
-    vov<double> A(5);
+    vov<0, double> A(5);
     A.push_back(0, 0, 3);
     A.push_back(1, 4, 1.5);
     A.push_back(2, 2, 6.9);
