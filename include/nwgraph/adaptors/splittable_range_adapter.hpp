@@ -16,7 +16,10 @@
 #define NW_GRAPH_SPLITTABLE_RANGE_ADAPTER_HPP
 
 #include <cstddef>
+#if NW_GRAPH_NEED_TBB
+#include <tbb/tbb.h>
 #include <tbb/tbb_stddef.h>
+#endif
 
 namespace nw {
 namespace graph {
@@ -40,6 +43,7 @@ public:
 
   splittable_range_adapter(Iterator begin, Iterator end, std::size_t cutoff) : begin_(begin > end ? end : begin), end_(end), cutoff_(cutoff) {}
 
+#if NW_GRAPH_NEED_TBB
   splittable_range_adapter(splittable_range_adapter& rhs, tbb::split)
       : begin_(rhs.begin_), end_(rhs.begin_ += rhs.size() / 2), cutoff_(rhs.cutoff_) {}
 
@@ -47,6 +51,8 @@ public:
   // initializer, which would otherwise get called incorrectly during a tbb
   // split event.
   splittable_range_adapter(splittable_range_adapter&)       = default;
+#endif
+
   splittable_range_adapter(const splittable_range_adapter&) = default;
   splittable_range_adapter(splittable_range_adapter&&)      = default;
 

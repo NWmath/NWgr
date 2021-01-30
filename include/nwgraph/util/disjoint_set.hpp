@@ -13,6 +13,8 @@
 #ifndef NW_GRAPH_DISJOINT_SET_HPP
 #define NW_GRAPH_DISJOINT_SET_HPP
 
+#include "nwgraph/util/counting_iterator.hpp"
+#include "nwgraph/util/types.hpp"
 #include <cassert>
 #include <iostream>
 #include <map>
@@ -20,22 +22,6 @@
 #include <stack>
 #include <string.h>
 #include <vector>
-
-#if defined(CL_SYCL_LANGUAGE_VERSION)
-#include <dpstd/execution>
-#include <dpstd/iterators.h>
-namespace nw::graph {
-template <class T>
-using counting_iterator = dpstd::counting_iterator<T>;
-}
-#else
-#include <execution>
-#include <tbb/iterators.h>
-namespace nw::graph {
-template <class T>
-using counting_iterator = tbb::counting_iterator<T>;
-}
-#endif
 
 #include "nwgraph/util/defaults.hpp"
 

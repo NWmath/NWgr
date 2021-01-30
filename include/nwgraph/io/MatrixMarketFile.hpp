@@ -16,15 +16,76 @@
 #include <cstring>
 #include <fcntl.h>
 #include <filesystem>
-#include <sys/mman.h>
 #include <sys/stat.h>
 #include <sys/types.h>
-#include <tuple>
+#include <sys/stat.h>
+#if (defined(__GNUC__) || defined(__clang__)) && !defined(_WINDOWS)
+#include <sys/mman.h>
+#include <fcntl.h>
 #include <unistd.h>
+#else
+#include <io.h>
+#endif
 
 extern "C" {
 #include "mmio_nist.h"
 }
+
+#if defined(_MSC_VER)
+// Windows has no mmap(), let's emulate it here
+#include <windows.h>
+
+#define PROT_READ 1
+#define PROT_WRITE 2
+#define MAP_SHARED 1
+#define MAP_PRIVATE 2
+#define MAP_FIXED 4
+#define MAP_NORESERVE 8
+#define MAP_FAILED ((void*)-1)
+
+inline void* mmap(void* addr, size_t length, int prot, int flags, int fd, off_t offset) {
+  void* retval = MAP_FAILED;
+
+  // recode PROT and FLAGS into desired access
+  int iAccess = 0;
+  int iProt   = 0;
+  int iFlags  = 0;
+  if (prot & PROT_READ) {
+    iAccess = iAccess | GENERIC_READ;
+    iProt   = PAGE_READONLY; // READONLY assumed
+    iFlags  = FILE_MAP_READ; // and FLAGS are ignored
+  }
+  if (prot & PROT_WRITE) {
+    iAccess = iAccess | GENERIC_WRITE;
+    if (flags & MAP_PRIVATE) { // Write changes won't be shared
+      iProt  = PAGE_WRITECOPY;
+      iFlags = FILE_MAP_COPY;
+    } else if (flags & MAP_SHARED) { // Write changes will be shared
+      iProt  = PAGE_READWRITE;
+      iFlags = FILE_MAP_WRITE;
+    }
+  }
+  if ((iProt != 0) && (iFlags != 0)) { // valid PROT, FLAGS options passed
+
+    HANDLE file_handle = (HANDLE)_get_osfhandle(fd);
+    if (file_handle == NULL) return retval; // "Could not open file"
+
+    HANDLE file_mapping = CreateFileMapping(file_handle, NULL, iProt, 0, 0, NULL);
+    if (file_mapping == NULL) return retval; // "Could not create file mapping"
+
+    void* staddr = MapViewOfFileEx(file_mapping, iFlags, 0, offset, length, (LPVOID)addr);
+    if (staddr == nullptr) return retval;    // "Could not map the file"
+
+    if (!CloseHandle(file_mapping)) return retval; // "Could not close file mapping"
+    if (!CloseHandle(file_handle)) return retval;  // "Could not close file handle"
+
+    retval = staddr;    //  return address of mapped memory
+  }
+  return retval;
+}
+
+inline int munmap(void* start, size_t length) { return (int)(UnmapViewOfFile((LPVOID)start)); }
+#endif
 
 namespace mmio {
 template <typename It>

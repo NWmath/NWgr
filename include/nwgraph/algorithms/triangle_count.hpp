@@ -170,7 +170,7 @@ size_t triangle_count_v3(const Graph& A) {
 ///
 /// @returns            The number of triangles in the graph.
 template <typename RandomAccessIterator>
-[[gnu::noinline]] std::size_t triangle_count_v4(RandomAccessIterator first, RandomAccessIterator last, std::size_t threads = 1) {
+NW_GRAPH_ATTRIBUTE_NOINLINE std::size_t triangle_count_v4(RandomAccessIterator first, RandomAccessIterator last, std::size_t threads = 1) {
   return triangle_count_async(threads, [&](std::size_t tid) {
     std::size_t triangles = 0;
     for (auto i = first + tid; i < last; i += threads) {
@@ -198,7 +198,7 @@ template <typename RandomAccessIterator>
 ///
 /// @returns            The number of triangles in the graph.
 template <typename RandomAccessIterator>
-[[gnu::noinline]] std::size_t triangle_count_v5(RandomAccessIterator first, RandomAccessIterator last, std::size_t threads = 1) {
+NW_GRAPH_ATTRIBUTE_NOINLINE std::size_t triangle_count_v5(RandomAccessIterator first, RandomAccessIterator last, std::size_t threads = 1) {
   return triangle_count_async(threads, [&](std::size_t tid) {
     std::size_t triangles = 0;
     auto&& [u, ue]        = nw::graph::block(last - first, threads, tid);
@@ -225,7 +225,7 @@ template <typename RandomAccessIterator>
 ///
 /// @returns            The number of triangles in the graph.
 template <typename RandomAccessIterator>
-[[gnu::noinline]] std::size_t triangle_count_v6(RandomAccessIterator first, RandomAccessIterator last, std::size_t threads = 1) {
+NW_GRAPH_ATTRIBUTE_NOINLINE std::size_t triangle_count_v6(RandomAccessIterator first, RandomAccessIterator last, std::size_t threads = 1) {
   return triangle_count_async(threads, [&](std::size_t tid) {
     std::size_t triangles = 0;
     for (auto&& i = first + tid; i < last; i += threads) {
@@ -261,7 +261,7 @@ template <typename RandomAccessIterator>
 /// @returns            The number of triangles in the graph.
 template <class Graph, class OuterExecutionPolicy = std::execution::parallel_unsequenced_policy,
           class InnerExecutionPolicy = std::execution::sequenced_policy>
-[[gnu::noinline]] std::size_t triangle_count_v7(const Graph& A, OuterExecutionPolicy&& outer = {}, InnerExecutionPolicy inner = {}) {
+NW_GRAPH_ATTRIBUTE_NOINLINE std::size_t triangle_count_v7(const Graph& A, OuterExecutionPolicy&& outer = {}, InnerExecutionPolicy inner = {}) {
   std::atomic<std::size_t> total_triangles = 0;
   std::for_each(outer, A.begin(), A.end(), [&](auto&& x) {
     std::size_t triangles = 0;
@@ -296,7 +296,7 @@ template <class Graph, class OuterExecutionPolicy = std::execution::parallel_uns
 /// @returns            The number of triangles in the graph.
 template <class Graph, class OuterExecutionPolicy = std::execution::parallel_unsequenced_policy,
           class InnerExecutionPolicy = std::execution::parallel_policy, class SetExecutionPolicy = std::execution::sequenced_policy>
-[[gnu::noinline]] std::size_t triangle_count_v10(const Graph& A, OuterExecutionPolicy&& outer = {}, InnerExecutionPolicy&& inner = {},
+NW_GRAPH_ATTRIBUTE_NOINLINE std::size_t triangle_count_v10(const Graph& A, OuterExecutionPolicy&& outer = {}, InnerExecutionPolicy&& inner = {},
                                                  SetExecutionPolicy&& set = {}) {
   std::atomic<std::size_t> total_triangles = 0;
   std::for_each(outer, A.begin(), A.end(), [&](auto&& x) {
@@ -326,7 +326,7 @@ template <class Graph, class OuterExecutionPolicy = std::execution::parallel_uns
 ///
 /// @returns            The number of triangles in the graph.
 template <class Graph, class SetExecutionPolicy = std::execution::sequenced_policy>
-[[gnu::noinline]] std::size_t triangle_count_v12(const Graph& graph, int stride, SetExecutionPolicy&& set = {}) {
+NW_GRAPH_ATTRIBUTE_NOINLINE std::size_t triangle_count_v12(const Graph& graph, int stride, SetExecutionPolicy&& set = {}) {
   return nw::graph::parallel_for(
       nw::graph::cyclic(graph, stride),
       [&](auto&& i) {
@@ -359,7 +359,7 @@ template <class Graph, class SetExecutionPolicy = std::execution::sequenced_poli
 ///
 /// @returns            The number of triangles in the graph.
 template <class Graph, class SetExecutionPolicy = std::execution::sequenced_policy>
-[[gnu::noinline]] std::size_t triangle_count_v13(const Graph& graph, int stride, SetExecutionPolicy&& set = {}) {
+NW_GRAPH_ATTRIBUTE_NOINLINE std::size_t triangle_count_v13(const Graph& graph, int stride, SetExecutionPolicy&& set = {}) {
   return nw::graph::parallel_for(
       nw::graph::cyclic(graph, stride),
       [&](auto&& i) {
@@ -392,7 +392,7 @@ template <class Graph, class SetExecutionPolicy = std::execution::sequenced_poli
 ///
 /// @return             The number of triangles in the graph.
 template <class Graph, class SetExecutionPolicy = std::execution::sequenced_policy>
-[[gnu::noinline]] std::size_t triangle_count_v14(const Graph& graph, SetExecutionPolicy&& set = {}) {
+NW_GRAPH_ATTRIBUTE_NOINLINE std::size_t triangle_count_v14(const Graph& graph, SetExecutionPolicy&& set = {}) {
   return nw::graph::parallel_for(
       edge_range(graph), [&](auto&& u, auto&& v) { return nw::graph::intersection_size(graph[u], graph[v], set); }, std::plus{}, 0ul);
 }
@@ -412,7 +412,7 @@ template <class Graph, class SetExecutionPolicy = std::execution::sequenced_poli
 ///
 /// @return             The number of triangles in the graph.
 template <class Graph, class SetExecutionPolicy = std::execution::sequenced_policy>
-[[gnu::noinline]] std::size_t triangle_count_edgerange(const Graph& graph, SetExecutionPolicy&& set = {}) {
+NW_GRAPH_ATTRIBUTE_NOINLINE std::size_t triangle_count_edgerange(const Graph& graph, SetExecutionPolicy&& set = {}) {
   return nw::graph::parallel_for(
       graph.edges(nw::graph::pow2(20)), [&](auto&& u, auto&& v) { return nw::graph::intersection_size(graph[u], graph[v], set); }, std::plus{},
       0ul);
@@ -434,7 +434,7 @@ template <class Graph, class SetExecutionPolicy = std::execution::sequenced_poli
 ///
 /// @return             The number of triangles in the graph.
 template <class Graph, class SetExecutionPolicy = std::execution::sequenced_policy>
-[[gnu::noinline]] std::size_t triangle_count_edgerange_cyclic(const Graph& graph, int stride, SetExecutionPolicy&& set = {}) {
+NW_GRAPH_ATTRIBUTE_NOINLINE std::size_t triangle_count_edgerange_cyclic(const Graph& graph, int stride, SetExecutionPolicy&& set = {}) {
   return nw::graph::parallel_for(
       nw::graph::cyclic(graph.edges(), stride), [&](auto&& u, auto&& v) { return nw::graph::intersection_size(graph[u], graph[v], set); },
       std::plus{}, 0ul);
@@ -458,7 +458,7 @@ template <class Graph, class SetExecutionPolicy = std::execution::sequenced_poli
 ///
 /// @returns            The number of triangles in the graph.
 template <class Graph>
-[[gnu::noinline]] std::size_t triangle_count_edgesplit_upper(const Graph& graph, std::size_t threads = 1) {
+NW_GRAPH_ATTRIBUTE_NOINLINE std::size_t triangle_count_edgesplit_upper(const Graph& graph, std::size_t threads = 1) {
   return triangle_count_async(threads, [&](std::size_t tid) {
     std::size_t triangles = 0;
     auto&& [v, ve]        = nw::graph::block(graph.to_be_indexed_.size(), threads, tid);
@@ -473,7 +473,7 @@ template <class Graph>
 }
 
 template <class Graph>
-[[gnu::noinline]] std::size_t triangle_count_edgesplit(const Graph& graph, std::size_t threads = 1) {
+NW_GRAPH_ATTRIBUTE_NOINLINE std::size_t triangle_count_edgesplit(const Graph& graph, std::size_t threads = 1) {
   return triangle_count_async(threads, [&](std::size_t tid) {
     std::size_t triangles = 0;
     auto&& [v, ve]        = nw::graph::block(graph.to_be_indexed_.size(), threads, tid);

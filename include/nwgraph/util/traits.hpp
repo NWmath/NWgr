@@ -15,7 +15,9 @@
 
 #include <atomic>
 #include <iterator>
+#if NW_GRAPH_NEED_TBB
 #include <tbb/blocked_range.h>
+#endif
 #include <tuple>
 
 namespace nw {
@@ -62,8 +64,10 @@ using edge_id_t = typename edge_id<T>::type;
 
 template <class>
 inline constexpr bool is_tbb_range_v = false;
+#if NW_GRAPH_NEED_TBB
 template <class T>
 inline constexpr bool is_tbb_range_v<tbb::blocked_range<T>> = true;
+#endif
 
 template <class>
 inline constexpr bool is_tuple_v = false;

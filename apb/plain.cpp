@@ -1,27 +1,18 @@
 
 
-#include <iostream>
-#include <vector>
+#if NW_GRAPH_NEED_HPX
+#include <hpx/hpx_main.hpp>
+#endif
 
-#include "nwgraph/adaptors/edge_range.hpp"
-#include "nwgraph/adaptors/plain_range.hpp"
 #include "nwgraph/containers/compressed.hpp"
 #include "nwgraph/edge_list.hpp"
 #include "nwgraph/io/mmio.hpp"
+#include "nwgraph/adaptors/edge_range.hpp"
+#include "nwgraph/adaptors/plain_range.hpp"
+#include "nwgraph/util/counting_iterator.hpp"
 
-#if defined(CL_SYCL_LANGUAGE_VERSioN)
-#include <dpstd/iterators.h>
-namespace nw::graph {
-template <class T>
-using counting_iterator = dpstd::counting_iterator<T>;
-}
-#else
-#include <tbb/iterators.h>
-namespace nw::graph {
-template <class T>
-using counting_iterator = tbb::counting_iterator<T>;
-}
-#endif
+#include <iostream>
+#include <vector>
 
 using namespace nw::graph;
 using namespace nw::util;
@@ -180,7 +171,7 @@ auto apb_adj(Adjacency& graph, size_t ntrial) {
       t1.start();
 
       auto ptr = graph.indices_.data();
-      auto idx = std::get<0>(graph.to_be_indexed_).data();
+      auto idx = std::get<0>(graph.to_be_indexed_.tuple()).data();
 
       for (vertex_id_type i = 0; i < N; ++i) {
         for (auto j = ptr[i]; j < ptr[i + 1]; ++j) {
@@ -344,7 +335,7 @@ auto apb_adj(Adjacency& graph, size_t ntrial) {
       t1.start();
 
       auto ptr = graph.indices_.data();
-      auto idx = std::get<0>(graph.to_be_indexed_).data();
+      auto idx = std::get<0>(graph.to_be_indexed_.tuple()).data();
 
       for (vertex_id_type i = 0; i < N; ++i) {
         for (auto j = ptr[i]; j < ptr[i + 1]; ++j) {

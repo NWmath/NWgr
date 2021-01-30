@@ -8,7 +8,9 @@
 // Author: Andrew Lumsdaine
 //
 
+#if (defined(__GNUC__) || defined(__clang__)) && !defined(_WINDOWS)
 #include <cxxabi.h>
+#endif
 #include <iostream>
 #include <typeinfo>
 

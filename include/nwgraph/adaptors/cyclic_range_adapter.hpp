@@ -14,7 +14,10 @@
 
 #include "nwgraph/util/util.hpp"
 #include <iterator>
+#if NW_GRAPH_NEED_TBB
+#include <tbb/tbb.h>
 #include <tbb/tbb_stddef.h>
+#endif
 
 namespace nw {
 namespace graph {
@@ -46,10 +49,19 @@ public:
   cyclic_range_adapter(const cyclic_range_adapter&) = default;
   cyclic_range_adapter(cyclic_range_adapter&&)      = default;
 
+#if NW_GRAPH_NEED_TBB
   cyclic_range_adapter(cyclic_range_adapter& rhs, tbb::split)
       : begin_(rhs.begin_), end_(rhs.end_), cutoff_(rhs.cutoff_), cycle_(rhs.cycle_ + rhs.stride_), stride_(rhs.stride_ *= 2) {}
+#endif
 
   struct iterator {
+    using traits            = std::iterator_traits<Iterator>;
+    using pointer           = typename traits::pointer;
+    using value_type        = typename traits::value_type;
+    using reference         = typename traits::reference;
+    using difference_type   = typename traits::difference_type;
+    using iterator_category = typename traits::iterator_category;
+
     Iterator        i_;
     difference_type stride_;
 
@@ -60,6 +72,40 @@ public:
       return *this;
     }
 
+    iterator operator++(int) {
+        iterator x(*this);
+        ++(*this);
+        return x;
+    }
+
+    iterator& operator--() {
+        i_ -= stride_;
+        return *this;
+    }
+
+    iterator operator--(int) {
+        iterator x(*this);
+        --(*this);
+        return x;
+    }
+
+    iterator& operator+=(std::size_t offset) {
+        i_ += stride_ * offset;
+        return *this;
+    }
+
+    iterator& operator-=(std::size_t offset) {
+        i_ -= stride_ * offset;
+        return *this;
+    }
+
+    difference_type operator-(iterator const& rhs) const {
+        return (i_ - rhs.i_) / stride_;
+    }
+
+    bool operator==(const iterator& rhs) const {
+        return i_ == rhs.i_;
+    }
     bool operator!=(const iterator& rhs) const { return i_ != rhs.i_; }
   };
 

@@ -18,25 +18,12 @@
 #include "nwgraph/util/AtomicBitVector.hpp"
 #include "nwgraph/util/atomic.hpp"
 #include "nwgraph/util/parallel_for.hpp"
+#include "util/counting_iterator.hpp"
 #include <queue>
 
 #include <tbb/concurrent_queue.h>
 #include <tbb/concurrent_vector.h>
 #include <tbb/parallel_for_each.h>
-
-#if defined(CL_SYCL_LANGUAGE_VERSION)
-#include <dpstd/iterators.h>
-namespace nw::graph {
-template <class T>
-using counting_iterator = dpstd::counting_iterator<T>;
-}
-#else
-#include <tbb/iterators.h>
-namespace nw::graph {
-template <class T>
-using counting_iterator = tbb::counting_iterator<T>;
-}
-#endif
 
 namespace nw {
 namespace graph {
@@ -289,9 +276,8 @@ auto bfs_v9(const Graph& graph, typename graph_traits<Graph>::vertex_id_type roo
 }
 
 template <class Graph>
-[[gnu::noinline]] auto bfs_top_down(const Graph& graph, typename graph_traits<Graph>::vertex_id_type root) {
+NW_GRAPH_ATTRIBUTE_NOINLINE auto bfs_top_down(Graph&& graph, vertex_id_type root) {
   using vertex_id_type = typename Graph::vertex_id_type;
-
   constexpr const std::size_t                         num_bins = 32;
   const std::size_t                                   N        = num_vertices(graph);
   std::vector<tbb::concurrent_vector<vertex_id_type>> q1(num_bins);
@@ -336,7 +322,7 @@ template <class Graph>
 }
 
 template <class Graph>
-[[gnu::noinline]] auto bfs_top_down_bitmap(const Graph& graph, typename graph_traits<Graph>::vertex_id_type root) {
+NW_GRAPH_ATTRIBUTE_NOINLINE auto bfs_top_down_bitmap(const Graph& graph, typename graph_traits<Graph>::vertex_id_type root) {
   using vertex_id_type = vertex_id_t<Graph>;
 
   constexpr const std::size_t                         num_bins = 32;
@@ -385,7 +371,7 @@ template <class Graph>
 }
 
 template <class Graph, class Transpose>
-[[gnu::noinline]] auto bfs_bottom_up(const Graph& g, const Transpose& gx, vertex_id_t<Graph> root) {
+NW_GRAPH_ATTRIBUTE_NOINLINE auto bfs_bottom_up(const Graph& g, const Transpose& gx, vertex_id_t<Graph> root) {
   using vertex_id_type = vertex_id_t<Graph>;
 
   const std::size_t          N = num_vertices(gx);
@@ -424,7 +410,7 @@ template <class Graph, class Transpose>
 }
 
 template <typename OutGraph, typename InGraph>
-[[gnu::noinline]] auto bfs_v11(const OutGraph& out_graph, const InGraph& in_graph, vertex_id_t<OutGraph> root, int num_bins = 32,
+NW_GRAPH_ATTRIBUTE_NOINLINE auto bfs_v11(const OutGraph& out_graph, const InGraph& in_graph, vertex_id_t<OutGraph> root, int num_bins = 32,
                                int alpha = 15, int beta = 18) {
 
   using vertex_id_type = vertex_id_t<OutGraph>;

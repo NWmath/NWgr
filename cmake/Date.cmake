@@ -10,4 +10,6 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(date)
 
-target_compile_options(date INTERFACE -Wno-deprecated-declarations)
+if(NOT MSVC)
+  target_compile_options(date INTERFACE -Wno-deprecated-declarations)
+endif()

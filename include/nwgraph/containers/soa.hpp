@@ -48,6 +48,11 @@ struct struct_of_arrays : std::tuple<std::vector<Attributes>...> {
   using storage_type = std::tuple<std::vector<Attributes>...>;
   using base         = std::tuple<std::vector<Attributes>...>;
 
+  base& tuple() { return static_cast<base&>(*this); }
+  base const& tuple() const { return static_cast<base const&>(*this); }
+
+  struct_of_arrays() = default;
+  struct_of_arrays(size_t M) : base(std::vector<Attributes>(M)...) {}
   template <bool is_const = false>
   class soa_iterator {
     friend class soa_iterator<!is_const>;
@@ -131,6 +136,9 @@ struct struct_of_arrays : std::tuple<std::vector<Attributes>...> {
   using size_type       = std::size_t;
   using difference_type = typename iterator::difference_type;
   using pointer         = typename iterator::pointer;
+  iterator begin() {
+    return std::apply([](auto&... vs) { return iterator(vs.begin()...); }, tuple());
+  }
 
   using const_iterator  = soa_iterator<true>;
   using const_reference = typename const_iterator::reference;
@@ -162,7 +170,7 @@ struct struct_of_arrays : std::tuple<std::vector<Attributes>...> {
   }
 
   void push_back(Attributes... attrs) {
-    std::apply([&](auto&... vs) { (vs.push_back(attrs), ...); }, *this);
+    std::apply([&](auto&... vs) { (vs.push_back(attrs), ...); }, tuple());
   }
 
   void push_back(std::tuple<Attributes...> attrs) {
@@ -170,7 +178,7 @@ struct struct_of_arrays : std::tuple<std::vector<Attributes>...> {
   }
 
   void push_at(std::size_t i, Attributes... attrs) {
-    std::apply([&](auto&... vs) { ((vs[i] = attrs), ...); }, *this);
+    std::apply([&](auto&... vs) { ((vs[i] = attrs), ...); }, tuple());
   }
 
   void push_at(std::size_t i, std::tuple<Attributes...> attrs) {
@@ -178,15 +186,15 @@ struct struct_of_arrays : std::tuple<std::vector<Attributes>...> {
   }
 
   void clear() {
-    std::apply([&](auto&... vs) { (vs.clear(), ...); }, *this);
+    std::apply([&](auto&... vs) { (vs.clear(), ...); }, tuple());
   }
 
   void resize(size_t N) {
-    std::apply([&](auto&&... vs) { (vs.resize(N), ...); }, *this);
+    std::apply([&](auto&&... vs) { (vs.resize(N), ...); }, tuple());
   }
 
   void reserve(size_t N) {
-    std::apply([&](auto&&... vs) { (vs.reserve(N), ...); }, *this);
+    std::apply([&](auto&&... vs) { (vs.reserve(N), ...); }, tuple());
   }
 
   template <class T>
@@ -208,11 +216,11 @@ struct struct_of_arrays : std::tuple<std::vector<Attributes>...> {
   }
 
   void serialize(std::ostream& outfile) const {
-    size_t st_size = std::get<0>(*this).size();
+    size_t st_size = std::get<0>(tuple()).size();
     size_t el_size = std::tuple_size<storage_type>::value;
     outfile.write(reinterpret_cast<char*>(&st_size), sizeof(size_t));
     outfile.write(reinterpret_cast<char*>(&el_size), sizeof(size_t));
-    std::apply([&](auto&... vs) { (serialize(outfile, vs), ...); }, *this);
+    std::apply([&](auto&... vs) { (serialize(outfile, vs), ...); }, tuple());
   }
 
   void deserialize(std::istream& infile) {
@@ -221,7 +229,7 @@ struct struct_of_arrays : std::tuple<std::vector<Attributes>...> {
     infile.read(reinterpret_cast<char*>(&st_size), sizeof(size_t));
     infile.read(reinterpret_cast<char*>(&el_size), sizeof(size_t));
     resize(st_size);
-    std::apply([&](auto&... vs) { (deserialize(infile, vs), ...); }, *this);
+    std::apply([&](auto&... vs) { (deserialize(infile, vs), ...); }, tuple());
   }
 
   template <typename index_t, typename vertex_id_type, class T, class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
@@ -237,10 +245,10 @@ struct struct_of_arrays : std::tuple<std::vector<Attributes>...> {
 
   template <typename index_t, typename vertex_id_type>
   void permute(const std::vector<index_t>& indices, const std::vector<index_t>& new_indices, const std::vector<vertex_id_type>& perm) {
-    std::apply([&](auto&... vs) { (permute(indices, new_indices, perm, vs), ...); }, *this);
+    std::apply([&](auto&... vs) { (permute(indices, new_indices, perm, vs), ...); }, tuple());
   }
 
-  size_t size() const { return std::get<0>(*this).size(); }
+  size_t size() const { return std::get<0>(tuple()).size(); }
 
   bool operator==(struct_of_arrays& a) { return std::equal(std::execution::par, begin(), end(), a.begin()); }
 

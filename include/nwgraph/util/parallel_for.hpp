@@ -13,8 +13,15 @@
 #define NW_GRAPH_PARALLEL_FOR_HPP
 
 #include "nwgraph/util/traits.hpp"
+#if NW_GRAPH_NEED_TBB
 #include <tbb/parallel_for.h>
 #include <tbb/parallel_reduce.h>
+#endif
+#if NW_GRAPH_NEED_HPX
+#include <hpx/algorithm.hpp>
+#include <hpx/execution.hpp>
+#include <hpx/numeric.hpp>
+#endif
 
 namespace nw {
 namespace graph {
@@ -31,7 +38,13 @@ template <class Op, class It>
 auto parallel_for_inner(Op&& op, It&& i) {
   if constexpr (is_tuple_v<std::decay_t<It>>) {
     return std::apply([&](auto&&... args) { return std::forward<Op>(op)(std::forward<decltype(args)>(args)...); }, std::forward<It>(i));
-  } else if constexpr (std::is_integral_v<std::decay_t<It>>) {
+  }
+#if NW_GRAPH_NEED_HPX
+  else {
+    return std::forward<Op>(op)(std::forward<It>(i));
+  }
+#else
+  else if constexpr (std::is_integral_v<std::decay_t<It>>) {
     return std::forward<Op>(op)(std::forward<It>(i));
   } else {
     if constexpr (is_tuple_v<decltype(*std::forward<It>(i))>) {
@@ -40,6 +53,7 @@ auto parallel_for_inner(Op&& op, It&& i) {
       return std::forward<Op>(op)(*std::forward<It>(i));
     }
   }
+#endif
 }
 
 /// Apply an operator to a range sequentially.
@@ -93,10 +107,19 @@ auto parallel_for_sequential(Range&& range, Op&& op, Reduce&& reduce, T init) {
 template <class Range, class Op>
 void parallel_for(Range&& range, Op&& op) {
   if (range.is_divisible()) {
+#if NW_GRAPH_NEED_TBB
     tbb::parallel_for(std::forward<Range>(range),
                       [&](auto&& sub) { parallel_for_sequential(std::forward<decltype(sub)>(sub), std::forward<Op>(op)); });
+#endif
+#if NW_GRAPH_NEED_HPX
+    hpx::ranges::for_each(hpx::execution::par, std::forward<Range>(range), std::forward<Op>(op));
+#endif
   } else {
+#if NW_GRAPH_NEED_HPX
+    hpx::ranges::for_each(std::forward<Range>(range), std::forward<Op>(op));
+#else
     parallel_for_sequential(std::forward<Range>(range), std::forward<Op>(op));
+#endif
   }
 }
 
@@ -121,11 +144,22 @@ void parallel_for(Range&& range, Op&& op) {
 template <class Range, class Op, class Reduce, class T>
 auto parallel_for(Range&& range, Op&& op, Reduce&& reduce, T init) {
   if (range.is_divisible()) {
+#if NW_GRAPH_NEED_TBB
     return tbb::parallel_reduce(
         std::forward<Range>(range), init,
         [&](auto&& sub, auto partial) { return parallel_for_sequential(std::forward<decltype(sub)>(sub), op, reduce, partial); }, reduce);
+#endif
+#if NW_GRAPH_NEED_HPX
+    return hpx::ranges::transform_reduce(hpx::execution::par, std::forward<Range>(range), init, std::forward<Reduce>(reduce),
+                                         [&](auto&& elem) { return parallel_for_inner(op, std::forward<decltype(elem)>(elem)); });
+#endif
   } else {
+#if NW_GRAPH_NEED_HPX
+    return hpx::ranges::transform_reduce(std::forward<Range>(range), init, std::forward<Reduce>(reduce),
+                                         [&](auto&& elem) { return parallel_for_inner(op, std::forward<decltype(elem)>(elem)); });
+#else
     return parallel_for_sequential(std::forward<Range>(range), std::forward<Op>(op), std::forward<Reduce>(reduce), init);
+#endif
   }
 }
 }    // namespace graph

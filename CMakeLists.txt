@@ -8,7 +8,7 @@
 # For more information about CMake, see http://www.cmake.org             #
 ##########################################################################
 #
-# Useful things to know 
+# Useful things to know
 # make VERBOSE=1
 # cmake --trace
 # cmake .. -DCMAKE_CXX_COMPILER=icpx
@@ -31,10 +31,19 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 # -----------------------------------------------------------------------------
 # Build types and default flags
 # -----------------------------------------------------------------------------
-set(CMAKE_CXX_FLAGS_DEBUG "-O0 -g -fno-elide-constructors -fsanitize=address " CACHE STRING "" FORCE)
-set(CMAKE_CXX_FLAGS_RELEASE "-Ofast -march=native -DNDEBUG " CACHE STRING "" FORCE)
-set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-Ofast -g -march=native" CACHE STRING "" FORCE)
-set(CMAKE_CXX_FLAGS_MINSIZEREL "-Os -march=native -DNDEBUG " CACHE STRING "" FORCE)
+if(NOT MSVC)
+  set(CMAKE_CXX_FLAGS_DEBUG "-O0 -g -fno-elide-constructors -fsanitize=address" CACHE STRING "" FORCE)
+  set(CMAKE_CXX_FLAGS_RELEASE "-Ofast -march=native -DNDEBUG" CACHE STRING "" FORCE)
+  set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-Ofast -g -march=native" CACHE STRING "" FORCE)
+  set(CMAKE_CXX_FLAGS_MINSIZEREL "-Os -march=native -DNDEBUG" CACHE STRING "" FORCE)
+else()
+  add_compile_definitions(_SILENCE_ALL_CXX17_DEPRECATION_WARNINGS)
+  add_compile_definitions(NOMINMAX)
+  # suppress warnings:
+  # 4244: 'return': conversion from 'xxx' to 'yyy', possible loss of data
+  # 4267: 'argument': conversion from 'xxx' to 'yyy', possible loss of data
+  add_compile_options(-wd4244 -wd4267)
+endif()
 
 # Default to Release build
 if (NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
@@ -52,8 +61,12 @@ include(CompilerFlags)
 # -----------------------------------------------------------------------------
 set(NW_GRAPH_SANITIZE "" CACHE STRING "-fsanitize compiler options (e.g., =address)")
 if (NW_GRAPH_SANITIZE)
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-omit-frame-pointer -fsanitize=${NW_GRAPH_SANITIZE}")
-  set(CMAKE_LINKER_FLAGS "${CMAKE_LINKER_FLAGS} -fsanitize=${NW_GRAPH_SANITIZE}")
+  if(NOT MSVC)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fno-omit-frame-pointer -fsanitize=${NW_GRAPH_SANITIZE}")
+    set(CMAKE_LINKER_FLAGS "${CMAKE_LINKER_FLAGS} -fsanitize=${NW_GRAPH_SANITIZE}")
+  else()
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=${NW_GRAPH_SANITIZE}")
+  endif()
 endif (NW_GRAPH_SANITIZE)
 
 option(NW_GRAPH_BUILD_TESTS "Determines whether to build tests." ON)

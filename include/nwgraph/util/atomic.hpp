@@ -15,7 +15,57 @@
 
 #include "nwgraph/util/traits.hpp"
 #include <atomic>
+#include <cstddef>
 #include <type_traits>
+
+#if !defined(__GNUC__) && !defined(__clang__)
+#include <cstdint>
+#include <intrin.h>
+#pragma intrinsic(_InterlockedExchangeAdd)
+#pragma intrinsic(_InterlockedOr8, _InterlockedOr16, _InterlockedOr, _InterlockedOr64)
+#pragma intrinsic(_InterlockedCompareExchange)
+
+namespace nw {
+namespace util {
+namespace detail {
+template<std::size_t Size>
+struct interlocked;
+
+template<>
+struct interlocked<1> {
+  template<typename T>
+  constexpr static T call_or(T volatile* value, T mask) {
+    return _InterlockedOr8(reinterpret_cast<std::int8_t volatile*>(value), static_cast<std::int8_t>(mask));
+  }
+};
+
+template<>
+struct interlocked<2> {
+  template<typename T>
+  constexpr static T call_or(T volatile* value, T mask) {
+    return _InterlockedOr16(reinterpret_cast<std::int16_t volatile*>(value), static_cast<std::int16_t>(mask));
+  }
+};
+
+template<>
+struct interlocked<4> {
+  template<typename T>
+  constexpr static T call_or(T volatile* value, T mask) {
+    return _InterlockedOr(reinterpret_cast<long volatile*>(value), static_cast<long>(mask));
+  }
+};
+
+template<>
+struct interlocked<8> {
+  template<typename T>
+  constexpr static T call_or(T volatile* value, T mask) {
+    return _InterlockedOr64(reinterpret_cast<std::int64_t volatile*>(value), static_cast<std::int64_t>(mask));
+  }
+};
+}    // namespace detail
+}    // namespace util
+}    // namespace nw
+#endif
 
 namespace nw {
 namespace graph {
@@ -25,7 +75,15 @@ constexpr auto load(T&& t) {
   if constexpr (is_atomic_v<std::decay_t<T>>) {
     return std::forward<T>(t).load(order);
   } else {
-    return load<order>(std::atomic_ref(t));
+#if defined(__GNUC__) || defined(__clang__)
+    std::decay_t<T> tt;
+    __atomic_load(std::addressof(std::forward<T>(t)), std::addressof(tt), order);
+    return tt;
+#else
+    auto tmp = std::forward<T>(t);
+    detail::interlocked<sizeof(tmp)>::call_or(&tmp, std::decay_t<T>{0});
+    return tmp;
+#endif
   }
 }
 
@@ -45,7 +103,12 @@ constexpr void store(T&& t, U&& u) {
   if constexpr (is_atomic_v<std::decay_t<T>>) {
     std::forward<T>(t).store(std::forward<U>(u), order);
   } else {
-    store<order>(std::atomic_ref(t), std::forward<U>(u));
+#if defined(__GNUC__) || defined(__clang__)
+    __atomic_store(std::addressof(std::forward<T>(t)), std::addressof(u), order);
+#else
+    auto tmp = std::decay_t<T>{0};
+    detail::interlocked<sizeof(tmp)>::call_or(&tmp, std::forward<T>(t));
+#endif
   }
 }
 
@@ -74,7 +137,14 @@ constexpr bool cas(T&& t, U&& u, V&& v) {
   if constexpr (is_atomic_v<std::decay_t<T>>) {
     return std::forward<T>(t).compare_exchange_strong(std::forward<U>(u), std::forward<V>(v), success, failure);
   } else {
-    return cas<success, failure>(std::atomic_ref(t), std::forward<U>(u), std::forward<V>(v));
+#if defined(__GNUC__) || defined(__clang__)
+    return __atomic_compare_exchange(std::addressof(std::forward<T>(t)), std::addressof(std::forward<U>(u)),
+                                     std::addressof(std::forward<V>(v)), false, success, failure);
+#else
+    auto compare_with = std::forward<U>(u);
+    auto old_value    = _InterlockedCompareExchange(std::addressof(std::forward<T>(t)), std::forward<V>(v), compare_with);
+    return compare_with == old_value;
+#endif
   }
 }
 
@@ -145,7 +215,13 @@ constexpr auto fetch_add(T&& t, U&& u) {
         ;
       return e;
     } else {
-      return fetch_add<order>(std::atomic_ref(t), std::forward<U>(u));
+#if defined(__GNUC__) || defined(__clang__)
+      return __atomic_fetch_add(std::addressof(std::forward<T>(t)), std::forward<U>(u), order);
+#else
+      auto tmp = std::forward<T>(t);
+      _InterlockedExchangeAdd(std::addressof(tmp), std::forward<U>(u));
+      return tmp;
+#endif
     }
   }
 }
@@ -156,7 +232,13 @@ constexpr auto fetch_or(T&& t, U&& u) {
   if constexpr (is_atomic_v<std::decay_t<T>>) {
     return std::forward<T>(t).fetch_or(std::forward<U>(u), order);
   } else {
-    return fetch_or<order>(std::atomic_ref(t), std::forward<U>(u));
+#if defined(__GNUC__) || defined(__clang__)
+    return __atomic_fetch_or(std::addressof(std::forward<T>(t)), std::forward<T>(u), order);
+#else
+    auto tmp = std::forward<T>(t);
+    detail::interlocked<sizeof(tmp)>::call_or(&tmp, std::forward<T>(u));
+    return tmp;
+#endif
   }
 }
 }    // namespace graph

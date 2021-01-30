@@ -1,4 +1,7 @@
 
+#if NW_GRAPH_NEED_HPX
+#include <hpx/hpx_main.hpp>
+#endif
 
 #include <iostream>
 #include <vector>
@@ -7,13 +10,7 @@
 #include "nwgraph/containers/compressed.hpp"
 #include "nwgraph/edge_list.hpp"
 #include "nwgraph/io/mmio.hpp"
-
-#if defined(CL_SYCL_LANGUAGE_VERSioN)
-#include <dpstd/iterator>
-#else
-#include "tbb/iterators.h"
-#endif
-
+#include "nwgraph/util/counting_iterator.hpp"
 using namespace nw::graph;
 using namespace nw::util;
 
@@ -37,8 +34,8 @@ auto apb_adj(Adjacency& graph, size_t ntrial) {
       t1.start();
 
       auto ptr = graph.indices_.data();
-      auto idx = std::get<0>(graph.to_be_indexed_).data();
-      auto dat = std::get<1>(graph.to_be_indexed_).data();
+      auto idx = std::get<0>(graph.to_be_indexed_.tuple()).data();
+      auto dat = std::get<1>(graph.to_be_indexed_.tuple()).data();
 
       for (vertex_id_type i = 0; i < N; ++i) {
         for (auto j = ptr[i]; j < ptr[i + 1]; ++j) {
@@ -178,8 +175,8 @@ auto apb_adj(Adjacency& graph, size_t ntrial) {
       t1.start();
 
       auto ptr = graph.indices_.data();
-      auto idx = std::get<0>(graph.to_be_indexed_).data();
-      auto dat = std::get<1>(graph.to_be_indexed_).data();
+      auto idx = std::get<0>(graph.to_be_indexed_.tuple()).data();
+      auto dat = std::get<1>(graph.to_be_indexed_.tuple()).data();
 
       for (vertex_id_type i = 0; i < N; ++i) {
         for (auto j = ptr[i]; j < ptr[i + 1]; ++j) {

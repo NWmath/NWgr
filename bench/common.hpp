@@ -7,9 +7,16 @@
 #include "nwgraph/graph_base.hpp"
 #include "nwgraph/graph_traits.hpp"
 #include "nwgraph/io/mmio.hpp"
+#include "nwgraph/util/atomic.hpp"
 #include "nwgraph/util/timer.hpp"
 #include "nwgraph/util/traits.hpp"
 
+#if NW_GRAPH_NEED_TBB
+#include <tbb/global_control.h>
+#endif
+#if NW_GRAPH_NEED_HPX
+#include <hpx/include/parallel_for_each.hpp>
+#endif
 #include <iomanip>
 #include <map>
 #include <random>
@@ -21,7 +28,17 @@
 namespace nw::graph {
 namespace bench {
 
+#ifdef NW_GRAPH_NEED_TBB
 constexpr inline bool WITH_TBB = true;
+#else
+constexpr inline bool WITH_TBB = false;
+#endif
+
+#ifdef NW_GRAPH_NEED_TBB
+constexpr inline bool WITH_HPX = true;
+#else
+constexpr inline bool WITH_HPX = false;
+#endif
 
 auto set_n_threads(long n) {
   if constexpr (WITH_TBB) {
@@ -34,7 +51,11 @@ auto set_n_threads(long n) {
 long get_n_threads() {
   if constexpr (WITH_TBB) {
     return tbb::global_control::active_value(tbb::global_control::max_allowed_parallelism);
-  } else {
+  }
+  else if constexpr (WITH_HPX) {
+    return hpx::get_worker_thread_num();
+  }
+  else {
     return 1;
   }
 }
@@ -49,7 +70,13 @@ std::vector<long> parse_n_threads(const std::vector<std::string>& args) {
         threads.push_back(std::stol(n));
       }
     }
-  } else {
+  }
+  else if constexpr (WITH_HPX) {
+    if (args.size() == 0) {
+        threads.push_back(hpx::get_worker_thread_num());
+    }
+  }
+  else {
     threads.push_back(1);
   }
   return threads;
@@ -95,11 +122,19 @@ auto build_degrees(const Graph& graph) {
   using Id = typename nw::graph::vertex_id<std::decay_t<Graph>>::type;
   nw::util::life_timer _("degrees");
   std::vector<Id>      degrees(graph.size());
+#if defined(NW_GRAPH_NEED_TBB)
   tbb::parallel_for(edge_range(graph), [&](auto&& edges) {
     for (auto&& [i, j] : edges) {
-      __atomic_fetch_add(&degrees[j], 1, __ATOMIC_ACQ_REL);
+      nw::util::fetch_add(degrees[j], 1);
     }
   });
+#elif defined(NW_GRAPH_NEED_HPX)
+  hpx::ranges::for_each(hpx::execution::par, edge_range(graph), [&](auto&& edges) {
+    for (auto&& [i, j] : edges) {
+        nw::util::fetch_add(degrees[j], 1);
+    }
+  });
+#endif
   return degrees;
 }
 

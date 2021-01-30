@@ -20,17 +20,49 @@
 #include <future>
 #include <iostream>
 #include <sstream>
+#if (defined(__GNUC__) || defined(__clang__)) && !defined(_WINDOWS)
 #include <sys/mman.h>
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <thread>
 #include <unistd.h>
+#endif
+#if NW_GRAPH_NEED_HPX
+#include <hpx/async.hpp>
+#include <hpx/future.hpp>
+#include <hpx/thread.hpp>
+
+namespace nw {
+namespace graph {
+using hpx::async;
+template<typename T>
+using future = hpx::future<T>;
+using hpx::thread;
+namespace launch {
+constexpr inline hpx::launch::async_policy async{};
+}    // namespace launch
+}    // namespace graph
+}    // namespace nw
+#else
+#include <future>
+#include <thread>
+
+namespace nw {
+namespace graph {
+using std::async;
+template<typename T>
+using future = std::future<T>;
+using std::thread;
+namespace launch {
+using std::launch::async;
+}    // namespace launch
+}    // namespace graph
+}    // namespace nw
+#endif
 
 #include "MatrixMarketFile.hpp"
 #include "nwgraph/adjacency.hpp"
 #include "nwgraph/edge_list.hpp"
-
-#include <tbb/concurrent_vector.h>
 
 namespace nw {
 namespace graph {
@@ -362,7 +394,7 @@ par_load_mm(mmio::MatrixMarketFile& mmio, std::vector<std::vector<std::tuple<siz
   std::array<vertex_id_type, 2> Gi_max = {0, 0};
   std::vector<std::future<std::tuple<size_t, std::array<vertex_id_type, 2>, std::array<vertex_id_type, 2>>>> futures(threads);
   for (std::size_t tid = 0; tid < threads; ++tid) {
-    futures[tid] = std::async(std::launch::async, 
+    futures[tid] = nw::graph::async(nw::graph::launch::async,
       [&](size_t thread) {
         size_t GN = mmio.getNCols();
         size_t GM = mmio.getNEdges();
@@ -414,7 +446,7 @@ par_load_mm(mmio::MatrixMarketFile& mmio, std::vector<std::vector<std::tuple<siz
     Gi_max[0] = std::max(std::get<2>(res)[0], Gi_max[0]);
     Gi_max[1] = std::max(std::get<2>(res)[1], Gi_max[1]);
   }
-  
+
   return std::tuple(entries, Gi_min, Gi_max);
 }
 
@@ -424,9 +456,9 @@ par_load_mm(mmio::MatrixMarketFile& mmio, std::vector<std::vector<std::tuple<siz
   std::array<vertex_id_type, 2> Gi_max = {0, 0};
   std::vector<std::future<std::tuple<size_t, std::array<vertex_id_type, 2>, std::array<vertex_id_type, 2>>>> futures(threads);
   for (std::size_t tid = 0; tid < threads; ++tid) {
-    futures[tid] = std::async(std::launch::async, 
+    futures[tid] = nw::graph::async(nw::graph::launch::async,
       [&](size_t thread) {
-        
+
         size_t GN = mmio.getNCols();
         size_t GM = mmio.getNEdges();
 
@@ -473,7 +505,7 @@ par_load_mm(mmio::MatrixMarketFile& mmio, std::vector<std::vector<std::tuple<siz
 
 
 template <directedness sym, typename... Attributes>
-edge_list<sym, Attributes...> par_read_mm(const std::string& filename, bool keep_loops = true, size_t threads = (size_t) std::thread::hardware_concurrency()) {
+edge_list<sym, Attributes...> par_read_mm(const std::string& filename, bool keep_loops = true, size_t threads = (size_t) nw::graph::thread::hardware_concurrency()) {
   mmio::MatrixMarketFile mmio(filename);
   if(!mmio.isSymmetric() && sym == undirected) {
     std::cerr << "warning: requested undirected edge list, but mtx file is general" << std::endl;
@@ -482,7 +514,7 @@ edge_list<sym, Attributes...> par_read_mm(const std::string& filename, bool keep
   edge_list<sym, Attributes...> A(mmio.getNCols());
   std::vector<std::vector<std::tuple<size_t, size_t, Attributes...>>> sub_lists(threads);
   std::vector<std::vector<std::tuple<size_t, size_t, Attributes...>>> sub_loops(threads);
-  
+
   auto info = par_load_mm(mmio, sub_lists, sub_loops, keep_loops, threads);
   if(mmio.isSymmetric() && sym == directed) {
     A.resize(std::get<0>(info)*2);
@@ -494,26 +526,26 @@ edge_list<sym, Attributes...> par_read_mm(const std::string& filename, bool keep
   A.max_ = std::get<2>(info);
 
   mmio.release();
-  
+
   std::vector<size_t> offsets(threads+1);
   offsets[0] = 0;
   for(size_t tid = 1; tid < threads; ++tid) {
     offsets[tid] = offsets[tid-1] + sub_lists[tid-1].size();
   }
   offsets[threads] = offsets[threads-1] + sub_lists[threads-1].size();
-  
-  std::vector<std::future<void>> futures(threads);
+
+  std::vector<nw::graph::future<void>> futures(threads);
   for (std::size_t tid = 0; tid < threads; ++tid) {
-    futures[tid] = std::async(std::launch::async,
+    futures[tid] = nw::graph::async(nw::graph::launch::async,
       [&](size_t thread) {
-	std::copy(std::execution::par_unseq, sub_lists[thread].begin(), sub_lists[thread].end(), A.begin() + offsets[thread]);
+    std::copy(std::execution::par_unseq, sub_lists[thread].begin(), sub_lists[thread].end(), A.begin() + offsets[thread]);
         if(mmio.isSymmetric() && sym == directed) {
           std::transform(std::execution::par_unseq, A.begin() + offsets[thread], A.begin() + offsets[thread+1], A.begin() + offsets[threads] + offsets[thread], [&](auto&& e){
             std::tuple<size_t, size_t, Attributes...> copy(e);
             std::swap(std::get<0>(copy), std::get<1>(copy));
             return copy;
           });
-	}
+    }
       return;
       }, tid);
   }
@@ -536,10 +568,10 @@ edge_list<sym, Attributes...> par_read_mm(const std::string& filename, bool keep
       offset += sub_loops[t].size();
     }
   }
- 
+
   A.close_for_push_back();
   A.set_origin(filename);
-  
+
   return A;
 }
 #endif

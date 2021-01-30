@@ -15,7 +15,7 @@
 // Author: Kevin Deweese, Andrew Lumsdaine
 //
 static constexpr const char USAGE[] =
-    R"(tc.exe: BGL17 triangle counting benchmark driver.
+ R"(tc.exe: BGL17 triangle counting benchmark driver.
   Usage:
       tc.exe (-h | --help)
       tc.exe -f FILE... [--version ID...] [-n NUM] [--lower | --upper] [--relabel] [--heuristic] [--log FILE] [--log-header] [--format FORMAT] [-dvV] [THREADS...]

@@ -28,6 +28,25 @@
 namespace nw {
 namespace graph {
 
+#if defined(_MSC_VER) && !defined(__clang__)
+#include <cstdint>
+#include <intrin.h>
+
+std::uint32_t inline __builtin_clz(std::uint32_t value)
+{
+    return __lzcnt(value);
+}
+
+std::uint64_t inline __builtin_clzl(std::uint64_t value)
+{
+    return __lzcnt64(value);
+}
+
+#define NW_GRAPH_BUILTIN_CONSTEXPR
+#else
+#define NW_GRAPH_BUILTIN_CONSTEXPR constexpr
+#endif
+
 template <typename T = std::size_t>
 
 class counting_output_iterator : public std::iterator<std::output_iterator_tag, std::ptrdiff_t> {
@@ -169,24 +188,24 @@ auto property_ptr(Iterator& inner) {
 
 /// The log_2 of an integer is the inverse of pow2... essentially the number of
 /// left shift bits we need to shift out of the value to get to 0.
-static inline constexpr int log2(uint64_t val) {
+static inline NW_GRAPH_BUILTIN_CONSTEXPR int log2(uint64_t val) {
   assert(val);
   return ((sizeof(val) * 8 - 1) - __builtin_clzl(val));
 }
 
 /// http://stackoverflow.com/questions/3272424/compute-fast-log-base-2-ceiling
-static inline constexpr int ceil_log2(uint32_t val) {
+static inline NW_GRAPH_BUILTIN_CONSTEXPR int ceil_log2(uint32_t val) {
   assert(val);
   return ((sizeof(val) * 8 - 1) - __builtin_clz(val)) + (!!(val & (val - 1)));
 }
 
-static inline constexpr int ceil_log2(int32_t val) {
+static inline NW_GRAPH_BUILTIN_CONSTEXPR int ceil_log2(int32_t val) {
   assert(0 < val);
   return ceil_log2(uint32_t(val));
 }
 
 /// http://stackoverflow.com/questions/3272424/compute-fast-log-base-2-ceiling
-static inline constexpr int ceil_log2(uint64_t val) {
+static inline NW_GRAPH_BUILTIN_CONSTEXPR int ceil_log2(uint64_t val) {
   assert(val);
   return ((sizeof(val) * 8 - 1) - __builtin_clzl(val)) + (!!(val & (val - 1)));
 }

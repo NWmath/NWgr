@@ -1,5 +1,15 @@
 
 
+#if NW_GRAPH_NEED_HPX
+#include <hpx/hpx_main.hpp>
+#endif
+
+#include "containers/compressed.hpp"
+#include "containers/edge_list.hpp"
+#include "adaptors/edge_range.hpp"
+#include "io/mmio.hpp"
+#include "util/counting_iterator.hpp"
+
 #include <iostream>
 #include <queue>
 #include <vector>
@@ -8,12 +18,6 @@
 #include "nwgraph/containers/compressed.hpp"
 #include "nwgraph/edge_list.hpp"
 #include "nwgraph/io/mmio.hpp"
-
-#if defined(CL_SYCL_LANGUAGE_VERSioN)
-#include <dpstd/iterator>
-#else
-#include "tbb/iterators.h"
-#endif
 
 using namespace nw::graph;
 using namespace nw::util;
@@ -31,7 +35,7 @@ auto apb_adj(Adjacency& graph, size_t ntrial, vertex_id_t<Adjacency> seed) {
     std::fill(visited.begin(), visited.end(), false);
     t1.start();
     auto ptr = graph.indices_.data();
-    auto idx = std::get<0>(graph.to_be_indexed_).data();
+    auto idx = std::get<0>(graph.to_be_indexed_.tuple()).data();
 
     std::queue<vertex_id_type> Q;
     Q.push(seed);

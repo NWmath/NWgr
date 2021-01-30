@@ -1,4 +1,7 @@
 
+#if NW_GRAPH_NEED_HPX
+#include <hpx/hpx_main.hpp>
+#endif
 
 #include <iostream>
 #include <vector>
@@ -6,26 +9,16 @@
 #include "nwgraph/containers/compressed.hpp"
 #include "nwgraph/edge_list.hpp"
 #include "nwgraph/io/mmio.hpp"
-
-#if defined(CL_SYCL_LANGUAGE_VERSioN)
-#include <dpstd/iterators.h>
-namespace nw::graph {
-template <class T>
-using counting_iterator = dpstd::counting_iterator<T>;
-}
-#else
-#include <tbb/iterators.h>
-namespace nw::graph {
-template <class T>
-using counting_iterator = tbb::counting_iterator<T>;
-}
-#endif
+#include "nwgraph/util/algorithm.hpp"
+#include "nwgraph/util/counting_iterator.hpp"
+#include "nwgraph/util/execution.hpp"
 
 using namespace nw::graph;
 using namespace nw::util;
 
 template <typename Adjacency, typename Exec1, typename Exec2>
-auto apb_adj(Adjacency& graph, size_t ntrial, Exec1 exec1 = std::execution::seq, Exec2 exec2 = std::execution::seq) {
+auto apb_adj(Adjacency& graph, size_t ntrial, Exec1 exec1 = nw::graph::execution::seq, Exec2 exec2 = nw::graph::execution::seq) {
+  using vertex_id_type = vertex_id_t<Adjacency>;
   using vertex_id_type = vertex_id_t<Adjacency>;
 
   vertex_id_type     N = num_vertices(graph);
@@ -39,10 +32,10 @@ auto apb_adj(Adjacency& graph, size_t ntrial, Exec1 exec1 = std::execution::seq,
     t1.start();
 
     auto ptr = graph.indices_.data();
-    auto idx = std::get<0>(graph.to_be_indexed_).data();
-    auto dat = std::get<1>(graph.to_be_indexed_).data();
+    auto idx = std::get<0>(graph.to_be_indexed_.tuple()).data();
+    auto dat = std::get<1>(graph.to_be_indexed_.tuple()).data();
 
-    std::for_each(exec1, counting_iterator<size_t>(0), counting_iterator<size_t>(N), [&](size_t i) {
+    nw::graph::for_each(exec1, counting_iterator<size_t>(0), counting_iterator<size_t>(N), [&](size_t i) {
       for (auto j = ptr[i]; j < ptr[i + 1]; ++j) {
         y[i] += x[idx[j]] * dat[j];
       }
@@ -59,12 +52,13 @@ auto apb_adj(Adjacency& graph, size_t ntrial, Exec1 exec1 = std::execution::seq,
     t2.start();
 
     auto ptr = graph.indices_.data();
-    auto idx = std::get<0>(graph.to_be_indexed_).data();
-    auto dat = std::get<1>(graph.to_be_indexed_).data();
+    auto idx = std::get<0>(graph.to_be_indexed_.tuple()).data();
+    auto dat = std::get<1>(graph.to_be_indexed_.tuple()).data();
 
-    std::for_each(exec1, counting_iterator<size_t>(0), counting_iterator<size_t>(N), [&](size_t i) {
-      y[i] += std::transform_reduce(exec2, counting_iterator<size_t>(ptr[i]), counting_iterator<size_t>(ptr[i + 1]), 0.0, std::plus<float>(),
-                                    [&](size_t j) { return x[idx[j]] * dat[j]; });
+    nw::graph::for_each(exec1, counting_iterator<size_t>(0), counting_iterator<size_t>(N), [&](size_t i) {
+      y[i] += nw::graph::transform_reduce(exec2, counting_iterator<size_t>(ptr[i]), counting_iterator<size_t>(ptr[i+1]), 0.0, std::plus<float>(), [&](size_t j) {
+          return x[idx[j]] * dat[j];
+        });
     });
     t2.stop();
     time += t2.elapsed();
@@ -78,7 +72,7 @@ auto apb_adj(Adjacency& graph, size_t ntrial, Exec1 exec1 = std::execution::seq,
     t3.start();
 
     vertex_id_type k = 0;
-    std::for_each(exec1, graph.begin(), graph.end(), [&](auto&& i) {
+    nw::graph::for_each (exec1, graph.begin(), graph.end(), [&](auto&& i) {
       for (auto j = (i).begin(); j != (i).end(); ++j) {
         y[k] += x[std::get<0>(*j)] * std::get<1>(*j);
       }
@@ -97,9 +91,10 @@ auto apb_adj(Adjacency& graph, size_t ntrial, Exec1 exec1 = std::execution::seq,
     t4.start();
 
     auto g = graph.begin();
-    std::for_each(exec1, counting_iterator<size_t>(0), counting_iterator<size_t>(N), [&](size_t i) {
-      y[i] += std::transform_reduce(exec2, g[i].begin(), g[i].end(), 0.0, std::plus<float>(),
-                                    [&](auto&& j) { return x[std::get<0>(j)] * std::get<1>(j); });
+    nw::graph::for_each(exec1, counting_iterator<size_t>(0), counting_iterator<size_t>(N), [&](size_t i) {
+      y[i] += nw::graph::transform_reduce(exec2, g[i].begin(), g[i].end(), 0.0, std::plus<float>(), [&](auto&& j) {
+        return x[std::get<0>(j)] * std::get<1>(j);
+      });
     });
 
     t4.stop();
@@ -205,16 +200,16 @@ int main(int argc, char* argv[]) {
   }
 
   //  std::cout << "# seq seq" << std::endl;
-  //  apb_adj(adj_a, std::execution::seq, std::execution::seq);
+  //  apb_adj(adj_a, nw::graph::execution::seq, nw::graph::execution::seq);
 
   std::cout << "# seq par" << std::endl;
-  apb_adj(adj_a, ntrial, std::execution::seq, std::execution::par);
+  apb_adj(adj_a, ntrial, nw::graph::execution::seq, nw::graph::execution::par);
 
   //  std::cout << "# par seq" << std::endl;
-  //  apb_adj(adj_a, std::execution::par, std::execution::seq);
+  //  apb_adj(adj_a, nw::graph::execution::par, nw::graph::execution::seq);
 
   //  std::cout << "# par par" << std::endl;
-  //  apb_adj(adj_a, std::execution::par, std::execution::par);
+  //  apb_adj(adj_a, nw::graph::execution::par, nw::graph::execution::par);
 
   return 0;
 }

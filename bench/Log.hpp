@@ -27,7 +27,11 @@
 #include <iostream>
 #include <random>
 #include <sstream>
+#ifdef _MSC_VER
+#include <winsock2.h>
+#elif defined(__GNUC__) || defined(__clang__)
 #include <unistd.h>
+#endif
 
 namespace nw::graph {
 namespace bench {

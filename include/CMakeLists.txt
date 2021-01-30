@@ -100,21 +100,26 @@ target_sources(nw_graph
 # -----------------------------------------------------------------------------
 
 set(THREADS_PREFER_PTHREAD_FLAG ON)
-
-find_package(TBB REQUIRED)
-
-# find_package(TBB)
-# if (not TBB_Found)
-#   FetchContent(
-#     TBB_STUFF)
-# endif()
-
-find_package(Threads REQUIRED)
+option(NW_GRAPH_NEED_TBB "Use TBB for parallelization" ON)
+option(NW_GRAPH_NEED_HPX "Use HPX for parallelization" OFF)
+if(NW_GRAPH_NEED_TBB AND NW_GRAPH_NEED_HPX)
+  message(FATAL "Can only enable one, TBB or HPX as parallelization backend")
+endif()
 target_compile_definitions(nw_graph INTERFACE EXECUTION_POLICY)
-target_link_libraries(nw_graph INTERFACE TBB::tbb Threads::Threads)
-if (NW_GRAPH_USE_TBBMALLOC)
-  target_link_libraries(nw_graph INTERFACE TBB::tbbmalloc) 
-endif ()
+if(NW_GRAPH_NEED_TBB)
+  find_package(TBB REQUIRED)
+  find_package(Threads REQUIRED)
+  target_compile_definitions(nw_graph INTERFACE NW_GRAPH_NEED_TBB)
+  target_link_libraries(nw_graph INTERFACE TBB::tbb Threads::Threads)
+  if (NW_GRAPH_USE_TBBMALLOC)
+    target_link_libraries(nw_graph INTERFACE TBB::tbbmalloc)
+  endif ()
+endif()
+if(NW_GRAPH_NEED_HPX)
+  find_package(HPX REQUIRED)
+  target_compile_definitions(nw_graph INTERFACE NW_GRAPH_NEED_HPX)
+  target_link_libraries(nw_graph INTERFACE HPX::hpx HPX::wrap_main)
+endif()
 
 
 
