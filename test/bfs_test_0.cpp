@@ -83,7 +83,7 @@ TEST_CASE("BFS traversal", "[bfs]") {
 */
   SECTION("another seed") {
     vertex_id_t<directed_csr_graph_t> seed = 1;
-    distance[seed]      = 0;
+    distance[seed]                         = 0;
     bfs_edge_range ranges(A, seed);
     auto           ite = ranges.begin();
     for (; ite != ranges.end(); ++ite) {

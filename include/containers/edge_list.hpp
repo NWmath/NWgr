@@ -54,13 +54,13 @@ public:
   // private:
   using graph_base     = graph_base_t;
   using vertex_id_type = vertex_id;
-  using base    = struct_of_arrays<vertex_id_type, vertex_id_type, Attributes...>;
-  using element = std::tuple<vertex_id_type, vertex_id_type, Attributes...>;
+  using base           = struct_of_arrays<vertex_id_type, vertex_id_type, Attributes...>;
+  using element        = std::tuple<vertex_id_type, vertex_id_type, Attributes...>;
 
   static const directedness edge_directedness = direct;
   using attributes_t                          = std::tuple<Attributes...>;
-  using num_vertices_type                        = graph_base::vertex_cardinality_t;
-  using num_edges_type                           = base::difference_type;
+  using num_vertices_type                     = graph_base::vertex_cardinality_t;
+  using num_edges_type                        = base::difference_type;
 
   using my_type         = index_edge_list<vertex_id_type, graph_base_t, direct, Attributes...>;
   using directed_type   = index_edge_list<vertex_id_type, graph_base_t, directedness::directed, Attributes...>;

@@ -94,9 +94,9 @@ struct graph_traits<outer<inner<std::tuple<Attributes...>>>> {
   using outer_iterator = typename outer_type::iterator;
   using inner_iterator = typename inner_type::iterator;
 
-  using vertex_id_type   = std::tuple_element<0, tuple_type>::type;
-  using vertex_size_type = typename outer_type::size_type;
-  using num_vertices_type   = std::array<vertex_size_type, 1>;
+  using vertex_id_type    = std::tuple_element<0, tuple_type>::type;
+  using vertex_size_type  = typename outer_type::size_type;
+  using num_vertices_type = std::array<vertex_size_type, 1>;
 };
 
 int main() {

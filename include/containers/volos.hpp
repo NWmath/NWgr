@@ -37,9 +37,9 @@ public:
 template <int idx, std::unsigned_integral vertex_id, typename... Attributes>
 class index_adj_list : public unipartite_graph_base, public vector_of_list_of_structs<vertex_id, Attributes...> {
 public:
-  using vertex_id_type = vertex_id;
-  using base           = vector_of_list_of_structs<vertex_id_type, Attributes...>;
-  using graph_base     = unipartite_graph_base;
+  using vertex_id_type    = vertex_id;
+  using base              = vector_of_list_of_structs<vertex_id_type, Attributes...>;
+  using graph_base        = unipartite_graph_base;
   using num_vertices_type = std::array<typename base::size_type, 1>;
   using num_edges_type    = base::size_type;
 
@@ -77,9 +77,9 @@ struct graph_traits<std::vector<std::forward_list<std::tuple<Attributes...>>>> {
   using outer_iterator = typename outer_type::iterator;
   using inner_iterator = typename inner_type::iterator;
 
-  using vertex_id_type   = std::tuple_element<0, tuple_type>::type;
-  using vertex_size_type = typename outer_type::size_type;
-  using num_vertices_type   = std::array<vertex_size_type, 1>;
+  using vertex_id_type    = std::tuple_element<0, tuple_type>::type;
+  using vertex_size_type  = typename outer_type::size_type;
+  using num_vertices_type = std::array<vertex_size_type, 1>;
 };
 
 template <typename... Attributes>

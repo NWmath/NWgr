@@ -92,7 +92,7 @@ adjacency<Adj, Attributes...> build_adjacency(edge_list<Directedness, Attributes
 }
 
 template <class Graph>
-auto build_degrees(Graph&& graph) {
+auto build_degrees(const Graph& graph) {
   using Id = typename nw::graph::vertex_id<std::decay_t<Graph>>::type;
   nw::util::life_timer _("degrees");
   std::vector<Id>      degrees(graph.size());
@@ -105,7 +105,7 @@ auto build_degrees(Graph&& graph) {
 }
 
 template <class Graph>
-auto build_random_sources(Graph&& graph, size_t n, long seed) {
+auto build_random_sources(const Graph& graph, size_t n, long seed) {
   using Id = typename nw::graph::vertex_id<std::decay_t<Graph>>::type;
 
   auto sources = std::vector<Id>(n);
@@ -125,7 +125,7 @@ auto build_random_sources(Graph&& graph, size_t n, long seed) {
 /// This will load a set of vertices from the passed `file` and verify that we
 /// have the expected number `n`.
 template <class Graph>
-auto load_sources_from_file(Graph&&, std::string file, size_t n = 0) {
+auto load_sources_from_file(const Graph&, std::string file, size_t n = 0) {
   using Id            = typename nw::graph::vertex_id<std::decay_t<Graph>>::type;
   std::vector sources = read_mm_vector<Id>(file);
   if (n && sources.size() != n) {

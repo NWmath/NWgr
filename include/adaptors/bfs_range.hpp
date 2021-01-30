@@ -102,7 +102,7 @@ public:
 template <typename Graph>
 class bottomup_bfs_range {
   using vertex_id_type = vertex_id_t<Graph>;
-  using Colors = std::vector<status>;
+  using Colors         = std::vector<status>;
 
   Graph&         graph_;
   Colors         colors_;

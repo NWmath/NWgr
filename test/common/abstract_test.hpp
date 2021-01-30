@@ -14,7 +14,7 @@ public:
   // Constructs a directed graph with the mmio file
   // pointed by the file path DATA_FILE
   directed_csr_graph_t generate_directed_graph() {
-    auto                           aos_a = read_mm<nw::graph::directedness::directed>(DATA_FILE);
+    auto         aos_a = read_mm<nw::graph::directedness::directed>(DATA_FILE);
     adjacency<0> A(aos_a);
     return A;
   }
@@ -22,7 +22,7 @@ public:
   // Constructs directed graph with the given
   // mmio file path
   directed_csr_graph_t generate_directed_graph(const std::string mmiofile) {
-    auto                           aos_a = read_mm<nw::graph::directedness::directed>(mmiofile);
+    auto         aos_a = read_mm<nw::graph::directedness::directed>(mmiofile);
     adjacency<0> A(aos_a);
     return A;
   }
