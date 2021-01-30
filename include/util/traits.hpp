@@ -31,11 +31,11 @@ using remove_atomic_t = typename remove_atomic<T>::type;
 /// Simple trait so that clients can bring their own vertex id type.
 template <class T>
 struct vertex_id {
-  using type = typename T::vertex_id_t;
+  using type = typename T::vertex_id_type;
 };
 
 // template <class T>
-// using vertex_id_t = typename vertex_id<T>::type;
+// using vertex_id_type = typename vertex_id<T>::type;
 
 template <class>
 struct edge_id {

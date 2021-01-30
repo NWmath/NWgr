@@ -33,26 +33,26 @@ std::tuple<double, std::vector<tree_mem>> bk_maxflow(Graph& A, std::vector<doubl
   // double grow = 0;
   // double augment = 0;
   // double adopt = 0;
-  size_t      n_vtx    = A.size();
-  vertex_id_t source   = n_vtx;
-  vertex_id_t terminal = source + 1;
-  double      max_flow = 0.0;
-  double      tol      = 1e-12;
-  size_t      gtime    = 0;
+  size_t         n_vtx    = A.size();
+  vertex_id_type source   = n_vtx;
+  vertex_id_type terminal = source + 1;
+  double         max_flow = 0.0;
+  double         tol      = 1e-12;
+  size_t         gtime    = 0;
 
-  std::queue<vertex_id_t>                   active;
-  std::queue<vertex_id_t>                   orphans;
+  std::queue<vertex_id_type>                active;
+  std::queue<vertex_id_type>                orphans;
   std::vector<tree_mem>                     tree_id(n_vtx);
   std::vector<std::tuple<double*, double*>> trees(n_vtx);
-  std::vector<vertex_id_t>                  preds(n_vtx, null_vertex);
+  std::vector<vertex_id_type>               preds(n_vtx, null_vertex);
   std::vector<size_t>                       timestamp(n_vtx);
   std::vector<size_t>                       dist(n_vtx);
 
-  double *    residual_cap, *back_residual_cap;
-  vertex_id_t connect_s;
-  vertex_id_t connect_t;
-  double      min_cap;
-  auto        G = A.begin();
+  double *       residual_cap, *back_residual_cap;
+  vertex_id_type connect_s;
+  vertex_id_type connect_t;
+  double         min_cap;
+  auto           G = A.begin();
 
   for (size_t i = 0; i < n_vtx; ++i) {
     if (cap[i] > 0) {
@@ -224,14 +224,14 @@ std::tuple<double, std::vector<tree_mem>> bk_maxflow(Graph& A, std::vector<doubl
       orphans.pop();
 
       tree_mem                     t = tree_id[p];
-      vertex_id_t                  min_pred{null_vertex};
+      vertex_id_type               min_pred{null_vertex};
       size_t                       d_min = INFINITE_D;
       std::tuple<double*, double*> min_edge;
 
       for (auto it = G[p].begin(); it != G[p].end(); ++it) {
-        vertex_id_t q = std::get<0>(*it);
-        vertex_id_t target;
-        size_t      d = 0;
+        vertex_id_type q = std::get<0>(*it);
+        vertex_id_type target;
+        size_t         d = 0;
 
         if (tree_id[q] != t || preds[q] == p) continue;
 

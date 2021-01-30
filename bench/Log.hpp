@@ -11,12 +11,11 @@
 #ifndef NW_GRAPH_LOG_HPP
 #define NW_GRAPH_LOG_HPP
 
-
 #include "config.h"
 
-#include <date/date.h>
 #include <chrono>
 #include <cstdlib>
+#include <date/date.h>
 
 #if CXX_FILESYSTEM_IS_EXPERIMENTAL
 #include <experimental/filesystem>
@@ -34,24 +33,24 @@ namespace nw::graph {
 namespace bench {
 
 struct Log {
-  std::string uuid_;
-  char host_[20];
-  std::string date_;
-  std::string git_branch_;
-  std::string git_version_;
-  std::size_t uuid_size_ = 24;
-  std::size_t cxx_size_;
-  std::size_t cxx_id_size_;
-  std::size_t cxx_ver_size_;
-  std::size_t build_size_;
-  std::size_t tbb_malloc_size_;
+  std::string   uuid_;
+  char          host_[20];
+  std::string   date_;
+  std::string   git_branch_;
+  std::string   git_version_;
+  std::size_t   uuid_size_ = 24;
+  std::size_t   cxx_size_;
+  std::size_t   cxx_id_size_;
+  std::size_t   cxx_ver_size_;
+  std::size_t   build_size_;
+  std::size_t   tbb_malloc_size_;
   std::ofstream out_;
   std::ostream& os_;
 
   Log(std::string path) : out_(), os_(path == "-" ? std::cout : out_) {
     auto seed = std::random_device();
-    auto  gen = std::mt19937(seed());
-    auto  dis = std::uniform_int_distribution<char>(97, 122);
+    auto gen  = std::mt19937(seed());
+    auto dis  = std::uniform_int_distribution<char>(97, 122);
     uuid_.resize(uuid_size_);
     std::generate(uuid_.begin(), uuid_.end(), [&] { return dis(gen); });
 
@@ -69,7 +68,7 @@ struct Log {
     }
 
     {
-      std::stringstream ss;
+      std::stringstream    ss;
       date::year_month_day date = date::floor<date::days>(std::chrono::system_clock::now());
       ss << date;
       date_ = ss.str();
@@ -89,26 +88,26 @@ struct Log {
     }
 
     // Establish column sizes
-    cxx_size_        = std::max(sizeof(CXX_COMPILER),    sizeof("CXX"))       + 1;
-    cxx_id_size_     = std::max(sizeof(CXX_COMPILER_ID), sizeof("CXX_ID"))    + 1;
-    cxx_ver_size_    = std::max(sizeof(CXX_VERSION),     sizeof("CXX_VER"))   + 1;
-    build_size_      = std::max(sizeof(BUILD_TYPE),      sizeof("Build"))     + 1;
-    tbb_malloc_size_ = std::max(sizeof(USE_TBBMALLOC),   sizeof("TBBMALLOC")) + 1;
+    cxx_size_        = std::max(sizeof(CXX_COMPILER), sizeof("CXX")) + 1;
+    cxx_id_size_     = std::max(sizeof(CXX_COMPILER_ID), sizeof("CXX_ID")) + 1;
+    cxx_ver_size_    = std::max(sizeof(CXX_VERSION), sizeof("CXX_VER")) + 1;
+    build_size_      = std::max(sizeof(BUILD_TYPE), sizeof("Build")) + 1;
+    tbb_malloc_size_ = std::max(sizeof(USE_TBBMALLOC), sizeof("TBBMALLOC")) + 1;
   }
 
   template <class... Times>
   void log_result_header(Times... times) {
     auto p = os_.precision(15);
-    auto f = os_.setf(std::ios::fixed, std::ios::floatfield); // OA
+    auto f = os_.setf(std::ios::fixed, std::ios::floatfield);    // OA
 
     os_ << std::setw(uuid_size_ + 2) << std::left << "UUID";
     os_ << std::setw(10) << std::left << "Library";
     os_ << std::setw(10) << std::left << "Branch";
     os_ << std::setw(10) << std::left << "Revision";
-    os_ << std::setw(cxx_size_)        << std::left << "CXX";
-    os_ << std::setw(cxx_id_size_)     << std::left << "CXX_ID";
-    os_ << std::setw(cxx_ver_size_)    << std::left << "CXX_VER";
-    os_ << std::setw(build_size_)      << std::left << "Build";
+    os_ << std::setw(cxx_size_) << std::left << "CXX";
+    os_ << std::setw(cxx_id_size_) << std::left << "CXX_ID";
+    os_ << std::setw(cxx_ver_size_) << std::left << "CXX_VER";
+    os_ << std::setw(build_size_) << std::left << "Build";
     os_ << std::setw(tbb_malloc_size_) << std::left << "TBBMALLOC";
     os_ << std::setw(15) << std::left << "Date";
     os_ << std::setw(sizeof(host_)) << std::left << "Host";
@@ -125,11 +124,11 @@ struct Log {
 
   template <class Benchmark, class Version, class Threads, class... Times>
   void operator()(Benchmark benchmark, Version version, Threads threads, CXX_FILESYSTEM_NAMESPACE::path graph, Times... times) {
-    auto  p = os_.precision(8);
-    auto  f = os_.setf(std::ios::scientific, std::ios::floatfield);
+    auto p = os_.precision(8);
+    auto f = os_.setf(std::ios::scientific, std::ios::floatfield);
 
     auto stem = graph.stem().string();
-    auto    n = stem.find('_');
+    auto n    = stem.find('_');
     if (n < stem.size()) {
       stem.resize(n);
     }
@@ -138,10 +137,10 @@ struct Log {
     os_ << std::setw(10) << std::left << "NWGRAPH";
     os_ << std::setw(10) << std::left << git_branch_;
     os_ << std::setw(10) << std::left << git_version_;
-    os_ << std::setw(cxx_size_)        << std::left << CXX_COMPILER;
-    os_ << std::setw(cxx_id_size_)     << std::left << CXX_COMPILER_ID;
-    os_ << std::setw(cxx_ver_size_)    << std::left << CXX_VERSION;
-    os_ << std::setw(build_size_)      << std::left << BUILD_TYPE;
+    os_ << std::setw(cxx_size_) << std::left << CXX_COMPILER;
+    os_ << std::setw(cxx_id_size_) << std::left << CXX_COMPILER_ID;
+    os_ << std::setw(cxx_ver_size_) << std::left << CXX_VERSION;
+    os_ << std::setw(build_size_) << std::left << BUILD_TYPE;
     os_ << std::setw(tbb_malloc_size_) << std::left << USE_TBBMALLOC;
     os_ << std::setw(15) << std::left << date_;
     os_ << std::setw(sizeof(host_)) << std::left << host_;
@@ -165,9 +164,11 @@ struct Log {
     for (auto&& [config, samples] : samples) {
       auto [file, id, threads] = config;
       for (auto&& sample : samples) {
-        std::apply([&,file=file,id=id,threads=threads](auto&&... values) {
-          (*this)(algorithm, "v" + std::to_string(id), threads, file, std::forward<decltype(values)>(values)...);
-        }, sample);
+        std::apply(
+            [&, file = file, id = id, threads = threads](auto&&... values) {
+              (*this)(algorithm, "v" + std::to_string(id), threads, file, std::forward<decltype(values)>(values)...);
+            },
+            sample);
       }
     }
   }
@@ -178,8 +179,7 @@ void log(std::string algorithm, std::string path, Samples&& samples, bool header
   Log log(path);
   log.print(algorithm, std::forward<Samples>(samples), header, std::forward<Headers>(headers)...);
 }
-}
-}
-
+}    // namespace bench
+}    // namespace nw::graph
 
 #endif

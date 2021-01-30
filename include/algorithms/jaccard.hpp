@@ -32,11 +32,11 @@ template <typename GraphT>
 auto jaccard_v0(GraphT& graph) {
 
   auto deg = degrees(graph);
-  for (auto&& [u, v, w] : make_edge_range<0,1,2>(graph)) {
+  for (auto&& [u, v, w] : make_edge_range<0, 1, 2>(graph)) {
     auto   numer = intersection_size(graph[u], graph[v]);
     auto   denom = deg[u] + deg[v] - numer;
     double rat   = ((double)numer) / ((double)denom);
-    w = rat;
+    w            = rat;
   }
 }
 

@@ -28,13 +28,13 @@ namespace graph {
 
 enum three_colors { black, white, grey };
 
-template <typename Graph, typename Queue = std::queue<typename Graph::vertex_id_t>>
+template <typename Graph, typename Queue = std::queue<typename Graph::vertex_id_type>>
 class bfs_edge_range {
 private:
-  using vertex_id_t = typename Graph::vertex_id_t;
+  using vertex_id_type = typename Graph::vertex_id_type;
 
 public:
-  bfs_edge_range(Graph& graph, vertex_id_t seed = 0) : the_graph_(graph), colors_(graph.size(), white) {
+  bfs_edge_range(Graph& graph, vertex_id_type seed = 0) : the_graph_(graph), colors_(graph.size(), white) {
     Q_.push(seed);
     colors_[seed] = grey;
   }
@@ -51,7 +51,7 @@ public:
   private:
     bfs_edge_range<Graph, Queue>&  the_range_;
     typename Graph::outer_iterator G;
-    vertex_id_t                    v_;
+    vertex_id_type                 v_;
     typename Graph::inner_iterator u_begin, u_end;
 
   public:
@@ -119,7 +119,7 @@ private:
 template <typename Graph, typename PriorityQueue>
 class bfs_edge_range2 {
 private:
-  using vertex_id_t = typename Graph::vertex_id_t;
+  using vertex_id_type = typename Graph::vertex_id_type;
 
 public:
   bfs_edge_range2(Graph& graph, PriorityQueue& Q, std::tuple<size_t, size_t> seed = {0, 0})
@@ -137,7 +137,7 @@ public:
   private:
     bfs_edge_range2<Graph, PriorityQueue>& the_range_;
     typename Graph::outer_iterator         G;
-    vertex_id_t                            v_;
+    vertex_id_type                         v_;
     typename Graph::inner_iterator         u_begin, u_end;
 
     // Graph -> v, u, w
@@ -180,7 +180,9 @@ public:
       return *this;
     }
 
-    auto operator*() { return std::tuple<vertex_id_t, vertex_id_t, size_t>(v_, std::get<0>(*u_begin), std::get<1>(*u_begin)); }
+    auto operator*() {
+      return std::tuple<vertex_id_type, vertex_id_type, size_t>(v_, std::get<0>(*u_begin), std::get<1>(*u_begin));
+    }
 
     class end_sentinel_type {
     public:
@@ -202,13 +204,13 @@ private:
   std::vector<three_colors> colors_;
 };
 
-template <typename Graph, typename Queue = std::queue<typename Graph::vertex_id_t>>
+template <typename Graph, typename Queue = std::queue<typename Graph::vertex_id_type>>
 class bfs_edge_range3 {
 private:
-  using vertex_id_t = typename Graph::vertex_id_t;
+  using vertex_id_type = typename Graph::vertex_id_type;
 
 public:
-  bfs_edge_range3(Graph& graph, vertex_id_t seed = 0) : the_graph_(graph), colors_(graph.end() - graph.begin(), white) {
+  bfs_edge_range3(Graph& graph, vertex_id_type seed = 0) : the_graph_(graph), colors_(graph.end() - graph.begin(), white) {
     Q_[0].push(seed);
     colors_[seed] = grey;
     //After adding seed, add the neighbors of seed to next queue

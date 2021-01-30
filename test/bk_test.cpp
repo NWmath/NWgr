@@ -8,8 +8,8 @@
 // Author: Kevin Deweese
 //
 
-#include <vector>
 #include <algorithm>
+#include <vector>
 
 #include "adaptors/back_edge_range.hpp"
 #include "algorithms/boykov_kolmogorov.hpp"
@@ -43,7 +43,7 @@ TEST_CASE("boykov-kolmogorov max flow", "[bkmf]") {
   capacities[1] = -1;
   capacities[3] = -1;
   capacities[7] = -1;
-  back_edge_range              back(A);
-  auto result = bk_maxflow(back, capacities);
+  back_edge_range back(A);
+  auto            result = bk_maxflow(back, capacities);
   REQUIRE(std::get<0>(result) == 0);
 }

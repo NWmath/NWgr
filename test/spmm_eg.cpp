@@ -22,7 +22,6 @@
 using namespace nw::graph;
 using namespace nw::util;
 
-
 //****************************************************************************
 int main(int argc, char* argv[]) {
   // call with data/spmatA.mmio and data/spmatB.mmio

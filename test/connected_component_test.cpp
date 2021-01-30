@@ -39,9 +39,8 @@ TEST_CASE("connected component", "[cc]") {
   /*Construct the graph*/
   compressed_sparse<0, directed> A(aos_a);
 
-  size_t              N = A.size();
-  std::vector<vertex_id_t> component_ids(N, std::numeric_limits<vertex_id_t>::max());
-
+  size_t                      N = A.size();
+  std::vector<vertex_id_type> component_ids(N, std::numeric_limits<vertex_id_type>::max());
 
   SECTION("v1 cc_push") {
     component_ids = ccv1(A);

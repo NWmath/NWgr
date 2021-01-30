@@ -130,13 +130,13 @@ void page_rank_range_for(GraphT& graph, std::vector<RealT>& page_rank, RealT dam
 template <typename Graph, typename Real = double>
 void page_rank_vc(const Graph& graph, std::vector<Real>& page_rank, const Real damping_factor = 0.85, const Real threshold = 1.e-4,
                   const size_t max_iters = std::numeric_limits<unsigned int>::max()) {
-  using vertex_id_t = typename Graph::vertex_id_t;
+  using vertex_id_type = typename Graph::vertex_id_type;
 
   const Real init_score = 1.0 / page_rank.size();
   const Real base_score = (1.0 - damping_factor) / page_rank.size();
 
   std::fill(page_rank.begin(), page_rank.end(), init_score);
-  std::vector<vertex_id_t> degrees(page_rank.size());
+  std::vector<vertex_id_type> degrees(page_rank.size());
   //  for (auto&& [i, j, v] : make_edge_range<0>(graph)) {
   for (auto&& [i, j] : edge_range(graph)) {
     ++degrees[j];
@@ -172,10 +172,10 @@ void page_rank_vc(const Graph& graph, std::vector<Real>& page_rank, const Real d
 }
 
 template <typename Graph, typename Real = double>
-void page_rank_v1(const Graph& graph, const std::vector<typename Graph::vertex_id_t>& degrees, std::vector<Real>& page_rank,
+void page_rank_v1(const Graph& graph, const std::vector<typename Graph::vertex_id_type>& degrees, std::vector<Real>& page_rank,
                   const Real damping_factor = 0.85, const Real threshold = 1.e-4,
                   const size_t max_iters = std::numeric_limits<unsigned int>::max()) {
-  using vertex_id_t = typename Graph::vertex_id_t;
+  using vertex_id_type = typename Graph::vertex_id_type;
 
   const Real init_score = 1.0 / page_rank.size();
   const Real base_score = (1.0 - damping_factor) / page_rank.size();
@@ -195,7 +195,7 @@ void page_rank_v1(const Graph& graph, const std::vector<typename Graph::vertex_i
 
     auto G = graph.begin();
 
-    for (vertex_id_t i = 0; i < page_rank.size(); ++i) {
+    for (vertex_id_type i = 0; i < page_rank.size(); ++i) {
       Real z = 0;
       for (auto j = G[i].begin(); j != G[i].end(); ++j) {
         z += outgoing_contrib[std::get<0>(*j)];
@@ -210,10 +210,10 @@ void page_rank_v1(const Graph& graph, const std::vector<typename Graph::vertex_i
 }
 
 template <typename Graph, typename Real = double>
-void page_rank_v2(const Graph& graph, const std::vector<typename Graph::vertex_id_t>& degrees, std::vector<Real>& page_rank,
+void page_rank_v2(const Graph& graph, const std::vector<typename Graph::vertex_id_type>& degrees, std::vector<Real>& page_rank,
                   const Real damping_factor = 0.85, const Real threshold = 1.e-4,
                   const size_t max_iters = std::numeric_limits<unsigned int>::max()) {
-  using vertex_id_t = typename Graph::vertex_id_t;
+  using vertex_id_type = typename Graph::vertex_id_type;
 
   const Real init_score = 1.0 / page_rank.size();
   const Real base_score = (1.0 - damping_factor) / page_rank.size();
@@ -228,7 +228,7 @@ void page_rank_v2(const Graph& graph, const std::vector<typename Graph::vertex_i
 
     auto G = graph.begin();
 
-    for (vertex_id_t i = 0; i < page_rank.size(); ++i) {
+    for (vertex_id_type i = 0; i < page_rank.size(); ++i) {
       Real z = 0;
       for (auto j = G[i].begin(); j != G[i].end(); ++j) {
         z += outgoing_contrib[std::get<0>(*j)];
@@ -244,10 +244,10 @@ void page_rank_v2(const Graph& graph, const std::vector<typename Graph::vertex_i
 }
 
 template <typename Graph, typename Real = double>
-void page_rank_v4(const Graph& graph, const std::vector<typename Graph::vertex_id_t>& degrees, std::vector<Real>& page_rank,
+void page_rank_v4(const Graph& graph, const std::vector<typename Graph::vertex_id_type>& degrees, std::vector<Real>& page_rank,
                   const Real damping_factor = 0.85, const Real threshold = 1.e-4,
                   const size_t max_iters = std::numeric_limits<unsigned int>::max(), size_t num_threads = 1) {
-  using vertex_id_t = typename Graph::vertex_id_t;
+  using vertex_id_type = typename Graph::vertex_id_type;
 
   const Real init_score = 1.0 / page_rank.size();
   const Real base_score = (1.0 - damping_factor) / page_rank.size();
@@ -273,7 +273,7 @@ void page_rank_v4(const Graph& graph, const std::vector<typename Graph::vertex_i
           [&](size_t thread) {
             double error = 0;
 
-            for (vertex_id_t i = thread; i < page_rank.size(); i += num_threads) {
+            for (vertex_id_type i = thread; i < page_rank.size(); i += num_threads) {
               Real z = 0;
               for (auto j = G[i].begin(); j != G[i].end(); ++j) {
                 z += outgoing_contrib[std::get<0>(*j)];
@@ -299,7 +299,7 @@ void page_rank_v4(const Graph& graph, const std::vector<typename Graph::vertex_i
 }
 
 template <typename Graph, typename Real = double>
-[[gnu::noinline]] void page_rank_v6(const Graph& graph, const std::vector<typename Graph::vertex_id_t>& degrees,
+[[gnu::noinline]] void page_rank_v6(const Graph& graph, const std::vector<typename Graph::vertex_id_type>& degrees,
                                     std::vector<Real>& page_rank, const Real damping_factor = 0.85, const Real threshold = 1.e-4,
                                     const size_t max_iters = std::numeric_limits<unsigned int>::max(), size_t num_threads = 1) {
 
@@ -325,7 +325,7 @@ template <typename Graph, typename Real = double>
                                      [&] (auto&& j) { }
                                      }, std::plus<Real>());
 
-      counting_iterator<vertex_id_t>(0), counting_iterator<vertex_id_t>(page_rank.size()), Real(0.0), std::plus<Real>(),
+      counting_iterator<vertex_id_type>(0), counting_iterator<vertex_id_type>(page_rank.size()), Real(0.0), std::plus<Real>(),
 
       [&](auto i) {
         Real z        = std::transform_reduce(std::execution::seq, G[i].begin(), G[i].end(), Real(0.0), std::plus<Real>(),
@@ -358,10 +358,10 @@ template <typename Graph, typename Real = double>
 }
 
 template <typename Graph, typename Real = double>
-void page_rank_v7(const Graph& graph, const std::vector<typename Graph::vertex_id_t>& degrees, std::vector<Real>& page_rank,
+void page_rank_v7(const Graph& graph, const std::vector<typename Graph::vertex_id_type>& degrees, std::vector<Real>& page_rank,
                   const Real damping_factor = 0.85, const Real threshold = 1.e-4,
                   const size_t max_iters = std::numeric_limits<unsigned int>::max(), size_t num_threads = 1) {
-  using vertex_id_t = typename Graph::vertex_id_t;
+  using vertex_id_type = typename Graph::vertex_id_type;
 
   const Real init_score = 1.0 / page_rank.size();
   const Real base_score = (1.0 - damping_factor) / page_rank.size();
@@ -386,8 +386,8 @@ void page_rank_v7(const Graph& graph, const std::vector<typename Graph::vertex_i
       auto G = graph.begin();
 
       double error = std::transform_reduce(
-          std::execution::par_unseq, counting_iterator<vertex_id_t>(0), counting_iterator<vertex_id_t>(page_rank.size()), Real(0.0),
-          std::plus<Real>(),
+          std::execution::par_unseq, counting_iterator<vertex_id_type>(0), counting_iterator<vertex_id_type>(page_rank.size()),
+          Real(0.0), std::plus<Real>(),
 
           [&](auto i) {
             Real z = tbb::parallel_reduce(
@@ -408,10 +408,10 @@ void page_rank_v7(const Graph& graph, const std::vector<typename Graph::vertex_i
 }
 
 template <typename Graph, typename Real = double>
-void page_rank_v8(const Graph& graph, const std::vector<typename Graph::vertex_id_t>& degrees, std::vector<Real>& page_rank,
+void page_rank_v8(const Graph& graph, const std::vector<typename Graph::vertex_id_type>& degrees, std::vector<Real>& page_rank,
                   const Real damping_factor = 0.85, const Real threshold = 1.e-4,
                   const size_t max_iters = std::numeric_limits<unsigned int>::max(), size_t num_threads = 1) {
-  using vertex_id_t = typename Graph::vertex_id_t;
+  using vertex_id_type = typename Graph::vertex_id_type;
 
   const Real init_score = 1.0 / page_rank.size();
   const Real base_score = (1.0 - damping_factor) / page_rank.size();
@@ -430,8 +430,8 @@ void page_rank_v8(const Graph& graph, const std::vector<typename Graph::vertex_i
 
     auto G = graph.begin();
 
-    double error = std::transform_reduce(std::execution::par_unseq, counting_iterator<vertex_id_t>(0),
-                                         counting_iterator<vertex_id_t>(page_rank.size()), Real(0.0), std::plus<Real>(),
+    double error = std::transform_reduce(std::execution::par_unseq, counting_iterator<vertex_id_type>(0),
+                                         counting_iterator<vertex_id_type>(page_rank.size()), Real(0.0), std::plus<Real>(),
 
                                          [&](auto i) {
                                            Real z = std::transform_reduce(
@@ -447,10 +447,10 @@ void page_rank_v8(const Graph& graph, const std::vector<typename Graph::vertex_i
 }
 
 template <typename Graph, typename Real>
-[[gnu::noinline]] void page_rank_v9(const Graph& graph, const std::vector<typename Graph::vertex_id_t>& degrees,
+[[gnu::noinline]] void page_rank_v9(const Graph& graph, const std::vector<typename Graph::vertex_id_type>& degrees,
                                     std::vector<Real>& page_rank, Real damping_factor, Real threshold, size_t max_iters,
                                     size_t num_threads) {
-  using vertex_id_t = typename Graph::vertex_id_t;
+  using vertex_id_type = typename Graph::vertex_id_type;
 
   std::size_t N          = page_rank.size();
   Real        init_score = 1.0 / N;
@@ -470,8 +470,8 @@ template <typename Graph, typename Real>
     auto G = graph.begin();
 
     auto&& [time, error] = page_rank::time_op([&] {
-      return std::transform_reduce(std::execution::par_unseq, counting_iterator<vertex_id_t>(0), counting_iterator<vertex_id_t>(N),
-                                   Real(0.0), std::plus{}, [&](auto&& i) {
+      return std::transform_reduce(std::execution::par_unseq, counting_iterator<vertex_id_type>(0),
+                                   counting_iterator<vertex_id_type>(N), Real(0.0), std::plus{}, [&](auto&& i) {
                                      Real z = 0.0;
                                      for (auto&& j : G[i]) {
                                        z += outgoing_contrib[std::get<0>(j)];
@@ -491,7 +491,7 @@ template <typename Graph, typename Real>
 }
 
 template <typename Graph, typename Real>
-[[gnu::noinline]] void page_rank_v10(const Graph& graph, const std::vector<typename Graph::vertex_id_t>& degrees,
+[[gnu::noinline]] void page_rank_v10(const Graph& graph, const std::vector<typename Graph::vertex_id_type>& degrees,
                                      std::vector<Real>& page_rank, Real damping_factor, Real threshold, size_t max_iters,
                                      size_t num_threads) {
   std::size_t N          = graph.size();
@@ -550,7 +550,7 @@ template <typename Graph, typename Real>
 }
 
 template <typename Graph, typename Real>
-[[gnu::noinline]] void page_rank_v11(const Graph& graph, const std::vector<typename Graph::vertex_id_t>& degrees,
+[[gnu::noinline]] void page_rank_v11(const Graph& graph, const std::vector<typename Graph::vertex_id_type>& degrees,
                                      std::vector<Real>& page_rank, Real damping_factor, Real threshold, size_t max_iters,
                                      size_t num_threads) {
   std::size_t N          = graph.size();
@@ -613,7 +613,7 @@ template <typename Graph, typename Real>
 }
 
 template <typename Graph, typename Real>
-[[gnu::noinline]] void page_rank_v12(const Graph& graph, const std::vector<typename Graph::vertex_id_t>& degrees,
+[[gnu::noinline]] void page_rank_v12(const Graph& graph, const std::vector<typename Graph::vertex_id_type>& degrees,
                                      std::vector<Real>& page_rank, Real damping_factor, Real threshold, size_t max_iters,
                                      size_t num_threads) {
   std::size_t N          = graph.size();
@@ -674,9 +674,9 @@ template <typename Graph, typename Real>
 }
 
 template <typename Graph, typename Real>
-[[gnu::noinline]] void page_rank_v3(const Graph& graph, const std::vector<typename Graph::vertex_id_t>& degrees,
+[[gnu::noinline]] void page_rank_v3(const Graph& graph, const std::vector<typename Graph::vertex_id_type>& degrees,
                                     std::vector<Real>& page_rank, Real damping_factor, Real threshold, size_t max_iters) {
-  using vertex_id_t = typename Graph::vertex_id_t;
+  using vertex_id_type = typename Graph::vertex_id_type;
 
   std::size_t N          = graph.size();
   Real        init_score = 1.0 / N;
@@ -699,8 +699,8 @@ template <typename Graph, typename Real>
 
     bool changed = false;
 
-    Real        max_residual = 0, max_value = 0;
-    vertex_id_t max_degree = 0;
+    Real           max_residual = 0, max_value = 0;
+    vertex_id_type max_degree = 0;
 
     for (size_t src = 0; src < N; ++src) {
       delta[src]   = 0;
@@ -742,7 +742,7 @@ template <typename Graph, typename Real>
 }
 
 template <typename Graph, typename Real>
-[[gnu::noinline]] void page_rank_v13(const Graph& graph, const std::vector<typename Graph::vertex_id_t>& degrees,
+[[gnu::noinline]] void page_rank_v13(const Graph& graph, const std::vector<typename Graph::vertex_id_type>& degrees,
                                      std::vector<Real>& page_rank, Real damping_factor, Real threshold, size_t max_iters,
                                      size_t num_threads) {
   std::size_t N          = graph.size();
@@ -814,7 +814,7 @@ template <typename Graph, typename Real>
 }
 
 template <class Graph, typename Real>
-[[gnu::noinline]] std::size_t page_rank_v14(const Graph& graph, const std::vector<typename Graph::vertex_id_t>& degrees,
+[[gnu::noinline]] std::size_t page_rank_v14(const Graph& graph, const std::vector<typename Graph::vertex_id_type>& degrees,
                                             std::vector<Real>& page_rank, Real damping_factor, Real threshold, size_t max_iters) {
   std::size_t N          = graph.size();
   Real        init_score = 1.0 / N;

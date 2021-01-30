@@ -8,7 +8,7 @@
 // Author: Luke D'Alessandro
 
 static constexpr const char USAGE[] =
- R"(sources : BGL17 gap sources file verifier.
+    R"(sources : BGL17 gap sources file verifier.
   Usage:
       sources (-h | --help)
       sources --version
@@ -25,9 +25,9 @@ static constexpr const char USAGE[] =
 )";
 
 #include "common.hpp"
+#include "io/mmio.hpp"
 #include <docopt.h>
 #include <random>
-#include "io/mmio.hpp"
 
 using namespace nw::graph::bench;
 using namespace nw::graph;
@@ -35,24 +35,23 @@ using namespace nw::util;
 
 int main(int argc, char* const argv[]) {
   std::vector strings = std::vector<std::string>{argv + 1, argv + argc};
-  std::map       args = docopt::docopt(USAGE, strings, true);
+  std::map    args    = docopt::docopt(USAGE, strings, true);
 
   int64_t iterations = args["-i"].asLong();
-  int64_t     trials = args["-n"].asLong();
-  int64_t       seed = args["--seed"].asLong();
+  int64_t trials     = args["-n"].asLong();
+  int64_t seed       = args["--seed"].asLong();
 
-  auto sources = read_mm_vector<vertex_id_t>(args["-s"].asString());
+  auto sources = read_mm_vector<vertex_id_type>(args["-s"].asString());
 
   if (int64_t(sources.size()) != trials * iterations) {
-    std::cerr << "Read " << sources.size() << " sources from "
-              << args["-s"].asString() << " but expected "
-              << trials * iterations << "\n";
+    std::cerr << "Read " << sources.size() << " sources from " << args["-s"].asString() << " but expected " << trials * iterations
+              << "\n";
     return 0;
   }
 
-  auto     aos = load_graph<directed>(args["-f"].asString());
-  auto   graph = build_adjacency<1>(aos);
-  auto  random = build_random_sources(graph, sources.size(), seed);
+  auto aos    = load_graph<directed>(args["-f"].asString());
+  auto graph  = build_adjacency<1>(aos);
+  auto random = build_random_sources(graph, sources.size(), seed);
 
   std::cout << "Testing sources\n";
   int64_t failures = 0;

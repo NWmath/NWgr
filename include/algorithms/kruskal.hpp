@@ -32,7 +32,7 @@ EdgeListT kruskal(EdgeListT& E, Compare comp) {
   EdgeListT T(n_vtx);
   std::sort(E.begin(), E.end(), comp);
 
-  std::vector<std::pair<vertex_id_t, size_t>> subsets(n_vtx);
+  std::vector<std::pair<vertex_id_type, size_t>> subsets(n_vtx);
   for (size_t i = 0; i < n_vtx; ++i) {
     subsets[i].first  = i;
     subsets[i].second = 0;

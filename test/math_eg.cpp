@@ -15,7 +15,7 @@
 using namespace nw::graph;
 using namespace nw::util;
 
-template<typename Mat, typename EdgeList>
+template <typename Mat, typename EdgeList>
 void run_test(EdgeList&& E) {
   std::vector<double> x = {3.1, -1.4, 1.59};
   std::vector<double> y = {1.0, 0.0, -1.0};
@@ -43,7 +43,7 @@ int main() {
 
   std::vector<double> x(4);
 
-  vertex_id_t i = 0;
+  vertex_id_type i = 0;
   std::for_each(A_range.begin(), A_range.end(), [&](auto&& j) {
     auto diag       = j.begin();
     auto&& [jj, vv] = *diag++;

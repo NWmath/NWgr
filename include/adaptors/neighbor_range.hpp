@@ -46,7 +46,7 @@ public:
       return *this;
     }
 
-    auto operator*() { return std::tuple<vertex_id_t, vertex_id_t&&>(first - G, std::get<0>(*u_begin)); }
+    auto operator*() { return std::tuple<vertex_id_type, vertex_id_type&&>(first - G, std::get<0>(*u_begin)); }
 
     // return std::tuple<typename Graph::sub_view, typename Graph::sub_view>(*first, G[std::get<0>(*u_begin)]);
 

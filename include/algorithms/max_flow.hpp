@@ -30,7 +30,7 @@ auto backedge_property(Edge edge) {
 }
 //****************************************************************************
 template <typename Dict = default_dict, typename flowtype = double, typename Graph>
-flowtype max_flow(Graph& A, vertex_id_t source, vertex_id_t sink, size_t max_iters = DEFAULT_MAX) {
+flowtype max_flow(Graph& A, vertex_id_type source, vertex_id_type sink, size_t max_iters = DEFAULT_MAX) {
   struct tree_edge {
     flowtype* capacity;
     flowtype* flow;
@@ -43,7 +43,7 @@ flowtype max_flow(Graph& A, vertex_id_t source, vertex_id_t sink, size_t max_ite
   flowtype               maxflow = 0;
 
   for (size_t i = 0; i <= max_iters; ++i) {
-    auto mf_filter = [&A](vertex_id_t vtx, typename Graph::inner_iterator edge) {
+    auto mf_filter = [&A](vertex_id_type vtx, typename Graph::inner_iterator edge) {
       return property<idx(Dict::flow_idx)>(edge) >=
              property<idx(Dict::capacity_idx)>(edge) + backedge_property<idx(Dict::flow_idx)>(A.get_back_edge(vtx, edge));
     };

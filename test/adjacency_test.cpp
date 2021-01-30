@@ -21,7 +21,6 @@
 using namespace nw::graph;
 using namespace nw::util;
 
-
 TEST_CASE("adjacency", "[adjacency]") {
   size_t n_vtx = 5;
 
@@ -50,5 +49,4 @@ TEST_CASE("adjacency", "[adjacency]") {
   for (auto&& [u, v, w] : make_edge_range<0>(B)) {
     std::cout << "edge " << u << " to " << v << " has weight " << w << std::endl;
   }
-
 }

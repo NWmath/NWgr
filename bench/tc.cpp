@@ -15,7 +15,7 @@
 // Author: Kevin Deweese, Andrew Lumsdaine
 //
 static constexpr const char USAGE[] =
- R"(tc.exe: BGL17 page rank benchmark driver.
+    R"(tc.exe: BGL17 page rank benchmark driver.
   Usage:
       tc.exe (-h | --help)
       tc.exe -f FILE... [--version ID...] [-n NUM] [--lower | --upper] [--relabel] [--heuristic] [--log FILE] [--log-header] [-dvV] [THREADS...]
@@ -36,11 +36,11 @@ static constexpr const char USAGE[] =
       -V, --verbose         run in verbose mode
 )";
 
-#include "containers/edge_list.hpp"
 #include "containers/adjacency.hpp"
+#include "containers/edge_list.hpp"
 
-#include "algorithms/triangle_count.hpp"
 #include "Log.hpp"
+#include "algorithms/triangle_count.hpp"
 #include "common.hpp"
 #include <docopt.h>
 #include <tuple>
@@ -65,83 +65,78 @@ static void clean(edge_list<nw::graph::directedness::undirected>& A, const std::
 }
 
 static auto compress(edge_list<nw::graph::directedness::undirected>& A) {
-  life_timer _(__func__);
+  life_timer   _(__func__);
   adjacency<0> B(num_vertices(A)[0]);
   push_back_fill(A, B);
   return B;
 }
 
-
-
 // heuristic to see if sufficently dense power-law graph
 template <class EdgeList, class Vector>
 static bool worth_relabeling(const EdgeList& el, const Vector& degree) {
-  using vertex_id_t = typename EdgeList::vertex_id_t;
+  using vertex_id_type = typename EdgeList::vertex_id_type;
 
   int64_t average_degree = el.size() / (el.num_vertices()[0]);
-  if (average_degree < 10)
-    return false;
+  if (average_degree < 10) return false;
 
-  int64_t num_samples = std::min<int64_t>(1000L, el.num_vertices()[0]);
-  int64_t sample_total = 0;
+  int64_t              num_samples  = std::min<int64_t>(1000L, el.num_vertices()[0]);
+  int64_t              sample_total = 0;
   std::vector<int64_t> samples(num_samples);
 
-  std::mt19937 rng;
-  std::uniform_int_distribution<vertex_id_t> udist (0, el.num_vertices()[0]-1);
+  std::mt19937                                  rng;
+  std::uniform_int_distribution<vertex_id_type> udist(0, el.num_vertices()[0] - 1);
 
-  for (int64_t trial=0; trial < num_samples; trial++) {
+  for (int64_t trial = 0; trial < num_samples; trial++) {
     samples[trial] = degree[udist(rng)];
     sample_total += samples[trial];
   }
   std::sort(std::execution::par_unseq, samples.begin(), samples.end());
   double sample_average = static_cast<double>(sample_total) / num_samples;
-  double sample_median = samples[num_samples/2];
+  double sample_median  = samples[num_samples / 2];
   return sample_average / 1.3 > sample_median;
 }
 
 // Taken from GAP and adapted to BGL.
 template <class Graph>
 static std::size_t TCVerifier(Graph& graph) {
-  using vertex_id_t = typename Graph::vertex_id_t;
+  using vertex_id_type = typename Graph::vertex_id_type;
 
-  life_timer _(__func__);
-  std::size_t total = 0;
-  std::vector<std::tuple<vertex_id_t>> intersection;
+  life_timer                              _(__func__);
+  std::size_t                             total = 0;
+  std::vector<std::tuple<vertex_id_type>> intersection;
   intersection.reserve(graph.size());
   auto g = graph.begin();
   for (auto&& [u, v] : edge_range(graph)) {
     auto u_out = g[u];
     auto v_out = g[v];
-    auto end = std::set_intersection(u_out.begin(), u_out.end(),
-                                     v_out.begin(), v_out.end(),
-                                     intersection.begin());
+    auto end   = std::set_intersection(u_out.begin(), u_out.end(), v_out.begin(), v_out.end(), intersection.begin());
     intersection.resize(end - intersection.begin());
     total += intersection.size();
   }
-  return total; // note that our processed Graph doesn't produce extra counts
-                // like the GAP verifier normally would
+  return total;    // note that our processed Graph doesn't produce extra counts
+                   // like the GAP verifier normally would
 }
 
 int main(int argc, char* argv[]) {
   std::vector<std::string> strings(argv + 1, argv + argc);
-  auto args = docopt::docopt(USAGE, strings, true);
+  auto                     args = docopt::docopt(USAGE, strings, true);
 
   // Read the easy options
-  bool     verify = args["--verify"].asBool();
-  bool    verbose = args["--verbose"].asBool();
-  bool      debug = args["--debug"].asBool();
-  long     trials = args["-n"].asLong() ?: 1;
+  bool verify  = args["--verify"].asBool();
+  bool verbose = args["--verbose"].asBool();
+  bool debug   = args["--debug"].asBool();
+  long trials  = args["-n"].asLong() ?: 1;
 
   // Read the more complex options
-  std::string  direction = "ascending";
+  std::string direction  = "ascending";
   std::string succession = "successor";
   if (args["--lower"].asBool()) {
     direction  = "descending";
     succession = "predecessor";
   }
 
-  std::vector   files = args["-f"].asStringList();
-  std::vector     ids = parse_ids(args["--version"].asStringList());
+  std::vector files   = args["-f"].asStringList();
+  std::vector ids     = parse_ids(args["--version"].asStringList());
   std::vector threads = parse_n_threads(args["THREADS"].asStringList());
 
   Times<double, double, double, std::size_t, bool> times;
@@ -149,11 +144,11 @@ int main(int argc, char* argv[]) {
   for (auto&& file : files) {
     std::cout << "processing " << file << "\n";
 
-    auto el_a = load_graph<nw::graph::directedness::undirected>(file);
+    auto el_a   = load_graph<nw::graph::directedness::undirected>(file);
     auto degree = degrees(el_a);
 
     // Run and time relabeling. This operates directly on the incoming edglist.
-    bool relabeled = false;
+    bool relabeled        = false;
     auto&& [relabel_time] = time_op([&] {
       if (args["--relabel"].asBool()) {
         if (args["--heuristic"].asBool() == false || worth_relabeling(el_a, degree)) {
@@ -171,9 +166,7 @@ int main(int argc, char* argv[]) {
 
     // Clean up the edgelist to deal with the normal issues related to
     // undirectedness.
-    auto&& [clean_time] = time_op([&] {
-      clean<0>(el_a, succession);
-    });
+    auto&& [clean_time] = time_op([&] { clean<0>(el_a, succession); });
 
     // Create the CSR from the undirected edgelist.
     auto cel_a = compress(el_a);
@@ -200,28 +193,47 @@ int main(int argc, char* argv[]) {
 
           auto&& [time, triangles] = time_op([&]() -> std::size_t {
             switch (id) {
-             case  0: return triangle_count_v0(cel_a);
-             case  1: return triangle_count_v1(cel_a);
-             case  2: return triangle_count_v2(cel_a);
-             case  3: return triangle_count_v3(cel_a);
-             case  4: return triangle_count_v4(cel_a.begin(), cel_a.end(), thread);
-             case  5: return triangle_count_v5(cel_a.begin(), cel_a.end(), thread);
-             case  6: return triangle_count_v6(cel_a.begin(), cel_a.end(), thread);
-             case  7: return triangle_count_v7(cel_a);
-             case  8: return triangle_count_v7(cel_a, std::execution::seq, std::execution::par_unseq);
-             case  9: return triangle_count_v7(cel_a, std::execution::par_unseq, std::execution::par_unseq);
-             case 10: return triangle_count_v10(cel_a);
-             case 11: return triangle_count_v10(cel_a, std::execution::par_unseq, std::execution::par_unseq, std::execution::par_unseq);
-             case 12: return triangle_count_v12(cel_a, thread);
-             case 13: return triangle_count_v13(cel_a, thread);
-             case 14: return triangle_count_v14(cel_a);
-             case 15: return triangle_count_edgesplit(cel_a, thread);
-             case 16: return triangle_count_edgesplit_upper(cel_a, thread);
-             case 17: return triangle_count_edgerange(cel_a);
-             case 18: return triangle_count_edgerange_cyclic(cel_a, thread);
-             default:
-              std::cerr << "Unknown version id " << id << "\n";
-              return 0ul;
+              case 0:
+                return triangle_count_v0(cel_a);
+              case 1:
+                return triangle_count_v1(cel_a);
+              case 2:
+                return triangle_count_v2(cel_a);
+              case 3:
+                return triangle_count_v3(cel_a);
+              case 4:
+                return triangle_count_v4(cel_a.begin(), cel_a.end(), thread);
+              case 5:
+                return triangle_count_v5(cel_a.begin(), cel_a.end(), thread);
+              case 6:
+                return triangle_count_v6(cel_a.begin(), cel_a.end(), thread);
+              case 7:
+                return triangle_count_v7(cel_a);
+              case 8:
+                return triangle_count_v7(cel_a, std::execution::seq, std::execution::par_unseq);
+              case 9:
+                return triangle_count_v7(cel_a, std::execution::par_unseq, std::execution::par_unseq);
+              case 10:
+                return triangle_count_v10(cel_a);
+              case 11:
+                return triangle_count_v10(cel_a, std::execution::par_unseq, std::execution::par_unseq, std::execution::par_unseq);
+              case 12:
+                return triangle_count_v12(cel_a, thread);
+              case 13:
+                return triangle_count_v13(cel_a, thread);
+              case 14:
+                return triangle_count_v14(cel_a);
+              case 15:
+                return triangle_count_edgesplit(cel_a, thread);
+              case 16:
+                return triangle_count_edgesplit_upper(cel_a, thread);
+              case 17:
+                return triangle_count_edgerange(cel_a);
+              case 18:
+                return triangle_count_edgerange_cyclic(cel_a, thread);
+              default:
+                std::cerr << "Unknown version id " << id << "\n";
+                return 0ul;
             }
           });
 
@@ -231,8 +243,8 @@ int main(int argc, char* argv[]) {
           times.append(file, id, thread, time + relabel_time, time, relabel_time, clean_time, triangles, relabeled);
 
           if (verify && triangles != v_triangles) {
-            std::cerr << "Inconsistent results: v" << id << " failed verification for " << file
-                      << " using " << thread << " threads (reported " << triangles << ")\n";
+            std::cerr << "Inconsistent results: v" << id << " failed verification for " << file << " using " << thread
+                      << " threads (reported " << triangles << ")\n";
           }
         }
       }
@@ -242,7 +254,7 @@ int main(int argc, char* argv[]) {
   times.print(std::cout);
 
   if (args["--log"]) {
-    auto   file = args["--log"].asString();
+    auto file   = args["--log"].asString();
     bool header = args["--log-header"].asBool();
     log("tc", file, times, header, "Time(s)", "Solve(s)", "Relabel(s)", "Clean(s)", "Triangles", "Relabeled");
   }

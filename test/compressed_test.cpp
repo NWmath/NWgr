@@ -10,20 +10,17 @@
 
 #include <iostream>
 
+#include "common/test_header.hpp"
 #include "containers/adjacency.hpp"
 #include "containers/edge_list.hpp"
-#include "common/test_header.hpp"
 
 using namespace nw::graph;
 using namespace nw::util;
 
-
 const size_t N = 5;
 
 TEST_CASE("indexed_struct_of_arrays construct", "[construct]") {
-  SECTION("construct") {
-    compressed A(N);
-  }
+  SECTION("construct") { compressed A(N); }
 
   SECTION("push_back diagonal") {
     compressed A(N);
@@ -46,24 +43,20 @@ TEST_CASE("indexed_struct_of_arrays construct", "[construct]") {
   SECTION("push_back diagonal less N-1") {
     compressed A(N);
     A.open_for_push_back();
-    for (size_t i = 0; i < A.size()-1; ++i) {
+    for (size_t i = 0; i < A.size() - 1; ++i) {
       A.push_back(i, i);
     }
     A.close_for_push_back();
   }
-
 }
-
 
 TEST_CASE("indexed_struct_of_arrays<double> construct", "[construct<double>]") {
-  SECTION("construct") {
-    compressed<double> A(N);
-  }
+  SECTION("construct") { compressed<double> A(N); }
   SECTION("push_back diagonal") {
     compressed<double> A(N);
     A.open_for_push_back();
     for (size_t i = 0; i < A.size(); ++i) {
-      A.push_back(i, i, i*3.14159);
+      A.push_back(i, i, i * 3.14159);
     }
     A.close_for_push_back();
   }
@@ -72,7 +65,7 @@ TEST_CASE("indexed_struct_of_arrays<double> construct", "[construct<double>]") {
     compressed<double> A(N);
     A.open_for_push_back();
     for (size_t i = 1; i < A.size(); ++i) {
-      A.push_back(i, i, i*3.14159);
+      A.push_back(i, i, i * 3.14159);
     }
     A.close_for_push_back();
   }
@@ -80,72 +73,65 @@ TEST_CASE("indexed_struct_of_arrays<double> construct", "[construct<double>]") {
   SECTION("push_back diagonal less N-1") {
     compressed<double> A(N);
     A.open_for_push_back();
-    for (size_t i = 0; i < A.size()-1; ++i) {
-      A.push_back(i, i, i*3.14159);
+    for (size_t i = 0; i < A.size() - 1; ++i) {
+      A.push_back(i, i, i * 3.14159);
     }
     A.close_for_push_back();
   }
 }
-
 
 TEST_CASE("indexed_struct_of_arrays outer iteration", "[outer]") {
   SECTION("") {
     compressed<double> A(N);
     A.open_for_push_back();
     for (size_t i = 0; i < A.size(); ++i) {
-      A.push_back(i, i, i*3.14159);
+      A.push_back(i, i, i * 3.14159);
       if (i > 0) {
-	A.push_back(i, i-1, i*3.14159);
+        A.push_back(i, i - 1, i * 3.14159);
       }
     }
     A.close_for_push_back();
     size_t i = 0;
-    for (auto && j : A) {
+    for (auto&& j : A) {
       if (i++ > 0) {
-	REQUIRE(j.size() == 2);
+        REQUIRE(j.size() == 2);
       } else {
-	REQUIRE(j.size() == 1);
+        REQUIRE(j.size() == 1);
       }
     }
   }
 }
-
 
 TEST_CASE("indexed_struct_of_arrays inner iteration", "[inner]") {
   SECTION("") {
     compressed<double> A(N);
     A.open_for_push_back();
     for (size_t i = 0; i < A.size(); ++i) {
-      A.push_back(i, i, i*3.14159);
+      A.push_back(i, i, i * 3.14159);
       if (i > 0) {
-	A.push_back(i, i-1, i*3.14159);
+        A.push_back(i, i - 1, i * 3.14159);
       }
     }
     A.close_for_push_back();
     size_t i = 0;
-    for (auto && j : A) {
-      for (auto && k : j) {
-	std::cout << std::get<0>(k) << " " << std::get<1>(k) << std::endl;
+    for (auto&& j : A) {
+      for (auto&& k : j) {
+        std::cout << std::get<0>(k) << " " << std::get<1>(k) << std::endl;
       }
     }
   }
 }
 
-
-
-
 TEST_CASE("indexed_struct_of_arrays flat iteration", "[flat]") {
-  SECTION("") {
-  }
+  SECTION("") {}
 }
-
 
 template <typename SOA>
 void foo(SOA& s) {
 
   size_t i = 0;
-  for (auto && j : s) {
-    for (auto && k : j) {
+  for (auto&& j : s) {
+    for (auto&& k : j) {
       std::cout << std::get<0>(k) << " " << std::get<1>(k) << std::endl;
     }
   }
@@ -155,23 +141,21 @@ template <typename SOA>
 void bar(const SOA& s) {
 
   size_t i = 0;
-  for (auto && j : s) {
-    for (auto && k : j) {
+  for (auto&& j : s) {
+    for (auto&& k : j) {
       std::cout << std::get<0>(k) << " " << std::get<1>(k) << std::endl;
     }
   }
-
 }
-
 
 TEST_CASE("indexed_struct_of_arrays const iteration", "[const]") {
   SECTION("") {
     compressed<double> A(N);
     A.open_for_push_back();
     for (size_t i = 0; i < A.size(); ++i) {
-      A.push_back(i, i, i*3.14159);
+      A.push_back(i, i, i * 3.14159);
       if (i > 0) {
-	A.push_back(i, i-1, i*3.14159);
+        A.push_back(i, i - 1, i * 3.14159);
       }
     }
     A.close_for_push_back();
@@ -179,8 +163,6 @@ TEST_CASE("indexed_struct_of_arrays const iteration", "[const]") {
     bar(A);
   }
 }
-
-
 
 #if 0
 

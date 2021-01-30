@@ -1,16 +1,12 @@
 
 
-
-#include <vector>
 #include <forward_list>
 #include <tuple>
+#include <vector>
 
 #include "containers/volos.hpp"
 
 #include "graph_concepts.hpp"
-
-
-
 
 int main() {
 

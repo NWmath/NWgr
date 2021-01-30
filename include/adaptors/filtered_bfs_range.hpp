@@ -23,13 +23,13 @@ namespace filtered_bfs {
 
 enum three_colors { black, white, grey };
 
-template <typename Graph, typename Queue = std::queue<vertex_id_t>, typename Filter = std::function<bool()>>
+template <typename Graph, typename Queue = std::queue<vertex_id_type>, typename Filter = std::function<bool()>>
 class filtered_bfs_edge_range {
 
 public:
   filtered_bfs_edge_range(
-      Graph& graph, vertex_id_t source, vertex_id_t target,
-      Filter filter = [](vertex_id_t v, typename Graph::inner_iterator iter) { return false; })
+      Graph& graph, vertex_id_type source, vertex_id_type target,
+      Filter filter = [](vertex_id_type v, typename Graph::inner_iterator iter) { return false; })
       : the_graph_(graph), colors_(graph.end() - graph.begin(), white), target_(target), filter_(filter) {
     Q_.push(source);
     colors_[source] = grey;
@@ -119,9 +119,9 @@ public:
   private:
     filtered_bfs_edge_range<Graph, Queue, Filter>& the_range_;
     typename Graph::outer_iterator                 G;
-    vertex_id_t                                    v_;
+    vertex_id_type                                 v_;
     typename Graph::inner_iterator                 u_begin;
-    vertex_id_t                                    iterator_target_;
+    vertex_id_type                                 iterator_target_;
     Filter                                         filter_;
   };
 
@@ -134,7 +134,7 @@ private:
   Graph&                    the_graph_;
   Queue                     Q_;
   std::vector<three_colors> colors_;
-  vertex_id_t               target_;
+  vertex_id_type            target_;
   Filter                    filter_;
 };
 }    // namespace filtered_bfs

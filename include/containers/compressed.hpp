@@ -193,7 +193,7 @@ public:    // fixme
   public:
     using difference_type   = std::make_signed_t<index_t>;
     using value_type        = sub_view;
-    using reference         = sub_view; // value_type&; // sub_view; 
+    using reference         = sub_view;    // value_type&; // sub_view;
     using pointer           = value_type*;
     using iterator_category = std::random_access_iterator_tag;
 
@@ -254,7 +254,7 @@ public:    // fixme
     pointer       operator->() { return nullptr; }
     const pointer operator->() const { return nullptr; }
 
-    reference       operator[](index_t n) { return {indexed_ + indices_[i_ + n], indexed_ + indices_[i_ + n + 1]}; }
+    reference operator[](index_t n) { return {indexed_ + indices_[i_ + n], indexed_ + indices_[i_ + n + 1]}; }
     reference operator[](index_t n) const { return {indexed_ + indices_[i_ + n], indexed_ + indices_[i_ + n + 1]}; }
   };
 
@@ -266,7 +266,7 @@ public:    // fixme
   public:
     using difference_type   = std::make_signed_t<index_t>;
     using value_type        = const_sub_view;
-    using reference         = const_sub_view; // const value_type&;
+    using reference         = const_sub_view;    // const value_type&;
     using pointer           = const value_type*;
     using iterator_category = std::random_access_iterator_tag;
 

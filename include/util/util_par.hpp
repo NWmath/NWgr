@@ -58,7 +58,7 @@ private:
   std::atomic<size_t>& count;
 };
 
-typedef size_t vertex_id_t;
+typedef size_t vertex_id_type;
 
 }    // namespace graph
 }    // namespace nw

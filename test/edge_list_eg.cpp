@@ -18,7 +18,6 @@
 using namespace nw::graph;
 using namespace nw::util;
 
-
 int main(int argc, char* argv[]) {
 
   if (argc < 2) {

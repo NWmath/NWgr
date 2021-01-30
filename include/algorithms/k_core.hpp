@@ -25,8 +25,8 @@ namespace graph {
 struct pair_hash {
   std::size_t operator()(const std::pair<size_t, size_t>& p) const {
 
-    auto h1 = std::hash<vertex_id_t>{}(p.first);
-    auto h2 = std::hash<vertex_id_t>{}(p.second);
+    auto h1 = std::hash<vertex_id_type>{}(p.first);
+    auto h2 = std::hash<vertex_id_type>{}(p.second);
 
     return h1 ^ h2;
   }
@@ -34,7 +34,7 @@ struct pair_hash {
 using Neighbors     = std::pair<size_t, size_t>;
 using Unordered_map = std::unordered_map<Neighbors, bool, pair_hash>;
 
-Neighbors make_my_pair(vertex_id_t x, vertex_id_t y) {
+Neighbors make_my_pair(vertex_id_type x, vertex_id_type y) {
   if (x < y) return std::make_pair(x, y);
   return std::make_pair(y, x);
 }
@@ -44,10 +44,10 @@ template <typename Graph>
 std::tuple<Unordered_map, size_t> k_core(Graph& A, int k) {
   Unordered_map filter;
 
-  size_t                   n_vtx     = A.size();
-  size_t                   old_n_vtx = n_vtx;
-  std::vector<int>         degree(n_vtx, 0);
-  std::vector<vertex_id_t> relabel(n_vtx);
+  size_t                      n_vtx     = A.size();
+  size_t                      old_n_vtx = n_vtx;
+  std::vector<int>            degree(n_vtx, 0);
+  std::vector<vertex_id_type> relabel(n_vtx);
 
   for (auto&& [u, v] : edge_range(A)) {
     ++degree[v];
@@ -69,7 +69,7 @@ std::tuple<Unordered_map, size_t> k_core(Graph& A, int k) {
     }
   }
 
-  /*vertex_id_t new_label = 0;
+  /*vertex_id_type new_label = 0;
   for(size_t i = 0; i < old_n_vtx; ++i) {
     if(degree[i] != 0){
       relabel[i] = new_label;

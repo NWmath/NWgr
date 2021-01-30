@@ -14,11 +14,11 @@
 #include <random>
 #include <vector>
 
+#include "algorithms/page_rank.hpp"
 #include "containers/aolos.hpp"
 #include "containers/compressed.hpp"
 #include "containers/edge_list.hpp"
 #include "io/mmio.hpp"
-#include "algorithms/page_rank.hpp"
 #include "util/timer.hpp"
 #include "util/util.hpp"
 
@@ -73,17 +73,16 @@ TEST_CASE("PageRank") {
     //std::cout << "Number vertices: " << graph.size() << std::endl;
     std::vector<RealT> page_rank(graph.size());
 
-    std::vector<vertex_id_t> degrees(graph.size());
+    std::vector<vertex_id_type> degrees(graph.size());
     {
       life_timer _("degrees");
       tbb::parallel_for(edge_range(graph), [&](auto&& edges) {
-	  for (auto&& [i, j] : edges) {
-	    __atomic_fetch_add(&degrees[j], 1, __ATOMIC_ACQ_REL);
-	  }
-	});
+        for (auto&& [i, j] : edges) {
+          __atomic_fetch_add(&degrees[j], 1, __ATOMIC_ACQ_REL);
+        }
+      });
     }
 
-    
     double const pr_threshold = 1.e-7;
     page_rank_v1(graph, degrees, page_rank, 0.85, pr_threshold, 100);
 
@@ -101,16 +100,16 @@ TEST_CASE("PageRank") {
     //std::cout << "Number vertices: " << graph.size() << std::endl;
     std::vector<RealT> page_rank(graph.size());
 
-    std::vector<vertex_id_t> degrees(graph.size());
+    std::vector<vertex_id_type> degrees(graph.size());
     {
       life_timer _("degrees");
       tbb::parallel_for(edge_range(graph), [&](auto&& edges) {
-	  for (auto&& [i, j] : edges) {
-	    __atomic_fetch_add(&degrees[j], 1, __ATOMIC_ACQ_REL);
-	  }
-	});
+        for (auto&& [i, j] : edges) {
+          __atomic_fetch_add(&degrees[j], 1, __ATOMIC_ACQ_REL);
+        }
+      });
     }
-    
+
     double const pr_threshold = 1.e-7;
     page_rank_v1(graph, degrees, page_rank, 0.85, pr_threshold, 100);
 

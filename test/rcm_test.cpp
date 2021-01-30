@@ -8,8 +8,8 @@
 // Author: Kevin Deweese
 //
 
-#include <iostream>
 #include <execution>
+#include <iostream>
 #include <unordered_set>
 
 #include "algorithms/triangle_count.hpp"
@@ -22,7 +22,6 @@
 
 using namespace nw::graph;
 using namespace nw::util;
-
 
 TEST_CASE("Reverse Cuthill-Mckee Ordering", "[rcm]") {
   edge_list<directed> el(10);
@@ -58,7 +57,7 @@ TEST_CASE("Reverse Cuthill-Mckee Ordering", "[rcm]") {
   el.push_back(9, 7);
 
   el.lexical_sort_by<0>();
-  auto perm=rcm(el);
+  auto perm = rcm(el);
   REQUIRE(perm[0] == 8);
 
   el.relabel(perm);

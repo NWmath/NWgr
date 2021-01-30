@@ -11,14 +11,13 @@
 #include <iostream>
 #include <queue>
 
+#include "adaptors/random_range.hpp"
 #include "containers/compressed.hpp"
 #include "containers/edge_list.hpp"
 #include "io/mmio.hpp"
-#include "adaptors/random_range.hpp"
 
 using namespace nw::graph;
 using namespace nw::util;
-
 
 int main(int argc, char* argv[]) {
 

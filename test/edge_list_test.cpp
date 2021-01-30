@@ -10,23 +10,21 @@
 
 #define EDGELIST_AOS
 
-#include "containers/edge_list.hpp"
-#include "common/test_header.hpp"
 #include "build.hpp"
+#include "common/test_header.hpp"
+#include "containers/edge_list.hpp"
 
 using namespace nw::graph;
 using namespace nw::util;
-
 
 static constexpr size_t N = 1024;
 
 TEST_CASE("push_back_zz", "[edge_list]") {
   edge_list<directed, double> A(N);
-  for (auto && j: A) {
+  for (auto&& j : A) {
     ;
   }
 }
-
 
 TEST_CASE("push_back", "[edge_list]") {
   edge_list<directed, double> A(N);

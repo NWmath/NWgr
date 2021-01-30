@@ -24,7 +24,7 @@ enum status { ready = 0, waiting, processed };
 // NOT fully verified yet
 
 //****************************************************************************
-template <typename Graph, typename Queue = std::queue<vertex_id_t>>
+template <typename Graph, typename Queue = std::queue<vertex_id_type>>
 class topdown_bfs_range {
   using Colors = std::vector<status>;
 
@@ -33,13 +33,13 @@ class topdown_bfs_range {
   Queue  queue_;     //!< worklist
 
   /// Initialize the range with a vertex id.
-  void init(vertex_id_t u) {
+  void init(vertex_id_type u) {
     queue_.push(u);
     colors_[u] = waiting;
   }
 
   /// Visit a vertex by enumerating its ready neighbors.
-  void visit(vertex_id_t v) {
+  void visit(vertex_id_type v) {
     for (auto&& [u] : graph_[v]) {
       if (colors_[u] == ready) {
         colors_[u] = waiting;
@@ -65,7 +65,7 @@ class topdown_bfs_range {
   decltype(auto) head() { return queue_.front(); }
 
 public:
-  topdown_bfs_range(Graph& graph, vertex_id_t seed = 0) : graph_(graph), colors_(graph.size()), queue_() {
+  topdown_bfs_range(Graph& graph, vertex_id_type seed = 0) : graph_(graph), colors_(graph.size()), queue_() {
     init(seed);
     visit(seed);
   }
@@ -101,11 +101,11 @@ template <typename Graph>
 class bottomup_bfs_range {
   using Colors = std::vector<status>;
 
-  Graph&      graph_;
-  Colors      colors_;
-  vertex_id_t v_;
-  vertex_id_t parent_v_;
-  size_t      n_;    // number of "processed" vertics
+  Graph&         graph_;
+  Colors         colors_;
+  vertex_id_type v_;
+  vertex_id_type parent_v_;
+  size_t         n_;    // number of "processed" vertics
 
   void advance() {
     // mark current v processed (visited)
@@ -134,7 +134,7 @@ class bottomup_bfs_range {
   decltype(auto) next() { return std::tuple(v_, parent_v_); }
 
 public:
-  bottomup_bfs_range(Graph& graph, vertex_id_t seed = 0) : graph_(graph), colors_(graph.size()), v_(seed), parent_v_(seed) {
+  bottomup_bfs_range(Graph& graph, vertex_id_type seed = 0) : graph_(graph), colors_(graph.size()), v_(seed), parent_v_(seed) {
     colors_[seed] = waiting;
     parent_v_     = graph_[seed][0];
   }

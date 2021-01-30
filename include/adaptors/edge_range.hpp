@@ -24,7 +24,7 @@ class edge_range {
   static_assert(((Is < Graph::getNAttr()) && ...), "Attribute index out of range");
   static constexpr size_t cutoff_ = 16;
 
-  using vertex_id_t = typename Graph::vertex_id_t;
+  using vertex_id_type = typename Graph::vertex_id_type;
 
   typename Graph::iterator outer_base_;
   typename Graph::iterator outer_begin_;
@@ -50,7 +50,7 @@ public:
   class iterator {
   public:
     using iterator_category = std::forward_iterator_tag;
-    using value_type        = std::tuple<vertex_id_t, vertex_id_t, std::tuple_element_t<Is, typename Graph::attributes_t>...>;
+    using value_type        = std::tuple<vertex_id_type, vertex_id_type, std::tuple_element_t<Is, typename Graph::attributes_t>...>;
     using difference_type   = std::size_t;
     using reference         = value_type&;
     using pointer           = value_type*;

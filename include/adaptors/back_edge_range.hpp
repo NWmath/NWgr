@@ -37,8 +37,8 @@ public:
       auto outer = graph.begin();
       for (auto outer_it = outer; outer_it != graph.end(); ++outer_it) {
         for (auto inner = (*outer_it).begin(); inner != (*outer_it).end(); ++inner) {
-          vertex_id_t neighbor = std::get<0>(*inner);
-          auto        back_it  = outer[neighbor].begin();
+          vertex_id_type neighbor = std::get<0>(*inner);
+          auto           back_it  = outer[neighbor].begin();
           if (back_address[outer_it - outer].find(neighbor) != back_address[outer_it - outer].end()) {
             continue;
           }
@@ -69,12 +69,12 @@ public:
   class back_edge_range_iterator {
   private:
     typename Graph::outer_iterator            G;
-    vertex_id_t                               v_;
+    vertex_id_type                            v_;
     typename Graph::inner_iterator            u_begin, u_end;
     typename std::map<size_t, edge>::iterator e_begin, e_end;
 
   public:
-    back_edge_range_iterator(back_edge_range<Graph>& range, vertex_id_t v)
+    back_edge_range_iterator(back_edge_range<Graph>& range, vertex_id_type v)
         : G(range.the_graph_.begin()), v_(v), u_begin(G[v_].begin()), u_end(G[v_].end()), e_begin(range.address_extra[v_].begin()),
           e_end(range.address_extra[v_].end()) {}
 
@@ -109,14 +109,14 @@ public:
 public:
   class sub_view {
   public:
-    sub_view(back_edge_range<Graph>& range, vertex_id_t v) : the_range_(range), v_(v) {}
+    sub_view(back_edge_range<Graph>& range, vertex_id_type v) : the_range_(range), v_(v) {}
 
     auto begin() { return back_edge_range_iterator(the_range_, v_); }
     auto end() { return typename back_edge_range_iterator::end_sentinel_type(); }
 
   private:
     back_edge_range<Graph>& the_range_;
-    vertex_id_t             v_;
+    vertex_id_type          v_;
   };
 
   class outer_back_edge_range_iterator {
@@ -164,12 +164,12 @@ public:
     auto vtx2 = std::get<0>(*inner);
     return get_back_edge(vtx, vtx2);
   }
-  auto get_back_edge(vertex_id_t vtx, back_edge_range_iterator& inner) {
-    vertex_id_t vtx2 = std::get<0>(*inner);
+  auto get_back_edge(vertex_id_type vtx, back_edge_range_iterator& inner) {
+    vertex_id_type vtx2 = std::get<0>(*inner);
     return get_back_edge(vtx, vtx2);
   }
 
-  auto get_back_edge(vertex_id_t vtx, vertex_id_t vtx2) {
+  auto get_back_edge(vertex_id_type vtx, vertex_id_type vtx2) {
     auto it = back_address[vtx].find(vtx2);
     if (it != back_address[vtx].end()) return it->second;
 
@@ -180,7 +180,7 @@ public:
 
     auto outer = the_graph_.begin();
     for (auto it = outer[vtx].begin(); it != outer[vtx].end(); ++it) {
-      vertex_id_t neighbor = std::get<0>(*it);
+      vertex_id_type neighbor = std::get<0>(*it);
       if (neighbor != vtx2) {
         continue;
       }

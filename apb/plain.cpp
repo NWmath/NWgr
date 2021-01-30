@@ -5,8 +5,8 @@
 
 #include "compressed.hpp"
 #include "edge_list.hpp"
-#include "io/mmio.hpp"
 #include "edge_range.hpp"
+#include "io/mmio.hpp"
 #include "plain_range.hpp"
 
 #if defined(CL_SYCL_LANGUAGE_VERSioN)
@@ -23,24 +23,23 @@ using counting_iterator = tbb::counting_iterator<T>;
 }
 #endif
 
-
 using namespace nw::graph;
 using namespace nw::util;
 
-template<typename Adjacency>
+template <typename Adjacency>
 auto apb_adj(Adjacency& graph, size_t ntrial) {
 
-  vertex_id_t              N = graph.max() + 1;
-  std::vector<vertex_id_t> degrees(N);
+  vertex_id_type              N = graph.max() + 1;
+  std::vector<vertex_id_type> degrees(N);
 
   {
     auto pr = plain_range(graph);
 
     std::cout << "plain_range" << std::endl;
 
-    double time = 0;
+    double   time = 0;
     ms_timer t1("iterator based for loop");
-    for(size_t t = 0; t < ntrial; ++t) {
+    for (size_t t = 0; t < ntrial; ++t) {
       degrees.clear();
       degrees.resize(N);
       t1.start();
@@ -51,11 +50,11 @@ auto apb_adj(Adjacency& graph, size_t ntrial) {
       t1.stop();
       time += t1.elapsed();
     }
-    std::cout << t1.name() << " " << time/ntrial << " ms" << std::endl;
+    std::cout << t1.name() << " " << time / ntrial << " ms" << std::endl;
 
     time = 0;
     ms_timer t2("range based for loop auto");
-    for(size_t t = 0; t < ntrial; ++t) {
+    for (size_t t = 0; t < ntrial; ++t) {
       degrees.clear();
       degrees.resize(N);
       t2.start();
@@ -66,11 +65,11 @@ auto apb_adj(Adjacency& graph, size_t ntrial) {
       t2.stop();
       time += t2.elapsed();
     }
-    std::cout << t2.name() << " " << time/ntrial << " ms" << std::endl;
+    std::cout << t2.name() << " " << time / ntrial << " ms" << std::endl;
 
     time = 0;
     ms_timer t3("range based for loop auto &&");
-    for(size_t t = 0; t < ntrial; ++t) {
+    for (size_t t = 0; t < ntrial; ++t) {
       degrees.clear();
       degrees.resize(N);
       t3.start();
@@ -81,11 +80,11 @@ auto apb_adj(Adjacency& graph, size_t ntrial) {
       t3.stop();
       time += t3.elapsed();
     }
-    std::cout << t3.name() << " " << time/ntrial << " ms" << std::endl;
+    std::cout << t3.name() << " " << time / ntrial << " ms" << std::endl;
 
     time = 0;
     ms_timer t4("range based for loop compound initialization auto");
-    for(size_t t = 0; t < ntrial; ++t) {
+    for (size_t t = 0; t < ntrial; ++t) {
       degrees.clear();
       degrees.resize(N);
       t4.start();
@@ -96,41 +95,41 @@ auto apb_adj(Adjacency& graph, size_t ntrial) {
       t4.stop();
       time += t4.elapsed();
     }
-    std::cout << t4.name() << " " << time/ntrial << " ms" << std::endl;
+    std::cout << t4.name() << " " << time / ntrial << " ms" << std::endl;
 
     time = 0;
     ms_timer t5("range based for loop compound initialization auto &&");
-    for(size_t t = 0; t < ntrial; ++t) {
+    for (size_t t = 0; t < ntrial; ++t) {
       degrees.clear();
       degrees.resize(N);
       t4.start();
-    
+
       for (auto&& [j] : pr) {
         ++degrees[j];
       }
       t5.stop();
       time += t5.elapsed();
     }
-    std::cout << t5.name() << " " << time/ntrial << " ms" << std::endl;
+    std::cout << t5.name() << " " << time / ntrial << " ms" << std::endl;
 
     time = 0;
     ms_timer t6("indexed for loop");
-    for(size_t t = 0; t < ntrial; ++t) {
+    for (size_t t = 0; t < ntrial; ++t) {
       degrees.clear();
       degrees.resize(N);
       t6.start();
 
-      for (vertex_id_t j = 0; j < N; ++j) {
+      for (vertex_id_type j = 0; j < N; ++j) {
         ++degrees[j];
       }
       t6.stop();
       time += t6.elapsed();
     }
-    std::cout << t6.name() << " " << time/ntrial << " ms" << std::endl;
+    std::cout << t6.name() << " " << time / ntrial << " ms" << std::endl;
 
     time = 0;
     ms_timer t7("std for_each auto");
-    for(size_t t = 0; t < ntrial; ++t) {
+    for (size_t t = 0; t < ntrial; ++t) {
       degrees.clear();
       degrees.resize(N);
       t7.start();
@@ -139,11 +138,11 @@ auto apb_adj(Adjacency& graph, size_t ntrial) {
       t7.stop();
       time += t7.elapsed();
     }
-    std::cout << t7.name() << " " << time/ntrial << " ms" << std::endl;
+    std::cout << t7.name() << " " << time / ntrial << " ms" << std::endl;
 
     time = 0;
     ms_timer t8("std for_each auto &&");
-    for(size_t t = 0; t < ntrial; ++t) {
+    for (size_t t = 0; t < ntrial; ++t) {
       degrees.clear();
       degrees.resize(N);
       t8.start();
@@ -152,30 +151,29 @@ auto apb_adj(Adjacency& graph, size_t ntrial) {
       t8.stop();
       time += t8.elapsed();
     }
-    std::cout << t8.name() << " " << time/ntrial << " ms" << std::endl;
+    std::cout << t8.name() << " " << time / ntrial << " ms" << std::endl;
 
     time = 0;
     ms_timer t9("counting iterator");
-    for(size_t t = 0; t < ntrial; ++t) {
+    for (size_t t = 0; t < ntrial; ++t) {
       degrees.clear();
       degrees.resize(N);
       t9.start();
 
-      std::for_each(counting_iterator<vertex_id_t>(0), counting_iterator<vertex_id_t>(N), [&](auto j) { ++degrees[j]; });
+      std::for_each(counting_iterator<vertex_id_type>(0), counting_iterator<vertex_id_type>(N), [&](auto j) { ++degrees[j]; });
       t9.stop();
       time += t9.elapsed();
     }
-    std::cout << t9.name() << " " << time/ntrial << " ms" << std::endl;
-
+    std::cout << t9.name() << " " << time / ntrial << " ms" << std::endl;
   }
   {
     auto per = edge_range(graph);
 
     std::cout << "edge_range 0" << std::endl;
 
-    double time = 0;
+    double   time = 0;
     ms_timer t1("raw for loop");
-    for(size_t t = 0; t < ntrial; ++t) {
+    for (size_t t = 0; t < ntrial; ++t) {
       degrees.clear();
       degrees.resize(N);
       t1.start();
@@ -183,20 +181,19 @@ auto apb_adj(Adjacency& graph, size_t ntrial) {
       auto ptr = graph.indices_.data();
       auto idx = std::get<0>(graph.to_be_indexed_).data();
 
-      for (vertex_id_t i = 0; i < N; ++i) {
-    for (auto j = ptr[i]; j < ptr[i+1]; ++j) {
-      ++degrees[i];
-    }
+      for (vertex_id_type i = 0; i < N; ++i) {
+        for (auto j = ptr[i]; j < ptr[i + 1]; ++j) {
+          ++degrees[i];
+        }
       }
       t1.stop();
       time += t1.elapsed();
     }
-    std::cout << t1.name() << " " << time/ntrial << " ms" << std::endl;
-
+    std::cout << t1.name() << " " << time / ntrial << " ms" << std::endl;
 
     time = 0;
     ms_timer t2("iterator based for loop");
-    for(size_t t = 0; t < ntrial; ++t) {
+    for (size_t t = 0; t < ntrial; ++t) {
       degrees.clear();
       degrees.resize(N);
       t2.start();
@@ -207,11 +204,11 @@ auto apb_adj(Adjacency& graph, size_t ntrial) {
       t2.stop();
       time += t2.elapsed();
     }
-    std::cout << t2.name() << " " << time/ntrial << " ms" << std::endl;
+    std::cout << t2.name() << " " << time / ntrial << " ms" << std::endl;
 
     time = 0;
     ms_timer t3("range based for loop auto");
-    for(size_t t = 0; t < ntrial; ++t) {
+    for (size_t t = 0; t < ntrial; ++t) {
       degrees.clear();
       degrees.resize(N);
       t3.start();
@@ -222,11 +219,11 @@ auto apb_adj(Adjacency& graph, size_t ntrial) {
       t3.stop();
       time += t3.elapsed();
     }
-    std::cout << t3.name() << " " << time/ntrial << " ms" << std::endl;
+    std::cout << t3.name() << " " << time / ntrial << " ms" << std::endl;
 
     time = 0;
     ms_timer t4("range based for loop auto &&");
-    for(size_t t = 0; t < ntrial; ++t) {
+    for (size_t t = 0; t < ntrial; ++t) {
       degrees.clear();
       degrees.resize(N);
       t4.start();
@@ -237,11 +234,11 @@ auto apb_adj(Adjacency& graph, size_t ntrial) {
       t4.stop();
       time += t4.elapsed();
     }
-    std::cout << t4.name() << " " << time/ntrial << " ms" << std::endl;
+    std::cout << t4.name() << " " << time / ntrial << " ms" << std::endl;
 
     time = 0;
     ms_timer t5("range based for loop compound initialization auto");
-    for(size_t t = 0; t < ntrial; ++t) {
+    for (size_t t = 0; t < ntrial; ++t) {
       degrees.clear();
       degrees.resize(N);
       t5.start();
@@ -252,11 +249,11 @@ auto apb_adj(Adjacency& graph, size_t ntrial) {
       t5.stop();
       time += t5.elapsed();
     }
-    std::cout << t5.name() << " " << time/ntrial << " ms" << std::endl;
+    std::cout << t5.name() << " " << time / ntrial << " ms" << std::endl;
 
     time = 0;
     ms_timer t6("range based for loop compound initialization auto &&");
-    for(size_t t = 0; t < ntrial; ++t) {
+    for (size_t t = 0; t < ntrial; ++t) {
       degrees.clear();
       degrees.resize(N);
       t6.start();
@@ -267,17 +264,17 @@ auto apb_adj(Adjacency& graph, size_t ntrial) {
       t6.stop();
       time += t6.elapsed();
     }
-    std::cout << t6.name() << " " << time/ntrial << " ms" << std::endl;
+    std::cout << t6.name() << " " << time / ntrial << " ms" << std::endl;
 
     time = 0;
     ms_timer t7("indexed for loop");
-    for(size_t t = 0; t < ntrial; ++t) {
+    for (size_t t = 0; t < ntrial; ++t) {
       degrees.clear();
       degrees.resize(N);
       t7.start();
 
       auto gr = graph.begin();
-      for (vertex_id_t i = 0; i < N; ++i) {
+      for (vertex_id_type i = 0; i < N; ++i) {
         for (auto j = gr[i].begin(); j != gr[i].end(); ++j) {
           ++degrees[i];
         }
@@ -285,11 +282,11 @@ auto apb_adj(Adjacency& graph, size_t ntrial) {
       t7.stop();
       time += t7.elapsed();
     }
-    std::cout << t7.name() << " " << time/ntrial << " ms" << std::endl;
+    std::cout << t7.name() << " " << time / ntrial << " ms" << std::endl;
 
     time = 0;
     ms_timer t8("std for_each auto");
-    for(size_t t = 0; t < ntrial; ++t) {
+    for (size_t t = 0; t < ntrial; ++t) {
       degrees.clear();
       degrees.resize(N);
       t8.start();
@@ -298,11 +295,11 @@ auto apb_adj(Adjacency& graph, size_t ntrial) {
       t8.stop();
       time += t8.elapsed();
     }
-    std::cout << t8.name() << " " << time/ntrial << " ms" << std::endl;
+    std::cout << t8.name() << " " << time / ntrial << " ms" << std::endl;
 
     time = 0;
     ms_timer t9("std for_each auto &&");
-    for(size_t t = 0; t < ntrial; ++t) {
+    for (size_t t = 0; t < ntrial; ++t) {
       degrees.clear();
       degrees.resize(N);
       t9.start();
@@ -311,17 +308,17 @@ auto apb_adj(Adjacency& graph, size_t ntrial) {
       t9.stop();
       time += t9.elapsed();
     }
-    std::cout << t9.name() << " " << time/ntrial << " ms" << std::endl;
+    std::cout << t9.name() << " " << time / ntrial << " ms" << std::endl;
 
     time = 0;
     ms_timer t10("counting iterator");
-    for(size_t t = 0; t < ntrial; ++t) {
+    for (size_t t = 0; t < ntrial; ++t) {
       degrees.clear();
       degrees.resize(N);
       t10.start();
 
       auto gr = graph.begin();
-      std::for_each(counting_iterator<vertex_id_t>(0), counting_iterator<vertex_id_t>(N), [&](auto i) {
+      std::for_each(counting_iterator<vertex_id_type>(0), counting_iterator<vertex_id_type>(N), [&](auto i) {
         for (auto j = gr[i].begin(); j != gr[i].end(); ++j) {
           ++degrees[i];
         }
@@ -329,8 +326,7 @@ auto apb_adj(Adjacency& graph, size_t ntrial) {
       t10.stop();
       time += t10.elapsed();
     }
-    std::cout << t10.name() << " " << time/ntrial << " ms" << std::endl;
-
+    std::cout << t10.name() << " " << time / ntrial << " ms" << std::endl;
   }
 
   {
@@ -339,9 +335,9 @@ auto apb_adj(Adjacency& graph, size_t ntrial) {
 
     std::cout << "edge_range 1" << std::endl;
 
-    double time = 0;
+    double   time = 0;
     ms_timer t1("raw for loop");
-    for(size_t t = 0; t < ntrial; ++t) {
+    for (size_t t = 0; t < ntrial; ++t) {
       degrees.clear();
       degrees.resize(N);
       t1.start();
@@ -349,19 +345,19 @@ auto apb_adj(Adjacency& graph, size_t ntrial) {
       auto ptr = graph.indices_.data();
       auto idx = std::get<0>(graph.to_be_indexed_).data();
 
-      for (vertex_id_t i = 0; i < N; ++i) {
-    for (auto j = ptr[i]; j < ptr[i+1]; ++j) {
-      ++degrees[idx[j]];
-    }
+      for (vertex_id_type i = 0; i < N; ++i) {
+        for (auto j = ptr[i]; j < ptr[i + 1]; ++j) {
+          ++degrees[idx[j]];
+        }
       }
       t1.stop();
       time += t1.elapsed();
     }
-    std::cout << t1.name() << " " << time/ntrial << " ms" << std::endl;
+    std::cout << t1.name() << " " << time / ntrial << " ms" << std::endl;
 
     time = 0;
     ms_timer t2("iterator based for loop");
-    for(size_t t = 0; t < ntrial; ++t) {
+    for (size_t t = 0; t < ntrial; ++t) {
       degrees.clear();
       degrees.resize(N);
       t2.start();
@@ -372,11 +368,11 @@ auto apb_adj(Adjacency& graph, size_t ntrial) {
       t2.stop();
       time += t2.elapsed();
     }
-    std::cout << t2.name() << " " << time/ntrial << " ms" << std::endl;
+    std::cout << t2.name() << " " << time / ntrial << " ms" << std::endl;
 
     time = 0;
     ms_timer t3("range based for loop auto");
-    for(size_t t = 0; t < ntrial; ++t) {
+    for (size_t t = 0; t < ntrial; ++t) {
       degrees.clear();
       degrees.resize(N);
       t3.start();
@@ -387,11 +383,11 @@ auto apb_adj(Adjacency& graph, size_t ntrial) {
       t3.stop();
       time += t3.elapsed();
     }
-    std::cout << t3.name() << " " << time/ntrial << " ms" << std::endl;
+    std::cout << t3.name() << " " << time / ntrial << " ms" << std::endl;
 
     time = 0;
     ms_timer t4("range based for loop auto &&");
-    for(size_t t = 0; t < ntrial; ++t) {
+    for (size_t t = 0; t < ntrial; ++t) {
       degrees.clear();
       degrees.resize(N);
       t4.start();
@@ -402,11 +398,11 @@ auto apb_adj(Adjacency& graph, size_t ntrial) {
       t4.stop();
       time += t4.elapsed();
     }
-    std::cout << t4.name() << " " << time/ntrial << " ms" << std::endl;
+    std::cout << t4.name() << " " << time / ntrial << " ms" << std::endl;
 
     time = 0;
     ms_timer t5("range based for loop compound initialization auto");
-    for(size_t t = 0; t < ntrial; ++t) {
+    for (size_t t = 0; t < ntrial; ++t) {
       degrees.clear();
       degrees.resize(N);
       t5.start();
@@ -417,11 +413,11 @@ auto apb_adj(Adjacency& graph, size_t ntrial) {
       t5.stop();
       time += t5.elapsed();
     }
-    std::cout << t5.name() << " " << time/ntrial << " ms" << std::endl;
+    std::cout << t5.name() << " " << time / ntrial << " ms" << std::endl;
 
     time = 0;
     ms_timer t6("range based for loop compound initialization auto &&");
-    for(size_t t = 0; t < ntrial; ++t) {
+    for (size_t t = 0; t < ntrial; ++t) {
       degrees.clear();
       degrees.resize(N);
       t6.start();
@@ -432,17 +428,17 @@ auto apb_adj(Adjacency& graph, size_t ntrial) {
       t6.stop();
       time += t6.elapsed();
     }
-    std::cout << t6.name() << " " << time/ntrial << " ms" << std::endl;
+    std::cout << t6.name() << " " << time / ntrial << " ms" << std::endl;
 
     time = 0;
     ms_timer t7("indexed for loop");
-    for(size_t t = 0; t < ntrial; ++t) {
+    for (size_t t = 0; t < ntrial; ++t) {
       degrees.clear();
       degrees.resize(N);
       t7.start();
 
       auto gr = graph.begin();
-      for (vertex_id_t i = 0; i < N; ++i) {
+      for (vertex_id_type i = 0; i < N; ++i) {
         for (auto j = gr[i].begin(); j != gr[i].end(); ++j) {
           ++degrees[std::get<0>(*j)];
         }
@@ -450,11 +446,11 @@ auto apb_adj(Adjacency& graph, size_t ntrial) {
       t7.stop();
       time += t7.elapsed();
     }
-    std::cout << t7.name() << " " << time/ntrial << " ms" << std::endl;
+    std::cout << t7.name() << " " << time / ntrial << " ms" << std::endl;
 
     time = 0;
     ms_timer t8("std for_each auto");
-    for(size_t t = 0; t < ntrial; ++t) {
+    for (size_t t = 0; t < ntrial; ++t) {
       degrees.clear();
       degrees.resize(N);
       t8.start();
@@ -463,11 +459,11 @@ auto apb_adj(Adjacency& graph, size_t ntrial) {
       t8.stop();
       time += t8.elapsed();
     }
-    std::cout << t8.name() << " " << time/ntrial << " ms" << std::endl;
+    std::cout << t8.name() << " " << time / ntrial << " ms" << std::endl;
 
     time = 0;
     ms_timer t9("std for_each auto &&");
-    for(size_t t = 0; t < ntrial; ++t) {
+    for (size_t t = 0; t < ntrial; ++t) {
       degrees.clear();
       degrees.resize(N);
       t9.start();
@@ -476,17 +472,17 @@ auto apb_adj(Adjacency& graph, size_t ntrial) {
       t9.stop();
       time += t9.elapsed();
     }
-    std::cout << t9.name() << " " << time/ntrial << " ms" << std::endl;
+    std::cout << t9.name() << " " << time / ntrial << " ms" << std::endl;
 
     time = 0;
     ms_timer t10("counting iterator with iterator for");
-    for(size_t t = 0; t < ntrial; ++t) {
+    for (size_t t = 0; t < ntrial; ++t) {
       degrees.clear();
       degrees.resize(N);
       t10.start();
 
       auto gr = graph.begin();
-      std::for_each(counting_iterator<vertex_id_t>(0), counting_iterator<vertex_id_t>(N), [&](auto i) {
+      std::for_each(counting_iterator<vertex_id_type>(0), counting_iterator<vertex_id_type>(N), [&](auto i) {
         for (auto j = gr[i].begin(); j != gr[i].end(); ++j) {
           ++degrees[std::get<0>(*j)];
         }
@@ -494,8 +490,7 @@ auto apb_adj(Adjacency& graph, size_t ntrial) {
       t10.stop();
       time += t10.elapsed();
     }
-    std::cout << t10.name() << " " << time/ntrial << " ms" << std::endl;
-
+    std::cout << t10.name() << " " << time / ntrial << " ms" << std::endl;
   }
 }
 
@@ -507,10 +502,12 @@ int main(int argc, char* argv[]) {
   std::string read_processed_edgelist  = "";
   std::string write_processed_edgelist = "";
 
-  bool         verbose      = false;
-  bool         debug        = false;
-  size_t       nthread      = 1; (void)nthread; // silence warnings
-  size_t       ntrial       = 1; (void)ntrial;  // silence warnings
+  bool   verbose = false;
+  bool   debug   = false;
+  size_t nthread = 1;
+  (void)nthread;    // silence warnings
+  size_t ntrial = 1;
+  (void)ntrial;    // silence warnings
   const size_t max_versions = 16;
 
   for (int argIndex = 1; argIndex < argc; ++argIndex) {

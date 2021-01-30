@@ -65,7 +65,7 @@ concept AdjacencyGraph = ranges::random_access_range<G> &&
 template<typename G>
 concept IncidenceGraph = ranges::random_access_range<G> && 
   ranges::forward_range<typename G::iterator::value_type> &&
-  std::is_same_v<typename G::iterator::value_type::iterator::value_type, std::tuple<vertex_id_t,vertex_id_t, EdgeProps...>>;
+  std::is_same_v<typename G::iterator::value_type::iterator::value_type, std::tuple<vertex_id_type,vertex_id_type, EdgeProps...>>;
   // Still need to be able store this as CSR
   // Adapt to edge_range
 
@@ -73,7 +73,7 @@ concept IncidenceGraph = ranges::random_access_range<G> &&
 template<typename G>
 concept TopologyGraph = ranges::random_access_range<G> && 
   ranges::forward_range<typename G::iterator::value_type> &&
-  std::is_same_v<typename G::iterator::value_type::iterator::value_type, std::tuple<vertex_id_t, VertProp??...>>;
+  std::is_same_v<typename G::iterator::value_type::iterator::value_type, std::tuple<vertex_id_type, VertProp??...>>;
 
   //   I. Conceptify interfaces -> IncidenceGraph
   //      A. const 
@@ -82,14 +82,12 @@ concept TopologyGraph = ranges::random_access_range<G> &&
   //  IV. Maybe rather than begin()/end() -> neighbors()? or out_edges()?
 #endif
 
+#include "aolos.hpp"
+#include "compressed.hpp"
+#include "util/intersection_size.hpp"
+#include "vovos.hpp"
 #include <concepts>
 #include <ranges>
-#include "vovos.hpp"
-#include "aolos.hpp" 
-#include "compressed.hpp" 
-#include "util/intersection_size.hpp"
-
-
 
 template <typename T>
 using inner_range = std::ranges::range_value_t<T>;
@@ -98,36 +96,34 @@ template <typename T>
 using inner_value = std::ranges::range_value_t<inner_range<T>>;
 
 template <typename T>
-using vertex_id_t = nw::graph::vertex_id_t;
+using vertex_id_type = nw::graph::vertex_id_type;
 
 template <typename T>
-using index_t = nw::graph::vertex_id_t;
+using index_t = nw::graph::vertex_id_type;
 
 template <typename T>
-concept Adjacence =
-  requires (T graph, inner_value<T> vertex) {
-    { target (vertex) } -> std::convertible_to<vertex_id_t<T>>;
-  };
+concept Adjacence = requires(T graph, inner_value<T> vertex) {
+  { target(vertex) }
+  ->std::convertible_to<vertex_id_type<T>>;
+};
 
 template <typename T>
-concept Incidence =
-  requires (T graph, inner_value<T> edge) {
-    { source (edge) } -> std::convertible_to<vertex_id_t<T>>;
-    { target (edge) } -> std::convertible_to<vertex_id_t<T>>;
-  };
+concept Incidence = requires(T graph, inner_value<T> edge) {
+  { source(edge) }
+  ->std::convertible_to<vertex_id_type<T>>;
+  { target(edge) }
+  ->std::convertible_to<vertex_id_type<T>>;
+};
 
 template <typename T>
-concept Graph = 
-  std::ranges::random_access_range<T> &&
-  std::ranges::forward_range<inner_range<T>> &&
-  std::convertible_to<vertex_id_t<T>, index_t<T>>;
+concept Graph = std::ranges::random_access_range<T>&& std::ranges::forward_range<inner_range<T>>&&
+                                                      std::convertible_to<vertex_id_type<T>, index_t<T>>;
 
 template <typename T>
-concept IncidenceGraph = Graph<T> && Incidence<T>;
+concept IncidenceGraph = Graph<T>&& Incidence<T>;
 
 template <typename T>
-concept AdjacenceGraph = Graph<T> && Adjacence<T>;
-
+concept AdjacenceGraph = Graph<T>&& Adjacence<T>;
 
 template <Graph GraphT>
 size_t triangle_count(const GraphT& A) {
@@ -144,14 +140,13 @@ size_t triangle_count(const GraphT& A) {
   return triangles;
 }
 
-
 template <typename Graph_t>
-auto bfs(const Graph_t& graph, vertex_id_t<Graph_t> root) requires Graph<Graph_t> {
+auto bfs(const Graph_t& graph, vertex_id_type<Graph_t> root) requires Graph<Graph_t> {
 
-  std::deque<vertex_id_t<Graph_t>>  q1, q2;
-  std::vector<vertex_id_t<Graph_t>>   level(graph.size(), std::numeric_limits<vertex_id_t<Graph_t>>::max());
-  std::vector<vertex_id_t<Graph_t>> parents(graph.size(), std::numeric_limits<vertex_id_t<Graph_t>>::max());
-  size_t                   lvl = 0;
+  std::deque<vertex_id_type<Graph_t>>  q1, q2;
+  std::vector<vertex_id_type<Graph_t>> level(graph.size(), std::numeric_limits<vertex_id_type<Graph_t>>::max());
+  std::vector<vertex_id_type<Graph_t>> parents(graph.size(), std::numeric_limits<vertex_id_type<Graph_t>>::max());
+  size_t                               lvl = 0;
 
   q1.push_back(root);
   level[root]   = lvl++;
@@ -161,10 +156,10 @@ auto bfs(const Graph_t& graph, vertex_id_t<Graph_t> root) requires Graph<Graph_t
 
   while (!q1.empty()) {
 
-    std::for_each(q1.begin(), q1.end(), [&](vertex_id_t<Graph_t> u) {
+    std::for_each(q1.begin(), q1.end(), [&](vertex_id_type<Graph_t> u) {
       std::for_each(g[u].begin(), g[u].end(), [&](auto&& x) {
-        vertex_id_t<Graph_t> v = std::get<0>(x);
-        if (level[v] == std::numeric_limits<vertex_id_t<Graph_t>>::max()) {
+        vertex_id_type<Graph_t> v = std::get<0>(x);
+        if (level[v] == std::numeric_limits<vertex_id_type<Graph_t>>::max()) {
           q2.push_back(v);
           level[v]   = lvl;
           parents[v] = u;
@@ -178,7 +173,6 @@ auto bfs(const Graph_t& graph, vertex_id_t<Graph_t> root) requires Graph<Graph_t
   return parents;
 }
 
-
 template <typename T>
 auto foo(const T& A) requires Graph<T> {
 
@@ -191,16 +185,12 @@ auto foo(const T& A) requires Graph<T> {
 
   for (auto& j : A) {
     for (auto& k : j) {
-
     }
   }
 
   for (auto& j : A[0]) {
-
-  } 
-
+  }
 }
-
 
 int main() {
 
@@ -213,14 +203,10 @@ int main() {
   foo(nw::graph::vector_of_vector_of_structs(5));
   foo(nw::graph::vov<>(5));
 
-
   foo(nw::graph::array_of_list_of_structs(5));
   foo(nw::graph::adj_list(5));
 
-
-
   // foo<nw::graph::adjacency<0>>();
-
 
   return 0;
 }
