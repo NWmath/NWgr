@@ -46,14 +46,13 @@ static bool g_time_edge_list  = false;
 void debug_edge_list(bool flag = true) { g_debug_edge_list = flag; }
 void time_edge_list(bool flag = true) { g_time_edge_list = flag; }
 
-template <std::unsigned_integral vertex_id_typeype, typename graph_base_t, directedness direct = directedness::undirected,
+template <std::unsigned_integral vertex_id_type, typename graph_base_t, directedness direct = directedness::undirected,
           typename... Attributes>
-class index_edge_list : public graph_base_t, public struct_of_arrays<vertex_id_typeype, vertex_id_typeype, Attributes...> {
+class index_edge_list : public graph_base_t, public struct_of_arrays<vertex_id_type, vertex_id_type, Attributes...> {
 
 public:
   // private:
   using graph_base     = graph_base_t;
-  using vertex_id_type = vertex_id_typeype;
 
   using base    = struct_of_arrays<vertex_id_type, vertex_id_type, Attributes...>;
   using element = std::tuple<vertex_id_type, vertex_id_type, Attributes...>;
@@ -63,9 +62,9 @@ public:
   using num_vertices_type                        = graph_base::vertex_cardinality_t;
   using num_edges_type                           = base::difference_type;
 
-  using my_type         = index_edge_list<vertex_id_typeype, graph_base_t, direct, Attributes...>;
-  using directed_type   = index_edge_list<vertex_id_typeype, graph_base_t, directedness::directed, Attributes...>;
-  using undirected_type = index_edge_list<vertex_id_typeype, graph_base_t, directedness::undirected, Attributes...>;
+  using my_type         = index_edge_list<vertex_id_type, graph_base_t, direct, Attributes...>;
+  using directed_type   = index_edge_list<vertex_id_type, graph_base_t, directedness::directed, Attributes...>;
+  using undirected_type = index_edge_list<vertex_id_type, graph_base_t, directedness::undirected, Attributes...>;
 
 public:
   constexpr static const bool is_unipartite = std::is_same<graph_base, unipartite_graph_base>::value;
@@ -208,11 +207,11 @@ public:
 
   void stream(std::ostream& os = std::cout) { stream_edges(os); }
 
-  bool operator==(index_edge_list<vertex_id_typeype, graph_base_t, edge_directedness, Attributes...>& e) {
+  bool operator==(index_edge_list<vertex_id_type, graph_base_t, edge_directedness, Attributes...>& e) {
     return graph_base::vertex_cardinality == e.graph_base::vertex_cardinality && base::operator==(e);    //*this == e;
   }
 
-  bool operator!=(index_edge_list<vertex_id_typeype, graph_base_t, edge_directedness, Attributes...>& e) { return !operator==(e); }
+  bool operator!=(index_edge_list<vertex_id_type, graph_base_t, edge_directedness, Attributes...>& e) { return !operator==(e); }
 };
 
 template <directedness edge_directedness = directedness::undirected, typename... Attributes>
@@ -221,15 +220,15 @@ using edge_list = index_edge_list<default_vertex_id_type, unipartite_graph_base,
 template <directedness edge_directedness = directedness::undirected, typename... Attributes>
 using bi_edge_list = index_edge_list<default_vertex_id_type, bipartite_graph_base, edge_directedness, Attributes...>;
 
-template <std::unsigned_integral vertex_id_typeype, typename graph_base_t, directedness direct = directedness::undirected,
+template <std::unsigned_integral vertex_id_type, typename graph_base_t, directedness direct = directedness::undirected,
           typename... Attributes>
-auto num_edges(const index_edge_list<vertex_id_typeype, graph_base_t, direct, Attributes...>& g) {
+auto num_edges(const index_edge_list<vertex_id_type, graph_base_t, direct, Attributes...>& g) {
   return g.num_edges();
 }
 
-template <std::unsigned_integral vertex_id_typeype, typename graph_base_t, directedness direct = directedness::undirected,
+template <std::unsigned_integral vertex_id_type, typename graph_base_t, directedness direct = directedness::undirected,
           typename... Attributes>
-auto num_vertices(const index_edge_list<vertex_id_typeype, graph_base_t, direct, Attributes...>& g) {
+auto num_vertices(const index_edge_list<vertex_id_type, graph_base_t, direct, Attributes...>& g) {
   return g.num_vertices();
 }
 

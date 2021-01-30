@@ -34,10 +34,10 @@ public:
   vector_of_list_of_structs(size_t N) : base(N) {}
 };
 
-template <int idx, std::unsigned_integral vertex_id_typeype, typename... Attributes>
-class index_adj_list : public unipartite_graph_base, public vector_of_list_of_structs<vertex_id_typeype, Attributes...> {
+template <int idx, std::unsigned_integral vertex_id, typename... Attributes>
+class index_adj_list : public unipartite_graph_base, public vector_of_list_of_structs<vertex_id, Attributes...> {
 public:
-  using vertex_id_type = vertex_id_typeype;
+  using vertex_id_type = vertex_id;
   using base           = vector_of_list_of_structs<vertex_id_type, Attributes...>;
   using graph_base     = unipartite_graph_base;
   using num_vertices_type = std::array<typename base::size_type, 1>;
@@ -56,7 +56,7 @@ public:
 
   void open_for_push_back() { graph_base::is_open = true; }
   void close_for_push_back() { graph_base::is_open = false; }
-  void push_back(size_t i, Attributes... attrs) { base::operator[](i).emplace_front(attrs...); }
+  void push_back(size_t i, size_t j, Attributes... attrs) { base::operator[](i).emplace_front(j, attrs...); }
 
   num_vertices_type num_vertices() const { return {base::size()}; };
   num_edges_type    num_edges() const { return num_edges_; }

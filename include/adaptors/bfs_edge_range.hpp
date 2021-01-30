@@ -18,6 +18,8 @@
 // template<template <typename...> class Graph, typename PriorityQueue, typename...Attributes>
 // class bfs_edge_range<Graph<Attributes...>> {
 
+#include "graph_traits.hpp"
+
 #include <cassert>
 #include <queue>
 #include <tuple>
@@ -28,10 +30,10 @@ namespace graph {
 
 enum three_colors { black, white, grey };
 
-template <typename Graph, typename Queue = std::queue<typename Graph::vertex_id_type>>
+template <typename Graph, typename Queue = std::queue<vertex_id_t<Graph>>>
 class bfs_edge_range {
 private:
-  using vertex_id_type = typename Graph::vertex_id_type;
+  using vertex_id_type = vertex_id_t<Graph>;
 
 public:
   bfs_edge_range(Graph& graph, vertex_id_type seed = 0) : the_graph_(graph), colors_(graph.size(), white) {
