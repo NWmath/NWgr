@@ -21,7 +21,6 @@ target_link_libraries(catch_main Catch2::Catch2)
 
 # Add Catch2 tests
 nw_graph_add_test(adjacency_test)
-nw_graph_add_test(aolos_test)
 nw_graph_add_test(aos_test)
 nw_graph_add_test(back_edge_test)
 nw_graph_add_test(bfs_test_0)
@@ -42,6 +41,7 @@ nw_graph_add_test(size_test)
 nw_graph_add_test(soa_test)
 nw_graph_add_test(spanning_tree_test)
 nw_graph_add_test(triangle_test)
+nw_graph_add_test(volos_test)
 nw_graph_add_test(vov_test)
 
 # exptected failures for now
