@@ -21,7 +21,7 @@ namespace graph {
 template <typename Graph>
 class neighbor_range {
 public:
-  neighbor_range(const Graph& g) : the_graph_(g) {}
+  neighbor_range(Graph& g) : the_graph_(g) {}
 
   class edge_range_iterator {
   private:

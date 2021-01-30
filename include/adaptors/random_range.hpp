@@ -22,7 +22,7 @@ namespace graph {
 template <typename Graph>
 class random_range {
 public:
-  random_range(const Graph& g, size_t length = size_t(0xffffffffffffffffULL), vertex_id_type first = 0, unsigned seed = 2049)
+  random_range(Graph& g, size_t length = size_t(0xffffffffffffffffULL), vertex_id_type first = 0, unsigned seed = 2049)
       : the_graph_(g), starting_vertex(first), length_(length), distribution(0, 1.0), generator(seed),
         dice(std::bind(distribution, generator)) {}
 

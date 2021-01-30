@@ -25,7 +25,7 @@ template <typename Graph, typename Stack = std::stack<vertex_id_type>>
 class dfs_range {
 
 public:
-  dfs_range(const Graph& graph, vertex_id_type seed = 0) : the_graph_(graph), colors_(graph.end() - graph.begin(), white) {
+  dfs_range(Graph& graph, vertex_id_type seed = 0) : the_graph_(graph), colors_(graph.end() - graph.begin(), white) {
     Q_.push(seed);
     colors_[seed] = grey;
 
@@ -118,7 +118,7 @@ template <typename Graph, typename Stack = std::stack<vertex_id_type>>
 class dfs_edge_range {
 
 public:
-  dfs_edge_range(const Graph& graph, vertex_id_type seed = 0) : the_graph_(graph), colors_(graph.end() - graph.begin(), white) {
+  dfs_edge_range(Graph& graph, vertex_id_type seed = 0) : the_graph_(graph), colors_(graph.end() - graph.begin(), white) {
     Q_.push(seed);
     colors_[seed] = grey;
   }

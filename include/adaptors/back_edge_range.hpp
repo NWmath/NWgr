@@ -31,7 +31,7 @@ class back_edge_range {
   }
 
 public:
-  back_edge_range(const Graph& graph, bool as_needed = false)
+  back_edge_range(Graph& graph, bool as_needed = false)
       : the_graph_(graph), back_address(graph.end() - graph.begin()), back_address_extra(graph.end() - graph.begin()),
         address_extra(graph.end() - graph.begin()) {
     if (!as_needed) {
