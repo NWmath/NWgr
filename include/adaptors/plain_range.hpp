@@ -44,7 +44,7 @@ namespace graph {
 template <typename Graph>
 class plain_range {
 public:
-  plain_range(const Graph& g) : the_graph_(g) {}
+  plain_range(Graph& g) : the_graph_(g) {}
 
   class iterator {
     typename Graph::iterator base_;
@@ -76,7 +76,7 @@ private:
 template <typename Graph>
 class plain_degree_range {
 public:
-  plain_degree_range(const Graph& g) : the_graph_(g) {}
+  plain_degree_range(Graph& g) : the_graph_(g) {}
 
   class iterator {
     typename Graph::iterator base_;
