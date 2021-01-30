@@ -115,9 +115,9 @@ void fill(edge_list_t& el, adjacency_t& cs, ExecutionPolicy&& policy = {}) {
     const int kdx = (idx + 1) % 2;
 
     if constexpr (edge_list_t::is_unipartite) {
-      cs.indices_.resize(el.num_vertices()[idx] + 1);
+      cs.indices_.resize(el.num_vertices()[0] + 1);
     } else {
-      cs.indices_.resize(el.num_vertices()[kdx] + 1);    // ???
+      cs.indices_.resize(el.num_vertices()[idx] + 1);    // ???
     }
 
     std::inclusive_scan(policy, degree.begin(), degree.end(), cs.indices_.begin() + 1);

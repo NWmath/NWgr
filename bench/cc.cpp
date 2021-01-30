@@ -253,7 +253,7 @@ int main(int argc, char* argv[]) {
   {
     auto reader = [&](std::string file, bool symmetric, bool verbose) {
       if (symmetric) {
-        auto aos_a = load_graph<undirected>(file);
+        auto aos_a = load_graph<nw::graph::directedness::undirected>(file);
         auto degree = degrees(aos_a);
 
         // Run relabeling. This operates directly on the incoming edglist.
@@ -275,7 +275,7 @@ int main(int argc, char* argv[]) {
         return std::tuple(graph, t_graph);
       } //if
       else {
-        auto aos_a = load_graph<directed>(file);
+        auto aos_a = load_graph<nw::graph::directedness::directed>(file);
         auto degree = degrees(aos_a);
 
         // Run and time relabeling. This operates directly on the incoming edglist.
