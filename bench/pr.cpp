@@ -68,7 +68,7 @@ int main(int argc, char* argv[]) {
 
   for (auto&& file : files)
   {
-    auto aos_a = load_graph<directed>(file);
+    auto aos_a = load_graph<nw::graph::directedness::directed>(file);
     if (verbose) {
       aos_a.stream_stats();
     }

@@ -52,15 +52,17 @@ void print_n_ranks(const Vector& centrality, size_t n) {
 }
 
 template <class score_t, class accum_t, class Graph>
-bool BCVerifier(Graph&& g, std::vector<vertex_id_t> &trial_sources, std::vector<score_t> &scores_to_test) {
-  std::vector<score_t> scores(g.max() + 1, 0);
+bool BCVerifier(const Graph& g, std::vector<typename graph_traits<Graph>::vertex_id_t> &trial_sources, std::vector<score_t> &scores_to_test) {
+  using vertex_id_t = typename graph_traits<Graph>::vertex_id_t;
+
+  std::vector<score_t> scores(num_vertices(g)[0], 0);
   for(auto& source : trial_sources) {
-    std::vector<int> depths(g.max() + 1, -1);
+    std::vector<int> depths(num_vertices(g)[0], -1);
     depths[source] = 0;
-    std::vector<accum_t> path_counts(g.max() + 1, 0);
+    std::vector<accum_t> path_counts(num_vertices(g)[0] + 1, 0);
     path_counts[source] = 1;
     std::vector<vertex_id_t> to_visit;
-    to_visit.reserve(g.max() + 1);
+    to_visit.reserve(num_vertices(g)[0]);
     to_visit.push_back(source);
     auto out_neigh = g.begin();
     for(auto it = to_visit.begin(); it != to_visit.end(); it++) {
@@ -78,7 +80,7 @@ bool BCVerifier(Graph&& g, std::vector<vertex_id_t> &trial_sources, std::vector<
     }
 
     std::vector<std::vector<vertex_id_t>> verts_at_depth;
-    for(size_t i = 0; i < g.max() + 1; ++i) {
+    for(size_t i = 0; i < num_vertices(g)[0]; ++i) {
       if(depths[i] != -1) {
     if(depths[i] >= static_cast<int>(verts_at_depth.size())) {
       verts_at_depth.resize(depths[i] + 1);
@@ -87,7 +89,7 @@ bool BCVerifier(Graph&& g, std::vector<vertex_id_t> &trial_sources, std::vector<
       }
     }
 
-    std::vector<score_t> deltas(g.max() + 1, 0);
+    std::vector<score_t> deltas(num_vertices(g)[0], 0);
     for(int depth=verts_at_depth.size()-1; depth >= 0; depth--) {
       for(vertex_id_t u : verts_at_depth[depth]) {
     for(auto edge : out_neigh[u]) {
@@ -103,7 +105,7 @@ bool BCVerifier(Graph&& g, std::vector<vertex_id_t> &trial_sources, std::vector<
   }
 
   score_t biggest_score = *std::max_element(scores.begin(), scores.end());
-  for(size_t i = 0; i < g.max() + 1; ++i) {
+  for(size_t i = 0; i < num_vertices(g)[0]; ++i) {
     scores[i] = scores[i] / biggest_score;
   }
 
@@ -135,7 +137,7 @@ int main(int argc, char* argv[]) {
   std::vector     ids = parse_ids(args["--version"].asStringList());
   std::vector threads = parse_n_threads(args["THREADS"].asStringList());
 
-  auto aos_a = load_graph<directed>(file);
+  auto aos_a = load_graph<nw::graph::directedness::directed>(file);
 
   if (verbose) {
     aos_a.stream_stats();
@@ -155,6 +157,8 @@ int main(int argc, char* argv[]) {
   // std::vector<vertex_id_t> sources_vector = { 3355244, 33831269, 45124744, 16137877 };
 
   // Our sources could come from a file,
+  using vertex_id_t = typename graph_traits<decltype(graph)>::vertex_id_t;
+
   std::vector<vertex_id_t> sources;
   if (args["--sources"]) {
     sources = load_sources_from_file(graph, args["--sources"].asString(), trials * iterations);
