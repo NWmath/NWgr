@@ -46,7 +46,8 @@ target_sources(nw_graph
   algorithms/spMatspMat.hpp
   algorithms/dag_based_mis.hpp
   algorithms/delta_stepping.hpp
-  algorithms/spanning_tree.hpp
+  algorithms/kruskal.hpp
+  algorithms/prim.hpp
   algorithms/boykov_kolmogorov.hpp
   algorithms/max_flow.hpp
   util/provenance.hpp

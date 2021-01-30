@@ -2,6 +2,10 @@ TODO List
 
 "pre_release" branch
 
+- what is the reference type for outer_iterator in compressed?
+
+=> AL
+
 - define definitively adjacency vs incidence and provide in adjacency.hpp and incidence.hpp (and appropriate concepts and adapters) 
 => AL
 

@@ -22,10 +22,9 @@
 namespace nw {
 namespace graph {
 
-//****************************************************************************
-/// @todo cannot yet specify const graph.
+
 template <typename DistanceT, typename GraphT>
-std::vector<DistanceT> dijkstra(GraphT& graph, vertex_id_t source) {
+std::vector<DistanceT> dijkstra(const GraphT& graph, vertex_id_t source) {
   size_t N(graph.end() - graph.begin());
   assert(source < N);
 
@@ -47,10 +46,9 @@ std::vector<DistanceT> dijkstra(GraphT& graph, vertex_id_t source) {
   return distance;
 }
 
-//****************************************************************************
-/// @todo cannot yet specify const graph.
+
 template <typename DistanceT, typename GraphT>
-auto dijkstra_v0(GraphT& graph, vertex_id_t source) {
+auto dijkstra_v0(const GraphT& graph, vertex_id_t source) {
   size_t N(graph.end() - graph.begin());
   assert(source < N);
 
