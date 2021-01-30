@@ -21,7 +21,7 @@ using namespace nw::util;
 
 TEST_CASE("back edge", "[back edge]") {
 
-  edge_list<directed, double, double> E_list(6);
+  edge_list<nw::graph::directedness::directed, double, double> E_list(6);
   E_list.push_back(0, 1, 1.0, 0);
   E_list.push_back(1, 2, 2.0, 0);
   E_list.push_back(2, 3, 3.0, 0);

@@ -11,17 +11,20 @@
 #ifndef NW_GRAPH_REVERSE_HPP
 #define NW_GRAPH_REVERSE_HPP
 
+
 #include "util/util.hpp"
+#include <concepts>
 #include <vector>
 
 namespace nw {
 namespace graph {
 
-template <typename path_edge>
+template <typename path_edge, std::integral vertex_id>
 class reverse_path {
 public:
-  reverse_path(std::vector<path_edge>& path, vertex_id_type start, vertex_id_type stop) : path_(path), start_(start), stop_(stop) {}
+  reverse_path(std::vector<path_edge>& path, vertex_id start, vertex_id stop) : path_(path), start_(start), stop_(stop) {}
 
+  using vertex_id_type = vertex_id;
   std::vector<path_edge> path_;
   double                 update_;
   vertex_id_type         start_, stop_;

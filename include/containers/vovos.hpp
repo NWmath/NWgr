@@ -10,6 +10,7 @@
 
 #include <algorithm>
 #include <cassert>
+#include <concepts>
 #include <forward_list>
 #include <tuple>
 #include <vector>
@@ -25,7 +26,6 @@ class vector_of_vector_of_structs : public std::vector<std::forward_list<std::tu
 
 public:
   using base           = std::vector<std::forward_list<std::tuple<Attributes...>>>;
-  using vertex_id_type = base::difference_type;
 
   vector_of_vector_of_structs(size_t N) : base(N) {}
 
@@ -40,40 +40,57 @@ public:
   auto size() const { return base::size(); }
 };
 
-template <typename... Attributes>
-class vov : public vector_of_vector_of_structs<size_t, Attributes...> {
-  using base = vector_of_vector_of_structs<size_t, Attributes...>;
+
+template <int idx, std::unsigned_integral vertex_id, typename... Attributes>
+class index_vov : public unipartite_graph_base, public vector_of_vector_of_structs<vertex_id, Attributes...> {
+using base = vector_of_vector_of_structs<vertex_id, Attributes...>;
 
 public:
+  using vertex_id_type    = vertex_id;
+  using graph_base        = unipartite_graph_base;
+  using num_vertices_type = std::array<typename base::size_type, 1>;
+  using num_edges_type    = base::size_type;
+
   using attributes_t   = std::tuple<Attributes...>;
-  using vertex_id_type = base::difference_type;
 
   static constexpr std::size_t getNAttr() { return sizeof...(Attributes); }
 
-  vov(size_t N) : vector_of_vector_of_structs<size_t, Attributes...>(N) {}
+  index_vov(size_t N) : base(N) {}
 
-  template <directedness dir>
-  vov(/* const */ edge_list<dir, Attributes...>& A) : vector_of_vector_of_structs<size_t, Attributes...>(0) {
-    dynamic_cast<base&>(*this).open_for_push_back();
+  index_vov(edge_list<directedness::directed, Attributes...>& A) : base(num_vertices(A)[0]) { num_edges_ = fill(A, *this); }
 
-    if constexpr (dir == directedness::directed) {
-      (*this).resize(A.max()[0] + 1);
-      std::for_each(A.begin(), A.end(), [&](auto&& elt) {
-        std::apply([&](vertex_id_type i, vertex_id_type j, Attributes... attrs) { (*this).push_back(i, j, attrs...); }, elt);
-      });
-    } else if constexpr (dir == directedness::undirected) {
-      (*this).resize(2 * (A.max()[0] + 1));
-      std::for_each(A.begin(), A.end(), [&](auto&& elt) {
-        std::apply([&](vertex_id_type i, vertex_id_type j, Attributes... attrs) { (*this).push_back(i, j, attrs...); }, elt);
-        std::apply([&](vertex_id_type i, vertex_id_type j, Attributes... attrs) { (*this).push_back(j, i, attrs...); }, elt);
-      });
-    } else {
-      ;
-    }
+  index_vov(edge_list<directedness::undirected, Attributes...>& A) : base(num_vertices(A)[0]) { num_edges_ = fill(A, *this); }
 
-    dynamic_cast<base&>(*this).close_for_push_back();
-  }
+private:
+  num_edges_type num_edges_;
+
 };
+
+
+template <int idx, typename... Attributes>
+using vov = index_vov<idx, default_vertex_id_type, Attributes...>;
+
+template <typename... Attributes>
+struct graph_traits<std::vector<std::vector<std::tuple<Attributes...>>>> {
+  using tuple_type = std::tuple<Attributes...>;
+  using inner_type = std::vector<tuple_type>;
+  using outer_type = std::vector<inner_type>;
+
+  using outer_iterator = typename outer_type::iterator;
+  using inner_iterator = typename inner_type::iterator;
+
+  using vertex_id_type   = std::tuple_element<0, tuple_type>::type;
+  using vertex_size_type = typename outer_type::size_type;
+  using num_vertices_type   = std::array<vertex_size_type, 1>;
+};
+
+template <typename... Attributes>
+struct graph_traits<std::vector<std::tuple<Attributes...>>> {
+  using tuple_type = std::tuple<Attributes...>;
+
+  using vertex_id_type = std::tuple_element<0, tuple_type>::type;
+};
+
 
 }    // namespace graph
 }    // namespace nw

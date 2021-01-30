@@ -7,15 +7,18 @@
 //
 // Author: Kevin Deweese
 //
+#ifndef NW_GRAPH_BACK_EDGE_RANGE_HPP
+#define NW_GRAPH_BACK_EDGE_RANGE_HPP
+
+
 #include "util/util.hpp"
+#include "graph_traits.hpp"
 
 #include <functional>
 #include <iostream>
 #include <map>
 #include <tuple>
 
-#ifndef NW_GRAPH_BACK_EDGE_RANGE_HPP
-#define NW_GRAPH_BACK_EDGE_RANGE_HPP
 
 namespace nw {
 namespace graph {
@@ -65,6 +68,8 @@ public:
   back_edge_range(const back_edge_range&&) = delete;
 
   using edge = typename std::iterator_traits<typename Graph::inner_iterator>::value_type;
+  using vertex_id_type = vertex_id_t<Graph>;
+
 
   class back_edge_range_iterator {
   private:

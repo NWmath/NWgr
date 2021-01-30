@@ -20,14 +20,14 @@ using namespace nw::util;
 static constexpr size_t N = 1024;
 
 TEST_CASE("push_back_zz", "[edge_list]") {
-  edge_list<directed, double> A(N);
+  edge_list<nw::graph::directedness::directed, double> A(N);
   for (auto&& j : A) {
     ;
   }
 }
 
 TEST_CASE("push_back", "[edge_list]") {
-  edge_list<directed, double> A(N);
+  edge_list<nw::graph::directedness::directed, double> A(N);
   A.push_back(8, 6, 7);
   A.push_back(5, 3, 0);
 
@@ -43,7 +43,7 @@ TEST_CASE("push_back", "[edge_list]") {
 }
 
 TEST_CASE("push_back - three tuples", "[edge_list]") {
-  edge_list<directed, double, float> A(N);
+  edge_list<nw::graph::directedness::directed, double, float> A(N);
   A.push_back(8, 6, 7, 5);
   A.push_back(3, 0, 9, 9);
 
@@ -61,7 +61,7 @@ TEST_CASE("push_back - three tuples", "[edge_list]") {
 }
 
 TEST_CASE("sort", "[edge_list]") {
-  edge_list<directed, double, size_t> A(N);
+  edge_list<nw::graph::directedness::directed, double, size_t> A(N);
 
   A.push_back(1, 2, 3.14, 159);
   A.push_back(3, 3, 3.141, 59);

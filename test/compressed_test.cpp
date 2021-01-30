@@ -17,6 +17,9 @@
 using namespace nw::graph;
 using namespace nw::util;
 
+template <typename... Attributes>
+using compressed = indexed_struct_of_arrays<unsigned, unsigned, Attributes...>;
+
 const size_t N = 5;
 
 TEST_CASE("indexed_struct_of_arrays construct", "[construct]") {

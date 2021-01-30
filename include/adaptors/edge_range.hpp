@@ -11,6 +11,7 @@
 #ifndef NW_GRAPH_EDGE_RANGE_HPP
 #define NW_GRAPH_EDGE_RANGE_HPP
 
+#include "graph_traits.hpp"
 #include "util/print_types.hpp"
 #include "util/util.hpp"
 #include <tbb/tbb_stddef.h>
@@ -24,7 +25,7 @@ class edge_range {
   static_assert(((Is < Graph::getNAttr()) && ...), "Attribute index out of range");
   static constexpr size_t cutoff_ = 16;
 
-  using vertex_id_type = typename Graph::vertex_id_type;
+  using vertex_id_type = vertex_id_t<Graph>;
 
   typename Graph::iterator outer_base_;
   typename Graph::iterator outer_begin_;

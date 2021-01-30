@@ -24,8 +24,8 @@ using namespace nw::util;
 
 //****************************************************************************
 template <typename EdgeListT>
-bool validate(EdgeListT& aos, size_t seed, std::vector<vertex_id_type> const& distance,
-              std::vector<vertex_id_type> const& predecessor) {
+bool validate(EdgeListT& aos, size_t seed, std::vector<vertex_id_t<EdgeListT>> const& distance,
+              std::vector<vertex_id_t<EdgeListT>> const& predecessor) {
   bool pass(true);
 
   /// @note Should we parse the orginal mmio file instead?
@@ -60,7 +60,8 @@ bool validate(EdgeListT& aos, size_t seed, std::vector<vertex_id_type> const& di
 }
 
 template <typename Graph>
-auto bfs_m1(Graph& graph, vertex_id_type root) {
+auto bfs_m1(Graph& graph, vertex_id_t<Graph> root) {
+  using vertex_id_type = vertex_id_t<Graph>;
 
   std::deque<vertex_id_type>  q1, q2;
   std::vector<vertex_id_type> level(graph.size(), std::numeric_limits<vertex_id_type>::max());
