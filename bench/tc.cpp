@@ -7,7 +7,7 @@
 //****************************************************************************
 //
 // This file is part of BGL17 (aka NWGraph aka GraphPack aka the Graph Standard Library)
-// (c) Pacific Northwest National Laboratory 2020
+// (c) Pacific Northwest National Laboratory 2020-2021
 //
 // Licensed under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License
 // https://creativecommons.org/licenses/by-nc-sa/4.0/
@@ -48,6 +48,7 @@ static constexpr const char USAGE[] =
 using namespace nw::graph::bench;
 using namespace nw::graph;
 using namespace nw::util;
+
 
 template <class Vector>
 static void tc_relabel(edge_list<nw::graph::directedness::undirected>& A, Vector&& degrees, const std::string& direction) {
@@ -96,9 +97,9 @@ static bool worth_relabeling(const EdgeList& el, const Vector& degree) {
   return sample_average / 1.3 > sample_median;
 }
 
-// Taken from GAP and adapted to BGL.
+// Taken from GAP and adapted to NW Graph
 template <class Graph>
-static std::size_t TCVerifier(const Graph& graph) {
+static std::size_t TCVerifier(Graph& graph) {
   using vertex_id_type = typename Graph::vertex_id_type;
 
   life_timer                              _(__func__);
@@ -227,10 +228,12 @@ int main(int argc, char* argv[]) {
                 return triangle_count_edgesplit(cel_a, thread);
               case 16:
                 return triangle_count_edgesplit_upper(cel_a, thread);
+#ifdef ONE_DIMENSIONAL_EDGE
               case 17:
                 return triangle_count_edgerange(cel_a);
               case 18:
                 return triangle_count_edgerange_cyclic(cel_a, thread);
+#endif
               default:
                 std::cerr << "Unknown version id " << id << "\n";
                 return 0ul;
@@ -261,3 +264,4 @@ int main(int argc, char* argv[]) {
 
   return 0;
 }
+

@@ -27,9 +27,13 @@ class edge_range {
 
   using vertex_id_type = vertex_id_t<Graph>;
 
-  typename Graph::iterator outer_base_;
-  typename Graph::iterator outer_begin_;
-  typename Graph::iterator outer_end_;
+  using graph_iterator = typename std::conditional<std::is_const_v<Graph>, typename Graph::const_iterator, typename Graph::iterator>::type;
+  using graph_inner_iterator = typename std::conditional<std::is_const_v<Graph>, typename Graph::const_inner_iterator, typename Graph::inner_iterator>::type;
+
+
+  graph_iterator outer_base_;
+  graph_iterator outer_begin_;
+  graph_iterator outer_end_;
 
 public:
   edge_range(Graph& g, std::size_t offset, std::index_sequence<Is...> = {})
@@ -48,7 +52,8 @@ public:
   edge_range(const edge_range&) = default;
   edge_range& operator=(const edge_range&) = default;
 
-  class iterator {
+  template <bool is_const>
+  class my_iterator {
   public:
     using iterator_category = std::forward_iterator_tag;
     using value_type        = std::tuple<vertex_id_type, vertex_id_type, std::tuple_element_t<Is, typename Graph::attributes_t>...>;
@@ -57,13 +62,13 @@ public:
     using pointer           = value_type*;
 
   private:
-    typename Graph::iterator       base_;            //!<
-    typename Graph::iterator       first_;           //!<
-    typename Graph::iterator       last_;            //!<
-    typename Graph::inner_iterator u_begin_ = {};    //!<
-    typename Graph::inner_iterator u_end_   = {};    //!<
+    graph_iterator       base_;            //!<
+    graph_iterator       first_;           //!<
+    graph_iterator       last_;            //!<
+    graph_inner_iterator u_begin_ = {};    //!<
+    graph_inner_iterator u_end_   = {};    //!<
 
-    iterator(const iterator& b, unsigned long step) : iterator(b) { first_ += step; }
+    my_iterator(const my_iterator& b, unsigned long step) : my_iterator(b) { first_ += step; }
 
     void check() {
       while (u_begin_ == u_end_ && first_ != last_) {    // make sure we start at a valid dereference point
@@ -75,7 +80,7 @@ public:
     }
 
   public:
-    iterator(typename Graph::iterator base, typename Graph::iterator begin, typename Graph::iterator end)
+    my_iterator(typename Graph::iterator base, typename Graph::iterator begin, typename Graph::iterator end)
         : base_(base), first_(begin), last_(end) {
       if (first_ != last_) {
         u_begin_ = (*first_).begin();
@@ -86,10 +91,22 @@ public:
 
     // Copy and assignment defaults are fine (we need these because there's not
     // a default constructor.
-    iterator(const iterator&) = default;
-    iterator& operator=(const iterator& b) = default;
+    my_iterator(const my_iterator&) = default;
+    my_iterator& operator=(const my_iterator& b) = default;
 
-    iterator& operator++() {
+    template<bool was_const>
+    my_iterator(const my_iterator<was_const>& rhs) requires (is_const != was_const  && is_const)
+      : base_(rhs.base_), first_(rhs.first_), last_(rhs.last_) { }
+
+    template<bool was_const>
+    my_iterator& operator=(const my_iterator<was_const>& rhs) requires (is_const != was_const  && is_const) { 
+      base_ = rhs.base_; 
+      first_ = rhs.first_;
+      last_ = rhs.last_;
+      return *this; 
+    }
+
+    my_iterator& operator++() {
       ++u_begin_;
       check();
       return *this;
@@ -99,19 +116,23 @@ public:
 
     auto operator*() const { return std::tuple(first_ - base_, std::get<0>(*u_begin_), std::ref(std::get<Is + 1>(*u_begin_))...); }
 
-    bool operator==(const iterator& b) const { return first_ == b.first_; }
-    bool operator!=(const iterator& b) const { return first_ != b.first_; }
-    bool operator<(const iterator& b) const { return first_ < b.first_; }
+    bool operator==(const my_iterator& b) const { return first_ == b.first_; }
+    bool operator!=(const my_iterator& b) const { return first_ != b.first_; }
+    bool operator<(const my_iterator& b) const { return first_ < b.first_; }
 
-    difference_type operator-(const iterator& b) const { return first_ - b.first_; }
-    iterator        operator+(difference_type step) const { return iterator(*this, step); }
+    difference_type operator-(const my_iterator& b) const { return first_ - b.first_; }
+    my_iterator        operator+(difference_type step) const { return my_iterator(*this, step); }
   };
 
+  using iterator = my_iterator<false>;
+  using const_iterator = my_iterator<true>;
+
+
   iterator begin() { return {outer_base_, outer_begin_, outer_end_}; }
-  iterator begin() const { return {outer_base_, outer_begin_, outer_end_}; }
+  const_iterator begin() const { return {outer_base_, outer_begin_, outer_end_}; }
 
   iterator end() { return {outer_base_, outer_end_, outer_end_}; }
-  iterator end() const { return {outer_base_, outer_end_, outer_end_}; }
+  const_iterator end() const { return {outer_base_, outer_end_, outer_end_}; }
 
   std::size_t size() const { return outer_end_ - outer_begin_; }
   bool        empty() const { return begin() == end(); }
