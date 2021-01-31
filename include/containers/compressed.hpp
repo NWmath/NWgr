@@ -76,124 +76,15 @@ public:    // fixme
   indexed_struct_of_arrays(size_t N) : N_(N), indices_(N + 1) {}
   indexed_struct_of_arrays(size_t N, size_t M) : N_(N), indices_(N + 1), to_be_indexed_(M) {}
 
-  template <std::size_t... Attrs>
-  class flat_iterator {
-  public:
-    using difference_type   = std::ptrdiff_t;
-    using value_type        = nw::graph::select_t<std::tuple<index_t, Attributes...>, 0, 1, (Attrs + 2)...>;
-    using reference         = nw::graph::select_t<std::tuple<index_t, const Attributes&...>, 0, 1, (Attrs + 2)...>;
-    using pointer           = nw::graph::select_t<std::tuple<index_t, const Attributes*...>, 0, 1, (Attrs + 2)...>;
-    using iterator_category = std::random_access_iterator_tag;
-
-  private:
-    indexed_struct_of_arrays& graph_;    // the underlying indexed data
-    index_t                   u_;        // the current source vertex id
-    difference_type           j_;        // the current edge
-
-  public:
-    flat_iterator(indexed_struct_of_arrays& graph, index_t i, difference_type j) : graph_(graph), u_(i), j_(j) {}
-
-    reference operator*() {
-      return {u_, std::get<0>(graph_.to_be_indexed_)[j_], std::get<Attrs + 1>(graph_.to_be_indexed_)[j_]...};
-    }
-
-    reference operator[](difference_type n) {
-      return {graph_.source(j_ + n), std::get<0>(graph_.to_be_indexed_)[j_ + n], std::get<Attrs + 1>(graph_.to_be_indexed_)[j_]...};
-    }
-
-    flat_iterator& operator++() {
-      for (++j_; j_ >= graph_.indices_[u_ + 1] && u_ < graph_.indices_.size() - 1; ++u_)
-        ;
-      return *this;
-    }
-
-    flat_iterator& operator--() {
-      for (--j_; j_ < graph_.indices_[u_] && u_ > 0; --u_)
-        ;
-      return *this;
-    }
-
-    flat_iterator operator++(int) {
-      flat_iterator i = *this;
-      ++(*this);
-      return i;
-    }
-
-    flat_iterator operator--(int) {
-      flat_iterator i = *this;
-      ++(*this);
-      return i;
-    }
-
-    flat_iterator& operator+=(difference_type n) {
-      j_ += n;
-      u_ = graph_.source(j_);
-      return *this;
-    }
-
-    flat_iterator& operator-=(difference_type n) {
-      j_ -= n;
-      u_ = graph_.source(j_);
-      return *this;
-    }
-
-    flat_iterator operator+(difference_type n) const { return {graph_, graph_.source(j_ + n), j_ + n}; }
-
-    flat_iterator operator-(difference_type n) const { return {graph_, graph_.source(j_ - n), j_ - n}; }
-
-    difference_type operator-(const flat_iterator& b) const { return j_ - b.j_; }
-
-    bool operator==(const flat_iterator& b) const { return j_ == b.j_; }
-
-    bool operator!=(const flat_iterator& b) const { return j_ != b.j_; }
-
-    bool operator<(const flat_iterator& b) const { return j_ < b.j_; }
-
-    bool operator>(const flat_iterator& b) const { return j_ > b.j_; }
-
-    bool operator<=(const flat_iterator& b) const { return j_ <= b.j_; }
-
-    bool operator>=(const flat_iterator& b) const { return j_ >= b.j_; }
-  };
-
-  /// Provide a tbb split-able range interface to the edge iterators.
-  template <std::size_t... Attrs>
-  class flat_range {
-    flat_iterator<Attrs...> begin_;
-    flat_iterator<Attrs...> end_;
-    std::ptrdiff_t          cutoff_;
-
-  public:
-    flat_range(flat_iterator<Attrs...> begin, flat_iterator<Attrs...> end, std::ptrdiff_t cutoff)
-        : begin_(begin), end_(end), cutoff_(cutoff) {}
-
-    flat_range(flat_range& rhs, tbb::split) : begin_(rhs.begin_), end_(rhs.begin_ += rhs.size() / 2), cutoff_(rhs.cutoff_) {}
-
-    flat_iterator<Attrs...> begin() { return begin_; }
-    flat_iterator<Attrs...> end() { return end_; }
-
-    std::ptrdiff_t size() const { return end_ - begin_; }
-    bool           empty() const { return begin_ == end_; }
-    bool           is_divisible() const { return size() >= cutoff_; }
-  };
-
-  /// Get a tbb split-able edge range with the passed cutoff.
-  template <std::size_t... Attrs>
-  flat_range<Attrs...> edges(std::ptrdiff_t cutoff = std::numeric_limits<std::ptrdiff_t>::max()) {
-    flat_iterator<Attrs...> begin = {*this, 0, 0};
-    flat_iterator<Attrs...> end   = {*this, index_t(indices_.size() - 1), index_t(to_be_indexed_.size())};
-    return {begin, end, cutoff};
-  }
-
   template <bool is_const = false>
   class outer_iterator {
     friend class outer_iterator<!is_const>;
 
     typename std::conditional<is_const, typename std::vector<index_t>::const_iterator,
- 			                typename std::vector<index_t>::iterator>::type indices_;
+                              typename std::vector<index_t>::iterator>::type            indices_;
     typename std::conditional<is_const, typename struct_of_arrays<Attributes...>::const_iterator,
-			                typename struct_of_arrays<Attributes...>::iterator>::type indexed_;
-    index_t                                            i_;
+                              typename struct_of_arrays<Attributes...>::iterator>::type indexed_;
+    index_t                                                                             i_;
 
   public:
     using difference_type   = std::make_signed_t<index_t>;
@@ -204,29 +95,28 @@ public:    // fixme
 
     outer_iterator() = default;
 
-    outer_iterator(std::vector<index_t>::const_iterator indices, typename struct_of_arrays<Attributes...>::const_iterator indexed, index_t i)
-      requires(is_const) 
-      : indices_(indices), indexed_(indexed), i_(i) {}
+    outer_iterator(std::vector<index_t>::const_iterator indices, typename struct_of_arrays<Attributes...>::const_iterator indexed,
+                   index_t i) requires(is_const)
+        : indices_(indices), indexed_(indexed), i_(i) {}
 
-    outer_iterator(std::vector<index_t>::iterator indices, typename struct_of_arrays<Attributes...>::iterator indexed, index_t i)
-      requires(!is_const) 
-      : indices_(indices), indexed_(indexed), i_(i)  {}
-
+    outer_iterator(std::vector<index_t>::iterator indices, typename struct_of_arrays<Attributes...>::iterator indexed,
+                   index_t i) requires(!is_const)
+        : indices_(indices), indexed_(indexed), i_(i) {}
 
     // See https://quuxplusone.github.io/blog/2018/12/01/const-iterator-antipatterns/
-    outer_iterator(const outer_iterator&) = default;  
-    outer_iterator& operator=(const outer_iterator&) = default;  
+    outer_iterator(const outer_iterator&) = default;
+    outer_iterator& operator=(const outer_iterator&) = default;
 
     template <bool was_const>
-    outer_iterator(const outer_iterator<was_const>& rhs) requires(was_const != is_const && is_const)
-      : indices_(rhs.indices_), indexed_(rhs.indexed_), i_(rhs.i_) {}
-    
-    template<bool was_const>
-    outer_iterator& operator=(const outer_iterator<was_const>& rhs) requires(was_const != is_const && is_const) { 
+    outer_iterator(const outer_iterator<was_const>& rhs) requires(was_const != is_const)
+        : indices_(rhs.indices_), indexed_(rhs.indexed_), i_(rhs.i_) {}
+
+    template <bool was_const>
+    outer_iterator& operator=(const outer_iterator<was_const>& rhs) requires(was_const != is_const) {
       indices_ = rhs.indices_;
-      indexed_= rhs.indexed_; 
-      i_ = rhs.i_;
-      return *this; 
+      indexed_ = rhs.indexed_;
+      i_       = rhs.i_;
+      return *this;
     }
 
     outer_iterator& operator++() {
@@ -312,7 +202,6 @@ public:    // fixme
   const_sub_view operator[](index_t i) const { return begin()[i]; }
 
   index_t size() const { return indices_.size() - 1; }
-  // index_t max() const { return indices_.size() - 2; }
 
   index_t source(difference_type edge) const {
     auto i = std::upper_bound(indices_.begin(), indices_.end(), edge);
@@ -518,10 +407,10 @@ public:    // fixme
   }
 };
 
-//template <typename index_t, typename... Attributes>
-//auto operator+(typename std::iter_difference_t<typename indexed_struct_of_arrays<index_t, Attributes...>::outer_iterator> n, const typename indexed_struct_of_arrays<index_t, Attributes...>::outer_iterator i) {
-//  return i + n;
-//}
+template <typename index_t, typename... Attributes>
+auto operator+(typename std::iter_difference_t<typename indexed_struct_of_arrays<index_t, Attributes...>::outer_iterator> n, const typename indexed_struct_of_arrays<index_t, Attributes...>::outer_iterator i) {
+  return i + n;
+}
 
 template <std::signed_integral T, typename I>
 I operator+(T n, const I i) {
