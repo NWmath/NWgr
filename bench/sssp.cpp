@@ -46,14 +46,16 @@ using distance_t = std::uint64_t;
 
 /// Basic sequential sssp (Dijkstra) copied from GAP benchmark suite.
 template <class Graph>
-static auto dijkstra(const Graph& graph, vertex_id_type source) {
+static auto dijkstra(const Graph& graph, vertex_id_t<Graph> source) {
+  using vertex_id_type = vertex_id_t<Graph>;
+
   // Workqueue
   using WN = std::tuple<vertex_id_type, distance_t>;
   auto mq  = nw::graph::make_priority_queue<WN>([](const WN& a, const WN& b) { return std::get<1>(a) > std::get<1>(b); });
   mq.emplace(source, 0);
 
   // Distances
-  std::vector<distance_t> dist(graph.max() + 1, std::numeric_limits<distance_t>::max());
+  std::vector<distance_t> dist(num_vertices(graph)[0], std::numeric_limits<distance_t>::max());
   dist[source] = 0;
 
   auto g = graph.begin();
@@ -75,7 +77,8 @@ static auto dijkstra(const Graph& graph, vertex_id_type source) {
 }
 
 template <class Graph, class Dist>
-static bool SSSPVerifier(const Graph& graph, vertex_id_type source, Dist&& dist, bool verbose) {
+static bool SSSPVerifier(const Graph& graph, vertex_id_t<Graph> source, Dist&& dist, bool verbose) {
+
   auto oracle = dijkstra(graph, source);
   if (std::equal(dist.begin(), dist.end(), oracle.begin())) {
     return true;
@@ -101,31 +104,31 @@ static bool SSSPVerifier(const Graph& graph, vertex_id_type source, Dist&& dist,
 /// and verifies the result, based on the verifier. Returns the time it took to
 /// run, as well as a boolean indicating if we passed verification.
 template <class Graph, class Verifier>
-static std::tuple<double, bool> sssp(int id, const Graph& graph, vertex_id_type source, distance_t delta, Verifier&& verifier) {
+static std::tuple<double, bool> sssp(int id, const Graph& graph, vertex_id_t<Graph> source, distance_t delta, Verifier&& verifier) {
   switch (id) {
     case 0:
-      return time_op_verify([&] { return delta_stepping_v0<distance_t>(std::forward<Graph>(graph), source, delta); },
+      return time_op_verify([&] { return delta_stepping_v0<distance_t>(graph, source, delta); },
                             std::forward<Verifier>(verifier));
     case 1:
-      return time_op_verify([&] { return delta_stepping_m1<distance_t>(std::forward<Graph>(graph), source, delta); },
+      return time_op_verify([&] { return delta_stepping_m1<distance_t>(graph, source, delta); },
                             std::forward<Verifier>(verifier));
     case 6:
-      return time_op_verify([&] { return delta_stepping_v6<distance_t>(std::forward<Graph>(graph), source, delta); },
+      return time_op_verify([&] { return delta_stepping_v6<distance_t>(graph, source, delta); },
                             std::forward<Verifier>(verifier));
     case 8:
-      return time_op_verify([&] { return delta_stepping_v8<distance_t>(std::forward<Graph>(graph), source, delta); },
+      return time_op_verify([&] { return delta_stepping_v8<distance_t>(graph, source, delta); },
                             std::forward<Verifier>(verifier));
     case 9:
-      return time_op_verify([&] { return delta_stepping_v9<distance_t>(std::forward<Graph>(graph), source, delta); },
+      return time_op_verify([&] { return delta_stepping_v9<distance_t>(graph, source, delta); },
                             std::forward<Verifier>(verifier));
     case 10:
-      return time_op_verify([&] { return delta_stepping_v10<distance_t>(std::forward<Graph>(graph), source, delta); },
+      return time_op_verify([&] { return delta_stepping_v10<distance_t>(graph, source, delta); },
                             std::forward<Verifier>(verifier));
     case 11:
-      return time_op_verify([&] { return delta_stepping_v11<distance_t>(std::forward<Graph>(graph), source, delta); },
+      return time_op_verify([&] { return delta_stepping_v11<distance_t>(graph, source, delta); },
                             std::forward<Verifier>(verifier));
     case 12:
-      return time_op_verify([&] { return delta_stepping_v12<distance_t>(std::forward<Graph>(graph), source, delta); },
+      return time_op_verify([&] { return delta_stepping_v12<distance_t>(graph, source, delta); },
                             std::forward<Verifier>(verifier));
     default:
       std::cerr << "Invalid SSSP version " << id << "\n";
@@ -149,7 +152,7 @@ int main(int argc, char* argv[]) {
   std::vector ids     = parse_ids(args["--version"].asStringList());
   std::vector threads = parse_n_threads(args["THREADS"].asStringList());
 
-  auto aos_a = load_graph<directed, int>(file);
+  auto aos_a = load_graph<nw::graph::directedness::directed, int>(file);
 
   if (verbose) {
     aos_a.stream_stats();
@@ -165,7 +168,8 @@ int main(int argc, char* argv[]) {
     graph.stream_indices();
   }
 
-  std::vector<vertex_id_type> sources;
+  
+  std::vector<vertex_id_t<decltype(graph)>> sources;
   if (args["--sources"]) {
     sources = load_sources_from_file(graph, args["--sources"].asString());
     assert(size_t(trials * iterations) <= sources.size());

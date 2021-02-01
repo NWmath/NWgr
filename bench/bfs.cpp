@@ -45,10 +45,10 @@ template <typename Graph, typename GraphT>
 bool BFSVerifier(const Graph& g, GraphT& g_t, vertex_id_t<Graph> source, std::vector<vertex_id_t<Graph>>& parent) {
   using vertex_id_type = vertex_id_t<Graph>;
 
-  std::vector<vertex_id_type> depth(g.max() + 1, std::numeric_limits<vertex_id_type>::max());
+  std::vector<vertex_id_type> depth(num_vertices(g)[0], std::numeric_limits<vertex_id_type>::max());
   depth[source] = 0;
   std::vector<vertex_id_type> to_visit;
-  to_visit.reserve(g.max() + 1);
+  to_visit.reserve(num_vertices(g)[0]);
   to_visit.push_back(source);
   auto out_neigh = g.begin();
   auto in_neigh  = g_t.begin();
@@ -62,7 +62,7 @@ bool BFSVerifier(const Graph& g, GraphT& g_t, vertex_id_t<Graph> source, std::ve
       }
     }
   }
-  for (vertex_id_type u = 0; u < g.max() + 1; ++u) {
+  for (vertex_id_type u = 0; u < num_vertices(g)[0]; ++u) {
     if ((depth[u] != std::numeric_limits<vertex_id_type>::max()) && (parent[u] != std::numeric_limits<vertex_id_type>::max())) {
       if (u == source) {
         if (!((parent[u] == u) && (depth[u] == 0))) {
