@@ -24,9 +24,7 @@ constexpr auto load(T&& t) {
   if constexpr (is_atomic_v<std::decay_t<T>>) {
     return std::forward<T>(t).load(order);
   } else {
-    std::decay_t<T> tt;
-    __atomic_load(std::addressof(std::forward<T>(t)), std::addressof(tt), order);
-    return tt;
+    return load<order>(std::atomic_ref(t));
   }
 }
 
@@ -46,7 +44,7 @@ constexpr void store(T&& t, U&& u) {
   if constexpr (is_atomic_v<std::decay_t<T>>) {
     std::forward<T>(t).store(std::forward<U>(u), order);
   } else {
-    __atomic_store(std::addressof(std::forward<T>(t)), std::addressof(u), order);
+    store<order>(std::atomic_ref(t), std::forward<U>(u));
   }
 }
 
@@ -75,8 +73,7 @@ constexpr bool cas(T&& t, U&& u, V&& v) {
   if constexpr (is_atomic_v<std::decay_t<T>>) {
     return std::forward<T>(t).compare_exchange_strong(std::forward<U>(u), std::forward<V>(v), success, failure);
   } else {
-    return __atomic_compare_exchange(std::addressof(std::forward<T>(t)), std::addressof(std::forward<U>(u)),
-                                     std::addressof(std::forward<V>(v)), false, success, failure);
+    return cas<success, failure>(std::atomic_ref(t), std::forward<U>(u), std::forward<V>(v));
   }
 }
 
@@ -147,7 +144,7 @@ constexpr auto fetch_add(T&& t, U&& u) {
         ;
       return e;
     } else {
-      return __atomic_fetch_add(std::addressof(std::forward<T>(t)), std::forward<U>(u), order);
+      return fetch_add<order>(std::atomic_ref(t), std::forward<U>(u));
     }
   }
 }
@@ -158,7 +155,7 @@ constexpr auto fetch_or(T&& t, U&& u) {
   if constexpr (is_atomic_v<std::decay_t<T>>) {
     return std::forward<T>(t).fetch_or(std::forward<U>(u), order);
   } else {
-    return __atomic_fetch_or(std::addressof(std::forward<T>(t)), std::forward<T>(u), order);
+    return fetch_or<order>(std::atomic_ref(t), std::forward<U>(u));
   }
 }
 }    // namespace graph

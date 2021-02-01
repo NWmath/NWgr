@@ -15,6 +15,9 @@ template <class>
 inline constexpr bool is_atomic_v = false;
 template <class T>
 inline constexpr bool is_atomic_v<std::atomic<T>> = true;
+template <class T>
+inline constexpr bool is_atomic_v<std::atomic_ref<T>> = true;
+
 
 /// Simple type trait that we can use to remove `std::atomic` from types.
 template <class T>
@@ -23,6 +26,10 @@ struct remove_atomic {
 };
 template <class T>
 struct remove_atomic<std::atomic<T>> {
+  using type = T;
+};
+template <class T>
+struct remove_atomic<std::atomic_ref<T>> {
   using type = T;
 };
 template <class T>
