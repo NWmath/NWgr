@@ -146,7 +146,7 @@ size_t triangle_count_v2(const GraphT& A) {
 
 //****************************************************************************
 template <class Graph>
-size_t triangle_count_v3(Graph& A) {
+size_t triangle_count_v3(const Graph& A) {
   size_t triangles = 0;
   for (auto&& [v, u] : edge_range(A)) {
     triangles += nw::graph::intersection_size(A[v], A[u]);
@@ -325,7 +325,7 @@ template <class Graph, class OuterExecutionPolicy = std::execution::parallel_uns
 ///
 /// @returns            The number of triangles in the graph.
 template <class Graph, class SetExecutionPolicy = std::execution::sequenced_policy>
-[[gnu::noinline]] std::size_t triangle_count_v12(Graph& graph, int stride, SetExecutionPolicy&& set = {}) {
+[[gnu::noinline]] std::size_t triangle_count_v12(const Graph& graph, int stride, SetExecutionPolicy&& set = {}) {
   return nw::graph::parallel_for(
       nw::graph::cyclic(graph, stride),
       [&](auto&& i) {
