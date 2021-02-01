@@ -78,15 +78,22 @@ public:    // fixme
 
   template <bool is_const = false>
   class outer_iterator {
+   public:
+    using   const_index_iterator_t = typename std::vector<index_t>::const_iterator;
+    using         index_iterator_t = typename std::vector<index_t>::iterator;
+    using const_indexed_iterator_t = typename struct_of_arrays<Attributes...>::const_iterator;
+    using       indexed_iterator_t = typename struct_of_arrays<Attributes...>::iterator;
+
+   private:
     friend class outer_iterator<!is_const>;
+    using   index_it_t = std::conditional_t<is_const, const_index_iterator_t, index_iterator_t>;
+    using indexed_it_t = std::conditional_t<is_const, const_indexed_iterator_t, indexed_iterator_t>;
 
-    typename std::conditional<is_const, typename std::vector<index_t>::const_iterator,
-                              typename std::vector<index_t>::iterator>::type            indices_;
-    typename std::conditional<is_const, typename struct_of_arrays<Attributes...>::const_iterator,
-                              typename struct_of_arrays<Attributes...>::iterator>::type indexed_;
-    index_t                                                                             i_;
+    index_it_t   indices_;
+    indexed_it_t indexed_;
+    index_t            i_;
 
-  public:
+   public:
     using difference_type   = std::make_signed_t<index_t>;
     using value_type        = typename std::conditional<is_const, const_sub_view, sub_view>::type;
     using reference         = value_type;
@@ -95,24 +102,31 @@ public:    // fixme
 
     outer_iterator() = default;
 
-    outer_iterator(std::vector<index_t>::const_iterator indices, typename struct_of_arrays<Attributes...>::const_iterator indexed,
-                   index_t i) requires(is_const)
-        : indices_(indices), indexed_(indexed), i_(i) {}
+    outer_iterator(index_iterator_t indices, indexed_iterator_t indexed, index_t i) requires(is_const == true)
+      : indices_(indices)
+      , indexed_(indexed)
+      , i_(i)
+    {
+    }
 
-    outer_iterator(std::vector<index_t>::iterator indices, typename struct_of_arrays<Attributes...>::iterator indexed,
-                   index_t i) requires(!is_const)
-        : indices_(indices), indexed_(indexed), i_(i) {}
+    outer_iterator(const_index_iterator_t indices, const_indexed_iterator_t indexed, index_t i)
+        : indices_(indices)
+        , indexed_(indexed)
+        , i_(i)
+    {
+    }
 
-    // See https://quuxplusone.github.io/blog/2018/12/01/const-iterator-antipatterns/
     outer_iterator(const outer_iterator&) = default;
+    outer_iterator(const outer_iterator<false>& rhs) requires(is_const == true)
+        : indices_(rhs.indices_)
+        , indexed_(rhs.indexed_)
+        , i_(rhs.i_)
+    {
+    }
+
     outer_iterator& operator=(const outer_iterator&) = default;
-
-    template <bool was_const>
-    outer_iterator(const outer_iterator<was_const>& rhs) requires(was_const != is_const)
-        : indices_(rhs.indices_), indexed_(rhs.indexed_), i_(rhs.i_) {}
-
-    template <bool was_const>
-    outer_iterator& operator=(const outer_iterator<was_const>& rhs) requires(was_const != is_const) {
+    outer_iterator& operator=(const outer_iterator<false>& rhs) requires(is_const)
+    {
       indices_ = rhs.indices_;
       indexed_ = rhs.indexed_;
       i_       = rhs.i_;
