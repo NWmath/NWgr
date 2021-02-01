@@ -16,7 +16,7 @@ class splittable_range_adapter {
 
 public:
   using iterator   = Iterator;
-  using value_type = iterator::value_type;
+  using value_type = typename iterator::value_type;
 
   template <class Range>
   explicit splittable_range_adapter(Range&& range) : splittable_range_adapter(range.begin(), range.end()) {}

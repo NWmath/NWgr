@@ -95,14 +95,14 @@ void push_back_fill(edge_list_t& el, adjacency_t& cs) {
 
 template <class edge_list_t, class adjacency_t, class ExecutionPolicy = default_execution_policy, size_t... Is>
 void fill_helper(edge_list_t& el, adjacency_t& cs, std::index_sequence<Is...> is, ExecutionPolicy&& policy = {}) {
-  (..., (std::copy(policy, std::get<Is + 2>(dynamic_cast<edge_list_t::base&>(el)).begin(),
-                   std::get<Is + 2>(dynamic_cast<edge_list_t::base&>(el)).end(), std::get<Is + 1>(cs.to_be_indexed_).begin())));
+  (..., (std::copy(policy, std::get<Is + 2>(dynamic_cast<typename edge_list_t::base&>(el)).begin(),
+                   std::get<Is + 2>(dynamic_cast<typename edge_list_t::base&>(el)).end(), std::get<Is + 1>(cs.to_be_indexed_).begin())));
 }
 
 template <class edge_list_t, class adjacency_t, class T, class ExecutionPolicy = default_execution_policy, size_t... Is>
 void fill_helper(edge_list_t& el, adjacency_t& cs, std::index_sequence<Is...> is, T& Tmp, ExecutionPolicy&& policy = {}) {
-  (..., (std::copy(policy, std::get<Is + 2>(dynamic_cast<edge_list_t::base&>(Tmp)).begin(),
-                   std::get<Is + 2>(dynamic_cast<edge_list_t::base&>(Tmp)).end(), std::get<Is + 1>(cs.to_be_indexed_).begin())));
+  (..., (std::copy(policy, std::get<Is + 2>(dynamic_cast<typename edge_list_t::base&>(Tmp)).begin(),
+                   std::get<Is + 2>(dynamic_cast<typename edge_list_t::base&>(Tmp)).end(), std::get<Is + 1>(cs.to_be_indexed_).begin())));
 }
 
 template <int idx, class edge_list_t, class adjacency_t, class ExecutionPolicy = default_execution_policy>
@@ -124,8 +124,8 @@ void fill(edge_list_t& el, adjacency_t& cs, ExecutionPolicy&& policy = {}) {
 
     // Copy kdx (the other index)
     const int kdx = (idx + 1) % 2;
-    std::copy(policy, std::get<kdx>(dynamic_cast<edge_list_t::base&>(el)).begin(),
-              std::get<kdx>(dynamic_cast<edge_list_t::base&>(el)).end(), std::get<0>(cs.to_be_indexed_).begin());
+    std::copy(policy, std::get<kdx>(dynamic_cast<typename edge_list_t::base&>(el)).begin(),
+              std::get<kdx>(dynamic_cast<typename edge_list_t::base&>(el)).end(), std::get<0>(cs.to_be_indexed_).begin());
 
     // Copy properties
     if constexpr (std::tuple_size<typename edge_list_t::attributes_t>::value > 0) {
@@ -158,8 +158,8 @@ void fill(edge_list_t& el, adjacency_t& cs, ExecutionPolicy&& policy = {}) {
     cs.to_be_indexed_.resize(Tmp.size());
 
     const int kdx = (idx + 1) % 2;
-    std::copy(policy, std::get<kdx>(dynamic_cast<edge_list_t::base&>(Tmp)).begin(),
-              std::get<kdx>(dynamic_cast<edge_list_t::base&>(Tmp)).end(), std::get<0>(cs.to_be_indexed_).begin());
+    std::copy(policy, std::get<kdx>(dynamic_cast<typename edge_list_t::base&>(Tmp)).begin(),
+              std::get<kdx>(dynamic_cast<typename edge_list_t::base&>(Tmp)).end(), std::get<0>(cs.to_be_indexed_).begin());
 
     if constexpr (std::tuple_size<typename edge_list_t::attributes_t>::value > 0) {
       fill_helper(el, cs, std::make_integer_sequence<size_t, std::tuple_size<typename edge_list_t::attributes_t>::value>(), Tmp);
