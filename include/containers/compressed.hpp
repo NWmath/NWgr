@@ -110,7 +110,7 @@ public:    // fixme
     {
     }
 
-    outer_iterator(const_index_iterator_t indices, const_indexed_iterator_t indexed, index_t i)
+    outer_iterator(index_it_t indices, indexed_it_t indexed, index_t i)
         : indices_(indices)
         , indexed_(indexed)
         , i_(i)
@@ -155,7 +155,6 @@ public:    // fixme
       outer_iterator tmp(*this);
       --i_;
       return tmp;
-      ;
     }
 
     outer_iterator& operator+=(difference_type n) {
@@ -168,7 +167,10 @@ public:    // fixme
       return *this;
     }
 
-    outer_iterator operator+(difference_type n) const { return {indices_, indexed_, i_ + n}; }
+    outer_iterator operator+(difference_type n) const {
+      return { indices_, indexed_, i_ + n };
+    }
+
     outer_iterator operator-(difference_type n) const { return {indices_, indexed_, i_ - n}; }
 
     difference_type operator-(const outer_iterator& b) const { return i_ - b.i_; }
