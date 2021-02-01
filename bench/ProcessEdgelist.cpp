@@ -50,12 +50,12 @@ int main(int argc, char* const argv[]) {
 
   if (args["-d"]) {
     std::cout << "Processing directed graph\n";
-    eval<directed, int>(input, args["-d"].asString());
+    eval<nw::graph::directedness::directed, int>(input, args["-d"].asString());
   }
 
   if (args["-u"]) {
     std::cout << "Processing directed graph\n";
-    eval<undirected, int>(input, args["-u"].asString());
+    eval<nw::graph::directedness::undirected, int>(input, args["-u"].asString());
   }
 
   return 0;
