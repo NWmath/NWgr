@@ -26,7 +26,7 @@ namespace graph {
 
 //****************************************************************************
 //template<typename Graph, typename Workitem = vertex_id_type, typename Queue = tbb::concurrent_queue<Workitem> >
-template <typename Graph, typename Workitem = Graph::vertex_id_type, typename Queue = std::queue<Workitem>>
+template <typename Graph, typename Workitem = typename Graph::vertex_id_type, typename Queue = std::queue<Workitem>>
 class worklist_range {
 public:
   worklist_range(Graph& graph) : the_graph_(graph) {}
@@ -77,7 +77,7 @@ private:
 };
 
 //****************************************************************************
-template <typename Graph, typename Workitem = Graph::vertex_id_type, typename Queue = tbb::concurrent_queue<Workitem>>
+template <typename Graph, typename Workitem = typename Graph::vertex_id_type, typename Queue = tbb::concurrent_queue<Workitem>>
 class tbbworklist_range {
 public:
   tbbworklist_range(Graph& graph) : the_graph_(graph) {}
@@ -142,7 +142,7 @@ private:
 };
 
 //****************************************************************************
-template <typename Graph, typename Workitem = Graph::vertex_id_type, typename Queue = tbb::concurrent_queue<Workitem>>
+template <typename Graph, typename Workitem = typename Graph::vertex_id_type, typename Queue = tbb::concurrent_queue<Workitem>>
 class tbbworklist_range2 {
 public:
   tbbworklist_range2(Graph& graph) : the_graph_(graph), buckets_(10000) {}
