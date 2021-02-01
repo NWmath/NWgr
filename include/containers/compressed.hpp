@@ -102,7 +102,7 @@ public:    // fixme
 
     outer_iterator() = default;
 
-    outer_iterator(index_iterator_t indices, indexed_iterator_t indexed, index_t i) requires(is_const == true)
+    outer_iterator(index_iterator_t indices, indexed_iterator_t indexed, index_t i) requires(is_const)
       : indices_(indices)
       , indexed_(indexed)
       , i_(i)
