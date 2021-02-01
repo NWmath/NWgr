@@ -97,7 +97,7 @@ public:
 };
 
 template <class Range, class Cutoff>
-cyclic_range_adapter(Range range, Cutoff) -> cyclic_range_adapter<decltype(range.begin())>;
+cyclic_range_adapter(Range&& range, Cutoff) -> cyclic_range_adapter<decltype(range.begin())>;
 
 template <class Range, class Cutoff>
 constexpr decltype(auto) cyclic(Range&& range, Cutoff cutoff) {
