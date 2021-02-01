@@ -68,7 +68,11 @@ public:
     graph_inner_iterator u_begin_ = {};    //!<
     graph_inner_iterator u_end_   = {};    //!<
 
-    my_iterator(const my_iterator& b, unsigned long step) : my_iterator(b) { first_ += step; }
+    my_iterator(const my_iterator& b, unsigned long step)
+        : my_iterator(b)
+    {
+      first_ += step;
+    }
 
     void check() {
       while (u_begin_ == u_end_ && first_ != last_) {    // make sure we start at a valid dereference point
@@ -80,8 +84,11 @@ public:
     }
 
   public:
-    my_iterator(typename Graph::iterator base, typename Graph::iterator begin, typename Graph::iterator end)
-        : base_(base), first_(begin), last_(end) {
+    my_iterator(graph_iterator base, graph_iterator begin, graph_iterator end)
+        :  base_(base)
+        , first_(begin)
+        ,  last_(end)
+    {
       if (first_ != last_) {
         u_begin_ = (*first_).begin();
         u_end_   = (*first_).end();
@@ -89,21 +96,21 @@ public:
       }
     }
 
-    // Copy and assignment defaults are fine (we need these because there's not
-    // a default constructor.
     my_iterator(const my_iterator&) = default;
-    my_iterator& operator=(const my_iterator& b) = default;
+    my_iterator(const my_iterator<false>& rhs) requires(is_const)
+      :  base_(rhs.base_)
+      , first_(rhs.first_)
+      ,  last_(rhs.last_)
+    {
+    }
 
-    template<bool was_const>
-    my_iterator(const my_iterator<was_const>& rhs) requires (is_const != was_const  && is_const)
-      : base_(rhs.base_), first_(rhs.first_), last_(rhs.last_) { }
-
-    template<bool was_const>
-    my_iterator& operator=(const my_iterator<was_const>& rhs) requires (is_const != was_const  && is_const) { 
-      base_ = rhs.base_; 
+    my_iterator& operator=(const my_iterator&) = default;
+    my_iterator& operator=(const my_iterator<false>& rhs) requires(is_const)
+    {
+      base_ = rhs.base_;
       first_ = rhs.first_;
       last_ = rhs.last_;
-      return *this; 
+      return *this;
     }
 
     my_iterator& operator++() {
