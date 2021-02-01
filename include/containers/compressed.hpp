@@ -41,6 +41,7 @@
 #include <tuple>
 #include <vector>
 
+#include "util/arrow_proxy.hpp"
 #include "util/defaults.hpp"
 #include "util/demangle.hpp"
 #include "util/timer.hpp"
@@ -95,9 +96,9 @@ public:    // fixme
 
    public:
     using difference_type   = std::make_signed_t<index_t>;
-    using value_type        = typename std::conditional<is_const, const_sub_view, sub_view>::type;
+    using value_type        = std::conditional_t<is_const, const_sub_view, sub_view>;
     using reference         = value_type;
-    using pointer           = value_type*;
+    using pointer           = arrow_proxy<reference>;
     using iterator_category = std::random_access_iterator_tag;
 
     outer_iterator() = default;
@@ -182,8 +183,8 @@ public:    // fixme
     reference operator*() { return {indexed_ + indices_[i_], indexed_ + indices_[i_ + 1]}; }
     reference operator*() const { return {indexed_ + indices_[i_], indexed_ + indices_[i_ + 1]}; }
 
-    pointer       operator->() { return nullptr; }
-    const pointer operator->() const { return nullptr; }
+    pointer operator->() { return {**this}; }
+    pointer operator->() const { return {**this}; }
 
     reference operator[](index_t n) { return {indexed_ + indices_[i_ + n], indexed_ + indices_[i_ + n + 1]}; }
     reference operator[](index_t n) const { return {indexed_ + indices_[i_ + n], indexed_ + indices_[i_ + n + 1]}; }
