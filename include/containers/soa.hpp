@@ -24,6 +24,7 @@
 #include <utility>
 #include <vector>
 
+#include "util/arrow_proxy.hpp"
 #include "util/print_types.hpp"
 #include "util/util.hpp"
 
@@ -44,100 +45,80 @@ struct struct_of_arrays : std::tuple<std::vector<Attributes>...> {
   using storage_type = std::tuple<std::vector<Attributes>...>;
   using base         = std::tuple<std::vector<Attributes>...>;
 
-  template <class... RandomAccessIterators>
-  class It {
-    std::tuple<RandomAccessIterators...> start;
-    std::size_t                          cursor = 0;
+  template <bool is_const = false>
+  class soa_iterator
+  {
+    friend class soa_iterator<!is_const>;
 
-  public:
-    using value_type        = typename std::tuple<typename std::iterator_traits<RandomAccessIterators>::value_type...>;
-    using difference_type   = std::ptrdiff_t;
-    using reference         = typename std::tuple<typename std::iterator_traits<RandomAccessIterators>::reference...>;
-    using pointer           = typename std::tuple<typename std::iterator_traits<RandomAccessIterators>::pointer...>;
+    using soa_t = std::conditional_t<is_const, const struct_of_arrays, struct_of_arrays>;
+
+    std::size_t i_;
+    soa_t *soa_;
+
+   public:
+    using        value_type = std::conditional_t<is_const, std::tuple<const Attributes...>, std::tuple<Attributes...>>;
+    using   difference_type = std::ptrdiff_t;
+    using         reference = std::conditional_t<is_const, std::tuple<const Attributes&...>, std::tuple<Attributes&...>>;
+    using           pointer = arrow_proxy<reference>;
     using iterator_category = std::random_access_iterator_tag;
 
-    It()          = default;
-    It(const It&) = default;
+    soa_iterator() = default;
 
-    It& operator=(const It&) = default;
-
-    It(It&&)    = default;
-    It& operator=(It&&) = default;
-
-    It(const std::tuple<RandomAccessIterators...>& iters, std::size_t init = 0) : start(iters), cursor(init) {}
-    It(const RandomAccessIterators... iters, std::size_t init = 0) : start(iters...), cursor(init) {}
-
-    friend void swap(It a, It b) {
-      std::apply([&](auto&&... is) { (std::swap(*a.start[is], *b.start[is]), ...); },
-                 std::make_index_sequence<sizeof...(Attributes)>());
+    soa_iterator(soa_t *soa, std::size_t i = 0)
+        : i_(i)
+        , soa_(soa)
+    {
     }
 
-    It operator++(int) {
-      It x(*this);
-      ++(*this);
-      return x;
+    soa_iterator(const soa_iterator&) = default;
+    soa_iterator(const soa_iterator<false>& b) requires(is_const)
+      : i_(b.i_)
+      , soa_(b.soa_)
+    {
     }
 
-    It& operator++() {
-      ++cursor;
+    soa_iterator& operator=(const soa_iterator&) = default;
+    soa_iterator& operator=(const soa_iterator<false>& b) requires(is_const)
+    {
+      i_ = b.i_;
+      soa_ = b.soa_;
       return *this;
     }
 
-    It& operator--() {
-      --cursor;
-      return *this;
+    bool operator==(const soa_iterator&) const = default;
+    auto operator<=>(const soa_iterator&) const = default;
+
+    soa_iterator operator++(int) { return soa_iterator(i_++, soa_); }
+    soa_iterator operator--(int) { return soa_iterator(i_--, soa_); }
+
+    soa_iterator& operator++() { ++i_; return *this; }
+    soa_iterator& operator--() { --i_; return *this; }
+    soa_iterator& operator+=(std::ptrdiff_t n) { i_ += n; return *this; }
+    soa_iterator& operator-=(std::ptrdiff_t n) { i_ -= n; return *this; }
+
+    soa_iterator operator+(std::ptrdiff_t n) const { return { soa_, i_ + n }; }
+    soa_iterator operator-(std::ptrdiff_t n) const { return { soa_, i_ - n }; }
+
+    std::ptrdiff_t operator-(const soa_iterator& b) const { return i_ - b.i_; }
+
+    reference operator*() const
+    {
+      return std::apply([this]<class... Vectors>(Vectors&&... v) {
+        return reference(std::forward<Vectors>(v)[i_]...);
+      }, *soa_);
     }
 
-    It operator--(int) {
-      It x(*this);
-      --(*this);
-      return x;
+    reference operator[](std::ptrdiff_t n) const {
+      return std::apply([this,n]<class... Vectors>(Vectors&&... v) {
+          return reference(std::forward<Vectors>(v)[i_ + n]...);
+      }, *soa_);
     }
 
-    It operator+(std::size_t offset) { return {start, cursor + offset}; }
-    It operator+(std::size_t offset) const { return {start, cursor + offset}; }
-    It operator-(std::size_t offset) { return {start, cursor - offset}; }
-    It operator-(std::size_t offset) const { return {start, cursor - offset}; }
-
-    It& operator+=(std::size_t offset) {
-      cursor += offset;
-      return *this;
-    }
-
-    It& operator-=(std::size_t offset) {
-      cursor -= offset;
-      return *this;
-    }
-
-    difference_type operator-(const It& b) const { return cursor - b.cursor; }
-
-    bool operator==(const It& b) const { return cursor == b.cursor; }
-
-    bool operator!=(const It& b) const { return cursor != b.cursor; }
-
-    reference operator*() {
-      return std::apply([&](auto&&... r) { return std::forward_as_tuple(*(std::forward<decltype(r)>(r) + cursor)...); }, start);
-    }
-
-    reference operator*() const {
-      return std::apply([&](auto&&... r) { return std::forward_as_tuple(*(std::forward<decltype(r)>(r) + cursor)...); }, start);
-    }
-
-    reference operator[](std::size_t i) {
-      return std::apply([&](auto&&... r) { return std::forward_as_tuple(std::forward<decltype(r)>(r)[i + cursor]...); }, start);
-    }
-
-    reference operator[](std::size_t i) const {
-      return std::apply([&](auto&&... r) { return std::forward_as_tuple(std::forward<decltype(r)>(r)[i + cursor]...); }, start);
-    }
-
-    bool operator<(const It& x) const { return cursor < x.cursor; }
-    bool operator>(const It& x) const { return cursor > x.cursor; }
-    bool operator>=(const It& x) const { return cursor >= x.cursor; }
-    bool operator<=(const It& x) const { return cursor <= x.cursor; }
+    pointer operator->() const { return { **this }; }
+    pointer operator->()       { return { **this }; }
   };
 
-  using iterator = It<typename std::vector<Attributes>::iterator...>;
+  using iterator = soa_iterator<false>;
 
   using value_type      = typename iterator::value_type;
   using reference       = typename iterator::reference;
@@ -145,7 +126,7 @@ struct struct_of_arrays : std::tuple<std::vector<Attributes>...> {
   using difference_type = typename iterator::difference_type;
   using pointer         = typename iterator::pointer;
 
-  using const_iterator  = It<typename std::vector<Attributes>::const_iterator...>;
+  using const_iterator  = soa_iterator<true>;
   using const_reference = typename const_iterator::reference;
   using const_pointer   = typename const_iterator::pointer;
 
@@ -159,13 +140,8 @@ struct struct_of_arrays : std::tuple<std::vector<Attributes>...> {
     for_each(l.begin(), l.end(), [&](value_type x) { push_back(x); });
   }
 
-  iterator begin() {
-    return std::apply([](auto&... vs) { return iterator(vs.begin()...); }, *this);
-  }
-
-  const_iterator begin() const {
-    return std::apply([](auto&... vs) { return const_iterator(vs.begin()...); }, *this);
-  }
+  iterator       begin()       { return { this }; }
+  const_iterator begin() const { return { this }; }
 
   iterator end() { return begin() + size(); }
 
