@@ -1484,7 +1484,9 @@ auto bc2_v2(const Graph& graph, const std::vector<typename Graph::vertex_id_type
     while (--phase > 0) {
       std::for_each(policy, S[phase].begin(), S[phase].end(), [&](auto&& w) {
         std::for_each(P[w].begin(), P[w].end(), [&](auto&& v) {
-          delta[v] = delta[v] + static_cast<score_t>(path_counts[v]) / static_cast<score_t>(path_counts[w]) * (1 + delta[w]);
+
+
+          delta[v] += static_cast<score_t>(path_counts[v]) / static_cast<score_t>(path_counts[w]) * (1 + static_cast<score_t>(delta[w]));
         });
 
         bc[w] += delta[w];
