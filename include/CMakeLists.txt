@@ -21,7 +21,10 @@ include(FetchContent)
 
 FetchContent_Declare(nwut
   GIT_REPOSITORY     git@github.com:NWmath/NWut.git
-  GIT_TAG            master)
+  GIT_TAG            master
+  # URL ${CMAKE_SOURCE_DIR}/contrib/nwut-something.zip
+  # URL_MD5 HASH_FOR_ZIP^
+  )
 FetchContent_MakeAvailable(nwut)
 
 add_library(nw_graph INTERFACE)
