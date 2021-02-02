@@ -29,6 +29,15 @@ FetchContent_MakeAvailable(nwut)
 
 add_library(nw_graph INTERFACE)
 
+# Require C++20
+target_compile_features(nw_graph INTERFACE cxx_std_20)
+
+# Add an alias for external uses
+add_library(nw::graph ALIAS nw_graph)
+
+# make sure we have the right include path
+target_include_directories(nw_graph INTERFACE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>)
+
 # Extend this as needed.
 target_sources(nw_graph
   INTERFACE
@@ -79,8 +88,6 @@ target_sources(nw_graph
   detail/numeric.hpp
   adaptors/edge_range.hpp)
 
-target_include_directories(nw_graph INTERFACE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>)
-
 # -----------------------------------------------------------------------------
 # Check to see if our C++ compiler supports Parallelism TS. If it does than
 # nothing weird will happen. If it doesn't we define the `NEED_` macros and that
@@ -128,7 +135,15 @@ endif ()
 # -----------------------------------------------------------------------------
 
 set(THREADS_PREFER_PTHREAD_FLAG ON)
+
 find_package(TBB REQUIRED)
+
+# find_package(TBB)
+# if (not TBB_Found)
+#   FetchContent(
+#     TBB_STUFF)
+# endif()
+
 find_package(Threads REQUIRED)
 target_compile_definitions(nw_graph INTERFACE EXECUTION_POLICY)
 target_link_libraries(nw_graph INTERFACE TBB::tbb Threads::Threads nw::util)
@@ -146,4 +161,3 @@ if (APPLE)
   endif()
 endif()
 
-target_compile_features(nw_graph INTERFACE cxx_std_20)
