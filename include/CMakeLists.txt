@@ -16,6 +16,14 @@
 #   a STATIC (or DYNAMIC) library, and add those sources here. Change other
 #   instances of INTERFACE to PUBLIC.
 # @note
+
+include(FetchContent)
+
+FetchContent_Declare(nwut
+  GIT_REPOSITORY     git@github.com:NWmath/NWut.git
+  GIT_TAG            master)
+FetchContent_MakeAvailable(nwut)
+
 add_library(nw_graph INTERFACE)
 
 # Extend this as needed.
@@ -68,8 +76,7 @@ target_sources(nw_graph
   detail/numeric.hpp
   adaptors/edge_range.hpp)
 
-target_include_directories(nw_graph INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})
-target_include_directories(nw_graph INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/../../NWut/include)
+target_include_directories(nw_graph INTERFACE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>)
 
 # -----------------------------------------------------------------------------
 # Check to see if our C++ compiler supports Parallelism TS. If it does than
@@ -121,7 +128,7 @@ set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(TBB REQUIRED)
 find_package(Threads REQUIRED)
 target_compile_definitions(nw_graph INTERFACE EXECUTION_POLICY)
-target_link_libraries(nw_graph INTERFACE TBB::tbb Threads::Threads)
+target_link_libraries(nw_graph INTERFACE TBB::tbb Threads::Threads nw::util)
 if (NW_GRAPH_USE_TBBMALLOC)
   target_link_libraries(nw_graph INTERFACE TBB::tbbmalloc) 
 endif ()
@@ -135,3 +142,5 @@ if (APPLE)
     target_compile_definitions(nw_graph INTERFACE _Atomic=volatile)
   endif()
 endif()
+
+target_compile_features(nw_graph INTERFACE cxx_std_20)
