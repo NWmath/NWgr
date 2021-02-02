@@ -87,3 +87,6 @@ option(NW_GRAPH_BUILD_HPEC "Determines whether to build HPEC artifact." OFF)
 if (NW_GRAPH_BUILD_HPEC)
    add_subdirectory(${CMAKE_SOURCE_DIR}/../Artifacts/hpec hpec)
 endif()
+
+# https://cmake.org/cmake/help/latest/command/install.html
+install(TARGETS nw_graph)
