@@ -14,7 +14,7 @@
 # cmake .. -DCMAKE_CXX_COMPILER=icpx
 #
 ##########################################################################
-cmake_minimum_required(VERSION 3.14 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.18.2 FATAL_ERROR)
 
 set(NW_GRAPH_VERSION 0.3)
 
@@ -27,7 +27,6 @@ project(
 # Extend the module path so we can find our custom modules
 # -----------------------------------------------------------------------------
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
-list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/../NWut/cmake)
 
 # -----------------------------------------------------------------------------
 # Build types and default flags
@@ -48,13 +47,6 @@ endif()
 include(CompilerFlags)
 
 # -----------------------------------------------------------------------------
-# Select a C++ standard
-# -----------------------------------------------------------------------------
-set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
-
-# -----------------------------------------------------------------------------
 # Options
 # -----------------------------------------------------------------------------
 set(NW_GRAPH_SANITIZE "" CACHE STRING "-fsanitize compiler options (e.g., =address)")
@@ -72,7 +64,6 @@ option(NW_GRAPH_USE_TBBMALLOC "Link to tbbmalloc" OFF)
 add_subdirectory(include)
 
 include(Docopt)
-include(RangeV3)
   
 if (NW_GRAPH_BUILD_TESTS)
   include(CTest)
