@@ -1683,7 +1683,8 @@ auto bc2_v4(Graph&& graph, const std::vector<vertex_id_t>& sources, int threads,
     while (!done) {
       std::for_each(outer_policy, q1.begin(), q1.end(), [&](auto&& q) {
         std::for_each(inner_policy, q.begin(), q.end(), [&](auto&& u) {
-          for (auto&& [v] : g[u]) {
+          for (auto x = g[u].begin(); x != g[u].end(); ++x) {
+            auto&& v = std::get<0>(*x);
             auto&& neg_one = std::numeric_limits<vertex_id_t>::max();
             if (nw::graph::acquire(levels[v]) == neg_one && nw::graph::cas(levels[v], neg_one, lvl)) {
               q2[u & bin_mask].push_back(v);
