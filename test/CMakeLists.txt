@@ -63,6 +63,7 @@ nw_graph_add_exe(proxysort_eg)
 nw_graph_add_exe(random_eg)
 nw_graph_add_exe(spmm_eg)
 nw_graph_add_exe(stream_eg)
+nw_graph_add_exe(tag_invoke_eg)
 nw_graph_add_exe(tbb_eg)
 nw_graph_add_exe(volos_eg)
 

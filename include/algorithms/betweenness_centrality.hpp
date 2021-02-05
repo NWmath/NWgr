@@ -1296,7 +1296,7 @@ auto bc2_v0(const Graph& graph, const std::vector<typename Graph::vertex_id_type
   using vertex_id_type = typename Graph::vertex_id_type;
 
   auto                 g = graph.begin();
-  vertex_id_type       N = num_vertices(graph)[0];
+  vertex_id_type       N = num_vertices(graph);
   std::vector<score_t> bc(N);
 
   for (vertex_id_type root : sources) {
@@ -1362,7 +1362,7 @@ auto bc2_v1(const Graph& graph, const std::vector<typename Graph::vertex_id_type
   using vertex_id_type = typename Graph::vertex_id_type;
 
   auto                 g = graph.begin();
-  vertex_id_type       N = num_vertices(graph)[0];
+  vertex_id_type       N = num_vertices(graph);
   std::vector<score_t> bc(N);
 
   for (vertex_id_type root : sources) {
@@ -1430,7 +1430,7 @@ auto bc2_v2(const Graph& graph, const std::vector<typename Graph::vertex_id_type
   using vertex_id_type = typename Graph::vertex_id_type;
 
   auto                 g = graph.begin();
-  vertex_id_type       N = num_vertices(graph)[0];
+  vertex_id_type       N = num_vertices(graph);
   std::vector<score_t> bc(N, 0);
 
   for (vertex_id_type root : sources) {
@@ -1506,7 +1506,7 @@ auto bc2_v3(const Graph& graph, const std::vector<typename Graph::vertex_id_type
   using vertex_id_type = typename Graph::vertex_id_type;
 
   auto           g = graph.begin();
-  vertex_id_type N = num_vertices(graph)[0];
+  vertex_id_type N = num_vertices(graph);
   size_t         M = graph.to_be_indexed_.size();
 
   auto                 neighbors = (*(graph.begin())).begin();
@@ -1607,7 +1607,7 @@ auto bc2_v4(const Graph& graph, const std::vector<typename Graph::vertex_id_type
   using vertex_id_type = typename Graph::vertex_id_type;
 
   auto                 g     = graph.begin();
-  vertex_id_type       N     = num_vertices(graph)[0];
+  vertex_id_type       N     = num_vertices(graph);
   size_t               M     = graph.to_be_indexed_.size();
   auto&&               edges = std::get<0>(*(*g).begin());
   std::vector<score_t> bc(N);
@@ -1697,7 +1697,7 @@ auto bc2_v5(const Graph& graph, const std::vector<typename Graph::vertex_id_type
             OuterExecutionPolicy&& outer_policy = {}, InnerExecutionPolicy&& inner_policy = {}) {
   using vertex_id_type = typename Graph::vertex_id_type;
 
-  vertex_id_type       N     = num_vertices(graph)[0];
+  vertex_id_type       N     = num_vertices(graph);
   size_t               M     = graph.to_be_indexed_.size();
   auto&&               edges = std::get<0>(*(graph[0]).begin());
   std::vector<score_t> bc(N);
