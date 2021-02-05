@@ -10,9 +10,9 @@
 
 
 
+
 #include "detail/tag_invoke.hpp"
-#include "graph_concepts.hpp"
-#include "graph_traits.hpp"
+#include <ranges>
 
 
 namespace nw {

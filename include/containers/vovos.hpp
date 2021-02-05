@@ -1,8 +1,11 @@
 //
+// This file is part of NWGraph aka GraphPack aka the Graph Standard Library
+// (c) Pacific Northwest National Laboratory and University of Washington 2018-2021
+//
 // Licensed under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License
 // https://creativecommons.org/licenses/by-nc-sa/4.0/
 //
-// Author: Andrew Lumsdaine (c) 2018
+// Author: Andrew Lumsdaine
 //
 
 #ifndef NW_GRAPH_VOVOS_HPP
