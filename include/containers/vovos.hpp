@@ -48,7 +48,7 @@ public:
   using vertex_id_type    = vertex_id;
   using graph_base        = unipartite_graph_base;
   using num_vertices_type = std::array<typename base::size_type, 1>;
-  using num_edges_type    = base::size_type;
+  using num_edges_type    = typename base::size_type;
 
   using attributes_t = std::tuple<Attributes...>;
 
@@ -56,9 +56,9 @@ public:
 
   index_vov(size_t N) : base(N) {}
 
-  index_vov(edge_list<directedness::directed, Attributes...>& A) : base(num_vertices(A)[0]) { num_edges_ = fill(A, *this); }
+  index_vov(edge_list<directedness::directed, Attributes...>& A) : base(num_vertices(A)) { num_edges_ = fill(A, *this); }
 
-  index_vov(edge_list<directedness::undirected, Attributes...>& A) : base(num_vertices(A)[0]) { num_edges_ = fill(A, *this); }
+  index_vov(edge_list<directedness::undirected, Attributes...>& A) : base(num_vertices(A)) { num_edges_ = fill(A, *this); }
 
 private:
   num_edges_type num_edges_;
@@ -76,7 +76,7 @@ struct graph_traits<std::vector<std::vector<std::tuple<Attributes...>>>> {
   using outer_iterator = typename outer_type::iterator;
   using inner_iterator = typename inner_type::iterator;
 
-  using vertex_id_type    = std::tuple_element<0, tuple_type>::type;
+  using vertex_id_type    = typename std::tuple_element<0, tuple_type>::type;
   using vertex_size_type  = typename outer_type::size_type;
   using num_vertices_type = std::array<vertex_size_type, 1>;
 };
@@ -85,7 +85,7 @@ template <typename... Attributes>
 struct graph_traits<std::vector<std::tuple<Attributes...>>> {
   using tuple_type = std::tuple<Attributes...>;
 
-  using vertex_id_type = std::tuple_element<0, tuple_type>::type;
+  using vertex_id_type = typename std::tuple_element<0, tuple_type>::type;
 };
 
 }    // namespace graph

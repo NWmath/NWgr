@@ -41,7 +41,7 @@ public:
   using base              = vector_of_list_of_structs<vertex_id_type, Attributes...>;
   using graph_base        = unipartite_graph_base;
   using num_vertices_type = std::array<typename base::size_type, 1>;
-  using num_edges_type    = base::size_type;
+  using num_edges_type    = typename base::size_type;
 
   index_adj_list(size_t N = 0) : base(N) {}
 
@@ -77,7 +77,7 @@ struct graph_traits<std::vector<std::forward_list<std::tuple<Attributes...>>>> {
   using outer_iterator = typename outer_type::iterator;
   using inner_iterator = typename inner_type::iterator;
 
-  using vertex_id_type    = std::tuple_element<0, tuple_type>::type;
+  using vertex_id_type    = typename std::tuple_element<0, tuple_type>::type;
   using vertex_size_type  = typename outer_type::size_type;
   using num_vertices_type = std::array<vertex_size_type, 1>;
 };
@@ -86,7 +86,7 @@ template <typename... Attributes>
 struct graph_traits<std::forward_list<std::tuple<Attributes...>>> {
   using tuple_type = std::tuple<Attributes...>;
 
-  using vertex_id_type = std::tuple_element<0, tuple_type>::type;
+  using vertex_id_type = typename std::tuple_element<0, tuple_type>::type;
 };
 
 #if 0

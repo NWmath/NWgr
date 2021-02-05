@@ -44,8 +44,8 @@ auto bfs_v0(const Graph& graph, typename graph_traits<Graph>::vertex_id_type roo
   using vertex_id_type = graph_traits<Graph>::vertex_id_type;
 
   std::deque<vertex_id_type>  q1, q2;
-  std::vector<vertex_id_type> level(num_vertices(graph)[0], std::numeric_limits<vertex_id_type>::max());
-  std::vector<vertex_id_type> parents(num_vertices(graph)[0], std::numeric_limits<vertex_id_type>::max());
+  std::vector<vertex_id_type> level(num_vertices(graph), std::numeric_limits<vertex_id_type>::max());
+  std::vector<vertex_id_type> parents(num_vertices(graph), std::numeric_limits<vertex_id_type>::max());
   size_t                      lvl = 0;
 
   q1.push_back(root);
@@ -120,8 +120,8 @@ auto bfs_v6(const Graph& graph, typename graph_traits<Graph>::vertex_id_type roo
   using vertex_id_type = typename graph_traits<Graph>::vertex_id_type;
 
   tbb::concurrent_vector<vertex_id_type> q1, q2;
-  std::vector<vertex_id_type>            level(num_vertices(graph)[0], std::numeric_limits<vertex_id_type>::max());
-  std::vector<vertex_id_type>            parents(num_vertices(graph)[0], std::numeric_limits<vertex_id_type>::max());
+  std::vector<vertex_id_type>            level(num_vertices(graph), std::numeric_limits<vertex_id_type>::max());
+  std::vector<vertex_id_type>            parents(num_vertices(graph), std::numeric_limits<vertex_id_type>::max());
   size_t                                 lvl = 0;
 
   q1.push_back(root);
@@ -154,11 +154,11 @@ auto bfs_v7(const Graph& graph, typename graph_traits<Graph>::vertex_id_type roo
   using vertex_id_type = typename graph_traits<Graph>::vertex_id_type;
 
   tbb::concurrent_vector<vertex_id_type>   q1, q2;
-  std::vector<std::atomic<vertex_id_type>> level(num_vertices(graph)[0]);
+  std::vector<std::atomic<vertex_id_type>> level(num_vertices(graph));
   for (size_t i = 0; i < graph.size(); ++i) {
     level[i] = std::numeric_limits<vertex_id_type>::max();
   }
-  std::vector parents(num_vertices(graph)[0], std::numeric_limits<vertex_id_type>::max());
+  std::vector parents(num_vertices(graph), std::numeric_limits<vertex_id_type>::max());
   size_t      lvl = 0;
 
   q1.push_back(root);
@@ -202,8 +202,8 @@ auto bfs_v8(const Graph& graph, typename graph_traits<Graph>::vertex_id_type roo
   using vertex_id_type = typename graph_traits<Graph>::vertex_id_type;
 
   _concurrent_queue<vertex_id_type> q1, q2;
-  std::vector                       level(num_vertices(graph)[0], std::numeric_limits<vertex_id_type>::max());
-  std::vector                       parents(num_vertices(graph)[0], std::numeric_limits<vertex_id_type>::max());
+  std::vector                       level(num_vertices(graph), std::numeric_limits<vertex_id_type>::max());
+  std::vector                       parents(num_vertices(graph), std::numeric_limits<vertex_id_type>::max());
   size_t                            lvl = 0;
 
   q1.push(root);
@@ -239,8 +239,8 @@ auto bfs_v9(const Graph& graph, typename graph_traits<Graph>::vertex_id_type roo
   const size_t                                        num_bins = 32;
   const size_t                                        bin_mask = 0x1F;
   std::vector<tbb::concurrent_vector<vertex_id_type>> q1(num_bins), q2(num_bins);
-  std::vector                                         level(num_vertices(graph)[0], std::numeric_limits<vertex_id_type>::max());
-  std::vector                                         parents(num_vertices(graph)[0], std::numeric_limits<vertex_id_type>::max());
+  std::vector                                         level(num_vertices(graph), std::numeric_limits<vertex_id_type>::max());
+  std::vector                                         parents(num_vertices(graph), std::numeric_limits<vertex_id_type>::max());
   size_t                                              lvl = 0;
   parents[root]                                           = root;
 
@@ -291,7 +291,7 @@ template <class Graph>
   using vertex_id_type = Graph::vertex_id_type;
 
   constexpr const std::size_t                         num_bins = 32;
-  const std::size_t                                   N        = num_vertices(graph)[0];
+  const std::size_t                                   N        = num_vertices(graph);
   std::vector<tbb::concurrent_vector<vertex_id_type>> q1(num_bins);
   std::vector<tbb::concurrent_vector<vertex_id_type>> q2(num_bins);
   std::vector<vertex_id_type>                         parents(N);
@@ -338,7 +338,7 @@ template <class Graph>
   using vertex_id_type = vertex_id_t<Graph>;
 
   constexpr const std::size_t                         num_bins = 32;
-  const std::size_t                                   N        = num_vertices(graph)[0];
+  const std::size_t                                   N        = num_vertices(graph)
   std::vector<tbb::concurrent_vector<vertex_id_type>> q1(num_bins);
   std::vector<tbb::concurrent_vector<vertex_id_type>> q2(num_bins);
   std::vector<vertex_id_type>                         parents(N);
@@ -386,7 +386,7 @@ template <class Graph, class Transpose>
 [[gnu::noinline]] auto bfs_bottom_up(const Graph& g, const Transpose& gx, vertex_id_t<Graph> root) {
   using vertex_id_type = vertex_id_t<Graph>;
 
-  const std::size_t          N = num_vertices(gx)[0];
+  const std::size_t          N = num_vertices(gx);
   nw::graph::AtomicBitVector frontier(N);
   nw::graph::AtomicBitVector next(N);
 
@@ -428,7 +428,7 @@ template <typename OutGraph, typename InGraph>
   using vertex_id_type = vertex_id_t<OutGraph>;
 
   const std::size_t                                   n = nw::graph::pow2(nw::graph::ceil_log2(num_bins));
-  const std::size_t                                   N = num_vertices(out_graph)[0];
+  const std::size_t                                   N = num_vertices(out_graph);
   const std::size_t                                   M = out_graph.to_be_indexed_.size();
   std::vector<tbb::concurrent_vector<vertex_id_type>> q1(n), q2(n);
 

@@ -226,11 +226,11 @@ auto num_edges(const index_edge_list<vertex_id_type, graph_base_t, direct, Attri
   return g.num_edges();
 }
 
-template <std::unsigned_integral vertex_id_type, typename graph_base_t, directedness direct = directedness::undirected,
-          typename... Attributes>
-auto num_vertices(const index_edge_list<vertex_id_type, graph_base_t, direct, Attributes...>& g) {
-  return g.num_vertices();
-}
+  //template <std::unsigned_integral vertex_id_type, typename graph_base_t, directedness direct = directedness::undirected,
+  //          typename... Attributes>
+  //auto num_vertices(const index_edge_list<vertex_id_type, graph_base_t, direct, Attributes...>& g) {
+  //  return g.num_vertices();
+  //}
 
 }    // namespace graph
 }    // namespace nw

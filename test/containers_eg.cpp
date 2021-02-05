@@ -2,17 +2,26 @@
 
 #include <deque>
 #include <forward_list>
+#include <ranges>
 #include <tuple>
 #include <vector>
 
+#include "access.hpp"
+
 #include "graph_traits.hpp"
+
+
 
 #include "containers/adjacency.hpp"
 #include "containers/edge_list.hpp"
 #include "containers/volos.hpp"
 #include "containers/vovos.hpp"
 
+
+
 #include "graph_concepts.hpp"
+
+
 
 template <nw::graph::edge_list_graph edge_list_t>
 auto t0(edge_list_t el) {}
@@ -32,13 +41,15 @@ auto t4(const adjacency_t& el) {}
 template <nw::graph::adjacency_graph adjacency_t>
 auto t5(adjacency_t&& el) {}
 
+
+
 template <nw::graph::adjacency_graph Graph>
 auto bfs_vv(const Graph& graph, typename nw::graph::graph_traits<Graph>::vertex_id_type root) {
   using vertex_id_type = typename nw::graph::graph_traits<Graph>::vertex_id_type;
 
   std::deque<vertex_id_type>  q1, q2;
-  std::vector<vertex_id_type> level(nw::graph::num_vertices(graph)[0], std::numeric_limits<vertex_id_type>::max());
-  std::vector<vertex_id_type> parents(nw::graph::num_vertices(graph)[0], std::numeric_limits<vertex_id_type>::max());
+  std::vector<vertex_id_type> level(nw::graph::num_vertices(graph), std::numeric_limits<vertex_id_type>::max());
+  std::vector<vertex_id_type> parents(nw::graph::num_vertices(graph), std::numeric_limits<vertex_id_type>::max());
   size_t                      lvl = 0;
 
   q1.push_back(root);
@@ -85,19 +96,19 @@ void adjacency_concept_test(T a) {
   t5(std::move(a));
 }
 
-template <std::ranges::random_access_range outer, std::ranges::forward_range inner, typename... Attributes>
-struct graph_traits<outer<inner<std::tuple<Attributes...>>>> {
-  using tuple_type = std::tuple<Attributes...>;
-  using inner_type = inner<std::tuple<Attributes...>>;
-  using outer_type = outer<inner<std::tuple<Attributes...>>>;
+// template <std::ranges::random_access_range outer, std::ranges::forward_range inner, typename... Attributes>
+// struct nw::graph::graph_traits<outer<inner<std::tuple<Attributes...>>>> {
+//   using tuple_type = std::tuple<Attributes...>;
+//   using inner_type = inner<std::tuple<Attributes...>>;
+//   using outer_type = outer<inner<std::tuple<Attributes...>>>;
 
-  using outer_iterator = typename outer_type::iterator;
-  using inner_iterator = typename inner_type::iterator;
+//   using outer_iterator = typename outer_type::iterator;
+//   using inner_iterator = typename inner_type::iterator;
 
-  using vertex_id_type    = std::tuple_element<0, tuple_type>::type;
-  using vertex_size_type  = typename outer_type::size_type;
-  using num_vertices_type = std::array<vertex_size_type, 1>;
-};
+//   using vertex_id_type    = std::tuple_element<0, tuple_type>::type;
+//   using vertex_size_type  = typename outer_type::size_type;
+//   using num_vertices_type = std::array<vertex_size_type, 1>;
+// };
 
 int main() {
 #if 0
@@ -135,6 +146,8 @@ int main() {
 #endif
 
   std::vector<std::forward_list<std::tuple<int>>> ckt = {{1, 5}, {2, 3}, {0}, {}, {}, {2, 4, 3}};
+
+  nw::graph::num_vertices(ckt);
 
   bfs_vv(ckt, 0);
 

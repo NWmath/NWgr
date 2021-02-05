@@ -47,7 +47,7 @@ public:
 
 template <class distance_t, class Graph, class Id>
 auto delta_stepping_m1(const Graph& graph, Id source, distance_t) {
-  std::vector<distance_t> tdist(num_vertices(graph)[0], std::numeric_limits<distance_t>::max());
+  std::vector<distance_t> tdist(num_vertices(graph), std::numeric_limits<distance_t>::max());
   size_t                  top_bin = 0;
 
   auto tdist_comp = [&](Id a, Id b) { return tdist[a] > tdist[b]; };
@@ -85,7 +85,7 @@ auto delta_stepping_m1(const Graph& graph, Id source, distance_t) {
 // Inspired by gapbs implementation
 template <class distance_t, class Graph, class Id, class T>
 auto delta_stepping_v0(const Graph& graph, Id source, T delta) {
-  std::vector<distance_t>      tdist(num_vertices(graph)[0], std::numeric_limits<distance_t>::max());
+  std::vector<distance_t>      tdist(num_vertices(graph), std::numeric_limits<distance_t>::max());
   std::vector<std::vector<Id>> bins(1);
   std::size_t                  top_bin = 0;
 
@@ -135,7 +135,7 @@ auto delta_stepping_v6(const Graph& graph, Id source, T delta) {
   tbb::concurrent_vector<tbb::concurrent_vector<Id>> bins(1);
   std::size_t                                        top_bin = 0;
 
-  std::vector<distance_t> tdist(num_vertices(graph)[0]);
+  std::vector<distance_t> tdist(num_vertices(graph));
   tbb::parallel_for_each(tdist, [&](auto&& d) { d = std::numeric_limits<distance_t>::max(); });
 
   bins[top_bin].push_back(source);
@@ -177,7 +177,7 @@ auto delta_stepping_v6(const Graph& graph, Id source, T delta) {
 // Inspired by gapbs implementation
 template <class distance_t, class Graph, class Id, class T>
 auto delta_stepping_v8(const Graph& graph, Id source, T delta) {
-  Id                                                 N = num_vertices(graph)[0];
+  Id                                                 N = num_vertices(graph);
   std::vector<std::atomic<distance_t>>               tdist(N);
   tbb::concurrent_vector<tbb::concurrent_vector<Id>> bins(1);
   std::size_t                                        top_bin = 0;
@@ -241,7 +241,7 @@ auto delta_stepping_v9(const Graph& graph, Id source, T delta) {
   tbb::concurrent_vector<tbb::concurrent_vector<Id>> bins(size);
   std::size_t                                        top_bin = 0;
 
-  std::vector<std::atomic<distance_t>> tdist(num_vertices(graph)[0]);
+  std::vector<std::atomic<distance_t>> tdist(num_vertices(graph));
   tbb::parallel_for_each(tdist, [](auto&& d) { d = std::numeric_limits<distance_t>::max(); });
 
   bins[top_bin].push_back(source);
@@ -297,7 +297,7 @@ auto delta_stepping_v10(const Graph& graph, Id source, T delta) {
   tbb::concurrent_vector<tbb::concurrent_vector<Id>> bins(size);
   std::size_t                                        top_bin = 0;
 
-  std::vector<std::atomic<distance_t>> tdist(num_vertices(graph)[0]);
+  std::vector<std::atomic<distance_t>> tdist(num_vertices(graph));
   tbb::parallel_for_each(tdist, [](auto&& d) { d = std::numeric_limits<distance_t>::max(); });
 
   bins[top_bin].push_back(source);
@@ -356,7 +356,7 @@ auto delta_stepping_v11(const Graph& graph, Id source, T delta) {
   tbb::concurrent_vector<tbb::concurrent_vector<Id>> bins(size);
   std::size_t                                        top_bin = 0;
 
-  std::vector<std::atomic<distance_t>> tdist(num_vertices(graph)[0]);
+  std::vector<std::atomic<distance_t>> tdist(num_vertices(graph));
   tbb::parallel_for_each(tdist, [](auto&& d) { d = std::numeric_limits<distance_t>::max(); });
 
   bins[top_bin].push_back(source);
@@ -417,7 +417,7 @@ auto delta_stepping_v12(const Graph& graph, Id source, T delta) {
   tbb::concurrent_vector<tbb::concurrent_vector<Id>> bins(size);
   std::size_t                                        top_bin = 0;
 
-  std::vector<std::atomic<distance_t>> tdist(num_vertices(graph)[0]);
+  std::vector<std::atomic<distance_t>> tdist(num_vertices(graph));
   tbb::parallel_for_each(tdist, [](auto&& d) { d = std::numeric_limits<distance_t>::max(); });
 
   bins[top_bin].push_back(source);
