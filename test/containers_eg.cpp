@@ -44,6 +44,7 @@ auto t5(adjacency_t&& el) {}
 
 
 template <nw::graph::adjacency_graph Graph>
+// template <typename Graph>
 auto bfs_vv(const Graph& graph, typename nw::graph::graph_traits<Graph>::vertex_id_type root) {
   using vertex_id_type = typename nw::graph::graph_traits<Graph>::vertex_id_type;
 
@@ -87,6 +88,13 @@ void adjacency_container_test(T a) {
 }
 
 template <typename T>
+auto tag_invoke(const nw::graph::num_vertices_tag, const std::vector<T>& b) {
+  return b.size();
+}
+
+
+
+template <typename T>
 void adjacency_concept_test(T a) {
 
   static_assert(nw::graph::adjacency_graph<T>);
@@ -110,8 +118,14 @@ void adjacency_concept_test(T a) {
 //   using num_vertices_type = std::array<vertex_size_type, 1>;
 // };
 
+
+
+
+
+
+
 int main() {
-#if 0
+#if 1
 
   //  nw::graph::edge_list a { {0, 0}, {0, 4} };  // compiler dumps core
 

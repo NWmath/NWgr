@@ -9,11 +9,13 @@
 //
 
 
-
+#ifndef NW_GRAPH_ACCESS_HPP
+#define NW_GRAPH_ACCESS_HPP
 
 #include "detail/tag_invoke.hpp"
 #include <ranges>
 
+#include "graph_base.hpp"
 
 namespace nw {
   namespace graph {
@@ -29,8 +31,9 @@ namespace nw {
   };									\
   static inline constexpr str##_tag str{}
     
-DECL_TAG_INVOKE(num_vertices);
 
+DECL_TAG_INVOKE(num_vertices);
+DECL_TAG_INVOKE(num_edges);
 
 
 template <std::ranges::random_access_range T>
@@ -38,8 +41,8 @@ auto tag_invoke(const num_vertices_tag, const T& b) {
   return b.size();
 }
 
-
   }
 }
 
 
+#endif // NW_GRAPH_ACCESS_HPP
