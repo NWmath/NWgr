@@ -338,7 +338,7 @@ template <class Graph>
   using vertex_id_type = vertex_id_t<Graph>;
 
   constexpr const std::size_t                         num_bins = 32;
-  const std::size_t                                   N        = num_vertices(graph)
+  const std::size_t                                   N        = num_vertices(graph);
   std::vector<tbb::concurrent_vector<vertex_id_type>> q1(num_bins);
   std::vector<tbb::concurrent_vector<vertex_id_type>> q2(num_bins);
   std::vector<vertex_id_type>                         parents(N);

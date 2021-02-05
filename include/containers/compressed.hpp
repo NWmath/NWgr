@@ -46,6 +46,9 @@
 #include "util/demangle.hpp"
 #include "util/timer.hpp"
 
+#include "access.hpp"
+
+
 namespace nw {
 namespace graph {
 
@@ -434,7 +437,8 @@ I operator+(T n, const I i) {
   return i + n;
 }
 
-// 'std::iter_difference_t<nw::graph::indexed_struct_of_arrays<unsigned int, unsigned int>::outer_iterator>' {aka 'const int'} and 'const nw::graph::indexed_struct_of_arrays<unsigned int, unsigned int>::outer_iterator')
+
+
 
 }    // namespace graph
 }    // namespace nw

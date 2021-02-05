@@ -111,7 +111,7 @@ auto build_random_sources(const Graph& graph, size_t n, long seed) {
   auto sources = std::vector<Id>(n);
   auto degrees = build_degrees(graph);
   auto gen     = std::mt19937(seed);
-  auto dis     = std::uniform_int_distribution<Id>(0, num_vertices(graph)[0]);
+  auto dis     = std::uniform_int_distribution<Id>(0, num_vertices(graph));
 
   for (auto& id : sources) {
     for (id = dis(gen); degrees[id] == 0; id = dis(gen)) {

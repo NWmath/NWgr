@@ -30,6 +30,9 @@ static constexpr const char USAGE[] =
       -V, --verbose           run in verbose mode
 )";
 
+#include "containers/adjacency.hpp"
+#include "containers/edge_list.hpp"
+
 #include "Log.hpp"
 #include "algorithms/betweenness_centrality.hpp"
 #include "common.hpp"
@@ -55,14 +58,14 @@ bool BCVerifier(const Graph& g, std::vector<typename graph_traits<Graph>::vertex
                 std::vector<score_t>& scores_to_test) {
   using vertex_id_type = typename graph_traits<Graph>::vertex_id_type;
 
-  std::vector<score_t> scores(num_vertices(g)[0], 0);
+  std::vector<score_t> scores(num_vertices(g), 0);
   for (auto& source : trial_sources) {
-    std::vector<int> depths(num_vertices(g)[0], -1);
+    std::vector<int> depths(num_vertices(g), -1);
     depths[source] = 0;
-    std::vector<accum_t> path_counts(num_vertices(g)[0] + 1, 0);
+    std::vector<accum_t> path_counts(num_vertices(g) + 1, 0);
     path_counts[source] = 1;
     std::vector<vertex_id_type> to_visit;
-    to_visit.reserve(num_vertices(g)[0]);
+    to_visit.reserve(num_vertices(g));
     to_visit.push_back(source);
     auto out_neigh = g.begin();
     for (auto it = to_visit.begin(); it != to_visit.end(); it++) {
@@ -80,7 +83,7 @@ bool BCVerifier(const Graph& g, std::vector<typename graph_traits<Graph>::vertex
     }
 
     std::vector<std::vector<vertex_id_type>> verts_at_depth;
-    for (size_t i = 0; i < num_vertices(g)[0]; ++i) {
+    for (size_t i = 0; i < num_vertices(g); ++i) {
       if (depths[i] != -1) {
         if (depths[i] >= static_cast<int>(verts_at_depth.size())) {
           verts_at_depth.resize(depths[i] + 1);
@@ -89,7 +92,7 @@ bool BCVerifier(const Graph& g, std::vector<typename graph_traits<Graph>::vertex
       }
     }
 
-    std::vector<score_t> deltas(num_vertices(g)[0], 0);
+    std::vector<score_t> deltas(num_vertices(g), 0);
     for (int depth = verts_at_depth.size() - 1; depth >= 0; depth--) {
       for (vertex_id_type u : verts_at_depth[depth]) {
         for (auto edge : out_neigh[u]) {
@@ -104,7 +107,7 @@ bool BCVerifier(const Graph& g, std::vector<typename graph_traits<Graph>::vertex
   }
 
   score_t biggest_score = *std::max_element(scores.begin(), scores.end());
-  for (size_t i = 0; i < num_vertices(g)[0]; ++i) {
+  for (size_t i = 0; i < num_vertices(g); ++i) {
     scores[i] = scores[i] / biggest_score;
   }
 
