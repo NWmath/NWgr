@@ -67,7 +67,7 @@ static void clean(edge_list<nw::graph::directedness::undirected>& A, const std::
 
 static auto compress(edge_list<nw::graph::directedness::undirected>& A) {
   life_timer   _(__func__);
-  adjacency<0> B(num_vertices(A)[0]);
+  adjacency<0> B(num_vertices(A));
   push_back_fill(A, B);
   return B;
 }

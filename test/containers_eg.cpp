@@ -87,10 +87,10 @@ void adjacency_container_test(T a) {
   static_assert(std::is_constructible_v<typename T::outer_iterator>);
 }
 
-template <typename T>
-auto tag_invoke(const nw::graph::num_vertices_tag, const std::vector<T>& b) {
-  return b.size();
-}
+//template <typename T>
+//auto tag_invoke(const nw::graph::num_vertices_tag, const std::vector<T>& b) {
+//  return b.size();
+//}
 
 
 
@@ -121,11 +121,7 @@ void adjacency_concept_test(T a) {
 
 
 
-
-
-
 int main() {
-#if 1
 
   //  nw::graph::edge_list a { {0, 0}, {0, 4} };  // compiler dumps core
 
@@ -136,28 +132,27 @@ int main() {
 
   static_assert(nw::graph::edge_list_graph<decltype(e)>);
 
+  nw::graph::num_vertices(e);
+
   t0(e);
   t1(e);
   t2(std::move(e));
 
-
   adjacency_concept_test(std::vector<std::forward_list<std::tuple<int, int, double>>>());
 
   adjacency_concept_test(nw::graph::adjacency<0>());
-  // auto a = make_adjacency<0>(e);
-  // adjacency_concept_test(a);
 
+  auto a = make_adjacency<0>(e);
+  nw::graph::num_vertices(a);
+
+  adjacency_concept_test(a);
 
   adjacency_concept_test(nw::graph::adj_list<0>());
-
   
   bfs_vv(nw::graph::adj_list<0>(), 0);
 
-
-
   bfs_vv(std::vector<std::forward_list<std::tuple<int, int, double>>>(), 0);
 
-#endif
 
   std::vector<std::forward_list<std::tuple<int>>> ckt = {{1, 5}, {2, 3}, {0}, {}, {}, {2, 4, 3}};
 

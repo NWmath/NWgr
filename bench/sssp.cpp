@@ -55,7 +55,7 @@ static auto dijkstra(const Graph& graph, vertex_id_t<Graph> source) {
   mq.emplace(source, 0);
 
   // Distances
-  std::vector<distance_t> dist(num_vertices(graph)[0], std::numeric_limits<distance_t>::max());
+  std::vector<distance_t> dist(num_vertices(graph), std::numeric_limits<distance_t>::max());
   dist[source] = 0;
 
   auto g = graph.begin();

@@ -12,14 +12,16 @@
 #ifndef NW_GRAPH_ADJACENCY_HPP
 #define NW_GRAPH_ADJACENCY_HPP
 
-#include "containers/compressed.hpp"
-#include "containers/edge_list.hpp"
-#include "graph_base.hpp"
 #include "util/defaults.hpp"
+#include "graph_base.hpp"
+#include "containers/edge_list.hpp"
+#include "containers/compressed.hpp"
 
 #include "build.hpp"
 
 #include <concepts>
+
+#include "access.hpp"
 
 namespace nw {
 namespace graph {
@@ -44,6 +46,7 @@ public:
 template <typename... Attributes>
 using compressed = index_compressed<default_index_t, default_vertex_id_type, Attributes...>;
 #endif
+
 
 template <int idx, std::unsigned_integral index_type, std::unsigned_integral vertex_id, typename... Attributes>
 class index_adjacency : public unipartite_graph_base, public indexed_struct_of_arrays<index_type, vertex_id, Attributes...> {
@@ -83,6 +86,7 @@ public:
 template <int idx, typename... Attributes>
 using adjacency = index_adjacency<idx, default_index_t, default_vertex_id_type, Attributes...>;
 
+
 template <int idx, typename edge_list_t>
 auto make_adjacency(edge_list_t& el) {
   return adjacency<idx>(el);
@@ -92,6 +96,11 @@ auto make_adjacency(edge_list_t& el) {
   //auto num_vertices(const index_adjacency<idx, index_type, vertex_id_type, Attributes...>& g) {
   //  return g.num_vertices();
   //}
+
+template <int idx, std::unsigned_integral index_type, std::unsigned_integral vertex_id_type, typename... Attributes>
+auto tag_invoke(const num_vertices_tag, const index_adjacency<idx, index_type, vertex_id_type, Attributes...>& g) {
+  return g.num_vertices()[0];
+}
 
 }    // namespace graph
 }    // namespace nw
