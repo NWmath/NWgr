@@ -49,7 +49,8 @@ concept graph = std::semiregular<G>&& requires(G g) {
   typename graph_traits<G>::vertex_id_type;
   typename graph_traits<G>::num_vertices_type;
   { num_vertices(g) }
-  ->std::convertible_to<typename graph_traits<G>::num_vertices_type>;
+  ->std::convertible_to<size_t>;
+  //  ->std::convertible_to<typename graph_traits<G>::num_vertices_type>;
 };
 
 

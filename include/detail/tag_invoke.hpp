@@ -1,3 +1,6 @@
+#ifndef NW_GRAPH_TAG_INVOKE_HPP
+#define NW_GRAPH_TAG_INVOKE_HPP
+
 #include <utility>
 #include <type_traits>
 
@@ -76,3 +79,5 @@ template <typename CPO, typename... Args>
 concept tag_invocable =
     (sizeof(_tag_invoke::try_tag_invoke<CPO, Args...>(0)) ==
      sizeof(_tag_invoke::yes_type));
+
+#endif // NW_GRAPH_TAG_INVOKE_HPP

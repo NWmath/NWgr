@@ -31,11 +31,15 @@
 #include "util/demangle.hpp"
 #include "util/print_types.hpp"
 #include "util/timer.hpp"
+
 #include <algorithm>
 #include <concepts>
 #include <limits>
 #include <numeric>
 #include <tuple>
+
+#include "access.hpp"
+
 
 namespace nw {
 namespace graph {
@@ -220,17 +224,20 @@ using edge_list = index_edge_list<default_vertex_id_type, unipartite_graph_base,
 template <directedness edge_directedness = directedness::undirected, typename... Attributes>
 using bi_edge_list = index_edge_list<default_vertex_id_type, bipartite_graph_base, edge_directedness, Attributes...>;
 
-template <std::unsigned_integral vertex_id_type, typename graph_base_t, directedness direct = directedness::undirected,
+
+template <std::unsigned_integral vertex_id, typename graph_base_t, directedness direct = directedness::undirected,
           typename... Attributes>
-auto num_edges(const index_edge_list<vertex_id_type, graph_base_t, direct, Attributes...>& g) {
-  return g.num_edges();
+auto tag_invoke(const num_edges_tag, const index_edge_list<vertex_id, graph_base_t, direct, Attributes...>& b) {
+  return b.num_edges();
 }
 
-  //template <std::unsigned_integral vertex_id_type, typename graph_base_t, directedness direct = directedness::undirected,
-  //          typename... Attributes>
-  //auto num_vertices(const index_edge_list<vertex_id_type, graph_base_t, direct, Attributes...>& g) {
-  //  return g.num_vertices();
-  //}
+
+template <std::unsigned_integral vertex_id, typename graph_base_t, directedness direct = directedness::undirected,
+          typename... Attributes>
+auto tag_invoke(const num_vertices_tag, const index_edge_list<vertex_id, graph_base_t, direct, Attributes...>& b) {
+  return b.num_vertices()[0];
+}
+
 
 }    // namespace graph
 }    // namespace nw
