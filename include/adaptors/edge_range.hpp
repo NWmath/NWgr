@@ -18,6 +18,9 @@
 #include <tbb/tbb_stddef.h>
 #include <tuple>
 
+#include <utility>
+#include <ranges>
+
 namespace nw {
 namespace graph {
 
@@ -66,9 +69,9 @@ public:
   {
    public:
     using iterator_category = std::forward_iterator_tag;
-    using value_type        = std::tuple<vertex_id_type, vertex_id_type, std::tuple_element_t<Is, std::conditional_t<is_const, const typename Graph::attributes_t, typename Graph::attributes_t>>...>;
+    using value_type        = std::tuple<vertex_id_type, vertex_id_type, typename std::tuple_element_t<Is, std::conditional_t<is_const, const typename Graph::attributes_t, typename Graph::attributes_t>>...>;
     using difference_type   = std::ptrdiff_t;
-    using reference         = std::tuple<vertex_id_type, vertex_id_type, std::tuple_element_t<Is, std::conditional_t<is_const, const typename Graph::attributes_t&, typename Graph::attributes_t&>>...>;
+    using reference         = std::tuple<vertex_id_type, vertex_id_type, typename std::tuple_element_t<Is, std::conditional_t<is_const, const typename Graph::attributes_t&, typename Graph::attributes_t&>>...>;
     using pointer           = arrow_proxy<reference>;
 
   private:
