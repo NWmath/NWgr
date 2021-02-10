@@ -41,7 +41,7 @@ int main(int argc, char* const argv[]) {
   int64_t trials     = args["-n"].asLong();
   int64_t seed       = args["--seed"].asLong();
 
-  auto sources = read_mm_vector<vertex_id_type>(args["-s"].asString());
+  auto sources = read_mm_vector<default_vertex_id_type>(args["-s"].asString());
 
   if (int64_t(sources.size()) != trials * iterations) {
     std::cerr << "Read " << sources.size() << " sources from " << args["-s"].asString() << " but expected " << trials * iterations
@@ -49,7 +49,7 @@ int main(int argc, char* const argv[]) {
     return 0;
   }
 
-  auto aos    = load_graph<directed>(args["-f"].asString());
+  auto aos    = load_graph<directedness::directed>(args["-f"].asString());
   auto graph  = build_adjacency<1>(aos);
   auto random = build_random_sources(graph, sources.size(), seed);
 

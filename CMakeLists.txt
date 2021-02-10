@@ -14,7 +14,7 @@
 # cmake .. -DCMAKE_CXX_COMPILER=icpx
 #
 ##########################################################################
-cmake_minimum_required(VERSION 3.18.2 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.16.2 FATAL_ERROR)
 
 set(NW_GRAPH_VERSION 0.3)
 

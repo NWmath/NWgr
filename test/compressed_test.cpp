@@ -23,10 +23,10 @@ using compressed = indexed_struct_of_arrays<unsigned, unsigned, Attributes...>;
 const size_t N = 5;
 
 TEST_CASE("indexed_struct_of_arrays construct", "[construct]") {
-  SECTION("construct") { compressed A(N); }
+  SECTION("construct") { compressed<> A(N); }
 
   SECTION("push_back diagonal") {
-    compressed A(N);
+    compressed<> A(N);
     A.open_for_push_back();
     for (size_t i = 0; i < A.size(); ++i) {
       A.push_back(i, i);
@@ -35,7 +35,7 @@ TEST_CASE("indexed_struct_of_arrays construct", "[construct]") {
   }
 
   SECTION("push_back diagonal less 0") {
-    compressed A(N);
+    compressed<> A(N);
     A.open_for_push_back();
     for (size_t i = 1; i < A.size(); ++i) {
       A.push_back(i, i);
@@ -44,7 +44,7 @@ TEST_CASE("indexed_struct_of_arrays construct", "[construct]") {
   }
 
   SECTION("push_back diagonal less N-1") {
-    compressed A(N);
+    compressed<> A(N);
     A.open_for_push_back();
     for (size_t i = 0; i < A.size() - 1; ++i) {
       A.push_back(i, i);

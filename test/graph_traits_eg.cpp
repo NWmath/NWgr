@@ -22,11 +22,11 @@ template <typename G, typename T = G>
 requires std::ranges::random_access_range<T>&& std::ranges::forward_range<typename T::value_type>&&
                                                is_tuple<typename T::value_type::value_type>::value struct graph_traits_x {
 private:
-  using tuple_type       = T::value_type::value_type;
+  using tuple_type       = typename T::value_type::value_type;
   using vertex_size_type = typename T::size_type;
 
 public:
-  using vertex_id_type    = std::tuple_element<0, tuple_type>::type;
+  using vertex_id_type    = typename std::tuple_element<0, tuple_type>::type;
   using num_vertices_type = std::array<vertex_size_type, 1>;
 };
 
