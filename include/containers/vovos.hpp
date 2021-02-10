@@ -33,8 +33,10 @@ public:
   vector_of_vector_of_structs(size_t N) : base(N) {}
 
   using inner_iterator      = typename std::forward_list<std::tuple<Attributes...>>::iterator;
+  using const_inner_iterator      = typename std::forward_list<std::tuple<Attributes...>>::const_iterator;
   using inner_container_ref = typename std::forward_list<std::tuple<Attributes...>>&;
   using outer_iterator      = typename std::vector<std::forward_list<std::tuple<Attributes...>>>::iterator;
+  using const_outer_iterator      = typename std::vector<std::forward_list<std::tuple<Attributes...>>>::const_iterator;
 
   void open_for_push_back() {}
   void close_for_push_back() {}
@@ -59,9 +61,9 @@ public:
 
   index_vov(size_t N) : base(N) {}
 
-  index_vov(edge_list<directedness::directed, Attributes...>& A) : base(num_vertices(A)) { num_edges_ = fill(A, *this); }
+  index_vov(edge_list<directedness::directed, Attributes...>& A) : base(num_vertices(A)) { num_edges_ = fill_adj_list(A, *this); }
 
-  index_vov(edge_list<directedness::undirected, Attributes...>& A) : base(num_vertices(A)) { num_edges_ = fill(A, *this); }
+  index_vov(edge_list<directedness::undirected, Attributes...>& A) : base(num_vertices(A)) { num_edges_ = fill_adj_list(A, *this); }
 
 private:
   num_edges_type num_edges_;
@@ -78,6 +80,9 @@ struct graph_traits<std::vector<std::vector<std::tuple<Attributes...>>>> {
 
   using outer_iterator = typename outer_type::iterator;
   using inner_iterator = typename inner_type::iterator;
+
+  using const_outer_iterator = typename outer_type::const_iterator;
+  using const_inner_iterator = typename inner_type::const_iterator;
 
   using vertex_id_type    = typename std::tuple_element<0, tuple_type>::type;
   using vertex_size_type  = typename outer_type::size_type;

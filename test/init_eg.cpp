@@ -19,13 +19,13 @@ using namespace nw::util;
 int main() {
 
   {
-    edge_list<undirected> a{{0, 1}, {1, 2}};
-    edge_list<directed>   b{{0, 2}, {1, 0}, {0, 1}};
+    edge_list<directedness::undirected> a{{0, 1}, {1, 2}};
+    edge_list<directedness::directed>   b{{0, 2}, {1, 0}, {0, 1}};
 
-    edge_list<directed>   c = a.convert_directedness<directed>();
-    edge_list<undirected> d = b.convert_directedness<undirected>();
-    edge_list<directed>   e = b.convert_directedness<directed>();
-    edge_list<undirected> f = a.convert_directedness<undirected>();
+    edge_list<directedness::directed>   c = a.convert_directedness<directed>();
+    edge_list<directedness::undirected> d = b.convert_directedness<undirected>();
+    edge_list<directedness::directed>   e = b.convert_directedness<directed>();
+    edge_list<directedness::undirected> f = a.convert_directedness<undirected>();
 
     a.stream_edges(std::cout);
     std::cout << std::endl;

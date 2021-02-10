@@ -24,6 +24,8 @@
 #include <utility>
 #include <vector>
 
+#include "util/print_types.hpp"
+
 namespace nw {
 namespace graph {
 
@@ -37,8 +39,7 @@ void sort_by(edge_list_t& el, ExecutionPolicy&& policy = {}) {
 
 template <int idx, class edge_list_t, class ExecutionPolicy = default_execution_policy>
 void stable_sort_by(edge_list_t& el, ExecutionPolicy&& policy = {}) {
-  std::stable_sort(policy, el.begin(), el.end(),
-                   [](const auto& a, const auto& b) -> bool { return (std::get<idx>(a) < std::get<idx>(b)); });
+  std::stable_sort(policy, el.begin(), el.end(), [](const auto& a, const auto& b) -> bool { return (std::get<idx>(a) < std::get<idx>(b)); });
 }
 
 template <int idx, class edge_list_t, class ExecutionPolicy = default_execution_policy>
@@ -93,6 +94,30 @@ void push_back_fill(edge_list_t& el, adjacency_t& cs) {
   cs.close_for_push_back();
 }
 
+
+template <typename edge_list_t, typename adj_list_t>
+auto fill_adj_list(edge_list_t& el, adj_list_t& al) {
+  size_t num_edges = 0;
+
+  al.open_for_push_back();
+
+  std::for_each(el.begin(), el.end(), [&](auto elt) {
+
+    push_back_fill_helper(al, elt);
+    ++num_edges;
+    if constexpr (edge_list_t::edge_directedness == directedness::undirected) {
+      std::swap(std::get<0>(elt), std::get<1>(elt));
+      push_back_fill_helper(al, elt);
+      ++num_edges;
+    }
+  });
+
+  al.close_for_push_back();
+
+  return num_edges;
+}
+
+
 template <class edge_list_t, class adjacency_t, class ExecutionPolicy = default_execution_policy, size_t... Is>
 void fill_helper(edge_list_t& el, adjacency_t& cs, std::index_sequence<Is...> is, ExecutionPolicy&& policy = {}) {
   (..., (std::copy(policy, std::get<Is + 2>(dynamic_cast<typename edge_list_t::base&>(el)).begin(),
@@ -106,7 +131,7 @@ void fill_helper(edge_list_t& el, adjacency_t& cs, std::index_sequence<Is...> is
 }
 
 template <int idx, class edge_list_t, class adjacency_t, class ExecutionPolicy = default_execution_policy>
-void fill(edge_list_t& el, adjacency_t& cs, ExecutionPolicy&& policy = {}) {
+auto fill(edge_list_t& el, adjacency_t& cs, ExecutionPolicy&& policy = {}) {
   if constexpr (edge_list_t::edge_directedness == nw::graph::directedness::directed) {
 
     sort_by<idx>(el, policy);
@@ -136,9 +161,8 @@ void fill(edge_list_t& el, adjacency_t& cs, ExecutionPolicy&& policy = {}) {
 
     assert(edge_list_t::is_unipartite == true);
 
-    typename edge_list_t::directed_type Tmp(
-        el.num_vertices()[0]);    // directedness doesn't matter for the Tmp, so just use same type as el
-                                  // EXCEPT -- degrees does something different if undirected
+    typename edge_list_t::directed_type Tmp(el.num_vertices()[0]);    // directedness doesn't matter for the Tmp, so just use same type as el
+                                                                      // EXCEPT -- degrees does something different if undirected
     Tmp.resize(2 * el.size());
 
     std::copy(policy, el.begin(), el.end(), Tmp.begin());
@@ -165,7 +189,9 @@ void fill(edge_list_t& el, adjacency_t& cs, ExecutionPolicy&& policy = {}) {
       fill_helper(el, cs, std::make_integer_sequence<size_t, std::tuple_size<typename edge_list_t::attributes_t>::value>(), Tmp);
     }
   }
+  return cs.to_be_indexed_.size();
 }
+
 
 template <int idx, class edge_list_t>
 void swap_to_triangular(edge_list_t& el, const std::string& cessor = "predecessor") {
@@ -201,9 +227,8 @@ void swap_to_triangular(edge_list_t& el, ExecutionPolicy&& policy = {}) {
 template <class edge_list_t, class ExecutionPolicy = default_execution_policy>
 void uniq(edge_list_t& el, ExecutionPolicy&& policy = {}) {
 
-  auto past_the_end = std::unique(policy, el.begin(), el.end(), [](auto&& x, auto&& y) {
-    return std::get<0>(x) == std::get<0>(y) && std::get<1>(x) == std::get<1>(y);
-  });
+  auto past_the_end = std::unique(policy, el.begin(), el.end(),
+                                  [](auto&& x, auto&& y) { return std::get<0>(x) == std::get<0>(y) && std::get<1>(x) == std::get<1>(y); });
 
   // el.erase(past_the_end, el.end());
   el.resize(past_the_end - el.begin());
@@ -211,8 +236,8 @@ void uniq(edge_list_t& el, ExecutionPolicy&& policy = {}) {
 
 template <class edge_list_t>
 void remove_self_loops(edge_list_t& el) {
-  auto past_the_end = std::remove_if(/*std::execution::par_unseq,*/ el.begin(), el.end(),
-                                     [](auto&& x) { return std::get<0>(x) == std::get<1>(x); });
+  auto past_the_end =
+      std::remove_if(/*std::execution::par_unseq,*/ el.begin(), el.end(), [](auto&& x) { return std::get<0>(x) == std::get<1>(x); });
   // el.erase(past_the_end, el.end());
   el.resize(past_the_end - el.begin());
 }

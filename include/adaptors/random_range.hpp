@@ -12,6 +12,7 @@
 #define NW_GRAPH_RANDOM_RANGE_HPP
 
 #include "util/util.hpp"
+#include "graph_traits.hpp"
 #include <cmath>
 #include <random>
 #include <vector>
@@ -22,12 +23,14 @@ namespace graph {
 template <typename Graph>
 class random_range {
 public:
-  random_range(Graph& g, size_t length = size_t(0xffffffffffffffffULL), vertex_id_type first = 0, unsigned seed = 2049)
+  random_range(Graph& g, size_t length = size_t(0xffffffffffffffffULL), vertex_id_t<Graph> first = 0, unsigned seed = 2049)
       : the_graph_(g), starting_vertex(first), length_(length), distribution(0, 1.0), generator(seed),
         dice(std::bind(distribution, generator)) {}
 
   class edge_range_iterator {
   private:
+    using vertex_id_type = vertex_id_t<Graph>;
+
     random_range<Graph>&           the_range_;
     typename Graph::outer_iterator G;
     vertex_id_type                 current_vertex;
@@ -66,7 +69,8 @@ public:
 private:
   Graph& the_graph_;
 
-  vertex_id_type starting_vertex;
+
+  vertex_id_t<Graph> starting_vertex;
   size_t         length_;
 
   std::uniform_real_distribution<double> distribution;

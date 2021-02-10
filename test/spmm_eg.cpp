@@ -30,15 +30,15 @@ int main(int argc, char* argv[]) {
     return -1;
   }
 
-  auto aos_A = read_mm<directed, float>(argv[1]);
-  auto aos_B = read_mm<directed, float>(argv[2]);
+  auto aos_A = read_mm<directedness::directed, float>(argv[1]);
+  auto aos_B = read_mm<directedness::directed, float>(argv[2]);
   std::cout << "A = " << std::endl;
   aos_A.stream(std::cout);
   std::cout << "B = " << std::endl;
   aos_B.stream(std::cout);
 
-  compressed_sparse<0, directed, float> A(aos_A);
-  compressed_sparse<0, directed, float> B(aos_B);
+  adjacency<0, float> A(aos_A);
+  adjacency<0, float> B(aos_B);
 
   std::cout << "C = A * B = " << std::endl;
   auto edges(spMatspMat<float>(A, B));

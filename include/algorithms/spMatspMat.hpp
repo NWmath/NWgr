@@ -32,11 +32,13 @@ namespace graph {
 /// @todo Need to discuss interface options
 template <typename ScalarT, typename LGraphT, typename RGraphT, typename MapOpT = std::multiplies<ScalarT>,
           typename ReduceOpT = std::plus<ScalarT>>
-edge_list<directed, ScalarT> spMatspMat(LGraphT& A, RGraphT& B) {
-  edge_list<directed, ScalarT> edges(0);
+edge_list<directedness::directed, ScalarT> spMatspMat(LGraphT& A, RGraphT& B) {
+  edge_list<directedness::directed, ScalarT> edges(0);
   edges.open_for_push_back();
 
-  // compute A * B
+  using vertex_id_type = vertex_id_t<LGraphT>;
+
+// compute A * B
   vertex_id_type i = 0;    // row_it - A.begin();
   for (auto row_it = A.begin(); row_it != A.end(); ++row_it, ++i) {
     // clear Row i of C
@@ -68,7 +70,7 @@ edge_list<directed, ScalarT> spMatspMat(LGraphT& A, RGraphT& B) {
   }
 
   edges.close_for_push_back();
-  edges.template sort_by<0>();
+  sort_by<0>(edges);
   return edges;
 }
 
@@ -99,10 +101,12 @@ void set_ewise_intersection(InputIt1 first1, InputIt1 last1, InputIt2 first2, In
 /// @todo cannot currently pass "const &" for A or BT
 template <typename ScalarT, typename LGraphT, typename RGraphT, typename MapOpT = std::multiplies<ScalarT>,
           typename ReduceOpT = std::plus<ScalarT>>
-edge_list<directed, ScalarT> spMatspMatT(LGraphT& A, RGraphT& BT) {
+edge_list<directedness::directed, ScalarT> spMatspMatT(LGraphT& A, RGraphT& BT) {
   std::vector<ScalarT> products;
 
-  edge_list<directed, ScalarT> edges(0);
+  using vertex_id_type = vertex_id_t<LGraphT>;
+
+  edge_list<directedness::directed, ScalarT> edges(0);
   edges.open_for_push_back();
 
   // compute A * B' with a series of sparse dot products

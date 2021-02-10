@@ -12,6 +12,7 @@
 
 #include "adaptors/edge_range.hpp"
 #include "containers/edge_list.hpp"
+#include "containers/adjacency.hpp"
 #include "util/print_types.hpp"
 
 using namespace nw::graph;
@@ -93,27 +94,29 @@ void do_test_1() {
     std::cout << i << " " << j << " " << v << std::endl;
   }
 
+#if 0
   std::cout << "edge range (A) v0" << std::endl;
   for (auto&& [i, j, v] : A.edges<0>()) {
     std::cout << i << " " << j << " " << v << std::endl;
   }
+#endif
 }
 
 int main() {
 
   std::cout << "Unirected" << std::endl;
-  do_test_0<undirected>();
+  do_test_0<directedness::undirected>();
 
   std::cout << "Directed" << std::endl;
-  do_test_0<directed>();
+  do_test_0<directedness::directed>();
 
   std::cout << "Unirected" << std::endl;
-  do_test_1<undirected>();
+  do_test_1<directedness::undirected>();
 
   std::cout << "Directed" << std::endl;
-  do_test_1<directed>();
+  do_test_1<directedness::directed>();
 
-  edge_list<undirected> E_list{{3, 4}, {3, 6}, {4, 6}, {2, 3}, {3, 0}, {4, 5}, {0, 2}, {1, 5}, {4, 1}};
+  edge_list<directedness::undirected> E_list{{3, 4}, {3, 6}, {4, 6}, {2, 3}, {3, 0}, {4, 5}, {0, 2}, {1, 5}, {4, 1}};
 
   std::cout << "E_list" << std::endl;
   for (auto y : E_list) {
@@ -129,7 +132,7 @@ int main() {
   }
 
   std::cout << (*(A.end())).begin() - (*(A.begin())).begin() << std::endl;
-  edge_list<directed> D_list{{3, 4}, {3, 6}, {4, 6}, {2, 3}, {3, 0}, {4, 5}, {0, 2}, {1, 5}, {4, 1}};
+  edge_list<directedness::directed> D_list{{3, 4}, {3, 6}, {4, 6}, {2, 3}, {3, 0}, {4, 5}, {0, 2}, {1, 5}, {4, 1}};
 
   adjacency<0> B(D_list);
   std::cout << (*(B.end())).begin() - (*(B.begin())).begin() << std::endl;

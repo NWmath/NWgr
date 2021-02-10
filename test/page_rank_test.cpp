@@ -15,9 +15,9 @@
 #include <vector>
 
 #include "algorithms/page_rank.hpp"
-#include "containers/aolos.hpp"
-#include "containers/compressed.hpp"
 #include "containers/edge_list.hpp"
+#include "containers/adjacency.hpp"
+#include "containers/volos.hpp"
 #include "io/mmio.hpp"
 #include "util/timer.hpp"
 #include "util/util.hpp"
@@ -30,7 +30,7 @@ using namespace nw::util;
 size_t const NUM_NODES = 34;
 
 //****************************************************************************
-void build_karate_edge_list(edge_list<directed, double>& edges) {
+void build_karate_edge_list(edge_list<directedness::directed, double>& edges) {
   std::vector<size_t> const i = {0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1,  1,  1,  1,  1,  1,  1,
                                  1,  1,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  3,  3,  3,  3,  3,  3,  4,  4,  4,  5,  5,
                                  5,  5,  6,  6,  6,  6,  7,  7,  7,  7,  8,  8,  8,  8,  8,  9,  9,  10, 10, 10, 11, 12, 12,
@@ -59,7 +59,7 @@ void build_karate_edge_list(edge_list<directed, double>& edges) {
 TEST_CASE("PageRank") {
   using RealT = double;
 
-  edge_list<directed, double> A(0);
+  edge_list<directedness::directed, double> A(0);
   build_karate_edge_list(A);
 
   // These are answers when a PR threshold of 1.e-7 is used
@@ -73,7 +73,7 @@ TEST_CASE("PageRank") {
     //std::cout << "Number vertices: " << graph.size() << std::endl;
     std::vector<RealT> page_rank(graph.size());
 
-    std::vector<vertex_id_type> degrees(graph.size());
+    std::vector<default_vertex_id_type> degrees(graph.size());
     {
       life_timer _("degrees");
       tbb::parallel_for(edge_range(graph), [&](auto&& edges) {
@@ -96,11 +96,11 @@ TEST_CASE("PageRank") {
     }
   }
   SECTION("adj_list") {
-    adj_list<RealT> graph(A);
+    adj_list<0, RealT> graph(A);
     //std::cout << "Number vertices: " << graph.size() << std::endl;
     std::vector<RealT> page_rank(graph.size());
 
-    std::vector<vertex_id_type> degrees(graph.size());
+    std::vector<default_vertex_id_type> degrees(graph.size());
     {
       life_timer _("degrees");
       tbb::parallel_for(edge_range(graph), [&](auto&& edges) {

@@ -9,7 +9,7 @@
 //
 
 #include <iostream>
-#include <tbb/tbb.h>
+#include <tbb/parallel_for.h>
 #include <tuple>
 
 #if defined(CL_SYCL_LANGUAGE_VERSioN)
@@ -24,17 +24,21 @@ template <class T>
 using counting_iterator = tbb::counting_iterator<T>;
 #endif
 
+
+
 #include "adaptors/edge_range.hpp"
 #include "adaptors/plain_range.hpp"
 #include "containers/compressed.hpp"
 #include "containers/edge_list.hpp"
+#include "containers/adjacency.hpp"
+
 
 using namespace nw::graph;
 using namespace nw::util;
 
 int main() {
 
-  edge_list<directed> E_list{{3, 4}, {3, 6}, {4, 6}, {7, 8}, {9, 3}};
+  edge_list<directedness::directed> E_list{{3, 4}, {3, 6}, {4, 6}, {7, 8}, {9, 3}};
   adjacency<0>        A_0(E_list);
 
   std::for_each(edge_range(A_0).begin(), edge_range(A_0).end(),

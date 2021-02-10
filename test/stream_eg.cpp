@@ -26,8 +26,8 @@ int main(int argc, char* argv[]) {
     return -1;
   }
 
-  auto                           aos_a = read_mm<directed>(argv[1]);
-  compressed_sparse<0, directed> A(aos_a);
+  auto                           aos_a = read_mm<directedness::directed>(argv[1]);
+  adjacency<0> A(aos_a);
 
   size_t N = A.end() - A.begin();
 
