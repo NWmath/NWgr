@@ -81,7 +81,7 @@ public:    // fixme
   indexed_struct_of_arrays(size_t N, size_t M) : N_(N), indices_(N + 1), to_be_indexed_(M) {}
 
   template <bool is_const = false>
-  class outer_iterator {
+  class my_outer_iterator {
    public:
     using   const_index_iterator_t = typename std::vector<index_t>::const_iterator;
     using         index_iterator_t = typename std::vector<index_t>::iterator;
@@ -89,7 +89,7 @@ public:    // fixme
     using       indexed_iterator_t = typename struct_of_arrays<Attributes...>::iterator;
 
    private:
-    friend class outer_iterator<!is_const>;
+    friend class my_outer_iterator<!is_const>;
     using   index_it_t = std::conditional_t<is_const, const_index_iterator_t, index_iterator_t>;
     using indexed_it_t = std::conditional_t<is_const, const_indexed_iterator_t, indexed_iterator_t>;
 
@@ -104,32 +104,32 @@ public:    // fixme
     using pointer           = arrow_proxy<reference>;
     using iterator_category = std::random_access_iterator_tag;
 
-    outer_iterator() = default;
+    my_outer_iterator() = default;
 
-    outer_iterator(index_iterator_t indices, indexed_iterator_t indexed, index_t i) requires(is_const)
+    my_outer_iterator(index_iterator_t indices, indexed_iterator_t indexed, index_t i) requires(is_const)
         : indices_(indices)
         , indexed_(indexed)
         , i_(i)
     {
     }
 
-    outer_iterator(index_it_t indices, indexed_it_t indexed, index_t i)
+    my_outer_iterator(index_it_t indices, indexed_it_t indexed, index_t i)
         : indices_(indices)
         , indexed_(indexed)
         , i_(i)
     {
     }
 
-    outer_iterator(const outer_iterator&) = default;
-    outer_iterator(const outer_iterator<false>& rhs) requires(is_const)
+    my_outer_iterator(const my_outer_iterator&) = default;
+    my_outer_iterator(const my_outer_iterator<false>& rhs) requires(is_const)
         : indices_(rhs.indices_)
         , indexed_(rhs.indexed_)
         , i_(rhs.i_)
     {
     }
 
-    outer_iterator& operator=(const outer_iterator&) = default;
-    outer_iterator& operator=(const outer_iterator<false>& rhs) requires(is_const)
+    my_outer_iterator& operator=(const my_outer_iterator&) = default;
+    my_outer_iterator& operator=(const my_outer_iterator<false>& rhs) requires(is_const)
     {
       indices_ = rhs.indices_;
       indexed_ = rhs.indexed_;
@@ -137,53 +137,53 @@ public:    // fixme
       return *this;
     }
 
-    outer_iterator& operator++() {
+    my_outer_iterator& operator++() {
       ++i_;
       return *this;
     }
 
-    outer_iterator operator++(int) const {
-      outer_iterator tmp(*this);
+    my_outer_iterator operator++(int) const {
+      my_outer_iterator tmp(*this);
       ++i_;
       return tmp;
       ;
     }
 
-    outer_iterator& operator--() {
+    my_outer_iterator& operator--() {
       --i_;
       return *this;
     }
 
-    outer_iterator operator--(int) const {
-      outer_iterator tmp(*this);
+    my_outer_iterator operator--(int) const {
+      my_outer_iterator tmp(*this);
       --i_;
       return tmp;
     }
 
-    outer_iterator& operator+=(difference_type n) {
+    my_outer_iterator& operator+=(difference_type n) {
       i_ += n;
       return *this;
     }
 
-    outer_iterator& operator-=(difference_type n) {
+    my_outer_iterator& operator-=(difference_type n) {
       i_ -= n;
       return *this;
     }
 
-    outer_iterator operator+(difference_type n) const {
+    my_outer_iterator operator+(difference_type n) const {
       return { indices_, indexed_, i_ + n };
     }
 
-    outer_iterator operator-(difference_type n) const { return {indices_, indexed_, i_ - n}; }
+    my_outer_iterator operator-(difference_type n) const { return {indices_, indexed_, i_ - n}; }
 
-    difference_type operator-(const outer_iterator& b) const { return i_ - b.i_; }
+    difference_type operator-(const my_outer_iterator& b) const { return i_ - b.i_; }
 
-    bool operator==(const outer_iterator& b) const { return i_ == b.i_; }
-    bool operator!=(const outer_iterator& b) const { return i_ != b.i_; }
-    bool operator<(const outer_iterator& b) const { return i_ < b.i_; }
-    bool operator>(const outer_iterator& b) const { return i_ > b.i_; }
-    bool operator<=(const outer_iterator& b) const { return i_ <= b.i_; }
-    bool operator>=(const outer_iterator& b) const { return i_ >= b.i_; }
+    bool operator==(const my_outer_iterator& b) const { return i_ == b.i_; }
+    bool operator!=(const my_outer_iterator& b) const { return i_ != b.i_; }
+    bool operator<(const my_outer_iterator& b) const { return i_ < b.i_; }
+    bool operator>(const my_outer_iterator& b) const { return i_ > b.i_; }
+    bool operator<=(const my_outer_iterator& b) const { return i_ <= b.i_; }
+    bool operator>=(const my_outer_iterator& b) const { return i_ >= b.i_; }
 
     reference operator*() { return {indexed_ + indices_[i_], indexed_ + indices_[i_ + 1]}; }
     reference operator*() const { return {indexed_ + indices_[i_], indexed_ + indices_[i_ + 1]}; }
@@ -195,9 +195,10 @@ public:    // fixme
     reference operator[](index_t n) const { return {indexed_ + indices_[i_ + n], indexed_ + indices_[i_ + n + 1]}; }
   };
 
-  using const_outer_iterator = outer_iterator<true>;
+  using const_outer_iterator = my_outer_iterator<true>;
+  using outer_iterator = my_outer_iterator<false>;
 
-  using iterator = outer_iterator<false>;
+  using iterator = my_outer_iterator<false>;
 
   using value_type      = typename iterator::value_type;
   using reference       = typename iterator::reference;

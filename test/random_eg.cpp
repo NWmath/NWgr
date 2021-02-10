@@ -30,12 +30,12 @@ int main(int argc, char* argv[]) {
     return -1;
   }
 
-  auto aos_a = read_mm<directed>(argv[1]);
+  auto aos_a = read_mm<directedness::directed>(argv[1]);
   if (argc >= 3) num_points = std::stol(argv[2]);
   if (argc >= 4) start = std::stol(argv[3]);
   if (argc >= 5) seed = std::stol(argv[4]);
 
-  compressed_sparse<0, directed> A(aos_a);
+  adjacency<0> A(aos_a);
 
   size_t              N = A.end() - A.begin();
   std::vector<size_t> hist(N);

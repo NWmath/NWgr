@@ -13,6 +13,7 @@
 
 #include "containers/soa.hpp"
 #include "graph_base.hpp"
+#include "graph_traits.hpp"
 
 #if defined(CL_SYCL_LANGUAGE_VERSION)
 #include <dpstd/algorithm>
@@ -37,6 +38,7 @@
 #include <limits>
 #include <numeric>
 #include <tuple>
+#include <type_traits>
 
 #include "access.hpp"
 
@@ -237,6 +239,24 @@ template <std::unsigned_integral vertex_id, typename graph_base_t, directedness 
 auto tag_invoke(const num_vertices_tag, const index_edge_list<vertex_id, graph_base_t, direct, Attributes...>& b) {
   return b.num_vertices()[0];
 }
+
+
+template <std::unsigned_integral vertex_id, typename graph_base_t, directedness direct, typename... Attributes>
+struct graph_traits<index_edge_list<vertex_id, graph_base_t, direct, Attributes...>> {
+  using G = index_edge_list<vertex_id, graph_base_t, direct, Attributes...>;
+
+  using vertex_id_type    = typename G::vertex_id_type;
+  using vertex_size_type  = typename G::vertex_id_type;
+  using num_vertices_type = typename G::num_vertices_type;
+  using num_edges_type    = typename G::num_edges_type;
+
+  using outer_iterator = std::false_type;
+  using inner_iterator = std::false_type;
+
+  using const_outer_iterator = std::false_type;
+  using const_inner_iterator = std::false_type;
+};
+
 
 
 }    // namespace graph

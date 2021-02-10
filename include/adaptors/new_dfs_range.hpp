@@ -15,17 +15,18 @@
 #include <cassert>
 #include <stack>
 #include <vector>
+#include "graph_traits.hpp"
 
 namespace nw {
 namespace graph {
 
 enum three_colors { black, white, grey };
 
-template <typename Graph, typename Stack = std::stack<vertex_id_type>>
+  template <typename Graph, typename Stack = std::stack<vertex_id_t<Graph>>>
 class dfs_range {
 
 public:
-  dfs_range(Graph& graph, vertex_id_type seed = 0) : the_graph_(graph), colors_(graph.end() - graph.begin(), white) {
+  dfs_range(Graph& graph, vertex_id_t<Graph> seed = 0) : the_graph_(graph), colors_(graph.end() - graph.begin(), white) {
     Q_.push(seed);
     colors_[seed] = grey;
 
@@ -39,7 +40,7 @@ public:
 
 private:
   template <typename GraphRange>
-  static void dfs_visit(const GraphRange& G, Stack& Q, std::vector<three_colors>& colors, vertex_id_type v) {
+  static void dfs_visit(const GraphRange& G, Stack& Q, std::vector<three_colors>& colors, vertex_id_t<Graph> v) {
     auto u     = G[v].begin();
     auto u_end = G[v].end();
 
@@ -100,7 +101,7 @@ public:
 
   private:
     dfs_range<Graph>& the_range_;
-    vertex_id_type    cursor_;
+    vertex_id_t<Graph>    cursor_;
   };
 
   typedef dfs_range_iterator iterator;
@@ -114,11 +115,11 @@ private:
   std::vector<three_colors> colors_;
 };
 
-template <typename Graph, typename Stack = std::stack<vertex_id_type>>
+  template <typename Graph, typename Stack = std::stack<vertex_id_t<Graph>>>
 class dfs_edge_range {
 
 public:
-  dfs_edge_range(Graph& graph, vertex_id_type seed = 0) : the_graph_(graph), colors_(graph.end() - graph.begin(), white) {
+  dfs_edge_range(Graph& graph, vertex_id_t<Graph> seed = 0) : the_graph_(graph), colors_(graph.end() - graph.begin(), white) {
     Q_.push(seed);
     colors_[seed] = grey;
   }
@@ -132,7 +133,7 @@ public:
   private:
     dfs_edge_range<Graph, Stack>&  the_range_;
     typename Graph::outer_iterator G;
-    vertex_id_type                 v_;
+    vertex_id_t<Graph>                 v_;
     typename Graph::inner_iterator u_begin, u_end, u_parent;
     bool                           has_parent_, back_edge_;
 
