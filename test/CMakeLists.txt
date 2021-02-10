@@ -41,8 +41,8 @@ nw_graph_add_test(vov_test)
 # nw_graph_add_test(jp_coloring_test)
 
 # nw_graph_add_test(bk_test)
-# nw_graph_add_test(kcore_test)
-# nw_graph_add_test(max_flow_test)
+nw_graph_add_test(kcore_test)
+nw_graph_add_test(max_flow_test)
 # nw_graph_add_test(rcm_test)
 # nw_graph_add_test(spanning_tree_test)
 
