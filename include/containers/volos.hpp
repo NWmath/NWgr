@@ -102,7 +102,7 @@ struct graph_traits<index_adj_list<idx, vertex_id, Attributes...>> {
   using const_outer_iterator = typename outer_type::const_iterator;
   using const_inner_iterator = typename inner_type::const_iterator;
 
-  using vertex_id_type    = my_type::vertex_id_type;
+  using vertex_id_type    = typename my_type::vertex_id_type;
   using vertex_size_type  = typename outer_type::size_type;
   using num_vertices_type = std::array<vertex_size_type, 1>;
 };

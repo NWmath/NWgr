@@ -43,7 +43,7 @@ using counting_iterator = tbb::counting_iterator<T>;
 namespace nw {
 namespace graph {
 
-template <class Graph>
+template <class Graph, std::size_t... Is>
 class plain_range {
   static constexpr size_t cutoff_ = 16;
 
@@ -137,12 +137,12 @@ public:
   bool        is_divisible() const { return size() > cutoff_; }
 };
 
-template <std::size_t... Is, class Graph>
+template <class Graph, std::size_t... Is>
 static inline plain_range<Graph, Is...> make_plain_range(Graph& g, std::size_t offset) {
   return {g, offset};
 }
 
-template <std::size_t... Is, class Graph>
+template <class Graph, std::size_t... Is>
 static inline plain_range<Graph, Is...> make_plain_range(Graph& g) {
   return {g};
 }

@@ -41,7 +41,7 @@ namespace graph {
 
 template <typename Graph>
 auto bfs_v0(const Graph& graph, typename graph_traits<Graph>::vertex_id_type root) {
-  using vertex_id_type = graph_traits<Graph>::vertex_id_type;
+  using vertex_id_type = typename graph_traits<Graph>::vertex_id_type;
 
   std::deque<vertex_id_type>  q1, q2;
   std::vector<vertex_id_type> level(num_vertices(graph), std::numeric_limits<vertex_id_type>::max());
@@ -83,7 +83,7 @@ public:
 
 template <typename Graph>
 auto bfs_v4(const Graph& graph, typename graph_traits<Graph>::vertex_id_type root) {
-  using vertex_id_type = graph_traits<Graph>::vertex_id_type;
+  using vertex_id_type = typename graph_traits<Graph>::vertex_id_type;
 
   _concurrent_queue<vertex_id_type> q1, q2;
   std::vector                       level(graph.max() + 1, std::numeric_limits<vertex_id_type>::max());
@@ -288,7 +288,7 @@ auto bfs_v9(const Graph& graph, typename graph_traits<Graph>::vertex_id_type roo
 
 template <class Graph>
 [[gnu::noinline]] auto bfs_top_down(const Graph& graph, typename graph_traits<Graph>::vertex_id_type root) {
-  using vertex_id_type = Graph::vertex_id_type;
+  using vertex_id_type = typename Graph::vertex_id_type;
 
   constexpr const std::size_t                         num_bins = 32;
   const std::size_t                                   N        = num_vertices(graph);
