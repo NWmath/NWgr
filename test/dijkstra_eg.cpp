@@ -27,8 +27,8 @@ int main(int argc, char* argv[]) {
     return -1;
   }
 
-  edge_list<directed, size_t>            aos_a = read_mm<directed, size_t>(argv[1]);
-  compressed_sparse<0, directed, size_t> A(aos_a);
+  edge_list<directedness::directed, size_t>            aos_a = read_mm<directedness::directed, size_t>(argv[1]);
+  adjacency<0, size_t> A(aos_a);
 
   //  auto distance = dijkstra<size_t>(A, 0);
 

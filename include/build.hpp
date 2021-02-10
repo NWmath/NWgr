@@ -194,6 +194,18 @@ auto fill(edge_list_t& el, adjacency_t& cs, ExecutionPolicy&& policy = {}) {
 
 
 template <int idx, class edge_list_t>
+void swap_to_triangular(edge_list_t& el, succession cessor) {
+  if (cessor == succession::predecessor) {
+    swap_to_triangular<idx, edge_list_t, succession::predecessor>(el);
+  } else if (cessor == succession::successor) {
+    swap_to_triangular<idx, edge_list_t, succession::successor>(el);
+  } else {
+    std::cout << "Bad succession: " <<  std::endl;
+  }
+}
+
+
+template <int idx, class edge_list_t>
 void swap_to_triangular(edge_list_t& el, const std::string& cessor = "predecessor") {
   if (cessor == "predecessor") {
     swap_to_triangular<idx, edge_list_t, succession::predecessor>(el);
@@ -203,6 +215,7 @@ void swap_to_triangular(edge_list_t& el, const std::string& cessor = "predecesso
     std::cout << "Bad succession: " + cessor << std::endl;
   }
 }
+
 
 template <int idx, class edge_list_t, succession cessor = succession::predecessor, class ExecutionPolicy = default_execution_policy>
 void swap_to_triangular(edge_list_t& el, ExecutionPolicy&& policy = {}) {

@@ -274,9 +274,13 @@ void aos_stream(std::ofstream& outputStream, edge_list<sym, Attributes...> A, co
                 std::string& w_type) {
   outputStream << "%%MatrixMarket matrix coordinate " << w_type << " " << file_symmetry << "\n%%\n";
 
-  A.stream_prv(outputStream);
+  if constexpr(edge_list<sym, Attributes...>::is_unipartite) {
+    outputStream << num_vertices(A) << " " << num_vertices(A) << " ";  // + 1 ???
+  } else {
+    outputStream << A.num_vertices()[0] << " " << A.num_vertice()[1] << " ";  // + 1 ???
+  }
 
-  outputStream << A.max()[0] + 1 << " " << A.max()[1] + 1 << " ";
+
   if (file_symmetry == "general" && sym == directedness::undirected)
     outputStream << 2 * (A.end() - A.begin()) << std::endl;
   else
@@ -318,7 +322,7 @@ void adjacency_stream(std::ofstream& outputStream, adjacency<idx, Attributes...>
                       std::string& w_type) {
   outputStream << "%%MatrixMarket matrix coordinate " << w_type << " " << file_symmetry << "\n%%\n";
 
-  outputStream << A.max() + 1 << " " << A.max() + 1 << " "
+  outputStream << num_vertices(A) << " " << num_vertices(A) << " "
                << std::accumulate(A.begin(), A.end(), 0, [&](int a, auto b) { return a + (int)(b.end() - b.begin()); })
                << std::endl;
 

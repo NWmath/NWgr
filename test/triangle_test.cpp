@@ -21,15 +21,15 @@
 using namespace nw::graph;
 using namespace nw::util;
 
-typedef compressed_sparse<0, undirected> csr_graph;
+typedef adjacency<0> csr_graph;
 
 //****************************************************************************
 TEST_CASE("triangle counting", "[tc]") {
 
-  auto aos_a = read_mm<undirected>(DATA_DIR "karate.mtx");
-  aos_a.swap_to_triangular<0, successor>();
-  aos_a.sort_by<1>();
-  aos_a.stable_sort_by<0>();
+  auto aos_a = read_mm<directedness::undirected>(DATA_DIR "karate.mtx");
+  swap_to_triangular<0>(aos_a, succession::successor);
+  sort_by<1>(aos_a);
+  stable_sort_by<0>(aos_a);
 
   csr_graph A(aos_a);
 

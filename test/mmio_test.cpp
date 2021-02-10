@@ -20,19 +20,19 @@ using namespace nw::util;
 TEST_CASE("constructing graphs using mmio", "[mmio]") {
 
   SECTION("reading an undirected graph") {
-    edge_list<undirected> A = read_mm<undirected>(DATA_FILE);
+    edge_list<directedness::undirected> A = read_mm<directedness::undirected>(DATA_FILE);
     A.stream();
   }
   SECTION("reading a directed graph") {
-    edge_list<directed> B = read_mm<directed>(DATA_FILE);
+    edge_list<directedness::directed> B = read_mm<directedness::directed>(DATA_FILE);
     B.stream();
   }
   SECTION("undirected with attributes") {
-    edge_list<undirected, double> C = read_mm<undirected, double>(DATA_FILE);
+    edge_list<directedness::undirected, double> C = read_mm<directedness::undirected, double>(DATA_FILE);
     C.stream();
   }
   SECTION("directed with attributes") {
-    edge_list<directed, double> D = read_mm<directed, double>(DATA_FILE);
+    edge_list<directedness::directed, double> D = read_mm<directedness::directed, double>(DATA_FILE);
     D.stream();
   }
 }
@@ -40,52 +40,54 @@ TEST_CASE("constructing graphs using mmio", "[mmio]") {
 TEST_CASE("constructing graphs using mmio-testing with auto", "[mmio]") {
 
   SECTION("reading an undirected graph") {
-    auto A = read_mm<undirected>(DATA_FILE);
+    auto A = read_mm<directedness::undirected>(DATA_FILE);
     A.stream();
   }
   SECTION("reading a directed graph") {
-    auto B = read_mm<directed>(DATA_FILE);
+    auto B = read_mm<directedness::directed>(DATA_FILE);
     B.stream();
   }
   SECTION("undirected with attributes") {
-    auto C = read_mm<undirected, double>(DATA_FILE);
+    auto C = read_mm<directedness::undirected, double>(DATA_FILE);
     C.stream();
   }
   SECTION("directed with attributes") {
-    auto D = read_mm<directed, double>(DATA_FILE);
+    auto D = read_mm<directedness::directed, double>(DATA_FILE);
     D.stream();
   }
 }
 
+#if 0
 TEST_CASE("constructing graphs using par_mmio", "[parmmio]") {
 
   SECTION("reading an undirected graph") {
-    edge_list<undirected> A = par_read_mm<undirected>(DATA_FILE, true, 2);
+    edge_list<directedness::undirected> A = par_read_mm<directedness::undirected>(DATA_FILE, true, 2);
     A.stream();
   }
   SECTION("reading a directed graph") {
-    edge_list<directed> B = par_read_mm<directed>(DATA_FILE, true, 2);
+    edge_list<directedness::directed> B = par_read_mm<directedness::directed>(DATA_FILE, true, 2);
     B.stream();
   }
   SECTION("undirected with attributes") {
-    edge_list<undirected, double> C = par_read_mm<undirected, double>(DATA_FILE, true, 2);
+    edge_list<directedness::undirected, double> C = par_read_mm<directedness::undirected, double>(DATA_FILE, true, 2);
     C.stream();
   }
   SECTION("directed with attributes") {
-    edge_list<directed, double> D = par_read_mm<directed, double>(DATA_FILE, true, 2);
+    edge_list<directedness::directed, double> D = par_read_mm<directedness::directed, double>(DATA_FILE, true, 2);
     D.stream();
   }
 }
+#endif
 
 TEST_CASE("writing graphsusing mmio", "[mmio]") {
-  edge_list<directed, double> A(5);
+  edge_list<directedness::directed, double> A(5);
   A.push_back(0, 1, 1);
   A.push_back(1, 2, 2);
   A.push_back(2, 3, 3);
   A.push_back(3, 4, 4);
   write_mm<2, double>("data/mmout_test.mtx", A);
 
-  edge_list<undirected, double> B(5);
+  edge_list<directedness::undirected, double> B(5);
   B.push_back(0, 1, 1);
   B.push_back(1, 2, 2);
   B.push_back(2, 3, 3);
@@ -93,7 +95,7 @@ TEST_CASE("writing graphsusing mmio", "[mmio]") {
   write_mm<2, double>("data/mmout_test2.mtx", B);
   write_mm<2, double>("data/mmout_test3.mtx", B, "symmetric");
 
-  edge_list<undirected, int, double> C(5);
+  edge_list<directedness::undirected, int, double> C(5);
   C.push_back(0, 1, 1, 5);
   C.push_back(1, 2, 2, 6);
   C.push_back(2, 3, 3, 7);
@@ -102,12 +104,14 @@ TEST_CASE("writing graphsusing mmio", "[mmio]") {
   write_mm<3, double>("data/mmout_test5.mtx", C);
   write_mm("data/mmout_test5.mtx", C);
 
-  edge_list<undirected> D(5);
+#if 0
+  edge_list<directedness::undirected> D(5);
   D.push_back(0, 1);
   D.push_back(1, 2);
   D.push_back(2, 3);
   D.push_back(3, 4);
-  write_mm<undirected>("data/mmout_test6.mtx", D);
+  write_mm<directedness::undirected>("data/mmout_test6.mtx", D);
+#endif
 
   adjacency<0, double>      A_A(A);
   adjacency<0, double>      A_B(B);

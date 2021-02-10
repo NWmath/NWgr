@@ -24,7 +24,7 @@ using namespace nw::graph;
 using namespace nw::util;
 
 TEST_CASE("Reverse Cuthill-Mckee Ordering", "[rcm]") {
-  edge_list<directed> el(10);
+  edge_list<directedness::directed> el(10);
   el.push_back(0, 1);
   el.push_back(0, 6);
   el.push_back(0, 8);

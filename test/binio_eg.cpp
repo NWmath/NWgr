@@ -28,7 +28,7 @@ int main(int argc, char* argv[]) {
     return -1;
   }
 
-  auto e = read_mm<directed>(argv[1]);
+  auto e = read_mm<directedness::directed>(argv[1]);
 
   e.remove_self_loops();
   e.uniq();
@@ -36,8 +36,8 @@ int main(int argc, char* argv[]) {
   e.stream_stats(std::cout);
   e.stream_prv(std::cout);
 
-  write_bin<directed>("e_foo.el", e);
-  auto h = read_bin<directed>("e_foo.el");
+  write_bin<directedness::directed>("e_foo.el", e);
+  auto h = read_bin<directedness::directed>("e_foo.el");
 
   if (e != h) {
     std::cout << "Error h != e" << std::endl;
@@ -47,7 +47,7 @@ int main(int argc, char* argv[]) {
 
   std::cout << "====" << std::endl;
 
-  auto f = read_mm<undirected>(argv[1]);
+  auto f = read_mm<directedness::undirected>(argv[1]);
 
   f.remove_self_loops();
   f.uniq();
@@ -55,8 +55,8 @@ int main(int argc, char* argv[]) {
   f.stream_stats(std::cout);
   f.stream_prv(std::cout);
 
-  write_bin<undirected>("f_foo.el", f);
-  auto g = read_bin<undirected>("f_foo.el");
+  write_bin<directedness::undirected>("f_foo.el", f);
+  auto g = read_bin<directedness::undirected>("f_foo.el");
 
   g.stream_stats(std::cout);
   g.stream_prv(std::cout);

@@ -33,6 +33,8 @@ std::tuple<double, std::vector<tree_mem>> bk_maxflow(const Graph& A, std::vector
   // double grow = 0;
   // double augment = 0;
   // double adopt = 0;
+  using vertex_id_type = vertex_id_t<Graph>;
+
   size_t         n_vtx    = A.size();
   vertex_id_type source   = n_vtx;
   vertex_id_type terminal = source + 1;
@@ -44,7 +46,7 @@ std::tuple<double, std::vector<tree_mem>> bk_maxflow(const Graph& A, std::vector
   std::queue<vertex_id_type>                orphans;
   std::vector<tree_mem>                     tree_id(n_vtx);
   std::vector<std::tuple<double*, double*>> trees(n_vtx);
-  std::vector<vertex_id_type>               preds(n_vtx, null_vertex);
+  std::vector<vertex_id_type>               preds(n_vtx, null_vertex_v);
   std::vector<size_t>                       timestamp(n_vtx);
   std::vector<size_t>                       dist(n_vtx);
 
@@ -79,7 +81,7 @@ std::tuple<double, std::vector<tree_mem>> bk_maxflow(const Graph& A, std::vector
       auto p = active.front();
 
       // This node was disconnected, so make it inactive
-      if (preds[p] == null_vertex) {
+      if (preds[p] == null_vertex_v) {
         active.pop();
         continue;
       }
@@ -116,7 +118,7 @@ std::tuple<double, std::vector<tree_mem>> bk_maxflow(const Graph& A, std::vector
         }
 
         // q is fresh (does not have a predecessor, not in the tree)
-        if (preds[q] == null_vertex) {
+        if (preds[q] == null_vertex_v) {
           // Assign our tree to q
           tree_id[q] = t;
           // We are the predecessor now
@@ -183,7 +185,7 @@ std::tuple<double, std::vector<tree_mem>> bk_maxflow(const Graph& A, std::vector
       if (next == terminal) {
         cap[vtx] += min_cap;
         if (cap[vtx] >= 0) {
-          preds[vtx] = null_vertex;
+          preds[vtx] = null_vertex_v;
           orphans.push(vtx);
         }
       } else {
@@ -191,7 +193,7 @@ std::tuple<double, std::vector<tree_mem>> bk_maxflow(const Graph& A, std::vector
         *std::get<0>(edge) -= min_cap;
         *std::get<1>(edge) += min_cap;
         if (*std::get<0>(edge) <= 0) {
-          preds[vtx] = null_vertex;
+          preds[vtx] = null_vertex_v;
           orphans.push(vtx);
         }
       }
@@ -202,7 +204,7 @@ std::tuple<double, std::vector<tree_mem>> bk_maxflow(const Graph& A, std::vector
       if (next == source) {
         cap[vtx] -= min_cap;
         if (cap[vtx] <= 0) {
-          preds[vtx] = null_vertex;
+          preds[vtx] = null_vertex_v;
           orphans.push(vtx);
         }
       } else {
@@ -210,7 +212,7 @@ std::tuple<double, std::vector<tree_mem>> bk_maxflow(const Graph& A, std::vector
         *std::get<0>(edge) -= min_cap;
         *std::get<1>(edge) += min_cap;
         if (*std::get<0>(edge) <= 0) {
-          preds[vtx] = null_vertex;
+          preds[vtx] = null_vertex_v;
           orphans.push(vtx);
         }
       }
@@ -224,7 +226,7 @@ std::tuple<double, std::vector<tree_mem>> bk_maxflow(const Graph& A, std::vector
       orphans.pop();
 
       tree_mem                     t = tree_id[p];
-      vertex_id_type               min_pred{null_vertex};
+      vertex_id_type               min_pred{null_vertex_v};
       size_t                       d_min = INFINITE_D;
       std::tuple<double*, double*> min_edge;
 
@@ -261,7 +263,7 @@ std::tuple<double, std::vector<tree_mem>> bk_maxflow(const Graph& A, std::vector
             timestamp[vtx] = gtime;
             dist[vtx]      = 1;
             break;
-          } else if (preds[vtx] == null_vertex) {
+          } else if (preds[vtx] == null_vertex_v) {
             d = INFINITE_D;
             break;
           }
@@ -284,7 +286,7 @@ std::tuple<double, std::vector<tree_mem>> bk_maxflow(const Graph& A, std::vector
       }
 
       // can't find new parent
-      if (min_pred == null_vertex) {
+      if (min_pred == null_vertex_v) {
         timestamp[p] = 0;
 
         for (auto it = G[p].begin(); it != G[p].end(); ++it) {
@@ -300,7 +302,7 @@ std::tuple<double, std::vector<tree_mem>> bk_maxflow(const Graph& A, std::vector
 
           if (preds[q] == p) {
             orphans.push(q);
-            preds[q] = null_vertex;
+            preds[q] = null_vertex_v;
           }
         }
       }
@@ -321,7 +323,7 @@ std::tuple<double, std::vector<tree_mem>> bk_maxflow(const Graph& A, std::vector
   // std::cout << path_length*(1.0)/augment_ct << " avg path length" <<
   // std::endl;
   for (size_t i = 0; i < n_vtx; ++i) {
-    if (preds[i] == null_vertex) {
+    if (preds[i] == null_vertex_v) {
       tree_id[i] = tree_mem::term;
     }
   }
