@@ -40,9 +40,9 @@ int main(int argc, char* argv[]) {
   } else {
     std::cout << "fail" << std::endl;
   }
-	      
 
-  edge_list<nw::graph::directedness::directed, double> c { {0, 3, 8.6}, { 1, 1, 7.5}, {2, 4, 3.0}, {3, 1, 99}, {4, 5, 3.1}, {3, 9, .04}, {2, 2, 1.5}, {1, 7,9 } };  
+
+  edge_list<nw::graph::directedness::directed, double> c { {0, 3, 8.6}, { 1, 1, 7.5}, {2, 4, 3.0}, {3, 1, 99}, {4, 5, 3.1}, {3, 9, .04}, {2, 2, 1.5}, {1, 7,9 } };
 
   auto d = adjacency<0,double>(c);
 
@@ -52,17 +52,17 @@ int main(int argc, char* argv[]) {
   }
 
   auto g = make_edge_range<0>(d);
-  for (auto&&[u, v, g]: f) {
+  for (auto&&[u, v, w]: g) {
     ;
   }
 
 
-  for (auto&&[u, v, g]: make_edge_range<0>(d)) {
+  for (auto&&[u, v, w]: make_edge_range<0>(d)) {
     ;
   }
 
 
-  for (auto&&[u, v, g]: make_edge_range<0>(d)) {
+  for (auto&&[u, v, w]: make_edge_range<0>(d)) {
     ;
   }
 
