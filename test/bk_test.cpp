@@ -24,11 +24,11 @@ using namespace nw::util;
 
 TEST_CASE("boykov-kolmogorov max flow", "[bkmf]") {
 
-  auto aos_a = read_mm<directed, double>(DATA_DIR "bktest1.mtx");
+  auto aos_a = read_mm<directedness::directed, double>(DATA_DIR "bktest1.mtx");
 
   size_t n_vtx = aos_a.size();
 
-  edge_list<directed, double, double*> A_list(n_vtx);
+  edge_list<directedness::directed, double, double*> A_list(n_vtx);
   for (auto y : aos_a) {
     A_list.push_back(std::get<0>(y), std::get<1>(y), std::get<2>(y), NULL);
   }

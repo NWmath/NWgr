@@ -24,7 +24,7 @@ using namespace nw::util;
 TEST_CASE("New Depth First Search", "[DFS]") {
   size_t n_vtx = 15;
 
-  edge_list<undirected> A_list(n_vtx);
+  edge_list<directedness::undirected> A_list(n_vtx);
   A_list.push_back(0, 1);
   A_list.push_back(1, 2);
   A_list.push_back(2, 3);

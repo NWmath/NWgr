@@ -177,19 +177,19 @@ TEST_CASE("indexed_struct_of_arrays const iteration", "[const]") {
 
 TEST_CASE("compressed class I/O", "[compressed_io]") {
   SECTION("I/O (read real symmetric to edge_list and convert to compressed graph)") {
-    auto A = read_mm<directed>(DATA_DIR "tree.mmio");
-    auto B = read_mm<undirected>(DATA_DIR "tree.mmio");
+    auto A = read_mm<directedness::directed>(DATA_DIR "tree.mmio");
+    auto B = read_mm<directedness::undirected>(DATA_DIR "tree.mmio");
 
-    auto C = read_mm<directed>(DATA_DIR "USAir97.mtx");
-    auto D = read_mm<undirected>(DATA_DIR "USAir97.mtx");
+    auto C = read_mm<directedness::directed>(DATA_DIR "USAir97.mtx");
+    auto D = read_mm<directedness::undirected>(DATA_DIR "USAir97.mtx");
   }
   SECTION("I/O (read pattern symmetric to edge_list and convert to compressed graph)") {
-    auto A = read_mm<directed>(DATA_DIR "karate.mtx");
-    auto B = read_mm<undirected>(DATA_DIR "karate.mtx");
+    auto A = read_mm<directedness::directed>(DATA_DIR "karate.mtx");
+    auto B = read_mm<directedness::undirected>(DATA_DIR "karate.mtx");
   }
   SECTION("I/O (read real unsymmetric to edge_list and convert to compressed graph)") {
-    auto A = read_mm<directed>(DATA_DIR "tree.mmio");
-    auto B = read_mm<undirected>(DATA_DIR "tree.mmio");
+    auto A = read_mm<directedness::directed>(DATA_DIR "tree.mmio");
+    auto B = read_mm<directedness::undirected>(DATA_DIR "tree.mmio");
   }
   SECTION("I/O (read pattern unsymmetric to edge_list and convert to compressed graph)") {}
   SECTION("I/O (read to edge_list and convert to compressed matrix)") {}
@@ -208,8 +208,8 @@ TEST_CASE("compressed class iteration", "[compressed]") {
 }
 
 
-  auto C = read_mm<directed, double>(argv[1]);
-  auto D = read_mm<undirected, double>(argv[1]);
+  auto C = read_mm<directedness::directed, double>(argv[1]);
+  auto D = read_mm<directedness::undirected, double>(argv[1]);
 
   compressed_sparse<0, directed>   E(A);
   compressed_sparse<1, directed>   F(A);

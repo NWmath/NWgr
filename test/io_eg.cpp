@@ -22,7 +22,7 @@ int main(int argc, char* argv[]) {
     std::cout << argv[0] << " mtx file" << std::endl;
   }
 
-  auto aos_a = read_mm<undirected>(argv[1]);
+  auto aos_a = read_mm<directedness::undirected>(argv[1]);
 
   std::ofstream outfile("foo.bin");
   aos_a.serialize(outfile);

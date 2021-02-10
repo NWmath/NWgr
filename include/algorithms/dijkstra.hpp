@@ -23,7 +23,9 @@ namespace nw {
 namespace graph {
 
 template <typename DistanceT, typename GraphT>
-std::vector<DistanceT> dijkstra(const GraphT& graph, vertex_id_type source) {
+std::vector<DistanceT> dijkstra(const GraphT& graph, vertex_id_t<GraphT> source) {
+  using vertex_id_type = vertex_id_t<GraphT>;
+
   size_t N(graph.end() - graph.begin());
   assert(source < N);
 
@@ -46,7 +48,9 @@ std::vector<DistanceT> dijkstra(const GraphT& graph, vertex_id_type source) {
 }
 
 template <typename DistanceT, typename GraphT>
-auto dijkstra_v0(const GraphT& graph, vertex_id_type source) {
+auto dijkstra_v0(const GraphT& graph, vertex_id_t<GraphT> source) {
+  using vertex_id_type = vertex_id_t<GraphT>;
+
   size_t N(graph.end() - graph.begin());
   assert(source < N);
 

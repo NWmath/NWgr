@@ -112,13 +112,13 @@ TEST_CASE("sort", "[edge_list]") {
 
 
 
-  sparse_aos<undirected> A(N, N);
+  sparse_aos<directedness::undirected> A(N, N);
   A.push_back(1, 2);
 
-  sparse_aos<undirected, double> B(N, N);
+  sparse_aos<directedness::undirected, double> B(N, N);
   B.push_back(1, 2, 3.14);
 
-  sparse_aos<undirected, double, size_t> C(N, N);
+  sparse_aos<directedness::undirected, double, size_t> C(N, N);
   C.push_back(1, 2, 3.14, 159);
   C.push_back(3, 3, 3.141, 59);
   C.push_back(2, 1, 3.1415, 9);

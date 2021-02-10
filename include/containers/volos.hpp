@@ -88,6 +88,10 @@ using adj_list = index_adj_list<idx, default_vertex_id_type, Attributes...>;
 
 template <int idx, std::unsigned_integral vertex_id, typename... Attributes>
 struct graph_traits<index_adj_list<idx, vertex_id, Attributes...>> {
+
+  using my_type = index_adj_list<idx, vertex_id, Attributes...>;
+
+
   using tuple_type = std::tuple<Attributes...>;
   using inner_type = std::forward_list<tuple_type>;
   using outer_type = std::vector<inner_type>;
@@ -98,7 +102,7 @@ struct graph_traits<index_adj_list<idx, vertex_id, Attributes...>> {
   using const_outer_iterator = typename outer_type::const_iterator;
   using const_inner_iterator = typename inner_type::const_iterator;
 
-  using vertex_id_type    = typename std::tuple_element<0, tuple_type>::type;
+  using vertex_id_type    = my_type::vertex_id_type;
   using vertex_size_type  = typename outer_type::size_type;
   using num_vertices_type = std::array<vertex_size_type, 1>;
 };

@@ -25,7 +25,7 @@ using namespace nw::util;
 
 TEST_CASE("max flow 1", "[MF1]") {
   size_t                              source = 0, sink = 5;
-  edge_list<directed, double, double> E_list(8);
+  edge_list<directedness::directed, double, double> E_list(8);
   E_list.push_back(0, 1, 10, 0);
   E_list.push_back(1, 0, 10, 0);
   E_list.push_back(1, 7, 10, 0);
@@ -44,10 +44,10 @@ TEST_CASE("max flow 1", "[MF1]") {
 
 TEST_CASE("max flow 2", "[mf2]") {
   size_t source = 0, sink = 7;
-  auto   aos_a = read_mm<directed, double>(DATA_DIR "flowtest.mtx");
+  auto   aos_a = read_mm<directedness::directed, double>(DATA_DIR "flowtest.mtx");
   size_t n_vtx = aos_a.size();
 
-  edge_list<directed, double, double> E_list(n_vtx);
+  edge_list<directedness::directed, double, double> E_list(n_vtx);
   for (auto y : aos_a) {
     E_list.push_back(std::get<0>(y), std::get<1>(y), std::get<2>(y), 0);
   }
@@ -63,10 +63,10 @@ TEST_CASE("max flow 2", "[mf2]") {
 TEST_CASE("max flow3", "[mf3]") {
   size_t source = 0, sink = 7;
 
-  auto   aos_a = read_mm<directed, double>(DATA_DIR "flowtest.mtx");
+  auto   aos_a = read_mm<directedness::directed, double>(DATA_DIR "flowtest.mtx");
   size_t n_vtx = aos_a.size();
 
-  edge_list<directed, double, double, double> E_list(n_vtx);
+  edge_list<directedness::directed, double, double, double> E_list(n_vtx);
   for (auto y : aos_a) {
     E_list.push_back(std::get<0>(y), std::get<1>(y), std::get<2>(y), 3 * std::get<2>(y), 0);
   }
@@ -94,10 +94,10 @@ TEST_CASE("max flow 3", "[mf3]") {
 
   size_t source = 0, sink = 7;
 
-  auto   aos_a = read_mm<directed, double>(DATA_DIR "flowtest.mtx");
+  auto   aos_a = read_mm<directedness::directed, double>(DATA_DIR "flowtest.mtx");
   size_t n_vtx = aos_a.size();
 
-  edge_list<directed, double, double> A_list(n_vtx);
+  edge_list<directedness::directed, double, double> A_list(n_vtx);
   for (auto y : aos_a) {
     A_list.push_back(std::get<0>(y), std::get<1>(y), std::get<2>(y), 0);
   }

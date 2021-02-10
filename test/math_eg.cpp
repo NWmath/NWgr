@@ -31,9 +31,9 @@ void run_test(EdgeList&& E) {
 
 int main() {
 
-  run_test<compressed_sparse<0, directed, double>>(edge_list<directed, double>({{0, 0, 1}, {1, 1, 1}, {2, 2, 1}, {0, 1, -3.7}}));
+  run_test<compressed_sparse<0, directed, double>>(edge_list<directedness::directed, double>({{0, 0, 1}, {1, 1, 1}, {2, 2, 1}, {0, 1, -3.7}}));
 
-  edge_list<directed, double> E({{0, 0, 1}, {1, 1, 1}, {2, 2, 1}, {0, 1, -3.7}});
+  edge_list<directedness::directed, double> E({{0, 0, 1}, {1, 1, 1}, {2, 2, 1}, {0, 1, -3.7}});
 
   compressed_sparse<0, directed, double> A(E);
 
@@ -56,7 +56,7 @@ int main() {
 
 #if 0
   {
-    edge_list<directed, double>            A = {{0, 0, 1}, {1, 1, 1}, {2, 2, 1}};
+    edge_list<directedness::directed, double>            A = {{0, 0, 1}, {1, 1, 1}, {2, 2, 1}};
     compressed_sparse<0, directed, double> B(A);
 
     matvec(B, x, y);
