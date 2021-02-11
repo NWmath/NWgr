@@ -25,18 +25,19 @@
 using namespace nw::graph;
 using namespace nw::util;
 
-typedef compressed_sparse<0> csr_graph;
+typedef adjacency<0> csr_graph;
 
 TEST_CASE("Jones-Plassmann Coloring", "[jp]") {
 
-  /*Read the edgelist*/
+  /* Read the edgelist */
   auto aos_a = read_mm<directedness::undirected>(DATA_DIR "coloringData.mmio");
-  aos_a.swap_to_triangular<0, predecessor>();
-  aos_a.sort_by<1>();
-  aos_a.stable_sort_by<0>();
 
-  /*Construct the graph*/
-  compressed_sparse<0, undirected> A(aos_a);
+  swap_to_triangular<0>(aos_a, succession::predecessor);
+  sort_by<1>(aos_a);
+  stable_sort_by<0>(aos_a);
+
+  /* Construct the graph */
+  adjacency<0> A(aos_a);
 
   size_t              N = A.size();
   std::vector<size_t> colors(N, std::numeric_limits<std::uint32_t>::max());

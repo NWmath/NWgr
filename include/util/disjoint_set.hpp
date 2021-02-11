@@ -35,10 +35,12 @@ using counting_iterator = tbb::counting_iterator<T>;
 }
 #endif
 
+#include "util/defaults.hpp"
+
 namespace nw {
 namespace graph {
 
-using vertex_id_type = vertex_id_type;
+using vertex_id_type = default_vertex_id_type;
 
 vertex_id_type disjoint_find(std::vector<std::pair<vertex_id_type, size_t>>& subsets, vertex_id_type vtx) {
   vertex_id_type parent = subsets[vtx].first;

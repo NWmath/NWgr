@@ -8,8 +8,8 @@
 // Author: Kevin Deweese
 //
 
-#ifndef NW_GRAPH_SPANNING_TREE
-#define NW_GRAPH_SPANNING_TREE
+#ifndef NW_GRAPH_KRUSKAL_HPP
+#define NW_GRAPH_KRUSKAL_HPP
 
 #include <algorithm>
 #include <tuple>
@@ -49,4 +49,5 @@ EdgeListT kruskal(EdgeListT& E, Compare comp) {
 
 }    // namespace graph
 }    // namespace nw
-#endif    //  NW_GRAPH_SPANNING_TREE
+
+#endif    //  NW_GRAPH_KRUSKAL_HPP

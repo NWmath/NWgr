@@ -169,7 +169,7 @@ bool pull(const Graph& g, const T u, std::vector<T>& comp) {
   return change;
 }
 
-template <typename Graph, typename T>
+template <typename Graph, typename T = vertex_id_t<Graph>>
 std::vector<T> compute_connected_components_v1(const Graph& g) {
   size_t N = g.size();
   // std::vector<atomwrapper<T>> comp(N,
@@ -256,7 +256,7 @@ std::vector<T> compute_connected_components_v1(const Graph& g) {
   return res;
 }    // compute_connected_components_v1
 
-template <typename Graph, typename T>
+template <typename Graph, typename T = vertex_id_t<Graph>>
 std::vector<T> compute_connected_components_v2(const Graph& g) {
   size_t         N = g.size();
   std::vector<T> comp(g.size());
@@ -289,7 +289,7 @@ std::vector<T> ccv1(const Graph& g) {
   return comp;
 }
 
-template <typename Graph, typename Graph2, typename T>
+template <typename Graph, typename Graph2, typename T = vertex_id_t<Graph>>
 std::vector<T> Afforest(const Graph& g, Graph2& t_graph, size_t neighbor_bound = 2) {
   std::vector<T> comp(g.size());
   // set component id of vertex v to v
@@ -315,7 +315,7 @@ std::vector<T> Afforest(const Graph& g, Graph2& t_graph, size_t neighbor_bound =
   return comp;
 }
 
-template <typename Graph, typename T>
+template <typename Graph, typename T = vertex_id_t<Graph>>
 std::vector<T> ccv5(const Graph& g) {
   size_t         N = g.size();
   std::vector<T> comp(g.size());
@@ -331,8 +331,8 @@ std::vector<T> ccv5(const Graph& g) {
   return comp;
 }
 
-template <typename Graph, typename T>
-auto sv_v6(/* const */ Graph& g) {
+template <typename Graph, typename T= vertex_id_t<Graph>>
+auto sv_v6(const Graph& g) {
   std::vector<T> comp(g.size());
 
   std::for_each(std::execution::par_unseq, counting_iterator<T>(0), counting_iterator<T>(g.size()), [&](auto n) { comp[n] = n; });
@@ -373,8 +373,8 @@ auto sv_v6(/* const */ Graph& g) {
   return comp;
 }
 
-template <typename Graph, typename T>
-auto sv_v8(/* const */ Graph& g) {
+template <typename Graph, typename T = vertex_id_t<Graph>>
+auto sv_v8(Graph& g) {
   std::vector<T> comp(g.size());
 
   std::for_each(std::execution::par_unseq, counting_iterator<T>(0), counting_iterator<T>(g.size()), [&](auto n) { comp[n] = n; });
@@ -418,8 +418,8 @@ auto sv_v8(/* const */ Graph& g) {
   return comp;
 }
 
-template <typename Graph, typename T>
-auto sv_v9(/* const */ Graph& g) {
+template <typename Graph, typename T = vertex_id_t<Graph>>
+auto sv_v9(Graph& g) {
   std::vector<T> comp(g.size());
 
   std::for_each(std::execution::par_unseq, counting_iterator<T>(0), counting_iterator<T>(g.size()), [&](auto n) { comp[n] = n; });

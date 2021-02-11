@@ -14,6 +14,8 @@
 #include <queue>
 #include <vector>
 
+#include "graph_traits.hpp"
+
 namespace nw {
 namespace graph {
 
