@@ -107,7 +107,14 @@ public:
     }
   }
 
-  void open_for_push_back() { graph_base::is_open = true; }
+  void open_for_push_back() { 
+    graph_base::is_open = true; 
+    graph_base::vertex_cardinality[0] = graph_base::vertex_cardinality[0] - 1;
+
+    if constexpr (false == is_unipartite) {
+      graph_base::vertex_cardinality[1] = graph_base::vertex_cardinality[1] - 1;
+    }
+  }
 
   void close_for_push_back() {
     graph_base::vertex_cardinality[0] = graph_base::vertex_cardinality[0] + 1;

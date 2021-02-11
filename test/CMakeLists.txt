@@ -26,29 +26,30 @@ nw_graph_add_test(back_edge_test)
 nw_graph_add_test(bfs_test_0)
 nw_graph_add_test(bfs_test_1)
 nw_graph_add_test(compressed_test)
+nw_graph_add_test(connected_component_test)
 nw_graph_add_test(edge_list_test)
+nw_graph_add_test(jp_coloring_test)
 nw_graph_add_test(mis_test)
 nw_graph_add_test(mmio_test)
 nw_graph_add_test(new_dfs_test)
+nw_graph_add_test(page_rank_test)
 nw_graph_add_test(size_test)
 nw_graph_add_test(soa_test)
+nw_graph_add_test(spanning_tree_test)
 nw_graph_add_test(triangle_test)
 nw_graph_add_test(volos_test)
 nw_graph_add_test(vov_test)
 
-# nw_graph_add_test(connected_component_test)
-# nw_graph_add_test(page_rank_test)
-# nw_graph_add_test(jp_coloring_test)
 
 # nw_graph_add_test(bk_test)
 # nw_graph_add_test(kcore_test)
 # nw_graph_add_test(max_flow_test)
 # nw_graph_add_test(rcm_test)
-# nw_graph_add_test(spanning_tree_test)
+
 
 # nw_graph_add_exe(init_eg)
 
-# exptected failures for now
+# expected failures for now
 #set_tests_properties(mis_test jp_coloring_test page_rank_test
 #  PROPERTIES WILL_FAIL TRUE)
 

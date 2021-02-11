@@ -30,7 +30,7 @@ using namespace nw::util;
 using csr_graph = adjacency<0>;
 
 TEST_CASE("connected component", "[cc]") {
-  /*Read the edgelist*/
+  /* Read the edgelist */
   auto aos_a = read_mm<nw::graph::directedness::directed>(DATA_DIR "coloringData.mmio");
   // aos_a.triangularize<predecessor>();
   // aos_a.sort_by<1>();
@@ -43,7 +43,7 @@ TEST_CASE("connected component", "[cc]") {
   std::vector<vertex_id_t<csr_graph>> component_ids(N, std::numeric_limits<vertex_id_t<csr_graph>>::max());
 
   SECTION("v1 cc_push") {
-    component_ids = ccv1(A);
+    component_ids = compute_connected_components_v1(A);
     for (auto component_id : component_ids) {
       //std::cout << component_id << std::endl;
       REQUIRE(component_id == 0);

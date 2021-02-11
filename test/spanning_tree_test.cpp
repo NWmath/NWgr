@@ -9,7 +9,7 @@
 // Author: Kevin Deweese
 //
 
-#include "algorithms/spanning_tree.hpp"
+#include "algorithms/kruskal.hpp"
 #include "containers/edge_list.hpp"
 #include "io/mmio.hpp"
 
