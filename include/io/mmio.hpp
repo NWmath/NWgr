@@ -43,10 +43,10 @@ void mm_fill(std::istream& inputStream, edge_list<directedness::directed>& A, si
     std::getline(inputStream, buffer);
     std::stringstream(buffer) >> d0 >> d1;
 
-    A.push_back(d0, d1);
+    A.push_back(d0-1, d1-1);
 
     if (file_symmetry && (d0 != d1)) {
-      A.push_back(d1, d0);
+      A.push_back(d1-1, d0-1);
     }
   }
   A.close_for_push_back();
@@ -69,10 +69,10 @@ void mm_fill(std::istream& inputStream, edge_list<directedness::directed, T>& A,
       std::stringstream(buffer) >> d0 >> d1 >> v;
     }
 
-    A.push_back(d0, d1, v);
+    A.push_back(d0-1, d1-1, v);
 
     if (file_symmetry && (d0 != d1)) {
-      A.push_back(d1, d0, v);
+      A.push_back(d1-1, d0-1, v);
     }
   }
   A.close_for_push_back();
@@ -93,7 +93,7 @@ void mm_fill(std::istream& inputStream, edge_list<directedness::undirected>& A, 
       inputStream >> d0 >> d1 >> d2;
     }
 
-    A.push_back(d0, d1);
+    A.push_back(d0-1, d1-1);
   }
   A.close_for_push_back();
 }
@@ -113,7 +113,7 @@ void mm_fill(std::istream& inputStream, edge_list<directedness::undirected, T>& 
     } else {
       std::stringstream(buffer) >> d0 >> d1 >> v;
     }
-    A.push_back(d0, d1, v);
+    A.push_back(d0-1, d1-1, v);
   }
   A.close_for_push_back();
 }
@@ -386,16 +386,16 @@ par_load_mm(mmio::MatrixMarketFile& mmio, std::vector<std::vector<std::tuple<siz
 
           if(u == v && keep_loops) {
             if(mmio.isPattern()) {
-              sub_loops[thread].push_back(std::tuple(u, v, T(1)));
+              sub_loops[thread].push_back(std::tuple(u-1, v-1, T(1)));
             } else {
-              sub_loops[thread].push_back(std::tuple(u, v, w));
+              sub_loops[thread].push_back(std::tuple(u-1, v-1, w));
             }
           }
           else {
             if(mmio.isPattern()) {
-              sub_lists[thread].push_back(std::tuple(u, v, T(1)));
+              sub_lists[thread].push_back(std::tuple(u-1, v-1, T(1)));
             } else {
-              sub_lists[thread].push_back(std::tuple(u, v, w));
+              sub_lists[thread].push_back(std::tuple(u-1, v-1, w));
             }
             ++count;
           }
@@ -448,9 +448,9 @@ par_load_mm(mmio::MatrixMarketFile& mmio, std::vector<std::vector<std::tuple<siz
           i_max[1] = std::max((vertex_id_type)v, i_max[1]);
 
           if(u == v && keep_loops) {
-            sub_loops[thread].push_back(std::tuple(u,v));
+            sub_loops[thread].push_back(std::tuple(u-1,v-1));
           } else {
-            sub_lists[thread].push_back(std::tuple(u, v));
+            sub_lists[thread].push_back(std::tuple(u-1, v-1));
             ++count;
           }
         }
