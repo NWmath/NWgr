@@ -107,29 +107,21 @@ template <class Graph, class Verifier>
 static std::tuple<double, bool> sssp(int id, const Graph& graph, vertex_id_t<Graph> source, distance_t delta, Verifier&& verifier) {
   switch (id) {
     case 0:
-      return time_op_verify([&] { return delta_stepping_v0<distance_t>(graph, source, delta); },
-                            std::forward<Verifier>(verifier));
+      return time_op_verify([&] { return delta_stepping_v0<distance_t>(graph, source, delta); }, std::forward<Verifier>(verifier));
     case 1:
-      return time_op_verify([&] { return delta_stepping_m1<distance_t>(graph, source, delta); },
-                            std::forward<Verifier>(verifier));
+      return time_op_verify([&] { return delta_stepping_m1<distance_t>(graph, source, delta); }, std::forward<Verifier>(verifier));
     case 6:
-      return time_op_verify([&] { return delta_stepping_v6<distance_t>(graph, source, delta); },
-                            std::forward<Verifier>(verifier));
+      return time_op_verify([&] { return delta_stepping_v6<distance_t>(graph, source, delta); }, std::forward<Verifier>(verifier));
     case 8:
-      return time_op_verify([&] { return delta_stepping_v8<distance_t>(graph, source, delta); },
-                            std::forward<Verifier>(verifier));
+      return time_op_verify([&] { return delta_stepping_v8<distance_t>(graph, source, delta); }, std::forward<Verifier>(verifier));
     case 9:
-      return time_op_verify([&] { return delta_stepping_v9<distance_t>(graph, source, delta); },
-                            std::forward<Verifier>(verifier));
+      return time_op_verify([&] { return delta_stepping_v9<distance_t>(graph, source, delta); }, std::forward<Verifier>(verifier));
     case 10:
-      return time_op_verify([&] { return delta_stepping_v10<distance_t>(graph, source, delta); },
-                            std::forward<Verifier>(verifier));
+      return time_op_verify([&] { return delta_stepping_v10<distance_t>(graph, source, delta); }, std::forward<Verifier>(verifier));
     case 11:
-      return time_op_verify([&] { return delta_stepping_v11<distance_t>(graph, source, delta); },
-                            std::forward<Verifier>(verifier));
+      return time_op_verify([&] { return delta_stepping_v11<distance_t>(graph, source, delta); }, std::forward<Verifier>(verifier));
     case 12:
-      return time_op_verify([&] { return delta_stepping_v12<distance_t>(graph, source, delta); },
-                            std::forward<Verifier>(verifier));
+      return time_op_verify([&] { return delta_stepping_v12<distance_t>(graph, source, delta); }, std::forward<Verifier>(verifier));
     default:
       std::cerr << "Invalid SSSP version " << id << "\n";
       return std::tuple(0.0, true);
@@ -168,7 +160,6 @@ int main(int argc, char* argv[]) {
     graph.stream_indices();
   }
 
-  
   std::vector<vertex_id_t<decltype(graph)>> sources;
   if (args["--sources"]) {
     sources = load_sources_from_file(graph, args["--sources"].asString());

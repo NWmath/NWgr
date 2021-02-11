@@ -161,8 +161,7 @@ auto delta_stepping_v6(const Graph& graph, Id source, T delta) {
     std::swap(frontier, bins[top_bin]);
     tbb::parallel_for_each(frontier, [&](Id i) {
       if (tdist[i] >= delta * top_bin) {
-        std::for_each(g[i].begin(), g[i].end(),
-                      [&](auto&& elt) { std::apply([&](Id j, auto wt) { relax(i, j, wt); }, std::move(elt)); });
+        std::for_each(g[i].begin(), g[i].end(), [&](auto&& elt) { std::apply([&](Id j, auto wt) { relax(i, j, wt); }, std::move(elt)); });
       }
     });
 

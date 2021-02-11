@@ -19,11 +19,11 @@ namespace graph {
 
 enum ready_to_process { yes, no };
 
-  template <typename Graph, typename Queue = std::queue<vertex_id_t<Graph>>>
+template <typename Graph, typename Queue = std::queue<vertex_id_t<Graph>>>
 class dag_range {
 
 public:
-    using vertex_id_type = vertex_id_t<Graph>;
+  using vertex_id_type = vertex_id_t<Graph>;
 
   typedef std::vector<std::vector<size_t>> VOV;
 

@@ -42,7 +42,6 @@
 
 #include "access.hpp"
 
-
 namespace nw {
 namespace graph {
 
@@ -52,8 +51,7 @@ static bool g_time_edge_list  = false;
 void debug_edge_list(bool flag = true) { g_debug_edge_list = flag; }
 void time_edge_list(bool flag = true) { g_time_edge_list = flag; }
 
-template <std::unsigned_integral vertex_id, typename graph_base_t, directedness direct = directedness::undirected,
-          typename... Attributes>
+template <std::unsigned_integral vertex_id, typename graph_base_t, directedness direct = directedness::undirected, typename... Attributes>
 class index_edge_list : public graph_base_t, public struct_of_arrays<vertex_id, vertex_id, Attributes...> {
 
 public:
@@ -80,9 +78,7 @@ public:
   constexpr index_edge_list(index_edge_list&&)                 = default;
   constexpr index_edge_list& operator=(index_edge_list&&) = default;
 
-  index_edge_list(size_t N = 0) requires(std::is_same<graph_base, unipartite_graph_base>::value) : graph_base(N) {
-    open_for_push_back();
-  }
+  index_edge_list(size_t N = 0) requires(std::is_same<graph_base, unipartite_graph_base>::value) : graph_base(N) { open_for_push_back(); }
   index_edge_list(size_t M = 0, size_t N = 0) requires(std::is_same<graph_base, bipartite_graph_base>::value) : graph_base(M, N) {
     open_for_push_back();
   }
@@ -226,20 +222,15 @@ using edge_list = index_edge_list<default_vertex_id_type, unipartite_graph_base,
 template <directedness edge_directedness = directedness::undirected, typename... Attributes>
 using bi_edge_list = index_edge_list<default_vertex_id_type, bipartite_graph_base, edge_directedness, Attributes...>;
 
-
-template <std::unsigned_integral vertex_id, typename graph_base_t, directedness direct = directedness::undirected,
-          typename... Attributes>
+template <std::unsigned_integral vertex_id, typename graph_base_t, directedness direct = directedness::undirected, typename... Attributes>
 auto tag_invoke(const num_edges_tag, const index_edge_list<vertex_id, graph_base_t, direct, Attributes...>& b) {
   return b.num_edges();
 }
 
-
-template <std::unsigned_integral vertex_id, typename graph_base_t, directedness direct = directedness::undirected,
-          typename... Attributes>
+template <std::unsigned_integral vertex_id, typename graph_base_t, directedness direct = directedness::undirected, typename... Attributes>
 auto tag_invoke(const num_vertices_tag, const index_edge_list<vertex_id, graph_base_t, direct, Attributes...>& b) {
   return b.num_vertices()[0];
 }
-
 
 template <std::unsigned_integral vertex_id, typename graph_base_t, directedness direct, typename... Attributes>
 struct graph_traits<index_edge_list<vertex_id, graph_base_t, direct, Attributes...>> {
@@ -256,8 +247,6 @@ struct graph_traits<index_edge_list<vertex_id, graph_base_t, direct, Attributes.
   using const_outer_iterator = std::false_type;
   using const_inner_iterator = std::false_type;
 };
-
-
 
 }    // namespace graph
 }    // namespace nw

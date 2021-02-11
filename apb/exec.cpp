@@ -63,8 +63,8 @@ auto apb_adj(Adjacency& graph, size_t ntrial, Exec1 exec1 = std::execution::seq,
     auto dat = std::get<1>(graph.to_be_indexed_).data();
 
     std::for_each(exec1, counting_iterator<size_t>(0), counting_iterator<size_t>(N), [&](size_t i) {
-      y[i] += std::transform_reduce(exec2, counting_iterator<size_t>(ptr[i]), counting_iterator<size_t>(ptr[i + 1]), 0.0,
-                                    std::plus<float>(), [&](size_t j) { return x[idx[j]] * dat[j]; });
+      y[i] += std::transform_reduce(exec2, counting_iterator<size_t>(ptr[i]), counting_iterator<size_t>(ptr[i + 1]), 0.0, std::plus<float>(),
+                                    [&](size_t j) { return x[idx[j]] * dat[j]; });
     });
     t2.stop();
     time += t2.elapsed();
@@ -169,7 +169,7 @@ int main(int argc, char* argv[]) {
 
   auto el_a = [&]() {
     if (read_processed_edgelist != "") {
-      life_timer                  _("deserialize");
+      life_timer                                _("deserialize");
       edge_list<directedness::directed, double> el_a(0);
       el_a.deserialize(read_processed_edgelist);
       return el_a;

@@ -113,8 +113,8 @@ T findDominantComponentID(const std::vector<T>& comp, size_t nsamples = 1024) {
     T n = distribution(gen);
     ++sample_counts[comp[n]];
   }
-  auto dominant = std::max_element(sample_counts.begin(), sample_counts.end(),
-                                   [](const kvp_type& a, const kvp_type& b) { return a.second < b.second; });
+  auto dominant =
+      std::max_element(sample_counts.begin(), sample_counts.end(), [](const kvp_type& a, const kvp_type& b) { return a.second < b.second; });
   /*
     float frac_of_graph = static_cast<float>(dominant->second) / nsamples;
     std::cout
@@ -271,8 +271,7 @@ std::vector<T> compute_connected_components_v2(const Graph& g) {
     }
     change = false;
 
-    std::for_each(std::execution::par_unseq, counting_iterator<T>(0), counting_iterator<T>(N),
-                  [&](auto u) { change = pull(g, u, comp); });
+    std::for_each(std::execution::par_unseq, counting_iterator<T>(0), counting_iterator<T>(N), [&](auto u) { change = pull(g, u, comp); });
     std::for_each(std::execution::par_unseq, counting_iterator<T>(0), counting_iterator<T>(N), [&](auto u) { push(g, u, comp); });
 
     compress(comp);
@@ -285,8 +284,7 @@ std::vector<T> ccv1(const Graph& g) {
   std::vector<T> comp(g.size());
   std::for_each(std::execution::par_unseq, counting_iterator<T>(0), counting_iterator<T>(g.size()), [&](auto n) { comp[n] = n; });
 
-  std::for_each(std::execution::par_unseq, counting_iterator<T>(0), counting_iterator<T>(g.size()),
-                [&](auto u) { push(g, u, comp); });
+  std::for_each(std::execution::par_unseq, counting_iterator<T>(0), counting_iterator<T>(g.size()), [&](auto u) { push(g, u, comp); });
   compress(comp);
   return comp;
 }

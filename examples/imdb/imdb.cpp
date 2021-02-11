@@ -11,8 +11,8 @@
 #include "xtensor/xcsv.hpp"
 
 #include "adaptors/bfs_edge_range.hpp"
-#include "containers/compressed.hpp"
 #include "containers/adjacency.hpp"
+#include "containers/compressed.hpp"
 #include "containers/edge_list.hpp"
 #include "util/timer.hpp"
 
@@ -163,8 +163,8 @@ int main() {
   std::cout << "David Suchet has a Bacon number of " << distance[david_suchet] << std::endl;
   d = distance[david_suchet];
   while (david_suchet != kevin_bacon) {
-    std::cout << names(david_suchet, 1) << " starred with " << names(parents[david_suchet], 1) << " in "
-              << titles(together_in[david_suchet], 2) << std::endl;
+    std::cout << names(david_suchet, 1) << " starred with " << names(parents[david_suchet], 1) << " in " << titles(together_in[david_suchet], 2)
+              << std::endl;
     david_suchet = parents[david_suchet];
     if (d-- == 0) {
       break;

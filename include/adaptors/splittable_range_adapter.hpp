@@ -26,8 +26,7 @@ public:
 
   splittable_range_adapter(Iterator begin, Iterator end) : begin_(begin > end ? end : begin), end_(end) {}
 
-  splittable_range_adapter(Iterator begin, Iterator end, std::size_t cutoff)
-      : begin_(begin > end ? end : begin), end_(end), cutoff_(cutoff) {}
+  splittable_range_adapter(Iterator begin, Iterator end, std::size_t cutoff) : begin_(begin > end ? end : begin), end_(end), cutoff_(cutoff) {}
 
   splittable_range_adapter(splittable_range_adapter& rhs, tbb::split)
       : begin_(rhs.begin_), end_(rhs.begin_ += rhs.size() / 2), cutoff_(rhs.cutoff_) {}

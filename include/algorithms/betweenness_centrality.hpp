@@ -214,9 +214,7 @@ std::vector<score_t> approx_betweenness_worklist_serial(const Graph& A, std::vec
     udata->edge_l_s[v].first  = udata->l;
     udata->edge_l_s[v].second = udata->path_counts;
   };
-  auto g_fu = [](auto& u, auto& v, auto& udata, auto& vdata) {
-    return vdata->l == udata->l + 1 && udata->edge_l_s[v].first != udata->l;
-  };
+  auto g_fu     = [](auto& u, auto& v, auto& udata, auto& vdata) { return vdata->l == udata->l + 1 && udata->edge_l_s[v].first != udata->l; };
   auto apply_fu = [](auto& u, auto& v, auto& udata, auto& vdata) {
     vdata->path_counts += udata->path_counts;
     udata->succs.emplace(v);
@@ -387,9 +385,7 @@ std::vector<score_t> approx_betweenness_worklist(const Graph& A, std::vector<typ
     udata->edge_l_s[v].first  = udata->l;
     udata->edge_l_s[v].second = udata->path_counts;
   };
-  auto g_fu = [](auto& u, auto& v, auto& udata, auto& vdata) {
-    return vdata->l == udata->l + 1 && udata->edge_l_s[v].first != udata->l;
-  };
+  auto g_fu     = [](auto& u, auto& v, auto& udata, auto& vdata) { return vdata->l == udata->l + 1 && udata->edge_l_s[v].first != udata->l; };
   auto apply_fu = [](auto& u, auto& v, auto& udata, auto& vdata) {
     vdata->path_counts += udata->path_counts;
     udata->succs.emplace(v);
@@ -646,8 +642,8 @@ std::vector<score_t> approx_betweenness_worklist(const Graph& A, std::vector<typ
                   // std::cout << "u " << u << std::endl;
                   vector_spinlocks[u].lock();
                   // locks[u].lock();
-                  delta[u] = delta[u] + static_cast<score_t>(vertices[u].path_counts) /
-                                            static_cast<score_t>(vertices[v].path_counts) * (1 + delta[v]);
+                  delta[u] =
+                      delta[u] + static_cast<score_t>(vertices[u].path_counts) / static_cast<score_t>(vertices[v].path_counts) * (1 + delta[v]);
                   // succs[u].erase(v);
                   succs_ct[u]--;
                   // if (succs[u].empty() && u != s) worklist_back.push_back(u);
@@ -714,9 +710,7 @@ std::vector<score_t> approx_betweenness_worklist_noabstraction(const Graph& A, s
     udata->edge_l_s[v].second = udata->path_counts;
     vdata->preds.emplace_front(u);
   };
-  auto g_fu = [](auto& u, auto& v, auto& udata, auto& vdata) {
-    return vdata->l == udata->l + 1 && udata->edge_l_s[v].first != udata->l;
-  };
+  auto g_fu     = [](auto& u, auto& v, auto& udata, auto& vdata) { return vdata->l == udata->l + 1 && udata->edge_l_s[v].first != udata->l; };
   auto apply_fu = [](auto& u, auto& v, auto& udata, auto& vdata) {
     vdata->path_counts += udata->path_counts;
     udata->succs.emplace_front(v);
@@ -760,8 +754,8 @@ std::vector<score_t> approx_betweenness_worklist_noabstraction(const Graph& A, s
 
     if (num_threads != 1) {
       for (size_t thread = 0; thread < num_threads; ++thread) {
-        vecOfThreads.push_back(std::thread(reset, n_vtx / num_threads * thread,
-                                           (thread == num_threads - 1) ? n_vtx : n_vtx / num_threads * (thread + 1)));
+        vecOfThreads.push_back(
+            std::thread(reset, n_vtx / num_threads * thread, (thread == num_threads - 1) ? n_vtx : n_vtx / num_threads * (thread + 1)));
       }
       for (std::thread& th : vecOfThreads) {
         if (th.joinable()) th.join();
@@ -1368,8 +1362,7 @@ auto bc2_v1(const Graph& graph, const std::vector<typename Graph::vertex_id_type
   for (vertex_id_type root : sources) {
 
     std::vector<std::atomic<vertex_id_type>> depths(N);
-    std::for_each(depths.begin(), depths.end(),
-                  [&](std::atomic<vertex_id_type>& x) { x.store(std::numeric_limits<vertex_id_type>::max()); });
+    std::for_each(depths.begin(), depths.end(), [&](std::atomic<vertex_id_type>& x) { x.store(std::numeric_limits<vertex_id_type>::max()); });
     std::vector<accum_t>                       path_counts(N);
     std::vector<std::multiset<vertex_id_type>> P(N);
 

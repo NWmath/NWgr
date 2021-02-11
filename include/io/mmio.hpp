@@ -53,8 +53,7 @@ void mm_fill(std::istream& inputStream, edge_list<directedness::directed>& A, si
 }
 
 template <typename T>
-void mm_fill(std::istream& inputStream, edge_list<directedness::directed, T>& A, size_t nNonzeros, bool file_symmetry,
-             bool pattern) {
+void mm_fill(std::istream& inputStream, edge_list<directedness::directed, T>& A, size_t nNonzeros, bool file_symmetry, bool pattern) {
 
   A.reserve((file_symmetry ? 2 : 1) * nNonzeros);
   A.open_for_push_back();
@@ -79,8 +78,7 @@ void mm_fill(std::istream& inputStream, edge_list<directedness::directed, T>& A,
   A.close_for_push_back();
 }
 
-void mm_fill(std::istream& inputStream, edge_list<directedness::undirected>& A, size_t nNonzeros, bool file_symmetry,
-             bool pattern) {
+void mm_fill(std::istream& inputStream, edge_list<directedness::undirected>& A, size_t nNonzeros, bool file_symmetry, bool pattern) {
 
   A.reserve(nNonzeros);
   A.open_for_push_back();
@@ -101,8 +99,7 @@ void mm_fill(std::istream& inputStream, edge_list<directedness::undirected>& A, 
 }
 
 template <typename T>
-void mm_fill(std::istream& inputStream, edge_list<directedness::undirected, T>& A, size_t nNonzeros, bool file_symmetry,
-             bool pattern) {
+void mm_fill(std::istream& inputStream, edge_list<directedness::undirected, T>& A, size_t nNonzeros, bool file_symmetry, bool pattern) {
   // assert(file_symmetry);
   A.reserve(nNonzeros);
   A.open_for_push_back();
@@ -270,16 +267,14 @@ directedness get_mm_symmetry(const std::string filename) {
 }
 
 template <size_t w_idx, directedness sym, typename... Attributes>
-void aos_stream(std::ofstream& outputStream, edge_list<sym, Attributes...> A, const std::string& file_symmetry,
-                std::string& w_type) {
+void aos_stream(std::ofstream& outputStream, edge_list<sym, Attributes...> A, const std::string& file_symmetry, std::string& w_type) {
   outputStream << "%%MatrixMarket matrix coordinate " << w_type << " " << file_symmetry << "\n%%\n";
 
-  if constexpr(edge_list<sym, Attributes...>::is_unipartite) {
-    outputStream << num_vertices(A) << " " << num_vertices(A) << " ";  // + 1 ???
+  if constexpr (edge_list<sym, Attributes...>::is_unipartite) {
+    outputStream << num_vertices(A) << " " << num_vertices(A) << " ";    // + 1 ???
   } else {
-    outputStream << A.num_vertices()[0] << " " << A.num_vertice()[1] << " ";  // + 1 ???
+    outputStream << A.num_vertices()[0] << " " << A.num_vertice()[1] << " ";    // + 1 ???
   }
-
 
   if (file_symmetry == "general" && sym == directedness::undirected)
     outputStream << 2 * (A.end() - A.begin()) << std::endl;
@@ -318,13 +313,11 @@ void write_mm(const std::string& filename, edge_list<sym, Attributes...>& A, con
 }
 
 template <size_t w_idx, int idx, typename... Attributes>
-void adjacency_stream(std::ofstream& outputStream, adjacency<idx, Attributes...>& A, const std::string& file_symmetry,
-                      std::string& w_type) {
+void adjacency_stream(std::ofstream& outputStream, adjacency<idx, Attributes...>& A, const std::string& file_symmetry, std::string& w_type) {
   outputStream << "%%MatrixMarket matrix coordinate " << w_type << " " << file_symmetry << "\n%%\n";
 
   outputStream << num_vertices(A) << " " << num_vertices(A) << " "
-               << std::accumulate(A.begin(), A.end(), 0, [&](int a, auto b) { return a + (int)(b.end() - b.begin()); })
-               << std::endl;
+               << std::accumulate(A.begin(), A.end(), 0, [&](int a, auto b) { return a + (int)(b.end() - b.begin()); }) << std::endl;
 
   for (auto first = A.begin(); first != A.end(); ++first) {
     for (auto v = (*first).begin(); v != (*first).end(); ++v) {

@@ -13,8 +13,8 @@
 using json = nlohmann::json;
 
 #include "adaptors/bfs_edge_range.hpp"
-#include "containers/compressed.hpp"
 #include "containers/adjacency.hpp"
+#include "containers/compressed.hpp"
 #include "containers/edge_list.hpp"
 #include "util/timer.hpp"
 
@@ -169,8 +169,7 @@ int main() {
 
     size_t d = distance[the_actor];
     while (the_actor != kevin_bacon) {
-      std::cout << names[the_actor] << " starred with " << names[parents[the_actor]] << " in " << titles[together_in[the_actor]]
-                << std::endl;
+      std::cout << names[the_actor] << " starred with " << names[parents[the_actor]] << " in " << titles[together_in[the_actor]] << std::endl;
       the_actor = parents[the_actor];
       if (d-- == 0) {
         break;

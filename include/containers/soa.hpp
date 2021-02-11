@@ -46,76 +46,75 @@ struct struct_of_arrays : std::tuple<std::vector<Attributes>...> {
   using base         = std::tuple<std::vector<Attributes>...>;
 
   template <bool is_const = false>
-  class soa_iterator
-  {
+  class soa_iterator {
     friend class soa_iterator<!is_const>;
 
     using soa_t = std::conditional_t<is_const, const struct_of_arrays, struct_of_arrays>;
 
     std::size_t i_;
-    soa_t *soa_;
+    soa_t*      soa_;
 
-   public:
-    using        value_type = std::conditional_t<is_const, std::tuple<const Attributes...>, std::tuple<Attributes...>>;
-    using   difference_type = std::ptrdiff_t;
-    using         reference = std::conditional_t<is_const, std::tuple<const Attributes&...>, std::tuple<Attributes&...>>;
-    using           pointer = arrow_proxy<reference>;
+  public:
+    using value_type        = std::conditional_t<is_const, std::tuple<const Attributes...>, std::tuple<Attributes...>>;
+    using difference_type   = std::ptrdiff_t;
+    using reference         = std::conditional_t<is_const, std::tuple<const Attributes&...>, std::tuple<Attributes&...>>;
+    using pointer           = arrow_proxy<reference>;
     using iterator_category = std::random_access_iterator_tag;
 
     soa_iterator() = default;
 
-    soa_iterator(soa_t *soa, std::size_t i = 0)
-        : i_(i)
-        , soa_(soa)
-    {
-    }
+    soa_iterator(soa_t* soa, std::size_t i = 0) : i_(i), soa_(soa) {}
 
     soa_iterator(const soa_iterator&) = default;
-    soa_iterator(const soa_iterator<false>& b) requires(is_const)
-      : i_(b.i_)
-      , soa_(b.soa_)
-    {
-    }
+    soa_iterator(const soa_iterator<false>& b) requires(is_const) : i_(b.i_), soa_(b.soa_) {}
 
     soa_iterator& operator=(const soa_iterator&) = default;
-    soa_iterator& operator=(const soa_iterator<false>& b) requires(is_const)
-    {
-      i_ = b.i_;
+    soa_iterator& operator                       =(const soa_iterator<false>& b) requires(is_const) {
+      i_   = b.i_;
       soa_ = b.soa_;
       return *this;
     }
 
-    bool operator==(const soa_iterator&) const = default;
+    bool operator==(const soa_iterator&) const  = default;
     auto operator<=>(const soa_iterator&) const = default;
 
     soa_iterator operator++(int) { return soa_iterator(i_++, soa_); }
     soa_iterator operator--(int) { return soa_iterator(i_--, soa_); }
 
-    soa_iterator& operator++() { ++i_; return *this; }
-    soa_iterator& operator--() { --i_; return *this; }
-    soa_iterator& operator+=(std::ptrdiff_t n) { i_ += n; return *this; }
-    soa_iterator& operator-=(std::ptrdiff_t n) { i_ -= n; return *this; }
+    soa_iterator& operator++() {
+      ++i_;
+      return *this;
+    }
+    soa_iterator& operator--() {
+      --i_;
+      return *this;
+    }
+    soa_iterator& operator+=(std::ptrdiff_t n) {
+      i_ += n;
+      return *this;
+    }
+    soa_iterator& operator-=(std::ptrdiff_t n) {
+      i_ -= n;
+      return *this;
+    }
 
-    soa_iterator operator+(std::ptrdiff_t n) const { return { soa_, i_ + n }; }
-    soa_iterator operator-(std::ptrdiff_t n) const { return { soa_, i_ - n }; }
+    soa_iterator operator+(std::ptrdiff_t n) const { return {soa_, i_ + n}; }
+    soa_iterator operator-(std::ptrdiff_t n) const { return {soa_, i_ - n}; }
 
     std::ptrdiff_t operator-(const soa_iterator& b) const { return i_ - b.i_; }
 
-    reference operator*() const
-    {
-      return std::apply([this]<class... Vectors>(Vectors&&... v) {
-        return reference(std::forward<Vectors>(v)[i_]...);
-      }, *soa_);
+    reference operator*() const {
+      return std::apply(
+          [this]<class... Vectors>(Vectors && ... v) { return reference(std::forward<Vectors>(v)[i_]...); }, *soa_);
     }
 
     reference operator[](std::ptrdiff_t n) const {
-      return std::apply([this,n]<class... Vectors>(Vectors&&... v) {
-          return reference(std::forward<Vectors>(v)[i_ + n]...);
-      }, *soa_);
+      return std::apply(
+          [this, n]<class... Vectors>(Vectors && ... v) { return reference(std::forward<Vectors>(v)[i_ + n]...); }, *soa_);
     }
 
-    pointer operator->() const { return { **this }; }
-    pointer operator->()       { return { **this }; }
+    pointer operator->() const { return {**this}; }
+    pointer operator->() { return {**this}; }
   };
 
   using iterator = soa_iterator<false>;
@@ -140,8 +139,8 @@ struct struct_of_arrays : std::tuple<std::vector<Attributes>...> {
     for_each(l.begin(), l.end(), [&](value_type x) { push_back(x); });
   }
 
-  iterator       begin()       { return { this }; }
-  const_iterator begin() const { return { this }; }
+  iterator       begin() { return {this}; }
+  const_iterator begin() const { return {this}; }
 
   iterator end() { return begin() + size(); }
 
@@ -219,8 +218,8 @@ struct struct_of_arrays : std::tuple<std::vector<Attributes>...> {
   }
 
   template <typename index_t, typename vertex_id_type, class T, class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
-  void permute(const std::vector<index_t>& indices, const std::vector<index_t>& new_indices,
-               const std::vector<vertex_id_type>& perm, T& vs, ExecutionPolicy&& ex_policy = {}) {
+  void permute(const std::vector<index_t>& indices, const std::vector<index_t>& new_indices, const std::vector<vertex_id_type>& perm, T& vs,
+               ExecutionPolicy&& ex_policy = {}) {
     T ws(vs.size());
     for (size_t i = 0, e = indices.size() - 1; i < e; ++i) {
       vertex_id_type j = perm[i];
@@ -230,8 +229,7 @@ struct struct_of_arrays : std::tuple<std::vector<Attributes>...> {
   }
 
   template <typename index_t, typename vertex_id_type>
-  void permute(const std::vector<index_t>& indices, const std::vector<index_t>& new_indices,
-               const std::vector<vertex_id_type>& perm) {
+  void permute(const std::vector<index_t>& indices, const std::vector<index_t>& new_indices, const std::vector<vertex_id_type>& perm) {
     std::apply([&](auto&... vs) { (permute(indices, new_indices, perm, vs), ...); }, *this);
   }
 

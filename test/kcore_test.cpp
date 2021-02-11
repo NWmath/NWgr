@@ -13,9 +13,9 @@
 
 #include "adaptors/new_dfs_range.hpp"
 #include "algorithms/k_core.hpp"
-#include "containers/volos.hpp"
 #include "containers/compressed.hpp"
 #include "containers/edge_list.hpp"
+#include "containers/volos.hpp"
 #include "io/mmio.hpp"
 
 #include "common/test_header.hpp"
@@ -63,9 +63,9 @@ TEST_CASE("k core", "[k-core]") {
   }
   SECTION("adj_list") {
     adj_list<0> A(E_list);
-    auto     core   = k_core(A, k);
-    auto     filter = std::get<0>(core);
-    auto     remain = std::get<1>(core);
+    auto        core   = k_core(A, k);
+    auto        filter = std::get<0>(core);
+    auto        remain = std::get<1>(core);
 
     REQUIRE(remain == 4);
 
@@ -131,9 +131,9 @@ TEST_CASE("disconnected", "[disconnected]") {
   }
   SECTION("adj_list") {
     adj_list<0> A(E_list);
-    auto     core   = k_core(A, k);
-    auto     filter = std::get<0>(core);
-    auto     remain = std::get<1>(core);
+    auto        core   = k_core(A, k);
+    auto        filter = std::get<0>(core);
+    auto        remain = std::get<1>(core);
 
     REQUIRE(remain == 8);
 

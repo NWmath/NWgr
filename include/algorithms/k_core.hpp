@@ -13,12 +13,12 @@
 
 #include "adaptors/edge_range.hpp"
 #include "adaptors/new_dfs_range.hpp"
+#include "util/defaults.hpp"
 #include "util/util.hpp"
 #include <algorithm>
 #include <tuple>
 #include <unordered_map>
 #include <utility>
-#include "util/defaults.hpp"
 
 namespace nw {
 namespace graph {
@@ -45,9 +45,9 @@ template <typename Graph>
 std::tuple<Unordered_map, size_t> k_core(const Graph& A, int k) {
   Unordered_map filter;
 
-  size_t                      n_vtx     = A.size();
-  size_t                      old_n_vtx = n_vtx;
-  std::vector<int>            degree(n_vtx, 0);
+  size_t                          n_vtx     = A.size();
+  size_t                          old_n_vtx = n_vtx;
+  std::vector<int>                degree(n_vtx, 0);
   std::vector<vertex_id_t<Graph>> relabel(n_vtx);
 
   for (auto&& [u, v] : edge_range(A)) {

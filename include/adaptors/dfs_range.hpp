@@ -137,8 +137,7 @@ public:
 
   public:
     dfs_edge_range_iterator(dfs_edge_range<Graph, Stack>& range)
-        : the_range_(range), G(the_range_.the_graph_.begin()), v_(the_range_.Q_.top()), u_begin(G[v_].begin()), u_end(G[v_].end()) {
-    }
+        : the_range_(range), G(the_range_.the_graph_.begin()), v_(the_range_.Q_.top()), u_begin(G[v_].begin()), u_end(G[v_].end()) {}
 
     dfs_edge_range_iterator& operator++() {
       auto& Q      = the_range_.Q_;

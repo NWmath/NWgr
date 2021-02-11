@@ -94,7 +94,6 @@ void push_back_fill(edge_list_t& el, adjacency_t& cs) {
   cs.close_for_push_back();
 }
 
-
 template <typename edge_list_t, typename adj_list_t>
 auto fill_adj_list(edge_list_t& el, adj_list_t& al) {
   size_t num_edges = 0;
@@ -102,7 +101,6 @@ auto fill_adj_list(edge_list_t& el, adj_list_t& al) {
   al.open_for_push_back();
 
   std::for_each(el.begin(), el.end(), [&](auto elt) {
-
     push_back_fill_helper(al, elt);
     ++num_edges;
     if constexpr (edge_list_t::edge_directedness == directedness::undirected) {
@@ -116,7 +114,6 @@ auto fill_adj_list(edge_list_t& el, adj_list_t& al) {
 
   return num_edges;
 }
-
 
 template <class edge_list_t, class adjacency_t, class ExecutionPolicy = default_execution_policy, size_t... Is>
 void fill_helper(edge_list_t& el, adjacency_t& cs, std::index_sequence<Is...> is, ExecutionPolicy&& policy = {}) {
@@ -192,7 +189,6 @@ auto fill(edge_list_t& el, adjacency_t& cs, ExecutionPolicy&& policy = {}) {
   return cs.to_be_indexed_.size();
 }
 
-
 template <int idx, class edge_list_t>
 void swap_to_triangular(edge_list_t& el, succession cessor) {
   if (cessor == succession::predecessor) {
@@ -200,10 +196,9 @@ void swap_to_triangular(edge_list_t& el, succession cessor) {
   } else if (cessor == succession::successor) {
     swap_to_triangular<idx, edge_list_t, succession::successor>(el);
   } else {
-    std::cout << "Bad succession: " <<  std::endl;
+    std::cout << "Bad succession: " << std::endl;
   }
 }
-
 
 template <int idx, class edge_list_t>
 void swap_to_triangular(edge_list_t& el, const std::string& cessor = "predecessor") {
@@ -215,7 +210,6 @@ void swap_to_triangular(edge_list_t& el, const std::string& cessor = "predecesso
     std::cout << "Bad succession: " + cessor << std::endl;
   }
 }
-
 
 template <int idx, class edge_list_t, succession cessor = succession::predecessor, class ExecutionPolicy = default_execution_policy>
 void swap_to_triangular(edge_list_t& el, ExecutionPolicy&& policy = {}) {

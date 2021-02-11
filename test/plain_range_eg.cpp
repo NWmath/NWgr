@@ -27,7 +27,7 @@ int main(int argc, char* argv[]) {
     return -1;
   }
 
-  auto                           aos_a = read_mm<directedness::directed>(argv[1]);
+  auto         aos_a = read_mm<directedness::directed>(argv[1]);
   adjacency<0> A(aos_a);
 
   for (auto&& [y] : plain_range(A)) {

@@ -10,18 +10,12 @@
 
 #include "graph_traits.hpp"
 
-
-
 #include "containers/adjacency.hpp"
 #include "containers/edge_list.hpp"
 #include "containers/volos.hpp"
 #include "containers/vovos.hpp"
 
-
-
 #include "graph_concepts.hpp"
-
-
 
 template <nw::graph::edge_list_graph edge_list_t>
 auto t0(edge_list_t el) {}
@@ -40,8 +34,6 @@ auto t4(const adjacency_t& el) {}
 
 template <nw::graph::adjacency_graph adjacency_t>
 auto t5(adjacency_t&& el) {}
-
-
 
 template <nw::graph::adjacency_graph Graph>
 // template <typename Graph>
@@ -92,8 +84,6 @@ void adjacency_container_test(T a) {
 //  return b.size();
 //}
 
-
-
 template <typename T>
 void adjacency_concept_test(T a) {
 
@@ -118,14 +108,11 @@ void adjacency_concept_test(T a) {
 //   using num_vertices_type = std::array<vertex_size_type, 1>;
 // };
 
-
-
-
 int main() {
 
   //  nw::graph::edge_list a { {0, 0}, {0, 4} };  // compiler dumps core
 
-  nw::graph::edge_list<nw::graph::directedness::directed> e { { 0, 0}, { 0, 4}, {4, 4}, {4, 0} };
+  nw::graph::edge_list<nw::graph::directedness::directed> e{{0, 0}, {0, 4}, {4, 4}, {4, 0}};
 
   static_assert(std::is_constructible_v<decltype(e)>);
   static_assert(std::ranges::forward_range<nw::graph::edge_list<nw::graph::directedness::directed>>);
@@ -148,11 +135,10 @@ int main() {
   adjacency_concept_test(a);
 
   adjacency_concept_test(nw::graph::adj_list<0>());
-  
+
   bfs_vv(nw::graph::adj_list<0>(), 0);
 
   bfs_vv(std::vector<std::forward_list<std::tuple<int, int, double>>>(), 0);
-
 
   std::vector<std::forward_list<std::tuple<int>>> ckt = {{1, 5}, {2, 3}, {0}, {}, {}, {2, 4, 3}};
 

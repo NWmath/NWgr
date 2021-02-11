@@ -26,8 +26,7 @@ class back_edge_range {
   /// Transform a reference to a tuple to a tuple of references.
   template <class Tuple>
   static constexpr decltype(auto) ref_tuple(Tuple&& tuple) {
-    return std::apply([](auto&&... vals) { return std::forward_as_tuple(std::forward<decltype(vals)>(vals)...); },
-                      std::forward<Tuple>(tuple));
+    return std::apply([](auto&&... vals) { return std::forward_as_tuple(std::forward<decltype(vals)>(vals)...); }, std::forward<Tuple>(tuple));
   }
 
 public:
@@ -127,8 +126,7 @@ public:
     typename Graph::outer_iterator G;
 
   public:
-    outer_back_edge_range_iterator(back_edge_range<Graph>& range, typename Graph::outer_iterator outer)
-        : the_range_(range), G(outer) {}
+    outer_back_edge_range_iterator(back_edge_range<Graph>& range, typename Graph::outer_iterator outer) : the_range_(range), G(outer) {}
 
     auto& operator=(const outer_back_edge_range_iterator& b) {
       G = b.G;

@@ -8,7 +8,6 @@
 // Author: Andrew Lumsdaine
 //
 
-
 #include "detail/tag_invoke.hpp"
 #include <iostream>
 #include <ranges>
@@ -41,48 +40,34 @@ static inline constexpr edges_t edges{};
 
 #endif
 
-
-#define DECL_TAG_INVOKE(str)						\
-  struct str##_t final {						\
-    inline constexpr auto operator()(auto&&... args) const		\
-      noexcept(is_nothrow_tag_invocable_v<str##_t, decltype(args)...>)	\
-      -> tag_invoke_result_t<str##_t, decltype(args)...> {		\
-      return tag_invoke(*this, std::forward<decltype(args)>(args)...);	\
-    }									\
-  };									\
-  static inline constexpr str##_t str{}
-
+#define DECL_TAG_INVOKE(str)                                                                                                \
+  struct str##_t final {                                                                                                    \
+    inline constexpr auto operator()(auto&&... args) const noexcept(is_nothrow_tag_invocable_v<str##_t, decltype(args)...>) \
+        -> tag_invoke_result_t<str##_t, decltype(args)...> {                                                                \
+      return tag_invoke(*this, std::forward<decltype(args)>(args)...);                                                      \
+    }                                                                                                                       \
+  };                                                                                                                        \
+  static inline constexpr str##_t str {}
 
 DECL_TAG_INVOKE(edges);
 DECL_TAG_INVOKE(vertices);
 DECL_TAG_INVOKE(num_vertices);
-
 
 struct foo {
   void one(const std::string& msg) const { std::cout << "This is foo one: " << msg << std::endl; }
   void two() const { std::cout << "This is foo two" << std::endl; }
 };
 
-
 struct bar {
   void one(const std::string& msg) const { std::cout << "This is bar one: " << msg << std::endl; }
   void three() const { std::cout << "This is bar three" << std::endl; }
 };
 
+auto tag_invoke(const edges_t, const bar& b, const std::string& msg) { b.one(msg); }
+auto tag_invoke(const edges_t, const foo& f, const std::string& msg) { f.one(msg); }
 
-auto tag_invoke(const edges_t, const bar& b, const std::string& msg) {
-  b.one(msg);
-}
-auto tag_invoke(const edges_t, const foo& f, const std::string& msg) {
-  f.one(msg);
-}
-
-auto tag_invoke(const vertices_t, const foo& f) {
-  f.two();
-}
-auto tag_invoke(const vertices_t, const bar& b) {
-  b.three();
-}
+auto tag_invoke(const vertices_t, const foo& f) { f.two(); }
+auto tag_invoke(const vertices_t, const bar& b) { b.three(); }
 
 //template <typename T>
 //auto tag_invoke(const num_vertices_t, const std::vector<T>& b) {
@@ -93,8 +78,6 @@ template <std::ranges::sized_range T>
 auto tag_invoke(const num_vertices_t, const T& b) {
   return b.size();
 }
-
-
 
 int main() {
   edges(foo(), "hello");

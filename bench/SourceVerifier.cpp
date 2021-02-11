@@ -44,8 +44,7 @@ int main(int argc, char* const argv[]) {
   auto sources = read_mm_vector<default_vertex_id_type>(args["-s"].asString());
 
   if (int64_t(sources.size()) != trials * iterations) {
-    std::cerr << "Read " << sources.size() << " sources from " << args["-s"].asString() << " but expected " << trials * iterations
-              << "\n";
+    std::cerr << "Read " << sources.size() << " sources from " << args["-s"].asString() << " but expected " << trials * iterations << "\n";
     return 0;
   }
 

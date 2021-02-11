@@ -3,11 +3,11 @@
 #include <iostream>
 #include <vector>
 
+#include "adaptors/edge_range.hpp"
+#include "adaptors/plain_range.hpp"
 #include "containers/compressed.hpp"
 #include "containers/edge_list.hpp"
-#include "adaptors/edge_range.hpp"
 #include "io/mmio.hpp"
-#include "adaptors/plain_range.hpp"
 
 #if defined(CL_SYCL_LANGUAGE_VERSioN)
 #include <dpstd/iterators.h>
@@ -556,7 +556,7 @@ int main(int argc, char* argv[]) {
 
   auto el_a = [&]() {
     if (read_processed_edgelist != "") {
-      life_timer          _("deserialize");
+      life_timer                        _("deserialize");
       edge_list<directedness::directed> el_a(0);
       el_a.deserialize(read_processed_edgelist);
       return el_a;

@@ -30,8 +30,7 @@ namespace graph {
 template <class Op, class It>
 auto parallel_for_inner(Op&& op, It&& i) {
   if constexpr (is_tuple_v<std::decay_t<It>>) {
-    return std::apply([&](auto&&... args) { return std::forward<Op>(op)(std::forward<decltype(args)>(args)...); },
-                      std::forward<It>(i));
+    return std::apply([&](auto&&... args) { return std::forward<Op>(op)(std::forward<decltype(args)>(args)...); }, std::forward<It>(i));
   } else if constexpr (std::is_integral_v<std::decay_t<It>>) {
     return std::forward<Op>(op)(std::forward<It>(i));
   } else {
@@ -124,8 +123,7 @@ auto parallel_for(Range&& range, Op&& op, Reduce&& reduce, T init) {
   if (range.is_divisible()) {
     return tbb::parallel_reduce(
         std::forward<Range>(range), init,
-        [&](auto&& sub, auto partial) { return parallel_for_sequential(std::forward<decltype(sub)>(sub), op, reduce, partial); },
-        reduce);
+        [&](auto&& sub, auto partial) { return parallel_for_sequential(std::forward<decltype(sub)>(sub), op, reduce, partial); }, reduce);
   } else {
     return parallel_for_sequential(std::forward<Range>(range), std::forward<Op>(op), std::forward<Reduce>(reduce), init);
   }

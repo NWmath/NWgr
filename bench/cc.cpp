@@ -89,11 +89,9 @@ static vertex_id_type sample_frequent_element(const Vector& comp, size_t num_sam
     counts[comp[n]]++;
   }
 
-  auto&& [num, count] =
-      *std::max_element(counts.begin(), counts.end(), [](auto&& a, auto&& b) { return std::get<1>(a) < std::get<1>(b); });
+  auto&& [num, count] = *std::max_element(counts.begin(), counts.end(), [](auto&& a, auto&& b) { return std::get<1>(a) < std::get<1>(b); });
   float frac_of_graph = static_cast<float>(count) / num_samples;
-  std::cout << "Skipping largest intermediate component (ID: " << num << ", approx. " << int(frac_of_graph * 100)
-            << "% of the graph)\n";
+  std::cout << "Skipping largest intermediate component (ID: " << num << ", approx. " << int(frac_of_graph * 100) << "% of the graph)\n";
   return num;
 }
 
