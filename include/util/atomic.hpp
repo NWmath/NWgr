@@ -67,8 +67,8 @@ constexpr void store(T&& t, U&& u) {
 ///
 /// @returns        true If the compare and exchange succeeded
 ///                false Otherwise (`u` is updated)
-template <std::memory_order success = std::memory_order_acq_rel, std::memory_order failure = std::memory_order_acquire, class T,
-          class U, class V>
+template <std::memory_order success = std::memory_order_acq_rel, std::memory_order failure = std::memory_order_acquire, class T, class U,
+          class V>
 constexpr bool cas(T&& t, U&& u, V&& v) {
   if constexpr (is_atomic_v<std::decay_t<T>>) {
     return std::forward<T>(t).compare_exchange_strong(std::forward<U>(u), std::forward<V>(v), success, failure);

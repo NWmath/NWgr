@@ -55,10 +55,8 @@ class plain_range {
   graph_iterator outer_begin_;
   graph_iterator outer_end_;
 
-
 public:
-  plain_range(Graph& g, std::size_t offset)
-      : outer_base_(g.begin()), outer_begin_(g.begin() + offset), outer_end_(g.end()) {}
+  plain_range(Graph& g, std::size_t offset) : outer_base_(g.begin()), outer_begin_(g.begin() + offset), outer_end_(g.end()) {}
 
   plain_range(Graph& g) : plain_range(g, 0) {}
 
@@ -82,28 +80,27 @@ public:
     using pointer           = value_type*;
 
   private:
-    graph_iterator       base_;            //!<
-    graph_iterator       first_;           //!<
-    graph_iterator       last_;            //!<
+    graph_iterator base_;     //!<
+    graph_iterator first_;    //!<
+    graph_iterator last_;     //!<
 
     my_iterator(const my_iterator& b, unsigned long step) : my_iterator(b) { first_ += step; }
 
   public:
-    my_iterator(graph_iterator base, graph_iterator begin, graph_iterator end)
-        : base_(base), first_(begin), last_(end) { }
+    my_iterator(graph_iterator base, graph_iterator begin, graph_iterator end) : base_(base), first_(begin), last_(end) {}
 
     my_iterator(const my_iterator&) = default;
     my_iterator& operator=(const my_iterator& b) = default;
 
-    template<bool was_const, class = std::enable_if_t<is_const && !was_const>>
-    my_iterator(const my_iterator<was_const>& rhs) : base_(rhs.base_), first_(rhs.first_), last_(rhs.last_) { }
+    template <bool was_const, class = std::enable_if_t<is_const && !was_const>>
+    my_iterator(const my_iterator<was_const>& rhs) : base_(rhs.base_), first_(rhs.first_), last_(rhs.last_) {}
 
-    template<bool was_const, class = std::enable_if_t<is_const && !was_const>>
-    my_iterator& operator=(const my_iterator<was_const>& rhs) { 
-      base_ = rhs.base_; 
+    template <bool was_const, class = std::enable_if_t<is_const && !was_const>>
+    my_iterator& operator=(const my_iterator<was_const>& rhs) {
+      base_  = rhs.base_;
       first_ = rhs.first_;
-      last_ = rhs.last_;
-      return *this; 
+      last_  = rhs.last_;
+      return *this;
     }
 
     my_iterator& operator++() {
@@ -120,16 +117,16 @@ public:
     bool operator<(const my_iterator& b) const { return first_ < b.first_; }
 
     difference_type operator-(const my_iterator& b) const { return first_ - b.first_; }
-    my_iterator        operator+(difference_type step) const { return my_iterator(*this, step); }
+    my_iterator     operator+(difference_type step) const { return my_iterator(*this, step); }
   };
 
-  using iterator = my_iterator<false>;
+  using iterator       = my_iterator<false>;
   using const_iterator = my_iterator<true>;
 
-  iterator begin()             { return {outer_base_, outer_begin_, outer_end_}; }
+  iterator       begin() { return {outer_base_, outer_begin_, outer_end_}; }
   const_iterator begin() const { return {outer_base_, outer_begin_, outer_end_}; }
 
-  iterator end()             { return {outer_base_, outer_end_, outer_end_}; }
+  iterator       end() { return {outer_base_, outer_end_, outer_end_}; }
   const_iterator end() const { return {outer_base_, outer_end_, outer_end_}; }
 
   std::size_t size() const { return outer_end_ - outer_begin_; }
@@ -146,7 +143,6 @@ template <class Graph, std::size_t... Is>
 static inline plain_range<Graph, Is...> make_plain_range(Graph& g) {
   return {g};
 }
-
 
 template <typename Graph>
 class plain_degree_range {

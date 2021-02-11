@@ -39,8 +39,7 @@ TEST_CASE("test", "[test]") {
       std::cout << "in" << std::endl;
     }
   }
-  std::ranges::for_each(A, [](auto&& out) {
-    std::ranges::for_each(out, [](auto&& in) { std::cout << "edge to " << std::get<0>(in) << std::endl; });
-  });
+  std::ranges::for_each(
+      A, [](auto&& out) { std::ranges::for_each(out, [](auto&& in) { std::cout << "edge to " << std::get<0>(in) << std::endl; }); });
   //test_func(A);
 }

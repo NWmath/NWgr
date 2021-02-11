@@ -116,8 +116,8 @@ concept Incidence = requires(T graph, inner_value<T> edge) {
 };
 
 template <typename T>
-concept Graph = std::ranges::random_access_range<T>&& std::ranges::forward_range<inner_range<T>>&&
-                                                      std::convertible_to<vertex_id_type<T>, index_t<T>>;
+concept Graph =
+    std::ranges::random_access_range<T>&& std::ranges::forward_range<inner_range<T>>&& std::convertible_to<vertex_id_type<T>, index_t<T>>;
 
 template <typename T>
 concept IncidenceGraph = Graph<T>&& Incidence<T>;

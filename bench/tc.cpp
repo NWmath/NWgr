@@ -49,7 +49,6 @@ using namespace nw::graph::bench;
 using namespace nw::graph;
 using namespace nw::util;
 
-
 template <class Vector>
 static void tc_relabel(edge_list<nw::graph::directedness::undirected>& A, Vector&& degrees, const std::string& direction) {
   life_timer _(__func__);
@@ -246,8 +245,8 @@ int main(int argc, char* argv[]) {
           times.append(file, id, thread, time + relabel_time, time, relabel_time, clean_time, triangles, relabeled);
 
           if (verify && triangles != v_triangles) {
-            std::cerr << "Inconsistent results: v" << id << " failed verification for " << file << " using " << thread
-                      << " threads (reported " << triangles << ")\n";
+            std::cerr << "Inconsistent results: v" << id << " failed verification for " << file << " using " << thread << " threads (reported "
+                      << triangles << ")\n";
           }
         }
       }
@@ -264,4 +263,3 @@ int main(int argc, char* argv[]) {
 
   return 0;
 }
-

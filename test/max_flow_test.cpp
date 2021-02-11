@@ -24,7 +24,7 @@ using namespace nw::graph;
 using namespace nw::util;
 
 TEST_CASE("max flow 1", "[MF1]") {
-  size_t                              source = 0, sink = 5;
+  size_t                                            source = 0, sink = 5;
   edge_list<directedness::directed, double, double> E_list(8);
   E_list.push_back(0, 1, 10, 0);
   E_list.push_back(1, 0, 10, 0);

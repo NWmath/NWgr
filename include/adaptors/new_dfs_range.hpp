@@ -11,18 +11,18 @@
 #ifndef NW_GRAPH_NEW_DFS_RANGE_HPP
 #define NW_GRAPH_NEW_DFS_RANGE_HPP
 
+#include "graph_traits.hpp"
 #include "util/util.hpp"
 #include <cassert>
 #include <stack>
 #include <vector>
-#include "graph_traits.hpp"
 
 namespace nw {
 namespace graph {
 
 enum three_colors { black, white, grey };
 
-  template <typename Graph, typename Stack = std::stack<vertex_id_t<Graph>>>
+template <typename Graph, typename Stack = std::stack<vertex_id_t<Graph>>>
 class dfs_range {
 
 public:
@@ -100,8 +100,8 @@ public:
     bool operator!=(const end_sentinel_type&) const { return !the_range_.empty(); }
 
   private:
-    dfs_range<Graph>& the_range_;
-    vertex_id_t<Graph>    cursor_;
+    dfs_range<Graph>&  the_range_;
+    vertex_id_t<Graph> cursor_;
   };
 
   typedef dfs_range_iterator iterator;
@@ -115,7 +115,7 @@ private:
   std::vector<three_colors> colors_;
 };
 
-  template <typename Graph, typename Stack = std::stack<vertex_id_t<Graph>>>
+template <typename Graph, typename Stack = std::stack<vertex_id_t<Graph>>>
 class dfs_edge_range {
 
 public:
@@ -133,7 +133,7 @@ public:
   private:
     dfs_edge_range<Graph, Stack>&  the_range_;
     typename Graph::outer_iterator G;
-    vertex_id_t<Graph>                 v_;
+    vertex_id_t<Graph>             v_;
     typename Graph::inner_iterator u_begin, u_end, u_parent;
     bool                           has_parent_, back_edge_;
 

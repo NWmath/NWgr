@@ -14,15 +14,12 @@
 #ifndef NW_GRAPH_UTIL_ARROW_PROXY_HPP
 #define NW_GRAPH_UTIL_ARROW_PROXY_HPP
 
-namespace nw::graph
-{
+namespace nw::graph {
 // https://quuxplusone.github.io/blog/2019/02/06/arrow-proxy/
-template<class Reference>
+template <class Reference>
 struct arrow_proxy {
-  Reference r;
-  Reference *operator->() {
-    return &r;
-  }
+  Reference  r;
+  Reference* operator->() { return &r; }
 };
-}
-#endif // NW_GRAPH_UTIL_ARROW_PROXY_HPP
+}    // namespace nw::graph
+#endif    // NW_GRAPH_UTIL_ARROW_PROXY_HPP

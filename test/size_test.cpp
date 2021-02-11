@@ -11,9 +11,9 @@
 #include <algorithm>
 #include <vector>
 
-#include "containers/volos.hpp"
 #include "containers/compressed.hpp"
 #include "containers/edge_list.hpp"
+#include "containers/volos.hpp"
 #include "io/mmio.hpp"
 
 #include "common/test_header.hpp"
@@ -21,7 +21,7 @@
 using namespace nw::graph;
 
 TEST_CASE("Size Test", "[size test]") {
-  size_t                N = 5;
+  size_t                              N = 5;
   edge_list<directedness::undirected> E_list(N);
   E_list.push_back(0, 1);
   E_list.push_back(1, 2);

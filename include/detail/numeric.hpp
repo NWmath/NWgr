@@ -31,16 +31,15 @@ _OutputIterator exclusive_scan(_InputIterator __first, _InputIterator __last, _O
 
 #if defined(BGL17_NEED_INCLUSIVE_SCAN)
 template <typename _InputIterator, typename _OutputIterator, typename _BinaryOperation, typename _Tp>
-_OutputIterator inclusive_scan(_InputIterator __first, _InputIterator __last, _OutputIterator __result,
-                               _BinaryOperation __binary_op, _Tp __init) {
+_OutputIterator inclusive_scan(_InputIterator __first, _InputIterator __last, _OutputIterator __result, _BinaryOperation __binary_op,
+                               _Tp __init) {
   for (; __first != __last; ++__first)
     *__result++ = __init = __binary_op(__init, *__first);
   return __result;
 }
 
 template <typename _InputIterator, typename _OutputIterator, typename _BinaryOperation>
-_OutputIterator inclusive_scan(_InputIterator __first, _InputIterator __last, _OutputIterator __result,
-                               _BinaryOperation __binary_op) {
+_OutputIterator inclusive_scan(_InputIterator __first, _InputIterator __last, _OutputIterator __result, _BinaryOperation __binary_op) {
   if (__first != __last) {
     auto __init = *__first;
     *__result++ = __init;

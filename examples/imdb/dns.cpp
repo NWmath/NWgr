@@ -9,8 +9,8 @@
 
 #include "xtensor/xcsv.hpp"
 
-#include "containers/compressed.hpp"
 #include "containers/adjacency.hpp"
+#include "containers/compressed.hpp"
 #include "containers/edge_list.hpp"
 #include "io/mmio.hpp"
 #include "util/timer.hpp"

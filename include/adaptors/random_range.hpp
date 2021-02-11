@@ -11,8 +11,8 @@
 #ifndef NW_GRAPH_RANDOM_RANGE_HPP
 #define NW_GRAPH_RANDOM_RANGE_HPP
 
-#include "util/util.hpp"
 #include "graph_traits.hpp"
+#include "util/util.hpp"
 #include <cmath>
 #include <random>
 #include <vector>
@@ -38,8 +38,7 @@ public:
 
   public:
     edge_range_iterator(random_range<Graph>& range)
-        : the_range_(range), G(the_range_.the_graph_.begin()), current_vertex(the_range_.starting_vertex),
-          length_(the_range_.length_) {}
+        : the_range_(range), G(the_range_.the_graph_.begin()), current_vertex(the_range_.starting_vertex), length_(the_range_.length_) {}
 
     edge_range_iterator& operator++() {
       --length_;
@@ -69,9 +68,8 @@ public:
 private:
   Graph& the_graph_;
 
-
   vertex_id_t<Graph> starting_vertex;
-  size_t         length_;
+  size_t             length_;
 
   std::uniform_real_distribution<double> distribution;
   std::default_random_engine             generator;

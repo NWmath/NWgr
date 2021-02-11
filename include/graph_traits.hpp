@@ -8,7 +8,6 @@
 // Author: Andrew Lumsdaine
 //
 
-
 #ifndef NW_GRAPH_GRAPH_TRAITS_HPP
 #define NW_GRAPH_GRAPH_TRAITS_HPP
 

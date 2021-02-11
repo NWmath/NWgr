@@ -32,8 +32,8 @@ public:
 
   public:
     edge_range_iterator(neighbor_range<Graph>& range)
-        : the_range_(range), first(the_range_.the_graph_.begin()), last(the_range_.the_graph_.end()), G(first),
-          u_begin((*first).begin()), u_end((*first).end()) {}
+        : the_range_(range), first(the_range_.the_graph_.begin()), last(the_range_.the_graph_.end()), G(first), u_begin((*first).begin()),
+          u_end((*first).end()) {}
 
     edge_range_iterator& operator++() {
       ++u_begin;

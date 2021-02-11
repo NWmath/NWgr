@@ -408,8 +408,8 @@ public:
       this->sets_[rootu] = rootv;
     else
       this->sets_[rootv] = rootu;
-    std::cout << u << "v" << v << ":" << rootu << "v" << rootv << ":" << valueofu << "v" << valueofv << ":" << this->sets_[rootu]
-              << "v" << this->sets_[rootv] << std::endl;
+    std::cout << u << "v" << v << ":" << rootu << "v" << rootv << ":" << valueofu << "v" << valueofv << ":" << this->sets_[rootu] << "v"
+              << this->sets_[rootv] << std::endl;
   }    //unionBySizeAtomic
 
   /**

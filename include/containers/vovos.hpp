@@ -32,11 +32,11 @@ public:
 
   vector_of_vector_of_structs(size_t N) : base(N) {}
 
-  using inner_iterator      = typename std::forward_list<std::tuple<Attributes...>>::iterator;
-  using const_inner_iterator      = typename std::forward_list<std::tuple<Attributes...>>::const_iterator;
-  using inner_container_ref = typename std::forward_list<std::tuple<Attributes...>>&;
-  using outer_iterator      = typename std::vector<std::forward_list<std::tuple<Attributes...>>>::iterator;
-  using const_outer_iterator      = typename std::vector<std::forward_list<std::tuple<Attributes...>>>::const_iterator;
+  using inner_iterator       = typename std::forward_list<std::tuple<Attributes...>>::iterator;
+  using const_inner_iterator = typename std::forward_list<std::tuple<Attributes...>>::const_iterator;
+  using inner_container_ref  = typename std::forward_list<std::tuple<Attributes...>>&;
+  using outer_iterator       = typename std::vector<std::forward_list<std::tuple<Attributes...>>>::iterator;
+  using const_outer_iterator = typename std::vector<std::forward_list<std::tuple<Attributes...>>>::const_iterator;
 
   void open_for_push_back() {}
   void close_for_push_back() {}

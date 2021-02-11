@@ -38,7 +38,7 @@ edge_list<directedness::directed, ScalarT> spMatspMat(LGraphT& A, RGraphT& B) {
 
   using vertex_id_type = vertex_id_t<LGraphT>;
 
-// compute A * B
+  // compute A * B
   vertex_id_type i = 0;    // row_it - A.begin();
   for (auto row_it = A.begin(); row_it != A.end(); ++row_it, ++i) {
     // clear Row i of C
@@ -81,8 +81,7 @@ edge_list<directedness::directed, ScalarT> spMatspMat(LGraphT& A, RGraphT& B) {
 //****************************************************************************
 // map
 template <class InputIt1, class InputIt2, class Output, class Compare, class Map>
-void set_ewise_intersection(InputIt1 first1, InputIt1 last1, InputIt2 first2, InputIt2 last2, Output& container, Compare comp,
-                            Map map) {
+void set_ewise_intersection(InputIt1 first1, InputIt1 last1, InputIt2 first2, InputIt2 last2, Output& container, Compare comp, Map map) {
   while (first1 != last1 && first2 != last2) {
     if (comp(*first1, *first2)) {
       ++first1;

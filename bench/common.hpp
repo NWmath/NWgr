@@ -84,8 +84,7 @@ edge_list<Directedness, Attributes...> load_graph(std::string file) {
   }
 }
 
-template <int Adj, class ExecutionPolicy = std::execution::parallel_unsequenced_policy, directedness Directedness,
-          class... Attributes>
+template <int Adj, class ExecutionPolicy = std::execution::parallel_unsequenced_policy, directedness Directedness, class... Attributes>
 adjacency<Adj, Attributes...> build_adjacency(edge_list<Directedness, Attributes...>& graph, ExecutionPolicy&& policy = {}) {
   nw::util::life_timer _("build adjacency");
   return {graph, policy};
@@ -225,9 +224,8 @@ private:
   }
 
   static auto minmax(const std::vector<Sample>& times) {
-    return std::apply(
-        [](auto... minmax) { return std::tuple(std::get<0>(*minmax)...); },
-        std::minmax_element(times.begin(), times.end(), [](auto&& a, auto&& b) { return std::get<0>(a) < std::get<0>(b); }));
+    return std::apply([](auto... minmax) { return std::tuple(std::get<0>(*minmax)...); },
+                      std::minmax_element(times.begin(), times.end(), [](auto&& a, auto&& b) { return std::get<0>(a) < std::get<0>(b); }));
   }
 
   static auto minmaxavg(const std::vector<Sample>& times) {

@@ -31,7 +31,7 @@ typedef adjacency<0> csr_graph;
 TEST_CASE("Maximal independent set", "[mis]") {
   /*Read the edgelist*/
   auto aos_a = read_mm<directedness::undirected>(DATA_DIR "coloringData.mmio");
-  
+
   swap_to_triangular<0, decltype(aos_a), succession::predecessor>(aos_a);
   sort_by<1>(aos_a);
   stable_sort_by<0>(aos_a);

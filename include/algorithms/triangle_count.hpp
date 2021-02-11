@@ -299,8 +299,7 @@ template <class Graph, class OuterExecutionPolicy = std::execution::parallel_uns
   std::atomic<std::size_t> total_triangles = 0;
   std::for_each(outer, A.begin(), A.end(), [&](auto&& x) {
     std::atomic<std::size_t> triangles = 0;
-    std::for_each(inner, x.begin(), x.end(),
-                  [&](auto&& v) { triangles += nw::graph::intersection_size(x, A[std::get<0>(v)], set); });
+    std::for_each(inner, x.begin(), x.end(), [&](auto&& v) { triangles += nw::graph::intersection_size(x, A[std::get<0>(v)], set); });
     total_triangles += triangles;
   });
   return total_triangles;
@@ -393,8 +392,7 @@ template <class Graph, class SetExecutionPolicy = std::execution::sequenced_poli
 template <class Graph, class SetExecutionPolicy = std::execution::sequenced_policy>
 [[gnu::noinline]] std::size_t triangle_count_v14(const Graph& graph, SetExecutionPolicy&& set = {}) {
   return nw::graph::parallel_for(
-      edge_range(graph), [&](auto&& u, auto&& v) { return nw::graph::intersection_size(graph[u], graph[v], set); }, std::plus{},
-      0ul);
+      edge_range(graph), [&](auto&& u, auto&& v) { return nw::graph::intersection_size(graph[u], graph[v], set); }, std::plus{}, 0ul);
 }
 
 #ifdef ONE_DIMENSIONAL_EDGE
@@ -414,8 +412,8 @@ template <class Graph, class SetExecutionPolicy = std::execution::sequenced_poli
 template <class Graph, class SetExecutionPolicy = std::execution::sequenced_policy>
 [[gnu::noinline]] std::size_t triangle_count_edgerange(const Graph& graph, SetExecutionPolicy&& set = {}) {
   return nw::graph::parallel_for(
-      graph.edges(nw::graph::pow2(20)), [&](auto&& u, auto&& v) { return nw::graph::intersection_size(graph[u], graph[v], set); },
-      std::plus{}, 0ul);
+      graph.edges(nw::graph::pow2(20)), [&](auto&& u, auto&& v) { return nw::graph::intersection_size(graph[u], graph[v], set); }, std::plus{},
+      0ul);
 }
 
 /// One dimensional triangle counting with a cyclic edge range.
@@ -436,8 +434,8 @@ template <class Graph, class SetExecutionPolicy = std::execution::sequenced_poli
 template <class Graph, class SetExecutionPolicy = std::execution::sequenced_policy>
 [[gnu::noinline]] std::size_t triangle_count_edgerange_cyclic(const Graph& graph, int stride, SetExecutionPolicy&& set = {}) {
   return nw::graph::parallel_for(
-      nw::graph::cyclic(graph.edges(), stride),
-      [&](auto&& u, auto&& v) { return nw::graph::intersection_size(graph[u], graph[v], set); }, std::plus{}, 0ul);
+      nw::graph::cyclic(graph.edges(), stride), [&](auto&& u, auto&& v) { return nw::graph::intersection_size(graph[u], graph[v], set); },
+      std::plus{}, 0ul);
 }
 #endif
 

@@ -48,7 +48,6 @@
 
 #include "access.hpp"
 
-
 namespace nw {
 namespace graph {
 
@@ -82,22 +81,22 @@ public:    // fixme
 
   template <bool is_const = false>
   class my_outer_iterator {
-   public:
-    using   const_index_iterator_t = typename std::vector<index_t>::const_iterator;
-    using         index_iterator_t = typename std::vector<index_t>::iterator;
+  public:
+    using const_index_iterator_t   = typename std::vector<index_t>::const_iterator;
+    using index_iterator_t         = typename std::vector<index_t>::iterator;
     using const_indexed_iterator_t = typename struct_of_arrays<Attributes...>::const_iterator;
-    using       indexed_iterator_t = typename struct_of_arrays<Attributes...>::iterator;
+    using indexed_iterator_t       = typename struct_of_arrays<Attributes...>::iterator;
 
-   private:
+  private:
     friend class my_outer_iterator<!is_const>;
-    using   index_it_t = std::conditional_t<is_const, const_index_iterator_t, index_iterator_t>;
+    using index_it_t   = std::conditional_t<is_const, const_index_iterator_t, index_iterator_t>;
     using indexed_it_t = std::conditional_t<is_const, const_indexed_iterator_t, indexed_iterator_t>;
 
     index_it_t   indices_;
     indexed_it_t indexed_;
-    index_t            i_;
+    index_t      i_;
 
-   public:
+  public:
     using difference_type   = std::make_signed_t<index_t>;
     using value_type        = std::conditional_t<is_const, const_sub_view, sub_view>;
     using reference         = value_type;
@@ -107,30 +106,15 @@ public:    // fixme
     my_outer_iterator() = default;
 
     my_outer_iterator(index_iterator_t indices, indexed_iterator_t indexed, index_t i) requires(is_const)
-        : indices_(indices)
-        , indexed_(indexed)
-        , i_(i)
-    {
-    }
+        : indices_(indices), indexed_(indexed), i_(i) {}
 
-    my_outer_iterator(index_it_t indices, indexed_it_t indexed, index_t i)
-        : indices_(indices)
-        , indexed_(indexed)
-        , i_(i)
-    {
-    }
+    my_outer_iterator(index_it_t indices, indexed_it_t indexed, index_t i) : indices_(indices), indexed_(indexed), i_(i) {}
 
     my_outer_iterator(const my_outer_iterator&) = default;
-    my_outer_iterator(const my_outer_iterator<false>& rhs) requires(is_const)
-        : indices_(rhs.indices_)
-        , indexed_(rhs.indexed_)
-        , i_(rhs.i_)
-    {
-    }
+    my_outer_iterator(const my_outer_iterator<false>& rhs) requires(is_const) : indices_(rhs.indices_), indexed_(rhs.indexed_), i_(rhs.i_) {}
 
     my_outer_iterator& operator=(const my_outer_iterator&) = default;
-    my_outer_iterator& operator=(const my_outer_iterator<false>& rhs) requires(is_const)
-    {
+    my_outer_iterator& operator                            =(const my_outer_iterator<false>& rhs) requires(is_const) {
       indices_ = rhs.indices_;
       indexed_ = rhs.indexed_;
       i_       = rhs.i_;
@@ -170,9 +154,7 @@ public:    // fixme
       return *this;
     }
 
-    my_outer_iterator operator+(difference_type n) const {
-      return { indices_, indexed_, i_ + n };
-    }
+    my_outer_iterator operator+(difference_type n) const { return {indices_, indexed_, i_ + n}; }
 
     my_outer_iterator operator-(difference_type n) const { return {indices_, indexed_, i_ - n}; }
 
@@ -196,7 +178,7 @@ public:    // fixme
   };
 
   using const_outer_iterator = my_outer_iterator<true>;
-  using outer_iterator = my_outer_iterator<false>;
+  using outer_iterator       = my_outer_iterator<false>;
 
   using iterator = my_outer_iterator<false>;
 
@@ -429,7 +411,8 @@ public:    // fixme
 };
 
 template <typename index_t, typename... Attributes>
-auto operator+(typename std::iter_difference_t<typename indexed_struct_of_arrays<index_t, Attributes...>::outer_iterator> n, const typename indexed_struct_of_arrays<index_t, Attributes...>::outer_iterator i) {
+auto operator+(typename std::iter_difference_t<typename indexed_struct_of_arrays<index_t, Attributes...>::outer_iterator> n,
+               const typename indexed_struct_of_arrays<index_t, Attributes...>::outer_iterator                            i) {
   return i + n;
 }
 
@@ -437,9 +420,6 @@ template <std::signed_integral T, typename I>
 I operator+(T n, const I i) {
   return i + n;
 }
-
-
-
 
 }    // namespace graph
 }    // namespace nw

@@ -36,5 +36,4 @@ using jj = graph_traits_x<nw::graph::adjacency<0>>::vertex_id_type;
 }    // namespace graph
 }    // namespace nw
 
-
 int main() { return 0; }

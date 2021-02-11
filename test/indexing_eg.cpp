@@ -11,8 +11,8 @@
 #include <iostream>
 
 #include "adaptors/edge_range.hpp"
-#include "containers/edge_list.hpp"
 #include "containers/adjacency.hpp"
+#include "containers/edge_list.hpp"
 #include "util/print_types.hpp"
 
 using namespace nw::graph;

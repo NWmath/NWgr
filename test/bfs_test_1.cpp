@@ -33,13 +33,12 @@ bool validate(EdgeListT& aos, size_t seed, std::vector<vertex_id_t<EdgeListT>> c
     int    localdiff = distance[u] - distance[v];
     size_t diff      = abs(localdiff);
 #ifdef PRINT_OUT
-    std::cout << "Checking edge: " << u << " (" << distance[u] << ", " << predecessor[u] << ") -> " << v << " (" << distance[v]
-              << ", " << predecessor[v] << "), diff = " << diff << std::endl;
+    std::cout << "Checking edge: " << u << " (" << distance[u] << ", " << predecessor[u] << ") -> " << v << " (" << distance[v] << ", "
+              << predecessor[v] << "), diff = " << diff << std::endl;
 #endif
     if (diff > 1) {
 #ifdef PRINT_OUT
-      std::cerr << "ERROR: too far: dist[" << u << "] = " << distance[u] << " too far from dist[" << v << "] = " << distance[v]
-                << std::endl;
+      std::cerr << "ERROR: too far: dist[" << u << "] = " << distance[u] << " too far from dist[" << v << "] = " << distance[v] << std::endl;
 #endif
       pass = false;
       break;
