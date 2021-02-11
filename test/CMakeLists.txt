@@ -47,7 +47,6 @@ nw_graph_add_test(vov_test)
 # nw_graph_add_test(rcm_test)
 
 
-# nw_graph_add_exe(init_eg)
 
 # expected failures for now
 #set_tests_properties(mis_test jp_coloring_test page_rank_test
@@ -62,6 +61,7 @@ nw_graph_add_exe(edge_range_eg)
 nw_graph_add_exe(graph_traits_eg)
 nw_graph_add_exe(index_soa_eg)
 nw_graph_add_exe(indexing_eg)
+nw_graph_add_exe(init_eg)
 nw_graph_add_exe(plain_range_eg)
 nw_graph_add_exe(proxysort_eg)
 nw_graph_add_exe(random_eg)
@@ -69,6 +69,7 @@ nw_graph_add_exe(spmm_eg)
 nw_graph_add_exe(stream_eg)
 nw_graph_add_exe(tag_invoke_eg)
 nw_graph_add_exe(tbb_eg)
+nw_graph_add_exe(triangular_eg)
 nw_graph_add_exe(volos_eg)
 
 # nw_graph_add_exe(binio_eg)
