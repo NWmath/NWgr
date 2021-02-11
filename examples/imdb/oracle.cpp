@@ -27,6 +27,7 @@ using json = nlohmann::json;
 #include "algorithms/betweenness_centrality.hpp"
 #include "algorithms/page_rank.hpp"
 #include "containers/compressed.hpp"
+#include "containers/adjacency.hpp"
 #include "containers/edge_list.hpp"
 #include "util/proxysort.hpp"
 #include "util/timer.hpp"
@@ -86,7 +87,7 @@ int main() {
   std::vector<std::string>      titles;
   std::vector<std::string>      names;
 
-  nw::graph::edge_list<nw::graph::directed> edges;
+  nw::graph::edge_list<nw::graph::directedness::directed> edges;
   edges.open_for_push_back();
 
   size_t title_counter = 0;
@@ -150,7 +151,7 @@ int main() {
 
   nw::util::timer t5("build s_overlap");
 
-  nw::graph::edge_list<nw::graph::undirected, size_t> s_overlap;
+  nw::graph::edge_list<nw::graph::directedness::undirected, size_t> s_overlap;
   s_overlap.open_for_push_back();
 
   for (size_t i = 0; i < H.size(); ++i) {    // foreach name
