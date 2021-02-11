@@ -3,9 +3,9 @@
 #include <iostream>
 #include <vector>
 
-#include "compressed.hpp"
-#include "edge_list.hpp"
-#include "edge_range.hpp"
+#include "containers/compressed.hpp"
+#include "containers/edge_list.hpp"
+#include "adaptors/edge_range.hpp"
 #include "io/mmio.hpp"
 
 #if defined(CL_SYCL_LANGUAGE_VERSioN)
@@ -27,8 +27,9 @@ using namespace nw::util;
 
 template <typename Adjacency>
 auto apb_adj(Adjacency& graph, size_t ntrial, size_t nthreads = 0) {
+  using vertex_id_type = vertex_id_t<Adjacency>;
 
-  vertex_id_type              N = graph.max() + 1;
+  vertex_id_type              N = num_vertices(graph);
   std::vector<vertex_id_type> degrees(N);
 
   {
@@ -163,7 +164,7 @@ auto apb_adj(Adjacency& graph, size_t ntrial, size_t nthreads = 0) {
   }
 
   {
-    vertex_id_type     N = graph.max() + 1;
+    vertex_id_type     N = num_vertices(graph);
     std::vector<float> x(N), y(N);
     std::iota(x.begin(), x.end(), 0);
     auto per = make_edge_range<0>(graph);
@@ -316,15 +317,15 @@ int main(int argc, char* argv[]) {
   auto el_a = [&]() {
     if (read_processed_edgelist != "") {
       life_timer                  _("deserialize");
-      edge_list<directed, double> el_a(0);
+      edge_list<directedness::directed, double> el_a(0);
       el_a.deserialize(read_processed_edgelist);
       return el_a;
     } else if (edgelistFile != "") {
       life_timer _("read mm");
-      return read_mm<directed, double>(edgelistFile);
+      return read_mm<directedness::directed, double>(edgelistFile);
     } else {
       usage(argv[0]);
-      return edge_list<directed, double>(0);
+      return edge_list<directedness::directed, double>(0);
     }
   }();
 

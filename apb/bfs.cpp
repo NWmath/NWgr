@@ -2,10 +2,11 @@
 
 #include <iostream>
 #include <vector>
+#include <queue>
 
-#include "compressed.hpp"
-#include "edge_list.hpp"
-#include "edge_range.hpp"
+#include "containers/compressed.hpp"
+#include "containers/edge_list.hpp"
+#include "adaptors/edge_range.hpp"
 #include "io/mmio.hpp"
 
 #if defined(CL_SYCL_LANGUAGE_VERSioN)
@@ -18,9 +19,10 @@ using namespace nw::graph;
 using namespace nw::util;
 
 template <typename Adjacency>
-auto apb_adj(Adjacency& graph, size_t ntrial, vertex_id_type seed) {
+auto apb_adj(Adjacency& graph, size_t ntrial, vertex_id_t<Adjacency> seed) {
+  using vertex_id_type = vertex_id_t<Adjacency>;
 
-  vertex_id_type    N = graph.max() + 1;
+  vertex_id_type    N = num_vertices(graph);
   std::vector<bool> visited(N);
 
   double   time = 0;
@@ -155,7 +157,7 @@ int main(int argc, char* argv[]) {
   (void)nthread;    // silence warnings
   size_t ntrial = 1;
   (void)ntrial;    // silence warnings
-  vertex_id_type seed         = 0;
+  default_vertex_id_type seed         = 0;
   const size_t   max_versions = 16;
 
   for (int argIndex = 1; argIndex < argc; ++argIndex) {
@@ -209,15 +211,15 @@ int main(int argc, char* argv[]) {
   auto el_a = [&]() {
     if (read_processed_edgelist != "") {
       life_timer          _("deserialize");
-      edge_list<directed> el_a(0);
+      edge_list<directedness::directed> el_a(0);
       el_a.deserialize(read_processed_edgelist);
       return el_a;
     } else if (edgelistFile != "") {
       life_timer _("read mm");
-      return read_mm<directed>(edgelistFile);
+      return read_mm<directedness::directed>(edgelistFile);
     } else {
       usage(argv[0]);
-      return edge_list<directed>(0);
+      return edge_list<directedness::directed>(0);
     }
   }();
 
