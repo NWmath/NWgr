@@ -108,7 +108,7 @@ class bottomup_bfs_range {
   Colors         colors_;
   vertex_id_type v_;
   vertex_id_type parent_v_;
-  size_t         n_;    // number of "processed" vertics
+  size_t         n_;    // number of "processed" vertices
 
   void advance() {
     // mark current v processed (visited)
@@ -117,29 +117,41 @@ class bottomup_bfs_range {
     ++v_;
     v_ %= graph_.size();
     colors_[v_] = waiting;
-    parent_v_   = v_;
-
-    for (auto&& [u] : graph_[v_]) {
-      if (colors_[u] != processed) {
-        parent_v_ = u;    //mark the first non-processed/unvisited neighbor as parent
-        break;            //done with v's neighbors
-      }
-    }    // for
-
+    //test v has neighors or not
+    if (0 == graph_[v_].size()) {
+      parent_v_ = v_;
+    }
+    else {
+      //if it has neighbor
+      for (auto&& [u] : graph_[v_]) {
+        if (colors_[u] == processed) {
+          parent_v_ = u;    //mark the first non-processed/unvisited neighbor as parent
+          break;            //done with v's neighbors
+        }
+      }    // for
+    }
+/*
     // if no valid parent_v, meaning we have travese to the leaf, we mark v
     // processed and be done with it
     if (v_ == parent_v_) {
       colors_[v_] = processed;
       ++n_;
     }
+    */
   }
 
   decltype(auto) next() { return std::tuple(v_, parent_v_); }
 
 public:
-  bottomup_bfs_range(Graph& graph, vertex_id_type seed = 0) : graph_(graph), colors_(graph.size()), v_(seed), parent_v_(seed) {
-    colors_[seed] = waiting;
-    parent_v_     = graph_[seed][0];
+  //n_ should be 0, assume seed has been processed
+  bottomup_bfs_range(Graph& graph, vertex_id_type seed = 0) : graph_(graph), colors_(graph.size()), v_(seed), n_(0) {
+    colors_[v_] = waiting;
+    //we set the first neighbor as parent
+    //but what if v_ has no neighbors?
+    if (0 == graph_[v_].size())
+      parent_v_ = v_;
+    else
+      parent_v_ = std::get<0>(*(graph_[seed].begin()));
   }
 
   bottomup_bfs_range(const bottomup_bfs_range&) = delete;

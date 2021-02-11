@@ -62,11 +62,12 @@ TEST_CASE("BFS traversal", "[bfs]") {
   directed_csr_graph_t A(aos_a);
 
   size_t              N = A.size();
-  std::vector<size_t> distance(N);
+  std::vector<size_t> distance(N, std::numeric_limits<size_t>::max());
   std::vector<size_t> predecessor(N);
-  /*
+  std::iota(predecessor.begin(), predecessor.end(), 0);
+  
   SECTION("default seed") {
-    vertex_id_type seed = 0;
+    vertex_id_t<directed_csr_graph_t> seed = 0;
     distance[seed]      = 0;
     bfs_edge_range ranges(A, seed);
     auto           ite = ranges.begin();
@@ -79,7 +80,7 @@ TEST_CASE("BFS traversal", "[bfs]") {
 
     REQUIRE(validate(aos_a, seed, distance, predecessor));
   }
-*/
+
   SECTION("another seed") {
     vertex_id_t<directed_csr_graph_t> seed = 1;
     distance[seed]                         = 0;
@@ -89,7 +90,6 @@ TEST_CASE("BFS traversal", "[bfs]") {
       auto v      = std::get<0>(*ite);
       auto u      = std::get<1>(*ite);
       distance[u] = distance[v] + 1;
-      std::cout << u << "-" << v << ":\t" << distance[u] << ":\t" << distance[v] << std::endl;
       predecessor[u] = v;
     }
 
@@ -124,50 +124,39 @@ TEST_CASE("BFS traversal", "[bfs]") {
 
     REQUIRE(validate(aos_a, seed, distance, predecessor));
   }
-
-    SECTION("Bottom-up BFS default seed using bottomup_bfs_range") {
-    vertex_id_type seed = 0;
+*/
+  SECTION("Bottom-up BFS default seed using bottomup_bfs_range") {
+    vertex_id_t<directed_csr_graph_t> seed = 0;
     distance[seed]      = 0;
     bottomup_bfs_range ranges(A, seed);
-    
+    std::cout << N << ": " << std::endl;
     auto      ite = ranges.begin();
     for (; ite != ranges.end(); ++ite) {
       auto v         = std::get<0>(*ite);
-      auto u         = std::get<1>(*ite);
-      distance[u]    = distance[v] + 1;
-                std::cout << u << "-" << v
-            << ":\t" << distance[u]
-            << ":\t" << distance[v] << std::endl;
-      predecessor[u] = v;
-          std::cout << u
-            << ":\t" << distance[u]
-              << "\t" << predecessor[u] << std::endl;
+      auto parentofv         = std::get<1>(*ite);
+      if (v == parentofv) distance[v] = 0;
+      else
+      distance[v]    = distance[parentofv] + 1;
+      predecessor[v] = parentofv;
     }
-      for (size_t vid = 0; vid < distance.size(); ++vid) {
-    std::cout << vid
-            << ":\t" << distance[vid]
-              << "\t" << predecessor[vid] << std::endl;
-  }
+  
     REQUIRE(validate(aos_a, seed, distance, predecessor));
   }
   
-    SECTION("Bottom-up BFS another seed using bottomup_bfs_range") {
-    vertex_id_type seed = 1;
+  SECTION("Bottom-up BFS another seed using bottomup_bfs_range") {
+    vertex_id_t<directed_csr_graph_t> seed = 1;
     distance[seed]      = 0;
     bottomup_bfs_range ranges(A, seed);
     auto      ite = ranges.begin();
     for (; ite != ranges.end(); ++ite) {
       auto v         = std::get<0>(*ite);
-      auto u         = std::get<1>(*ite);
-      distance[u]    = distance[v] + 1;
-                  std::cout << u << "-" << v
-            << ":\t" << distance[u]
-            << ":\t" << distance[v] << std::endl;
-      predecessor[u] = v;
+      auto parentofv         = std::get<1>(*ite);
+      if (v == parentofv) distance[v] = 0;
+      else
+      distance[v]    = distance[parentofv] + 1;
+      predecessor[v] = parentofv;
     }
-
-
     REQUIRE(validate(aos_a, seed, distance, predecessor));
   }
- */
+
 }
