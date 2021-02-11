@@ -21,17 +21,17 @@
 using namespace nw::graph;
 using namespace nw::util;
 
-typedef adjacency<0> csr_graph;
 
 //****************************************************************************
 TEST_CASE("triangle counting", "[tc]") {
 
   auto aos_a = read_mm<directedness::undirected>(DATA_DIR "karate.mtx");
   swap_to_triangular<0>(aos_a, succession::successor);
-  sort_by<1>(aos_a);
-  stable_sort_by<0>(aos_a);
+  lexical_sort_by<0>(aos_a);
+  uniq(aos_a);
+  adjacency<0> A(num_vertices(aos_a));
+  push_back_fill(aos_a, A);
 
-  csr_graph A(aos_a);
 
   SECTION("v0") {
     size_t triangles = triangle_count_v0(A);
