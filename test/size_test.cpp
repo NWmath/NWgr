@@ -29,9 +29,14 @@ TEST_CASE("Size Test", "[size test]") {
   REQUIRE(num_vertices(E_list) == 5);
   REQUIRE(E_list.size() == 0);
   E_list.open_for_push_back();
-  REQUIRE(num_vertices(E_list) == 4);
+  REQUIRE(num_vertices(E_list) == 5);
+  E_list.close_for_push_back();
+  E_list.close_for_push_back();
+  E_list.close_for_push_back();
+  REQUIRE(num_vertices(E_list) == 5);
   REQUIRE(E_list.size() == 0);
 
+  E_list.open_for_push_back();
   E_list.push_back(0, 1);
   E_list.push_back(1, 2);
   E_list.push_back(2, 3);
@@ -54,7 +59,7 @@ TEST_CASE("Size Test", "[size test]") {
   adj_list<0> A_list(E_list);
   REQUIRE(A_list.size() == 7);
 
-  edge_list<directedness::directed> E_list2(N);
+  edge_list<directedness::directed> E_list2(0);
   E_list2.push_back(0, 1);
   E_list2.push_back(1, 2);
   E_list2.push_back(2, 3);
