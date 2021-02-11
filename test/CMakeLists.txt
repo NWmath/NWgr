@@ -15,7 +15,6 @@ macro (nw_graph_add_test TESTNAME)
   #  catch_discover_tests(${TESTNAME})
 endmacro (nw_graph_add_test)
 
-
 add_library(catch_main STATIC catch_main.cpp)
 target_link_libraries(catch_main Catch2::Catch2)
 
@@ -45,7 +44,6 @@ nw_graph_add_test(vov_test)
 # nw_graph_add_test(kcore_test)
 # nw_graph_add_test(max_flow_test)
 # nw_graph_add_test(rcm_test)
-
 
 
 # expected failures for now

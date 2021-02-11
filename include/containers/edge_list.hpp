@@ -109,18 +109,18 @@ public:
 
   void open_for_push_back() { 
     graph_base::is_open = true; 
-    graph_base::vertex_cardinality[0] = graph_base::vertex_cardinality[0] - 1;
+    graph_base::vertex_cardinality[0] = graph_base::vertex_cardinality[0];
 
     if constexpr (false == is_unipartite) {
-      graph_base::vertex_cardinality[1] = graph_base::vertex_cardinality[1] - 1;
+      graph_base::vertex_cardinality[1] = graph_base::vertex_cardinality[1];
     }
   }
 
   void close_for_push_back() {
-    graph_base::vertex_cardinality[0] = graph_base::vertex_cardinality[0] + 1;
+    graph_base::vertex_cardinality[0] = graph_base::vertex_cardinality[0];
 
     if constexpr (false == is_unipartite) {
-      graph_base::vertex_cardinality[1] = graph_base::vertex_cardinality[1] + 1;
+      graph_base::vertex_cardinality[1] = graph_base::vertex_cardinality[1];
     }
 
     graph_base::is_open = false;
@@ -130,10 +130,10 @@ public:
     assert(graph_base::is_open == true);
 
     if constexpr (is_unipartite) {
-      graph_base::vertex_cardinality[0] = std::max<vertex_id_type>(std::max(i, j), graph_base::vertex_cardinality[0]);
+      graph_base::vertex_cardinality[0] = std::max<vertex_id_type>(std::max(i, j)+1, graph_base::vertex_cardinality[0]);
     } else {
-      graph_base::vertex_cardinality[0] = std::max<vertex_id_type>(i, graph_base::vertex_cardinality[0]);
-      graph_base::vertex_cardinality[1] = std::max<vertex_id_type>(j, graph_base::vertex_cardinality[1]);
+      graph_base::vertex_cardinality[0] = std::max<vertex_id_type>(i+1, graph_base::vertex_cardinality[0]);
+      graph_base::vertex_cardinality[1] = std::max<vertex_id_type>(j+1, graph_base::vertex_cardinality[1]);
     }
 
     base::push_back(i, j, attrs...);
