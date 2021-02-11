@@ -87,7 +87,11 @@ public:
     }
 
   public:
-    my_iterator(graph_iterator base, graph_iterator begin, graph_iterator end) : base_(base), first_(begin), last_(end) {
+    my_iterator(graph_iterator base, graph_iterator begin, graph_iterator end)
+        : base_(base)
+        , first_(begin)
+        , last_(end)
+    {
       if (first_ != last_) {
         u_begin_ = (*first_).begin();
         u_end_   = (*first_).end();
@@ -96,18 +100,33 @@ public:
     }
 
     my_iterator(const my_iterator&) = default;
-    my_iterator(const my_iterator<false>& rhs) requires(is_const) : base_(rhs.base_), first_(rhs.first_), last_(rhs.last_) {}
+    my_iterator(const my_iterator<false>& rhs) requires(is_const)
+      : base_(rhs.base_)
+      , first_(rhs.first_)
+      , last_(rhs.last_)
+      , u_begin_(rhs.u_begin_)
+      , u_end_(rhs.u_end_)
+    {
+    }
 
     my_iterator& operator=(const my_iterator&) = default;
-    my_iterator& operator                      =(const my_iterator<false>& rhs) requires(is_const) {
-      base_  = rhs.base_;
-      first_ = rhs.first_;
-      last_  = rhs.last_;
+    my_iterator& operator=(const my_iterator<false>& rhs) requires(is_const)
+    {
+      base_    = rhs.base_;
+      first_   = rhs.first_;
+      last_    = rhs.last_;
+      u_begin_ = rhs.u_begin_;
+      u_end_   = rhs.u_end_;
       return *this;
     }
 
-    bool operator==(const my_iterator&) const  = default;
-    auto operator<=>(const my_iterator&) const = default;
+    friend bool operator==(const my_iterator& a, const my_iterator& b) {
+      return a.first_ == b.first_;
+    }
+
+    friend auto operator<=>(const my_iterator& a, const my_iterator& b) {
+      return a.first_ <=> b.first_;
+    }
 
     my_iterator& operator++() {
       ++u_begin_;
