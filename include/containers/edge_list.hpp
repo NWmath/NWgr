@@ -24,10 +24,6 @@
 #include <tbb/parallel_sort.h>
 #endif
 
-#if defined(BGL17_NEED_EXCLUSIVE_SCAN)
-#include "detail/numeric.hpp"
-#endif
-
 #include "util/defaults.hpp"
 #include "util/demangle.hpp"
 #include "util/print_types.hpp"

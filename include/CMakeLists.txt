@@ -85,50 +85,8 @@ target_sources(nw_graph
   adaptors/filtered_bfs_range.hpp
   containers/aos.hpp
   util/util.hpp
-  detail/numeric.hpp
   adaptors/edge_range.hpp)
 
-# -----------------------------------------------------------------------------
-# Check to see if our C++ compiler supports Parallelism TS. If it does than
-# nothing weird will happen. If it doesn't we define the `NEED_` macros and that
-# will pull in `detail/numeric.hpp`.
-# -----------------------------------------------------------------------------
-include(CheckCXXSourceCompiles)
-check_cxx_source_compiles(
-  "#include<numeric>
-    int main() {
-        int* ptr;
-        std::inclusive_scan(ptr, ptr, ptr);
-    }"
-  HAVE_INCLUSIVE_SCAN)
-
-if (NOT HAVE_INCLUSIVE_SCAN)
-  target_compile_definitions(nw_graph INTERFACE NW_GRAPH_NEED_INCLUSIVE_SCAN)
-endif ()
-
-check_cxx_source_compiles(
-  "#include<numeric>
-    int main() {
-        int* ptr;
-        std::exclusive_scan(ptr, ptr, ptr, 0);
-    }"
-  HAVE_EXCLUSIVE_SCAN)
-
-if (NOT HAVE_EXCLUSIVE_SCAN)
-  target_compile_definitions(nw_graph INTERFACE NW_GRAPH_NEED_EXCLUSIVE_SCAN)
-endif ()
-
-check_cxx_source_compiles(
-  "#include<numeric>
-    int main() {
-        int* ptr;
-        std::reduce(ptr, ptr, 0);
-    }"
-  HAVE_REDUCE)
-
-if (NOT HAVE_REDUCE)
-  target_compile_definitions(nw_graph INTERFACE NW_GRAPH_NEED_REDUCE)
-endif ()
 
 # -----------------------------------------------------------------------------
 # Handle requests for parallel execution

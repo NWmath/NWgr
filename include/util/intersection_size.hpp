@@ -5,10 +5,6 @@
 #include <dpstd/algorithm>
 #include <dpstd/execution>
 #include <dpstd/numeric>
-#elif defined(BGL17_NEED_EXCLUSIVE_SCAN)
-#include "detail/numeric.hpp"
-#include <algorithm>
-#include <execution>
 #else
 #include <algorithm>
 #include <execution>
