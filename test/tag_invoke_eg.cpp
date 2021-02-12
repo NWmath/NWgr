@@ -8,7 +8,7 @@
 // Author: Andrew Lumsdaine
 //
 
-#include "detail/tag_invoke.hpp"
+#include "util/tag_invoke.hpp"
 #include <iostream>
 #include <ranges>
 #include <string>
