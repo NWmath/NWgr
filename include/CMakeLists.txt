@@ -85,7 +85,10 @@ target_sources(nw_graph
   adaptors/filtered_bfs_range.hpp
   containers/aos.hpp
   util/util.hpp
-  adaptors/edge_range.hpp)
+  adaptors/edge_range.hpp
+  csr.hpp
+  csc.hpp
+  coo.hpp)
 
 
 # -----------------------------------------------------------------------------
