@@ -11,7 +11,7 @@
 #ifndef NW_GRAPH_ACCESS_HPP
 #define NW_GRAPH_ACCESS_HPP
 
-#include "detail/tag_invoke.hpp"
+#include "util/tag_invoke.hpp"
 #include <ranges>
 
 #include "graph_base.hpp"

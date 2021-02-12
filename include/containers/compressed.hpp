@@ -34,10 +34,6 @@
 #include <execution>
 #endif
 
-#if defined(BGL17_NEED_EXCLUSIVE_SCAN)
-#include "detail/numeric.hpp"
-#endif
-
 #include <tuple>
 #include <vector>
 
