@@ -1376,7 +1376,8 @@ auto bc2_v0(Graph& graph, const std::vector<vertex_id_t> sources) {
       count = 0;
 
       for (vertex_id_t v : S[phase]) {
-        for (auto&& [w] : g[v]) {
+        for (auto&& x : g[v]) {
+          auto w = std::get<0>(x);
 
           if (depths[w] == std::numeric_limits<vertex_id_t>::max()) {
             S[phase + 1].push_front(w);
