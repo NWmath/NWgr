@@ -5,5 +5,5 @@ layout: directory
 title: algorithms
 ---
 
-```{index} 
+```{index} Graph algorithms
 ```

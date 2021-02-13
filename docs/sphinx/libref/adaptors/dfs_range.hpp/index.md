@@ -8,6 +8,6 @@ tags:
 library-type: sourcefile
 ---
 
-```{index} 
+```{index} dfs_range.hpp
 ```
 Range adapter for accessing edges in depth first search order.

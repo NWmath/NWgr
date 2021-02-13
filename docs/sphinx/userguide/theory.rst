@@ -164,3 +164,287 @@ In the second case, we begin with a table of airports and the distance in kilome
          \end{array}
 
 
+
+Unipartite Graphs and Bipartite Graphs
+--------------------------------------
+
+
+We may also have the case of a graph representing relationships between
+two different kinds of entities. In that case we write
+:math:`G\  = \ (U,\ V,\ E)`, where :math:`U` and :math:`V` are distinct
+sets of different kinds of entities (and in general :math:`U` and
+:math:`V` will not have the same cardinality). The set :math:`E` of
+edges consists of ordered pairs :math:`(u,v)`, with :math:`u` coming
+from :math:`U` and :math:`v` coming from :math:`V`. This kind of graph
+is known as a *bipartite* graph; to distinguish it from a bipartite
+graph, a graph with just a single vertex set may also be referred to as
+a *unipartite* graph.
+
+.. list-table:: 
+   :widths: 225 125 450
+
+   * -
+     -
+     -
+
+   * -
+        Table of movie titles and actors.
+
+     -
+        Graphical representation of the tabular data.
+
+     -
+        Set-theoretical (mathematical) representation.
+
+   * -
+      .. figure:: ../_static/images/title_principal.pdf
+        :width: 200px
+        :align: center
+        :alt: alternate text
+        :figclass: align-center
+
+     -
+      .. figure:: ../_static/images/title_principal_graph.pdf
+        :width: 200px
+        :align: center
+        :alt: alternate text
+        :figclass: align-center
+
+     -
+      .. math::
+
+      .. figure:: ../_static/images/title_principal_set.pdf
+        :width: 400px
+        :align: center
+        :alt: alternate text
+        :figclass: align-center
+
+
+
+
+Graph Traversal
+---------------
+
+
+To define algorithms on graphs and to be able to reason about those
+algorithms, we need to define some representations for graphs—one can’t
+really do very much with abstract sets of vertices and edges. So first
+we need to define some terminology regarding representations. Various
+characteristics of these representations are what we use to express
+algorithms (still abstractly) but when those algorithms are implemented
+as generic library functions, those characteristics will in turn become
+the basis for the library’s concepts.
+
+
+One of the fundamental operations in graph algorithms is *traversal*.
+That is, given a vertex :math:`u`\ we would like to find the neighbors
+of :math:`u`, i.e., all vertices :math:`v`\ such that the edge
+:math:`(u,\ v)` is in the graph. Then, for each of those edges, we would
+like to find their neighbors, and so on. The representation that we can
+define to make this efficient is an *adjacency list.* This is standard
+terminology for the abstract representation, we aren’t going to require
+that an actual list be used (or any other actual type). Specific type
+requirements will be defined by the library concepts below.
+
+There is an important transition in going from a graph (as a collection
+of vertex objects and pairs of vertex objects) to an adjacency list.
+Implied in using an adjacency list for traversal is that we would like
+to be able “find the neighbors” efficiently, i.e., in constant time,
+meaning we need to be able to take a vertex and do a constant time
+lookup to get all of the neighboring vertices. Then, with what we get
+back as the neighbors, we also need to use to look up more neighbors. In
+short, regardless of what we consider to be the vertices or edges in our
+graph :math:`G`, an adjacency list is something that stores indices
+which can be used to index into itself.
+
+
+Index Graphs
+~~~~~~~~~~~~
+
+Given a graph :math:`G\  = \ (V,\ E)`, we can define an adjacency-list
+representation in the following way. Assign to each element of
+:math:`V`\ a unique index from the range :math:`\lbrack 0,\ |V|)` and
+denote the vertex identified with index :math:`i` as
+:math:`V\lbrack i\rbrack.` We can now define a new graph with the same
+structure as :math:`G,` but in terms of the indices in
+:math:`\lbrack 0,\ |V|)`. Let the *index graph* of :math:`G` be the
+graph :math:`= (,\ )`, where :math:`= \lbrack 0,\ |V|)`\ and :math:``
+consists of :math:`\left| E \right|`\ pairs of indices from :math:``
+such that a pair :math:`(i,j)` is in :math:`` if and only if
+:math:`(V\lbrack i\rbrack,\ V\lbrack j\rbrack)` is in :math:`\text{E.}`
+Which is all to say, the index graph of :math:`G`\ is the graph we get
+by replacing all elements of :math:`G` with their corresponding indices.
+
+This process is illustrated in the following.
+
+.. list-table:: 
+   :widths: 250 250
+
+   * -
+     -
+     -
+
+   * -
+        Undirected graph
+
+     -
+        Corresponding index graph
+
+   * -
+      .. figure:: ../_static/images/airport_pre_index.pdf
+        :width: 225px
+        :align: center
+        :alt: alternate text
+        :figclass: align-center
+
+     -
+      .. figure:: ../_static/images/airport_index.pdf
+        :width: 225px
+        :align: center
+        :alt: alternate text
+        :figclass: align-center
+
+
+
+.. list-table:: 
+   :widths: 250 250
+
+   * -
+     -
+     -
+
+   * -
+        Directed graph
+
+     -
+        Corresponding index graph
+
+   * -
+      .. figure:: ../_static/images/spice_pre_index.pdf
+        :width: 225px
+        :align: center
+        :alt: alternate text
+        :figclass: align-center
+
+     -
+      .. figure:: ../_static/images/spice_index.pdf
+        :width: 225px
+        :align: center
+        :alt: alternate text
+        :figclass: align-center
+
+
+Of course, we don’t need an underlying graph to define what an index
+graph itself is. We can say that an index graph :math:`G`\ = (V, E) is
+any graph with the property that the vertex set is a set of contiguous
+indices, with :math:`V = \lbrack 0,|V| - 1)`. Since an index graph is
+just a graph, in cases where the context is clear, we may refer to an
+index graph simply as a graph. We note that an adjacency list can only
+be defined over an index graph.
+
+
+Adjacency Lists
+~~~~~~~~~~~~~~~
+
+An adjacency list of an index graph :math:`G = (V,E)` is an array
+:math:`\text{Adj}` of size :math:`|V|`\ (the array is indexed from 0 to
+:math:`|V| - 1`). Each entry :math:`Adj\lbrack u\rbrack` in the array is
+a list of all the vertices :math:`v`\ for which :math:`(u,v)`\ is
+contained in :math:`\text{E.}` This structure (an adjacency list of an
+index graph, or an index adjacency list) is the fundamental structure
+used by almost all graph algorithms.
+
+
+.. list-table:: 
+   :widths: 600
+
+   * -
+     -
+     -
+
+   * -
+        Airport adjacency list
+
+   * -
+      .. figure:: ../_static/images/airport_adjacency_list.pdf
+        :width: 600
+        :align: center
+        :alt: alternate text
+        :figclass: align-center
+
+
+
+.. list-table:: 
+   :widths: 600
+
+   * -
+     -
+     -
+
+   * -
+        Circuit adjacency list
+
+   * -
+      .. figure:: ../_static/images/circuit_adjacency_list.pdf
+        :width: 600
+        :align: center
+        :alt: alternate text
+        :figclass: align-center
+
+
+
+**NB (1):** Although the standard term for this kind of abstraction is
+“adjacency list”, and although it is often drawn (as we do here) with linked lists as
+elements, it is not necessary that this abstraction be implemented this
+way. What is important is that the items that are stored (vertex
+indices) can be used to index into the adjacency list to obtain other
+lists of neighbors.
+
+**NB (2):** The index adjacency list does not store edges per se and
+therefore the index adjacency list is neither inherently directed nor
+undirected. Again, for a given vertex :math:`u,`\ the container
+:math:`Adj\lbrack u\rbrack` contains the vertex :math:`v`\ if the edge
+:math:`(u,\ v)` is contained in :math:`\text{E.}` This means that for a
+directed graph with edge :math:`(u,v)` in :math:`,`
+:math:`EAdj\lbrack u\rbrack` will contain :math:`\text{v.}` For an
+undirected graph with edge :math:`(u,\ v)` is contained in :math:`E,`
+:math:`Adj\lbrack u\rbrack` will contain :math:`v`\ **and**
+:math:`Adj\lbrack v\rbrack` will contain :math:`\text{u.}` Directedness
+of the original graph is thus made manifest in the *values* stored in
+the index adjacency list. But there is nothing about the structure or
+semantic properties of the adjacency list itself that reflects the
+directedness (or undirectedness) of the original graph.
+
+Summarizing some points to note about computing with graphs, based on
+the preceding.
+
+-  The vertex set in an index graph is a contiguous range of identifiers
+      :math:`\lbrack 0,\ |V|)`
+
+-  There are no vertices per se in an index graph (we don’t materialize
+      :math:`V`).
+
+-  Edges in an index graph are pairs of vertex identifiers.
+
+-  An adjacency list does not store vertices. An adjacency list is a
+      structured organization of the relationship information contained
+      in the edges.
+
+-  An adjacency list does not store edges.
+
+-  Vertex ids obtained from iterating neighbor lists can be used to
+      index back into the adjacency list.
+
+-  An adjacency is neither ordered nor unordered (but is over a graph
+      that may be ordered or unordered).
+
+And, finally, a meta-point. Although graphs and graph algorithms are the
+central focus of a graph library, graphs in some sense are ephemeral.
+The thing that will be computed on by a graph algorithm is an organized
+collection of vertex identifiers that were generated to refer back to
+some real data. Graph texts will often use a phrase like “edges and
+vertices have properties” but a more correct statement would be
+“properties have edges and vertices.”
+
+
+		   

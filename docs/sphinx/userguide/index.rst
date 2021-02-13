@@ -10,7 +10,8 @@ require data structures over which they can operate (even more so for implementa
 of graph algorithms in software).
 
 By this we mean the following.  You will often see definitions like the following
-(which we in fact use below): A graph is a set :math:`G = \{ V, E \}` , where :math:`V`
+(which we in fact use below): A graph is a set :math:`G = \{ V, E \},`
+where :math:`V`
 is a finite set of vertices and :math:`E` is a finite set of edges, etc.  This is
 fine, but one can't build algorithms or software with finite sets of things.  One
 needs a more useful organization of these entities, such as an adjacency list.
@@ -35,7 +36,7 @@ Some Mathematical Terminology
 -----------------------------
 
 Abstractly, we define a graph :math:`G` as comprising two finite sets, 
-:math:`G = \{ V, E \} ` ,
+:math:`G = \{ V, E \},` 
 where the set :math:`V` is a set of entities of interest (''vertices'' or ``nodes'') and :math:`E`
 is a set of pairs of entities from :math:`V` (''edges'' or ''links'').  Without loss of
 generality we label the entities in :math:`V` as :math:`v_i` so that :math:`V = \{ v_0, v_1, \ldots
