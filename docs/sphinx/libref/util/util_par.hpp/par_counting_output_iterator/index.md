@@ -18,3 +18,7 @@ namespace:
   - nw
   - graph
 ---
+
+```{index}  par_counting_output_iterator
+```
+

@@ -7,6 +7,7 @@ tags:
   - library
 library-type: library
 icon: book
+short_title: __OPTIONAL__
 tab: __MISSING__
 ---
 

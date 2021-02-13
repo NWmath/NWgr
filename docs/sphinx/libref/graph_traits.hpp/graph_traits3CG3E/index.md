@@ -10,19 +10,35 @@ declaration: "template <typename G>\nstruct nw::graph::graph_traits;"
 ctor: unspecified
 dtor: unspecified
 typedefs:
-  num_edges_t:
-    definition: typename G::num_edges_t
+  const_inner_iterator:
+    definition: typename G::const_inner_iterator
     description: __MISSING__
-  num_vertices_t:
-    definition: typename G::num_vertices_t
+  const_outer_iterator:
+    definition: typename G::const_outer_iterator
     description: __MISSING__
-  vertex_id_t:
-    definition: typename G::vertex_id_t
+  inner_iterator:
+    definition: typename G::inner_iterator
     description: __MISSING__
-  vertex_size_t:
-    definition: typename G::vertex_id_t
+  num_edges_type:
+    definition: typename G::num_edges_type
+    description: __MISSING__
+  num_vertices_type:
+    definition: typename G::num_vertices_type
+    description: __MISSING__
+  outer_iterator:
+    definition: typename G::outer_iterator
+    description: __MISSING__
+  vertex_id_type:
+    definition: typename G::vertex_id_type
+    description: __MISSING__
+  vertex_size_type:
+    definition: typename G::vertex_id_type
     description: __MISSING__
 namespace:
   - nw
   - graph
 ---
+
+```{index}  graph_traits<G>
+```
+

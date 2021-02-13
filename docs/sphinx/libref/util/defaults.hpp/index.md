@@ -10,7 +10,11 @@ typedefs:
   default_index_t:
     definition: uint32_t
     description: __MISSING__
-  default_vertex_id_t:
+  default_vertex_id_type:
     definition: uint32_t
     description: __MISSING__
 ---
+
+```{index}  util/defaults.hpp
+```
+

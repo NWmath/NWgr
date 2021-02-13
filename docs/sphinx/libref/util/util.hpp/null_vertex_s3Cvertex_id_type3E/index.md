@@ -17,3 +17,7 @@ namespace:
   - nw
   - graph
 ---
+
+```{index}  null_vertex_s<vertex_id_type>
+```
+
