@@ -2,7 +2,7 @@
 layout: library
 title: edge_list.hpp
 owner: Andrew Lumsdaine
-brief: Range of edges based on SOA or AOS containers
+brief: Range of edges based on a "struct of arrays" container
 tags:
   - sourcefile
 library-type: sourcefile
