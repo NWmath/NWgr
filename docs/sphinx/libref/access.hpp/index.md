@@ -1,8 +1,8 @@
 ---
 layout: library
 title: access.hpp
-owner: __MISSING__
-brief: __MISSING__
+owner: Andrew Lumsdaine
+brief: Utility file for graph property accessors
 tags:
   - sourcefile
 library-type: sourcefile

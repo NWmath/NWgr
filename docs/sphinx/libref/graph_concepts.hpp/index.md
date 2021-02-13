@@ -1,8 +1,8 @@
 ---
 layout: library
 title: graph_concepts.hpp
-owner: __MISSING__
-brief: __MISSING__
+owner: Andrew Lumsdaine
+brief: Initial concepts for NW Graph algorithms
 tags:
   - sourcefile
 library-type: sourcefile

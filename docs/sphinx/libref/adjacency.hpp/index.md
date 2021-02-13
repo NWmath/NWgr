@@ -1,8 +1,8 @@
 ---
 layout: library
 title: adjacency.hpp
-owner: __MISSING__
-brief: __MISSING__
+owner: Andrew Lumsdaine
+brief: Basic adjacency graph structure
 tags:
   - sourcefile
 library-type: sourcefile
@@ -15,3 +15,4 @@ typedefs:
 ```{index}  adjacency.hpp
 ```
 
+This is a "workhorse" graph container that stores vertex neighborhoods.

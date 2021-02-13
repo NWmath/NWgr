@@ -1,8 +1,8 @@
 ---
 layout: library
 title: build.hpp
-owner: __MISSING__
-brief: __MISSING__
+owner: Andrew Lumsdaine
+brief: Utilities for graph construction
 tags:
   - sourcefile
 library-type: sourcefile

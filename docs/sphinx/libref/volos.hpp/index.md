@@ -1,8 +1,8 @@
 ---
 layout: library
 title: volos.hpp
-owner: __MISSING__
-brief: __MISSING__
+owner: Andrew Lumsdaine
+brief: Vector of lists data structure
 tags:
   - sourcefile
 library-type: sourcefile

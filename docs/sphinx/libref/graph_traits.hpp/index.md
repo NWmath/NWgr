@@ -1,8 +1,8 @@
 ---
 layout: library
 title: graph_traits.hpp
-owner: __MISSING__
-brief: __MISSING__
+owner: Andrew Lumsdaine
+brief: Traits class for graphs
 tags:
   - sourcefile
 library-type: sourcefile
@@ -36,3 +36,4 @@ typedefs:
 ```{index}  graph_traits.hpp
 ```
 
+These should not be used directly, but rather the "_t" type alias should be used.
