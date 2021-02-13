@@ -14,13 +14,13 @@
 #include <random>
 #include <vector>
 
-#include "algorithms/page_rank.hpp"
-#include "containers/adjacency.hpp"
-#include "containers/edge_list.hpp"
-#include "containers/volos.hpp"
-#include "io/mmio.hpp"
+#include "nwgraph/algorithms/page_rank.hpp"
+#include "nwgraph/adjacency.hpp"
+#include "nwgraph/edge_list.hpp"
+#include "nwgraph/volos.hpp"
+#include "nwgraph/io/mmio.hpp"
 #include "util/timer.hpp"
-#include "util/util.hpp"
+#include "nwgraph/util/util.hpp"
 
 #include "common/abstract_test.hpp"
 

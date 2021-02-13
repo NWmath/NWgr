@@ -25,7 +25,7 @@ static constexpr const char USAGE[] =
 )";
 
 #include "common.hpp"
-#include "io/mmio.hpp"
+#include "nwgraph/io/mmio.hpp"
 #include <docopt.h>
 #include <random>
 

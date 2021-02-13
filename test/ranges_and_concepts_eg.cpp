@@ -84,7 +84,7 @@ concept TopologyGraph = ranges::random_access_range<G> &&
 
 #include "aolos.hpp"
 #include "compressed.hpp"
-#include "util/intersection_size.hpp"
+#include "nwgraph/util/intersection_size.hpp"
 #include "vovos.hpp"
 #include <concepts>
 #include <ranges>

@@ -9,9 +9,9 @@
 // Author: Kevin Deweese
 //
 
-#include "algorithms/kruskal.hpp"
-#include "containers/edge_list.hpp"
-#include "io/mmio.hpp"
+#include "nwgraph/algorithms/kruskal.hpp"
+#include "nwgraph/edge_list.hpp"
+#include "nwgraph/io/mmio.hpp"
 
 #include "common/test_header.hpp"
 

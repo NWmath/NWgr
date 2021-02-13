@@ -9,11 +9,11 @@
 
 #include "xtensor/xcsv.hpp"
 
-#include "containers/adjacency.hpp"
-#include "containers/compressed.hpp"
-#include "containers/edge_list.hpp"
-#include "io/mmio.hpp"
-#include "util/timer.hpp"
+#include "nwgraph/adjacency.hpp"
+#include "nwgraph/containers/compressed.hpp"
+#include "nwgraph/edge_list.hpp"
+#include "nwgraph/io/mmio.hpp"
+#include "nwgraph/util/timer.hpp"
 
 int main(int argc, char* argv[]) {
 

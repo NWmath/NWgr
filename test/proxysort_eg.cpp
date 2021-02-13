@@ -12,7 +12,7 @@
 #include <iostream>
 #include <vector>
 
-#include "util/proxysort.hpp"
+#include "nwgraph/util/proxysort.hpp"
 
 namespace nw::graph {};
 

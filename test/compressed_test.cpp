@@ -11,8 +11,8 @@
 #include <iostream>
 
 #include "common/test_header.hpp"
-#include "containers/adjacency.hpp"
-#include "containers/edge_list.hpp"
+#include "nwgraph/adjacency.hpp"
+#include "nwgraph/edge_list.hpp"
 
 using namespace nw::graph;
 using namespace nw::util;

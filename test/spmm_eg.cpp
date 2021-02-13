@@ -13,11 +13,11 @@
 #include <algorithm>
 #include <tuple>
 
-#include "algorithms/spMatspMat.hpp"
-#include "containers/aos.hpp"
-#include "containers/compressed.hpp"
-#include "io/mmio.hpp"
-#include "util/util.hpp"
+#include "nwgraph/algorithms/spMatspMat.hpp"
+#include "nwgraph/containers/aos.hpp"
+#include "nwgraph/containers/compressed.hpp"
+#include "nwgraph/io/mmio.hpp"
+#include "nwgraph/util/util.hpp"
 
 using namespace nw::graph;
 using namespace nw::util;

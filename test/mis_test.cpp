@@ -12,14 +12,14 @@
 #include <cassert>
 #include <iostream>
 
-#include "graph_traits.hpp"
+#include "nwgraph/graph_traits.hpp"
 
-#include "algorithms/dag_based_mis.hpp"
-#include "algorithms/mis.hpp"
-#include "containers/aos.hpp"
-#include "containers/compressed.hpp"
-#include "io/mmio.hpp"
-#include "util/util.hpp"
+#include "nwgraph/algorithms/dag_based_mis.hpp"
+#include "nwgraph/algorithms/mis.hpp"
+#include "nwgraph/containers/aos.hpp"
+#include "nwgraph/containers/compressed.hpp"
+#include "nwgraph/io/mmio.hpp"
+#include "nwgraph/util/util.hpp"
 
 #include "common/test_header.hpp"
 

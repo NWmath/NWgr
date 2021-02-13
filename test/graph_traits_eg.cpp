@@ -1,14 +1,14 @@
 
-// #include "graph_traits.hpp"
+// #include "nwgraph/graph_traits.hpp"
 
 #include <forward_list>
 #include <tuple>
 #include <vector>
 
-#include "containers/adjacency.hpp"
-#include "containers/edge_list.hpp"
-#include "containers/volos.hpp"
-#include "containers/vovos.hpp"
+#include "nwgraph/adjacency.hpp"
+#include "nwgraph/edge_list.hpp"
+#include "nwgraph/volos.hpp"
+#include "nwgraph/vovos.hpp"
 
 namespace nw {
 namespace graph {

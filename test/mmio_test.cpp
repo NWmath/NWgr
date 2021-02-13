@@ -8,7 +8,7 @@
 // Author: Andrew Lumsdaine
 //
 
-#include "containers/compressed.hpp"
+#include "nwgraph/containers/compressed.hpp"
 
 #include "common/test_header.hpp"
 

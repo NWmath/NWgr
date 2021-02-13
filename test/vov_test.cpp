@@ -10,11 +10,11 @@
 
 #include <complex>
 
-#include "adaptors/edge_range.hpp"
-#include "adaptors/plain_range.hpp"
-#include "containers/edge_list.hpp"
-#include "containers/vovos.hpp"
-#include "util/print_types.hpp"
+#include "nwgraph/adaptors/edge_range.hpp"
+#include "nwgraph/adaptors/plain_range.hpp"
+#include "nwgraph/edge_list.hpp"
+#include "nwgraph/vovos.hpp"
+#include "nwgraph/util/print_types.hpp"
 
 #include "common/test_header.hpp"
 

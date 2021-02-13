@@ -6,16 +6,16 @@
 #include <tuple>
 #include <vector>
 
-#include "access.hpp"
+#include "nwgraph/access.hpp"
 
-#include "graph_traits.hpp"
+#include "nwgraph/graph_traits.hpp"
 
-#include "containers/adjacency.hpp"
-#include "containers/edge_list.hpp"
-#include "containers/volos.hpp"
-#include "containers/vovos.hpp"
+#include "nwgraph/adjacency.hpp"
+#include "nwgraph/edge_list.hpp"
+#include "nwgraph/volos.hpp"
+#include "nwgraph/vovos.hpp"
 
-#include "graph_concepts.hpp"
+#include "nwgraph/graph_concepts.hpp"
 
 template <nw::graph::edge_list_graph edge_list_t>
 auto t0(edge_list_t el) {}

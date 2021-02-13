@@ -10,7 +10,7 @@
 
 #include <iterator>
 
-#include "containers/aos.hpp"
+#include "nwgraph/containers/aos.hpp"
 
 #include "common/test_header.hpp"
 

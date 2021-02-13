@@ -31,13 +31,13 @@ static constexpr const char USAGE[] =
 )";
 
 #include "Log.hpp"
-#include "adaptors/plain_range.hpp"
-#include "algorithms/connected_components.hpp"
+#include "nwgraph/adaptors/plain_range.hpp"
+#include "nwgraph/algorithms/connected_components.hpp"
 #include "common.hpp"
-#include "containers/adjacency.hpp"
-#include "containers/edge_list.hpp"
-#include "util/atomic.hpp"
-#include "util/traits.hpp"
+#include "nwgraph/adjacency.hpp"
+#include "nwgraph/edge_list.hpp"
+#include "nwgraph/util/atomic.hpp"
+#include "nwgraph/util/traits.hpp"
 #include <docopt.h>
 
 #ifdef CL_SYCL_LANGUAGE_VERSION

@@ -10,8 +10,8 @@
 
 #include <iostream>
 
-#include "containers/edge_list.hpp"
-#include "io/mmio.hpp"
+#include "nwgraph/edge_list.hpp"
+#include "nwgraph/io/mmio.hpp"
 
 using namespace nw::graph;
 using namespace nw::util;

@@ -10,11 +10,11 @@
 
 #include "xtensor/xcsv.hpp"
 
-#include "adaptors/bfs_edge_range.hpp"
-#include "containers/adjacency.hpp"
-#include "containers/compressed.hpp"
-#include "containers/edge_list.hpp"
-#include "util/timer.hpp"
+#include "nwgraph/adaptors/bfs_edge_range.hpp"
+#include "nwgraph/adjacency.hpp"
+#include "nwgraph/containers/compressed.hpp"
+#include "nwgraph/edge_list.hpp"
+#include "nwgraph/util/timer.hpp"
 
 int main() {
 
