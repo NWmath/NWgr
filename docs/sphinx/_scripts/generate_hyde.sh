@@ -36,13 +36,16 @@ echo HYDE_PATH is ${HYDE_PATH}
 # NWGRAPH_ROOT=/Users/lums658/Working/NWmath/NWgr
 NWGRAPH_ROOT=/home/nwmath/NWmath/NWgr
 
-NWGRAPH_SRC=${NWGRAPH_ROOT}/include
+NWGRAPH_SRC=${NWGRAPH_ROOT}/include/nwgraph
 
 HYDE_DST_ROOT=${NWGRAPH_ROOT}/docs/sphinx/libref
 
-NWGRAPH_INCLUDES="-I${NWGRAPH_SRC} -I${NWGRAPH_SRC}/algorithms -I${NWGRAPH_SRC}/util -I/home/nwmath/NWmath/NWut/include"
+NWGRAPH_INCLUDES="-I${NWGRAPH_ROOT} -I${NWGRAPH_ROOT}/include -I${NWGRAPH_SRC} -I${NWGRAPH_SRC}/algorithms -I${NWGRAPH_SRC}/util -I${NWGRAPH_SRC}/containers -I${NWGRAPH_SRC}/adaptors -I${NWGRAPH_SRC}/io"
 
-for CUR_LIB in ${NWGRAPH_SRC} ${NWGRAPH_SRC}/algorithms ${NWGRAPH_SRC}/util  ${NWGRAPH_SRC}/detail ; do
+CUR_LIBS="${NWGRAPH_SRC} ${NWGRAPH_SRC}/algorithms ${NWGRAPH_SRC}/adaptors ${NWGRAPH_SRC}/containers ${NWGRAPH_SRC}/io ${NWGRAPH_SRC}/util"
+# CUR_LIBS="${NWGRAPH_SRC}"
+
+for CUR_LIB in "${CUR_LIBS}"; do
     HYDE_SRC_ROOT=${NWGRAPH_SRC}
 
     for CUR_FILE in ${CUR_LIB}/*.hpp ; do
