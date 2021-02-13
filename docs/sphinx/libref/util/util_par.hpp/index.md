@@ -7,7 +7,11 @@ tags:
   - sourcefile
 library-type: sourcefile
 typedefs:
-  vertex_id_t:
+  vertex_id_type:
     definition: size_t
     description: __MISSING__
 ---
+
+```{index}  util/util_par.hpp
+```
+

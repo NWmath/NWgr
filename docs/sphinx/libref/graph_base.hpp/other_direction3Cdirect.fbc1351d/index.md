@@ -17,3 +17,7 @@ namespace:
   - nw
   - graph
 ---
+
+```{index}  other_direction<directedness::undirected>
+```
+

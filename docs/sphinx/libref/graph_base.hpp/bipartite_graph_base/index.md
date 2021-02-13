@@ -27,3 +27,7 @@ namespace:
   - nw
   - graph
 ---
+
+```{index}  bipartite_graph_base
+```
+

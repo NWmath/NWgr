@@ -18,3 +18,7 @@ namespace:
   - nw
   - graph
 ---
+
+```{index}  atomic_counting_output_iterator
+```
+
