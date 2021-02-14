@@ -211,6 +211,25 @@ public:
     lim[1] = max_[1] + 1;
   }
 
+  void close_for_push_back(bool shifting) {
+    if (shifting) {
+      if (min_[0] != 0 || min_[1] != 0) {
+        vertex_id_t the_min = std::min(min_[0], min_[1]);
+
+        std::for_each(std::execution::par, base::begin(), base::end(), [&](auto &&x) {
+          std::get<0>(x) -= the_min;
+          std::get<1>(x) -= the_min;
+        });
+        max_[0] -= the_min;
+        min_[0] -= the_min;
+        max_[1] -= the_min;
+        min_[1] -= the_min;
+      }
+    }
+    lim[0] = max_[0] + 1;
+    lim[1] = max_[1] + 1;
+  }
+
   void push_back(vertex_id_t i, vertex_id_t j, Attributes... attrs) {
     min_[0] = std::min(i, min_[0]);
     min_[1] = std::min(j, min_[1]);
