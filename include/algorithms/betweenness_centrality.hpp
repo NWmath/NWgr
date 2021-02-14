@@ -1480,8 +1480,6 @@ auto bc2_v1(Graph& graph, const std::vector<vertex_id_t> sources, bool normalize
     score_t biggest_score = *max_element(bc.begin(), bc.end());
     for (auto &j : bc)
       j = j / biggest_score; 
-    j = j / biggest_score;
-      j = j / biggest_score; 
   }
 
   return bc;
