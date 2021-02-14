@@ -62,7 +62,7 @@ public:
 };
 //****************************************************************************
 template <typename Graph, typename score_t = float, typename accum_t = size_t>
-std::vector<score_t> betweenness_brandes(Graph& A) {
+std::vector<score_t> betweenness_brandes(Graph& A, bool normalize = true) {
   size_t               n_vtx = A.size();
   std::vector<score_t> centrality(n_vtx, 0);
   auto                 G = A.begin();
@@ -112,10 +112,12 @@ std::vector<score_t> betweenness_brandes(Graph& A) {
       }
     }
   }
-  std::vector<score_t> final(n_vtx);
-  score_t              largest = *std::max_element(centrality.begin(), centrality.end());
-  std::transform(centrality.begin(), centrality.end(), final.begin(), [&](auto& val) { return val / largest; });
-  return final;
+  
+  if (normalize) {
+    score_t largest = *std::max_element(centrality.begin(), centrality.end());
+    std::transform(centrality.begin(), centrality.end(), centrality.begin(), [&](auto &val) { return val /= largest; });
+  }
+  return centrality;
 }
 
 template <typename Graph, typename score_t = float, typename accum_t = size_t>
@@ -1351,7 +1353,7 @@ bool BCVerifier(Graph&& g, std::vector<vertex_id_t> &trial_sources, std::vector<
 }
 
 template <typename Graph, typename score_t = float, typename accum_t = size_t>
-auto bc2_v0(Graph& graph, const std::vector<vertex_id_t> sources) {
+auto bc2_v0(Graph& graph, const std::vector<vertex_id_t> sources, bool normalize = true) {
 
   auto                 g = graph.begin();
   vertex_id_t          N = graph.max() + 1;
@@ -1407,17 +1409,17 @@ auto bc2_v0(Graph& graph, const std::vector<vertex_id_t> sources) {
       }
     }
   }
-
-  score_t biggest_score = *max_element(bc.begin(), bc.end());
-  for (auto& j : bc) {
-    j = j / biggest_score;
+  if (normalize) {
+    score_t biggest_score = *max_element(bc.begin(), bc.end());
+    for (auto &j : bc)
+      j = j / biggest_score; 
   }
 
   return bc;
 }
 
 template <typename Graph, typename score_t = float, typename accum_t = size_t>
-auto bc2_v1(Graph& graph, const std::vector<vertex_id_t> sources) {
+auto bc2_v1(Graph& graph, const std::vector<vertex_id_t> sources, bool normalize = true) {
 
   auto                 g = graph.begin();
   vertex_id_t          N = graph.max() + 1;
@@ -1474,16 +1476,19 @@ auto bc2_v1(Graph& graph, const std::vector<vertex_id_t> sources) {
     }
   }
 
-  score_t biggest_score = *max_element(bc.begin(), bc.end());
-  for (auto& j : bc) {
+  if (normalize) {
+    score_t biggest_score = *max_element(bc.begin(), bc.end());
+    for (auto &j : bc)
+      j = j / biggest_score; 
     j = j / biggest_score;
+      j = j / biggest_score; 
   }
 
   return bc;
 }
 
 template <typename Graph, typename score_t = float, typename accum_t = size_t, class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
-auto bc2_v2(Graph& graph, const std::vector<vertex_id_t>& sources, ExecutionPolicy&& policy = {}) {
+auto bc2_v2(Graph& graph, const std::vector<vertex_id_t>& sources, ExecutionPolicy&& policy = {}, bool normalize = true) {
 
   auto                 g = graph.begin();
   vertex_id_t          N = graph.max() + 1;
@@ -1547,15 +1552,15 @@ auto bc2_v2(Graph& graph, const std::vector<vertex_id_t>& sources, ExecutionPoli
       });
     }
   }
-
-  score_t biggest_score = *max_element(policy, bc.begin(), bc.end());
-  std::for_each(policy, bc.begin(), bc.end(), [&](score_t& j) { j = j / biggest_score; });
-
+  if (normalize) {
+    score_t biggest_score = *max_element(policy, bc.begin(), bc.end());
+    std::for_each(policy, bc.begin(), bc.end(), [&](score_t& j) { j = j / biggest_score; });
+  }
   return bc;
 }
 
 template <typename Graph, typename score_t = float, typename accum_t = size_t, class OuterExecutionPolicy = std::execution::parallel_unsequenced_policy, class InnerExecutionPolicy = std::execution::parallel_unsequenced_policy>
-auto bc2_v3(Graph& graph, const std::vector<vertex_id_t>& sources, OuterExecutionPolicy&& outer_policy = {}, InnerExecutionPolicy&& inner_policy = {}) {
+auto bc2_v3(Graph& graph, const std::vector<vertex_id_t>& sources, OuterExecutionPolicy&& outer_policy = {}, InnerExecutionPolicy&& inner_policy = {}, bool normalize = true) {
 
   auto        g = graph.begin();
   vertex_id_t N = graph.max() + 1;
@@ -1645,15 +1650,15 @@ auto bc2_v3(Graph& graph, const std::vector<vertex_id_t>& sources, OuterExecutio
       });
     });
   }
-
-  score_t biggest_score = *max_element(outer_policy, bc.begin(), bc.end());
-  std::for_each(outer_policy, bc.begin(), bc.end(), [&](score_t& j) { j = j / biggest_score; });
-
+  if (normalize) {
+    score_t biggest_score = *max_element(outer_policy, bc.begin(), bc.end());
+    std::for_each(outer_policy, bc.begin(), bc.end(), [&](score_t& j) { j = j / biggest_score; });
+  }
   return bc;
 }
 
 template <class score_t, class accum_t, class Graph, class OuterExecutionPolicy = std::execution::parallel_unsequenced_policy, class InnerExecutionPolicy = std::execution::parallel_unsequenced_policy>
-auto bc2_v4(Graph&& graph, const std::vector<vertex_id_t>& sources, int threads, OuterExecutionPolicy&& outer_policy={}, InnerExecutionPolicy&& inner_policy={}) {
+auto bc2_v4(Graph&& graph, const std::vector<vertex_id_t>& sources, int threads, OuterExecutionPolicy&& outer_policy={}, InnerExecutionPolicy&& inner_policy={}, bool normalize = true) {
   auto                 g     = graph.begin();
   vertex_id_t          N     = graph.max() + 1;
   size_t               M     = graph.to_be_indexed_.size();
@@ -1734,14 +1739,15 @@ auto bc2_v4(Graph&& graph, const std::vector<vertex_id_t>& sources, int threads,
     });
   }
 
-  score_t biggest_score = *max_element(outer_policy, bc.begin(), bc.end());
-  std::for_each(outer_policy, bc.begin(), bc.end(), [&](score_t& j) { j = j / biggest_score; });
-
+  if (normalize) {
+    score_t biggest_score = *max_element(outer_policy, bc.begin(), bc.end());
+    std::for_each(outer_policy, bc.begin(), bc.end(), [&](score_t& j) { j = j / biggest_score; });
+  }
   return bc;
 }
 
 template <class score_t, class accum_t, class Graph, class OuterExecutionPolicy = std::execution::parallel_unsequenced_policy, class InnerExecutionPolicy = std::execution::parallel_unsequenced_policy>
-auto bc2_v5(Graph&& graph, const std::vector<vertex_id_t>& sources, int threads, OuterExecutionPolicy&& outer_policy = {}, InnerExecutionPolicy&& inner_policy = {}) {
+auto bc2_v5(Graph&& graph, const std::vector<vertex_id_t>& sources, int threads, OuterExecutionPolicy&& outer_policy = {}, InnerExecutionPolicy&& inner_policy = {}, bool normalize = true) {
   vertex_id_t          N     = graph.max() + 1;
   size_t               M     = graph.to_be_indexed_.size();
   auto&&               edges = std::get<0>(*(graph[0]).begin());
@@ -1838,10 +1844,10 @@ auto bc2_v5(Graph&& graph, const std::vector<vertex_id_t>& sources, int threads,
   for (auto&& f : futures) {
     f.wait();
   }
-
-  auto max = std::reduce(outer_policy, bc.begin(), bc.end(), 0.0f, nw::graph::max{});
-  std::for_each(outer_policy, bc.begin(), bc.end(), [&](auto&& j) { j /= max; });
-
+  if (normalize) {
+    auto max = std::reduce(outer_policy, bc.begin(), bc.end(), 0.0f, nw::graph::max{});
+    std::for_each(outer_policy, bc.begin(), bc.end(), [&](auto&& j) { j /= max; });
+  }
   return bc;
 }
 
