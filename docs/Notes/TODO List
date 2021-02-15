@@ -2,6 +2,15 @@ TODO List
 
 "pre_release" branch
 
+- change "fill" to "copy"
+  - make edge list const (don't sort original edge list)
+  - make an overload with move that steals the input vectors
+  - fix fill undirected to work in place like fill directed (no Tmp)
+
+- add adjacency constructor(s) for pair of vector / vector of pairs, with and without N argument (#vertices)
+
+- parallelize "iota" in proxysort (make a util/par_iota.hpp -- we use this alot)
+
 - what is the reference type for outer_iterator in compressed?
 
 => AL
