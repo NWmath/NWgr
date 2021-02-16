@@ -22,6 +22,21 @@ target_sources(bench INTERFACE
 target_include_directories(bench INTERFACE ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
 target_link_libraries(bench INTERFACE nw_graph docopt date::date )
 
+find_package(nlohmann_json 3.2.0 QUIET)
+if (NOT nlohmann_json_FOUND)
+  message("Installed json not found -- fetching")
+  FetchContent_Declare(json
+    GIT_REPOSITORY https://github.com/nlohmann/json.git
+    GIT_TAG v3.7.3)
+
+  FetchContent_GetProperties(json)
+  if(NOT json_POPULATED)
+    FetchContent_Populate(json)
+    add_subdirectory(${json_SOURCE_DIR} ${json_BINARY_DIR} EXCLUDE_FROM_ALL)
+  endif()
+endif()
+
+
 # -----------------------------------------------------------------------------
 # NW_GRAPH driver to process edgelists.
 # -----------------------------------------------------------------------------
@@ -44,7 +59,7 @@ add_executable(sssp.exe sssp.cpp)
 target_link_libraries(sssp.exe bench)
 
 add_executable(tc.exe tc.cpp)
-target_link_libraries(tc.exe bench)
+target_link_libraries(tc.exe bench nlohmann_json::nlohmann_json)
 
 add_executable(bc.exe bc.cpp)
 target_link_libraries(bc.exe bench)
