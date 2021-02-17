@@ -100,6 +100,11 @@ auto tag_invoke(const num_vertices_tag, const index_adjacency<idx, index_type, v
   return g.num_vertices()[0];
 }
 
+template <int idx, std::unsigned_integral index_type, std::unsigned_integral vertex_id_type, std::unsigned_integral lookup_type, typename... Attributes>
+auto tag_invoke(const degree_tag, const index_adjacency<idx, index_type, vertex_id_type, Attributes...>& g, lookup_type i) {
+  return g[i].size();
+}
+
 }    // namespace graph
 }    // namespace nw
 
