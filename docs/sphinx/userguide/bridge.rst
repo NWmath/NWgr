@@ -48,22 +48,27 @@ use graph terminology to name those sets of requirements.
 
 
 
-
-
 Basic Concepts
-~~~~~~~~~~~~~~
+--------------
+
+
+Edge List Structure
+~~~~~~~~~~~~~~~~~~~
+
+Index Adjacency Structure
+~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Based on our observations of graphs and their representations, an index
 adjacency structure of a graph (i.e., :math:`Adj(G)`) is a *range of
 ranges,* specifically, a random access range of forward ranges. As such,
 the outer range conforms completely to the requirements of the
-random_access_range concept and the inner range conforms completely to
-the requirements of the forward_range concept, including all valid
+`random_access_range` concept and the inner range conforms completely to
+the requirements of the `forward_range` concept, including all valid
 expressions and associated types (such as begin, end, etc.).
 
-The size of a graph is the cardinality of its vertex set. This can be
-accessed via the size() function on the outer range or via the
-num_vertices() function on the outer range.
+The size of a graph is the cardinality of its vertex set. This can be accessed via the
+size() function on the outer range of an index adjacency structure, or via the
+num_vertices() function on any graph.
 
 The vertices and edges of a graph are abstract notions that are only implicitly
 reified in a program via vertex and edge properties (see examples above). However,
@@ -122,6 +127,12 @@ In other cases, the number of edges will need to be maintained as part
 of the graph. The total number of edges of a graph can be obtained with
 the num_edges() function (which takes a graph as argument).
 
+
+Index Incidence
+~~~~~~~~~~~~~~~
+
+
+
 Graph Traversal
 ~~~~~~~~~~~~~~~
 
@@ -137,9 +148,9 @@ An example traversing an incidence graph is shown below.
 
 
 
+Adaptors
+~~~~~~~~
 
-Vertex and Edge Descriptors
----------------------------
 
 
 Vertex and Edge Properties
