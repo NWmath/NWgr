@@ -216,7 +216,7 @@ void run_bench(int argc, char* argv[]) {
 
     std::cout << "processing " << file << "\n";
 
-    auto el_a   = load_graph<nw::graph::directedness::undirected>(file);
+    auto el_a   = load_graph<nw::graph::directedness::undirected, double>(file);  // fill with default
     auto degree = degrees(el_a);
 
     // Run and time relabeling. This operates directly on the incoming edglist.
@@ -242,10 +242,7 @@ void run_bench(int argc, char* argv[]) {
 
     auto cel_a = compress<Graph>(el_a);
 
-    //    if (debug) {
-    //cel_a.stream_indices();
-    //}
-
+#if 0
     // If we're verifying then compute the number of coefficients once for this
     // graph.
     std::size_t v_coefficients = 0;
@@ -253,6 +250,7 @@ void run_bench(int argc, char* argv[]) {
       v_coefficients = TCVerifier(cel_a);
       std::cout << "verifier reports " << v_coefficients << " coefficients\n";
     }
+#endif
 
     json   thread_log = {};
     size_t thread_ctr = 0;

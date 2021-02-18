@@ -66,7 +66,7 @@ size_t jaccard_similarity_v1(const GraphT& A) {
       ++ctr;
     }
   }
-  return triangles;
+  return ctr;
 }
 
 template <typename GraphT>
