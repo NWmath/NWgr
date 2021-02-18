@@ -159,7 +159,7 @@ auto fill_directed(edge_list_t& el, Int N, adjacency_t& cs, ExecutionPolicy&& po
   std::inclusive_scan(policy, degree.begin(), degree.end(), cs.indices_.begin() + 1);
   cs.to_be_indexed_.resize(el.size());
   
-#if 0
+#if 1
 
   sort_by<idx>(el);  // Need to do this in a way that will let us have const el
                      // If not, we should steal (move) the vectors rather than copy
