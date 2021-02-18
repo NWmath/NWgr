@@ -19,13 +19,13 @@
 
 include(FetchContent)
 
-FetchContent_Declare(nwut
-  GIT_REPOSITORY     git@github.com:NWmath/NWut.git
-  GIT_TAG            master
-  # URL ${CMAKE_SOURCE_DIR}/contrib/nwut-something.zip
-  # URL_MD5 HASH_FOR_ZIP^
-  )
-FetchContent_MakeAvailable(nwut)
+# FetchContent_Declare(nwut
+#   GIT_REPOSITORY     git@github.com:NWmath/NWut.git
+#   GIT_TAG            master
+#   # URL ${CMAKE_SOURCE_DIR}/contrib/nwut-something.zip
+#   # URL_MD5 HASH_FOR_ZIP^
+#   )
+# FetchContent_MakeAvailable(nwut)
 
 add_library(nw_graph INTERFACE)
 
@@ -79,6 +79,7 @@ target_sources(nw_graph
   nwgraph/util/provenance.hpp
   nwgraph/util/proxysort.hpp
   nwgraph/util/tag_invoke.hpp
+  nwgraph/util/timer.hpp
   nwgraph/util/util.hpp
   nwgraph/util/util_par.hpp
   nwgraph/build.hpp
@@ -110,7 +111,7 @@ find_package(TBB REQUIRED)
 
 find_package(Threads REQUIRED)
 target_compile_definitions(nw_graph INTERFACE EXECUTION_POLICY)
-target_link_libraries(nw_graph INTERFACE TBB::tbb Threads::Threads nw::util)
+target_link_libraries(nw_graph INTERFACE TBB::tbb Threads::Threads)
 if (NW_GRAPH_USE_TBBMALLOC)
   target_link_libraries(nw_graph INTERFACE TBB::tbbmalloc) 
 endif ()

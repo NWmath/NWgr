@@ -17,7 +17,7 @@
 #include "nwgraph/adaptors/edge_range.hpp"
 #include "nwgraph/util/intersection_size.hpp"
 #include "nwgraph/util/parallel_for.hpp"
-#include "util/timer.hpp"
+#include "nwgraph/util/timer.hpp"
 #include "nwgraph/util/util.hpp"
 
 #include <atomic>

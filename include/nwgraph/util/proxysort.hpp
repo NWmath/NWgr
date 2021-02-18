@@ -15,6 +15,7 @@
 #define NW_UTIL_PROXYSORT_HPP
 
 #include <algorithm>
+#include <cassert>
 #include <cstddef>
 #include <cstdint>
 #include <functional>
@@ -33,6 +34,7 @@ namespace util {
 
 template <typename ThingToSort, typename Comparator, typename IntT, class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
 void proxysort(const ThingToSort& x, std::vector<IntT>& perm, Comparator comp = std::less<IntT>(), ExecutionPolicy policy = {}) {
+  assert(perm.size() == x.size());
 
 #if 0
   tbb::parallel_for(tbb::blocked_range(0ul, perm.size()), [&](auto&& r) {
@@ -44,7 +46,14 @@ void proxysort(const ThingToSort& x, std::vector<IntT>& perm, Comparator comp = 
   std::iota(perm.begin(), perm.end(), 0);  // Parallelize Me!!
 #endif
 
-  std::sort(policy, perm.begin(), perm.end(), [&](auto a, auto b) { return comp(x[a], x[b]); });
+  assert(perm.begin() != perm.end());
+
+  std::sort(/*policy,*/ perm.begin(), perm.end(), [&](auto a, auto b) { 
+    assert(perm.size() == x.size());
+    assert(a < x.size());
+    assert(b < x.size());
+    return comp(x[a], x[b]); 
+  });
 }
 
 template <typename IntT = uint32_t, typename Comparator, typename ThingToSort, class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
