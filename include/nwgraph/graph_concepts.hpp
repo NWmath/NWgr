@@ -40,6 +40,13 @@ template <typename G>
 using inner_value = typename std::iterator_traits<typename inner_range<G>::iterator>::value_type;
 // using inner_value = std::ranges::range_value_t<inner_range<G>>;
 
+
+template <typename G>
+concept struct_of_arrays_c = std::semiregular<G> && requires(G g) {
+  std::random_access_iterator<typename G::iterator>;
+  std::get<0>(g) ;
+};
+
 template <typename G>
 concept graph = std::semiregular<G>&& requires(G g) {
   typename graph_traits<G>::vertex_id_type;
@@ -113,10 +120,17 @@ concept incidence_graph = graph<G>&& std::random_access_iterator<typename G::ite
                               });
 
 template <typename G>
-concept degree_enumerable_graph = (adjacency_graph<G> || incidence_graph<G>)&&requires(G g, typename graph_traits<G>::vertex_id_type u) {
-  { degree(g, u) }
-  ->std::convertible_to<size_t>;
-};
+concept degree_enumerable_graph = (adjacency_graph<G> || incidence_graph<G>)
+  && (
+         requires(G g, typename graph_traits<G>::vertex_id_type u) {
+	{ degree(g, u) }
+	  ->std::convertible_to<size_t>;
+      } 
+      || requires(G g, typename graph_traits<G>::vertex_id_type u) {
+	{ degree(g[u]) }
+	  ->std::convertible_to<size_t>;
+      }
+      );
 
 }    // namespace graph
 }    // namespace nw

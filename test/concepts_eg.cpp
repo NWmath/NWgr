@@ -5,6 +5,7 @@
 #include "nwgraph/graph_concepts.hpp"
 #include <deque>
 #include <vector>
+#include <tuple>
 
 template <nw::graph::edge_list_c edge_list_t>
 auto foo(edge_list_t el) {}
@@ -56,6 +57,11 @@ int main() {
   nw::graph::edge_list<nw::graph::directedness::directed> e{{0, 0}, {0, 4}, {4, 4}, {4, 0}};
 
   auto a = make_adjacency<0>(e);
+
+
+  
+  static_assert(nw::graph::struct_of_arrays_c<std::tuple<std::vector<int>>>);
+
 
   bfs_vv(a, 0);
 

@@ -29,6 +29,9 @@
 #include <vector>
 
 
+#include "graph_concepts.hpp"
+
+
 namespace nw {
 namespace graph {
 
@@ -175,6 +178,14 @@ auto fill_directed(edge_list_t& el, Int N, adjacency_t& cs, ExecutionPolicy&& po
   // permute(cs.to_be_indexed_, perm, policy);
 #else
 
+  // Better solution:
+  //   Create tmp array
+  //   Copy sorting index array to tmp array
+  //   Copy other arrays to cs.to_be_indexed_
+  //   Sort everything in to_be_indexed with tmp
+  //     Need a custom swap -- pass in ?  ADL ? 
+  //
+
   auto perm = nw::util::proxysort(std::get<idx>(el), std::less<vertex_id_t<edge_list_t>>());
 
   // Copy other (permuted) indices
@@ -192,6 +203,15 @@ auto fill_directed(edge_list_t& el, Int N, adjacency_t& cs, ExecutionPolicy&& po
 
 template <int idx, class edge_list_t, class Int, class adjacency_t, class ExecutionPolicy = default_execution_policy>
 auto fill_undirected(edge_list_t& el, Int N, adjacency_t& cs, ExecutionPolicy&& policy = {}) {
+
+  // Do same thing in fill_undirected
+  //   Create tmp array -- 2X size 
+  //   Copy sorting index array and other array to tmp array 
+  //   Copy other index array and sorting index array to cs.to_be_indexed_
+  //   Copy property arrays to cs.to_be_indexed_ 2X
+  //   Sort everything in to_be_indexed with tmp
+  //     Need a custom swap -- pass in ?  ADL ? 
+
 
   assert(edge_list_t::is_unipartite == true);
   
@@ -295,8 +315,22 @@ void remove_self_loops(edge_list_t& el) {
   el.resize(past_the_end - el.begin());
 }
 
+
+template<degree_enumerable_graph Graph, class ExecutionPolicy = default_execution_policy>
+auto degrees(const Graph& graph, ExecutionPolicy&& policy = {}) {
+  std::vector<vertex_id_t<Graph>> degree_v(num_vertices(graph));
+  
+  tbb::parallel_for(tbb::blocked_range(0ul, degree_v.size()), [&](auto&& r) {
+    for (auto i = r.begin(), e = r.end(); i != e; ++i) {
+      degree_v[i] = degree(graph[i]);
+    }
+  });
+  return degree_v;
+}
+
+
 template <int d_idx = 0, class edge_list_t, class ExecutionPolicy = default_execution_policy>
-auto degrees(edge_list_t& el, ExecutionPolicy&& policy = {}) {
+auto degrees(edge_list_t& el, ExecutionPolicy&& policy = {}) requires(!degree_enumerable_graph<edge_list_t>) {
 
   size_t d_size = 0;
   if constexpr (edge_list_t::is_unipartite) {
@@ -325,6 +359,7 @@ auto degrees(edge_list_t& el, ExecutionPolicy&& policy = {}) {
   }
   return degree;
 }
+
 
 template <int idx = 0, class edge_list_t>
 auto perm_by_degree(edge_list_t& el, std::string direction = "ascending") {
