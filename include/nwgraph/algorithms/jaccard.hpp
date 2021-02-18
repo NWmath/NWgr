@@ -29,24 +29,10 @@
 namespace nw {
 namespace graph {
 
-template <typename GraphT>
-auto jaccard_v_m1(GraphT& graph) {
-
-  size_t ctr = 0;
-  auto deg = degrees(graph);
-  for (auto&& [u, v, w] : make_edge_range<0, 1, 2>(graph)) {
-    auto   numer = intersection_size(graph[u], graph[v]);
-    auto   denom = deg[u] + deg[v] - numer;
-    double rat   = ((double)numer) / ((double)denom);
-    w            = rat;
-    ++ctr;
-  }
-  return ctr;
-}
 
 
 template <typename GraphT>
-size_t triangle_count_v0(const GraphT& A) {
+size_t jaccard_similarity_v0(const GraphT& A) {
   size_t ctr = 0;
   auto   first     = A.begin();
   auto   last      = A.end();
@@ -66,7 +52,7 @@ size_t triangle_count_v0(const GraphT& A) {
 
 
 template <typename GraphT>
-size_t triangle_count_v1(const GraphT& A) {
+size_t jaccard_similarity_v1(const GraphT& A) {
   size_t ctr = 0;
   auto   first     = A.begin();
   auto   last      = A.end();
@@ -82,6 +68,22 @@ size_t triangle_count_v1(const GraphT& A) {
   }
   return triangles;
 }
+
+template <typename GraphT>
+auto jaccard_similarity_v2(GraphT& graph) {
+
+  size_t ctr = 0;
+  auto deg = degrees(graph);
+  for (auto&& [u, v, w] : make_edge_range<0, 1, 2>(graph)) {
+    auto   numer = intersection_size(graph[u], graph[v]);
+    auto   denom = deg[u] + deg[v] - numer;
+    double rat   = ((double)numer) / ((double)denom);
+    w            = rat;
+    ++ctr;
+  }
+  return ctr;
+}
+
 
 
 }    // namespace graph
