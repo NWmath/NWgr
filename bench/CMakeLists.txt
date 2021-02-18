@@ -49,8 +49,17 @@ target_link_libraries(process_edge_list nw_graph docopt )
 add_executable(sources SourceVerifier.cpp)
 target_link_libraries(sources bench)
 
+add_executable(bc.exe bc.cpp)
+target_link_libraries(bc.exe bench)
+
 add_executable(bfs.exe bfs.cpp)
 target_link_libraries(bfs.exe bench)
+
+add_executable(cc.exe cc.cpp) 
+target_link_libraries(cc.exe bench) 
+
+add_executable(js.exe js.cpp)
+target_link_libraries(js.exe bench)
 
 add_executable(pr.exe pr.cpp)
 target_link_libraries(pr.exe bench)
@@ -61,8 +70,4 @@ target_link_libraries(sssp.exe bench)
 add_executable(tc.exe tc.cpp)
 target_link_libraries(tc.exe bench nlohmann_json::nlohmann_json)
 
-add_executable(bc.exe bc.cpp)
-target_link_libraries(bc.exe bench)
 
-add_executable(cc.exe cc.cpp) 
-target_link_libraries(cc.exe bench) 
