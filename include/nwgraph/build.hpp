@@ -13,6 +13,8 @@
 #ifndef NW_GRAPH_BUILD_HPP
 #define NW_GRAPH_BUILD_HPP
 
+#include "util/print_types.hpp"
+
 #include "nwgraph/util/proxysort.hpp"
 
 #include "nwgraph/graph_base.hpp"
@@ -35,7 +37,8 @@
 namespace nw {
 namespace graph {
 
-using default_execution_policy = std::execution::parallel_unsequenced_policy;
+  // using default_execution_policy = std::execution::parallel_unsequenced_policy;
+using default_execution_policy = std::execution::sequenced_policy;
 
 template <int idx, class edge_list_t, class ExecutionPolicy = default_execution_policy>
 void sort_by(edge_list_t& el, ExecutionPolicy&& policy = {}) {
@@ -125,6 +128,12 @@ void permute_helper(edge_list_t& el, adjacency_t& cs, std::index_sequence<Is...>
   (..., (permute(std::get<Is + 2>(dynamic_cast<typename edge_list_t::base&>(el)), std::get<Is + 1>(cs.to_be_indexed_), perm)));
 }
 
+template <class edge_list_t, class adjacency_t, class Perm, size_t... Is>
+void permute_helper_all(edge_list_t& el, adjacency_t& cs, std::index_sequence<Is...> is, const Perm& perm) {
+  (..., (permute(std::get<Is + 1>(dynamic_cast<typename edge_list_t::base&>(el)), std::get<Is>(cs.to_be_indexed_), perm)));
+}
+
+
 
 template <class edge_list_t, class adjacency_t, class T, class Perm, size_t... Is>
 void permute_helper(edge_list_t& el, adjacency_t& cs, std::index_sequence<Is...> is, T& Tmp, Perm& perm) {
@@ -138,11 +147,19 @@ void fill_helper(edge_list_t& el, adjacency_t& cs, std::index_sequence<Is...> is
                    std::get<Is + 2>(dynamic_cast<typename edge_list_t::base&>(el)).end(), std::get<Is + 1>(cs.to_be_indexed_).begin())));
 }
 
+template <class edge_list_t, class adjacency_t, class ExecutionPolicy = default_execution_policy, size_t... Is>
+void copy_helper(edge_list_t& el, adjacency_t& cs, std::index_sequence<Is...> is, size_t offset, ExecutionPolicy&& policy = {}) {
+  (..., (std::copy(policy, std::get<Is + 2>(dynamic_cast<typename edge_list_t::base&>(el)).begin(),
+                   std::get<Is + 2>(dynamic_cast<typename edge_list_t::base&>(el)).end(), std::get<Is + 1>(cs.to_be_indexed_).begin()+offset)));
+}
+
 template <class edge_list_t, class adjacency_t, class T, class ExecutionPolicy = default_execution_policy, size_t... Is>
 void fill_helper(edge_list_t& el, adjacency_t& cs, std::index_sequence<Is...> is, T& Tmp, ExecutionPolicy&& policy = {}) {
   (..., (std::copy(policy, std::get<Is + 2>(dynamic_cast<typename edge_list_t::base&>(Tmp)).begin(),
                    std::get<Is + 2>(dynamic_cast<typename edge_list_t::base&>(Tmp)).end(), std::get<Is + 1>(cs.to_be_indexed_).begin())));
 }
+
+
 
 
 template <int idx, class edge_list_t, class adjacency_t, class Int, class ExecutionPolicy = default_execution_policy>
@@ -203,6 +220,10 @@ auto fill_directed(edge_list_t& el, Int N, adjacency_t& cs, ExecutionPolicy&& po
 
 template <int idx, class edge_list_t, class Int, class adjacency_t, class ExecutionPolicy = default_execution_policy>
 auto fill_undirected(edge_list_t& el, Int N, adjacency_t& cs, ExecutionPolicy&& policy = {}) {
+  assert(edge_list_t::is_unipartite == true);
+
+
+#if 1
 
   // Do same thing in fill_undirected
   //   Create tmp array -- 2X size 
@@ -213,10 +234,39 @@ auto fill_undirected(edge_list_t& el, Int N, adjacency_t& cs, ExecutionPolicy&& 
   //     Need a custom swap -- pass in ?  ADL ? 
 
 
-  assert(edge_list_t::is_unipartite == true);
-  
+  using vertex_id_type = vertex_id_t<edge_list_t>;
+  std::vector<vertex_id_type> Tmp(2*el.size());
+  std::copy(policy, std::get<0>(el).begin(), std::get<0>(el).end(), Tmp.begin());
+  std::copy(policy, std::get<1>(el).begin(), std::get<1>(el).end(), Tmp.begin()+el.size());
+
+  const int kdx = (idx + 1) % 2;
+  std::copy(policy, std::get<kdx>(el).begin(), std::get<kdx>(el).end(), std::get<0>(cs.to_be_indexed_).begin());
+  std::copy(policy, std::get<idx>(el).begin(), std::get<idx>(el).end(), std::get<0>(cs.to_be_indexed_).begin()+el.size());
+
+  if constexpr (std::tuple_size<typename edge_list_t::attributes_t>::value > 0) {
+    copy_helper(el, cs, std::make_integer_sequence<size_t, std::tuple_size<typename edge_list_t::attributes_t>::value>(), 0);
+  }
+  if constexpr (std::tuple_size<typename edge_list_t::attributes_t>::value > 0) {
+    copy_helper(el, cs, std::make_integer_sequence<size_t, std::tuple_size<typename edge_list_t::attributes_t>::value>(), el.size());
+  }
+
+  auto perm = proxysort(Tmp);
+
+  permute_helper_all(el, cs, std::make_integer_sequence<size_t, std::tuple_size<typename edge_list_t::attributes_t>::value>()+1, perm);
+
+
+#else  
+
+  {
+    auto degree = degrees<idx>(Tmp);    // Can have a fast version if we know it is sorted -- using equal_range
+    cs.indices_.resize(N + 1);
+    std::inclusive_scan(policy, degree.begin(), degree.end(), cs.indices_.begin() + 1);
+  }
+
+
   typename edge_list_t::directed_type Tmp(N);    // directedness doesn't matter for the Tmp, so just use same type as el
                                                  // EXCEPT -- degrees does something different if undirected
+
   Tmp.resize(2 * el.size());
   
   std::copy(policy, el.begin(), el.end(), Tmp.begin());
@@ -229,10 +279,7 @@ auto fill_undirected(edge_list_t& el, Int N, adjacency_t& cs, ExecutionPolicy&& 
   
   sort_by<idx>(Tmp);    // stable_sort may allocate extra memory
   
-  auto degree = degrees<idx>(Tmp);    // Can have a fast version if we know it is sorted -- using equal_range
-  cs.indices_.resize(N + 1);
-  
-  std::inclusive_scan(policy, degree.begin(), degree.end(), cs.indices_.begin() + 1);
+
   cs.to_be_indexed_.resize(Tmp.size());
   
   const int kdx = (idx + 1) % 2;
@@ -242,6 +289,7 @@ auto fill_undirected(edge_list_t& el, Int N, adjacency_t& cs, ExecutionPolicy&& 
   if constexpr (std::tuple_size<typename edge_list_t::attributes_t>::value > 0) {
     fill_helper(el, cs, std::make_integer_sequence<size_t, std::tuple_size<typename edge_list_t::attributes_t>::value>(), Tmp);
   }
+#endif
 }
 
 
