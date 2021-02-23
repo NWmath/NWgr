@@ -11,8 +11,8 @@
 //     Luke D'Alessandro	
 //
 
-#ifndef NW_GRAPH_SOA_HPP
-#define NW_GRAPH_SOA_HPP
+#ifndef NW_GRAPH_ZIP_HPP
+#define NW_GRAPH_ZIP_HPP
 
 #include <cassert>
 
@@ -39,28 +39,40 @@
 #include <execution>
 #endif
 
+
+#include <ranges>
+#include "nwgraph/containers/soa.hpp"
+
+
 namespace nw {
 namespace graph {
 
-// Bare bones struct of arrays (tuple of vectors)
-template <class... Attributes>
-struct struct_of_arrays : std::tuple<std::vector<Attributes>...> {
-  using storage_type = std::tuple<std::vector<Attributes>...>;
-  using base         = std::tuple<std::vector<Attributes>...>;
+// Bare bones zipper of ranges 
+
+template <std::ranges::random_access_range... Ranges>
+struct zipped : std::tuple<Ranges&...> {
+  using storage_type = std::tuple<Ranges&...>;
+  using base         = std::tuple<Ranges&...>;
+
+  using attributes_t = std::tuple<typename std::iterator_traits<typename Ranges::iterator>::value_type...>;
+  using const_attributes_t = std::tuple<typename std::iterator_traits<typename Ranges::const_iterator>::value_type...>;
+  using attributes_r = std::tuple<typename std::iterator_traits<typename Ranges::iterator>::reference...>;
+  using const_attributes_r = std::tuple<typename std::iterator_traits<typename Ranges::const_iterator>::reference...>;
+
 
   template <bool is_const = false>
   class soa_iterator {
     friend class soa_iterator<!is_const>;
 
-    using soa_t = std::conditional_t<is_const, const struct_of_arrays, struct_of_arrays>;
+    using soa_t = std::conditional_t<is_const, const zipped, zipped>;
 
     std::size_t i_;
     soa_t*      soa_;
 
   public:
-    using value_type        = std::conditional_t<is_const, std::tuple<const Attributes...>, std::tuple<Attributes...>>;
+    using value_type        = std::conditional_t<is_const, const_attributes_t, attributes_t>;
     using difference_type   = std::ptrdiff_t;
-    using reference         = std::conditional_t<is_const, std::tuple<const Attributes&...>, std::tuple<Attributes&...>>;
+    using reference         = std::conditional_t<is_const, const_attributes_r, attributes_r>;
     using pointer           = arrow_proxy<reference>;
     using iterator_category = std::random_access_iterator_tag;
 
@@ -106,10 +118,6 @@ struct struct_of_arrays : std::tuple<std::vector<Attributes>...> {
 
     std::ptrdiff_t operator-(const soa_iterator& b) const { return i_ - b.i_; }
 
-    friend soa_iterator operator+(std::ptrdiff_t n, soa_iterator i) { return i + n; }
-    friend soa_iterator operator-(std::ptrdiff_t n, soa_iterator i) { return i - n; }
-
-
     reference operator*() const {
       return std::apply(
           [this]<class... Vectors>(Vectors && ... v) { return reference(std::forward<Vectors>(v)[i_]...); }, *soa_);
@@ -139,12 +147,15 @@ struct struct_of_arrays : std::tuple<std::vector<Attributes>...> {
   using reverse_iterator       = std::reverse_iterator<iterator>;
   using const_reverse_iterator = std::reverse_iterator<const_iterator>;
 
-  struct_of_arrays() = default;
-  struct_of_arrays(size_t M) : base(std::vector<Attributes>(M)...) {}
+  zipped() = default;
+  // zipped(size_t M) : base(std::vector<Attributes>(M)...) {}
 
-  struct_of_arrays(std::initializer_list<value_type> l) {
-    for_each(l.begin(), l.end(), [&](value_type x) { push_back(x); });
-  }
+  // zipped(std::initializer_list<value_type> l) {
+  // for_each(l.begin(), l.end(), [&](value_type x) { push_back(x); });
+  // }
+
+
+  zipped(Ranges&... rs) : base(std::forward_as_tuple(rs...)) { }
 
   iterator       begin() { return {this}; }
   const_iterator begin() const { return {this}; }
@@ -161,6 +172,7 @@ struct struct_of_arrays : std::tuple<std::vector<Attributes>...> {
     return std::apply([&](auto&&... r) { return std::forward_as_tuple(std::forward<decltype(r)>(r)[i]...); }, *this);
   }
 
+#if 0
   void push_back(Attributes... attrs) {
     std::apply([&](auto&... vs) { (vs.push_back(attrs), ...); }, *this);
   }
@@ -176,6 +188,7 @@ struct struct_of_arrays : std::tuple<std::vector<Attributes>...> {
   void push_at(std::size_t i, std::tuple<Attributes...> attrs) {
     std::apply([&](Attributes... attr) { push_at(i, attr...); }, attrs);
   }
+#endif
 
   void clear() {
     std::apply([&](auto&... vs) { (vs.clear(), ...); }, *this);
@@ -242,18 +255,29 @@ struct struct_of_arrays : std::tuple<std::vector<Attributes>...> {
 
   size_t size() const { return std::get<0>(*this).size(); }
 
-  bool operator==(struct_of_arrays& a) { return std::equal(std::execution::par, begin(), end(), a.begin()); }
+  bool operator==(zipped& a) { return std::equal(std::execution::par, begin(), end(), a.begin()); }
 
   bool operator!=(const storage_type& a) { return !operator==(a); }
 };
+
+
+template <std::ranges::random_access_range... Ranges>
+zipped<Ranges...> make_zipped(Ranges&... rs) {
+  return { rs... };
+}
+
 
 }    // namespace graph
 }    // namespace nw
 
 namespace std {
 template <class... Attributes>
-class tuple_size<nw::graph::struct_of_arrays<Attributes...>> : public std::integral_constant<std::size_t, sizeof...(Attributes)> {};
+class tuple_size<nw::graph::zipped<Attributes...>> : public std::integral_constant<std::size_t, sizeof...(Attributes)> {};
 
+
+
+
+#if 0
 /// NB: technically we're supposed to be using `iter_swap` here on the
 /// struct_of_array iterator type, but I can't figure out how to do this.
 template <class... Ts, std::size_t... Is>
@@ -265,6 +289,8 @@ template <class... Ts>
 void swap(std::tuple<Ts&...>&& x, std::tuple<Ts&...>&& y) {
   swap(std::move(x), std::move(y), std::make_index_sequence<sizeof...(Ts)>());
 }
+#endif
+
 }    // namespace std
 
-#endif    // NW_GRAPH_SOA_HPP
+#endif    // NW_GRAPH_ZIP_HPP

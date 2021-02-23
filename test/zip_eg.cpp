@@ -1,0 +1,81 @@
+
+
+#include <algorithm>
+#include <tuple>
+#include <vector>
+
+#include "nwgraph/util/print_types.hpp"
+#include "nwgraph/edge_list.hpp"
+#include "nwgraph/containers/zip.hpp"
+
+// using namespace nw::graph;
+
+template <std::ranges::random_access_range... Ranges>
+struct zipper : public std::tuple<Ranges&...> {
+
+  using base = std::tuple<Ranges&...>;
+
+  using attributes_t = std::tuple<typename std::iterator_traits<typename Ranges::iterator>::value_type...> ;
+
+  using value_type        =  attributes_t;
+  
+  zipper(Ranges&... rs) : base(std::forward_as_tuple(rs...)) { }
+
+};
+
+
+
+int main() {
+
+  
+  static_assert(std::ranges::random_access_range<nw::graph::struct_of_arrays<int, float>>);
+
+
+  nw::graph::edge_list<nw::graph::directedness::directed> el = { { 8, 3}, { 6, 1 }, { 7, 4} };
+
+
+  std::vector<int> a(10, 1), b(10, 2);
+  std::vector<float> c(10, 3), d(10, 4);
+
+  zipper f(a,b, c, d);
+
+
+  nw::graph::zipped g (a, b, c, d);
+  auto e = nw::graph::make_zipped(a, b, c, d);
+
+
+
+  auto i = nw::graph::make_zipped(c, a, b);
+
+  nw::graph::zipped h (el, c, d);
+
+  std::iota(a.begin(), a.end(), -1);
+  std::iota(b.begin(), b.end(), -2);
+  std::iota(c.begin(), c.end(), -3);
+  std::iota(d.begin(), d.end(), -4);
+
+  std::reverse(c.begin(), c.end());
+
+
+
+  std::sort(i.begin(), i.end(), [](auto&&a, auto&&b) { 
+
+    //    print_types(a, b);
+
+    return std::get<0>(a) < std::get<0>(b); } );
+
+
+
+  for (auto &&j : e) {
+    std::swap(std::get<0>(j), std::get<1>(j));
+
+    std::cout << std::get<0>(j) << " " ;
+    std::cout << std::get<1>(j) << " " ;
+    std::cout << std::get<2>(j) << " " ;
+    std::cout << std::get<3>(j) << " " ;
+    std::cout << std::endl;
+  }
+
+
+  return 0;
+}

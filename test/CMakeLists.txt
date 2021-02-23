@@ -71,6 +71,7 @@ nw_graph_add_exe(tag_invoke_eg)
 nw_graph_add_exe(tbb_eg)
 nw_graph_add_exe(triangular_eg)
 nw_graph_add_exe(volos_eg)
+nw_graph_add_exe(zip_eg)
 
 # nw_graph_add_exe(binio_eg)
 # nw_graph_add_exe(io_eg)
