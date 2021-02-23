@@ -22,6 +22,8 @@
 #include <concepts>
 
 #include "nwgraph/access.hpp"
+#include "nwgraph/graph_concepts.hpp"
+
 
 namespace nw {
 namespace graph {
@@ -85,10 +87,13 @@ public:
 template <int idx, typename... Attributes>
 using adjacency = index_adjacency<idx, default_index_t, default_vertex_id_type, Attributes...>;
 
-template <int idx, typename edge_list_t>
+template <int idx, edge_list_graph edge_list_t>
 auto make_adjacency(edge_list_t& el) {
   return adjacency<idx>(el);
 }
+
+
+
 
 //template <int idx, std::unsigned_integral index_type, std::unsigned_integral vertex_id_type, typename... Attributes>
 //auto num_vertices(const index_adjacency<idx, index_type, vertex_id_type, Attributes...>& g) {
