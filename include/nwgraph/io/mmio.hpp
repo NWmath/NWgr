@@ -272,7 +272,7 @@ template <size_t w_idx, directedness sym, typename... Attributes>
 void aos_stream(std::ofstream& outputStream, edge_list<sym, Attributes...> A, const std::string& file_symmetry, std::string& w_type) {
   outputStream << "%%MatrixMarket matrix coordinate " << w_type << " " << file_symmetry << "\n%%\n";
 
-  if constexpr (edge_list<sym, Attributes...>::is_unipartite) {
+  if constexpr (is_unipartite<edge_list<sym, Attributes...>>::value) {
     outputStream << num_vertices(A) << " " << num_vertices(A) << " ";    // + 1 ???
   } else {
     outputStream << A.num_vertices()[0] << " " << A.num_vertice()[1] << " ";    // + 1 ???

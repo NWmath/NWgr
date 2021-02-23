@@ -58,8 +58,8 @@ target_link_libraries(bfs.exe bench)
 add_executable(cc.exe cc.cpp) 
 target_link_libraries(cc.exe bench) 
 
-add_executable(js.exe js.cpp)
-target_link_libraries(js.exe bench)
+# add_executable(js.exe js.cpp)
+# target_link_libraries(js.exe bench)
 
 add_executable(pr.exe pr.cpp)
 target_link_libraries(pr.exe bench)

@@ -8,6 +8,8 @@
 #include "nwgraph/edge_list.hpp"
 #include "nwgraph/containers/zip.hpp"
 
+#include "nwgraph/graph_concepts.hpp"
+
 // using namespace nw::graph;
 
 template <std::ranges::random_access_range... Ranges>
@@ -42,16 +44,12 @@ int main() {
 
   nw::graph::zipped g (a, b, c, d);
 
-
   static_assert(std::ranges::random_access_range<decltype(g)>);
+
   
   auto e = nw::graph::make_zipped(a, b, c, d);
 
-
-
   auto i = nw::graph::make_zipped(c, a, b);
-
-
 
   std::iota(a.begin(), a.end(), -1);
   std::iota(b.begin(), b.end(), -2);
