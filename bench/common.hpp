@@ -7,7 +7,7 @@
 #include "nwgraph/graph_base.hpp"
 #include "nwgraph/graph_traits.hpp"
 #include "nwgraph/io/mmio.hpp"
-#include "util/timer.hpp"
+#include "nwgraph/util/timer.hpp"
 #include "nwgraph/util/traits.hpp"
 
 #include <iomanip>

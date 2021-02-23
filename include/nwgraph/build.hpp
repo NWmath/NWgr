@@ -257,12 +257,6 @@ auto fill_undirected(edge_list_t& el, Int N, adjacency_t& cs, ExecutionPolicy&& 
 
 #else  
 
-  {
-    auto degree = degrees<idx>(Tmp);    // Can have a fast version if we know it is sorted -- using equal_range
-    cs.indices_.resize(N + 1);
-    std::inclusive_scan(policy, degree.begin(), degree.end(), cs.indices_.begin() + 1);
-  }
-
 
   typename edge_list_t::directed_type Tmp(N);    // directedness doesn't matter for the Tmp, so just use same type as el
                                                  // EXCEPT -- degrees does something different if undirected
@@ -278,7 +272,12 @@ auto fill_undirected(edge_list_t& el, Int N, adjacency_t& cs, ExecutionPolicy&& 
   });
   
   sort_by<idx>(Tmp);    // stable_sort may allocate extra memory
-  
+
+  {
+    auto degree = degrees<idx>(Tmp);    // Can have a fast version if we know it is sorted -- using equal_range
+    cs.indices_.resize(N + 1);
+    std::inclusive_scan(policy, degree.begin(), degree.end(), cs.indices_.begin() + 1);
+  }
 
   cs.to_be_indexed_.resize(Tmp.size());
   

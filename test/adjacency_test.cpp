@@ -9,6 +9,7 @@
 //
 
 #include <algorithm>
+#include <ranges>
 #include <vector>
 
 #include "nwgraph/adaptors/edge_range.hpp"
