@@ -19,7 +19,7 @@
 #include "nwgraph/edge_list.hpp"
 #include "nwgraph/volos.hpp"
 #include "nwgraph/io/mmio.hpp"
-#include "util/timer.hpp"
+#include "nwgraph/util/timer.hpp"
 #include "nwgraph/util/util.hpp"
 
 #include "common/abstract_test.hpp"

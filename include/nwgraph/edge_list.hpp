@@ -71,8 +71,6 @@ public:
   using undirected_type = index_edge_list<vertex_id_type, graph_base_t, directedness::undirected, Attributes...>;
 
 public:
-  constexpr static const bool is_unipartite = std::is_same<graph_base, unipartite_graph_base>::value;
-
   constexpr index_edge_list(const index_edge_list&) = default;
   constexpr index_edge_list& operator=(const index_edge_list&) = default;
   constexpr index_edge_list(index_edge_list&&)                 = default;
@@ -89,7 +87,7 @@ public:
     for_each(l.begin(), l.end(), [&](element x) { push_back(x); });
 
     if (g_debug_edge_list) {
-      if constexpr (is_unipartite) {
+      if constexpr (is_unipartite<graph_base>::value) {
         std::cout << " max " << graph_base::vertex_cardinality[0] << std::endl;
       } else {
         std::cout << " max " << graph_base::vertex_cardinality[0] << " " << graph_base::vertex_cardinality[1] << std::endl;
@@ -99,7 +97,7 @@ public:
     close_for_push_back();
 
     if (g_debug_edge_list) {
-      if constexpr (is_unipartite) {
+      if constexpr (is_unipartite<graph_base>::value) {
         std::cout << " max " << graph_base::vertex_cardinality[0] << std::endl;
       } else {
         std::cout << " max " << graph_base::vertex_cardinality[0] << " " << graph_base::vertex_cardinality[1] << std::endl;
@@ -111,7 +109,7 @@ public:
     graph_base::is_open = true; 
     graph_base::vertex_cardinality[0] = graph_base::vertex_cardinality[0];
 
-    if constexpr (false == is_unipartite) {
+    if constexpr (false == is_unipartite<graph_base>::value) {
       graph_base::vertex_cardinality[1] = graph_base::vertex_cardinality[1];
     }
   }
@@ -119,7 +117,7 @@ public:
   void close_for_push_back() {
     graph_base::vertex_cardinality[0] = graph_base::vertex_cardinality[0];
 
-    if constexpr (false == is_unipartite) {
+    if constexpr (false == is_unipartite<graph_base>::value) {
       graph_base::vertex_cardinality[1] = graph_base::vertex_cardinality[1];
     }
 
@@ -129,7 +127,7 @@ public:
   void push_back(vertex_id_type i, vertex_id_type j, Attributes... attrs) {
     assert(graph_base::is_open == true);
 
-    if constexpr (is_unipartite) {
+    if constexpr (is_unipartite<graph_base>::value) {
       graph_base::vertex_cardinality[0] = std::max<vertex_id_type>(std::max(i, j)+1, graph_base::vertex_cardinality[0]);
     } else {
       graph_base::vertex_cardinality[0] = std::max<vertex_id_type>(i+1, graph_base::vertex_cardinality[0]);
@@ -143,7 +141,7 @@ public:
     vertex_id_type i = std::get<0>(elem);
     vertex_id_type j = std::get<1>(elem);
 
-    if constexpr (is_unipartite) {
+    if constexpr (is_unipartite<graph_base>::value) {
       graph_base::vertex_cardinality[0] = std::max<vertex_id_type>(std::max(i, j), graph_base::vertex_cardinality[0]);
     } else {
       graph_base::vertex_cardinality[0] = std::max<vertex_id_type>(i, graph_base::vertex_cardinality[0]);
@@ -200,7 +198,7 @@ public:
     std::cout << "% ";
     std::cout << nw::graph::demangle(typeid(*this).name(), nullptr, nullptr, &status) + ": " +
                      "graph_base::vertex_cardinality = " + std::to_string(graph_base::vertex_cardinality[0]) + " ";
-    if constexpr (false == is_unipartite) {
+    if constexpr (false == is_unipartite<graph_base>::value) {
       std::cout << std::to_string(graph_base::vertex_cardinality[1]) + " ";
     }
     std::cout << std::string("base::size() = ") + std::to_string(base::size());

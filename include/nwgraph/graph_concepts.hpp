@@ -46,6 +46,13 @@ concept struct_of_arrays_c = std::semiregular<G> && requires(G g) {
   std::get<0>(g);
 };
 
+
+template <typename G>
+concept partite = requires (G g) {
+  typename G::graph_base;
+};
+
+
 template <typename G>
 concept graph = std::semiregular<G>&& requires(G g) {
   typename graph_traits<G>::vertex_id_type;
@@ -54,6 +61,7 @@ concept graph = std::semiregular<G>&& requires(G g) {
   ->std::convertible_to<size_t>;
   //  ->std::convertible_to<typename graph_traits<G>::num_vertices_type>;
 };
+
 
 template <typename G>
 concept edge_enumerable_graph = graph<G>&& requires(G g) {

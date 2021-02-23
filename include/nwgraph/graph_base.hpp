@@ -78,6 +78,13 @@ protected:
   bool                 is_open;               // can we mutate graph
 };
 
+
+template <typename Graph>
+struct is_unipartite {
+  constexpr static const bool value = true;
+};
+
+
 }    // namespace graph
 }    // namespace nw
 #endif    // NW_GRAPH_GRAPH_BASE_HPP

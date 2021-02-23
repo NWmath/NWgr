@@ -6,6 +6,8 @@
 
 
 
+#include "nwgraph/vovos.hpp"
+
 #include "nwgraph/adjacency.hpp"
 #include "nwgraph/edge_list.hpp"
 
@@ -60,10 +62,19 @@ int main() {
 
   nw::graph::edge_list<nw::graph::directedness::directed> e{{0, 0}, {0, 4}, {4, 4}, {4, 0}};
 
-  static_assert(edge_list_c<decltype(e)>);
-  static_assert(edge_list_graph<decltype(e)>);
+  std::vector<std::tuple<int, int>> f;
+  std::tuple<std::vector<int>, std::vector<int>> g;
 
-  auto a = make_adjacency<0>(e);
+
+  static_assert(nw::graph::edge_list_c<decltype(e)>);
+  static_assert(nw::graph::edge_list_graph<decltype(e)>);
+
+  static_assert(nw::graph::edge_list_c<decltype(f)>);
+  // static_assert(nw::graph::edge_list_c<decltype(g)>);
+
+  auto a = nw::graph::make_adjacency<0>(e);
+  // auto b = nw::graph::make_adjacency<0>(f, 2UL);
+  // auto c = nw::graph::make_adjacency<0>(g, 2UL);
 
 
   

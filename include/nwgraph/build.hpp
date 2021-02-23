@@ -160,14 +160,12 @@ void fill_helper(edge_list_t& el, adjacency_t& cs, std::index_sequence<Is...> is
 }
 
 
-
-
 template <int idx, class edge_list_t, class adjacency_t, class Int, class ExecutionPolicy = default_execution_policy>
 auto fill_directed(edge_list_t& el, Int N, adjacency_t& cs, ExecutionPolicy&& policy = {}) {
 
   auto degree = degrees<idx>(el);
 
-  if constexpr (edge_list_t::is_unipartite) {  // Compress idx
+  if constexpr (is_unipartite<edge_list_t>::value) {  // Compress idx
     cs.indices_.resize(N + 1);
   } else {
     cs.indices_.resize(N + 1);
@@ -193,6 +191,7 @@ auto fill_directed(edge_list_t& el, Int N, adjacency_t& cs, ExecutionPolicy&& po
 
   // auto perm = proxysort(std::get<idx>(el));
   // permute(cs.to_be_indexed_, perm, policy);
+
 #else
 
   // Better solution:
@@ -203,7 +202,8 @@ auto fill_directed(edge_list_t& el, Int N, adjacency_t& cs, ExecutionPolicy&& po
   //     Need a custom swap -- pass in ?  ADL ? 
   //
 
-  auto perm = nw::util::proxysort(std::get<idx>(el), std::less<vertex_id_t<edge_list_t>>());
+  using vertex_id_type = typename decltype(std::get<idx>(el))::value_type;  /* vertex_id_t<edge_list_t> */
+  auto perm = nw::util::proxysort(std::get<idx>(el), std::less<vertex_id_type>());
 
   // Copy other (permuted) indices
   const int kdx = (idx + 1) % 2;
@@ -223,7 +223,7 @@ auto fill_undirected(edge_list_t& el, Int N, adjacency_t& cs, ExecutionPolicy&& 
   assert(edge_list_t::is_unipartite == true);
 
 
-#if 1
+#if 0
 
   // Do same thing in fill_undirected
   //   Create tmp array -- 2X size 
@@ -235,6 +235,7 @@ auto fill_undirected(edge_list_t& el, Int N, adjacency_t& cs, ExecutionPolicy&& 
 
 
   using vertex_id_type = vertex_id_t<edge_list_t>;
+
   std::vector<vertex_id_type> Tmp(2*el.size());
   std::copy(policy, std::get<0>(el).begin(), std::get<0>(el).end(), Tmp.begin());
   std::copy(policy, std::get<1>(el).begin(), std::get<1>(el).end(), Tmp.begin()+el.size());
@@ -250,7 +251,7 @@ auto fill_undirected(edge_list_t& el, Int N, adjacency_t& cs, ExecutionPolicy&& 
     copy_helper(el, cs, std::make_integer_sequence<size_t, std::tuple_size<typename edge_list_t::attributes_t>::value>(), el.size());
   }
 
-  auto perm = proxysort(Tmp);
+  auto perm = proxysort(Tmp, std::less<vertex_id_type>());
 
   permute_helper_all(el, cs, std::make_integer_sequence<size_t, std::tuple_size<typename edge_list_t::attributes_t>::value>()+1, perm);
 
@@ -301,6 +302,18 @@ auto fill(edge_list_t& el, adjacency_t& cs, ExecutionPolicy&& policy = {}) {
   }
   return cs.to_be_indexed_.size();
 }
+
+template <int idx, class edge_list_t, class adjacency_t, class ExecutionPolicy = default_execution_policy>
+auto fill(edge_list_t& el, adjacency_t& cs, directedness dir, ExecutionPolicy&& policy = {}) {
+  if (dir == nw::graph::directedness::directed) {
+    fill_directed<idx>(el, num_vertices(el), cs, policy);
+  } else {    // undirected -- this cannot be a bipartite graph
+    fill_undirected<idx>(el, num_vertices(el), cs, policy);
+  }
+  return cs.to_be_indexed_.size();
+}
+
+
 
 template <int idx, class edge_list_t>
 void swap_to_triangular(edge_list_t& el, succession cessor) {
@@ -380,23 +393,25 @@ template <int d_idx = 0, class edge_list_t, class ExecutionPolicy = default_exec
 auto degrees(edge_list_t& el, ExecutionPolicy&& policy = {}) requires(!degree_enumerable_graph<edge_list_t>) {
 
   size_t d_size = 0;
-  if constexpr (edge_list_t::is_unipartite) {
-    d_size = el.num_vertices()[0];
+  if constexpr (is_unipartite<edge_list_t>::value) {
+    d_size = num_vertices(el);
   } else {
     d_size = el.num_vertices()[d_idx];
   }
 
-  std::vector<typename edge_list_t::vertex_id_type> degree(d_size);
+  using vertex_id_type = typename edge_list_t::vertex_id_type;
+  
+  std::vector<vertex_id_type> degree(d_size);
 
   if constexpr (edge_list_t::edge_directedness == directedness::directed) {
-    std::vector<std::atomic<typename edge_list_t::vertex_id_type>> tmp(degree.size());
+    std::vector<std::atomic<vertex_id_type>> tmp(degree.size());
 
     std::for_each(/* policy, */ el.begin(), el.end(), [&](auto&& x) { ++tmp[std::get<d_idx>(x)]; });
 
     std::copy(/* policy, */ tmp.begin(), tmp.end(), degree.begin());
 
   } else if constexpr (edge_list_t::edge_directedness == directedness::undirected) {
-    std::vector<std::atomic<typename edge_list_t::vertex_id_type>> tmp(degree.size());
+    std::vector<std::atomic<vertex_id_type>> tmp(degree.size());
 
     std::for_each(/* policy, */ el.begin(), el.end(), [&](auto&& x) {
       ++tmp[std::get<0>(x)];

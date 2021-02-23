@@ -93,6 +93,11 @@ auto make_adjacency(edge_list_t& el) {
 }
 
 
+template <int idx, edge_list_c edge_list_t, std::unsigned_integral u_integral, class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
+auto make_adjacency(edge_list_t& el, u_integral n, directedness edge_directedness = directedness::directed, ExecutionPolicy&& policy = {}) {
+  adjacency<idx> adj(n);
+  fill<idx>(el, adj, edge_directedness, policy);
+}
 
 
 //template <int idx, std::unsigned_integral index_type, std::unsigned_integral vertex_id_type, typename... Attributes>

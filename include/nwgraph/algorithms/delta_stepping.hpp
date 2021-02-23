@@ -25,7 +25,7 @@
 #include "nwgraph/util/atomic.hpp"
 
 #include "nwgraph/util/parallel_for.hpp"
-#include "util/timer.hpp"
+#include "nwgraph/util/timer.hpp"
 #include "nwgraph/util/util.hpp"
 
 #include "tbb/concurrent_vector.h"
