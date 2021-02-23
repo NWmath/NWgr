@@ -47,7 +47,7 @@ int main() {
 
   auto i = nw::graph::make_zipped(c, a, b);
 
-  nw::graph::zipped h (el, c, d);
+
 
   std::iota(a.begin(), a.end(), -1);
   std::iota(b.begin(), b.end(), -2);
@@ -59,13 +59,12 @@ int main() {
 
 
   std::sort(i.begin(), i.end(), [](auto&&a, auto&&b) { 
-
     //    print_types(a, b);
-
     return std::get<0>(a) < std::get<0>(b); } );
 
 
 
+#if 0
   for (auto &&j : e) {
     std::swap(std::get<0>(j), std::get<1>(j));
 
@@ -75,6 +74,23 @@ int main() {
     std::cout << std::get<3>(j) << " " ;
     std::cout << std::endl;
   }
+#endif
+
+  std::reverse(c.begin(), c.end());
+
+  nw::graph::zipped h (el, c, d);
+
+
+  //  print_types(h[0], h[1]);
+  swap(h[0], h[1]);
+
+  //using std::swap;
+  //  std::sort(h.begin(), h.end(), [](auto&&a, auto&&b) { 
+    // print_types(a, b);
+    //return std::get<1>(a) < std::get<1>(b); } );
+
+
+
 
 
   return 0;

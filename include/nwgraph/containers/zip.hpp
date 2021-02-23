@@ -172,6 +172,7 @@ struct zipped : std::tuple<Ranges&...> {
     return std::apply([&](auto&&... r) { return std::forward_as_tuple(std::forward<decltype(r)>(r)[i]...); }, *this);
   }
 
+
 #if 0
   void push_back(Attributes... attrs) {
     std::apply([&](auto&... vs) { (vs.push_back(attrs), ...); }, *this);
@@ -275,6 +276,14 @@ template <class... Attributes>
 class tuple_size<nw::graph::zipped<Attributes...>> : public std::integral_constant<std::size_t, sizeof...(Attributes)> {};
 
 
+template <typename... Ranges>
+void swap(typename nw::graph::zipped<Ranges...>::reference&& x, typename nw::graph::zipped<Ranges...>::reference&& y) {}
+
+template <typename... Ranges>
+void swap(typename nw::graph::zipped<Ranges...>::reference& x, typename nw::graph::zipped<Ranges...>::reference& y) {}
+
+template <typename... Ranges>
+void swap(typename nw::graph::zipped<Ranges...>::reference x, typename nw::graph::zipped<Ranges...>::reference y) {}
 
 
 #if 0
