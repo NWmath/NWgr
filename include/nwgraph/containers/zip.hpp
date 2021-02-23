@@ -116,6 +116,9 @@ struct zipped : std::tuple<Ranges&...> {
     soa_iterator operator+(std::ptrdiff_t n) const { return {soa_, i_ + n}; }
     soa_iterator operator-(std::ptrdiff_t n) const { return {soa_, i_ - n}; }
 
+    friend soa_iterator operator+(std::ptrdiff_t n, soa_iterator i) { return i + n; }
+    friend soa_iterator operator-(std::ptrdiff_t n, soa_iterator i) { return i - n; }
+
     std::ptrdiff_t operator-(const soa_iterator& b) const { return i_ - b.i_; }
 
     reference operator*() const {
@@ -276,15 +279,19 @@ template <class... Attributes>
 class tuple_size<nw::graph::zipped<Attributes...>> : public std::integral_constant<std::size_t, sizeof...(Attributes)> {};
 
 
-template <typename... Ranges>
-void swap(typename nw::graph::zipped<Ranges...>::reference&& x, typename nw::graph::zipped<Ranges...>::reference&& y) {}
+#if 0
+template <std::ranges::random_access_range... Ranges, std::size_t... Is>
+void swap(typename nw::graph::zipped<Ranges...>::iterator::reference&& x, typename nw::graph::zipped<Ranges...>::iterator::reference&& y, std::index_sequence<Is...>) {
+  using std::swap;
+  
+  (swap(std::get<Is>(x), std::get<Is>(y)), ...);
+}
 
-template <typename... Ranges>
-void swap(typename nw::graph::zipped<Ranges...>::reference& x, typename nw::graph::zipped<Ranges...>::reference& y) {}
-
-template <typename... Ranges>
-void swap(typename nw::graph::zipped<Ranges...>::reference x, typename nw::graph::zipped<Ranges...>::reference y) {}
-
+template <std::ranges::random_access_range... Ranges>
+void swap(typename nw::graph::zipped<Ranges...>::iterator::reference&& x, typename nw::graph::zipped<Ranges...>::iterator::reference&& y) {
+  swap(std::move(x), std::move(y), std::make_index_sequence<sizeof...(Ranges)>());
+}
+#endif
 
 #if 0
 /// NB: technically we're supposed to be using `iter_swap` here on the

@@ -41,6 +41,10 @@ int main() {
 
 
   nw::graph::zipped g (a, b, c, d);
+
+
+  static_assert(std::ranges::random_access_range<decltype(g)>);
+  
   auto e = nw::graph::make_zipped(a, b, c, d);
 
 
@@ -78,11 +82,11 @@ int main() {
 
   std::reverse(c.begin(), c.end());
 
-  nw::graph::zipped h (el, c, d);
+  //  nw::graph::zipped h (el, c, d);
 
 
   //  print_types(h[0], h[1]);
-  swap(h[0], h[1]);
+  //  swap(h[0], h[1]);
 
   //using std::swap;
   //  std::sort(h.begin(), h.end(), [](auto&&a, auto&&b) { 

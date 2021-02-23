@@ -1,11 +1,16 @@
 
 
-#include "nwgraph/adjacency.hpp"
-#include "nwgraph/edge_list.hpp"
-#include "nwgraph/graph_concepts.hpp"
 #include <deque>
 #include <vector>
 #include <tuple>
+
+
+
+#include "nwgraph/adjacency.hpp"
+#include "nwgraph/edge_list.hpp"
+
+#include "nwgraph/graph_concepts.hpp"
+
 
 template <nw::graph::edge_list_c edge_list_t>
 auto foo(edge_list_t el) {}
@@ -52,9 +57,11 @@ auto bfs_vv(const Graph& graph, typename nw::graph::graph_traits<Graph>::vertex_
 
 int main() {
 
-  //  nw::graph::edge_list a { {0, 0}, {0, 4} };  // compiler dumps core
 
   nw::graph::edge_list<nw::graph::directedness::directed> e{{0, 0}, {0, 4}, {4, 4}, {4, 0}};
+
+  static_assert(edge_list_c<decltype(e)>);
+  static_assert(edge_list_graph<decltype(e)>);
 
   auto a = make_adjacency<0>(e);
 
