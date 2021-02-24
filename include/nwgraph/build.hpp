@@ -220,7 +220,7 @@ auto fill_directed(edge_list_t& el, Int N, adjacency_t& cs, ExecutionPolicy&& po
 
 template <int idx, class edge_list_t, class Int, class adjacency_t, class ExecutionPolicy = default_execution_policy>
 auto fill_undirected(edge_list_t& el, Int N, adjacency_t& cs, ExecutionPolicy&& policy = {}) {
-  assert(edge_list_t::is_unipartite == true);
+  assert(is_unipartite<edge_list_t>::value);
 
 
 #if 0
