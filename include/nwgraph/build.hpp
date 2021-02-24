@@ -37,8 +37,7 @@
 namespace nw {
 namespace graph {
 
-  // using default_execution_policy = std::execution::parallel_unsequenced_policy;
-using default_execution_policy = std::execution::sequenced_policy;
+using default_execution_policy = std::execution::parallel_unsequenced_policy;
 
 template <int idx, class edge_list_t, class ExecutionPolicy = default_execution_policy>
 void sort_by(edge_list_t& el, ExecutionPolicy&& policy = {}) {
