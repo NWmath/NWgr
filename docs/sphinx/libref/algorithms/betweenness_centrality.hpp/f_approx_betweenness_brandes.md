@@ -7,17 +7,17 @@ tags:
   - function
 defined_in_file: algorithms/betweenness_centrality.hpp
 overloads:
-  "template <typename Graph, typename score_t, typename accum_t>\nstd::vector<score_t> approx_betweenness_brandes(Graph &, std::vector<vertex_id_t> &)":
+  "template <typename Graph, typename score_t, typename accum_t>\nstd::vector<score_t> approx_betweenness_brandes(const Graph &, std::vector<typename Graph::vertex_id_type> &)":
     arguments:
-      - description: Adjacency graph
+      - description: __OPTIONAL__
         name: A
-        type: Graph &
-      - description: Sources vertices
+        type: const Graph &
+      - description: __OPTIONAL__
         name: sources
-        type: std::vector<vertex_id_t> &
-    description: Sequential Brandes algorithm for finding approximate betweenness centrality in an unweighted graph.
-    return: A vector containing the approximate betweenness centrality of every vertex
-    signature_with_names: "template <typename Graph, typename score_t, typename accum_t>\nstd::vector<score_t> approx_betweenness_brandes(Graph & A, std::vector<vertex_id_t> & sources)"
+        type: std::vector<typename Graph::vertex_id_type> &
+    description: __OPTIONAL__
+    return: __OPTIONAL__
+    signature_with_names: "template <typename Graph, typename score_t, typename accum_t>\nstd::vector<score_t> approx_betweenness_brandes(const Graph & A, std::vector<typename Graph::vertex_id_type> & sources)"
 namespace:
   - nw
   - graph

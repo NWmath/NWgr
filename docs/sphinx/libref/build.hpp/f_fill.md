@@ -18,9 +18,26 @@ overloads:
       - description: __OPTIONAL__
         name: policy
         type: ExecutionPolicy &&
-    description: __OPTIONAL__
+    description: __MISSING__
     return: __OPTIONAL__
     signature_with_names: "template <int idx, class edge_list_t, class adjacency_t, class ExecutionPolicy>\nauto fill(edge_list_t & el, adjacency_t & cs, ExecutionPolicy && policy)"
+  "template <int idx, class edge_list_t, class adjacency_t, class ExecutionPolicy>\nauto fill(edge_list_t &, adjacency_t &, nw::graph::directedness, ExecutionPolicy &&)":
+    arguments:
+      - description: __OPTIONAL__
+        name: el
+        type: edge_list_t &
+      - description: __OPTIONAL__
+        name: cs
+        type: adjacency_t &
+      - description: __OPTIONAL__
+        name: dir
+        type: nw::graph::directedness
+      - description: __OPTIONAL__
+        name: policy
+        type: ExecutionPolicy &&
+    description: __MISSING__
+    return: __OPTIONAL__
+    signature_with_names: "template <int idx, class edge_list_t, class adjacency_t, class ExecutionPolicy>\nauto fill(edge_list_t & el, adjacency_t & cs, nw::graph::directedness dir, ExecutionPolicy && policy)"
 namespace:
   - nw
   - graph

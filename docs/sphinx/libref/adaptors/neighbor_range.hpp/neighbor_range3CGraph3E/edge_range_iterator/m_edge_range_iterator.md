@@ -5,7 +5,7 @@ owner: __MISSING__
 brief: __MISSING__
 tags:
   - method
-defined_in_file: neighbor_range.hpp
+defined_in_file: adaptors/neighbor_range.hpp
 is_ctor: true
 overloads:
   edge_range_iterator(neighbor_range<Graph> &):

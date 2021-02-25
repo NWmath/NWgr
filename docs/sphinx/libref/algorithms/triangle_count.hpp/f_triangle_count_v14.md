@@ -7,17 +7,17 @@ tags:
   - function
 defined_in_file: algorithms/triangle_count.hpp
 overloads:
-  "template <class Graph, class SetExecutionPolicy>\nstd::size_t triangle_count_v14(Graph &&, SetExecutionPolicy &&)":
+  "template <class Graph, class SetExecutionPolicy>\nstd::size_t triangle_count_v14(const Graph &, SetExecutionPolicy &&)":
     arguments:
-      - description: Adjacency graph
+      - description: __OPTIONAL__
         name: graph
-        type: Graph &&
-      - description: The execution policy for the set intersection
+        type: const Graph &
+      - description: __OPTIONAL__
         name: set
         type: SetExecutionPolicy &&
-    description: This version of triangle counting uses a one dimensional parallel-for loop over the edge range. This is identical to the the GAP verification code, but in parallel. <br /> This version produces the correct result for both upper and lower triangular matrices, but should be somewhat more efficient for lower triangular orders as the set intersections should be more efficient.
-    return: The number of triangles in the graph
-    signature_with_names: "template <class Graph, class SetExecutionPolicy>\nstd::size_t triangle_count_v14(Graph && graph, SetExecutionPolicy && set)"
+    description: __OPTIONAL__
+    return: __OPTIONAL__
+    signature_with_names: "template <class Graph, class SetExecutionPolicy>\nstd::size_t triangle_count_v14(const Graph & graph, SetExecutionPolicy && set)"
 namespace:
   - nw
   - graph

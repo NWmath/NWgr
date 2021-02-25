@@ -10,6 +10,9 @@ typedefs:
   counting_iterator:
     definition: tbb::counting_iterator<T>
     description: __MISSING__
+  vertex_id_type:
+    definition: typename Graph::vertex_id_type
+    description: __MISSING__
 ---
 
 ```{index}  algorithms/page_rank.hpp

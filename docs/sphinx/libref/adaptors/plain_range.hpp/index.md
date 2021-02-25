@@ -1,6 +1,6 @@
 ---
 layout: library
-title: plain_range.hpp
+title: adaptors/plain_range.hpp
 owner: __MISSING__
 brief: __MISSING__
 tags:

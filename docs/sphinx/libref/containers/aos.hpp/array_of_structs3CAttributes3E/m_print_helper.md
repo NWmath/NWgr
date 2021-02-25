@@ -5,7 +5,7 @@ owner: __MISSING__
 brief: __MISSING__
 tags:
   - method
-defined_in_file: aos.hpp
+defined_in_file: containers/aos.hpp
 overloads:
   "template <size_t... Is>\nvoid print_helper(std::ostream &, std::tuple<Attributes...>, std::index_sequence<Is...>)":
     arguments:

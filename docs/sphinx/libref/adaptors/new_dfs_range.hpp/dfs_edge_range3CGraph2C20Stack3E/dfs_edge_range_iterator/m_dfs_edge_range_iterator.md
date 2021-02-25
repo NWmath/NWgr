@@ -5,7 +5,7 @@ owner: __MISSING__
 brief: __MISSING__
 tags:
   - method
-defined_in_file: new_dfs_range.hpp
+defined_in_file: adaptors/new_dfs_range.hpp
 is_ctor: true
 overloads:
   dfs_edge_range_iterator(dfs_edge_range<Graph, Stack> &):

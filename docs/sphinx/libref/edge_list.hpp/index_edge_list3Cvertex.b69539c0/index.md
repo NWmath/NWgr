@@ -43,9 +43,6 @@ fields:
   edge_directedness:
     description: __MISSING__
     type: const nw::graph::directedness
-  is_unipartite:
-    description: __MISSING__
-    type: const bool
   magic:
     description: __MISSING__
     type: const char const[27]

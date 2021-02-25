@@ -5,7 +5,7 @@ owner: __MISSING__
 brief: __MISSING__
 tags:
   - method
-defined_in_file: random_range.hpp
+defined_in_file: adaptors/random_range.hpp
 overloads:
   auto operator==(const nw::graph::random_range::edge_range_iterator::end_sentinel_type &) const:
     arguments:

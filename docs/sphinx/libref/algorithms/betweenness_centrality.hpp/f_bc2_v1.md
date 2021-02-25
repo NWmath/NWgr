@@ -7,17 +7,17 @@ tags:
   - function
 defined_in_file: algorithms/betweenness_centrality.hpp
 overloads:
-  "template <typename Graph, typename score_t, typename accum_t>\nauto bc2_v1(Graph &, const std::vector<vertex_id_t>)":
+  "template <typename Graph, typename score_t, typename accum_t>\nauto bc2_v1(const Graph &, const std::vector<typename Graph::vertex_id_type>)":
     arguments:
-      - description: Adjacency graph
+      - description: __OPTIONAL__
         name: graph
-        type: Graph &
-      - description: Vector of sources
+        type: const Graph &
+      - description: __OPTIONAL__
         name: sources
-        type: const std::vector<vertex_id_t>
-    description: Similar to bc2_v0, but uses atomic operations for setting depth. Used to test the atomic operations needed for the following parallel implementations.
-    return: A vector containing the approximate betweenness centrality of every vertex
-    signature_with_names: "template <typename Graph, typename score_t, typename accum_t>\nauto bc2_v1(Graph & graph, const std::vector<vertex_id_t> sources)"
+        type: const std::vector<typename Graph::vertex_id_type>
+    description: __OPTIONAL__
+    return: __OPTIONAL__
+    signature_with_names: "template <typename Graph, typename score_t, typename accum_t>\nauto bc2_v1(const Graph & graph, const std::vector<typename Graph::vertex_id_type> sources)"
 namespace:
   - nw
   - graph

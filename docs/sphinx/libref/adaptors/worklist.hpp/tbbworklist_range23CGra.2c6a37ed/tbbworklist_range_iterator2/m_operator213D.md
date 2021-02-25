@@ -5,7 +5,7 @@ owner: __MISSING__
 brief: __MISSING__
 tags:
   - method
-defined_in_file: worklist.hpp
+defined_in_file: adaptors/worklist.hpp
 overloads:
   bool operator!=(const nw::graph::tbbworklist_range2::tbbworklist_range_iterator2::end_sentinel_type &) const:
     arguments:

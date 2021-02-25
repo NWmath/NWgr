@@ -1,6 +1,6 @@
 ---
 layout: library
-title: bfs_range.hpp
+title: adaptors/bfs_range.hpp
 owner: Andrew Lumsdaine
 brief: A range adapter that traverses the underlying graph in breadth-first order
 tags:

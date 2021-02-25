@@ -5,7 +5,7 @@ owner: __MISSING__
 brief: __MISSING__
 tags:
   - function
-defined_in_file: edge_range.hpp
+defined_in_file: adaptors/edge_range.hpp
 overloads:
   "template <std::size_t... Is, class Graph>\nstatic edge_range<Graph, Is...> make_edge_range(Graph &)":
     arguments:
