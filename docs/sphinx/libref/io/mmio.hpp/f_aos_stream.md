@@ -5,7 +5,7 @@ owner: __MISSING__
 brief: __MISSING__
 tags:
   - function
-defined_in_file: mmio.hpp
+defined_in_file: io/mmio.hpp
 overloads:
   "template <size_t w_idx, nw::graph::directedness sym, typename... Attributes>\nvoid aos_stream(std::ofstream &, edge_list<sym, Attributes...>, const std::string &, std::string &)":
     arguments:

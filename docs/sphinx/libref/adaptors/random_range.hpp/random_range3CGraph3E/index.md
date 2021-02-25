@@ -5,7 +5,7 @@ owner: __MISSING__
 brief: __MISSING__
 tags:
   - class
-defined_in_file: random_range.hpp
+defined_in_file: adaptors/random_range.hpp
 declaration: "template <typename Graph>\nclass nw::graph::random_range;"
 dtor: unspecified
 typedefs:
@@ -37,7 +37,7 @@ fields:
     annotation:
       - private
     description: __MISSING__
-    type: nw::graph::vertex_id_t
+    type: vertex_id_t<Graph>
   the_graph_:
     annotation:
       - private

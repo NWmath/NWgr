@@ -5,7 +5,7 @@ owner: __MISSING__
 brief: __MISSING__
 tags:
   - class
-defined_in_file: worklist.hpp
+defined_in_file: adaptors/worklist.hpp
 declaration: "template <typename Graph, typename Workitem, typename Queue>\nclass nw::graph::tbbworklist_range2;"
 dtor: unspecified
 typedefs:

@@ -5,7 +5,7 @@ owner: __MISSING__
 brief: __MISSING__
 tags:
   - class
-defined_in_file: bfs_range.hpp
+defined_in_file: adaptors/bfs_range.hpp
 declaration: "\nclass nw::graph::bottomup_bfs_range::iterator;"
 dtor: unspecified
 fields:

@@ -5,7 +5,7 @@ owner: __MISSING__
 brief: __MISSING__
 tags:
   - method
-defined_in_file: back_edge_range.hpp
+defined_in_file: adaptors/back_edge_range.hpp
 is_ctor: true
 overloads:
   end_sentinel_type():

@@ -5,7 +5,7 @@ owner: __MISSING__
 brief: __MISSING__
 tags:
   - method
-defined_in_file: splittable_range_adapter.hpp
+defined_in_file: adaptors/splittable_range_adapter.hpp
 is_ctor: true
 overloads:
   splittable_range_adapter<Iterator>(Iterator, Iterator):

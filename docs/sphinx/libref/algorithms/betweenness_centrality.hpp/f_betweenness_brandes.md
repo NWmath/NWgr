@@ -7,14 +7,14 @@ tags:
   - function
 defined_in_file: algorithms/betweenness_centrality.hpp
 overloads:
-  "template <typename Graph, typename score_t, typename accum_t>\nstd::vector<score_t> betweenness_brandes(Graph &)":
+  "template <typename Graph, typename score_t, typename accum_t>\nstd::vector<score_t> betweenness_brandes(const Graph &)":
     arguments:
-      - description: Adjacency graph
+      - description: __OPTIONAL__
         name: A
-        type: Graph &
-    description: Sequential Brandes algorithm for finding betweenness centrality in an unweighted graph.
-    return: A vector containing the betweenness centrality of every vertex
-    signature_with_names: "template <typename Graph, typename score_t, typename accum_t>\nstd::vector<score_t> betweenness_brandes(Graph & A)"
+        type: const Graph &
+    description: __OPTIONAL__
+    return: __OPTIONAL__
+    signature_with_names: "template <typename Graph, typename score_t, typename accum_t>\nstd::vector<score_t> betweenness_brandes(const Graph & A)"
 namespace:
   - nw
   - graph

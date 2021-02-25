@@ -2,7 +2,7 @@
 layout: library
 title: coo.hpp
 owner: Andrew Lumsdaine
-brief: Coordinate Format Sparse Storage 
+brief: Coordinate Format Sparse Storage
 tags:
   - sourcefile
 library-type: sourcefile

@@ -5,7 +5,7 @@ owner: __MISSING__
 brief: __MISSING__
 tags:
   - method
-defined_in_file: soa.hpp
+defined_in_file: containers/soa.hpp
 overloads:
   "template <class T>\nvoid deserialize(std::istream &, T &)":
     arguments:

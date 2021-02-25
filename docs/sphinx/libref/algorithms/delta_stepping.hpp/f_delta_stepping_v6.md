@@ -7,20 +7,20 @@ tags:
   - function
 defined_in_file: algorithms/delta_stepping.hpp
 overloads:
-  "template <class distance_t, class Graph, class Id, class T>\nauto delta_stepping_v6(Graph &&, Id, T)":
+  "template <class distance_t, class Graph, class Id, class T>\nauto delta_stepping_v6(const Graph &, Id, T)":
     arguments:
-      - description: Incidence graph
+      - description: __OPTIONAL__
         name: graph
-        type: Graph &&
-      - description: Source vertex
+        type: const Graph &
+      - description: __OPTIONAL__
         name: source
         type: Id
-      - description: Delta stepping parameter
+      - description: __OPTIONAL__
         name: delta
         type: T
-    description: Parallel frontier based delta stepping inspired by the implementation in the GAP benchmark suite. Frontier is processed with tbb::parallel_for_each.
-    return: Vector containing shortest path distances of every vertex from source
-    signature_with_names: "template <class distance_t, class Graph, class Id, class T>\nauto delta_stepping_v6(Graph && graph, Id source, T delta)"
+    description: __OPTIONAL__
+    return: __OPTIONAL__
+    signature_with_names: "template <class distance_t, class Graph, class Id, class T>\nauto delta_stepping_v6(const Graph & graph, Id source, T delta)"
 namespace:
   - nw
   - graph

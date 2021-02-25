@@ -5,7 +5,7 @@ owner: __MISSING__
 brief: __MISSING__
 tags:
   - method
-defined_in_file: soa.hpp
+defined_in_file: containers/soa.hpp
 overloads:
   bool operator!=(const nw::graph::struct_of_arrays::storage_type &):
     arguments:
