@@ -250,6 +250,7 @@ struct struct_of_arrays : std::tuple<std::vector<Attributes>...> {
 }    // namespace graph
 }    // namespace nw
 
+
 namespace std {
 template <class... Attributes>
 class tuple_size<nw::graph::struct_of_arrays<Attributes...>> : public std::integral_constant<std::size_t, sizeof...(Attributes)> {};
@@ -257,17 +258,9 @@ class tuple_size<nw::graph::struct_of_arrays<Attributes...>> : public std::integ
 
 /// NB: technically we're supposed to be using `iter_swap` here on the
 /// struct_of_array iterator type, but I can't figure out how to do this.
-template <class... Ts, std::size_t... Is>
-void swap(std::tuple<Ts&...>&& x, std::tuple<Ts&...>&& y, std::index_sequence<Is...>) {
 
-  (std::swap(std::get<Is>(x), std::get<Is>(y)), ...);
-}
+#include "nwgraph/util/tuple_hack.hpp"
 
-template <class... Ts>
-void swap(std::tuple<Ts&...>&& x, std::tuple<Ts&...>&& y) {
-  
-  swap(std::move(x), std::move(y), std::make_index_sequence<sizeof...(Ts)>());
-}
 
 
 }    // namespace std
