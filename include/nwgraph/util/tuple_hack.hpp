@@ -13,6 +13,10 @@
 #ifndef NWGRAPH_TUPLE_HACK_HPP
 #define NWGRAPH_TUPLE_HACK_HPP
 
+#include <cstddef>
+#include <tuple>
+#include <utility>
+
 namespace std {
 
 template <class... Ts, std::size_t... Is>

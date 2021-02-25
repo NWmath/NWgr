@@ -9,6 +9,12 @@
 //
 
 
+
+#ifndef NW_GRAPH_FLATTENED_HPP
+#define NW_GRAPH_FLATTENED_HPP
+
+#if 0
+
 template <bool is_const = false, std::size_t... Attrs>
 class my_flat_iterator {
 public:
@@ -165,3 +171,8 @@ const_flat_range<Attrs...> edges(std::ptrdiff_t cutoff = std::numeric_limits<std
                                        size(),   index_t(indices_.size() - 1), index_t(to_be_indexed_.size())};
   return {begin, end, cutoff};
 }
+
+#endif 
+
+#endif // NW_GRAPH_FLATTENED_HPP
+

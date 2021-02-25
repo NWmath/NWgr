@@ -14,10 +14,12 @@
 #ifndef NW_GRAPH_BFS_RANGE_HPP
 #define NW_GRAPH_BFS_RANGE_HPP
 
-#include "nwgraph/util/util.hpp"
 #include <cassert>
 #include <queue>
 #include <vector>
+
+#include "nwgraph/util/util.hpp"
+#include "nwgraph/graph_traits.hpp"
 
 namespace nw {
 namespace graph {

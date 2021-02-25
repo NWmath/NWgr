@@ -13,10 +13,12 @@
 #ifndef NW_GRAPH_DFS_RANGE_HPP
 #define NW_GRAPH_DFS_RANGE_HPP
 
-#include "nwgraph/util/util.hpp"
 #include <cassert>
 #include <stack>
 #include <vector>
+
+#include "nwgraph/graph_traits.hpp"
+#include "nwgraph/util/util.hpp"
 
 namespace nw {
 namespace graph {
