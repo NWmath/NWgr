@@ -41,7 +41,6 @@
 
 
 #include <ranges>
-#include "nwgraph/containers/soa.hpp"
 
 
 namespace nw {
@@ -275,11 +274,21 @@ zipped<Ranges...> make_zipped(Ranges&... rs) {
 }    // namespace nw
 
 namespace std {
+
 template <class... Attributes>
 class tuple_size<nw::graph::zipped<Attributes...>> : public std::integral_constant<std::size_t, sizeof...(Attributes)> {};
 
+}    // namespace std
+
+
+/// NB: technically we're supposed to be using `iter_swap` here on the
+/// zipped iterator type, but I can't figure out how to do this.
+#include "nwgraph/util/tuple_hack.hpp"
+
 
 #if 0
+namespace std {
+
 template <std::ranges::random_access_range... Ranges, std::size_t... Is>
 void swap(typename nw::graph::zipped<Ranges...>::iterator::reference&& x, typename nw::graph::zipped<Ranges...>::iterator::reference&& y, std::index_sequence<Is...>) {
   using std::swap;
@@ -291,22 +300,11 @@ template <std::ranges::random_access_range... Ranges>
 void swap(typename nw::graph::zipped<Ranges...>::iterator::reference&& x, typename nw::graph::zipped<Ranges...>::iterator::reference&& y) {
   swap(std::move(x), std::move(y), std::make_index_sequence<sizeof...(Ranges)>());
 }
+
+} 
 #endif
 
-#if 0
-/// NB: technically we're supposed to be using `iter_swap` here on the
-/// struct_of_array iterator type, but I can't figure out how to do this.
-template <class... Ts, std::size_t... Is>
-void swap(std::tuple<Ts&...>&& x, std::tuple<Ts&...>&& y, std::index_sequence<Is...>) {
-  (std::swap(std::get<Is>(x), std::get<Is>(y)), ...);
-}
 
-template <class... Ts>
-void swap(std::tuple<Ts&...>&& x, std::tuple<Ts&...>&& y) {
-  swap(std::move(x), std::move(y), std::make_index_sequence<sizeof...(Ts)>());
-}
-#endif
 
-}    // namespace std
 
 #endif    // NW_GRAPH_ZIP_HPP
