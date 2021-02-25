@@ -255,6 +255,7 @@ namespace std {
 template <class... Attributes>
 class tuple_size<nw::graph::struct_of_arrays<Attributes...>> : public std::integral_constant<std::size_t, sizeof...(Attributes)> {};
 
+}    // namespace std
 
 /// NB: technically we're supposed to be using `iter_swap` here on the
 /// struct_of_array iterator type, but I can't figure out how to do this.
@@ -263,6 +264,6 @@ class tuple_size<nw::graph::struct_of_arrays<Attributes...>> : public std::integ
 
 
 
-}    // namespace std
+
 
 #endif    // NW_GRAPH_SOA_HPP

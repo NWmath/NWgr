@@ -10,11 +10,10 @@
 
 int main() {
 
-  using T = std::vector<std::forward_list<std::tuple<int, int, double>>>;
-
+  using T = nw::graph::adj_list<0>;
   static_assert(nw::graph::graph<T>);
-  static_assert(nw::graph::vertex_list_c<std::forward_list<std::tuple<int, int, double>>>);
-  static_assert(nw::graph::adjacency_graph<std::vector<std::forward_list<std::tuple<int, int, double>>>>);
+  static_assert(nw::graph::adjacency_graph<T>);
+  
 
   return 0;
 }

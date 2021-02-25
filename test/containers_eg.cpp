@@ -15,6 +15,8 @@
 #include "nwgraph/volos.hpp"
 #include "nwgraph/vovos.hpp"
 
+#include "nwgraph/compat.hpp"
+
 #include "nwgraph/graph_concepts.hpp"
 
 template <nw::graph::edge_list_graph edge_list_t>

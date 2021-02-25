@@ -13,6 +13,8 @@
 #ifndef NWGRAPH_TUPLE_HACK_HPP
 #define NWGRAPH_TUPLE_HACK_HPP
 
+namespace std {
+
 template <class... Ts, std::size_t... Is>
 void swap(std::tuple<Ts&...>&& x, std::tuple<Ts&...>&& y, std::index_sequence<Is...>) {
 
@@ -25,5 +27,6 @@ void swap(std::tuple<Ts&...>&& x, std::tuple<Ts&...>&& y) {
   swap(std::move(x), std::move(y), std::make_index_sequence<sizeof...(Ts)>());
 }
 
+}
 
-#endif NWGRAPH_TUPLE_HACK_HPP
+#endif // NWGRAPH_TUPLE_HACK_HPP

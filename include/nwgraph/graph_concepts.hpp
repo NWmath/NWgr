@@ -67,36 +67,30 @@ template <typename G>
 concept edge_enumerable_graph = graph<G>&& requires(G g) {
   typename graph_traits<G>::num_edges_type;
   { num_edges(g) }
-  ->std::convertible_to<typename graph_traits<G>::num_edges_type>;
+  ->std::convertible_to<size_t>;
 };
 
 template <typename R, typename G = R>
 concept vertex_list_c = std::forward_iterator<typename R::iterator>
                         // std::ranges::forward_range<R>
                         && (
-                               requires(typename std::iterator_traits<typename R::iterator>::value_type e) {
-                                 { std::get<0>(e) }
-                                 ->std::convertible_to<typename graph_traits<G>::vertex_id_type>;    // target
-                               } ||
-                               requires(typename std::iterator_traits<typename R::iterator>::value_type e) {
-                                 { adjacent(e) }
-                                 ->std::convertible_to<typename graph_traits<G>::vertex_id_type>;
-                               });
+			    requires(typename std::iterator_traits<typename R::iterator>::value_type e) {
+			      std::get<0>(e);
+			    } ||
+			    requires(typename std::iterator_traits<typename R::iterator>::value_type e) {
+			      adjacent(e);
+			    });
 
 template <typename R, typename G = R>
 concept edge_list_c = std::forward_iterator<typename G::iterator> &&
                       (
                           requires(typename std::iterator_traits<typename R::iterator>::value_type e) {
-                            { std::get<0>(e) }
-                            ->std::convertible_to<typename graph_traits<G>::vertex_id_type>;    // source
-                            { std::get<1>(e) }
-                            ->std::convertible_to<typename graph_traits<G>::vertex_id_type>;    // target
+			    std::get<0>(e); 
+			    std::get<1>(e); 
                           } ||
                           requires(typename std::iterator_traits<typename R::iterator>::value_type e) {
-                            { source(e) }
-                            ->std::convertible_to<typename graph_traits<G>::vertex_id_type>;
-                            { target(e) }
-                            ->std::convertible_to<typename graph_traits<G>::vertex_id_type>;
+			    source(e); 
+			    target(e);
                           });
 
 template <typename G>
@@ -129,16 +123,13 @@ concept incidence_graph = graph<G>&& std::random_access_iterator<typename G::ite
 template <typename G>
 concept degree_enumerable_graph = (adjacency_graph<G> || incidence_graph<G>)
   && (
-         requires(G g, typename graph_traits<G>::vertex_id_type u) {
-	{ degree(g, u) }
-	  ->std::convertible_to<size_t>;
+      requires(G g, typename graph_traits<G>::vertex_id_type u) {
+	degree(g, u);
       } 
       || requires(G g, typename graph_traits<G>::vertex_id_type u) {
-	{ degree(g[u]) }
-	  ->std::convertible_to<size_t>;
-      }
-      );
-
+	degree(g[u]);
+      });
+  
 }    // namespace graph
 }    // namespace nw
 
