@@ -45,12 +45,13 @@ NWGRAPH_INCLUDES="-I${NWGRAPH_ROOT} -I${NWGRAPH_ROOT}/include -I${NWGRAPH_SRC} -
 CUR_LIBS="${NWGRAPH_SRC} ${NWGRAPH_SRC}/algorithms ${NWGRAPH_SRC}/adaptors ${NWGRAPH_SRC}/containers ${NWGRAPH_SRC}/io ${NWGRAPH_SRC}/util"
 # CUR_LIBS="${NWGRAPH_SRC}"
 
-for CUR_LIB in "${CUR_LIBS}"; do
+for CUR_LIB in ${CUR_LIBS}; do
     HYDE_SRC_ROOT=${NWGRAPH_SRC}
+    echo "Processing library $CUR_LIB"
 
     for CUR_FILE in ${CUR_LIB}/*.hpp ; do
 	
-	echo "Processing $CUR_FILE"
+	echo "Processing file $CUR_FILE"
 	
 	CUR_COMMAND="${HYDE_PATH} -hyde-very-verbose -hyde-src-root=${HYDE_SRC_ROOT} -hyde-yaml-dir=${HYDE_DST_ROOT} -hyde-update --auto-toolchain-includes "$CUR_FILE" -- -std=c++20 ${NWGRAPH_INCLUDES}"
 

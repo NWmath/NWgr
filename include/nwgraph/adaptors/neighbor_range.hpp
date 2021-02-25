@@ -13,9 +13,12 @@
 #ifndef NW_GRAPH_NEIGHBOR_RANGE_HPP
 #define NW_GRAPH_NEIGHBOR_RANGE_HPP
 
-#include "nwgraph/util/util.hpp"
 #include <queue>
 #include <vector>
+
+#include "nwgraph/graph_traits.hpp"
+#include "nwgraph/util/util.hpp"
+
 
 namespace nw {
 namespace graph {
@@ -48,7 +51,7 @@ public:
       return *this;
     }
 
-    auto operator*() { return std::tuple<vertex_id_type, vertex_id_type&&>(first - G, std::get<0>(*u_begin)); }
+    auto operator*() { return std::tuple<vertex_id_t<Graph>, vertex_id_t<Graph>&&>(first - G, std::get<0>(*u_begin)); }
 
     // return std::tuple<typename Graph::sub_view, typename Graph::sub_view>(*first, G[std::get<0>(*u_begin)]);
 

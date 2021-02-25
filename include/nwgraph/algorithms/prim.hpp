@@ -13,12 +13,13 @@
 #define NW_GRAPH_PRIM_HPP
 
 #include "nwgraph/adaptors/bfs_range.hpp"
+#include "nwgraph/adaptors/graph_traits.hpp"
 
 namespace nw {
 namespace graph {
 
 template <typename DistanceT, typename GraphT>
-std::vector<DistanceT> prim(const GraphT& graph, vertex_id_type source) {}
+std::vector<DistanceT> prim(const GraphT& graph, vertex_id_t<GraphT> source) {}
 
 
 #endif    // NW_GRAPH_PRIM_HPP
