@@ -3,8 +3,8 @@
 #include <iostream>
 #include <vector>
 
-#include "compressed.hpp"
-#include "edge_list.hpp"
+#include "containers/compressed.hpp"
+#include "containers/edge_list.hpp"
 #include "io/mmio.hpp"
 
 #if defined(CL_SYCL_LANGUAGE_VERSioN)
