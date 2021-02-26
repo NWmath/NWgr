@@ -2,7 +2,7 @@
 layout: library
 title: vovos.hpp
 owner: Andrew Lumsdaine
-brief: Vector of vectors data structure
+brief: Vector of vectors graph adjacency data structure
 tags:
   - sourcefile
 library-type: sourcefile

@@ -42,6 +42,7 @@ public:
   void open_for_push_back() {}
   void close_for_push_back() {}
   void push_back(size_t i, Attributes... attrs) { base::operator[](i).emplace_back(attrs...); }
+  void push_at(size_t i, size_t j, Attributes... attrs) { base::operator[](i).emplace_back(j, attrs...); }
 
   auto size() const { return base::size(); }
 };

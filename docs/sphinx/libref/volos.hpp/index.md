@@ -2,7 +2,7 @@
 layout: library
 title: volos.hpp
 owner: Andrew Lumsdaine
-brief: Vector of lists data structure
+brief: Vector of lists graph adjacency data structure
 tags:
   - sourcefile
 library-type: sourcefile

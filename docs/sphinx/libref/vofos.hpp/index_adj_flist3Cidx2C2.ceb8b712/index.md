@@ -1,8 +1,8 @@
 ---
 layout: class
 title: index_adj_flist<idx, vertex_id, Attributes>
-owner: __MISSING__
-brief: __MISSING__
+owner: Andrew Lumsdaine
+brief: Index adjacency structure based on vector of forward list
 tags:
   - class
 defined_in_file: vofos.hpp

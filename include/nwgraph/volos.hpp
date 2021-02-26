@@ -70,6 +70,7 @@ public:
   void open_for_push_back() { graph_base::is_open = true; }
   void close_for_push_back() { graph_base::is_open = false; }
   void push_back(size_t i, size_t j, Attributes... attrs) { base::operator[](i).emplace_back(j, attrs...); }
+  void push_at(size_t i, size_t j, Attributes... attrs) { base::operator[](i).emplace_back(j, attrs...); }
 
   num_vertices_type num_vertices() const { return {base::size()}; };
   num_edges_type    num_edges() const { return num_edges_; }
