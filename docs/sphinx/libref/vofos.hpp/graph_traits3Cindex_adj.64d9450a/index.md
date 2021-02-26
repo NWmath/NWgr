@@ -1,11 +1,11 @@
 ---
 layout: class
-title: graph_traits<index_adj_list<idx, vertex_id, Attributes...>>
+title: graph_traits<index_adj_flist<idx, vertex_id, Attributes...>>
 owner: __MISSING__
 brief: __MISSING__
 tags:
   - class
-defined_in_file: volos.hpp
+defined_in_file: vofos.hpp
 declaration: "\nstruct nw::graph::graph_traits;"
 ctor: unspecified
 dtor: unspecified
@@ -20,10 +20,10 @@ typedefs:
     definition: typename inner_type::iterator
     description: __MISSING__
   inner_type:
-    definition: std::list<tuple_type>
+    definition: std::forward_list<tuple_type>
     description: __MISSING__
   my_type:
-    definition: index_adj_list<idx, vertex_id, Attributes...>
+    definition: index_adj_flist<idx, vertex_id, Attributes...>
     description: __MISSING__
   num_vertices_type:
     definition: std::array<vertex_size_type, 1>
@@ -47,7 +47,3 @@ namespace:
   - nw
   - graph
 ---
-
-```{index}  graph_traits<index_adj_list<idx, vertex_id, Attributes...>>
-```
-
