@@ -9,8 +9,8 @@
 //     Andrew Lumsdaine	
 //
 
-#ifndef NW_GRAPH_VOLOS_HPP
-#define NW_GRAPH_VOLOS_HPP
+#ifndef NW_GRAPH_VOFOS_HPP
+#define NW_GRAPH_VOFOS_HPP
 
 #include <cassert>
 #include <forward_list>
@@ -27,11 +27,11 @@ namespace nw {
 namespace graph {
 
 template <typename... Attributes>
-class vector_of_list_of_structs : public std::vector<std::forward_list<std::tuple<Attributes...>>> {
+class vector_of_flist_of_structs : public std::vector<std::list<std::tuple<Attributes...>>> {
 
 public:
-  using base  = std::vector<std::forward_list<std::tuple<Attributes...>>>;
-  using inner = std::forward_list<std::tuple<Attributes...>>;
+  using base  = std::vector<std::list<std::tuple<Attributes...>>>;
+  using inner = std::list<std::tuple<Attributes...>>;
 
   using inner_container_ref  = inner&;
   using outer_iterator       = typename base::iterator;
@@ -39,14 +39,14 @@ public:
   using inner_iterator       = typename inner::iterator;
   using const_inner_iterator = typename inner::const_iterator;
 
-  vector_of_list_of_structs(size_t N) : base(N) {}
+  vector_of_flist_of_structs(size_t N) : base(N) {}
 };
 
 template <int idx, std::unsigned_integral vertex_id, typename... Attributes>
-class index_adj_list : public unipartite_graph_base, public vector_of_list_of_structs<vertex_id, Attributes...> {
+class index_adj_list : public unipartite_graph_base, public vector_of_flist_of_structs<vertex_id, Attributes...> {
 public:
   using vertex_id_type    = vertex_id;
-  using base              = vector_of_list_of_structs<vertex_id_type, Attributes...>;
+  using base              = vector_of_flist_of_structs<vertex_id_type, Attributes...>;
   using graph_base        = unipartite_graph_base;
   using num_vertices_type = std::array<typename base::size_type, 1>;
   using num_edges_type    = typename base::size_type;
@@ -69,7 +69,7 @@ public:
 
   void open_for_push_back() { graph_base::is_open = true; }
   void close_for_push_back() { graph_base::is_open = false; }
-  void push_back(size_t i, size_t j, Attributes... attrs) { base::operator[](i).emplace_back(j, attrs...); }
+  void push_back(size_t i, size_t j, Attributes... attrs) { base::operator[](i).emplace_front(j, attrs...); }
 
   num_vertices_type num_vertices() const { return {base::size()}; };
   num_edges_type    num_edges() const { return num_edges_; }
@@ -79,15 +79,15 @@ private:
 };
 
 template <int idx, typename... Attributes>
-using adj_list = index_adj_list<idx, default_vertex_id_type, Attributes...>;
+using adj_flist = index_adj_flist<idx, default_vertex_id_type, Attributes...>;
 
 template <int idx, std::unsigned_integral vertex_id, typename... Attributes>
-struct graph_traits<index_adj_list<idx, vertex_id, Attributes...>> {
+struct graph_traits<index_adj_flist<idx, vertex_id, Attributes...>> {
 
-  using my_type = index_adj_list<idx, vertex_id, Attributes...>;
+  using my_type = index_adj_flist<idx, vertex_id, Attributes...>;
 
   using tuple_type = std::tuple<Attributes...>;
-  using inner_type = std::forward_list<tuple_type>;
+  using inner_type = std::list<tuple_type>;
   using outer_type = std::vector<inner_type>;
 
   using outer_iterator = typename outer_type::iterator;
@@ -102,15 +102,15 @@ struct graph_traits<index_adj_list<idx, vertex_id, Attributes...>> {
 };
 
 template <int idx, std::unsigned_integral vertex_id, typename... Attributes>
-auto tag_invoke(const num_vertices_tag, index_adj_list<idx, vertex_id, Attributes...>& b) {
+auto tag_invoke(const num_vertices_tag, index_adj_flist<idx, vertex_id, Attributes...>& b) {
   return b.num_vertices()[0];
 }
 
 #if 0
 
 template <typename... Attributes>
-graph_traits<std::vector<std::forward_list<std::tuple<Attributes...>>>>::num_vertices_type
-num_vertices(const typename std::vector<std::forward_list<std::tuple<Attributes...>>>& g) {
+graph_traits<std::vector<std::list<std::tuple<Attributes...>>>>::num_vertices_type
+num_vertices(const typename std::vector<std::list<std::tuple<Attributes...>>>& g) {
   return { g.size() };
 }
 #endif
@@ -118,4 +118,4 @@ num_vertices(const typename std::vector<std::forward_list<std::tuple<Attributes.
 }    // namespace graph
 }    // namespace nw
 
-#endif    // NW_GRAPH_VOLOS_HPP
+#endif    // NW_GRAPH_VOFOS_HPP
