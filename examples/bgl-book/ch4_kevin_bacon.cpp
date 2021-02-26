@@ -3,9 +3,14 @@
 #include <map>
 #include <sstream>
 
-#include "bfs_range.hpp"
-#include "compressed.hpp"
-#include "edge_list.hpp"
+#include "nwgraph/adjacency.hpp"
+#include "nwgraph/adaptors/bfs_range.hpp"
+#include "nwgraph/adaptors/bfs_edge_range.hpp"
+#include "nwgraph/edge_list.hpp"
+
+using namespace nw::graph;
+using vertex_index_t = unsigned int;
+
 
 auto parse_buffer(const std::string& buffer) {
   std::stringstream link(buffer);
@@ -21,7 +26,7 @@ auto read_imdb(const std::string& path, std::map<std::string, vertex_index_t>& a
   vertex_index_t actor_vertex_counter = 0;
   std::ifstream  datastream(path);
 
-  edge_list<undirected, std::string> imdb(0);
+  edge_list<directedness::undirected, std::string> imdb(0);
   imdb.open_for_push_back();
   while (getline(datastream, buffer)) {
     auto&& [actor_one, movie_name, actor_two] = parse_buffer(buffer);
@@ -56,7 +61,7 @@ int main(int argc, char* argv[]) {
 
   auto&& [kb, kb_id] = *(actor_id_map.find("Kevin Bacon"));
 
-  for (auto&& [v, u] : bfs_edge_range(A, kb_id)) {
+  for (auto&& [v, u, w] : bfs_edge_range(A, kb_id)) {
     bacon_number[u] = bacon_number[v] + 1;
   }
 

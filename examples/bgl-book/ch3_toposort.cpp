@@ -8,15 +8,18 @@
 // Author: Andrew Lumsdaine
 //
 
-#include "compressed.hpp"
-#include "dfs_range.hpp"
-#include "edge_list.hpp"
-#include "mmio.hpp"
+#include "nwgraph/adaptors/dfs_range.hpp"
+#include "nwgraph/adjacency.hpp"
+#include "nwgraph/edge_list.hpp"
+#include "nwgraph/io/mmio.hpp"
+
+
+using namespace nw::graph;
 
 int main() {
 
-  edge_list<directed> E = read_mm<directed>("makefile-dependencies.mmio");
-  adjacency<0>        A(E);
+  edge_list<directedness::directed> E = read_mm<directedness::directed>("makefile-dependencies.mmio");
+  adjacency<0>                      A(E);
 
   std::vector<std::string> name;
   std::ifstream            name_in("makefile-target-names.dat");
