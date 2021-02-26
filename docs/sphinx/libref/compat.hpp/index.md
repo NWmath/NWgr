@@ -1,8 +1,8 @@
 ---
 layout: library
 title: compat.hpp
-owner: __MISSING__
-brief: __MISSING__
+owner: Andrew Lumsdaine
+brief: Compatibility layer for standard library containers
 tags:
   - sourcefile
 library-type: sourcefile
