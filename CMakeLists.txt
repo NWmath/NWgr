@@ -88,6 +88,7 @@ endif()
 
 if (NW_GRAPH_BUILD_EXAMPLES)
   add_subdirectory(examples/imdb)
+  add_subdirectory(examples/jaccard)
 endif()
 
 #Artifacts

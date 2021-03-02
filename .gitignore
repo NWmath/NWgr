@@ -51,3 +51,5 @@ _hyde
 dblp.json
 oracle.json
 
+.ccls-cache
+compile_commands.json
