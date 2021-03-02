@@ -13,7 +13,7 @@ namespace graph {
 template <class Graph> std::vector<float> jaccard_similarity(Graph& G) {
 
     compressed_sparse<0, directed> g_for_api(20);
-    vertex_id_t N = G.size();
+    vertex_id_t N = G.num_vertices();
     auto degrees = G.degrees();
     std::vector<float> ret(N * N, 0.0);
     for (auto u_neighbors = G.begin(); u_neighbors != G.end(); ++u_neighbors) {
@@ -44,15 +44,15 @@ bool test() {
 
     // Alternatively, new bit of graph API: n_vertices() and n_edges()
     data.push_back(0, 1);
-    data.push_back(1, 0);
+    //    data.push_back(1, 0);
     data.push_back(1, 2);
-    data.push_back(2, 1);
+    //data.push_back(2, 1);
     data.close_for_push_back();
 
     //auto edge_list_jaccard = jaccard_similarity(data);
 
     compressed_sparse<0, nw::graph::directedness::undirected> sparse_data(data);
-    vertex_id_t N = sparse_data.size();
+    vertex_id_t N = sparse_data.num_vertices();
     auto csr_jaccard = jaccard_similarity(sparse_data);
 
     for (vertex_id_t i = 0; i < N; i++) {
