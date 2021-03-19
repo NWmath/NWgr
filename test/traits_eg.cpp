@@ -1,6 +1,6 @@
 
 
-#include "graph_traits.hpp"
+#include "nwgraph/graph_traits.hpp"
 
 using namespace nw::graph;
 

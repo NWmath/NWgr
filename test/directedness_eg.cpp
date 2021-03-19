@@ -10,7 +10,7 @@
 
 #include <iostream>
 
-#include "containers/edge_list.hpp"
+#include "nwgraph/edge_list.hpp"
 #include "karate.hpp"
 
 using namespace nw::graph;

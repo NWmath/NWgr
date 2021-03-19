@@ -22,7 +22,7 @@ static constexpr const char USAGE[] =
 )";
 
 #include "common.hpp"
-#include "graph_base.hpp"
+#include "nwgraph/graph_base.hpp"
 #include <docopt.h>
 
 using namespace nw::graph;

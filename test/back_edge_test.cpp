@@ -8,11 +8,11 @@
 // Author: Kevin Deweese
 //
 
-#include "adaptors/back_edge_range.hpp"
-#include "adaptors/filtered_bfs_range.hpp"
-#include "adaptors/reverse.hpp"
-#include "containers/compressed.hpp"
-#include "containers/edge_list.hpp"
+#include "nwgraph/adaptors/back_edge_range.hpp"
+#include "nwgraph/adaptors/filtered_bfs_range.hpp"
+#include "nwgraph/adaptors/reverse.hpp"
+#include "nwgraph/containers/compressed.hpp"
+#include "nwgraph/edge_list.hpp"
 
 #include "common/test_header.hpp"
 

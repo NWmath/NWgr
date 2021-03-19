@@ -12,8 +12,8 @@
 #include <queue>
 #include <vector>
 
-#include "algorithms/bfs.hpp"
-#include "containers/aos.hpp"
+#include "nwgraph/algorithms/bfs.hpp"
+#include "nwgraph/containers/aos.hpp"
 
 #include "common/abstract_test.hpp"
 

@@ -16,8 +16,8 @@
 #error "test_header is included multiple times. test header must be included only once"
 #endif
 
-#include "containers/compressed.hpp"
-#include "containers/edge_list.hpp"
-#include "io/mmio.hpp"
+#include "nwgraph/containers/compressed.hpp"
+#include "nwgraph/edge_list.hpp"
+#include "nwgraph/io/mmio.hpp"
 
 #include <catch2/catch.hpp>

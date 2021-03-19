@@ -32,7 +32,7 @@ static constexpr const char USAGE[] =
       -V, --verbose           run in verbose mode
 )";
 
-#include "algorithms/bfs.hpp"
+#include "nwgraph/algorithms/bfs.hpp"
 #include "Log.hpp"
 #include "common.hpp"
 #include <docopt.h>

@@ -11,12 +11,12 @@
 #include <algorithm>
 #include <vector>
 
-#include "adaptors/filtered_bfs_range.hpp"
-#include "adaptors/reverse.hpp"
-#include "algorithms/max_flow.hpp"
-#include "containers/compressed.hpp"
-#include "containers/edge_list.hpp"
-#include "io/mmio.hpp"
+#include "nwgraph/adaptors/filtered_bfs_range.hpp"
+#include "nwgraph/adaptors/reverse.hpp"
+#include "nwgraph/algorithms/max_flow.hpp"
+#include "nwgraph/containers/compressed.hpp"
+#include "nwgraph/edge_list.hpp"
+#include "nwgraph/io/mmio.hpp"
 
 #include "common/test_header.hpp"
 

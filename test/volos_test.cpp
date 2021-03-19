@@ -10,8 +10,8 @@
 
 #include <complex>
 
-#include "adaptors/bfs_edge_range.hpp"
-#include "containers/volos.hpp"
+#include "nwgraph/adaptors/bfs_edge_range.hpp"
+#include "nwgraph/volos.hpp"
 
 #include "common/test_header.hpp"
 

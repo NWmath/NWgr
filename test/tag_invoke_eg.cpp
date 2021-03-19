@@ -8,7 +8,7 @@
 // Author: Andrew Lumsdaine
 //
 
-#include "util/tag_invoke.hpp"
+#include "nwgraph/util/tag_invoke.hpp"
 #include <iostream>
 #include <ranges>
 #include <string>

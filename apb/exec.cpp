@@ -3,9 +3,9 @@
 #include <iostream>
 #include <vector>
 
-#include "containers/compressed.hpp"
-#include "containers/edge_list.hpp"
-#include "io/mmio.hpp"
+#include "nwgraph/containers/compressed.hpp"
+#include "nwgraph/edge_list.hpp"
+#include "nwgraph/io/mmio.hpp"
 
 #if defined(CL_SYCL_LANGUAGE_VERSioN)
 #include <dpstd/iterators.h>

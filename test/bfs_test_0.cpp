@@ -11,9 +11,9 @@
 #include <iostream>
 #include <queue>
 
-#include "adaptors/bfs_edge_range.hpp"
-#include "adaptors/bfs_range.hpp"
-#include "containers/aos.hpp"
+#include "nwgraph/adaptors/bfs_edge_range.hpp"
+#include "nwgraph/adaptors/bfs_range.hpp"
+#include "nwgraph/containers/aos.hpp"
 
 #include "common/abstract_test.hpp"
 

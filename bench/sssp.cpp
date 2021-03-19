@@ -32,10 +32,10 @@ static constexpr const char USAGE[] =
 )";
 
 #include "Log.hpp"
-#include "algorithms/delta_stepping.hpp"
+#include "nwgraph/algorithms/delta_stepping.hpp"
 #include "common.hpp"
-#include "util/make_priority_queue.hpp"
-#include "util/traits.hpp"
+#include "nwgraph/util/make_priority_queue.hpp"
+#include "nwgraph/util/traits.hpp"
 #include <docopt.h>
 
 using namespace nw::graph::bench;

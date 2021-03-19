@@ -11,12 +11,12 @@
 #include <algorithm>
 #include <vector>
 
-#include "adaptors/new_dfs_range.hpp"
-#include "algorithms/k_core.hpp"
-#include "containers/compressed.hpp"
-#include "containers/edge_list.hpp"
-#include "containers/volos.hpp"
-#include "io/mmio.hpp"
+#include "nwgraph/adaptors/new_dfs_range.hpp"
+#include "nwgraph/algorithms/k_core.hpp"
+#include "nwgraph/containers/compressed.hpp"
+#include "nwgraph/edge_list.hpp"
+#include "nwgraph/volos.hpp"
+#include "nwgraph/io/mmio.hpp"
 
 #include "common/test_header.hpp"
 

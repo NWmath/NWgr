@@ -1,14 +1,14 @@
 #ifndef NW_GRAPH_BENCH_COMMON_HPP
 #define NW_GRAPH_BENCH_COMMON_HPP
 
-#include "adaptors/edge_range.hpp"
-#include "containers/adjacency.hpp"
-#include "containers/edge_list.hpp"
-#include "graph_base.hpp"
-#include "graph_traits.hpp"
-#include "io/mmio.hpp"
+#include "nwgraph/adaptors/edge_range.hpp"
+#include "nwgraph/adjacency.hpp"
+#include "nwgraph/edge_list.hpp"
+#include "nwgraph/graph_base.hpp"
+#include "nwgraph/graph_traits.hpp"
+#include "nwgraph/io/mmio.hpp"
 #include "util/timer.hpp"
-#include "util/traits.hpp"
+#include "nwgraph/util/traits.hpp"
 
 #include <iomanip>
 #include <map>

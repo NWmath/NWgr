@@ -11,10 +11,10 @@
 #include <concepts>
 
 #include "containers/aolos.hpp"
-#include "containers/compressed.hpp"
-#include "containers/edge_list.hpp"
-#include "containers/vovos.hpp"
-#include "graph_concepts.hpp"
+#include "nwgraph/containers/compressed.hpp"
+#include "nwgraph/edge_list.hpp"
+#include "nwgraph/vovos.hpp"
+#include "nwgraph/graph_concepts.hpp"
 
 #include "common/abstract_test.hpp"
 

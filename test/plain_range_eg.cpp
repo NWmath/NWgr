@@ -11,11 +11,11 @@
 #include <iostream>
 #include <queue>
 
-#include "adaptors/edge_range.hpp"
-#include "adaptors/plain_range.hpp"
-#include "containers/compressed.hpp"
-#include "containers/edge_list.hpp"
-#include "io/mmio.hpp"
+#include "nwgraph/adaptors/edge_range.hpp"
+#include "nwgraph/adaptors/plain_range.hpp"
+#include "nwgraph/containers/compressed.hpp"
+#include "nwgraph/edge_list.hpp"
+#include "nwgraph/io/mmio.hpp"
 
 using namespace nw::graph;
 using namespace nw::util;

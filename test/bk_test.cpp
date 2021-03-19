@@ -11,11 +11,11 @@
 #include <algorithm>
 #include <vector>
 
-#include "adaptors/back_edge_range.hpp"
-#include "algorithms/boykov_kolmogorov.hpp"
-#include "containers/compressed.hpp"
-#include "containers/edge_list.hpp"
-#include "io/mmio.hpp"
+#include "nwgraph/adaptors/back_edge_range.hpp"
+#include "nwgraph/algorithms/boykov_kolmogorov.hpp"
+#include "nwgraph/containers/compressed.hpp"
+#include "nwgraph/edge_list.hpp"
+#include "nwgraph/io/mmio.hpp"
 
 #include "common/test_header.hpp"
 

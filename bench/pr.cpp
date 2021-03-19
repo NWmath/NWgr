@@ -29,7 +29,7 @@ static constexpr const char USAGE[] =
 )";
 
 #include "Log.hpp"
-#include "algorithms/page_rank.hpp"
+#include "nwgraph/algorithms/page_rank.hpp"
 #include "common.hpp"
 #include <docopt.h>
 

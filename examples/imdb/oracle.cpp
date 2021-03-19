@@ -23,14 +23,14 @@
 
 using json = nlohmann::json;
 
-#include "adaptors/bfs_edge_range.hpp"
-#include "algorithms/betweenness_centrality.hpp"
-#include "algorithms/page_rank.hpp"
-#include "containers/adjacency.hpp"
-#include "containers/compressed.hpp"
-#include "containers/edge_list.hpp"
-#include "util/proxysort.hpp"
-#include "util/timer.hpp"
+#include "nwgraph/adaptors/bfs_edge_range.hpp"
+#include "nwgraph/algorithms/betweenness_centrality.hpp"
+#include "nwgraph/algorithms/page_rank.hpp"
+#include "nwgraph/adjacency.hpp"
+#include "nwgraph/containers/compressed.hpp"
+#include "nwgraph/edge_list.hpp"
+#include "nwgraph/util/proxysort.hpp"
+#include "nwgraph/util/timer.hpp"
 
 std::string delink(const std::string& link) {
   auto opening = link.find("[[");

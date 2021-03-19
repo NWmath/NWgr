@@ -1,8 +1,8 @@
 
 
-#include "containers/adjacency.hpp"
-#include "containers/edge_list.hpp"
-#include "graph_concepts.hpp"
+#include "nwgraph/adjacency.hpp"
+#include "nwgraph/edge_list.hpp"
+#include "nwgraph/graph_concepts.hpp"
 #include <deque>
 #include <vector>
 

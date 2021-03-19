@@ -10,11 +10,11 @@
 
 #include <iterator>
 
-#include "containers/soa.hpp"
+#include "nwgraph/containers/soa.hpp"
 
 #include "common/test_header.hpp"
 
-#include "util/print_types.hpp"
+#include "nwgraph/util/print_types.hpp"
 
 using namespace nw::graph;
 using namespace nw::util;

@@ -30,11 +30,11 @@ static constexpr const char USAGE[] =
       -V, --verbose           run in verbose mode
 )";
 
-#include "containers/adjacency.hpp"
-#include "containers/edge_list.hpp"
+#include "nwgraph/adjacency.hpp"
+#include "nwgraph/edge_list.hpp"
 
 #include "Log.hpp"
-#include "algorithms/betweenness_centrality.hpp"
+#include "nwgraph/algorithms/betweenness_centrality.hpp"
 #include "common.hpp"
 #include <docopt.h>
 

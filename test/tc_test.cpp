@@ -11,10 +11,10 @@
 #include <iostream>
 #include <queue>
 
-#include "algorithms/triangle_count.hpp"
-#include "containers/compressed.hpp"
-#include "containers/edge_list.hpp"
-#include "io/mmio.hpp"
+#include "nwgraph/algorithms/triangle_count.hpp"
+#include "nwgraph/containers/compressed.hpp"
+#include "nwgraph/edge_list.hpp"
+#include "nwgraph/io/mmio.hpp"
 
 #include "common/test_header.hpp"
 

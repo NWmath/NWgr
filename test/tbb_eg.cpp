@@ -24,11 +24,11 @@ template <class T>
 using counting_iterator = tbb::counting_iterator<T>;
 #endif
 
-#include "adaptors/edge_range.hpp"
-#include "adaptors/plain_range.hpp"
-#include "containers/adjacency.hpp"
-#include "containers/compressed.hpp"
-#include "containers/edge_list.hpp"
+#include "nwgraph/adaptors/edge_range.hpp"
+#include "nwgraph/adaptors/plain_range.hpp"
+#include "nwgraph/adjacency.hpp"
+#include "nwgraph/containers/compressed.hpp"
+#include "nwgraph/edge_list.hpp"
 
 using namespace nw::graph;
 using namespace nw::util;
