@@ -5,7 +5,7 @@ owner: __MISSING__
 brief: __MISSING__
 tags:
   - class
-defined_in_file: new_dfs_range.hpp
+defined_in_file: adaptors/new_dfs_range.hpp
 declaration: "template <typename Graph, typename Stack>\nclass nw::graph::dfs_edge_range;"
 dtor: unspecified
 typedefs:

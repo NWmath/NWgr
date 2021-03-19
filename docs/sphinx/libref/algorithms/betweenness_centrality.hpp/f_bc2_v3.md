@@ -7,23 +7,23 @@ tags:
   - function
 defined_in_file: algorithms/betweenness_centrality.hpp
 overloads:
-  "template <typename Graph, typename score_t, typename accum_t, class OuterExecutionPolicy, class InnerExecutionPolicy>\nauto bc2_v3(Graph &, const std::vector<vertex_id_t> &, OuterExecutionPolicy &&, InnerExecutionPolicy &&)":
+  "template <typename Graph, typename score_t, typename accum_t, class OuterExecutionPolicy, class InnerExecutionPolicy>\nauto bc2_v3(const Graph &, const std::vector<typename Graph::vertex_id_type> &, OuterExecutionPolicy &&, InnerExecutionPolicy &&)":
     arguments:
-      - description: Adjacency graph
+      - description: __OPTIONAL__
         name: graph
-        type: Graph &
-      - description: Vector of sources
+        type: const Graph &
+      - description: __OPTIONAL__
         name: sources
-        type: const std::vector<vertex_id_t> &
-      - description: Execution policy for processing frontier
+        type: const std::vector<typename Graph::vertex_id_type> &
+      - description: __OPTIONAL__
         name: outer_policy
         type: OuterExecutionPolicy &&
-      - description: Execution policy for processing individual neighbor lists
+      - description: __OPTIONAL__
         name: inner_policy
         type: InnerExecutionPolicy &&
-    description: Similar to bc2_v2, with an optional execution policy for processing neighbor lists in parallel.
-    return: A vector containing the approximate betweenness centrality of every vertex
-    signature_with_names: "template <typename Graph, typename score_t, typename accum_t, class OuterExecutionPolicy, class InnerExecutionPolicy>\nauto bc2_v3(Graph & graph, const std::vector<vertex_id_t> & sources, OuterExecutionPolicy && outer_policy, InnerExecutionPolicy && inner_policy)"
+    description: __OPTIONAL__
+    return: __OPTIONAL__
+    signature_with_names: "template <typename Graph, typename score_t, typename accum_t, class OuterExecutionPolicy, class InnerExecutionPolicy>\nauto bc2_v3(const Graph & graph, const std::vector<typename Graph::vertex_id_type> & sources, OuterExecutionPolicy && outer_policy, InnerExecutionPolicy && inner_policy)"
 namespace:
   - nw
   - graph

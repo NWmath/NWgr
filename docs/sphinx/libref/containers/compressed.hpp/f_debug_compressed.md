@@ -5,7 +5,7 @@ owner: __MISSING__
 brief: __MISSING__
 tags:
   - function
-defined_in_file: compressed.hpp
+defined_in_file: containers/compressed.hpp
 overloads:
   void debug_compressed(bool):
     arguments:

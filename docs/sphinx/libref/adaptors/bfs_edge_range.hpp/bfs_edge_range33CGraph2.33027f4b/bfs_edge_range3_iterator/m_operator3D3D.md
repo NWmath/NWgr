@@ -5,7 +5,7 @@ owner: __MISSING__
 brief: __MISSING__
 tags:
   - method
-defined_in_file: bfs_edge_range.hpp
+defined_in_file: adaptors/bfs_edge_range.hpp
 overloads:
   auto operator==(const nw::graph::bfs_edge_range3::bfs_edge_range3_iterator::end_sentinel_type &) const:
     arguments:

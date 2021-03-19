@@ -1,6 +1,6 @@
 ---
 layout: library
-title: random_range.hpp
+title: adaptors/random_range.hpp
 owner: Andrew Lumsdaine
 brief: A range adapter for a random walk of the underlying graph
 tags:

@@ -5,5 +5,5 @@ layout: directory
 title: io
 ---
 
-```{index}
+```{index} Graph io
 ```

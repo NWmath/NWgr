@@ -5,7 +5,7 @@ owner: __MISSING__
 brief: __MISSING__
 tags:
   - method
-defined_in_file: provenance.hpp
+defined_in_file: util/provenance.hpp
 is_dtor: true
 overloads:
   ~provenance():

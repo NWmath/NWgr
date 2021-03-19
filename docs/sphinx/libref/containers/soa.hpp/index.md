@@ -1,6 +1,6 @@
 ---
 layout: library
-title: soa.hpp
+title: containers/soa.hpp
 owner: Andrew Lumsdaine
 brief: Struct of arrays
 tags:

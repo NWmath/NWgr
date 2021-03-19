@@ -5,7 +5,7 @@ owner: __MISSING__
 brief: __MISSING__
 tags:
   - function
-defined_in_file: disjoint_set.hpp
+defined_in_file: util/disjoint_set.hpp
 overloads:
   std::ostream & operator<<(std::ostream &, const disjoint_set<T> &):
     arguments:

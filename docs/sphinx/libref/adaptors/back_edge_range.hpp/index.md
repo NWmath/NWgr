@@ -1,6 +1,6 @@
 ---
 layout: library
-title: back_edge_range.hpp
+title: adaptors/back_edge_range.hpp
 owner: Andrew Lumsdaine
 brief: Range adapter for accessing back edges
 tags:

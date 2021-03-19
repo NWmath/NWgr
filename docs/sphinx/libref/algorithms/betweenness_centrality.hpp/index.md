@@ -6,6 +6,10 @@ brief: (Approximate) betweenness centrality
 tags:
   - sourcefile
 library-type: sourcefile
+typedefs:
+  vertex_id_type:
+    definition: typename Graph::vertex_id_type
+    description: __MISSING__
 ---
 
 ```{index}  algorithms/betweenness_centrality.hpp

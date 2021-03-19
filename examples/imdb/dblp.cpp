@@ -12,10 +12,11 @@
 
 using json = nlohmann::json;
 
-#include "adaptors/bfs_edge_range.hpp"
-#include "containers/compressed.hpp"
-#include "containers/edge_list.hpp"
-#include "util/timer.hpp"
+#include "nwgraph/adaptors/bfs_edge_range.hpp"
+#include "nwgraph/adjacency.hpp"
+#include "nwgraph/containers/compressed.hpp"
+#include "nwgraph/edge_list.hpp"
+#include "nwgraph/util/timer.hpp"
 
 std::string delink(const std::string& link) {
   auto opening = link.find("[[");
@@ -48,7 +49,7 @@ int main() {
   std::vector<std::string>      titles;
   std::vector<std::string>      names;
 
-  nw::graph::edge_list<nw::graph::directed> edges;
+  nw::graph::edge_list<nw::graph::directedness::directed> edges;
   edges.open_for_push_back();
 
   size_t title_counter = 0;
@@ -76,7 +77,7 @@ int main() {
       }
 
       if (names[names_map[name]] != name) {
-	std::cout << names[names_map[name]] << " != " << name << " ( " << names_map[name] << " )" << std::endl;
+        std::cout << names[names_map[name]] << " != " << name << " ( " << names_map[name] << " )" << std::endl;
       }
 
       edges.push_back(titles_map[title], names_map[name]);
@@ -98,18 +99,18 @@ int main() {
 
   nw::util::timer t5("build s_overlap");
 
-  nw::graph::edge_list<nw::graph::undirected, size_t> s_overlap;
+  nw::graph::edge_list<nw::graph::directedness::undirected, size_t> s_overlap;
   s_overlap.open_for_push_back();
 
   for (size_t i = 0; i < H.size(); ++i) {
     for (auto&& [k] : H[i]) {
       for (auto&& [j] : G[k]) {
-	s_overlap.push_back(i, j, k);
+        s_overlap.push_back(i, j, k);
       }
     }
   }
 
-  // NB: may be clobbering values 
+  // NB: may be clobbering values
   s_overlap.close_for_push_back();
 
   t5.stop();
@@ -141,8 +142,7 @@ int main() {
 
     size_t d = distance[the_actor];
     while (the_actor != kevin_bacon) {
-      std::cout << names[the_actor] << " co-authored " << titles[together_in[the_actor]] << " with " << names[parents[the_actor]]
-                << std::endl;
+      std::cout << names[the_actor] << " co-authored " << titles[together_in[the_actor]] << " with " << names[parents[the_actor]] << std::endl;
       the_actor = parents[the_actor];
       if (d-- == 0) {
         break;
@@ -161,7 +161,6 @@ int main() {
   path_to_bacon("Assefaw Hadish Gebremedhin");
   path_to_bacon("Kevin Deweese");
   path_to_bacon("Jesun Sahariar Firoz");
-
 
   return 0;
 }

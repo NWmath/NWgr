@@ -1,6 +1,6 @@
 ---
 layout: library
-title: reverse.hpp
+title: adaptors/reverse.hpp
 owner: __MISSING__
 brief: __MISSING__
 tags:

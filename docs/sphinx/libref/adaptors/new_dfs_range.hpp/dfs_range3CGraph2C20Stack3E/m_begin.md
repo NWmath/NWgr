@@ -5,7 +5,7 @@ owner: __MISSING__
 brief: __MISSING__
 tags:
   - method
-defined_in_file: new_dfs_range.hpp
+defined_in_file: adaptors/new_dfs_range.hpp
 overloads:
   auto begin():
     description: __OPTIONAL__

@@ -14,7 +14,7 @@
 # cmake .. -DCMAKE_CXX_COMPILER=icpx
 #
 ##########################################################################
-cmake_minimum_required(VERSION 3.14 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.18.2 FATAL_ERROR)
 
 set(NW_GRAPH_VERSION 0.3)
 
@@ -26,16 +26,15 @@ project(
 # -----------------------------------------------------------------------------
 # Extend the module path so we can find our custom modules
 # -----------------------------------------------------------------------------
-#list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
-list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/../NWut/cmake)
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 
 # -----------------------------------------------------------------------------
 # Build types and default flags
 # -----------------------------------------------------------------------------
-set(CMAKE_CXX_FLAGS_DEBUG "-O0 -g -fno-elide-constructors" CACHE STRING "" FORCE)
-set(CMAKE_CXX_FLAGS_RELEASE "-Ofast -march=native -DNDEBUG" CACHE STRING "" FORCE)
+set(CMAKE_CXX_FLAGS_DEBUG "-O0 -g -fno-elide-constructors -fsanitize=address " CACHE STRING "" FORCE)
+set(CMAKE_CXX_FLAGS_RELEASE "-Ofast -march=native -DNDEBUG " CACHE STRING "" FORCE)
 set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-Ofast -g -march=native" CACHE STRING "" FORCE)
-set(CMAKE_CXX_FLAGS_MINSIZEREL "-Os -march=native -DNDEBUG" CACHE STRING "" FORCE)
+set(CMAKE_CXX_FLAGS_MINSIZEREL "-Os -march=native -DNDEBUG " CACHE STRING "" FORCE)
 
 # Default to Release build
 if (NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
@@ -46,12 +45,7 @@ endif()
 # Control compiler-specific flags.
 include(CompilerFlags)
 
-# -----------------------------------------------------------------------------
-# Select a C++ standard
-# -----------------------------------------------------------------------------
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
+##
 
 # -----------------------------------------------------------------------------
 # Options
@@ -71,7 +65,6 @@ option(NW_GRAPH_USE_TBBMALLOC "Link to tbbmalloc" OFF)
 add_subdirectory(include)
 
 include(Docopt)
-include(RangeV3)
   
 if (NW_GRAPH_BUILD_TESTS)
   include(CTest)
@@ -95,3 +88,6 @@ option(NW_GRAPH_BUILD_HPEC "Determines whether to build HPEC artifact." OFF)
 if (NW_GRAPH_BUILD_HPEC)
    add_subdirectory(${CMAKE_SOURCE_DIR}/../Artifacts/hpec hpec)
 endif()
+
+# https://cmake.org/cmake/help/latest/command/install.html
+install(TARGETS nw_graph)
