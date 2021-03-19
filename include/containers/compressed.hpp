@@ -81,7 +81,7 @@ public:    // fixme
   private:
     indexed_struct_of_arrays& graph_;    // the underlying indexed data
     index_t                   u_;        // the current source vertex id
-    difference_type                 j_;        // the current edge
+    difference_type           j_;        // the current edge
 
   public:
     flat_iterator(indexed_struct_of_arrays& graph, index_t i, difference_type j) : graph_(graph), u_(i), j_(j) {}
@@ -149,7 +149,6 @@ public:    // fixme
     bool operator>=(const flat_iterator& b) const { return j_ >= b.j_; }
   };
 
-
   /// Provide a tbb split-able range interface to the edge iterators.
   template <std::size_t... Attrs>
   class flat_range {
@@ -179,9 +178,6 @@ public:    // fixme
     return {begin, end, cutoff};
   }
 
-
-  /// This iterator provides a 2D vertex-neighbor tbb split-able interface to
-  /// the graph.
   class outer_iterator {
     std::vector<index_t>::iterator                     indices_;
     typename struct_of_arrays<Attributes...>::iterator indexed_;
@@ -225,9 +221,9 @@ public:    // fixme
   };
 
   class const_outer_iterator {
-    std::vector<index_t>::const_iterator               indices_;
+    std::vector<index_t>::const_iterator                     indices_;
     typename struct_of_arrays<Attributes...>::const_iterator indexed_;
-    index_t                                            i_;
+    index_t                                                  i_;
 
   public:
     using difference_type   = index_t;
@@ -236,7 +232,8 @@ public:    // fixme
     using pointer           = const value_type*;
     using iterator_category = std::random_access_iterator_tag;
 
-    const_outer_iterator(std::vector<index_t>::const_iterator indices, typename struct_of_arrays<Attributes...>::const_iterator indexed, index_t i)
+    const_outer_iterator(std::vector<index_t>::const_iterator                     indices,
+                         typename struct_of_arrays<Attributes...>::const_iterator indexed, index_t i)
         : indices_(indices), indexed_(indexed), i_(i) {}
 
     const_outer_iterator& operator++() {
@@ -281,17 +278,17 @@ public:    // fixme
   using reverse_iterator       = std::reverse_iterator<iterator>;
   using const_reverse_iterator = std::reverse_iterator<const_iterator>;
 
-  iterator       begin()       { return {indices_.begin(), to_be_indexed_.begin(), 0}; }
+  iterator       begin() { return {indices_.begin(), to_be_indexed_.begin(), 0}; }
   const_iterator begin() const { return {indices_.begin(), to_be_indexed_.begin(), 0}; }
-  iterator       end()         { return {indices_.begin(), to_be_indexed_.begin(), N_}; }
-  const_iterator end()   const { return {indices_.begin(), to_be_indexed_.begin(), N_}; }
+  iterator       end() { return {indices_.begin(), to_be_indexed_.begin(), N_}; }
+  const_iterator end() const { return {indices_.begin(), to_be_indexed_.begin(), N_}; }
 
   /// Random access to the outer range.
-  sub_view       operator[](index_t i)       { return begin()[i]; }
+  sub_view       operator[](index_t i) { return begin()[i]; }
   const_sub_view operator[](index_t i) const { return begin()[i]; }
 
   index_t size() const { return indices_.size() - 1; }
-  index_t max()  const { return indices_.size() - 2; }
+  index_t max() const { return indices_.size() - 2; }
 
   index_t source(difference_type edge) const {
     auto i = std::upper_bound(indices_.begin(), indices_.end(), edge);
@@ -497,28 +494,20 @@ public:    // fixme
   }
 };
 
-
-
 template <typename vertex_id_type, typename... Attributes>
 class index_compressed : public graph_base, public indexed_struct_of_arrays<vertex_id_type, Attributes...> {
   using base = indexed_struct_of_arrays<vertex_id_type, Attributes...>;
+
 public:
   index_compressed(size_t N) : graph_base(N), base(N) {}
 
-  void close_for_push_back() {
-    base::close_for_push_back();
-  };
+  void close_for_push_back() { base::close_for_push_back(); };
 
-  auto num_edges() {
-    return base::to_be_indexed_.size();
-  }
-
+  auto num_edges() { return base::to_be_indexed_.size(); }
 };
-
 
 template <typename... Attributes>
 using compressed = index_compressed<default_vertex_id_t, default_vertex_id_t, Attributes...>;
-
 
 #if 0
 template <int idx, typename... Attributes>

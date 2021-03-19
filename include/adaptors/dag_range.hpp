@@ -116,4 +116,4 @@ private:
 }    // namespace graph
 }    // namespace nw
 
-#endif // NW_GRAPH_DAG_RANGE_HPP
+#endif    // NW_GRAPH_DAG_RANGE_HPP

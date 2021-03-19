@@ -17,8 +17,8 @@
 namespace nw {
 namespace graph {
 
-  // using vertex_id_t = uint32_t;
-  // using index_t     = std::size_t;
+// using vertex_id_t = uint32_t;
+// using index_t     = std::size_t;
 
 }    // namespace graph
 }    // namespace nw

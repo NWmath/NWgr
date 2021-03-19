@@ -57,9 +57,9 @@ public:
   auto num_edges() { return num_edges_; }
 
 protected:
-  std::array<size_t,2> vertex_cardinality;     // ordinal limits
-  std::size_t num_edges_;
-  bool   is_open;    // can we mutate graph
+  std::array<size_t, 2> vertex_cardinality;    // ordinal limits
+  std::size_t           num_edges_;
+  bool                  is_open;    // can we mutate graph
 };
 
 template <directedness sym, typename... Attributes>

@@ -11,8 +11,8 @@
 #ifndef NW_GRAPH_RANDOM_RANGE_HPP
 #define NW_GRAPH_RANDOM_RANGE_HPP
 
-#include "util/util.hpp"
 #include "util/types.hpp"
+#include "util/util.hpp"
 #include <cmath>
 #include <random>
 #include <vector>

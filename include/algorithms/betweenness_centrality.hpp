@@ -11,12 +11,12 @@
 #ifndef BETWEENNESS_CENTRALITY_HPP
 #define BETWEENNESS_CENTRALITY_HPP
 
-#include "util/util.hpp"
-#include "util/types.hpp"
+#include "adaptors/worklist.hpp"
 #include "util/AtomicBitVector.hpp"
 #include "util/atomic.hpp"
 #include "util/parallel_for.hpp"
-#include "adaptors/worklist.hpp"
+#include "util/types.hpp"
+#include "util/util.hpp"
 
 #include <algorithm>
 
@@ -1412,7 +1412,8 @@ auto bc2_v1(Graph& graph, const std::vector<vertex_id_t> sources) {
   return bc;
 }
 
-template <typename Graph, typename score_t = float, typename accum_t = size_t, class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
+template <typename Graph, typename score_t = float, typename accum_t = size_t,
+          class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
 auto bc2_v2(Graph& graph, const std::vector<vertex_id_t>& sources, ExecutionPolicy&& policy = {}) {
 
   auto                 g = graph.begin();
@@ -1484,8 +1485,11 @@ auto bc2_v2(Graph& graph, const std::vector<vertex_id_t>& sources, ExecutionPoli
   return bc;
 }
 
-template <typename Graph, typename score_t = float, typename accum_t = size_t, class OuterExecutionPolicy = std::execution::parallel_unsequenced_policy, class InnerExecutionPolicy = std::execution::parallel_unsequenced_policy>
-auto bc2_v3(Graph& graph, const std::vector<vertex_id_t>& sources, OuterExecutionPolicy&& outer_policy = {}, InnerExecutionPolicy&& inner_policy = {}) {
+template <typename Graph, typename score_t = float, typename accum_t = size_t,
+          class OuterExecutionPolicy = std::execution::parallel_unsequenced_policy,
+          class InnerExecutionPolicy = std::execution::parallel_unsequenced_policy>
+auto bc2_v3(Graph& graph, const std::vector<vertex_id_t>& sources, OuterExecutionPolicy&& outer_policy = {},
+            InnerExecutionPolicy&& inner_policy = {}) {
 
   auto        g = graph.begin();
   vertex_id_t N = graph.max() + 1;
@@ -1582,8 +1586,10 @@ auto bc2_v3(Graph& graph, const std::vector<vertex_id_t>& sources, OuterExecutio
   return bc;
 }
 
-template <class score_t, class accum_t, class Graph, class OuterExecutionPolicy = std::execution::parallel_unsequenced_policy, class InnerExecutionPolicy = std::execution::parallel_unsequenced_policy>
-auto bc2_v4(Graph&& graph, const std::vector<vertex_id_t>& sources, int threads, OuterExecutionPolicy&& outer_policy={}, InnerExecutionPolicy&& inner_policy={}) {
+template <class score_t, class accum_t, class Graph, class OuterExecutionPolicy = std::execution::parallel_unsequenced_policy,
+          class InnerExecutionPolicy = std::execution::parallel_unsequenced_policy>
+auto bc2_v4(Graph&& graph, const std::vector<vertex_id_t>& sources, int threads, OuterExecutionPolicy&& outer_policy = {},
+            InnerExecutionPolicy&& inner_policy = {}) {
   auto                 g     = graph.begin();
   vertex_id_t          N     = graph.max() + 1;
   size_t               M     = graph.to_be_indexed_.size();
@@ -1595,7 +1601,7 @@ auto bc2_v4(Graph&& graph, const std::vector<vertex_id_t>& sources, int threads,
 
   for (vertex_id_t root : sources) {
     std::vector<std::atomic<vertex_id_t>> levels(N);
-    nw::graph::AtomicBitVector                succ(M);
+    nw::graph::AtomicBitVector            succ(M);
 
     std::fill(outer_policy, levels.begin(), levels.end(), std::numeric_limits<vertex_id_t>::max());
 
@@ -1669,8 +1675,10 @@ auto bc2_v4(Graph&& graph, const std::vector<vertex_id_t>& sources, int threads,
   return bc;
 }
 
-template <class score_t, class accum_t, class Graph, class OuterExecutionPolicy = std::execution::parallel_unsequenced_policy, class InnerExecutionPolicy = std::execution::parallel_unsequenced_policy>
-auto bc2_v5(Graph&& graph, const std::vector<vertex_id_t>& sources, int threads, OuterExecutionPolicy&& outer_policy = {}, InnerExecutionPolicy&& inner_policy = {}) {
+template <class score_t, class accum_t, class Graph, class OuterExecutionPolicy = std::execution::parallel_unsequenced_policy,
+          class InnerExecutionPolicy = std::execution::parallel_unsequenced_policy>
+auto bc2_v5(Graph&& graph, const std::vector<vertex_id_t>& sources, int threads, OuterExecutionPolicy&& outer_policy = {},
+            InnerExecutionPolicy&& inner_policy = {}) {
   vertex_id_t          N     = graph.max() + 1;
   size_t               M     = graph.to_be_indexed_.size();
   auto&&               edges = std::get<0>(*(graph[0]).begin());
@@ -1684,8 +1692,8 @@ auto bc2_v5(Graph&& graph, const std::vector<vertex_id_t>& sources, int threads,
     futures[s_idx] = std::async(
         std::launch::async,
         [&](vertex_id_t root) {
-          std::vector<vertex_id_t> levels(N);
-          nw::graph::AtomicBitVector   succ(M);
+          std::vector<vertex_id_t>   levels(N);
+          nw::graph::AtomicBitVector succ(M);
 
           // Initialize the levels to infinity.
           std::fill(outer_policy, levels.begin(), levels.end(), std::numeric_limits<vertex_id_t>::max());

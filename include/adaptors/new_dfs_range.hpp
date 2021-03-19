@@ -11,8 +11,8 @@
 #ifndef NW_GRAPH_NEW_DFS_RANGE_HPP
 #define NW_GRAPH_NEW_DFS_RANGE_HPP
 
-#include "util/util.hpp"
 #include "util/types.hpp"
+#include "util/util.hpp"
 #include <cassert>
 #include <stack>
 #include <vector>
@@ -247,4 +247,4 @@ private:
 
 }    // namespace graph
 }    // namespace nw
-#endif // NW_GRAPH_NEW_DFS_RANGE_HPP
+#endif    // NW_GRAPH_NEW_DFS_RANGE_HPP

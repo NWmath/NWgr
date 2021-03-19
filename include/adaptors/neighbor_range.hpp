@@ -11,8 +11,8 @@
 #ifndef NW_GRAPH_NEIGHBOR_RANGE_HPP
 #define NW_GRAPH_NEIGHBOR_RANGE_HPP
 
-#include "util/util.hpp"
 #include "util/types.hpp"
+#include "util/util.hpp"
 #include <queue>
 #include <vector>
 

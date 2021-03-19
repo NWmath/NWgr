@@ -15,14 +15,14 @@
 #include <cstddef>
 #include <cstdio>
 #include <fcntl.h>
+#include <future>
 #include <iostream>
 #include <sstream>
 #include <sys/mman.h>
 #include <sys/stat.h>
 #include <sys/types.h>
-#include <unistd.h>
-#include <future>
 #include <thread>
+#include <unistd.h>
 
 #include "MatrixMarketFile.hpp"
 #include "containers/edge_list.hpp"
@@ -343,7 +343,6 @@ void write_mm(const std::string& filename, adjacency<idx, Attributes...>& A, con
   std::ofstream outputStream(filename);
   adjacency_stream<w_idx>(outputStream, A, file_symmetry, w_type);
 }
-
 
 #if 0
 

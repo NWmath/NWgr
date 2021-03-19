@@ -11,11 +11,11 @@
 #ifndef NW_GRAPH_BFS_HPP
 #define NW_GRAPH_BFS_HPP
 
-#include "util/types.hpp"
 #include "containers/compressed.hpp"
 #include "util/AtomicBitVector.hpp"
 #include "util/atomic.hpp"
 #include "util/parallel_for.hpp"
+#include "util/types.hpp"
 #include <queue>
 
 #include <tbb/concurrent_queue.h>
@@ -333,7 +333,7 @@ template <class Graph>
   std::vector<tbb::concurrent_vector<vertex_id_t>> q1(num_bins);
   std::vector<tbb::concurrent_vector<vertex_id_t>> q2(num_bins);
   std::vector<vertex_id_t>                         parents(N);
-  nw::graph::AtomicBitVector                           visited(N);
+  nw::graph::AtomicBitVector                       visited(N);
 
   std::fill(std::execution::par_unseq, parents.begin(), parents.end(), null_vertex);
 
@@ -373,7 +373,7 @@ template <class Graph>
 
 template <class Graph, class Transpose>
 [[gnu::noinline]] auto bfs_bottom_up(Graph&& g, Transpose&& gx, vertex_id_t root) {
-  const std::size_t      N = gx.max() + 1;
+  const std::size_t          N = gx.max() + 1;
   nw::graph::AtomicBitVector frontier(N);
   nw::graph::AtomicBitVector next(N);
 
@@ -414,8 +414,8 @@ template <typename OutGraph, typename InGraph>
   const std::size_t                                M = out_graph.to_be_indexed_.size();
   std::vector<tbb::concurrent_vector<vertex_id_t>> q1(n), q2(n);
 
-  nw::graph::AtomicBitVector   visited(N);
-  std::vector<vertex_id_t> parents(N);
+  nw::graph::AtomicBitVector visited(N);
+  std::vector<vertex_id_t>   parents(N);
 
   std::fill(std::execution::par_unseq, parents.begin(), parents.end(), null_vertex);
 
@@ -431,7 +431,7 @@ template <typename OutGraph, typename InGraph>
     if (scout_count > edges_to_check / alpha) {
       nw::graph::AtomicBitVector front(N, false);
       nw::graph::AtomicBitVector curr(N);
-      std::size_t            awake_count = 0;
+      std::size_t                awake_count = 0;
 
       // Initialize the frontier bitmap from the frontier queues, and count the
       // number of non-zeros.

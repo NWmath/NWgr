@@ -22,10 +22,10 @@
 #include "util/atomic.hpp"
 #include "util/types.hpp"
 
-#include "util/util.hpp"
 #include "util/parallel_for.hpp"
 #include "util/timer.hpp"
 #include "util/types.hpp"
+#include "util/util.hpp"
 
 #include "tbb/concurrent_vector.h"
 #include "tbb/parallel_for_each.h"
