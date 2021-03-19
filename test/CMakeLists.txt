@@ -19,6 +19,7 @@ endmacro (nw_graph_add_test)
 # Add Catch2 tests
 nw_graph_add_test(mmio_test)
 nw_graph_add_test(aos_test)
+nw_graph_add_test(soa_test)
 nw_graph_add_test(aolos_test)
 nw_graph_add_test(vov_test)
 nw_graph_add_test(bfs_test_0)
