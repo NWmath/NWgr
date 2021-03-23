@@ -5,7 +5,7 @@ owner: __MISSING__
 brief: __MISSING__
 tags:
   - class
-defined_in_file: new_dfs_range.hpp
+defined_in_file: adaptors/new_dfs_range.hpp
 declaration: "\nclass nw::graph::dfs_range::dfs_range_iterator;"
 dtor: unspecified
 fields:
@@ -13,7 +13,7 @@ fields:
     annotation:
       - private
     description: __MISSING__
-    type: nw::graph::vertex_id_t
+    type: vertex_id_t<Graph>
   the_range_:
     annotation:
       - private

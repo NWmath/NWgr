@@ -11,12 +11,12 @@
 #include <algorithm>
 #include <vector>
 
-#include "algorithms/k_core.hpp"
-#include "containers/aolos.hpp"
-#include "containers/compressed.hpp"
-#include "containers/edge_list.hpp"
-#include "io/mmio.hpp"
-#include "adaptors/new_dfs_range.hpp"
+#include "nwgraph/adaptors/new_dfs_range.hpp"
+#include "nwgraph/algorithms/k_core.hpp"
+#include "nwgraph/containers/compressed.hpp"
+#include "nwgraph/edge_list.hpp"
+#include "nwgraph/volos.hpp"
+#include "nwgraph/io/mmio.hpp"
 
 #include "common/test_header.hpp"
 
@@ -28,7 +28,7 @@ TEST_CASE("k core", "[k-core]") {
   size_t           n_vtx = 10;
   std::vector<int> degree(n_vtx, 0);
 
-  edge_list<undirected> E_list(n_vtx);
+  edge_list<directedness::undirected> E_list(n_vtx);
   E_list.push_back(0, 1);
   E_list.push_back(1, 2);
   E_list.push_back(2, 3);
@@ -62,10 +62,10 @@ TEST_CASE("k core", "[k-core]") {
     }
   }
   SECTION("adj_list") {
-    adj_list A(E_list);
-    auto     core   = k_core(A, k);
-    auto     filter = std::get<0>(core);
-    auto     remain = std::get<1>(core);
+    adj_list<0> A(E_list);
+    auto        core   = k_core(A, k);
+    auto        filter = std::get<0>(core);
+    auto        remain = std::get<1>(core);
 
     REQUIRE(remain == 4);
 
@@ -96,7 +96,7 @@ TEST_CASE("disconnected", "[disconnected]") {
   size_t           n_vtx = 9;
   std::vector<int> degree(n_vtx, 0);
 
-  edge_list<undirected> E_list(n_vtx);
+  edge_list<directedness::undirected> E_list(n_vtx);
   E_list.push_back(0, 1);
   E_list.push_back(1, 2);
   E_list.push_back(2, 3);
@@ -130,10 +130,10 @@ TEST_CASE("disconnected", "[disconnected]") {
     }
   }
   SECTION("adj_list") {
-    adj_list A(E_list);
-    auto     core   = k_core(A, k);
-    auto     filter = std::get<0>(core);
-    auto     remain = std::get<1>(core);
+    adj_list<0> A(E_list);
+    auto        core   = k_core(A, k);
+    auto        filter = std::get<0>(core);
+    auto        remain = std::get<1>(core);
 
     REQUIRE(remain == 8);
 

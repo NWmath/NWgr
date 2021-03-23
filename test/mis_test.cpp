@@ -12,29 +12,32 @@
 #include <cassert>
 #include <iostream>
 
-#include "algorithms/dag_based_mis.hpp"
-#include "algorithms/mis.hpp"
-#include "containers/aos.hpp"
-#include "containers/compressed.hpp"
-#include "io/mmio.hpp"
-#include "util/util.hpp"
+#include "nwgraph/graph_traits.hpp"
+
+#include "nwgraph/algorithms/dag_based_mis.hpp"
+#include "nwgraph/algorithms/mis.hpp"
+#include "nwgraph/containers/aos.hpp"
+#include "nwgraph/containers/compressed.hpp"
+#include "nwgraph/io/mmio.hpp"
+#include "nwgraph/util/util.hpp"
 
 #include "common/test_header.hpp"
 
 using namespace nw::graph;
 using namespace nw::util;
 
-typedef compressed_sparse<0> csr_graph;
+typedef adjacency<0> csr_graph;
 
 TEST_CASE("Maximal independent set", "[mis]") {
   /*Read the edgelist*/
-  auto aos_a = read_mm<undirected>(DATA_DIR "coloringData.mmio");
-  aos_a.swap_to_triangular<0, predecessor>();
-  aos_a.sort_by<1>();
-  aos_a.stable_sort_by<0>();
+  auto aos_a = read_mm<directedness::undirected>(DATA_DIR "coloringData.mmio");
+
+  swap_to_triangular<0, decltype(aos_a), succession::predecessor>(aos_a);
+  sort_by<1>(aos_a);
+  stable_sort_by<0>(aos_a);
 
   /*Construct the graph*/
-  compressed_sparse<0, undirected> A(aos_a);
+  adjacency<0> A(aos_a);
 
   size_t              N = A.size();
   std::vector<size_t> independentSet;

@@ -1,6 +1,6 @@
 ---
 layout: library
-title: aos.hpp
+title: containers/aos.hpp
 owner: Andrew Lumsdaine
 brief: Array of structs
 tags:

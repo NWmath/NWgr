@@ -11,7 +11,7 @@ ctor: unspecified
 dtor: unspecified
 typedefs:
   type:
-    definition: typename T::vertex_id_t
+    definition: typename T::vertex_id_type
     description: __MISSING__
 namespace:
   - nw

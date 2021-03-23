@@ -1,6 +1,6 @@
 ---
 layout: library
-title: bfs_edge_range.hpp
+title: adaptors/bfs_edge_range.hpp
 owner: Andrew Lumsdaine
 brief: A range adapter that provides access to edges in BFS order
 tags:

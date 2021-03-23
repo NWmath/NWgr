@@ -5,7 +5,7 @@ owner: __MISSING__
 brief: __MISSING__
 tags:
   - method
-defined_in_file: cyclic_range_adapter.hpp
+defined_in_file: adaptors/cyclic_range_adapter.hpp
 overloads:
   nw::graph::cyclic_range_adapter::iterator begin():
     description: __OPTIONAL__

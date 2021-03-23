@@ -12,7 +12,7 @@ dtor: unspecified
 fields:
   edge_l_s:
     description: __MISSING__
-    type: std::unordered_map<vertex_id_t, std::pair<size_t, accum_t>>
+    type: std::unordered_map<vertex_id_type, std::pair<size_t, accum_t>>
   l:
     description: __MISSING__
     type: size_t
@@ -21,10 +21,10 @@ fields:
     type: accum_t
   preds:
     description: __MISSING__
-    type: std::forward_list<vertex_id_t>
+    type: std::forward_list<vertex_id_type>
   succs:
     description: __MISSING__
-    type: std::forward_list<vertex_id_t>
+    type: std::forward_list<vertex_id_type>
 namespace:
   - nw
   - graph

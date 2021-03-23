@@ -5,7 +5,7 @@ owner: __MISSING__
 brief: __MISSING__
 tags:
   - function
-defined_in_file: provenance.hpp
+defined_in_file: util/provenance.hpp
 overloads:
   std::string & trim(std::string &, const std::string &):
     arguments:

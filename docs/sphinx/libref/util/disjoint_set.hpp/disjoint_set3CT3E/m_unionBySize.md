@@ -5,7 +5,7 @@ owner: __MISSING__
 brief: __MISSING__
 tags:
   - method
-defined_in_file: disjoint_set.hpp
+defined_in_file: util/disjoint_set.hpp
 overloads:
   static void unionBySize(disjoint_set<T> &, const T &, const T &):
     arguments:

@@ -7,14 +7,14 @@ tags:
   - function
 defined_in_file: algorithms/triangle_count.hpp
 overloads:
-  "template <typename GraphT>\nsize_t triangle_count_v1(GraphT &)":
+  "template <typename GraphT>\nsize_t triangle_count_v1(const GraphT &)":
     arguments:
-      - description: Adjacency graph
+      - description: __OPTIONAL__
         name: A
-        type: GraphT &
-    description: Range based triangle similar to v0, but passes iterators for the first range for the set intersection to reduce unnecessary work.
-    return: The number of triangles in the graph
-    signature_with_names: "template <typename GraphT>\nsize_t triangle_count_v1(GraphT & A)"
+        type: const GraphT &
+    description: __OPTIONAL__
+    return: __OPTIONAL__
+    signature_with_names: "template <typename GraphT>\nsize_t triangle_count_v1(const GraphT & A)"
 namespace:
   - nw
   - graph

@@ -189,11 +189,11 @@ endmacro()
 # Get path, convert backslashes as ${ENV_${var}}
 getenv_path(TBBROOT)
 
+
 # initialize search paths
 set(TBB_PREFIX_PATH ${TBBROOT} ${ENV_TBBROOT})
 set(TBB_INC_SEARCH_PATH "")
 set(TBB_LIB_SEARCH_PATH "")
-
 
 # If user built from sources
 set(TBB_BUILD_PREFIX $ENV{TBB_BUILD_PREFIX})
@@ -279,6 +279,7 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
   set(COMPILER_PREFIX)
   if (NOT CMAKE_CXX_COMPILER_VERSION VERSION_LESS 4.7)
     list(APPEND COMPILER_PREFIX "gcc4.7")
+    list(APPEND COMPILER_PREFIX "gcc4.8")
   endif()
   if (NOT CMAKE_CXX_COMPILER_VERSION VERSION_LESS 4.4)
     list(APPEND COMPILER_PREFIX "gcc4.4")
@@ -334,7 +335,6 @@ endforeach ()
 
 set(TBB_LIBRARY_NAMES tbb)
 get_debug_names(TBB_LIBRARY_NAMES)
-
 
 find_path(TBB_INCLUDE_DIR
           NAMES tbb/tbb.h

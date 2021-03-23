@@ -5,7 +5,7 @@ owner: __MISSING__
 brief: __MISSING__
 tags:
   - class
-defined_in_file: neighbor_range.hpp
+defined_in_file: adaptors/neighbor_range.hpp
 declaration: "template <typename Graph>\nclass nw::graph::neighbor_range;"
 dtor: unspecified
 typedefs:

@@ -1,32 +1,32 @@
 #ifndef NW_GRAPH_BENCH_COMMON_HPP
 #define NW_GRAPH_BENCH_COMMON_HPP
 
-#include "graph_base.hpp"
-#include "containers/edge_list.hpp"
-#include "adaptors/edge_range.hpp"
-#include "io/mmio.hpp"
-#include "util/timer.hpp"
-#include "util/traits.hpp"
+#include "nwgraph/adaptors/edge_range.hpp"
+#include "nwgraph/adjacency.hpp"
+#include "nwgraph/edge_list.hpp"
+#include "nwgraph/graph_base.hpp"
+#include "nwgraph/graph_traits.hpp"
+#include "nwgraph/io/mmio.hpp"
+#include "nwgraph/util/timer.hpp"
+#include "nwgraph/util/traits.hpp"
 
-#include <tbb/global_control.h>
 #include <iomanip>
 #include <map>
 #include <random>
 #include <string>
+#include <tbb/global_control.h>
 #include <tuple>
 #include <vector>
 
 namespace nw::graph {
 namespace bench {
 
-
 constexpr inline bool WITH_TBB = true;
 
 auto set_n_threads(long n) {
   if constexpr (WITH_TBB) {
     return tbb::global_control(tbb::global_control::max_allowed_parallelism, n);
-  }
-  else {
+  } else {
     return 0;
   }
 }
@@ -34,8 +34,7 @@ auto set_n_threads(long n) {
 long get_n_threads() {
   if constexpr (WITH_TBB) {
     return tbb::global_control::active_value(tbb::global_control::max_allowed_parallelism);
-  }
-  else {
+  } else {
     return 1;
   }
 }
@@ -45,14 +44,12 @@ std::vector<long> parse_n_threads(const std::vector<std::string>& args) {
   if constexpr (WITH_TBB) {
     if (args.size() == 0) {
       threads.push_back(tbb::global_control::active_value(tbb::global_control::max_allowed_parallelism));
-    }
-    else {
+    } else {
       for (auto&& n : args) {
         threads.push_back(std::stol(n));
       }
     }
-  }
-  else {
+  } else {
     threads.push_back(1);
   }
   return threads;
@@ -69,21 +66,19 @@ std::vector<long> parse_ids(const std::vector<std::string>& args) {
 template <directedness Directedness, class... Attributes>
 edge_list<Directedness, Attributes...> load_graph(std::string file) {
   std::ifstream in(file);
-  std::string type;
+  std::string   type;
   in >> type;
 
   if (type == "BGL17") {
-    nw::util::life_timer _("deserialize");
+    nw::util::life_timer                   _("deserialize");
     edge_list<Directedness, Attributes...> aos_a(0);
     aos_a.deserialize(file);
     return aos_a;
-  }
-  else if (type == "%%MatrixMarket") {
+  } else if (type == "%%MatrixMarket") {
     std::cout << "Reading matrix market input " << file << " (slow)\n";
     nw::util::life_timer _("read mm");
     return read_mm<Directedness, Attributes...>(file);
-  }
-  else {
+  } else {
     std::cerr << "Did not recognize graph input file " << file << "\n";
     exit(1);
   }
@@ -92,15 +87,14 @@ edge_list<Directedness, Attributes...> load_graph(std::string file) {
 template <int Adj, class ExecutionPolicy = std::execution::parallel_unsequenced_policy, directedness Directedness, class... Attributes>
 adjacency<Adj, Attributes...> build_adjacency(edge_list<Directedness, Attributes...>& graph, ExecutionPolicy&& policy = {}) {
   nw::util::life_timer _("build adjacency");
-  return { graph, policy };
+  return {graph, policy};
 }
 
 template <class Graph>
-auto build_degrees(Graph&& graph)
-{
+auto build_degrees(const Graph& graph) {
   using Id = typename nw::graph::vertex_id<std::decay_t<Graph>>::type;
   nw::util::life_timer _("degrees");
-  std::vector<Id> degrees(graph.size());
+  std::vector<Id>      degrees(graph.size());
   tbb::parallel_for(edge_range(graph), [&](auto&& edges) {
     for (auto&& [i, j] : edges) {
       __atomic_fetch_add(&degrees[j], 1, __ATOMIC_ACQ_REL);
@@ -110,17 +104,17 @@ auto build_degrees(Graph&& graph)
 }
 
 template <class Graph>
-auto build_random_sources(Graph&& graph, size_t n, long seed)
-{
+auto build_random_sources(const Graph& graph, size_t n, long seed) {
   using Id = typename nw::graph::vertex_id<std::decay_t<Graph>>::type;
 
   auto sources = std::vector<Id>(n);
   auto degrees = build_degrees(graph);
-  auto     gen = std::mt19937(seed);
-  auto     dis = std::uniform_int_distribution<Id>(0, graph.max());
+  auto gen     = std::mt19937(seed);
+  auto dis     = std::uniform_int_distribution<Id>(0, num_vertices(graph));
 
   for (auto& id : sources) {
-    for (id = dis(gen); degrees[id] == 0; id = dis(gen)) {}
+    for (id = dis(gen); degrees[id] == 0; id = dis(gen)) {
+    }
   }
   return sources;
 }
@@ -130,9 +124,8 @@ auto build_random_sources(Graph&& graph, size_t n, long seed)
 /// This will load a set of vertices from the passed `file` and verify that we
 /// have the expected number `n`.
 template <class Graph>
-auto load_sources_from_file(Graph&&, std::string file, size_t n = 0)
-{
-  using Id = typename nw::graph::vertex_id<std::decay_t<Graph>>::type;
+auto load_sources_from_file(const Graph&, std::string file, size_t n = 0) {
+  using Id            = typename nw::graph::vertex_id<std::decay_t<Graph>>::type;
   std::vector sources = read_mm_vector<Id>(file);
   if (n && sources.size() != n) {
     std::cerr << file << " contains " << sources.size() << " sources, however options require " << n << "\n";
@@ -148,13 +141,12 @@ auto time_op(Op&& op) {
     auto start = std::chrono::high_resolution_clock::now();
     op();
     std::chrono::duration<double> end = std::chrono::high_resolution_clock::now() - start;
-    return std::tuple{ end.count() };
-  }
-  else {
-    auto start = std::chrono::high_resolution_clock::now();
-    auto e = op();
-    std::chrono::duration<double> end = std::chrono::high_resolution_clock::now() - start;
-    return std::tuple { end.count(), std::move(e) };
+    return std::tuple{end.count()};
+  } else {
+    auto                          start = std::chrono::high_resolution_clock::now();
+    auto                          e     = op();
+    std::chrono::duration<double> end   = std::chrono::high_resolution_clock::now() - start;
+    return std::tuple{end.count(), std::move(e)};
   }
 }
 
@@ -165,21 +157,22 @@ auto time_op_verify(Op&& op, Check&& check) {
 }
 
 template <class... Extra>
-class Times
-{
-  using Sample = std::tuple<double, Extra...>;
+class Times {
+  using Sample                                                              = std::tuple<double, Extra...>;
   std::map<std::tuple<std::string, long, long>, std::vector<Sample>> times_ = {};
 
- public:
+public:
   decltype(auto) begin() const { return times_.begin(); }
-  decltype(auto)   end() const { return times_.end(); }
+  decltype(auto) end() const { return times_.end(); }
 
   template <class Op>
   auto record(std::string file, long id, long thread, Op&& op, Extra... extra) {
-    return std::apply([&](auto time, auto&&... rest) {
-      append(file, id, thread, time, extra...);
-      return std::tuple { std::forward<decltype(rest)>(rest)... };
-    }, time_op(std::forward<Op>(op)));
+    return std::apply(
+        [&](auto time, auto&&... rest) {
+          append(file, id, thread, time, extra...);
+          return std::tuple{std::forward<decltype(rest)>(rest)...};
+        },
+        time_op(std::forward<Op>(op)));
   }
 
   template <class Op, class Verify>
@@ -209,7 +202,7 @@ class Times
 
     for (auto&& [config, samples] : times_) {
       auto [file, id, threads] = config;
-      auto [min, max, avg] = minmaxavg(samples);
+      auto [min, max, avg]     = minmaxavg(samples);
 
       out << std::setw(n + 2) << std::left << file;
       out << std::setw(10) << std::left << id;
@@ -221,7 +214,7 @@ class Times
     }
   }
 
- private:
+private:
   static auto average(const std::vector<Sample>& times) {
     double total = 0.0;
     for (auto&& sample : times) {
@@ -231,20 +224,15 @@ class Times
   }
 
   static auto minmax(const std::vector<Sample>& times) {
-    return std::apply([](auto... minmax) {
-      return std::tuple(std::get<0>(*minmax)...);
-    }, std::minmax_element(times.begin(), times.end(), [](auto&& a, auto&& b) {
-      return std::get<0>(a) < std::get<0>(b);
-    }));
+    return std::apply([](auto... minmax) { return std::tuple(std::get<0>(*minmax)...); },
+                      std::minmax_element(times.begin(), times.end(), [](auto&& a, auto&& b) { return std::get<0>(a) < std::get<0>(b); }));
   }
 
   static auto minmaxavg(const std::vector<Sample>& times) {
-    return std::apply([&](auto... minmax) {
-      return std::tuple(minmax..., average(times));
-    }, minmax(times));
+    return std::apply([&](auto... minmax) { return std::tuple(minmax..., average(times)); }, minmax(times));
   }
 };
-}
-}
+}    // namespace bench
+}    // namespace nw::graph
 
-#endif // NW_GRAPH_BENCH_COMMON_HPP
+#endif    // NW_GRAPH_BENCH_COMMON_HPP

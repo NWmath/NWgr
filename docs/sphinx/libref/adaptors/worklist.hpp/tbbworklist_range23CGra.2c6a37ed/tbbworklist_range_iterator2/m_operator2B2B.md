@@ -5,7 +5,7 @@ owner: __MISSING__
 brief: __MISSING__
 tags:
   - method
-defined_in_file: worklist.hpp
+defined_in_file: adaptors/worklist.hpp
 overloads:
   nw::graph::tbbworklist_range2::tbbworklist_range_iterator2 & operator++():
     description: __OPTIONAL__

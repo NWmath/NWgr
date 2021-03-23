@@ -5,10 +5,10 @@ owner: __MISSING__
 brief: __MISSING__
 tags:
   - method
-defined_in_file: random_range.hpp
+defined_in_file: adaptors/random_range.hpp
 is_ctor: true
 overloads:
-  random_range<Graph>(Graph &, size_t, nw::graph::vertex_id_t, unsigned int):
+  random_range<Graph>(Graph &, size_t, vertex_id_t<Graph>, unsigned int):
     arguments:
       - description: __OPTIONAL__
         name: g
@@ -18,11 +18,11 @@ overloads:
         type: size_t
       - description: __OPTIONAL__
         name: first
-        type: nw::graph::vertex_id_t
+        type: vertex_id_t<Graph>
       - description: __OPTIONAL__
         name: seed
         type: unsigned int
     description: __OPTIONAL__
     return: __OPTIONAL__
-    signature_with_names: random_range<Graph>(Graph & g, size_t length, nw::graph::vertex_id_t first, unsigned int seed)
+    signature_with_names: random_range<Graph>(Graph & g, size_t length, vertex_id_t<Graph> first, unsigned int seed)
 ---

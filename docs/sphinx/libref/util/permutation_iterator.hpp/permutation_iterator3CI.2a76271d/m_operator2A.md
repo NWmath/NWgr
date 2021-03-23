@@ -5,7 +5,7 @@ owner: __MISSING__
 brief: __MISSING__
 tags:
   - method
-defined_in_file: permutation_iterator.hpp
+defined_in_file: util/permutation_iterator.hpp
 overloads:
   constexpr decltype(auto) operator*():
     description: __OPTIONAL__

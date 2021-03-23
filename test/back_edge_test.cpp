@@ -8,11 +8,11 @@
 // Author: Kevin Deweese
 //
 
-#include "adaptors/back_edge_range.hpp"
-#include "containers/compressed.hpp"
-#include "containers/edge_list.hpp"
-#include "adaptors/filtered_bfs_range.hpp"
-#include "adaptors/reverse.hpp"
+#include "nwgraph/adaptors/back_edge_range.hpp"
+#include "nwgraph/adaptors/filtered_bfs_range.hpp"
+#include "nwgraph/adaptors/reverse.hpp"
+#include "nwgraph/containers/compressed.hpp"
+#include "nwgraph/edge_list.hpp"
 
 #include "common/test_header.hpp"
 
@@ -21,7 +21,7 @@ using namespace nw::util;
 
 TEST_CASE("back edge", "[back edge]") {
 
-  edge_list<directed, double, double> E_list(6);
+  edge_list<nw::graph::directedness::directed, double, double> E_list(6);
   E_list.push_back(0, 1, 1.0, 0);
   E_list.push_back(1, 2, 2.0, 0);
   E_list.push_back(2, 3, 3.0, 0);

@@ -5,7 +5,7 @@ owner: __MISSING__
 brief: __MISSING__
 tags:
   - class
-defined_in_file: disjoint_set.hpp
+defined_in_file: util/disjoint_set.hpp
 declaration: "template <class T>\nclass nw::graph::disjoint_set;"
 fields:
   maxid_:

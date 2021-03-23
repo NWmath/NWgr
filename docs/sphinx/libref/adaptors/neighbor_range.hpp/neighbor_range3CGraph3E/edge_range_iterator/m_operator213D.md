@@ -5,7 +5,7 @@ owner: __MISSING__
 brief: __MISSING__
 tags:
   - method
-defined_in_file: neighbor_range.hpp
+defined_in_file: adaptors/neighbor_range.hpp
 overloads:
   bool operator!=(const nw::graph::neighbor_range::edge_range_iterator::end_sentinel_type &) const:
     arguments:

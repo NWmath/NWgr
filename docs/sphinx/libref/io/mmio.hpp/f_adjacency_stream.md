@@ -5,7 +5,7 @@ owner: __MISSING__
 brief: __MISSING__
 tags:
   - function
-defined_in_file: mmio.hpp
+defined_in_file: io/mmio.hpp
 overloads:
   "template <size_t w_idx, int idx, typename... Attributes>\nvoid adjacency_stream(std::ofstream &, adjacency<idx, Attributes...> &, const std::string &, std::string &)":
     arguments:

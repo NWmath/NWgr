@@ -5,7 +5,7 @@ owner: __MISSING__
 brief: __MISSING__
 tags:
   - function
-defined_in_file: splittable_range_adapter.hpp
+defined_in_file: adaptors/splittable_range_adapter.hpp
 overloads:
   "template <class Iterator, class Range>\nauto <deduction guide for splittable_range_adapter>(Range &&) -> splittable_range_adapter<Iterator>":
     arguments:

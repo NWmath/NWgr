@@ -5,7 +5,7 @@ owner: __MISSING__
 brief: __MISSING__
 tags:
   - class
-defined_in_file: bfs_edge_range.hpp
+defined_in_file: adaptors/bfs_edge_range.hpp
 declaration: "\nclass nw::graph::bfs_edge_range2::bfs_edge_range2_iterator;"
 dtor: unspecified
 fields:
@@ -33,7 +33,7 @@ fields:
     annotation:
       - private
     description: __MISSING__
-    type: nw::graph::vertex_id_t
+    type: nw::graph::bfs_edge_range2::vertex_id_type
 namespace:
   - nw
   - graph

@@ -9,14 +9,15 @@
 
 #include "xtensor/xcsv.hpp"
 
-#include "containers/compressed.hpp"
-#include "containers/edge_list.hpp"
-#include "io/mmio.hpp"
-#include "util/timer.hpp"
+#include "nwgraph/adjacency.hpp"
+#include "nwgraph/containers/compressed.hpp"
+#include "nwgraph/edge_list.hpp"
+#include "nwgraph/io/mmio.hpp"
+#include "nwgraph/util/timer.hpp"
 
 int main(int argc, char* argv[]) {
 
-  nw::graph::edge_list<nw::graph::directed> edges = nw::graph::read_mm<nw::graph::directed>(argv[1]);
+  nw::graph::edge_list<nw::graph::directedness::directed> edges = nw::graph::read_mm<nw::graph::directedness::directed>(argv[1]);
 
   nw::util::timer t4("build biadjacencies");
 
@@ -28,7 +29,7 @@ int main(int argc, char* argv[]) {
 
   nw::util::timer t5("build s_overlap");
 
-  nw::graph::edge_list<nw::graph::undirected> s_overlap;
+  nw::graph::edge_list<nw::graph::directedness::undirected> s_overlap;
   s_overlap.open_for_push_back();
 
   size_t s = 2;
