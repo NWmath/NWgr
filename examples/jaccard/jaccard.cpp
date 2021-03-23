@@ -1,8 +1,8 @@
-#include "containers/compressed.hpp"
-#include "containers/edge_list.hpp"
-#include "adaptors/edge_range.hpp"
-#include "util/intersection_size.hpp"
-#include "util/types.hpp"
+#include "nwgraph/access.hpp"
+#include "nwgraph/csr.hpp"
+#include "nwgraph/edge_list.hpp"
+#include "nwgraph/adaptors/edge_range.hpp"
+#include "nwgraph/util/intersection_size.hpp"
 
 #include <algorithm>
 #include <iostream>
@@ -12,14 +12,13 @@ namespace nw {
 namespace graph {
 template <class Graph> std::vector<float> jaccard_similarity(Graph& G) {
 
-    compressed_sparse<0, directed> g_for_api(20);
-    vertex_id_t N = G.num_vertices();
+    vertex_id_t<Graph> N = num_vertices(G);
     auto degrees = G.degrees();
     std::vector<float> ret(N * N, 0.0);
     for (auto u_neighbors = G.begin(); u_neighbors != G.end(); ++u_neighbors) {
-        vertex_id_t u = u_neighbors - G.begin();
+        vertex_id_t<Graph> u = u_neighbors - G.begin();
         for (auto v_neighbors = G.begin(); v_neighbors != G.end(); ++v_neighbors) {
-            vertex_id_t v = v_neighbors - G.begin();
+            vertex_id_t<Graph> v = v_neighbors - G.begin();
             size_t intersect_size = intersection_size(*u_neighbors, *v_neighbors);
             std::cout << "( " << u << ", " << v << "): intersect = " << intersect_size
                       << " deg(u) = " << degrees[u] << " deg(v) = " << degrees[v] << std::endl;
@@ -51,12 +50,12 @@ bool test() {
 
     //auto edge_list_jaccard = jaccard_similarity(data);
 
-    compressed_sparse<0, nw::graph::directedness::undirected> sparse_data(data);
-    vertex_id_t N = sparse_data.num_vertices();
+    csr_graph sparse_data(data);
+    size_t N = num_vertices(sparse_data);
     auto csr_jaccard = jaccard_similarity(sparse_data);
 
-    for (vertex_id_t i = 0; i < N; i++) {
-      for (vertex_id_t j = 0; j < N; j++) {
+    for (size_t i = 0; i < N; i++) {
+      for (size_t j = 0; j < N; j++) {
           std::cout << csr_jaccard[j + N * i];
           if (j != N - 1) {
               std::cout << " ";
