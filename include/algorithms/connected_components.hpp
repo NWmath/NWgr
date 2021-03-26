@@ -366,7 +366,6 @@ std::vector<vertex_id_t> ccv1(Graph& g) {
   std::for_each(
       std::execution::par_unseq,
       counting_iterator<vertex_id_t>(0), counting_iterator<vertex_id_t>(g.size()), [&](auto n) { comp[n] = n; });
-
   std::for_each(
       std::execution::par_unseq,
       counting_iterator<vertex_id_t>(0), counting_iterator<vertex_id_t>(g.size()), [&](auto u) { push(g, u, comp); });
