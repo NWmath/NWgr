@@ -33,6 +33,44 @@ template <class Graph> std::vector<float> jaccard_similarity(Graph& G) {
     }
     return ret;
 }
+
+template<class Graph> Graph transpose(Graph& G) {
+    Graph ret(num_vertices(G)); // It was very nonobvious I needed to do this
+    ret.open_for_push_back();
+    for (auto&& [u, v] : make_edge_range(G)) {
+        ret.push_back(v, u);
+    }
+    ret.close_for_push_back();
+    return ret;
+}
+
+template<class Adj> std::vector<float> jaccard_sparse(Adj& G) {
+    using vertex_id_type = vertex_id_t<Adj>;
+    vertex_id_type N = num_vertices(G);
+    std::vector<vertex_id_type> degrees(N, 0);
+    for (auto&& [u, v] : make_edge_range(G)) {
+        degrees[u]++;
+    }
+
+    Adj G_t = transpose(G);
+    std::vector<float> ret(N * N, 0.0);
+    for (auto&& [u, v] : make_edge_range(G)) {
+        for (auto&& [w] : G_t[v]) {
+            size_t intersect_size = intersection_size(G[u], G[w]);
+            std::cout << "( " << u << ", " << w << "): intersect = " << intersect_size
+                      << " deg(u) = " << degrees[u] << " deg(w) = " << degrees[w] << std::endl;
+            float jaccard = ((float)intersect_size) / (degrees[u] + degrees[w] - intersect_size);
+            // Special case self-intersections
+            ret[u + N * w] = (intersect_size != 0) ? jaccard : (u == v ? 1.0 : 0.0);
+
+        }
+    }
+    // Patch up self-intersections
+    for (vertex_id_type i = 0; i < N; i++) {
+        ret[i + N * i] = 1.0;
+    }
+    return ret;
+}
 }
 }
 
@@ -49,18 +87,6 @@ bool test() {
     data.push_back(2, 1);
     data.close_for_push_back();
 
-    // auto edge_list_jaccard = jaccard_similarity(data);
-    // size_t N1 = num_vertices(data);
-    // for (size_t i = 0; i < N1; i++) {
-    //   for (size_t j = 0; j < N1; j++) {
-    //       std::cout << edge_list_jaccard[j + N1 * i];
-    //       if (j != N1 - 1) {
-    //           std::cout << " ";
-    //       }
-    //   }
-    //   std::cout << std::endl;
-    // }
-
     csr_graph sparse_data(data);
     size_t N = num_vertices(sparse_data);
     auto csr_jaccard = jaccard_similarity(sparse_data);
@@ -74,18 +100,18 @@ bool test() {
       }
       std::cout << std::endl;
     }
-    return true;
 
-    // return
-    //     std::equal(edge_list_jaccard.cbegin(), edge_list_jaccard.cend(),
-    //                csr_jaccard.cbegin(), csr_jaccard.cend(),
-    //                [](const float &a, const float &b) { return std::abs(a - b) < 1e-5; } );
+    auto jaccard_by_transpose = jaccard_sparse(sparse_data);
+    return
+        std::equal(csr_jaccard.cbegin(), csr_jaccard.cend(),
+                   jaccard_by_transpose.cbegin(), jaccard_by_transpose.cend(),
+                   [](const float &a, const float &b) { return std::abs(a - b) < 1e-5; } );
 }
 
 int main() {
     bool test_result = test();
     if (!test_result) {
-        std::cerr << "Jaccard varries with graph type somehow" << std::endl;
+        std::cerr << "Jaccard varries with algorithm somehow" << std::endl;
     }
     return 0;
 }
