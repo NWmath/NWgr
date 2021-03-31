@@ -3,6 +3,10 @@
 # -----------------------------------------------------------------------------
 include(FetchContent)
 
+if(MSVC)
+  set(COMPILE_WITH_C_LOCALE ON)
+endif()
+
 FetchContent_Declare(
   date
   GIT_REPOSITORY https://github.com/HowardHinnant/date.git

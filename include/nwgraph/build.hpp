@@ -1,13 +1,13 @@
-// 
-// This file is part of NW Graph (aka GraphPack) 
-// (c) Pacific Northwest National Laboratory 2018-2021 
-// (c) University of Washington 2018-2021 
-// 
-// Licensed under terms of include LICENSE file 
-// 
-// Authors: 
-//     Andrew Lumsdaine	
-//     Luke D'Alessandro	
+//
+// This file is part of NW Graph (aka GraphPack)
+// (c) Pacific Northwest National Laboratory 2018-2021
+// (c) University of Washington 2018-2021
+//
+// Licensed under terms of include LICENSE file
+//
+// Authors:
+//     Andrew Lumsdaine
+//     Luke D'Alessandro
 //
 
 #ifndef NW_GRAPH_BUILD_HPP
@@ -15,6 +15,8 @@
 
 #include "util/print_types.hpp"
 
+#include "nwgraph/util/algorithm.hpp"
+#include "nwgraph/util/execution.hpp"
 #include "nwgraph/util/proxysort.hpp"
 
 #include "nwgraph/graph_base.hpp"
@@ -37,17 +39,17 @@
 namespace nw {
 namespace graph {
 
-using default_execution_policy = std::execution::parallel_unsequenced_policy;
+using default_execution_policy = nw::graph::execution::parallel_unsequenced_policy;
 
 template <int idx, class edge_list_t, class ExecutionPolicy = default_execution_policy>
 void sort_by(edge_list_t& el, ExecutionPolicy&& policy = {}) {
-  std::sort(std::execution::seq, el.begin(), el.end(),
-            [](const auto& a, const auto& b) -> bool { return (std::get<idx>(a) < std::get<idx>(b)); });
+  nw::graph::sort(nw::graph::execution::seq, el.begin(), el.end(),
+                  [](const auto& a, const auto& b) -> bool { return (std::get<idx>(a) < std::get<idx>(b)); });
 }
 
 template <int idx, class edge_list_t, class ExecutionPolicy = default_execution_policy>
 void stable_sort_by(edge_list_t& el, ExecutionPolicy&& policy = {}) {
-  std::stable_sort(policy, el.begin(), el.end(), [](const auto& a, const auto& b) -> bool { return (std::get<idx>(a) < std::get<idx>(b)); });
+    nw::graph::stable_sort(policy, el.begin(), el.end(), [](const auto& a, const auto& b) -> bool { return (std::get<idx>(a) < std::get<idx>(b)); });
 }
 
 template <int idx, class edge_list_t, class ExecutionPolicy = default_execution_policy>
@@ -57,9 +59,9 @@ void lexical_sort_by(edge_list_t& el, ExecutionPolicy&& policy = {}) {
   const int jdx = (idx + 1) % 2;
 
   if constexpr (idx == 0) {
-    std::sort(policy, el.begin(), el.end());
+    nw::graph::sort(policy, el.begin(), el.end());
   } else {
-    std::sort(policy, el.begin(), el.end(), [](const auto& a, const auto& b) -> bool {
+    nw::graph::sort(policy, el.begin(), el.end(), [](const auto& a, const auto& b) -> bool {
       return std::tie(std::get<1>(a), std::get<0>(a)) < std::tie(std::get<1>(b), std::get<0>(b));
     });
   }
@@ -70,7 +72,7 @@ void lexical_stable_sort_by(edge_list_t& el, ExecutionPolicy&& policy = {}) {
 
   const int jdx = (idx + 1) % 2;
 
-  std::stable_sort(policy, el.begin(), el.end(), [](const auto& a, const auto& b) -> bool {
+  nw::graph::stable_sort(policy, el.begin(), el.end(), [](const auto& a, const auto& b) -> bool {
     return std::tie(std::get<idx>(a), std::get<jdx>(a)) < std::tie(std::get<idx>(b), std::get<jdx>(b));
   });
 }
@@ -115,11 +117,17 @@ auto fill_adj_list(edge_list_t& el, adj_list_t& al) {
 
 template <class Vector1, class Vector2, class Perm>
 void permute(const Vector1& vec1, Vector2& vec2, const Perm& perm) {
+#if NW_GRAPH_NEED_TBB
   tbb::parallel_for(tbb::blocked_range(0ul, perm.size()), [&](auto&& r) {
     for (auto i = r.begin(), e = r.end(); i != e; ++i) {
       vec2[i] = vec1[perm[i]];
     }
   });
+#elif NW_GRAPH_NEED_HPX
+  hpx::for_loop(0ul, perm.size(), [&](auto i) { vec2[i] = vec1[perm[i]]; });
+#else
+#error "Unknown parallelization backend"
+#endif
 }
 
 template <class edge_list_t, class adjacency_t, class Perm, size_t... Is>
@@ -142,19 +150,19 @@ void permute_helper(edge_list_t& el, adjacency_t& cs, std::index_sequence<Is...>
 
 template <class edge_list_t, class adjacency_t, class ExecutionPolicy = default_execution_policy, size_t... Is>
 void fill_helper(edge_list_t& el, adjacency_t& cs, std::index_sequence<Is...> is, ExecutionPolicy&& policy = {}) {
-  (..., (std::copy(policy, std::get<Is + 2>(dynamic_cast<typename edge_list_t::base&>(el)).begin(),
+  (..., (nw::graph::copy(policy, std::get<Is + 2>(dynamic_cast<typename edge_list_t::base&>(el)).begin(),
                    std::get<Is + 2>(dynamic_cast<typename edge_list_t::base&>(el)).end(), std::get<Is + 1>(cs.to_be_indexed_).begin())));
 }
 
 template <class edge_list_t, class adjacency_t, class ExecutionPolicy = default_execution_policy, size_t... Is>
 void copy_helper(edge_list_t& el, adjacency_t& cs, std::index_sequence<Is...> is, size_t offset, ExecutionPolicy&& policy = {}) {
-  (..., (std::copy(policy, std::get<Is + 2>(dynamic_cast<typename edge_list_t::base&>(el)).begin(),
+  (..., (nw::graph::copy(policy, std::get<Is + 2>(dynamic_cast<typename edge_list_t::base&>(el)).begin(),
                    std::get<Is + 2>(dynamic_cast<typename edge_list_t::base&>(el)).end(), std::get<Is + 1>(cs.to_be_indexed_).begin()+offset)));
 }
 
 template <class edge_list_t, class adjacency_t, class T, class ExecutionPolicy = default_execution_policy, size_t... Is>
 void fill_helper(edge_list_t& el, adjacency_t& cs, std::index_sequence<Is...> is, T& Tmp, ExecutionPolicy&& policy = {}) {
-  (..., (std::copy(policy, std::get<Is + 2>(dynamic_cast<typename edge_list_t::base&>(Tmp)).begin(),
+  (..., (nw::graph::copy(policy, std::get<Is + 2>(dynamic_cast<typename edge_list_t::base&>(Tmp)).begin(),
                    std::get<Is + 2>(dynamic_cast<typename edge_list_t::base&>(Tmp)).end(), std::get<Is + 1>(cs.to_be_indexed_).begin())));
 }
 
@@ -170,9 +178,9 @@ auto fill_directed(edge_list_t& el, Int N, adjacency_t& cs, ExecutionPolicy&& po
     cs.indices_.resize(N + 1);
   }
 
-  std::inclusive_scan(policy, degree.begin(), degree.end(), cs.indices_.begin() + 1);
+  nw::graph::inclusive_scan(policy, degree.begin(), degree.end(), cs.indices_.begin() + 1);
   cs.to_be_indexed_.resize(el.size());
-  
+
 #if 1
 
   sort_by<idx>(el);  // Need to do this in a way that will let us have const el
@@ -180,9 +188,9 @@ auto fill_directed(edge_list_t& el, Int N, adjacency_t& cs, ExecutionPolicy&& po
 
   // Copy kdx (the other index)
   const int kdx = (idx + 1) % 2;
-  std::copy(policy, std::get<kdx>(dynamic_cast<typename edge_list_t::base&>(el)).begin(),
-	    std::get<kdx>(dynamic_cast<typename edge_list_t::base&>(el)).end(), std::get<0>(cs.to_be_indexed_).begin());
-  
+  nw::graph::copy(policy, std::get<kdx>(dynamic_cast<typename edge_list_t::base&>(el)).begin(),
+        std::get<kdx>(dynamic_cast<typename edge_list_t::base&>(el)).end(), std::get<0>(cs.to_be_indexed_).begin());
+
   // Copy properties
   if constexpr (std::tuple_size<typename edge_list_t::attributes_t>::value > 0) {
     fill_helper(el, cs, std::make_integer_sequence<size_t, std::tuple_size<typename edge_list_t::attributes_t>::value>());
@@ -198,7 +206,7 @@ auto fill_directed(edge_list_t& el, Int N, adjacency_t& cs, ExecutionPolicy&& po
   //   Copy sorting index array to tmp array
   //   Copy other arrays to cs.to_be_indexed_
   //   Sort everything in to_be_indexed with tmp
-  //     Need a custom swap -- pass in ?  ADL ? 
+  //     Need a custom swap -- pass in ?  ADL ?
   //
 
   using vertex_id_type = typename decltype(std::get<idx>(el))::value_type;  /* vertex_id_t<edge_list_t> */
@@ -207,7 +215,7 @@ auto fill_directed(edge_list_t& el, Int N, adjacency_t& cs, ExecutionPolicy&& po
   // Copy other (permuted) indices
   const int kdx = (idx + 1) % 2;
   permute(std::get<kdx>(dynamic_cast<typename edge_list_t::base&>(el)), std::get<0>(cs.to_be_indexed_), perm);
-  
+
   // Copy (permuted) properties
   if constexpr (std::tuple_size<typename edge_list_t::attributes_t>::value > 0) {
     permute_helper(el, cs, std::make_integer_sequence<size_t, std::tuple_size<typename edge_list_t::attributes_t>::value>(), perm);
@@ -225,23 +233,23 @@ auto fill_undirected(edge_list_t& el, Int N, adjacency_t& cs, ExecutionPolicy&& 
 #if 0
 
   // Do same thing in fill_undirected
-  //   Create tmp array -- 2X size 
-  //   Copy sorting index array and other array to tmp array 
+  //   Create tmp array -- 2X size
+  //   Copy sorting index array and other array to tmp array
   //   Copy other index array and sorting index array to cs.to_be_indexed_
   //   Copy property arrays to cs.to_be_indexed_ 2X
   //   Sort everything in to_be_indexed with tmp
-  //     Need a custom swap -- pass in ?  ADL ? 
+  //     Need a custom swap -- pass in ?  ADL ?
 
 
   using vertex_id_type = vertex_id_t<edge_list_t>;
 
   std::vector<vertex_id_type> Tmp(2*el.size());
-  std::copy(policy, std::get<0>(el).begin(), std::get<0>(el).end(), Tmp.begin());
-  std::copy(policy, std::get<1>(el).begin(), std::get<1>(el).end(), Tmp.begin()+el.size());
+  nw::graph::copy(policy, std::get<0>(el).begin(), std::get<0>(el).end(), Tmp.begin());
+  nw::graph::copy(policy, std::get<1>(el).begin(), std::get<1>(el).end(), Tmp.begin()+el.size());
 
   const int kdx = (idx + 1) % 2;
-  std::copy(policy, std::get<kdx>(el).begin(), std::get<kdx>(el).end(), std::get<0>(cs.to_be_indexed_).begin());
-  std::copy(policy, std::get<idx>(el).begin(), std::get<idx>(el).end(), std::get<0>(cs.to_be_indexed_).begin()+el.size());
+  nw::graph::copy(policy, std::get<kdx>(el).begin(), std::get<kdx>(el).end(), std::get<0>(cs.to_be_indexed_).begin());
+  nw::graph::copy(policy, std::get<idx>(el).begin(), std::get<idx>(el).end(), std::get<0>(cs.to_be_indexed_).begin()+el.size());
 
   if constexpr (std::tuple_size<typename edge_list_t::attributes_t>::value > 0) {
     copy_helper(el, cs, std::make_integer_sequence<size_t, std::tuple_size<typename edge_list_t::attributes_t>::value>(), 0);
@@ -255,36 +263,36 @@ auto fill_undirected(edge_list_t& el, Int N, adjacency_t& cs, ExecutionPolicy&& 
   permute_helper_all(el, cs, std::make_integer_sequence<size_t, std::tuple_size<typename edge_list_t::attributes_t>::value>()+1, perm);
 
 
-#else  
+#else
 
 
   typename edge_list_t::directed_type Tmp(N);    // directedness doesn't matter for the Tmp, so just use same type as el
                                                  // EXCEPT -- degrees does something different if undirected
 
   Tmp.resize(2 * el.size());
-  
-  std::copy(policy, el.begin(), el.end(), Tmp.begin());
-  
-  std::transform(policy, el.begin(), el.end(), Tmp.begin() + el.size(), [&](auto&& elt) {
+
+  nw::graph::copy(policy, el.begin(), el.end(), Tmp.begin());
+
+  nw::graph::transform(policy, el.begin(), el.end(), Tmp.begin() + el.size(), [&](auto&& elt) {
     auto flt = elt;
     std::swap(std::get<0>(flt), std::get<1>(flt));
     return flt;
   });
-  
+
   sort_by<idx>(Tmp);    // stable_sort may allocate extra memory
 
   {
     auto degree = degrees<idx>(Tmp);    // Can have a fast version if we know it is sorted -- using equal_range
     cs.indices_.resize(N + 1);
-    std::inclusive_scan(policy, degree.begin(), degree.end(), cs.indices_.begin() + 1);
+    nw::graph::inclusive_scan(policy, degree.begin(), degree.end(), cs.indices_.begin() + 1);
   }
 
   cs.to_be_indexed_.resize(Tmp.size());
-  
+
   const int kdx = (idx + 1) % 2;
-  std::copy(policy, std::get<kdx>(dynamic_cast<typename edge_list_t::base&>(Tmp)).begin(),
-	    std::get<kdx>(dynamic_cast<typename edge_list_t::base&>(Tmp)).end(), std::get<0>(cs.to_be_indexed_).begin());
-  
+  nw::graph::copy(policy, std::get<kdx>(dynamic_cast<typename edge_list_t::base&>(Tmp)).begin(),
+        std::get<kdx>(dynamic_cast<typename edge_list_t::base&>(Tmp)).end(), std::get<0>(cs.to_be_indexed_).begin());
+
   if constexpr (std::tuple_size<typename edge_list_t::attributes_t>::value > 0) {
     fill_helper(el, cs, std::make_integer_sequence<size_t, std::tuple_size<typename edge_list_t::attributes_t>::value>(), Tmp);
   }
@@ -340,13 +348,13 @@ template <int idx, class edge_list_t, succession cessor = succession::predecesso
 void swap_to_triangular(edge_list_t& el, ExecutionPolicy&& policy = {}) {
 
   if constexpr ((idx == 0 && cessor == succession::predecessor) || (idx == 1 && cessor == succession::successor)) {
-    std::for_each(policy, el.begin(), el.end(), [](auto&& f) {
+    nw::graph::for_each(policy, el.begin(), el.end(), [](auto&& f) {
       if (std::get<0>(f) < std::get<1>(f)) {
         std::swap(std::get<0>(f), std::get<1>(f));
       }
     });
   } else if constexpr ((idx == 0 && cessor == succession::successor) || (idx == 1 && cessor == succession::predecessor)) {
-    std::for_each(policy, el.begin(), el.end(), [](auto&& f) {
+    nw::graph::for_each(policy, el.begin(), el.end(), [](auto&& f) {
       if (std::get<1>(f) < std::get<0>(f)) {
         std::swap(std::get<1>(f), std::get<0>(f));
       }
@@ -359,8 +367,9 @@ void swap_to_triangular(edge_list_t& el, ExecutionPolicy&& policy = {}) {
 template <class edge_list_t, class ExecutionPolicy = default_execution_policy>
 void uniq(edge_list_t& el, ExecutionPolicy&& policy = {}) {
 
-  auto past_the_end = std::unique(policy, el.begin(), el.end(),
-                                  [](auto&& x, auto&& y) { return std::get<0>(x) == std::get<0>(y) && std::get<1>(x) == std::get<1>(y); });
+  auto past_the_end = nw::graph::unique(policy, el.begin(), el.end(), [](auto&& x, auto&& y) {
+    return std::get<0>(x) == std::get<0>(y) && std::get<1>(x) == std::get<1>(y);
+  });
 
   // el.erase(past_the_end, el.end());
   el.resize(past_the_end - el.begin());
@@ -378,12 +387,18 @@ void remove_self_loops(edge_list_t& el) {
 template<degree_enumerable_graph Graph, class ExecutionPolicy = default_execution_policy>
 auto degrees(const Graph& graph, ExecutionPolicy&& policy = {}) {
   std::vector<vertex_id_t<Graph>> degree_v(num_vertices(graph));
-  
+
+#if NW_GRAPH_NEED_TBB
   tbb::parallel_for(tbb::blocked_range(0ul, degree_v.size()), [&](auto&& r) {
     for (auto i = r.begin(), e = r.end(); i != e; ++i) {
       degree_v[i] = degree(graph[i]);
     }
   });
+#elif NW_GRAPH_NEED_HPX
+  hpx::for_loop(0ul, degree_v.size(), [&](auto i) { degree_v[i] = degree(graph[i]); });
+#else
+#error "Unknown parallelization backend"
+#endif
   return degree_v;
 }
 
@@ -399,7 +414,7 @@ auto degrees(edge_list_t& el, ExecutionPolicy&& policy = {}) requires(!degree_en
   }
 
   using vertex_id_type = typename edge_list_t::vertex_id_type;
-  
+
   std::vector<vertex_id_type> degree(d_size);
 
   if constexpr (edge_list_t::edge_directedness == directedness::directed) {
@@ -433,18 +448,24 @@ auto perm_by_degree(edge_list_t& el, const Vector& degree, std::string direction
 
   std::vector<typename edge_list_t::vertex_id_type> perm(degree.size());
 
+#if NW_GRAPH_NEED_TBB
   tbb::parallel_for(tbb::blocked_range(0ul, perm.size()), [&](auto&& r) {
     for (auto i = r.begin(), e = r.end(); i != e; ++i) {
       perm[i] = i;
     }
   });
+#elif NW_GRAPH_NEED_HPX
+  hpx::for_loop(0ul, perm.size(), [&](auto i) { perm[i] = i; });
+#else
+#error "Unknown parallelization backend"
+#endif
 
   auto d = degree.begin();
 
   if (direction == "descending") {
-    std::sort(policy, perm.begin(), perm.end(), [&](auto a, auto b) { return d[a] > d[b]; });
+    nw::graph::sort(policy, perm.begin(), perm.end(), [&](auto a, auto b) { return d[a] > d[b]; });
   } else if (direction == "ascending") {
-    std::sort(policy, perm.begin(), perm.end(), [&](auto a, auto b) { return d[a] < d[b]; });
+    nw::graph::sort(policy, perm.begin(), perm.end(), [&](auto a, auto b) { return d[a] < d[b]; });
   } else {
     std::cout << "Unknown direction: " << direction << std::endl;
   }
@@ -456,13 +477,19 @@ template <class edge_list_t, class Vector, class ExecutionPolicy = default_execu
 void relabel(edge_list_t& el, const Vector& perm, ExecutionPolicy&& policy = {}) {
   std::vector<typename edge_list_t::vertex_id_type> iperm(perm.size());
 
+#if NW_GRAPH_NEED_TBB
   tbb::parallel_for(tbb::blocked_range(0ul, iperm.size()), [&](auto&& r) {
     for (auto i = r.begin(), e = r.end(); i != e; ++i) {
       iperm[perm[i]] = i;
     }
   });
+#elif NW_GRAPH_NEED_HPX
+  hpx::for_loop(0ul, iperm.size(), [&](auto i) { iperm[perm[i]] = i; });
+#else
+#error "Unknown parallelization backend"
+#endif
 
-  std::for_each(policy, el.begin(), el.end(), [&](auto&& x) {
+  nw::graph::for_each(policy, el.begin(), el.end(), [&](auto&& x) {
     std::get<0>(x) = iperm[std::get<0>(x)];
     std::get<1>(x) = iperm[std::get<1>(x)];
   });

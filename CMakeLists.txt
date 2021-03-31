@@ -37,6 +37,8 @@ if(NOT MSVC)
   set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-Ofast -g -march=native" CACHE STRING "" FORCE)
   set(CMAKE_CXX_FLAGS_MINSIZEREL "-Os -march=native -DNDEBUG" CACHE STRING "" FORCE)
 else()
+  add_compile_definitions(_CRT_NONSTDC_NO_WARNINGS)
+  add_compile_definitions(_CRT_SECURE_NO_WARNINGS)
   add_compile_definitions(_SILENCE_ALL_CXX17_DEPRECATION_WARNINGS)
   add_compile_definitions(NOMINMAX)
   # suppress warnings:
@@ -59,6 +61,9 @@ include(CompilerFlags)
 # -----------------------------------------------------------------------------
 # Options
 # -----------------------------------------------------------------------------
+option(NW_GRAPH_NEED_TBB "Use TBB for parallelization" ON)
+option(NW_GRAPH_NEED_HPX "Use HPX for parallelization" OFF)
+
 set(NW_GRAPH_SANITIZE "" CACHE STRING "-fsanitize compiler options (e.g., =address)")
 if (NW_GRAPH_SANITIZE)
   if(NOT MSVC)
@@ -78,7 +83,7 @@ option(NW_GRAPH_USE_TBBMALLOC "Link to tbbmalloc" OFF)
 add_subdirectory(include)
 
 include(Docopt)
-  
+
 if (NW_GRAPH_BUILD_TESTS)
   include(CTest)
   add_subdirectory(test)

@@ -21,64 +21,47 @@
 #include <map>
 #include <random>
 #include <string>
-#include <tbb/global_control.h>
 #include <tuple>
 #include <vector>
 
 namespace nw::graph {
 namespace bench {
 
-#ifdef NW_GRAPH_NEED_TBB
-constexpr inline bool WITH_TBB = true;
-#else
-constexpr inline bool WITH_TBB = false;
-#endif
-
-#ifdef NW_GRAPH_NEED_TBB
-constexpr inline bool WITH_HPX = true;
-#else
-constexpr inline bool WITH_HPX = false;
-#endif
-
 auto set_n_threads(long n) {
-  if constexpr (WITH_TBB) {
-    return tbb::global_control(tbb::global_control::max_allowed_parallelism, n);
-  } else {
-    return 0;
-  }
+#ifdef NW_GRAPH_NEED_TBB
+  return tbb::global_control(tbb::global_control::max_allowed_parallelism, n);
+#else
+  return 0;
+#endif
 }
 
 long get_n_threads() {
-  if constexpr (WITH_TBB) {
-    return tbb::global_control::active_value(tbb::global_control::max_allowed_parallelism);
-  }
-  else if constexpr (WITH_HPX) {
-    return hpx::get_worker_thread_num();
-  }
-  else {
-    return 1;
-  }
+#ifdef NW_GRAPH_NEED_TBB
+  return tbb::global_control::active_value(tbb::global_control::max_allowed_parallelism);
+#elif NW_GRAPH_NEED_HPX
+  return hpx::get_worker_thread_num();
+#else
+  return 1;
+#endif
 }
 
 std::vector<long> parse_n_threads(const std::vector<std::string>& args) {
   std::vector<long> threads;
-  if constexpr (WITH_TBB) {
-    if (args.size() == 0) {
-      threads.push_back(tbb::global_control::active_value(tbb::global_control::max_allowed_parallelism));
-    } else {
-      for (auto&& n : args) {
-        threads.push_back(std::stol(n));
-      }
+#ifdef NW_GRAPH_NEED_TBB
+  if (args.size() == 0) {
+    threads.push_back(tbb::global_control::active_value(tbb::global_control::max_allowed_parallelism));
+  } else {
+    for (auto&& n : args) {
+      threads.push_back(std::stol(n));
     }
   }
-  else if constexpr (WITH_HPX) {
-    if (args.size() == 0) {
-        threads.push_back(hpx::get_worker_thread_num());
-    }
+#elif NW_GRAPH_NEED_HPX
+  if (args.size() == 0) {
+    threads.push_back(hpx::get_worker_thread_num());
   }
-  else {
-    threads.push_back(1);
-  }
+#else
+  threads.push_back(1);
+#endif
   return threads;
 }
 
@@ -125,13 +108,13 @@ auto build_degrees(const Graph& graph) {
 #if defined(NW_GRAPH_NEED_TBB)
   tbb::parallel_for(edge_range(graph), [&](auto&& edges) {
     for (auto&& [i, j] : edges) {
-      nw::util::fetch_add(degrees[j], 1);
+      nw::graph::fetch_add(degrees[j], 1);
     }
   });
 #elif defined(NW_GRAPH_NEED_HPX)
   hpx::ranges::for_each(hpx::execution::par, edge_range(graph), [&](auto&& edges) {
     for (auto&& [i, j] : edges) {
-        nw::util::fetch_add(degrees[j], 1);
+        nw::graph::fetch_add(degrees[j], 1);
     }
   });
 #endif

@@ -1,14 +1,14 @@
-// 
-// This file is part of NW Graph (aka GraphPack) 
-// (c) Pacific Northwest National Laboratory 2018-2021 
-// (c) University of Washington 2018-2021 
-// 
-// Licensed under terms of include LICENSE file 
-// 
-// Authors: 
-//     Andrew Lumsdaine	
-//     Kevin Deweese	
-//     Luke D'Alessandro	
+//
+// This file is part of NW Graph (aka GraphPack)
+// (c) Pacific Northwest National Laboratory 2018-2021
+// (c) University of Washington 2018-2021
+//
+// Licensed under terms of include LICENSE file
+//
+// Authors:
+//     Andrew Lumsdaine
+//     Kevin Deweese
+//     Luke D'Alessandro
 //
 
 
@@ -57,7 +57,9 @@ public:
   splittable_range_adapter(splittable_range_adapter&&)      = default;
 
   decltype(auto) begin() { return begin_; }
+  decltype(auto) begin() const { return begin_; }
   decltype(auto) end() { return end_; }
+  decltype(auto) end() const { return end_; }
 
   decltype(auto) cutoff(std::size_t cutoff) {
     cutoff_ = cutoff;

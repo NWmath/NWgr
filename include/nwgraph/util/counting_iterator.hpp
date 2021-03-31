@@ -1,3 +1,9 @@
+//
+// Licensed under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License
+// https://creativecommons.org/licenses/by-nc-sa/4.0/
+//
+// Author: Hartmut Kaiser (c) 2021
+//
 
 #ifndef NW_GRAPH_COUNTING_ITERATOR_HPP
 #define NW_GRAPH_COUNTING_ITERATOR_HPP

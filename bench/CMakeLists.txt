@@ -20,7 +20,7 @@ target_sources(bench INTERFACE
   Log.hpp
   config.h)
 target_include_directories(bench INTERFACE ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
-target_link_libraries(bench INTERFACE nw_graph docopt date::date nlohmann_json::nlohmann_json) 
+target_link_libraries(bench INTERFACE nw_graph docopt date::date nlohmann_json::nlohmann_json)
 
 find_package(nlohmann_json 3.2.0 QUIET)
 if (NOT nlohmann_json_FOUND)
@@ -55,8 +55,8 @@ target_link_libraries(bc.exe bench)
 add_executable(bfs.exe bfs.cpp)
 target_link_libraries(bfs.exe bench)
 
-add_executable(cc.exe cc.cpp) 
-target_link_libraries(cc.exe bench) 
+add_executable(cc.exe cc.cpp)
+target_link_libraries(cc.exe bench)
 
 # add_executable(js.exe js.cpp)
 # target_link_libraries(js.exe bench)

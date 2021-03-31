@@ -1,13 +1,13 @@
-// 
-// This file is part of NW Graph (aka GraphPack) 
-// (c) Pacific Northwest National Laboratory 2018-2021 
-// (c) University of Washington 2018-2021 
-// 
-// Licensed under terms of include LICENSE file 
-// 
-// Authors: 
-//     Andrew Lumsdaine	
-//     Luke D'Alessandro	
+//
+// This file is part of NW Graph (aka GraphPack)
+// (c) Pacific Northwest National Laboratory 2018-2021
+// (c) University of Washington 2018-2021
+//
+// Licensed under terms of include LICENSE file
+//
+// Authors:
+//     Andrew Lumsdaine
+//     Luke D'Alessandro
 //
 
 #ifndef NW_GRAPH_ATOMIC
@@ -81,7 +81,7 @@ constexpr auto load(T&& t) {
     return tt;
 #else
     auto tmp = std::forward<T>(t);
-    detail::interlocked<sizeof(tmp)>::call_or(&tmp, std::decay_t<T>{0});
+    util::detail::interlocked<sizeof(tmp)>::call_or(&tmp, std::decay_t<T>{0});
     return tmp;
 #endif
   }
@@ -107,7 +107,7 @@ constexpr void store(T&& t, U&& u) {
     __atomic_store(std::addressof(std::forward<T>(t)), std::addressof(u), order);
 #else
     auto tmp = std::decay_t<T>{0};
-    detail::interlocked<sizeof(tmp)>::call_or(&tmp, std::forward<T>(t));
+    util::detail::interlocked<sizeof(tmp)>::call_or(&tmp, std::forward<T>(t));
 #endif
   }
 }
@@ -236,7 +236,7 @@ constexpr auto fetch_or(T&& t, U&& u) {
     return __atomic_fetch_or(std::addressof(std::forward<T>(t)), std::forward<T>(u), order);
 #else
     auto tmp = std::forward<T>(t);
-    detail::interlocked<sizeof(tmp)>::call_or(&tmp, std::forward<T>(u));
+    util::detail::interlocked<sizeof(tmp)>::call_or(&tmp, std::forward<T>(u));
     return tmp;
 #endif
   }

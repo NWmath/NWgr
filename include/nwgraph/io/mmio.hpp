@@ -1,13 +1,13 @@
-// 
-// This file is part of NW Graph (aka GraphPack) 
-// (c) Pacific Northwest National Laboratory 2018-2021 
-// (c) University of Washington 2018-2021 
-// 
-// Licensed under terms of include LICENSE file 
-// 
-// Authors: 
-//     Andrew Lumsdaine	
-//     Kevin Deweese	
+//
+// This file is part of NW Graph (aka GraphPack)
+// (c) Pacific Northwest National Laboratory 2018-2021
+// (c) University of Washington 2018-2021
+//
+// Licensed under terms of include LICENSE file
+//
+// Authors:
+//     Andrew Lumsdaine
+//     Kevin Deweese
 //
 
 #ifndef NW_GRAPH_MMIO_HPP
@@ -17,52 +17,19 @@
 #include <cstddef>
 #include <cstdio>
 #include <fcntl.h>
-#include <future>
 #include <iostream>
 #include <sstream>
 #if (defined(__GNUC__) || defined(__clang__)) && !defined(_WINDOWS)
 #include <sys/mman.h>
 #include <sys/stat.h>
 #include <sys/types.h>
-#include <thread>
 #include <unistd.h>
-#endif
-#if NW_GRAPH_NEED_HPX
-#include <hpx/async.hpp>
-#include <hpx/future.hpp>
-#include <hpx/thread.hpp>
-
-namespace nw {
-namespace graph {
-using hpx::async;
-template<typename T>
-using future = hpx::future<T>;
-using hpx::thread;
-namespace launch {
-constexpr inline hpx::launch::async_policy async{};
-}    // namespace launch
-}    // namespace graph
-}    // namespace nw
-#else
-#include <future>
-#include <thread>
-
-namespace nw {
-namespace graph {
-using std::async;
-template<typename T>
-using future = std::future<T>;
-using std::thread;
-namespace launch {
-using std::launch::async;
-}    // namespace launch
-}    // namespace graph
-}    // namespace nw
 #endif
 
 #include "MatrixMarketFile.hpp"
 #include "nwgraph/adjacency.hpp"
 #include "nwgraph/edge_list.hpp"
+#include "nwgraph/util/future.hpp"
 
 namespace nw {
 namespace graph {

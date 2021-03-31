@@ -15,7 +15,7 @@
 // Author: Kevin Deweese, Andrew Lumsdaine
 //
 static constexpr const char USAGE[] =
- R"(tc.exe: BGL17 triangle counting benchmark driver.
+    R"(tc.exe: BGL17 triangle counting benchmark driver.
   Usage:
       tc.exe (-h | --help)
       tc.exe -f FILE... [--version ID...] [-n NUM] [--lower | --upper] [--relabel] [--heuristic] [--log FILE] [--log-header] [--format FORMAT] [-dvV] [THREADS...]
@@ -37,8 +37,13 @@ static constexpr const char USAGE[] =
       -V, --verbose         run in verbose mode
 )";
 
+#ifdef NW_GRAPH_NEED_HPX
+#include <hpx/hpx_main.hpp>
+#endif
 #include "nwgraph/adjacency.hpp"
 #include "nwgraph/edge_list.hpp"
+#include "nwgraph/util/algorithm.hpp"
+#include "nwgraph/util/execution.hpp"
 #include "nwgraph/volos.hpp"
 #include "nwgraph/vovos.hpp"
 
@@ -57,13 +62,13 @@ using namespace nw::graph::bench;
 using namespace nw::graph;
 using namespace nw::util;
 
-template <class Vector>
+template<class Vector>
 static void tc_relabel(edge_list<nw::graph::directedness::undirected>& A, Vector&& degrees, const std::string& direction) {
   life_timer _(__func__);
   relabel_by_degree<0>(A, direction, degrees);
 }
 
-template <std::size_t id = 0>
+template<std::size_t id = 0>
 static void clean(edge_list<nw::graph::directedness::undirected>& A, const std::string& succession) {
   life_timer _(__func__);
   swap_to_triangular<id>(A, succession);
@@ -72,7 +77,7 @@ static void clean(edge_list<nw::graph::directedness::undirected>& A, const std::
   remove_self_loops(A);
 }
 
-template <typename Graph>
+template<typename Graph>
 auto compress(edge_list<nw::graph::directedness::undirected>& A) {
   life_timer _(__func__);
   Graph      B(num_vertices(A));
@@ -81,7 +86,7 @@ auto compress(edge_list<nw::graph::directedness::undirected>& A) {
 }
 
 // heuristic to see if sufficently dense power-law graph
-template <class EdgeList, class Vector>
+template<class EdgeList, class Vector>
 static bool worth_relabeling(const EdgeList& el, const Vector& degree) {
   using vertex_id_type = typename EdgeList::vertex_id_type;
 
@@ -99,14 +104,14 @@ static bool worth_relabeling(const EdgeList& el, const Vector& degree) {
     samples[trial] = degree[udist(rng)];
     sample_total += samples[trial];
   }
-  std::sort(std::execution::par_unseq, samples.begin(), samples.end());
+  nw::graph::sort(nw::graph::execution::par_unseq, samples.begin(), samples.end());
   double sample_average = static_cast<double>(sample_total) / num_samples;
   double sample_median  = samples[num_samples / 2];
   return sample_average / 1.3 > sample_median;
 }
 
 // Taken from GAP and adapted to NW Graph
-template <class Graph>
+template<class Graph>
 static std::size_t TCVerifier(Graph& graph) {
   using vertex_id_type = typename Graph::vertex_id_type;
 
@@ -136,7 +141,7 @@ auto config_log() {
 
   auto seed = std::random_device();
   auto gen  = std::mt19937(seed());
-  auto dis  = std::uniform_int_distribution<char>(97, 122);
+  auto dis  = std::uniform_int_distribution<short>(97, 122);
   uuid_.resize(uuid_size_);
   std::generate(uuid_.begin(), uuid_.end(), [&] { return dis(gen); });
 
@@ -173,7 +178,7 @@ auto config_log() {
   return config;
 }
 
-template <typename Args>
+template<typename Args>
 auto args_log(const Args& args) {
   json arg_log;
 
@@ -185,7 +190,7 @@ auto args_log(const Args& args) {
   return arg_log;
 }
 
-template <typename Graph>
+template<typename Graph>
 void run_bench(int argc, char* argv[]) {
   std::vector<std::string> strings(argv + 1, argv + argc);
   auto                     args = docopt::docopt(USAGE, strings, true);
@@ -194,7 +199,7 @@ void run_bench(int argc, char* argv[]) {
   bool verify  = args["--verify"].asBool();
   bool verbose = args["--verbose"].asBool();
   bool debug   = args["--debug"].asBool();
-  long trials  = args["-n"].asLong() ?: 1;
+  long trials  = args["-n"].asLong() ? args["-n"].asLong() : 1;
 
   // Read the more complex options
   std::string direction  = "ascending";
@@ -208,7 +213,7 @@ void run_bench(int argc, char* argv[]) {
   std::vector ids     = parse_ids(args["--version"].asStringList());
   std::vector threads = parse_n_threads(args["THREADS"].asStringList());
 
-  json file_log = {};
+  json   file_log = {};
   size_t file_ctr = 0;
   for (auto&& file : files) {
     std::cout << "processing " << file << "\n";
@@ -261,9 +266,9 @@ void run_bench(int argc, char* argv[]) {
       size_t id_ctr = 0;
       for (auto&& id : ids) {
 
-	json   run_log = {};
-	size_t run_ctr = 0;
-	
+        json   run_log = {};
+        size_t run_ctr = 0;
+
         for (int j = 0; j < trials; ++j) {
           if (verbose) {
             std::cout << "running version:" << id << " threads:" << thread << "\n";
@@ -288,13 +293,13 @@ void run_bench(int argc, char* argv[]) {
               case 7:
                 return triangle_count_v7(cel_a);
               case 8:
-                return triangle_count_v7(cel_a, std::execution::seq, std::execution::par_unseq);
+                return triangle_count_v7(cel_a, nw::graph::execution::seq, nw::graph::execution::par_unseq);
               case 9:
-                return triangle_count_v7(cel_a, std::execution::par_unseq, std::execution::par_unseq);
+                return triangle_count_v7(cel_a, nw::graph::execution::par_unseq, nw::graph::execution::par_unseq);
               case 10:
                 return triangle_count_v10(cel_a);
               case 11:
-                return triangle_count_v10(cel_a, std::execution::par_unseq, std::execution::par_unseq, std::execution::par_unseq);
+                return triangle_count_v10(cel_a, nw::graph::execution::par_unseq, nw::graph::execution::par_unseq, nw::graph::execution::par_unseq);
               case 12:
                 return triangle_count_v12(cel_a, thread);
               case 13:
@@ -302,15 +307,15 @@ void run_bench(int argc, char* argv[]) {
               case 14:
                 return triangle_count_v14(cel_a);
 #if 0
-	    case 15:
-	      return triangle_count_edgesplit(cel_a, thread);
-	    case 16:
-	      return triangle_count_edgesplit_upper(cel_a, thread);
+        case 15:
+          return triangle_count_edgesplit(cel_a, thread);
+        case 16:
+          return triangle_count_edgesplit_upper(cel_a, thread);
 #ifdef ONE_DIMENSIONAL_EDGE
-	    case 17:
-	      return triangle_count_edgerange(cel_a);
-	    case 18:
-	      return triangle_count_edgerange_cyclic(cel_a, thread);
+        case 17:
+          return triangle_count_edgerange(cel_a);
+        case 18:
+          return triangle_count_edgerange_cyclic(cel_a, thread);
 #endif
 #endif
               default:
@@ -320,15 +325,15 @@ void run_bench(int argc, char* argv[]) {
           });
 
           run_log[run_ctr++] = {{"id", id},
-                            {"num_threads", thread},
-                            {"trial", j},
-                            {"elapsed", time},
-                            {"elapsed+relabel", time + relabel_time},
-                            {"triangles", triangles}};
+                                {"num_threads", thread},
+                                {"trial", j},
+                                {"elapsed", time},
+                                {"elapsed+relabel", time + relabel_time},
+                                {"triangles", triangles}};
 
           if (verify && triangles != v_triangles) {
-            std::cerr << "Inconsistent results: v" << id << " failed verification for " << file << " using " << thread << " threads (reported "
-                      << triangles << ")\n";
+            std::cerr << "Inconsistent results: v" << id << " failed verification for " << file << " using " << thread
+                      << " threads (reported " << triangles << ")\n";
           }
         }    // for j in trials
 

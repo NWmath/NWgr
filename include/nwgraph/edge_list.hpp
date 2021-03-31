@@ -18,20 +18,11 @@
 #include "nwgraph/containers/soa.hpp"
 #include "nwgraph/graph_base.hpp"
 #include "nwgraph/graph_traits.hpp"
-
-#if defined(CL_SYCL_LANGUAGE_VERSION)
-#include <dpstd/algorithm>
-#include <dpstd/execution>
-#include <dpstd/numeric>
-#else
-#include <execution>
-#include <tbb/parallel_sort.h>
-#endif
-
 #include "nwgraph/util/defaults.hpp"
 #include "nwgraph/util/demangle.hpp"
+#include "nwgraph/util/execution.hpp"
 #include "nwgraph/util/print_types.hpp"
-#include "util/timer.hpp"
+#include "nwgraph/util/timer.hpp"
 
 #include <algorithm>
 #include <concepts>

@@ -1,13 +1,13 @@
-// 
-// This file is part of NW Graph (aka GraphPack) 
-// (c) Pacific Northwest National Laboratory 2018-2021 
-// (c) University of Washington 2018-2021 
-// 
-// Licensed under terms of include LICENSE file 
-// 
-// Authors: 
-//     Andrew Lumsdaine	
-//     Kevin Deweese	
+//
+// This file is part of NW Graph (aka GraphPack)
+// (c) Pacific Northwest National Laboratory 2018-2021
+// (c) University of Washington 2018-2021
+//
+// Licensed under terms of include LICENSE file
+//
+// Authors:
+//     Andrew Lumsdaine
+//     Kevin Deweese
 //
 
 #pragma once
@@ -112,7 +112,7 @@ class MatrixMarketFile final {
   MM_typecode type_;
 
 public:
-  MatrixMarketFile(std::filesystem::path path) : fd_(open(path.c_str(), O_RDONLY)) {
+  MatrixMarketFile(std::filesystem::path path) : fd_(open(path.string().c_str(), O_RDONLY)) {
     if (fd_ < 0) {
       fprintf(stderr, "open failed, %d: %s\n", errno, strerror(errno));
       std::terminate();

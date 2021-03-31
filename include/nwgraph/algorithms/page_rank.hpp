@@ -1,22 +1,21 @@
-// 
-// This file is part of NW Graph (aka GraphPack) 
-// (c) Pacific Northwest National Laboratory 2018-2021 
-// (c) University of Washington 2018-2021 
-// 
-// Licensed under terms of include LICENSE file 
-// 
-// Authors: 
-//     Andrew Lumsdaine	
-//     Kevin Deweese	
+//
+// This file is part of NW Graph (aka GraphPack)
+// (c) Pacific Northwest National Laboratory 2018-2021
+// (c) University of Washington 2018-2021
+//
+// Licensed under terms of include LICENSE file
+//
+// Authors:
+//     Andrew Lumsdaine
+//     Kevin Deweese
 //
 
 #ifndef NW_GRAPH_PAGE_RANK_HPP
 #define NW_GRAPH_PAGE_RANK_HPP
 
-#include "config.hpp"
-#include "util/types.hpp"
-#include "nwgraph/containers/compressed.hpp"
 #include "nwgraph/adaptors/edge_range.hpp"
+#include "nwgraph/config.hpp"
+#include "nwgraph/containers/compressed.hpp"
 #include "nwgraph/util/counting_iterator.hpp"
 #include "nwgraph/util/parallel_for.hpp"
 

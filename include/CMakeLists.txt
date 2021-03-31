@@ -100,8 +100,6 @@ target_sources(nw_graph
 # -----------------------------------------------------------------------------
 
 set(THREADS_PREFER_PTHREAD_FLAG ON)
-option(NW_GRAPH_NEED_TBB "Use TBB for parallelization" ON)
-option(NW_GRAPH_NEED_HPX "Use HPX for parallelization" OFF)
 if(NW_GRAPH_NEED_TBB AND NW_GRAPH_NEED_HPX)
   message(FATAL "Can only enable one, TBB or HPX as parallelization backend")
 endif()

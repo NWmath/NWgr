@@ -1,14 +1,14 @@
-// 
-// This file is part of NW Graph (aka GraphPack) 
-// (c) Pacific Northwest National Laboratory 2018-2021 
-// (c) University of Washington 2018-2021 
-// 
-// Licensed under terms of include LICENSE file 
-// 
-// Authors: 
-//     Andrew Lumsdaine	
-//     Kevin Deweese	
-//     Luke D'Alessandro	
+//
+// This file is part of NW Graph (aka GraphPack)
+// (c) Pacific Northwest National Laboratory 2018-2021
+// (c) University of Washington 2018-2021
+//
+// Licensed under terms of include LICENSE file
+//
+// Authors:
+//     Andrew Lumsdaine
+//     Kevin Deweese
+//     Luke D'Alessandro
 //
 
 #ifndef NW_GRAPH_SOA_HPP
@@ -51,8 +51,6 @@ struct struct_of_arrays : std::tuple<std::vector<Attributes>...> {
   base& tuple() { return static_cast<base&>(*this); }
   base const& tuple() const { return static_cast<base const&>(*this); }
 
-  struct_of_arrays() = default;
-  struct_of_arrays(size_t M) : base(std::vector<Attributes>(M)...) {}
   template <bool is_const = false>
   class soa_iterator {
     friend class soa_iterator<!is_const>;
@@ -86,8 +84,8 @@ struct struct_of_arrays : std::tuple<std::vector<Attributes>...> {
     bool operator==(const soa_iterator&) const  = default;
     auto operator<=>(const soa_iterator&) const = default;
 
-    soa_iterator operator++(int) { return soa_iterator(i_++, soa_); }
-    soa_iterator operator--(int) { return soa_iterator(i_--, soa_); }
+    soa_iterator operator++(int) { return soa_iterator(soa_, i_++); }
+    soa_iterator operator--(int) { return soa_iterator(soa_, i_--); }
 
     soa_iterator& operator++() {
       ++i_;
@@ -136,9 +134,6 @@ struct struct_of_arrays : std::tuple<std::vector<Attributes>...> {
   using size_type       = std::size_t;
   using difference_type = typename iterator::difference_type;
   using pointer         = typename iterator::pointer;
-  iterator begin() {
-    return std::apply([](auto&... vs) { return iterator(vs.begin()...); }, tuple());
-  }
 
   using const_iterator  = soa_iterator<true>;
   using const_reference = typename const_iterator::reference;

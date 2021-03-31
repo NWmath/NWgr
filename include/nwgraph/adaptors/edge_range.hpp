@@ -1,15 +1,15 @@
-// 
-// This file is part of NW Graph (aka GraphPack) 
-// (c) Pacific Northwest National Laboratory 2018-2021 
-// (c) University of Washington 2018-2021 
-// 
-// Licensed under terms of include LICENSE file 
-// 
-// Authors: 
-//     Andrew Lumsdaine	
-//     Kevin Deweese	
-//     Luke D'Alessandro	
-//     Luke Dalessandro	
+//
+// This file is part of NW Graph (aka GraphPack)
+// (c) Pacific Northwest National Laboratory 2018-2021
+// (c) University of Washington 2018-2021
+//
+// Licensed under terms of include LICENSE file
+//
+// Authors:
+//     Andrew Lumsdaine
+//     Kevin Deweese
+//     Luke D'Alessandro
+//     Luke Dalessandro
 //
 
 #ifndef NW_GRAPH_EDGE_RANGE_HPP
@@ -19,7 +19,9 @@
 #include "nwgraph/util/arrow_proxy.hpp"
 #include "nwgraph/util/print_types.hpp"
 #include "nwgraph/util/util.hpp"
+#if NW_GRAPH_NEED_TBB
 #include <tbb/tbb_stddef.h>
+#endif
 #include <tuple>
 
 #include <ranges>
@@ -49,11 +51,13 @@ public:
   edge_range(Graph& g, std::index_sequence<Is...> is = {}) : edge_range(g, 0, is) {}
 
   // Split a range.
+#if NW_GRAPH_NEED_TBB
   edge_range(edge_range& b, tbb::split) : edge_range(b) {
     auto i = (outer_end_ - outer_begin_) / 2;
     outer_begin_ += i;
     b.outer_end_ = b.outer_begin_ + i;
   }
+#endif
 
   // Copy constructors and assignment operators are fine.
   edge_range(const edge_range&) = default;
