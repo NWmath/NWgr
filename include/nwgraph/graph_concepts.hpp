@@ -21,20 +21,12 @@
 #include "nwgraph/graph_traits.hpp"
 
 
-// template <std::ranges::random_access_range G>
-// std::array<typename G::size_type, 1> num_vertices(const G& g) {
-//  return {size(g)};
-// }
-
-// }    // namespace graph
-// }    // namespace nw
-
-namespace nw {
-namespace graph {
+namespace nw::graph {
 
 
 template <typename G>
 using inner_range = std::ranges::range_value_t<G>;
+
 
 template <typename G>
 using inner_value = std::ranges::range_value_t<inner_range<G>>;
@@ -107,7 +99,6 @@ concept degree_enumerable_graph = adjacency_graph<G> &&
 };
 
   
-}    // namespace graph
-}    // namespace nw
+}    // namespace nw::graph
 
 #endif    //  NW_GRAPH_GRAPH_CONCEPTS_HPP
