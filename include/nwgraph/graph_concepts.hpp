@@ -47,12 +47,6 @@ concept struct_of_arrays_c = std::semiregular<G> && requires(G g) {
 
 
 template <typename G>
-concept partite = requires (G g) {
-  typename G::graph_base;
-};
-
-
-template <typename G>
 concept graph = std::semiregular<G>&& requires(G g) {
   typename vertex_id_t<G>;
   { num_vertices(g) } -> std::convertible_to<size_t>;
