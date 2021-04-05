@@ -3,13 +3,13 @@
 name: Build with gcc-10
 
 on:
-  push: 
-    branches: [ master, pre_release ]
-  workflow_dispatch: 
-    branches: [ master, pre_release ]
+  push:
+    branches: [ master, pre_release, update_ci ]
+  workflow_dispatch:
+    branches: [ master, pre_release, update_ci ]
 
 env:
-  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
   build:
