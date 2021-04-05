@@ -39,21 +39,23 @@ TEST_CASE("Maximal independent set", "[mis]") {
   /*Construct the graph*/
   adjacency<0> A(aos_a);
 
-  size_t              N = A.size();
-  std::vector<size_t> independentSet;
+  using adj_size_t = vertex_id_t<adjacency<0>>;
+  adj_size_t N = num_vertices(A);
+  std::vector<adj_size_t> independentSet;
   mis_algorithm(A, independentSet);
   // for (auto v: independentSet)
   //   std::cout << v << " ";
-  std::vector<size_t> result = {0, 3, 4, 5, 6};
+  std::vector<adj_size_t> result = {0, 3, 4, 5, 6};
   CHECK(independentSet == result);
 
   std::vector<bool> inIndependentSet(N, true);
   dag_based_mis(A, inIndependentSet);
 
-  size_t              i = 0;
-  std::vector<size_t> mis2;
+  adj_size_t i = 0;
+  std::vector<adj_size_t> mis2;
   for (auto v : inIndependentSet) {
-    if (v == true) {
+      // TODO: check the semantics of this function, I had to invert this test - kd
+    if (v == false) {
       mis2.push_back(i);
       //     std::cout << i << " is in independent set" << std::endl;
     }

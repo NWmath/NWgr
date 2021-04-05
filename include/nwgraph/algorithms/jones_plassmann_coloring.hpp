@@ -66,7 +66,7 @@ void jones_plassmann_coloring(Graph A, std::vector<vertex_id_t<Graph>>& colors) 
     }
   }
 
-  std::vector<std::vector<uint64_t>> pred_colors(N);
+  std::vector<std::vector<vertex_type>> pred_colors(N);
 
   /*TODO: we probably need a vertex range. */
   for (vertex_type vtx = 0; vtx < N; vtx++) {

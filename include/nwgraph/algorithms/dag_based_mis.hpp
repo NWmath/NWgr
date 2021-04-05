@@ -28,7 +28,7 @@ namespace graph {
 template <typename Graph>
 void dag_based_mis(Graph A, std::vector<bool>& mis) {
   using vertex_id_type = vertex_id_t<Graph>;
-  vertex_id_type N = A.size();
+  vertex_id_type N = num_vertices(A);
 #ifdef PRINT_DEBUG
   std::cout << "size: " << N << std::endl;
 #endif
@@ -68,7 +68,7 @@ void dag_based_mis(Graph A, std::vector<bool>& mis) {
     }
   }
 
-  for (uint64_t vtx = 0; vtx < N; vtx++) {
+  for (vertex_id_type vtx = 0; vtx < N; vtx++) {
     /*Set the color of the roots to be zero.*/
     if (predecessor_list[vtx].size() == 0) {
       mis[vtx] = true;
