@@ -17,6 +17,7 @@
 #include <vector>
 
 #include "nwgraph/graph_traits.hpp"
+#include "nwgraph/access.hpp"
 
 namespace nw {
 namespace graph {
@@ -29,14 +30,15 @@ class dag_range {
 public:
   using vertex_id_type = vertex_id_t<Graph>;
 
-  typedef std::vector<std::vector<size_t>> VOV;
+  typedef std::vector<std::vector<vertex_id_type>> VOV;
 
   dag_range(Graph& graph, VOV pred_list, VOV successor_list)
       : the_graph_(graph), _predecessor_list(pred_list), _successor_list(successor_list) {
     /*Set all pred done counter to zero*/
-    _pred_done_counter.resize(the_graph_.size(), 0);
+    vertex_id_type N = num_vertices(the_graph_);
+    _pred_done_counter.resize(N, 0);
     /*Insert all the roots in the queue*/
-    for (size_t i = 0; i < the_graph_.size(); i++) {
+    for (vertex_id_type i = 0; i < N; i++) {
       if (pred_list[i].size() == 0) {
         Q_.push(i);
       }
@@ -51,7 +53,7 @@ public:
   private:
     dag_range<Graph, Queue>&      the_range_;
     vertex_id_type                v_;
-    std::vector<size_t>::iterator successor_iterator;
+    typename std::vector<vertex_id_type>::iterator successor_iterator;
 
   public:
     dag_range_iterator(dag_range<Graph>& range)
@@ -113,7 +115,7 @@ private:
   Queue                 Q_;
   VOV                   _predecessor_list;
   VOV                   _successor_list;
-  std::vector<uint64_t> _pred_done_counter;
+  std::vector<vertex_id_type> _pred_done_counter;
   ready_to_process      _ready_to_process;
 };
 

@@ -27,17 +27,18 @@ namespace graph {
 
 template <typename Graph>
 void dag_based_mis(Graph A, std::vector<bool>& mis) {
-  size_t N = A.size();
+  using vertex_id_type = vertex_id_t<Graph>;
+  vertex_id_type N = A.size();
 #ifdef PRINT_DEBUG
   std::cout << "size: " << N << std::endl;
 #endif
 
-  std::vector<size_t> degrees(N, 0);
-  // std::vector<size_t> colors(N, std::numeric_limits<std::uint32_t>::max());
+  std::vector<vertex_id_type> degrees(N, 0);
+  // std::vector<vertex_id_type> colors(N, std::numeric_limits<std::uint32_t>::max());
 
-  std::vector<std::vector<size_t>> predecessor_list(N);
-  std::vector<std::vector<size_t>> successor_list(N);
-  std::vector<size_t>              degree_list(N, 0);
+  std::vector<std::vector<vertex_id_type>> predecessor_list(N);
+  std::vector<std::vector<vertex_id_type>> successor_list(N);
+  std::vector<vertex_id_type>              degree_list(N, 0);
   /*Need a "Degree range"*/
   for (auto&& [v, deg] : plain_degree_range(A)) {
 #ifdef PRINT_DEBUG

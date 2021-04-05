@@ -14,27 +14,29 @@
 #ifndef JONES_PLASSMANN_COLORING_HPP
 #define JONES_PLASSMANN_COLORING_HPP
 
-#include "nwgraph/adaptors/dag_range.hpp"
+#include "nwgraph/access.hpp"
 #include "nwgraph/adaptors/edge_range.hpp"
 #include "nwgraph/adaptors/plain_range.hpp"
+#include "nwgraph/adaptors/dag_range.hpp"
 
 
 namespace nw {
 namespace graph {
 
 template <typename Graph>
-void jones_plassmann_coloring(Graph A, std::vector<size_t>& colors) {
-  size_t N = A.size();
+void jones_plassmann_coloring(Graph A, std::vector<vertex_id_t<Graph>>& colors) {
+  using vertex_type = vertex_id_t<Graph>;
+  vertex_type N = num_vertices(A);
 #ifdef PRINT_DEBUG
   std::cout << "size: " << N << std::endl;
 #endif
 
-  std::vector<size_t> degrees(N, 0);
+  std::vector<vertex_type> degrees(N, 0);
   // std::vector<size_t> colors(N, std::numeric_limits<std::uint32_t>::max());
 
-  std::vector<std::vector<size_t>> predecessor_list(N);
-  std::vector<std::vector<size_t>> successor_list(N);
-  std::vector<size_t>              degree_list(N, 0);
+  std::vector<std::vector<vertex_type>> predecessor_list(N);
+  std::vector<std::vector<vertex_type>> successor_list(N);
+  std::vector<vertex_type>              degree_list(N, 0);
   /*Need a "Degree range"*/
   for (auto&& [v, deg] : plain_degree_range(A)) {
 #ifdef PRINT_DEBUG
@@ -67,11 +69,11 @@ void jones_plassmann_coloring(Graph A, std::vector<size_t>& colors) {
   std::vector<std::vector<uint64_t>> pred_colors(N);
 
   /*TODO: we probably need a vertex range. */
-  for (uint64_t vtx = 0; vtx < N; vtx++) {
+  for (vertex_type vtx = 0; vtx < N; vtx++) {
     pred_colors[vtx].resize(predecessor_list[vtx].size(), 0);
   }
 
-  for (uint64_t vtx = 0; vtx < N; vtx++) {
+  for (vertex_type vtx = 0; vtx < N; vtx++) {
     /*Set the color of the roots to be zero.*/
     if (predecessor_list[vtx].size() == 0) {
       colors[vtx] = 0;
@@ -91,11 +93,11 @@ void jones_plassmann_coloring(Graph A, std::vector<size_t>& colors) {
 #endif
     if (ready_to_process == yes) {
       std::sort(pred_colors[u].begin(), pred_colors[u].end());
-      uint64_t pred_count = predecessor_list[u].size();
+      vertex_type pred_count = predecessor_list[u].size();
 
       /*Find the minimum available color*/
-      uint64_t min_color = pred_count;
-      for (std::vector<uint64_t>::iterator it = pred_colors[u].begin(); it < pred_colors[u].end(); it++) {
+      vertex_type min_color = pred_count;
+      for (auto it = pred_colors[u].begin(); it < pred_colors[u].end(); it++) {
         if (*it == 0) {
           min_color = *it;
           break;
@@ -111,7 +113,7 @@ void jones_plassmann_coloring(Graph A, std::vector<size_t>& colors) {
       for (const auto& succ : successor_list[u]) {
         /*Check whether the new color by the predecessor is
       less than of its total pred count*/
-        uint64_t preds = predecessor_list[succ].size();
+        vertex_type preds = predecessor_list[succ].size();
 #ifdef PRINT_DEBUG
         std::cout << "succ: " << succ << " predlist size: " << preds << std::endl;
 #endif

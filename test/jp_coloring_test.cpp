@@ -38,11 +38,12 @@ TEST_CASE("Jones-Plassmann Coloring", "[jp]") {
 
   /* Construct the graph */
   adjacency<0> A(aos_a);
+  using adj_size_t = vertex_id_t<adjacency<0>>;
 
-  size_t              N = A.size();
-  std::vector<size_t> colors(N, std::numeric_limits<std::uint32_t>::max());
+  adj_size_t N = num_vertices(A);
+  std::vector<adj_size_t> colors(N, std::numeric_limits<adj_size_t>::max());
 
-  std::vector<size_t> result = {0, 1, 1, 0, 0, 0, 0, 1};
+  std::vector<adj_size_t> result = {0, 1, 1, 0, 0, 0, 0, 1};
   jones_plassmann_coloring(A, colors);
   REQUIRE(colors == result);
 }
