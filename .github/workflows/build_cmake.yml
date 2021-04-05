@@ -1,6 +1,6 @@
 # Workflow to configure with cmake and build with gcc-10
 
-name: Build with gcc-10
+name: Build and test with gcc-10
 
 on:
   push:
