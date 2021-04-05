@@ -33,7 +33,7 @@ jobs:
 
     - name: prep
       run: |
-        sudo apt-get install -y libtbb2 libtbb-dev
+        sudo apt-get install -y libtbb2 libtbb-dev nlohmann-json3-dev
 
     - name: cmake
       run: |
