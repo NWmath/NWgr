@@ -40,7 +40,7 @@ jobs:
         cd NWgr
         mkdir build
         cd build
-        cmake .. -DCMAKE_BUILD_TYPE=RelWithDbgInfo -DCMAKE_CXX_COMPILER=g++-10 -DCMAKE_C_COMPILER=gcc-10
+        cmake .. -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_CXX_COMPILER=g++-10 -DCMAKE_C_COMPILER=gcc-10
 
     - name: make
       run: |
