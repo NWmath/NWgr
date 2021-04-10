@@ -245,7 +245,7 @@ auto fill_undirected(edge_list_t& el, Int N, adjacency_t& cs, ExecutionPolicy&& 
     cs.indices_.resize(N + 1);
     cs.indices_[0] = 0;
     std::for_each(/* policy, */  Tmp.begin(), Tmp.end(), [&](auto&& i) { ++degrees[i]; });
-    std::inclusive_scan(degrees.begin(), degrees.end(), cs.indices_.begin() + 1);
+    std::inclusive_scan(policy, degrees.begin(), degrees.end(), cs.indices_.begin() + 1);
   }
 
   cs.to_be_indexed_.resize(Tmp.size());
