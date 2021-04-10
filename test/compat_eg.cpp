@@ -15,7 +15,7 @@
 #include <vector>
 
 #include "nwgraph/compat.hpp"
-
+#include "nwgraph/containers/zip.hpp"
 #include "nwgraph/algorithms/bfs.hpp"
 
 #include "nwgraph/graph_concepts.hpp"
@@ -37,19 +37,37 @@ using vov = std::vector<std::vector<std::tuple<int>>>;
 
 
 
-static_assert(adjacency_graph<vov>);
+static_assert(vertex_list_c<fot>);
+static_assert(vertex_list_c<lot>);
+static_assert(vertex_list_c<vot>);
+
+
+static_assert(edge_list_c<fot>);
+static_assert(edge_list_c<lot>);
+static_assert(edge_list_c<vot>);
+
+
+// Need a single iterator returning tuple
+// static_assert(edge_list_c<tof>);
+// static_assert(edge_list_c<tol>);
+// static_assert(edge_list_c<tov>);
+
+
+// Zip only defined for random access at the moment
+// static_assert(edge_list_c<zipped<std::forward_list<int>,std::forward_list<int>>>);
+// static_assert(edge_list_c<zipped<std::list<int>,std::list<int>>>);
+static_assert(edge_list_c<zipped<std::vector<int>,std::vector<int>>>);
+
+
+// static_assert(edge_list_graph<fot>); // Has neither num_edges nor num_vertices
+// static_assert(edge_list_graph<lot>); // Has num_edges, does not have num_vertices
+// static_assert(edge_list_graph<vot>); // Has num_edges, does not have num_vertices
+
+
 static_assert(adjacency_graph<vof>);
 static_assert(adjacency_graph<vol>);
+static_assert(adjacency_graph<vov>);
 
-
-static_assert(vertex_list_c<vot>);
-static_assert(edge_list_c<vot>);
-static_assert(edge_list_graph<vot>);
-
-
-static_assert(vertex_list_c<lot>);
-static_assert(edge_list_c<lot>);
-static_assert(edge_list_graph<lot>);
 
 
 

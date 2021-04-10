@@ -77,7 +77,7 @@ concept edge_list_graph = edge_enumerable_graph<G> && edge_list_c<G> &&
 template <typename G>
 concept adjacency_graph = graph<G> && std::ranges::random_access_range<G> && vertex_list_c<inner_range<G>> &&
   requires(G g, inner_value<G> e, vertex_id_t<G> u) {
-  { g[u] } -> std::same_as<inner_range<G>>;
+  { g[u] } -> std::convertible_to<inner_range<G>>;
   { std::get<0>(e) } -> std::convertible_to<vertex_id_t<G>>;  
 };
 
@@ -85,7 +85,7 @@ concept adjacency_graph = graph<G> && std::ranges::random_access_range<G> && ver
 template <typename G>
 concept key_adjacency_graph = graph<G> && std::ranges::random_access_range<G> && vertex_list_c<inner_range<G>> &&
   requires(G g, inner_value<G> e, vertex_id_t<G> u) {
-  { g[u] } -> std::same_as<std::tuple<vertex_id_t<G>, inner_range<G>>>;
+  { g[u] } -> std::convertible_to<std::tuple<vertex_id_t<G>, inner_range<G>>>;
   { std::get<0>(e) } -> std::convertible_to<vertex_id_t<G>>;
 };
 
