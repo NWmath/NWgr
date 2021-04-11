@@ -35,5 +35,15 @@ int main(int argc, char* argv[]) {
     std::cout << std::endl;
   }
   
+  
+  auto neighborhoods = neighbor_range(A);
+  std::for_each(std::execution::seq, neighborhoods.begin(), neighborhoods.end(), [&](auto&& x) {
+    auto&& [u, neighbors] = x;
+    std::cout << u << ": ";
+    for (auto && [v] : neighbors)
+        std::cout << v << " ";
+    std::cout << std::endl;     
+  });
+    
   return 0;
 }
