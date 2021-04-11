@@ -9,6 +9,7 @@
 //     Andrew Lumsdaine	
 //     Kevin Deweese	
 //     Luke D'Alessandro	
+//     Xu Tony Liu
 //
 
 #ifndef NW_GRAPH_SOA_HPP
@@ -159,6 +160,22 @@ struct struct_of_arrays : std::tuple<std::vector<Attributes>...> {
 
   const_reference operator[](std::size_t i) const {
     return std::apply([&](auto&&... r) { return std::forward_as_tuple(std::forward<decltype(r)>(r)[i]...); }, *this);
+  }
+
+  void move(std::vector<Attributes>&... attrs) {
+    std::apply([&](auto&... vs) { (vs.swap(attrs), ...); }, *this);
+  }
+
+  void move(std::tuple<std::vector<Attributes>...>& attrs) {
+    std::apply([&](Attributes... attr) { move(attr...); }, attrs);
+  }
+
+  void copy(std::vector<Attributes>... attrs) {
+    std::apply([&](auto&... vs) { (std::copy(attrs.begin(), attrs.end(), vs.begin()), ...); }, *this);
+  }
+
+  void copy(std::tuple<std::vector<Attributes>...> attrs) {
+    std::apply([&](Attributes... attr) { copy(attr...); }, attrs);
   }
 
   void push_back(Attributes... attrs) {
