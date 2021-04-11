@@ -8,6 +8,7 @@
 // Authors: 
 //     Andrew Lumsdaine	
 //     Kevin Deweese	
+//     Xu Tony Liu
 //
 
 #ifndef NW_GRAPH_NEIGHBOR_RANGE_HPP
@@ -28,32 +29,33 @@ class neighbor_range {
 public:
   neighbor_range(Graph& g) : the_graph_(g) {}
 
-  class edge_range_iterator {
+  class my_iterator {
   private:
     neighbor_range<Graph>&         the_range_;
     typename Graph::outer_iterator first, last;
     typename Graph::outer_iterator G;
-    typename Graph::inner_iterator u_begin, u_end;
 
   public:
-    edge_range_iterator(neighbor_range<Graph>& range)
-        : the_range_(range), first(the_range_.the_graph_.begin()), last(the_range_.the_graph_.end()), G(first), u_begin((*first).begin()),
-          u_end((*first).end()) {}
+    my_iterator(neighbor_range<Graph>& range) :
+      the_range_(range), 
+      first(the_range_.the_graph_.begin()), 
+      last(the_range_.the_graph_.end()), 
+      G(first)
+      {}
 
-    edge_range_iterator& operator++() {
-      ++u_begin;
-      while (u_begin == u_end) {
-        if (++first == last) break;
-        u_begin = (*first).begin();
-        u_end   = (*first).end();
-      }
-
+    my_iterator& operator++() {
+      ++first;
       return *this;
     }
 
-    auto operator*() { return std::tuple<vertex_id_t<Graph>, vertex_id_t<Graph>&&>(first - G, std::get<0>(*u_begin)); }
+    my_iterator operator++(int) const {
+      my_iterator tmp(*this);
+      ++first;
+      return tmp;
+    }
 
-    // return std::tuple<typename Graph::sub_view, typename Graph::sub_view>(*first, G[std::get<0>(*u_begin)]);
+    auto operator*() { auto u = first - G; return std::tuple(u, G[u]); }
+    auto operator*() const { auto u = first - G; return std::tuple(u, G[u]); }
 
     class end_sentinel_type {
     public:
@@ -64,10 +66,10 @@ public:
     bool operator!=(const end_sentinel_type&) const { return (first != last); }
   };
 
-  typedef edge_range_iterator iterator;
+  typedef my_iterator iterator;
 
-  auto begin() { return edge_range_iterator(*this); }
-  auto end() { return typename edge_range_iterator::end_sentinel_type(); }
+  auto begin() { return my_iterator(*this); }
+  auto end() { return typename my_iterator::end_sentinel_type(); }
 
 private:
   Graph& the_graph_;
