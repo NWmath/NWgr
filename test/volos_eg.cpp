@@ -13,7 +13,6 @@ int main() {
   using T = nw::graph::adj_list<0>;
   static_assert(nw::graph::graph<T>);
   static_assert(nw::graph::adjacency_graph<T>);
-  
 
   return 0;
 }

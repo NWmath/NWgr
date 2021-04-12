@@ -46,7 +46,7 @@ struct graph_traits<std::list<std::tuple<Attributes...>>> {
 
 
 template <typename... Attributes>
-auto tag_invoke(const num_vertices_tag, const std::list<std::tuple<Attributes...>>& b) {
+auto tag_invoke(const num_edges_tag, const std::list<std::tuple<Attributes...>>& b) {
   return b.size();
 }
 
@@ -62,6 +62,10 @@ struct graph_traits<std::vector<std::tuple<Attributes...>>> {
 };
 
 
+template <typename... Attributes>
+auto tag_invoke(const num_edges_tag, const std::vector<std::tuple<Attributes...>>& b) {
+  return b.size();
+}
 
 
 

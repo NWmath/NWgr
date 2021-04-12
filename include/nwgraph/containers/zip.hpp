@@ -46,6 +46,7 @@
 namespace nw {
 namespace graph {
 
+
 // Bare bones zipper of ranges 
 
 template <std::ranges::random_access_range... Ranges>
@@ -79,10 +80,14 @@ struct zipped : std::tuple<Ranges&...> {
 
     soa_iterator(soa_t* soa, std::size_t i = 0) : i_(i), soa_(soa) {}
 
+    soa_iterator(soa_iterator&&) = default;
     soa_iterator(const soa_iterator&) = default;
+
     soa_iterator(const soa_iterator<false>& b) requires(is_const) : i_(b.i_), soa_(b.soa_) {}
 
     soa_iterator& operator=(const soa_iterator&) = default;
+    soa_iterator& operator=(soa_iterator&&) = default;
+
     soa_iterator& operator                       =(const soa_iterator<false>& b) requires(is_const) {
       i_   = b.i_;
       soa_ = b.soa_;
@@ -149,9 +154,9 @@ struct zipped : std::tuple<Ranges&...> {
   using reverse_iterator       = std::reverse_iterator<iterator>;
   using const_reverse_iterator = std::reverse_iterator<const_iterator>;
 
-  zipped() = default;
-  // zipped(size_t M) : base(std::vector<Attributes>(M)...) {}
+  //  zipped() = default;
 
+  // zipped(size_t M) : base(std::vector<Attributes>(M)...) {}
   // zipped(std::initializer_list<value_type> l) {
   // for_each(l.begin(), l.end(), [&](value_type x) { push_back(x); });
   // }
@@ -270,10 +275,24 @@ zipped<Ranges...> make_zipped(Ranges&... rs) {
 }
 
 
+
+
+
 }    // namespace graph
 }    // namespace nw
 
 namespace std {
+
+
+#if 0
+template <std::ranges::random_access_range... Ranges>
+auto iter_swap(typename nw::graph::zipped<Ranges...>::soa_iterator<false> a, typename nw::graph::zipped<Ranges...>::soa_iterator<false> b) {
+  auto tmp = *a;
+  *a = *b;
+  *b = *tmp;
+}
+#endif
+
 
 template <class... Attributes>
 class tuple_size<nw::graph::zipped<Attributes...>> : public std::integral_constant<std::size_t, sizeof...(Attributes)> {};

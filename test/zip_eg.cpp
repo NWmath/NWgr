@@ -12,6 +12,21 @@
 
 // using namespace nw::graph;
 
+
+namespace nw {
+  namespace graph {
+
+template <std::ranges::forward_range... Ranges>
+auto iter_swap(typename nw::graph::zipped<Ranges...>::soa_iterator<false> a, typename nw::graph::zipped<Ranges...>::soa_iterator<false> b) {
+  auto tmp = *a;
+  *a = *b;
+  *b = tmp;
+}
+
+  }
+}
+
+
 template <std::ranges::random_access_range... Ranges>
 struct zipper : public std::tuple<Ranges&...> {
 
@@ -24,6 +39,8 @@ struct zipper : public std::tuple<Ranges&...> {
   zipper(Ranges&... rs) : base(std::forward_as_tuple(rs...)) { }
 
 };
+
+
 
 
 
@@ -64,6 +81,14 @@ int main() {
     //    print_types(a, b);
     return std::get<0>(a) < std::get<0>(b); } );
 
+  auto j = nw::graph::make_zipped(a, i);
+
+  // print_types(j[0]);
+  j[0] = j[1];
+
+
+  std::sort(j.begin(), j.end(), [](auto&&a, auto&&b) { 
+    return std::get<0>(a) < std::get<0>(b); } );
 
 
 #if 0

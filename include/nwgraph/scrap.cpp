@@ -1,3 +1,28 @@
+#if 0
+
+  // Better solution:
+  //   Create tmp array
+  //   Copy sorting index array to tmp array
+  //   Copy other arrays to cs.to_be_indexed_
+  //   Sort everything in to_be_indexed with tmp
+  //     Need a custom swap -- pass in ?  ADL ? 
+  //   Or zip
+
+  using vertex_id_type = typename decltype(std::get<idx>(el))::value_type;  /* vertex_id_t<edge_list_t> */
+  auto perm = nw::util::proxysort(std::get<idx>(el), std::less<vertex_id_type>());
+
+  // Copy other (permuted) indices
+  const int kdx = (idx + 1) % 2;
+  permute(std::get<kdx>(dynamic_cast<typename edge_list_t::base&>(el)), std::get<0>(cs.to_be_indexed_), perm);
+  
+  // Copy (permuted) properties
+  if constexpr (std::tuple_size<typename edge_list_t::attributes_t>::value > 0) {
+    permute_helper(el, cs, std::make_integer_sequence<size_t, std::tuple_size<typename edge_list_t::attributes_t>::value>(), perm);
+  }
+
+#endif
+
+
 // #include "nwgraph/graph_base.hpp"
 
 #if 0
