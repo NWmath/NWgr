@@ -2,6 +2,7 @@
 #include "nwgraph/csr.hpp"
 #include "nwgraph/edge_list.hpp"
 #include "nwgraph/adaptors/edge_range.hpp"
+#include "nwgraph/adaptors/neighbor_range.hpp"
 #include "nwgraph/util/intersection_size.hpp"
 
 #include <algorithm>
@@ -19,11 +20,9 @@ template <class Graph> std::vector<float> jaccard_similarity(Graph& G) {
     }
 
     std::vector<float> ret(N * N, 0.0);
-    for (auto u_neighbors = G.begin(); u_neighbors != G.end(); ++u_neighbors) {
-        vertex_id_type u = u_neighbors - G.begin();
-        for (auto v_neighbors = G.begin(); v_neighbors != G.end(); ++v_neighbors) {
-            vertex_id_type v = v_neighbors - G.begin();
-            size_t intersect_size = intersection_size(*u_neighbors, *v_neighbors);
+    for (auto&& [u, u_neighbors] : neighbor_range(G)) {
+        for (auto&& [v, v_neighbors] : neighbor_range(G)) {
+            size_t intersect_size = intersection_size(u_neighbors, v_neighbors);
             std::cout << "( " << u << ", " << v << "): intersect = " << intersect_size
                       << " deg(u) = " << degrees[u] << " deg(v) = " << degrees[v] << std::endl;
             float jaccard = ((float)intersect_size) / (degrees[u] + degrees[v] - intersect_size);
