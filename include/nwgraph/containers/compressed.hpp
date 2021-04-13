@@ -251,6 +251,7 @@ public:    // fixme
     if (i >= indices_.size()) {
       for (index_t j = indices_.size(); j <= i; ++j) {
         indices_.emplace_back(0);
+        ++N_;
       }
     }
     ++indices_[i];
