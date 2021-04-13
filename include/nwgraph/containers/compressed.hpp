@@ -62,6 +62,7 @@ class indexed_struct_of_arrays {
 
   bool    is_open_ = false;
   index_t N_;
+  index_t max_pushed_source_ = 0;
 
 public:    // fixme
   std::vector<index_t>            indices_;
@@ -215,6 +216,7 @@ public:    // fixme
   }
 
   void open_for_push_back() {
+    if (is_open_ == true) return;
     assert(to_be_indexed_.size() == 0);
     //If we decide to allow reopen for pushback, this will undo exclusive_scan
     /*if(to_be_indexed_.size() != 0) {
@@ -233,10 +235,10 @@ public:    // fixme
     assert(indices_.back() == to_be_indexed_.size());
     is_open_ = false;
   }
-  
+
   void move(std::vector<index_t>&& indices, struct_of_arrays<Attributes...>&& to_be_indexed) {
-    indices_.swap(indices); //equivalent to 
-    //indices_ = std::move(indices); 
+    indices_.swap(indices); //equivalent to
+    //indices_ = std::move(indices);
     to_be_indexed_.move(to_be_indexed);
     assert(indices_.back() == to_be_indexed_.size());
   }
@@ -248,6 +250,9 @@ public:    // fixme
   }
 
   void push_back(index_t i, const Attributes&... attrs) {
+    // TODO: Tell people to (or fall over to) push_at for this case?
+    assert(i >= max_pushed_source_);
+    max_pushed_source_ = max(i, max_pushed_source_);
     ++indices_[i];
     to_be_indexed_.push_back(attrs...);
   }
