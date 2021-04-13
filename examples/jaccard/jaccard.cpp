@@ -34,13 +34,13 @@ template <class Graph> std::vector<float> jaccard_similarity(Graph& G) {
 }
 
 template<class Graph> Graph transpose(Graph& G) {
-    Graph ret(num_vertices(G)); // It was very nonobvious I needed to do this
+    edge_list<nw::graph::directedness::directed> ret;
     ret.open_for_push_back();
     for (auto&& [u, v] : make_edge_range(G)) {
         ret.push_back(v, u);
     }
     ret.close_for_push_back();
-    return ret;
+    return Graph(ret);
 }
 
 template<class Adj> std::vector<float> jaccard_sparse(Adj& G) {
