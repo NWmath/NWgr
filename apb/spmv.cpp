@@ -3,6 +3,7 @@
 #include <iostream>
 #include <vector>
 
+#include "nwgraph/adaptors/neighbor_range.hpp"
 #include "nwgraph/adaptors/edge_range.hpp"
 #include "nwgraph/containers/compressed.hpp"
 #include "nwgraph/edge_list.hpp"
@@ -85,6 +86,46 @@ auto apb_adj(Adjacency& graph, size_t ntrial) {
       time += t3.elapsed();
     }
     std::cout << t3.name() << " " << time / ntrial << " ms" << std::endl;
+
+    time = 0;
+    ms_timer ta("nested std::for_each auto&&");
+    for (size_t t = 0; t < ntrial; ++t) {
+      std::fill(y.begin(), y.end(), 0);
+      ta.start();
+
+      vertex_id_type k = 0;
+      std::for_each(graph.begin(), graph.end(), [&](auto&& nbhd) {
+	  std::for_each(nbhd.begin(), nbhd.end(), [&] (auto&& elt) {
+	    auto&& [j, v] = elt;
+	    y[k] += x[j] * v;
+	  });
+	  ++k;
+	});
+      ta.stop();
+      time += ta.elapsed();
+    }
+    std::cout << ta.name() << " " << time / ntrial << " ms" << std::endl;
+
+
+    time = 0;
+    ms_timer tb("nested range for with neighbor_range");
+    for (size_t t = 0; t < ntrial; ++t) {
+      std::fill(y.begin(), y.end(), 0);
+      tb.start();
+
+      vertex_id_type k = 0;
+
+      for (auto&& [k, u_neighbors] : make_neighbor_range(graph)) {
+	for (auto&& [j, v] : u_neighbors) {
+          y[k] += x[j] * v;
+	}
+      }
+      tb.stop();
+
+      time += tb.elapsed();
+    }
+    std::cout << tb.name() << " " << time / ntrial << " ms" << std::endl;
+
 
     time = 0;
     ms_timer t4("range based for loop edge range auto");
