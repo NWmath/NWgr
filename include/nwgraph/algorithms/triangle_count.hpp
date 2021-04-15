@@ -14,6 +14,7 @@
 #define NW_GRAPH_TRIANGLE_COUNT_HPP
 
 #include "nwgraph/adaptors/cyclic_range_adapter.hpp"
+#include "nwgraph/adaptors/neighbor_range.hpp"
 #include "nwgraph/adaptors/edge_range.hpp"
 #include "nwgraph/util/intersection_size.hpp"
 #include "nwgraph/util/parallel_for.hpp"
@@ -124,6 +125,18 @@ size_t triangle_count_v1(const GraphT& A) {
   for (auto G = first; first != last; ++first) {
     for (auto v = (*first).begin(); v != (*first).end(); ++v) {
       triangles += nw::graph::intersection_size(v, (*first).end(), G[std::get<0>(*v)]);
+    }
+  }
+  return triangles;
+}
+
+template <typename GraphT>
+size_t triangle_count_v15(const GraphT& A) {
+  size_t triangles = 0;
+
+  for (auto&& [u, u_neighbors] : make_neighbor_range(A)) {
+    for (auto&& [v] : u_neighbors) {
+      triangles += nw::graph::intersection_size(u_neighbors, A[v]);
     }
   }
   return triangles;
