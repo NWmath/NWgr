@@ -86,7 +86,7 @@ public:
         if (++first_ != last_) {
           u_begin_ = (*first_).begin();
           u_end_   = (*first_).end();
-        }
+        } else break;
       }
     }
 

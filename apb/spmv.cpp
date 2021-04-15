@@ -69,7 +69,7 @@ auto apb_adj(Adjacency& graph, size_t ntrial) {
     std::cout << t2.name() << " " << time / ntrial << " ms" << std::endl;
 
     time = 0;
-    ms_timer t3("range based for loop with range based for loop with compound initializer");
+    ms_timer t3("range based for loop with range based for loop with structured binding");
     for (size_t t = 0; t < ntrial; ++t) {
       std::fill(y.begin(), y.end(), 0);
       t3.start();
@@ -87,7 +87,7 @@ auto apb_adj(Adjacency& graph, size_t ntrial) {
     std::cout << t3.name() << " " << time / ntrial << " ms" << std::endl;
 
     time = 0;
-    ms_timer t4("range based for loop auto");
+    ms_timer t4("range based for loop edge range auto");
     for (size_t t = 0; t < ntrial; ++t) {
       std::fill(y.begin(), y.end(), 0);
       t4.start();
@@ -101,7 +101,7 @@ auto apb_adj(Adjacency& graph, size_t ntrial) {
     std::cout << t4.name() << " " << time / ntrial << " ms" << std::endl;
 
     time = 0;
-    ms_timer t5("range based for loop auto &&");
+    ms_timer t5("range based for loop edge range auto &&");
     for (size_t t = 0; t < ntrial; ++t) {
       std::fill(y.begin(), y.end(), 0);
       t5.start();
@@ -115,7 +115,7 @@ auto apb_adj(Adjacency& graph, size_t ntrial) {
     std::cout << t5.name() << " " << time / ntrial << " ms" << std::endl;
 
     time = 0;
-    ms_timer t6("range based for loop compound initialization auto");
+    ms_timer t6("range based for loop structured binding edge range auto");
     for (size_t t = 0; t < ntrial; ++t) {
       std::fill(y.begin(), y.end(), 0);
       t6.start();
@@ -129,7 +129,7 @@ auto apb_adj(Adjacency& graph, size_t ntrial) {
     std::cout << t6.name() << " " << time / ntrial << " ms" << std::endl;
 
     time = 0;
-    ms_timer t7("range based for loop compound initialization auto &&");
+    ms_timer t7("range based for loop structured binding edge range auto &&");
     for (size_t t = 0; t < ntrial; ++t) {
       std::fill(y.begin(), y.end(), 0);
       t7.start();
@@ -143,7 +143,7 @@ auto apb_adj(Adjacency& graph, size_t ntrial) {
     std::cout << t7.name() << " " << time / ntrial << " ms" << std::endl;
 
     time = 0;
-    ms_timer t8("std for_each auto");
+    ms_timer t8("std for_each edge range auto");
     for (size_t t = 0; t < ntrial; ++t) {
       std::fill(y.begin(), y.end(), 0);
       t8.start();
@@ -155,7 +155,7 @@ auto apb_adj(Adjacency& graph, size_t ntrial) {
     std::cout << t8.name() << " " << time / ntrial << " ms" << std::endl;
 
     time = 0;
-    ms_timer t9("std for_each auto &&");
+    ms_timer t9("std for_each edge range auto &&");
     for (size_t t = 0; t < ntrial; ++t) {
       std::fill(y.begin(), y.end(), 0);
       t9.start();
@@ -238,7 +238,7 @@ auto apb_adj(Adjacency& graph, size_t ntrial) {
     std::cout << t4.name() << " " << time / ntrial << " ms" << std::endl;
 
     time = 0;
-    ms_timer t5("range based for loop compound initialization auto");
+    ms_timer t5("range based for loop structured binding auto");
     for (size_t t = 0; t < ntrial; ++t) {
       std::fill(y.begin(), y.end(), 0);
       t5.start();
@@ -252,7 +252,7 @@ auto apb_adj(Adjacency& graph, size_t ntrial) {
     std::cout << t5.name() << " " << time / ntrial << " ms" << std::endl;
 
     time = 0;
-    ms_timer t6("range based for loop compound initialization auto &&");
+    ms_timer t6("range based for loop structured binding auto &&");
     for (size_t t = 0; t < ntrial; ++t) {
       std::fill(y.begin(), y.end(), 0);
       t6.start();
