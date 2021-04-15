@@ -108,6 +108,7 @@ void compress(std::vector<T>& comp) {
 
 template <typename T>
 T findDominantComponentID(const std::vector<T>& comp, size_t nsamples = 1024) {
+  if (0 == comp.size()) return 0;
   std::unordered_map<T, size_t>                              sample_counts(32);
   typedef typename std::unordered_map<T, size_t>::value_type kvp_type;
   std::mt19937                                               gen;

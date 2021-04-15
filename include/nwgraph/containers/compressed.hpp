@@ -9,7 +9,7 @@
 //     Andrew Lumsdaine	
 //     Kevin Deweese	
 //     Luke D'Alessandro	
-//     liux238	
+//     Xu Tony Liu	
 //
 
 #ifndef NW_GRAPH_COMPRESSED_HPP
@@ -232,6 +232,19 @@ public:    // fixme
     std::exclusive_scan(indices_.begin(), indices_.end(), indices_.begin(), 0);
     assert(indices_.back() == to_be_indexed_.size());
     is_open_ = false;
+  }
+  
+  void move(std::vector<index_t>&& indices, struct_of_arrays<Attributes...>&& to_be_indexed) {
+    indices_.swap(indices); //equivalent to 
+    //indices_ = std::move(indices); 
+    to_be_indexed_.move(to_be_indexed);
+    assert(indices_.back() == to_be_indexed_.size());
+  }
+
+  void copy(std::vector<index_t>& indices, struct_of_arrays<Attributes...>& to_be_indexed) {
+    std::copy(indices.begin(), indices.end(), indices_.begin());
+    to_be_indexed_.copy(to_be_indexed);
+    assert(indices_.back() == to_be_indexed_.size());
   }
 
   void push_back(index_t i, const Attributes&... attrs) {
