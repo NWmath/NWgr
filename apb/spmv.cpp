@@ -116,9 +116,9 @@ auto apb_adj(Adjacency& graph, size_t ntrial) {
       vertex_id_type k = 0;
 
       for (auto&& [k, u_neighbors] : make_neighbor_range(graph)) {
-	for (auto&& [j, v] : u_neighbors) {
+        for (auto &&[j, v] : u_neighbors) {
           y[k] += x[j] * v;
-	}
+        }
       }
       tb.stop();
 

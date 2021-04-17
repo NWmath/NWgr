@@ -17,3 +17,6 @@ target_link_Libraries(bfs nw_graph)
 
 add_executable(dfs dfs.cpp)
 target_link_Libraries(dfs nw_graph)
+
+add_executable(containers containers.cpp)
+target_link_Libraries(containers nw_graph docopt)
