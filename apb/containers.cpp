@@ -109,6 +109,24 @@ void run_bench(int argc, char* argv[], EdgeList& el_a) {
     std::cout << t2.name() << " " << time / ntrial << " ms" << std::endl;
 
     time = 0;
+    ms_timer t3("range based for loop with range based for loop with structured binding");
+    for (long t = 0; t < ntrial; ++t) {
+      std::fill(y.begin(), y.end(), 0);
+      t3.start();
+
+      vertex_id_type k = 0;
+      for (auto&& i : graph) {
+        for (auto&& [j, v] : i) {
+          y[k] += x[j] * v;
+        }
+        ++k;
+      }
+      t3.stop();
+      time += t3.elapsed();
+    }
+    std::cout << t3.name() << " " << time / ntrial << " ms" << std::endl;
+
+    time = 0;
     ms_timer ta("nested std::for_each auto&&");
     for (long t = 0; t < ntrial; ++t) {
       std::fill(y.begin(), y.end(), 0);
