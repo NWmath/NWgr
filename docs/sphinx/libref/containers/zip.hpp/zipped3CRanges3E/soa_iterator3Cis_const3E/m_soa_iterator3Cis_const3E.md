@@ -44,4 +44,15 @@ overloads:
     description: __MISSING__
     return: __OPTIONAL__
     signature_with_names: soa_iterator<is_const>(nw::graph::zipped::soa_iterator::soa_t * soa, std::size_t i)
+  soa_iterator<is_const>(soa_iterator<is_const> &&):
+    annotation:
+      - default
+    arguments:
+      - description: __OPTIONAL__
+        name: unnamed-0
+        type: soa_iterator<is_const> &&
+        unnamed: true
+    description: __MISSING__
+    return: __OPTIONAL__
+    signature_with_names: soa_iterator<is_const>(soa_iterator<is_const> &&)
 ---

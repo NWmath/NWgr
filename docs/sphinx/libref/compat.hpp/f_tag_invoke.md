@@ -7,18 +7,30 @@ tags:
   - function
 defined_in_file: compat.hpp
 overloads:
-  "template <typename... Attributes>\nauto tag_invoke(const nw::graph::num_vertices_tag, const std::list<std::tuple<Attributes...>> &)":
+  "template <typename... Attributes>\nauto tag_invoke(const nw::graph::num_edges_tag, const std::list<std::tuple<Attributes...>> &)":
     arguments:
       - description: __OPTIONAL__
         name: unnamed-0
-        type: const nw::graph::num_vertices_tag
+        type: const nw::graph::num_edges_tag
         unnamed: true
       - description: __OPTIONAL__
         name: b
         type: const std::list<std::tuple<Attributes...>> &
-    description: __OPTIONAL__
+    description: __MISSING__
     return: __OPTIONAL__
-    signature_with_names: "template <typename... Attributes>\nauto tag_invoke(const nw::graph::num_vertices_tag, const std::list<std::tuple<Attributes...>> & b)"
+    signature_with_names: "template <typename... Attributes>\nauto tag_invoke(const nw::graph::num_edges_tag, const std::list<std::tuple<Attributes...>> & b)"
+  "template <typename... Attributes>\nauto tag_invoke(const nw::graph::num_edges_tag, const std::vector<std::tuple<Attributes...>> &)":
+    arguments:
+      - description: __OPTIONAL__
+        name: unnamed-0
+        type: const nw::graph::num_edges_tag
+        unnamed: true
+      - description: __OPTIONAL__
+        name: b
+        type: const std::vector<std::tuple<Attributes...>> &
+    description: __MISSING__
+    return: __OPTIONAL__
+    signature_with_names: "template <typename... Attributes>\nauto tag_invoke(const nw::graph::num_edges_tag, const std::vector<std::tuple<Attributes...>> & b)"
 namespace:
   - nw
   - graph
