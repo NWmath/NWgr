@@ -7,7 +7,8 @@
 // 
 // Authors: 
 //     Andrew Lumsdaine	
-//     Kevin Deweese	
+//     Kevin Deweese
+//     Xu Tony Liu	
 //
 
 #ifndef NW_GRAPH_BFS_HPP
@@ -540,6 +541,103 @@ template <typename OutGraph, typename InGraph>
 
   return parents;
 }
+
+template<typename Graph>
+size_t BU_step(Graph& g, std::vector<vertex_id_t<Graph>>& parents, 
+nw::graph::AtomicBitVector<>& front, nw::graph::AtomicBitVector<>& next) {
+  size_t num = num_vertices(g);    // number of nodes
+  size_t awake_count = 0;
+  next.clear();
+    //or use a parallel for loop
+  std::for_each(counting_iterator<vertex_id_t<Graph>>(0), counting_iterator<vertex_id_t<Graph>>(num), [&](auto u) {
+    if (std::numeric_limits<vertex_id_t<Graph>>::max() == parents[u]) {
+      std::for_each(g.begin()[u].begin(), g.begin()[u].end(), [&](auto&& x) {
+        auto v = std::get<0>(x);
+        if (front.atomic_get(v)) {
+          //v has not been claimed
+          parents[u] = v;      
+          next.atomic_set(u);
+          ++awake_count;
+          return;
+        }
+      });
+    }
+  });
+  return awake_count;
+}
+
+template<typename Graph>
+size_t TD_step(Graph& g, std::vector<vertex_id_t<Graph>>& parents,
+std::vector<vertex_id_t<Graph>>& front, std::vector<vertex_id_t<Graph>>& next) {
+  size_t scout_count = 0;
+  std::for_each(front.begin(), front.end(), [&](auto& u) {
+    std::for_each(g.begin()[u].begin(), g.begin()[u].end(), [&](auto&& x) {
+        auto v = std::get<0>(x);
+        if (std::numeric_limits<vertex_id_t<Graph>>::max() == parents[v]) {
+          //v has not been claimed
+          parents[v] = u;
+          next.push_back(v);
+          scout_count += g[v].size();
+        }
+    });
+  });
+  return scout_count;
+}
+template<typename Graph>
+inline void queue_to_bitmap(std::vector<vertex_id_t<Graph>>& queue, nw::graph::AtomicBitVector<>& bitmap) {
+  std::for_each(std::execution::par_unseq, queue.begin(), queue.end(), [&](auto&& u) { 
+    bitmap.atomic_set(u); 
+  });
+}
+template<typename Graph>
+inline void bitmap_to_queue(nw::graph::AtomicBitVector<>& bitmap, std::vector<vertex_id_t<Graph>>& queue) {
+  tbb::parallel_for(bitmap.non_zeros(nw::graph::pow2(15)), [&](auto&& range) {
+    for (auto &&i = range.begin(), e = range.end(); i != e; ++i) {
+      queue.push_back(*i);
+    }
+  });
+}
+
+template <typename OutGraph, typename InGraph>
+[[gnu::noinline]] auto bfs_v1(const OutGraph& out_graph, const InGraph& in_graph, vertex_id_t<OutGraph> root, 
+                              int num_bins = 32, int alpha = 15, int beta = 18) {
+
+  using vertex_id_type = vertex_id_t<OutGraph>;
+
+  size_t n = num_vertices(out_graph);;
+  std::vector<vertex_id_type> parents(n);
+  parents[root] = root;
+  std::vector<vertex_id_type> frontier, nextfrontier;
+  frontier.reserve(n);
+  nextfrontier.reserve(n);
+  frontier.push_back(root);
+  nw::graph::AtomicBitVector front(n), cur(n);
+  size_t edges_to_check = out_graph.to_be_indexed_.size();
+  size_t scout_count = out_graph[root].size();
+  while (!frontier.empty()) {
+    if (scout_count > edges_to_check / alpha) {
+      size_t awake_count, old_awake_count;
+      awake_count = frontier.size();
+      do {
+        old_awake_count = awake_count;
+        awake_count = BU_step(in_graph, parents, front, cur);
+        std::swap(front, cur);
+        cur.clear();
+      } while ((awake_count >= old_awake_count) || (awake_count > n / beta));
+      bitmap_to_queue<InGraph>(front, frontier);
+      scout_count = 1;
+    }
+    else {
+      edges_to_check -= scout_count;
+      scout_count = TD_step(out_graph, parents, frontier, nextfrontier);
+      std::swap(frontier, nextfrontier);
+      nextfrontier.clear();
+    }
+  }//while
+
+  return parents;
+}
+
 }    // namespace graph
 }    // namespace nw
 

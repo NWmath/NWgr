@@ -160,6 +160,8 @@ int main(int argc, char* argv[]) {
           switch (id) {
             case 0:
               return bfs_v0(graph, source);
+            case 1:
+              return bfs_v1(graph, gx, source, num_bins, alpha, beta);
             case 6:
               return bfs_v6(graph, source);
             case 7:
