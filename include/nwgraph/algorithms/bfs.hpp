@@ -471,12 +471,12 @@ template <typename OutGraph, typename InGraph>
         awake_count = tbb::parallel_reduce(
             tbb::blocked_range(0ul, N), 0ul,
             [&](auto&& range, auto n) {
-              for (auto &&v = range.begin(), e = range.end(); v != e; ++v) {
-                if (visited.get(v) == 0) {
-                  for (auto&& [u] : in_graph[v]) {
-                    if (front.get(u) && visited.atomic_set(v) == 0) {
-                      curr.atomic_set(v);
-                      parents[v] = u;
+              for (auto&& u = range.begin(), e = range.end(); u != e; ++u) {
+                if (visited.get(u) == 0) {
+                  for (auto&& [v] : in_graph[u]) {
+                    if (front.get(v) && visited.atomic_set(u) == 0) {
+                      curr.atomic_set(u);
+                      parents[u] = v;
                       ++n;
                       break;
                     }
@@ -541,6 +541,8 @@ template <typename OutGraph, typename InGraph>
 
   return parents;
 }
+
+
 
 template<typename Graph>
 size_t BU_step(Graph& g, std::vector<vertex_id_t<Graph>>& parents,
@@ -614,8 +616,183 @@ inline void bitmap_to_queue(nw::graph::AtomicBitVector<>& bitmap, std::vector<Ve
   });
 }
 
+  /*
+  * Flush thread-local queue to global queue
+  */
+ template<typename Vector>
+  void flush(std::vector<Vector>& lqueue, Vector& queue) {
+    size_t size = 0;
+    size_t n = lqueue.size();
+    std::vector<size_t> size_array(n, 0);
+    for (size_t i = 0; i < n; ++i) {
+      //calculate the size of each thread-local frontier
+      size_array[i] = size;
+      //accumulate the total size of all thread-local frontiers
+      size += lqueue[i].size();
+    }
+    //resize 'queue'
+    queue.resize(size); 
+    std::for_each(std::execution::par_unseq, tbb::counting_iterator(0ul), tbb::counting_iterator(n), [&](auto i) {
+      //copy each thread-local queue to global queue based on their size offset
+      auto begin = std::next(queue.begin(), size_array[i]);
+      std::copy(std::execution::par_unseq, lqueue[i].begin(), lqueue[i].end(), begin);
+      lqueue[i].clear();
+    });
+  };
+
 template <typename OutGraph, typename InGraph>
-[[gnu::noinline]] auto bfs_v1(const OutGraph& out_graph, const InGraph& in_graph, vertex_id_t<OutGraph> root, 
+[[gnu::noinline]] auto bfs_v1(const OutGraph& out_graph, const InGraph& in_graph, vertex_id_t<OutGraph> root, int num_bins = 32,
+                               int alpha = 15, int beta = 18) {
+
+  using vertex_id_type = vertex_id_t<OutGraph>;
+  using Vector = std::vector<vertex_id_type>;
+  const std::size_t                                   n = nw::graph::pow2(nw::graph::ceil_log2(num_bins));
+  const std::size_t                                   N = num_vertices(out_graph);
+  const std::size_t                                   M = out_graph.to_be_indexed_.size();
+  Vector queue;
+  std::vector<Vector> lqueue(n);
+  //std::vector<tbb::concurrent_vector<vertex_id_type>> q1(n), q2(n);
+
+  nw::graph::AtomicBitVector  visited(N);
+  std::vector<vertex_id_type> parents(N);
+
+  constexpr const auto null_vertex = null_vertex_v<vertex_id_type>();
+  std::fill(std::execution::par_unseq, parents.begin(), parents.end(), null_vertex);
+
+  std::uint64_t edges_to_check = M;
+  std::uint64_t scout_count    = out_graph[root].size();
+
+  visited.atomic_set(root);
+  parents[root] = root;
+  queue.reserve(N);
+  queue.push_back(root);
+  //q1[root % n].push_back(root);
+
+  bool done = false;
+  while (!done) {
+    if (scout_count > edges_to_check / alpha) {
+      nw::graph::AtomicBitVector front(N, false);
+      nw::graph::AtomicBitVector curr(N);
+      std::size_t                awake_count = queue.size();
+      //std::size_t                awake_count = 0;
+
+      // Initialize the frontier bitmap from the frontier queues, and count the
+      // number of non-zeros.
+      queue_to_bitmap<InGraph>(queue, curr);
+      /*
+      std::for_each(std::execution::par_unseq, q1.begin(), q1.end(), [&](auto&& q) {
+        nw::graph::fetch_add(awake_count, q.size());
+        std::for_each(std::execution::par_unseq, q.begin(), q.end(), [&](auto&& u) { curr.atomic_set(u); });
+      });
+      */
+      std::size_t old_awake_count = 0;
+      do {
+        old_awake_count = awake_count;
+        std::swap(front, curr);
+        curr.clear();
+
+        awake_count = tbb::parallel_reduce(
+            tbb::blocked_range(0ul, N), 0ul,
+            [&](auto&& range, auto n) {
+              for (auto&& u = range.begin(), e = range.end(); u != e; ++u) {
+                if (visited.get(u) == 0) {
+                  for (auto&& [v] : in_graph[u]) {
+                    if (front.get(v) && visited.atomic_set(u) == 0) {
+                      curr.atomic_set(u);
+                      parents[u] = v;
+                      ++n;
+                      break;
+                    }
+                  }
+                }
+              }
+              return n;
+            },
+            std::plus{});
+      } while ((awake_count >= old_awake_count) || (awake_count > N / beta));
+
+      if (awake_count == 0) {
+        return parents;
+      }
+
+      bitmap_to_queue<InGraph>(front, lqueue);
+      flush(lqueue, queue);
+      /*
+      tbb::parallel_for(curr.non_zeros(nw::graph::pow2(15)), [&](auto&& range) {
+        for (auto &&i = range.begin(), e = range.end(); i != e; ++i) {
+          q2[*i % n].push_back(*i);
+        }
+      });
+      */
+      scout_count = 1;
+    } else {
+      edges_to_check -= scout_count;
+      scout_count = nw::graph::parallel_for(
+          tbb::blocked_range(0ul, queue.size()),
+          [&](auto&& i) {
+            auto&& u = queue[i];
+            return nw::graph::parallel_for(
+                  out_graph[u],
+                  [&](auto&& v) {
+                    if (visited.atomic_get(v) == 0 && visited.atomic_set(v) == 0) {
+                      lqueue[u % n].push_back(v);
+                      parents[v] = u;
+                      return out_graph[v].size();
+                    }
+                    return 0ul;
+                  },
+                  std::plus{}, 0ul);
+          },
+          std::plus{}, 0ul);
+          flush(lqueue, queue);
+      /*
+      scout_count = nw::graph::parallel_for(
+          tbb::blocked_range(0ul, q.size()),
+          [&](auto&& i) {
+            auto&& q = q1[i];
+            return nw::graph::parallel_for(
+                tbb::blocked_range(0ul, q.size()),
+                [&](auto&& i) {
+                  auto&& u = q[i];
+                  return nw::graph::parallel_for(
+                      out_graph[u],
+                      [&](auto&& v) {
+                        if (visited.atomic_get(v) == 0 && visited.atomic_set(v) == 0) {
+                          q2[u % n].push_back(v);
+                          parents[v] = u;
+                          return out_graph[v].size();
+                        }
+                        return 0ul;
+                      },
+                      std::plus{}, 0ul);
+                },
+                std::plus{}, 0ul);
+          },
+          std::plus{}, 0ul);
+          */
+    }
+
+    if (!queue.size())
+      done = true;
+    /*
+    for (auto&& q : q2) {
+      if (q.size() != 0) {
+        done = false;
+        break;
+      }
+    }
+    std::swap(q1, q2);
+    for (auto&& q : q2) {
+      q.clear();
+    }
+    */
+  }
+
+  return parents;
+}
+
+template <typename OutGraph, typename InGraph>
+[[gnu::noinline]] auto bfs_v2(const OutGraph& out_graph, const InGraph& in_graph, vertex_id_t<OutGraph> root, 
                               int num_bins = 32, int alpha = 15, int beta = 18) {
 
   using vertex_id_type = vertex_id_t<OutGraph>;
