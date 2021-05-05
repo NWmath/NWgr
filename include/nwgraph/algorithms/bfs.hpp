@@ -437,6 +437,8 @@ template <typename OutGraph, typename InGraph>
 
   nw::graph::AtomicBitVector  visited(N);
   std::vector<vertex_id_type> parents(N);
+  nw::graph::AtomicBitVector front(N, false);
+  nw::graph::AtomicBitVector curr(N);
 
   constexpr const auto null_vertex = null_vertex_v<vertex_id_type>();
   std::fill(std::execution::par_unseq, parents.begin(), parents.end(), null_vertex);
@@ -451,13 +453,9 @@ template <typename OutGraph, typename InGraph>
   bool done = false;
   while (!done) {
     if (scout_count > edges_to_check / alpha) {
-      nw::graph::AtomicBitVector front(N, false);
-      nw::graph::AtomicBitVector curr(N);
-      std::size_t                awake_count = 0;
-
       // Initialize the frontier bitmap from the frontier queues, and count the
       // number of non-zeros.
-      awake_count = nw::graph::parallel_for(
+      std::size_t awake_count = nw::graph::parallel_for(
           tbb::blocked_range(0ul, q1.size()),
           [&](auto&& i) {
             auto&& q = q1[i];
@@ -473,6 +471,7 @@ template <typename OutGraph, typename InGraph>
       */
 
       std::size_t old_awake_count = 0;
+      front.clear();
       do {
         old_awake_count = awake_count;
         std::swap(front, curr);
