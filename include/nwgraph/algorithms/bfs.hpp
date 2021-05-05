@@ -667,12 +667,12 @@ template <typename OutGraph, typename InGraph>
   queue.reserve(N);
   queue.push_back(root);
   //q1[root % n].push_back(root);
+  nw::graph::AtomicBitVector front(N, false);
+  nw::graph::AtomicBitVector curr(N);
 
   bool done = false;
   while (!done) {
     if (scout_count > edges_to_check / alpha) {
-      nw::graph::AtomicBitVector front(N, false);
-      nw::graph::AtomicBitVector curr(N);
       std::size_t                awake_count = queue.size();
       //std::size_t                awake_count = 0;
 
