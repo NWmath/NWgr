@@ -727,24 +727,25 @@ template <typename OutGraph, typename InGraph>
       scout_count = 1;
     } else {
       edges_to_check -= scout_count;
-      scout_count = nw::graph::parallel_for(
-          tbb::blocked_range(0ul, queue.size()),
-          [&](auto&& i) {
-            auto&& u = queue[i];
-            return nw::graph::parallel_for(
+      scout_count = tbb::parallel_reduce(tbb::blocked_range(0ul, queue.size()), 0ul,
+                                         [&](auto&&range, auto n) {
+            int worker_index = tbb::task_arena::current_thread_index();
+            for (auto&& i = range.begin(), e = range.end(); i != e; ++i) {
+              auto u = queue[i];
+              n += nw::graph::parallel_for(
                   out_graph[u],
                   [&](auto&& v) {
                     if (visited.atomic_get(v) == 0 && visited.atomic_set(v) == 0) {
-                      lqueue[u % n].push_back(v);
+                      lqueue[worker_index].push_back(v);
                       parents[v] = u;
                       return out_graph[v].size();
                     }
                     return 0ul;
-                  },
-                  std::plus{}, 0ul);
-          },
-          std::plus{}, 0ul);
-          flush(lqueue, queue);
+                  }, std::plus{}, 0ul);
+            }
+            return n;
+        }, std::plus{});
+        flush(lqueue, queue);
       /*
       scout_count = nw::graph::parallel_for(
           tbb::blocked_range(0ul, q.size()),
