@@ -564,15 +564,6 @@ template <typename OutGraph, typename InGraph>
   return parents;
 }
 
-template<class T>
-inline bool writeMin(T& old, T& next) {
-  T    prev;
-  bool success = false;
-  do
-    prev = old;
-  while (prev > next && !(success = nw::graph::cas(old, prev, next)));
-  return success;
-}
 
 template<typename Graph>
 size_t BU_step(Graph& g, std::vector<vertex_id_t<Graph>>& parents,
@@ -581,10 +572,8 @@ nw::graph::AtomicBitVector<>& front, nw::graph::AtomicBitVector<>& next) {
   next.clear();
   return tbb::parallel_reduce(
       nw::graph::neighbor_range(g), 0ul,
-      //tbb::blocked_range(0ul, N), 0ul,
       [&](auto &&range, auto n) {
         for (auto&& [u, neighbors] : range) {
-        //for (auto&& u = range.begin(), e = range.end(); u != e; ++u) {
           if (null_vertex_v<vertex_id_t<Graph>>() == parents[u]) {
             //if u has not found a parent (not visited)
             for (auto &&[v] : neighbors) {
@@ -603,24 +592,21 @@ nw::graph::AtomicBitVector<>& front, nw::graph::AtomicBitVector<>& next) {
 }
 
 template<typename Graph, typename Vector>
-size_t TD_step(Graph& g, int stride, std::vector<vertex_id_t<Graph>>& parents,
+size_t TD_step(Graph& g, std::vector<vertex_id_t<Graph>>& parents,
 Vector& cur, std::vector<Vector>& next) {
   size_t scout_count = 0;
   size_t N = cur.size();
   scout_count = tbb::parallel_reduce(
-    nw::graph::cyclic(cur, stride), 0ul,
-    //tbb::blocked_range(0ul, N), 0ul,
+    tbb::blocked_range(0ul, N), 0ul,
     [&](auto&& range, auto n) {
       int worker_index = tbb::task_arena::current_thread_index();
       for (auto&& i = range.begin(), e = range.end(); i != e; ++i) {
-        auto u = *i;
-        //auto u = cur[i];
+        auto u = cur[i];
         for (auto&& [v] : g[u]) {
           auto curr_val = parents[v];
           if (null_vertex_v<vertex_id_t<Graph>>() == curr_val) {
             //if u has not found a parent (not visited)
-            if (writeMin(parents[v], u)) {
-            //if (nw::graph::cas(parents[v], curr_val, u)) {
+            if (nw::graph::cas(parents[v], curr_val, u)) {
               next[worker_index].push_back(v);
               n += g[v].size();
             }
@@ -802,7 +788,7 @@ template <typename OutGraph, typename InGraph>
     }
     else {
       edges_to_check -= scout_count;
-      scout_count = TD_step(out_graph, n, parents, frontier, nextfrontier);
+      scout_count = TD_step(out_graph, parents, frontier, nextfrontier);
       flush(nextfrontier, frontier);
     }
   }//while
