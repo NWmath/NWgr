@@ -580,9 +580,9 @@ nw::graph::AtomicBitVector<>& front, nw::graph::AtomicBitVector<>& next) {
             for (auto &&[v] : g[u]) {
               if (front.get(v) && visited.atomic_set(u) == 0) {
                 //if v is not visited
+                next.atomic_set(u);
                 parents[u] = v;
                 ++n;
-                next.atomic_set(u);
                 break;
               }
             }
@@ -735,7 +735,7 @@ template <typename OutGraph, typename InGraph>
         return parents;
       }
 
-      bitmap_to_queue<InGraph>(front, lqueue);
+      bitmap_to_queue<InGraph>(curr, lqueue);
       flush(lqueue, queue);
       /*
       tbb::parallel_for(curr.non_zeros(nw::graph::pow2(15)), [&](auto&& range) {
@@ -865,7 +865,7 @@ template <typename OutGraph, typename InGraph>
         awake_count = BU_step(in_graph, parents, visited, front, cur);
         std::swap(front, cur);
       } while ((awake_count >= old_awake_count) || (awake_count > N / beta));
-      bitmap_to_queue<InGraph>(front, nextfrontier);
+      bitmap_to_queue<InGraph>(next, nextfrontier);
       flush(nextfrontier, frontier);
       scout_count = 1;
     }
