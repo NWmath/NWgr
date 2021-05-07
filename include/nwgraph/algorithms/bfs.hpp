@@ -453,8 +453,10 @@ template <typename OutGraph, typename InGraph>
   bool done = false;
   while (!done) {
     if (scout_count > edges_to_check / alpha) {
+      std::size_t awake_count = 0;
       // Initialize the frontier bitmap from the frontier queues, and count the
       // number of non-zeros.
+      /*
       std::size_t awake_count = nw::graph::parallel_for(
           tbb::blocked_range(0ul, q1.size()),
           [&](auto&& i) {
@@ -462,16 +464,14 @@ template <typename OutGraph, typename InGraph>
             std::for_each(q.begin(), q.end(), [&](auto&& u) { curr.atomic_set(u); });
             return q.size();
           }, std::plus{}, 0ul);
-
-      /*
+      */
       std::for_each(std::execution::par_unseq, q1.begin(), q1.end(), [&](auto&& q) {
         nw::graph::fetch_add(awake_count, q.size());
         std::for_each(std::execution::par_unseq, q.begin(), q.end(), [&](auto&& u) { curr.atomic_set(u); });
       });
-      */
 
       std::size_t old_awake_count = 0;
-      front.clear();
+      //front.clear();
       do {
         old_awake_count = awake_count;
         std::swap(front, curr);
