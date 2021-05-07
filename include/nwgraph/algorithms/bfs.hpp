@@ -671,7 +671,6 @@ template <typename OutGraph, typename InGraph>
   const std::size_t                                   M = out_graph.to_be_indexed_.size();
   Vector queue;
   std::vector<Vector> lqueue(n);
-  //std::vector<tbb::concurrent_vector<vertex_id_type>> q1(n), q2(n);
 
   std::vector<vertex_id_type> parents(N);
 
@@ -684,25 +683,17 @@ template <typename OutGraph, typename InGraph>
   parents[root] = root;
   queue.reserve(N);
   queue.push_back(root);
-  //q1[root % n].push_back(root);
+
   nw::graph::AtomicBitVector front(N, false);
   nw::graph::AtomicBitVector curr(N);
 
-  bool done = false;
-  while (!done) {
+  while (!queue.empty()) {
     if (scout_count > edges_to_check / alpha) {
       std::size_t                awake_count = queue.size();
-      //std::size_t                awake_count = 0;
-
       // Initialize the frontier bitmap from the frontier queues, and count the
       // number of non-zeros.
       queue_to_bitmap<InGraph>(queue, curr);
-      /*
-      std::for_each(std::execution::par_unseq, q1.begin(), q1.end(), [&](auto&& q) {
-        nw::graph::fetch_add(awake_count, q.size());
-        std::for_each(std::execution::par_unseq, q.begin(), q.end(), [&](auto&& u) { curr.atomic_set(u); });
-      });
-      */
+
       std::size_t old_awake_count = 0;
       do {
         old_awake_count = awake_count;
@@ -735,13 +726,7 @@ template <typename OutGraph, typename InGraph>
 
       bitmap_to_queue<InGraph>(curr, lqueue);
       flush(lqueue, queue);
-      /*
-      tbb::parallel_for(curr.non_zeros(nw::graph::pow2(15)), [&](auto&& range) {
-        for (auto &&i = range.begin(), e = range.end(); i != e; ++i) {
-          q2[*i % n].push_back(*i);
-        }
-      });
-      */
+
       scout_count = 1;
     } else {
       edges_to_check -= scout_count;
@@ -763,47 +748,7 @@ template <typename OutGraph, typename InGraph>
             return n;
         }, std::plus{});
         flush(lqueue, queue);
-      /*
-      scout_count = nw::graph::parallel_for(
-          tbb::blocked_range(0ul, q.size()),
-          [&](auto&& i) {
-            auto&& q = q1[i];
-            return nw::graph::parallel_for(
-                tbb::blocked_range(0ul, q.size()),
-                [&](auto&& i) {
-                  auto&& u = q[i];
-                  return nw::graph::parallel_for(
-                      out_graph[u],
-                      [&](auto&& v) {
-                        if (visited.atomic_get(v) == 0 && visited.atomic_set(v) == 0) {
-                          q2[u % n].push_back(v);
-                          parents[v] = u;
-                          return out_graph[v].size();
-                        }
-                        return 0ul;
-                      },
-                      std::plus{}, 0ul);
-                },
-                std::plus{}, 0ul);
-          },
-          std::plus{}, 0ul);
-          */
     }
-
-    if (!queue.size())
-      done = true;
-    /*
-    for (auto&& q : q2) {
-      if (q.size() != 0) {
-        done = false;
-        break;
-      }
-    }
-    std::swap(q1, q2);
-    for (auto&& q : q2) {
-      q.clear();
-    }
-    */
   }
 
   return parents;
