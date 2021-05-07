@@ -537,8 +537,11 @@ template <typename OutGraph, typename InGraph>
           },
           std::plus{}, 0ul);
           */
-        for (auto&& q : q1) {
-          scout_count += nw::graph::parallel_for(
+        scout_count = nw::graph::parallel_for(
+          tbb::blocked_range(0ul, q1.size()),
+          [&](auto&& i) {
+            auto&& q = q1[i];
+            return nw::graph::parallel_for(
                 tbb::blocked_range(0ul, q.size()),
                 [&](auto&& i) {
                   size_t count = 0;
@@ -554,7 +557,7 @@ template <typename OutGraph, typename InGraph>
                   }
                   return count;
                 }, std::plus{}, 0ul);
-        }
+        }, std::plus{}, 0ul);
     }
 
     if (0 == nw::graph::parallel_for(
