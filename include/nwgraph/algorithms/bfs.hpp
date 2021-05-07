@@ -865,7 +865,7 @@ template <typename OutGraph, typename InGraph>
         awake_count = BU_step(in_graph, parents, visited, front, cur);
         std::swap(front, cur);
       } while ((awake_count >= old_awake_count) || (awake_count > N / beta));
-      bitmap_to_queue<InGraph>(next, nextfrontier);
+      bitmap_to_queue<InGraph>(cur, nextfrontier);
       flush(nextfrontier, frontier);
       scout_count = 1;
     }
