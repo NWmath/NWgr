@@ -747,18 +747,15 @@ template <typename OutGraph, typename InGraph>
             int worker_index = tbb::task_arena::current_thread_index();
             for (auto&& i = range.begin(), e = range.end(); i != e; ++i) {
               auto u = queue[i];
-              n += nw::graph::parallel_for(
-                  out_graph[u],
-                  [&](auto&& v) {
-                    auto curr_val = parents[v];
-                    if (null_vertex == curr_val) {
-                      if (nw::graph::cas(parents[v], curr_val, u)) {
-                        lqueue[worker_index].push_back(v);
-                        return out_graph[v].size();
-                      }
-                    }
-                    return 0ul;
-                  }, std::plus{}, 0ul);
+              for (auto&& [v] : out_graph[u]) {
+                auto curr_val = parents[v];
+                if (null_vertex == curr_val) {
+                  if (nw::graph::cas(parents[v], curr_val, u)) {
+                    lqueue[worker_index].push_back(v);
+                    n += out_graph[v].size();
+                  }
+                }
+              }
             }
             return n;
         }, std::plus{});
