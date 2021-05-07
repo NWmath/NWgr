@@ -471,7 +471,6 @@ template <typename OutGraph, typename InGraph>
       });
 
       std::size_t old_awake_count = 0;
-      //front.clear();
       do {
         old_awake_count = awake_count;
         std::swap(front, curr);
@@ -479,20 +478,20 @@ template <typename OutGraph, typename InGraph>
 
         awake_count = tbb::parallel_reduce(
             tbb::blocked_range(0ul, N), 0ul,
-            [&](auto&& range, auto n) {
+            [&](auto&& range, auto count) {
               for (auto&& u = range.begin(), e = range.end(); u != e; ++u) {
                 if (null_vertex == parents[u]) {
                   for (auto&& [v] : in_graph[u]) {
                     if (front.get(v)) {
                       curr.atomic_set(u);
                       parents[u] = v;
-                      ++n;
+                      ++count;
                       break;
                     }
                   }
                 }
               }
-              return n;
+              return count;
             },
             std::plus{});
       } while ((awake_count >= old_awake_count) || (awake_count > N / beta));
@@ -559,17 +558,7 @@ template <typename OutGraph, typename InGraph>
                 }, std::plus{}, 0ul);
         }, std::plus{}, 0ul);
     }
-/*
-    if (0 == nw::graph::parallel_for(
-      tbb::blocked_range(0ul, q2.size()),
-      [&](auto&& i) {
-        return q2[i].size();
-      }, std::plus{}, 0ul)) {
-      done = true;
-    }
-    std::swap(q1, q2);
-    std::for_each(std::execution::par_unseq, q2.begin(), q2.end(), [&](auto&& q) { q.clear(); });
-*/
+
     done = true;
     for (auto&& q : q2) {
       if (q.size() != 0) {
@@ -637,8 +626,7 @@ Vector& cur, std::vector<Vector>& next) {
         }
       }
       return n;
-  },
-  std::plus{});
+  }, std::plus{});
   return scout_count;
 }
 template<typename Graph>
@@ -737,8 +725,7 @@ template <typename OutGraph, typename InGraph>
                 }
               }
               return n;
-            },
-            std::plus{});
+            }, std::plus{});
       } while ((awake_count >= old_awake_count) || (awake_count > N / beta));
 
       if (awake_count == 0) {
@@ -752,7 +739,7 @@ template <typename OutGraph, typename InGraph>
     } else {
       edges_to_check -= scout_count;
       scout_count = tbb::parallel_reduce(tbb::blocked_range(0ul, queue.size()), 0ul,
-                                         [&](auto&&range, auto n) {
+                                         [&](auto&&range, auto count) {
             int worker_index = tbb::task_arena::current_thread_index();
             for (auto&& i = range.begin(), e = range.end(); i != e; ++i) {
               auto u = queue[i];
@@ -761,14 +748,14 @@ template <typename OutGraph, typename InGraph>
                 if (null_vertex == curr_val) {
                   if (nw::graph::cas(parents[v], curr_val, u)) {
                     lqueue[worker_index].push_back(v);
-                    n += out_graph[v].size();
+                    count += out_graph[v].size();
                   }
                 }
               }
             }
-            return n;
-        }, std::plus{});
-        flush(lqueue, queue);
+            return count;
+      }, std::plus{});
+      flush(lqueue, queue);
     }
   }
 
@@ -797,9 +784,9 @@ template <typename OutGraph, typename InGraph>
   
   while (!frontier.empty()) {
     if (scout_count > edges_to_check / alpha) {
-      size_t awake_count, old_awake_count;
+      size_t old_awake_count;
       queue_to_bitmap<InGraph>(frontier, front);
-      awake_count = frontier.size();
+      size_t awake_count = frontier.size();
       do {
         old_awake_count = awake_count;
         awake_count = BU_step(in_graph, parents, front, cur);
