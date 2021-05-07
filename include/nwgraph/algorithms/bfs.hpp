@@ -569,13 +569,12 @@ size_t BU_step(Graph& g, std::vector<vertex_id_t<Graph>>& parents,
 nw::graph::AtomicBitVector<>& visited, 
 nw::graph::AtomicBitVector<>& front, nw::graph::AtomicBitVector<>& next) {
   size_t N = num_vertices(g);    // number of nodes
-  size_t awake_count = 0;
   next.clear();
-  awake_count = tbb::parallel_reduce(
+  return tbb::parallel_reduce(
       tbb::blocked_range(0ul, N), 0ul,
       [&](auto &&range, auto n) {
-        for (auto &&u = range.begin(), e = range.end(); u != e; ++u) {
-          if (0 == visited.get(u)) {
+        for (auto&& u = range.begin(), e = range.end(); u != e; ++u) {
+          if (null_vertex_v<vertex_id_t<Graph>>() == parents[u]) {
             //if u has not found a parent (not visited)
             for (auto &&[v] : g[u]) {
               if (front.get(v) && visited.atomic_set(u) == 0) {
@@ -589,9 +588,7 @@ nw::graph::AtomicBitVector<>& front, nw::graph::AtomicBitVector<>& next) {
           }
         }
         return n;
-      },
-      std::plus{});
-  return awake_count;
+      }, std::plus{});
 }
 
 template<typename Graph, typename Vector>
@@ -607,11 +604,13 @@ Vector& cur, std::vector<Vector>& next) {
         vertex_id_t<Graph> u = cur[i];
         std::for_each(g.begin()[u].begin(), g.begin()[u].end(), [&](auto&& x) {
           auto v = std::get<0>(x);
-          if (visited.atomic_get(v) == 0 && visited.atomic_set(v) == 0) {
-            //v has not been claimed
-            next[worker_index].push_back(v);
-            parents[v] = u;
-            n += g[v].size();
+          auto curr_val = parents[v];
+          if (null_vertex_v<vertex_id_t<Graph>>() == curr_val) {
+            //if u has not found a parent (not visited)
+            if (nw::graph::cas(parents[v], curr_val, u)) {
+              next[worker_index].push_back(v);
+              n += g[v].size();
+            }
           }
         });
       }
@@ -636,29 +635,29 @@ inline void bitmap_to_queue(nw::graph::AtomicBitVector<>& bitmap, std::vector<Ve
   });
 }
 
-  /*
-  * Flush thread-local queue to global queue
-  */
- template<typename Vector>
-  void flush(std::vector<Vector>& lqueue, Vector& queue) {
-    size_t size = 0;
-    size_t n = lqueue.size();
-    std::vector<size_t> size_array(n, 0);
-    for (size_t i = 0; i < n; ++i) {
-      //calculate the size of each thread-local frontier
-      size_array[i] = size;
-      //accumulate the total size of all thread-local frontiers
-      size += lqueue[i].size();
-    }
-    //resize 'queue'
-    queue.resize(size); 
-    std::for_each(std::execution::par_unseq, tbb::counting_iterator(0ul), tbb::counting_iterator(n), [&](auto i) {
-      //copy each thread-local queue to global queue based on their size offset
-      auto begin = std::next(queue.begin(), size_array[i]);
-      std::copy(std::execution::par_unseq, lqueue[i].begin(), lqueue[i].end(), begin);
-      lqueue[i].clear();
-    });
-  };
+/*
+* Flush thread-local queue to global queue
+*/
+template<typename Vector>
+void flush(std::vector<Vector>& lqueue, Vector& queue) {
+  size_t size = 0;
+  size_t n = lqueue.size();
+  std::vector<size_t> size_array(n, 0);
+  for (size_t i = 0; i < n; ++i) {
+    //calculate the size of each thread-local frontier
+    size_array[i] = size;
+    //accumulate the total size of all thread-local frontiers
+    size += lqueue[i].size();
+  }
+  //resize 'queue'
+  queue.resize(size); 
+  std::for_each(std::execution::par_unseq, tbb::counting_iterator(0ul), tbb::counting_iterator(n), [&](auto i) {
+    //copy each thread-local queue to global queue based on their size offset
+    auto begin = std::next(queue.begin(), size_array[i]);
+    std::copy(std::execution::par_unseq, lqueue[i].begin(), lqueue[i].end(), begin);
+    lqueue[i].clear();
+  });
+}
 
 template <typename OutGraph, typename InGraph>
 [[gnu::noinline]] auto bfs_v1(const OutGraph& out_graph, const InGraph& in_graph, vertex_id_t<OutGraph> root, int num_bins = 32,
