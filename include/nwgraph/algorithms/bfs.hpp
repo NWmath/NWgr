@@ -834,28 +834,6 @@ template <typename OutGraph, typename InGraph>
   size_t edges_to_check = out_graph.to_be_indexed_.size();
   size_t scout_count = out_graph[root].size();
   
-  /*
-  * Flush thread-local queue to global queue
-  */
-  auto flush = [](std::vector<Vector>& lqueue, Vector& queue) {
-    size_t size = 0;
-    size_t n = lqueue.size();
-    std::vector<size_t> size_array(n, 0);
-    for (size_t i = 0; i < n; ++i) {
-      //calculate the size of each thread-local frontier
-      size_array[i] = size;
-      //accumulate the total size of all thread-local frontiers
-      size += lqueue[i].size();
-    }
-    //resize 'queue'
-    queue.resize(size); 
-    std::for_each(std::execution::par_unseq, tbb::counting_iterator(0ul), tbb::counting_iterator(n), [&](auto i) {
-      //copy each thread-local queue to global queue based on their size offset
-      auto begin = std::next(queue.begin(), size_array[i]);
-      std::copy(std::execution::par_unseq, lqueue[i].begin(), lqueue[i].end(), begin);
-      lqueue[i].clear();
-    });
-  };
   while (!frontier.empty()) {
     if (scout_count > edges_to_check / alpha) {
       size_t awake_count, old_awake_count;
@@ -866,7 +844,7 @@ template <typename OutGraph, typename InGraph>
         awake_count = BU_step(in_graph, parents, visited, front, cur);
         std::swap(front, cur);
       } while ((awake_count >= old_awake_count) || (awake_count > N / beta));
-      bitmap_to_queue<InGraph>(cur, nextfrontier);
+      bitmap_to_queue<InGraph>(front, nextfrontier);
       flush(nextfrontier, frontier);
       scout_count = 1;
     }
