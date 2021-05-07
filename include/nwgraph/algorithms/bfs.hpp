@@ -19,6 +19,7 @@
 #include "nwgraph/util/AtomicBitVector.hpp"
 #include "nwgraph/util/atomic.hpp"
 #include "nwgraph/util/parallel_for.hpp"
+#include "nwgraph/adaptors/neighbor_range.hpp"
 #include <queue>
 
 #include <tbb/concurrent_queue.h>
@@ -565,17 +566,19 @@ template <typename OutGraph, typename InGraph>
 
 
 template<typename Graph>
-size_t BU_step(Graph& g, std::vector<vertex_id_t<Graph>>& parents,
+size_t BU_step(Graph& g, int stride, std::vector<vertex_id_t<Graph>>& parents,
 nw::graph::AtomicBitVector<>& front, nw::graph::AtomicBitVector<>& next) {
   size_t N = num_vertices(g);    // number of nodes
   next.clear();
   return tbb::parallel_reduce(
-      tbb::blocked_range(0ul, N), 0ul,
+      nw::graph::neighbor_range(g), 0ul,
+      //tbb::blocked_range(0ul, N), 0ul,
       [&](auto &&range, auto n) {
-        for (auto&& u = range.begin(), e = range.end(); u != e; ++u) {
+        for (auto&& [u, neighbors] : range) {
+        //for (auto&& u = range.begin(), e = range.end(); u != e; ++u) {
           if (null_vertex_v<vertex_id_t<Graph>>() == parents[u]) {
             //if u has not found a parent (not visited)
-            for (auto &&[v] : g[u]) {
+            for (auto &&[v] : neighbors) {
               if (front.get(v)) {
                 //if v is not visited
                 next.atomic_set(u);
@@ -833,7 +836,7 @@ template <typename OutGraph, typename InGraph>
       awake_count = frontier.size();
       do {
         old_awake_count = awake_count;
-        awake_count = BU_step(in_graph, parents, front, cur);
+        awake_count = BU_step(in_graph, n, parents, front, cur);
         std::swap(front, cur);
       } while ((awake_count >= old_awake_count) || (awake_count > N / beta));
       bitmap_to_queue<InGraph>(front, nextfrontier);
