@@ -563,7 +563,15 @@ template <typename OutGraph, typename InGraph>
   return parents;
 }
 
-
+template<class T>
+inline bool writeMin(T& old, T& next) {
+  T    prev;
+  bool success = false;
+  do
+    prev = old;
+  while (prev > next && !(success = nw::graph::cas(old, prev, next)));
+  return success;
+}
 
 template<typename Graph>
 size_t BU_step(Graph& g, int stride, std::vector<vertex_id_t<Graph>>& parents,
@@ -608,7 +616,8 @@ Vector& cur, std::vector<Vector>& next) {
           auto curr_val = parents[v];
           if (null_vertex_v<vertex_id_t<Graph>>() == curr_val) {
             //if u has not found a parent (not visited)
-            if (nw::graph::cas(parents[v], curr_val, u)) {
+            if (writeMin(parents[v], u)) {
+            //if (nw::graph::cas(parents[v], curr_val, u)) {
               next[worker_index].push_back(v);
               n += g[v].size();
             }
