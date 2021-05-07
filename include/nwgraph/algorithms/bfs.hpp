@@ -435,7 +435,6 @@ template <typename OutGraph, typename InGraph>
   const std::size_t                                   M = out_graph.to_be_indexed_.size();
   std::vector<tbb::concurrent_vector<vertex_id_type>> q1(n), q2(n);
 
-  nw::graph::AtomicBitVector  visited(N);
   std::vector<vertex_id_type> parents(N);
   nw::graph::AtomicBitVector front(N, false);
   nw::graph::AtomicBitVector curr(N);
@@ -446,7 +445,6 @@ template <typename OutGraph, typename InGraph>
   std::uint64_t edges_to_check = M;
   std::uint64_t scout_count    = out_graph[root].size();
 
-  visited.atomic_set(root);
   parents[root] = root;
   q1[root % n].push_back(root);
 
@@ -481,9 +479,9 @@ template <typename OutGraph, typename InGraph>
             tbb::blocked_range(0ul, N), 0ul,
             [&](auto&& range, auto n) {
               for (auto&& u = range.begin(), e = range.end(); u != e; ++u) {
-                if (visited.get(u) == 0) {
+                if (null_vertex == parents[u]) {
                   for (auto&& [v] : in_graph[u]) {
-                    if (front.get(v) && visited.atomic_set(u) == 0) {
+                    if (front.get(v)) {
                       curr.atomic_set(u);
                       parents[u] = v;
                       ++n;
@@ -521,10 +519,12 @@ template <typename OutGraph, typename InGraph>
                   return nw::graph::parallel_for(
                       out_graph[u],
                       [&](auto&& v) {
-                        if (visited.atomic_get(v) == 0 && visited.atomic_set(v) == 0) {
-                          q2[u % n].push_back(v);
-                          parents[v] = u;
-                          return out_graph[v].size();
+                        auto curr_val = parents[v];
+                        if (null_vertex == curr_val) {
+                          if (nw::graph::cas(parents[v], curr_val, u)) {
+                            q2[u % n].push_back(v);
+                            return out_graph[v].size();
+                          }
                         }
                         return 0ul;
                       },
@@ -566,7 +566,6 @@ template <typename OutGraph, typename InGraph>
 
 template<typename Graph>
 size_t BU_step(Graph& g, std::vector<vertex_id_t<Graph>>& parents,
-nw::graph::AtomicBitVector<>& visited, 
 nw::graph::AtomicBitVector<>& front, nw::graph::AtomicBitVector<>& next) {
   size_t N = num_vertices(g);    // number of nodes
   next.clear();
@@ -577,7 +576,7 @@ nw::graph::AtomicBitVector<>& front, nw::graph::AtomicBitVector<>& next) {
           if (null_vertex_v<vertex_id_t<Graph>>() == parents[u]) {
             //if u has not found a parent (not visited)
             for (auto &&[v] : g[u]) {
-              if (front.get(v) && visited.atomic_set(u) == 0) {
+              if (front.get(v)) {
                 //if v is not visited
                 next.atomic_set(u);
                 parents[u] = v;
@@ -593,7 +592,6 @@ nw::graph::AtomicBitVector<>& front, nw::graph::AtomicBitVector<>& next) {
 
 template<typename Graph, typename Vector>
 size_t TD_step(Graph& g, std::vector<vertex_id_t<Graph>>& parents,
-nw::graph::AtomicBitVector<>& visited, 
 Vector& cur, std::vector<Vector>& next) {
   size_t scout_count = 0;
   size_t N = cur.size();
@@ -672,7 +670,6 @@ template <typename OutGraph, typename InGraph>
   std::vector<Vector> lqueue(n);
   //std::vector<tbb::concurrent_vector<vertex_id_type>> q1(n), q2(n);
 
-  nw::graph::AtomicBitVector  visited(N);
   std::vector<vertex_id_type> parents(N);
 
   constexpr const auto null_vertex = null_vertex_v<vertex_id_type>();
@@ -681,7 +678,6 @@ template <typename OutGraph, typename InGraph>
   std::uint64_t edges_to_check = M;
   std::uint64_t scout_count    = out_graph[root].size();
 
-  visited.atomic_set(root);
   parents[root] = root;
   queue.reserve(N);
   queue.push_back(root);
@@ -714,9 +710,9 @@ template <typename OutGraph, typename InGraph>
             tbb::blocked_range(0ul, N), 0ul,
             [&](auto&& range, auto n) {
               for (auto&& u = range.begin(), e = range.end(); u != e; ++u) {
-                if (visited.get(u) == 0) {
+                if (null_vertex == parents[u]) {
                   for (auto&& [v] : in_graph[u]) {
-                    if (front.get(v) && visited.atomic_set(u) == 0) {
+                    if (front.get(v)) {
                       curr.atomic_set(u);
                       parents[u] = v;
                       ++n;
@@ -754,10 +750,12 @@ template <typename OutGraph, typename InGraph>
               n += nw::graph::parallel_for(
                   out_graph[u],
                   [&](auto&& v) {
-                    if (visited.atomic_get(v) == 0 && visited.atomic_set(v) == 0) {
-                      lqueue[worker_index].push_back(v);
-                      parents[v] = u;
-                      return out_graph[v].size();
+                    auto curr_val = parents[v];
+                    if (null_vertex == curr_val) {
+                      if (nw::graph::cas(parents[v], curr_val, u)) {
+                        lqueue[worker_index].push_back(v);
+                        return out_graph[v].size();
+                      }
                     }
                     return 0ul;
                   }, std::plus{}, 0ul);
@@ -827,8 +825,6 @@ template <typename OutGraph, typename InGraph>
   std::vector<Vector> nextfrontier(n);
   frontier.reserve(N);
   frontier.push_back(root);
-  nw::graph::AtomicBitVector visited(N);
-  visited.set(root);
   nw::graph::AtomicBitVector front(N, false), cur(N);
   size_t edges_to_check = out_graph.to_be_indexed_.size();
   size_t scout_count = out_graph[root].size();
@@ -840,7 +836,7 @@ template <typename OutGraph, typename InGraph>
       awake_count = frontier.size();
       do {
         old_awake_count = awake_count;
-        awake_count = BU_step(in_graph, parents, visited, front, cur);
+        awake_count = BU_step(in_graph, parents, front, cur);
         std::swap(front, cur);
       } while ((awake_count >= old_awake_count) || (awake_count > N / beta));
       bitmap_to_queue<InGraph>(front, nextfrontier);
@@ -849,7 +845,7 @@ template <typename OutGraph, typename InGraph>
     }
     else {
       edges_to_check -= scout_count;
-      scout_count = TD_step(out_graph, parents, visited, frontier, nextfrontier);
+      scout_count = TD_step(out_graph, parents, frontier, nextfrontier);
       flush(nextfrontier, frontier);
     }
   }//while
