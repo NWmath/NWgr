@@ -559,7 +559,7 @@ template <typename OutGraph, typename InGraph>
                 }, std::plus{}, 0ul);
         }, std::plus{}, 0ul);
     }
-
+/*
     if (0 == nw::graph::parallel_for(
       tbb::blocked_range(0ul, q2.size()),
       [&](auto&& i) {
@@ -569,7 +569,7 @@ template <typename OutGraph, typename InGraph>
     }
     std::swap(q1, q2);
     std::for_each(std::execution::par_unseq, q2.begin(), q2.end(), [&](auto&& q) { q.clear(); });
-/*
+*/
     done = true;
     for (auto&& q : q2) {
       if (q.size() != 0) {
@@ -581,7 +581,7 @@ template <typename OutGraph, typename InGraph>
     for (auto&& q : q2) {
       q.clear();
     }
-    */
+    
   }
 
   return parents;
