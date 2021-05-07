@@ -459,7 +459,7 @@ template <typename OutGraph, typename InGraph>
           tbb::blocked_range(0ul, q1.size()),
           [&](auto&& i) {
             auto&& q = q1[i];
-            std::for_each(std::execution::par_unseq, q.begin(), q.end(), [&](auto&& u) { curr.atomic_set(u); });
+            std::for_each(q.begin(), q.end(), [&](auto&& u) { curr.atomic_set(u); });
             return q.size();
           }, std::plus{}, 0ul);
 
@@ -510,6 +510,7 @@ template <typename OutGraph, typename InGraph>
       scout_count = 1;
     } else {
       edges_to_check -= scout_count;
+      /*
       scout_count = nw::graph::parallel_for(
           tbb::blocked_range(0ul, q1.size()),
           [&](auto&& i) {
@@ -535,6 +536,25 @@ template <typename OutGraph, typename InGraph>
                 std::plus{}, 0ul);
           },
           std::plus{}, 0ul);
+          */
+        for (auto&& q : q1) {
+          scout_count += nw::graph::parallel_for(
+                tbb::blocked_range(0ul, q.size()),
+                [&](auto&& i) {
+                  size_t count = 0;
+                  auto&& u = q[i];
+                  for (auto&& [v] : out_graph[u]) {
+                    auto curr_val = parents[v];
+                    if (null_vertex == curr_val) {
+                      if (nw::graph::cas(parents[v], curr_val, u)) {
+                        q2[u % n].push_back(v);
+                        count += out_graph[v].size();
+                      }
+                    }
+                  }
+                  return count;
+                }, std::plus{}, 0ul);
+        }
     }
 
     if (0 == nw::graph::parallel_for(
