@@ -829,6 +829,7 @@ template <typename OutGraph, typename InGraph>
   frontier.reserve(N);
   frontier.push_back(root);
   nw::graph::AtomicBitVector visited(N);
+  visited.set(root);
   nw::graph::AtomicBitVector front(N, false), cur(N);
   size_t edges_to_check = out_graph.to_be_indexed_.size();
   size_t scout_count = out_graph[root].size();
