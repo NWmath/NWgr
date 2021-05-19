@@ -729,6 +729,7 @@ public:
 
   template <int idx = 0, class Vector, class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
   auto perm_by_degree(Vector&& degree, std::string direction = "ascending", ExecutionPolicy&& policy = {}) {
+    std::cout << "relabel column " << idx << " by degree in " << direction << " order" << std::endl;
     std::vector<vertex_id_t> perm(degree.size());
 
     tbb::parallel_for(tbb::blocked_range(0ul, perm.size()), [&](auto&& r) {
@@ -752,7 +753,7 @@ public:
   }
 
   template <class Vector = std::vector<vertex_id_t>, class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
-  void relabel(Vector&& perm, ExecutionPolicy&& policy = {}) {
+  auto relabel(Vector&& perm, ExecutionPolicy&& policy = {}) {
     std::vector<vertex_id_t> iperm(perm.size());
 
     tbb::parallel_for(tbb::blocked_range(0ul, iperm.size()), [&](auto&& r) {
@@ -766,10 +767,11 @@ public:
                     std::get<0>(x) = iperm[std::get<0>(x)];
                     std::get<1>(x) = iperm[std::get<1>(x)];
                   });
+    return iperm;
   }
 
   template <int idx, class Vector = std::vector<vertex_id_t>, class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
-  void relabel(Vector&& perm, ExecutionPolicy&& policy = {}) {
+  auto relabel(Vector&& perm, ExecutionPolicy&& policy = {}) {
     std::vector<vertex_id_t> iperm(perm.size());
 
     tbb::parallel_for(tbb::blocked_range(0ul, iperm.size()), [&](auto&& r) {
@@ -781,6 +783,7 @@ public:
     std::for_each(policy, base::begin(), base::end(),[&](auto&& x) {
       std::get<idx>(x) = iperm[std::get<idx>(x)];
     });
+    return iperm;
   }
 
   template <int idx, class Vector = std::vector<int>>
