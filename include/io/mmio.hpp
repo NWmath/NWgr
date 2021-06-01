@@ -273,23 +273,36 @@ void aos_stream(std::ofstream& outputStream, edge_list<sym, Attributes...> A, co
 
   A.stream_prv(outputStream);
 
-  outputStream << A.max()[0] + 1 << " " << A.max()[1] + 1 << " ";
+  if (0 == w_idx)
+    outputStream << A.max()[0] + 1 << " " << A.max()[1] + 1 << " ";
+  else 
+    outputStream << A.max()[1] + 1 << " " << A.max()[0] + 1 << " ";
   if (file_symmetry == "general" && sym == directedness::undirected)
     outputStream << 2 * (A.end() - A.begin()) << std::endl;
   else
     outputStream << A.end() - A.begin() << std::endl;
+  if (0 == w_idx) {
 
-  for (auto&& element : A) {
-    outputStream << std::get<0>(element) + 1 << " " << std::get<1>(element) + 1 << " ";
-    if (w_idx != 0) {
-      outputStream << std::get<w_idx>(element);
-    }
-    outputStream << std::endl;
-    if (file_symmetry == "general" && sym == directedness::undirected) {
-      outputStream << std::get<1>(element) + 1 << " " << std::get<0>(element) + 1 << " ";
-      if (w_idx != 0) outputStream << std::get<w_idx>(element);
-
+    for (auto&& element : A) {
+      outputStream << std::get<0>(element) + 1 << " "
+                   << std::get<1>(element) + 1 << " ";
       outputStream << std::endl;
+      if (file_symmetry == "general" && sym == directedness::undirected) {
+        outputStream << std::get<1>(element) + 1 << " "
+                     << std::get<0>(element) + 1 << " ";
+        outputStream << std::endl;
+      }
+    }
+  } else {
+    for (auto&& element : A) {
+      outputStream << std::get<1>(element) + 1 << " "
+                   << std::get<0>(element) + 1 << " ";
+      outputStream << std::endl;
+      if (file_symmetry == "general" && sym == directedness::undirected) {
+        outputStream << std::get<0>(element) + 1 << " "
+                     << std::get<1>(element) + 1 << " ";
+        outputStream << std::endl;
+      }
     }
   }
 }
