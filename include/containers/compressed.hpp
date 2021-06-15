@@ -624,9 +624,7 @@ public:
   }
   //move constructor
   adjacency(std::vector<vertex_id_t>&& indices, std::vector<vertex_id_t>&& to_be_indexed) :
-  indexed_struct_of_arrays<vertex_id_t, Attributes...>(std::move(indices), std::move(to_be_indexed)) {
-    std::cout << "adj move constuctor\n";
-  }
+  indexed_struct_of_arrays<vertex_id_t, Attributes...>(std::move(indices), std::move(to_be_indexed)) {}
 
   //  size_t size() const { return indexed_struct_of_arrays<vertex_id_t, Attributes...>::size(); }
 
