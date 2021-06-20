@@ -285,22 +285,22 @@ void aos_stream(std::ofstream& outputStream, edge_list<sym, Attributes...> A, co
 
     for (auto&& element : A) {
       outputStream << std::get<0>(element) + 1 << " "
-                   << std::get<1>(element) + 1 << " ";
+                   << std::get<1>(element) + 1;
       outputStream << std::endl;
       if (file_symmetry == "general" && sym == directedness::undirected) {
         outputStream << std::get<1>(element) + 1 << " "
-                     << std::get<0>(element) + 1 << " ";
+                     << std::get<0>(element) + 1;
         outputStream << std::endl;
       }
     }
   } else {
     for (auto&& element : A) {
       outputStream << std::get<1>(element) + 1 << " "
-                   << std::get<0>(element) + 1 << " ";
+                   << std::get<0>(element) + 1;
       outputStream << std::endl;
       if (file_symmetry == "general" && sym == directedness::undirected) {
         outputStream << std::get<0>(element) + 1 << " "
-                     << std::get<1>(element) + 1 << " ";
+                     << std::get<1>(element) + 1;
         outputStream << std::endl;
       }
     }
