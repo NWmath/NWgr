@@ -1,6 +1,6 @@
 ---
 layout: library
-title: worklist.hpp
+title: adaptors/worklist.hpp
 owner: Andrew Lumsdaine, Kevin Deweese
 brief: Classes for worklist data structures
 tags:

@@ -7,11 +7,14 @@ tags:
   - sourcefile
 library-type: sourcefile
 typedefs:
+  vertex_id_type:
+    definition: vertex_id_t<GraphT>
+    description: __MISSING__
   weight_t:
     definition: DistanceT
     description: __MISSING__
   weighted_vertex:
-    definition: std::tuple<vertex_id_t, weight_t>
+    definition: std::tuple<vertex_id_type, weight_t>
     description: __MISSING__
 ---
 

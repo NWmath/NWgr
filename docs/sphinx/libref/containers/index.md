@@ -5,5 +5,5 @@ layout: directory
 title: containers
 ---
 
-```{index} 
+```{index} Containers
 ```

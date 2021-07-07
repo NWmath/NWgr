@@ -5,7 +5,7 @@ owner: __MISSING__
 brief: __MISSING__
 tags:
   - class
-defined_in_file: bfs_edge_range.hpp
+defined_in_file: adaptors/bfs_edge_range.hpp
 declaration: "\nclass nw::graph::bfs_edge_range::bfs_edge_range_iterator::end_sentinel_type;"
 dtor: unspecified
 namespace:

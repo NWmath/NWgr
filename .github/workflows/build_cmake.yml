@@ -1,0 +1,55 @@
+# Workflow to configure with cmake and build with gcc-10
+
+name: Build and test with gcc-10
+
+on:
+  push:
+    branches: [ master, pre_release, update_ci ]
+  workflow_dispatch:
+    branches: [ master, pre_release, update_ci ]
+
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+jobs:
+  build:
+
+    runs-on: ubuntu-20.04
+
+    steps:
+
+    - name: Checkout NWgr
+      uses: actions/checkout@v2
+      with:
+        path: NWgr
+
+    - name: Checkout NWut
+      uses: actions/checkout@v2
+      with:
+        repository: NWmath/NWut
+        token: ${{ secrets.PULL_FROM_NWMATH }}
+        ref: master
+        path: NWut
+
+    - name: prep
+      run: |
+        sudo apt-get install -y libtbb2 libtbb-dev nlohmann-json3-dev
+
+    - name: cmake
+      run: |
+        cd NWgr
+        mkdir build
+        cd build
+        cmake .. -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_CXX_COMPILER=g++-10 -DCMAKE_C_COMPILER=gcc-10
+
+    - name: make
+      run: |
+        cd NWgr/build
+        make
+
+    - name: test
+      run: |
+        cd NWgr/build
+        make test
+
+

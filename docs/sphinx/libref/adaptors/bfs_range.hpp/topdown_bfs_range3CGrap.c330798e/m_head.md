@@ -5,7 +5,7 @@ owner: __MISSING__
 brief: __MISSING__
 tags:
   - method
-defined_in_file: bfs_range.hpp
+defined_in_file: adaptors/bfs_range.hpp
 overloads:
   decltype(auto) head():
     annotation:

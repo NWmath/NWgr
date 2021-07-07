@@ -1,4 +1,4 @@
-FROM ubuntu:20.04
+FROM ubuntu:21.04
 
 RUN DEBIAN_FRONTEND=noninteractive \
     apt-get -y update    \
@@ -35,8 +35,6 @@ RUN DEBIAN_FRONTEND=noninteractive	\
     		apt-get -y install	\
 		software-properties-common
 
-
-
 RUN wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key|sudo apt-key add -
 RUN apt-add-repository 'deb http://apt.llvm.org/focal/ llvm-toolchain-focal-10 main'
 RUN apt-add-repository 'deb http://apt.llvm.org/focal/ llvm-toolchain-focal-11 main'
@@ -51,16 +49,26 @@ RUN apt-add-repository 'deb http://apt.llvm.org/focal/ llvm-toolchain-focal-11 m
 #	 	clang-10 clang-tools-10 clang-10-doc libclang-common-10-dev libclang-10-dev libclang1-10 clang-format-10 python-clang-10 clangd-10 \
 #		lldb-10 lld-10 libc++-10-dev libc++abi-10-dev libomp-10-dev
 
+RUN DEBIAN_FRONTEND=noninteractive	\
+   		apt-get -y install	\
+		gcc-10 	   		\
+		g++-10 	   		
 
 RUN DEBIAN_FRONTEND=noninteractive	\
-    		apt-get -y install	\
-		libllvm11  		\
-		llvm-11			\
-		llvm-11-dev		\
-		clang-tools-11		\
-		libclang-common-11-dev  \
-		clang-11  		\
-		libclang-11-dev 		
+   		apt-get -y install	\
+		libllvm11 llvm-11 llvm-11-dev llvm-11-doc llvm-11-examples llvm-11-runtime \
+	 	clang-11 clang-tools-11 clang-11-doc libclang-common-11-dev libclang-11-dev libclang1-11 clang-format-11 clangd-11 \
+		lld-11 libc++-11-dev libc++abi-11-dev libomp-11-dev
+
+# RUN DEBIAN_FRONTEND=noninteractive	\
+#     		apt-get -y install	\
+# 		libllvm11  		\
+# 		llvm-11			\
+# 		llvm-11-dev		\
+# 		clang-tools-11		\
+# 		libclang-common-11-dev  \
+# 		clang-11  		\
+# 		libclang-11-dev 		
 
 
 RUN DEBIAN_FRONTEND=noninteractive	\
@@ -82,8 +90,6 @@ RUN DEBIAN_FRONTEND=noninteractive \
 	       texlive-font-utils  \
 	       texlive-fonts-extra \
 	       texlive-fonts-recommended
-
-   
 
 RUN echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true | sudo debconf-set-selections
 RUN apt-get -y install ttf-mscorefonts-installer
@@ -116,7 +122,7 @@ USER root
 
 RUN \
        update-alternatives --install /usr/bin/python python /usr/bin/python3 10					  \
-    && update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-9 90 --slave /usr/bin/g++ g++ /usr/bin/g++-9 \
+    && update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-10 90 --slave /usr/bin/g++ g++ /usr/bin/g++-10 \
     && update-alternatives --install /usr/bin/cc cc /usr/bin/gcc 30						  \
     && update-alternatives --install /usr/bin/c++ c++ /usr/bin/g++ 30						  \
     && update-alternatives --install /usr/bin/clang   clang   /usr/bin/clang-11   40				  \
@@ -135,9 +141,9 @@ RUN git submodule update --init
 RUN mkdir build
 WORKDIR /home/nwmath/hyde/build
 
-RUN sed -i.bak 's/const bool is_negative = (x <= 0) and (x != 0)/const bool is_negative = (x < 0)/' ../include/nlohmann/detail/output/serializer.hpp
+# RUN sed -i.bak 's/const bool is_negative = (x <= 0) and (x != 0)/const bool is_negative = (x < 0)/' ../include/nlohmann/detail/output/serializer.hpp
 
-RUN sed -i.bak 's/failure |= check_editable_scalar(filepath, have, expected, "", merged, "title");/failure |= check_scalar(filepath, have, expected, "", merged, "title");/' ../emitters/yaml_base_emitter.cpp
+# RUN sed -i.bak 's/failure |= check_editable_scalar(filepath, have, expected, "", merged, "title");/failure |= check_scalar(filepath, have, expected, "", merged, "title");/' ../emitters/yaml_base_emitter.cpp
 
 RUN cmake .. -GNinja && ninja
 

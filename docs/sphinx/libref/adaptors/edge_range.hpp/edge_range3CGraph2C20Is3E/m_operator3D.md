@@ -5,7 +5,7 @@ owner: __MISSING__
 brief: __MISSING__
 tags:
   - method
-defined_in_file: edge_range.hpp
+defined_in_file: adaptors/edge_range.hpp
 overloads:
   edge_range<Graph, Is...> & operator=(const edge_range<Graph, Is...> &):
     annotation:

@@ -9,7 +9,7 @@
 //
 
 static constexpr const char USAGE[] =
- R"(sssp.exe : BGL17 page rank benchmark driver.
+    R"(sssp.exe : BGL17 page rank benchmark driver.
   Usage:
       sssp.exe (-h | --help)
       sssp.exe -f FILE [-r NODE | -s FILE] [-i NUM] [-n NUM] [-d NUM] [--seed NUM] [--version ID...] [--log FILE] [--log-header] [-vV] [--debug] [THREADS]...
@@ -31,39 +31,36 @@ static constexpr const char USAGE[] =
       -V, --verbose           run in verbose mode
 )";
 
-#include "algorithms/delta_stepping.hpp"
 #include "Log.hpp"
+#include "nwgraph/algorithms/delta_stepping.hpp"
 #include "common.hpp"
-#include "util/make_priority_queue.hpp"
-#include "util/traits.hpp"
+#include "nwgraph/util/make_priority_queue.hpp"
+#include "nwgraph/util/traits.hpp"
 #include <docopt.h>
-
 
 using namespace nw::graph::bench;
 using namespace nw::graph;
 using namespace nw::util;
 
-
 using distance_t = std::uint64_t;
 
 /// Basic sequential sssp (Dijkstra) copied from GAP benchmark suite.
 template <class Graph>
-static auto dijkstra(Graph&& graph, vertex_id_t source)
-{
+static auto dijkstra(const Graph& graph, vertex_id_t<Graph> source) {
+  using vertex_id_type = vertex_id_t<Graph>;
+
   // Workqueue
-  using WN = std::tuple<vertex_id_t, distance_t>;
-  auto mq = nw::graph::make_priority_queue<WN>([](const WN& a, const WN& b) {
-    return std::get<1>(a) > std::get<1>(b);
-  });
+  using WN = std::tuple<vertex_id_type, distance_t>;
+  auto mq  = nw::graph::make_priority_queue<WN>([](const WN& a, const WN& b) { return std::get<1>(a) > std::get<1>(b); });
   mq.emplace(source, 0);
 
   // Distances
-  std::vector<distance_t> dist(graph.max() + 1, std::numeric_limits<distance_t>::max());
+  std::vector<distance_t> dist(num_vertices(graph), std::numeric_limits<distance_t>::max());
   dist[source] = 0;
 
   auto g = graph.begin();
   while (!mq.empty()) {
-    auto [u, td] = mq.top(); // don't capture auto&& references here
+    auto [u, td] = mq.top();    // don't capture auto&& references here
     mq.pop();
     if (td == dist[u]) {
       for (auto&& [v, w] : g[u]) {
@@ -80,7 +77,8 @@ static auto dijkstra(Graph&& graph, vertex_id_t source)
 }
 
 template <class Graph, class Dist>
-static bool SSSPVerifier(Graph&& graph, vertex_id_t source, Dist&& dist, bool verbose) {
+static bool SSSPVerifier(const Graph& graph, vertex_id_t<Graph> source, Dist&& dist, bool verbose) {
+
   auto oracle = dijkstra(graph, source);
   if (std::equal(dist.begin(), dist.end(), oracle.begin())) {
     return true;
@@ -106,42 +104,47 @@ static bool SSSPVerifier(Graph&& graph, vertex_id_t source, Dist&& dist, bool ve
 /// and verifies the result, based on the verifier. Returns the time it took to
 /// run, as well as a boolean indicating if we passed verification.
 template <class Graph, class Verifier>
-static std::tuple<double, bool>
-sssp(int id, Graph&& graph, vertex_id_t source, distance_t delta, Verifier&& verifier)
-{
+static std::tuple<double, bool> sssp(int id, const Graph& graph, vertex_id_t<Graph> source, distance_t delta, Verifier&& verifier) {
   switch (id) {
-   case  0: return time_op_verify([&] { return delta_stepping_v0<distance_t>(std::forward<Graph>(graph),  source, delta); }, std::forward<Verifier>(verifier));
-   case  1: return time_op_verify([&] { return delta_stepping_m1<distance_t>(std::forward<Graph>(graph),  source, delta); }, std::forward<Verifier>(verifier));
-   case  6: return time_op_verify([&] { return delta_stepping_v6<distance_t>(std::forward<Graph>(graph),  source, delta); }, std::forward<Verifier>(verifier));
-   case  8: return time_op_verify([&] { return delta_stepping_v8<distance_t>(std::forward<Graph>(graph),  source, delta); }, std::forward<Verifier>(verifier));
-   case  9: return time_op_verify([&] { return delta_stepping_v9<distance_t>(std::forward<Graph>(graph),  source, delta); }, std::forward<Verifier>(verifier));
-   case 10: return time_op_verify([&] { return delta_stepping_v10<distance_t>(std::forward<Graph>(graph), source, delta); }, std::forward<Verifier>(verifier));
-   case 11: return time_op_verify([&] { return delta_stepping_v11<distance_t>(std::forward<Graph>(graph), source, delta); }, std::forward<Verifier>(verifier));
-   case 12: return time_op_verify([&] { return delta_stepping_v12<distance_t>(std::forward<Graph>(graph), source, delta); }, std::forward<Verifier>(verifier));
-   default:
-    std::cerr << "Invalid SSSP version " << id << "\n";
-    return std::tuple(0.0, true);
+    case 0:
+      return time_op_verify([&] { return delta_stepping_v0<distance_t>(graph, source, delta); }, std::forward<Verifier>(verifier));
+    case 1:
+      return time_op_verify([&] { return delta_stepping_m1<distance_t>(graph, source, delta); }, std::forward<Verifier>(verifier));
+    case 6:
+      return time_op_verify([&] { return delta_stepping_v6<distance_t>(graph, source, delta); }, std::forward<Verifier>(verifier));
+    case 8:
+      return time_op_verify([&] { return delta_stepping_v8<distance_t>(graph, source, delta); }, std::forward<Verifier>(verifier));
+    case 9:
+      return time_op_verify([&] { return delta_stepping_v9<distance_t>(graph, source, delta); }, std::forward<Verifier>(verifier));
+    case 10:
+      return time_op_verify([&] { return delta_stepping_v10<distance_t>(graph, source, delta); }, std::forward<Verifier>(verifier));
+    case 11:
+      return time_op_verify([&] { return delta_stepping_v11<distance_t>(graph, source, delta); }, std::forward<Verifier>(verifier));
+    case 12:
+      return time_op_verify([&] { return delta_stepping_v12<distance_t>(graph, source, delta); }, std::forward<Verifier>(verifier));
+    default:
+      std::cerr << "Invalid SSSP version " << id << "\n";
+      return std::tuple(0.0, true);
   }
 }
 
-int main(int argc, char* argv[])
-{
+int main(int argc, char* argv[]) {
   std::vector strings = std::vector<std::string>(argv + 1, argv + argc);
-  std::map       args = docopt::docopt(USAGE, strings, true);
+  std::map    args    = docopt::docopt(USAGE, strings, true);
 
   // Read the options
-  bool       verify = args["--verify"].asBool();
-  bool      verbose = args["--verbose"].asBool();
-  bool        debug = args["--debug"].asBool();
-  long       trials = args["-n"].asLong() ?: 1; // at least one trial
-  long   iterations = args["-i"].asLong() ?: 1; // at least one iteration
-  std::string  file = args["-f"].asString();
-  std::size_t delta = args["--delta"].asLong() ?: 1; // at least one
+  bool        verify     = args["--verify"].asBool();
+  bool        verbose    = args["--verbose"].asBool();
+  bool        debug      = args["--debug"].asBool();
+  long        trials     = args["-n"].asLong() ?: 1;    // at least one trial
+  long        iterations = args["-i"].asLong() ?: 1;    // at least one iteration
+  std::string file       = args["-f"].asString();
+  std::size_t delta      = args["--delta"].asLong() ?: 1;    // at least one
 
-  std::vector     ids = parse_ids(args["--version"].asStringList());
+  std::vector ids     = parse_ids(args["--version"].asStringList());
   std::vector threads = parse_n_threads(args["THREADS"].asStringList());
 
-  auto aos_a = load_graph<directed, int>(file);
+  auto aos_a = load_graph<nw::graph::directedness::directed, int>(file);
 
   if (verbose) {
     aos_a.stream_stats();
@@ -157,16 +160,14 @@ int main(int argc, char* argv[])
     graph.stream_indices();
   }
 
-  std::vector<vertex_id_t> sources;
+  std::vector<vertex_id_t<decltype(graph)>> sources;
   if (args["--sources"]) {
     sources = load_sources_from_file(graph, args["--sources"].asString());
     assert(size_t(trials * iterations) <= sources.size());
-  }
-  else if (args["-r"]) {
+  } else if (args["-r"]) {
     sources.resize(trials);
     std::fill(sources.begin(), sources.end(), args["-r"].asLong());
-  }
-  else {
+  } else {
     sources = build_random_sources(graph, trials, args["--seed"].asLong());
   }
 
@@ -199,9 +200,8 @@ int main(int argc, char* argv[])
 
   times.print(std::cout);
 
-
   if (args["--log"]) {
-    auto   file = args["--log"].asString();
+    auto file   = args["--log"].asString();
     bool header = args["--log-header"].asBool();
     log("sssp", file, times, header, "Time(s)");
   }

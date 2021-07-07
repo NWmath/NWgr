@@ -7,20 +7,20 @@ tags:
   - function
 defined_in_file: algorithms/triangle_count.hpp
 overloads:
-  "template <class Graph, class OuterExecutionPolicy, class InnerExecutionPolicy>\nstd::size_t triangle_count_v7(Graph &&, OuterExecutionPolicy &&, InnerExecutionPolicy)":
+  "template <class Graph, class OuterExecutionPolicy, class InnerExecutionPolicy>\nstd::size_t triangle_count_v7(const Graph &, OuterExecutionPolicy &&, InnerExecutionPolicy)":
     arguments:
-      - description: Adjacency graph (must be upper triangular)
+      - description: __OPTIONAL__
         name: A
-        type: Graph &&
-      - description: Execution policy over outer range
+        type: const Graph &
+      - description: __OPTIONAL__
         name: outer
         type: OuterExecutionPolicy &&
-      - description: Execution policy within inner neighbor range
+      - description: __OPTIONAL__
         name: inner
         type: InnerExecutionPolicy
-    description: This version of triangle counting is explicitly two-dimensional. It works on graphs that are upper triangular, and uses a `std::for_each` for the outer loop decomposition. <br />This version takes an outer and inner execution policy. The outer policy is used to parallelize the `std::for_each` while the inner policy is used to parallelize the `std::set_intersection`. By default the `std::for_each` is parallel while the `std::set_intersection` is sequential.
-    return: The number of triangles in the graph
-    signature_with_names: "template <class Graph, class OuterExecutionPolicy, class InnerExecutionPolicy>\nstd::size_t triangle_count_v7(Graph && A, OuterExecutionPolicy && outer, InnerExecutionPolicy inner)"
+    description: __OPTIONAL__
+    return: __OPTIONAL__
+    signature_with_names: "template <class Graph, class OuterExecutionPolicy, class InnerExecutionPolicy>\nstd::size_t triangle_count_v7(const Graph & A, OuterExecutionPolicy && outer, InnerExecutionPolicy inner)"
 namespace:
   - nw
   - graph

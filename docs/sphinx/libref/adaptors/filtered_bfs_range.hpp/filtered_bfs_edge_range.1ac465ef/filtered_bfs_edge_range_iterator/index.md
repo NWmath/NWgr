@@ -5,7 +5,7 @@ owner: __MISSING__
 brief: __MISSING__
 tags:
   - class
-defined_in_file: filtered_bfs_range.hpp
+defined_in_file: adaptors/filtered_bfs_range.hpp
 declaration: "\nclass nw::graph::filtered_bfs::filtered_bfs_edge_range::filtered_bfs_edge_range_iterator;"
 dtor: unspecified
 fields:
@@ -23,7 +23,7 @@ fields:
     annotation:
       - private
     description: __MISSING__
-    type: nw::graph::vertex_id_t
+    type: nw::graph::filtered_bfs::filtered_bfs_edge_range::vertex_id_type
   the_range_:
     annotation:
       - private
@@ -38,7 +38,7 @@ fields:
     annotation:
       - private
     description: __MISSING__
-    type: nw::graph::vertex_id_t
+    type: nw::graph::filtered_bfs::filtered_bfs_edge_range::vertex_id_type
 namespace:
   - nw
   - graph
