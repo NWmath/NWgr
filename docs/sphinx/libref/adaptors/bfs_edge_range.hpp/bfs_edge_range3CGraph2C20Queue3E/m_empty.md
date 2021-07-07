@@ -5,7 +5,7 @@ owner: __MISSING__
 brief: __MISSING__
 tags:
   - method
-defined_in_file: bfs_edge_range.hpp
+defined_in_file: adaptors/bfs_edge_range.hpp
 overloads:
   bool empty():
     description: __OPTIONAL__

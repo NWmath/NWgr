@@ -7,20 +7,20 @@ tags:
   - function
 defined_in_file: algorithms/bfs.hpp
 overloads:
-  "template <class Graph, class Transpose>\nauto bfs_bottom_up(Graph &&, Transpose &&, nw::graph::vertex_id_t)":
+  "template <class Graph, class Transpose>\nauto bfs_bottom_up(const Graph &, const Transpose &, vertex_id_t<Graph>)":
     arguments:
-      - description: Adjacency graph (outgoing edges)
+      - description: __OPTIONAL__
         name: g
-        type: Graph &&
-      - description: Adjacency graph (incoming edges)
+        type: const Graph &
+      - description: __OPTIONAL__
         name: gx
-        type: Transpose &&
-      - description: Root of BFS search
+        type: const Transpose &
+      - description: __OPTIONAL__
         name: root
-        type: nw::graph::vertex_id_t
-    description: Bottom-up breadth first search uses tbb::parallel_reduce and tbb::blocked_range to search all the vertices for frontier parents.
-    return: Vector of parent vertices forming BFS tree
-    signature_with_names: "template <class Graph, class Transpose>\nauto bfs_bottom_up(Graph && g, Transpose && gx, nw::graph::vertex_id_t root)"
+        type: vertex_id_t<Graph>
+    description: __OPTIONAL__
+    return: __OPTIONAL__
+    signature_with_names: "template <class Graph, class Transpose>\nauto bfs_bottom_up(const Graph & g, const Transpose & gx, vertex_id_t<Graph> root)"
 namespace:
   - nw
   - graph

@@ -1,8 +1,8 @@
 ---
 layout: library
 title: graph_base.hpp
-owner: __MISSING__
-brief: __MISSING__
+owner: Andrew Lumsdaine
+brief: Base class for unipartite and bipartite graphs
 tags:
   - sourcefile
 library-type: sourcefile

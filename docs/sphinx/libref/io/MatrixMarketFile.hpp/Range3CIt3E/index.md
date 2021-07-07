@@ -5,7 +5,7 @@ owner: __MISSING__
 brief: __MISSING__
 tags:
   - class
-defined_in_file: MatrixMarketFile.hpp
+defined_in_file: io/MatrixMarketFile.hpp
 declaration: "template <typename It>\nclass mmio::Range;"
 dtor: unspecified
 fields:

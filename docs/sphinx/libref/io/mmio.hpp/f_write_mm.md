@@ -5,7 +5,7 @@ owner: __MISSING__
 brief: __MISSING__
 tags:
   - function
-defined_in_file: mmio.hpp
+defined_in_file: io/mmio.hpp
 overloads:
   "template <size_t w_idx, typename idxtype, int idx, typename... Attributes>\nvoid write_mm(const std::string &, adjacency<idx, Attributes...> &, const std::string &)":
     arguments:

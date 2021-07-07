@@ -7,20 +7,20 @@ tags:
   - function
 defined_in_file: algorithms/connected_components.hpp
 overloads:
-  "template <typename Graph>\nvoid push(Graph &, const nw::graph::vertex_id_t, std::vector<vertex_id_t> &)":
+  "template <typename Graph, typename T>\nvoid push(const Graph &, const T, std::vector<T> &)":
     arguments:
       - description: __OPTIONAL__
         name: g
-        type: Graph &
+        type: const Graph &
       - description: __OPTIONAL__
         name: u
-        type: const nw::graph::vertex_id_t
+        type: const T
       - description: __OPTIONAL__
         name: comp
-        type: std::vector<vertex_id_t> &
+        type: std::vector<T> &
     description: __OPTIONAL__
     return: __OPTIONAL__
-    signature_with_names: "template <typename Graph>\nvoid push(Graph & g, const nw::graph::vertex_id_t u, std::vector<vertex_id_t> & comp)"
+    signature_with_names: "template <typename Graph, typename T>\nvoid push(const Graph & g, const T u, std::vector<T> & comp)"
 namespace:
   - nw
   - graph

@@ -5,7 +5,7 @@ owner: __MISSING__
 brief: __MISSING__
 tags:
   - class
-defined_in_file: worklist.hpp
+defined_in_file: adaptors/worklist.hpp
 declaration: "\nclass nw::graph::worklist_range::worklist_range_iterator;"
 dtor: unspecified
 fields:

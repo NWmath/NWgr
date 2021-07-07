@@ -5,7 +5,7 @@ owner: __MISSING__
 brief: __MISSING__
 tags:
   - method
-defined_in_file: MatrixMarketFile.hpp
+defined_in_file: io/MatrixMarketFile.hpp
 overloads:
   std::tuple<int, int, Vs...> operator*() const:
     description: __OPTIONAL__

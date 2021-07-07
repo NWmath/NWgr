@@ -5,7 +5,7 @@ owner: __MISSING__
 brief: __MISSING__
 tags:
   - class
-defined_in_file: soa.hpp
+defined_in_file: containers/soa.hpp
 declaration: "\nclass std::tuple_size;"
 ctor: unspecified
 dtor: unspecified

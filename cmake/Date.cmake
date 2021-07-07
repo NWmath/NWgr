@@ -3,6 +3,10 @@
 # -----------------------------------------------------------------------------
 include(FetchContent)
 
+if(MSVC)
+  set(COMPILE_WITH_C_LOCALE ON)
+endif()
+
 FetchContent_Declare(
   date
   GIT_REPOSITORY https://github.com/HowardHinnant/date.git
@@ -10,4 +14,6 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(date)
 
-target_compile_options(date INTERFACE -Wno-deprecated-declarations)
+if(NOT MSVC)
+  target_compile_options(date INTERFACE -Wno-deprecated-declarations)
+endif()

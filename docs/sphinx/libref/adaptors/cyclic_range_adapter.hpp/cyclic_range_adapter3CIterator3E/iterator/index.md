@@ -5,7 +5,7 @@ owner: __MISSING__
 brief: __MISSING__
 tags:
   - class
-defined_in_file: cyclic_range_adapter.hpp
+defined_in_file: adaptors/cyclic_range_adapter.hpp
 declaration: "\nstruct nw::graph::cyclic_range_adapter::iterator;"
 ctor: unspecified
 dtor: unspecified

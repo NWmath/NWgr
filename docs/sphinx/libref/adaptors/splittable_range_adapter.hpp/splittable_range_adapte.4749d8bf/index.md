@@ -5,9 +5,16 @@ owner: __MISSING__
 brief: __MISSING__
 tags:
   - class
-defined_in_file: splittable_range_adapter.hpp
+defined_in_file: adaptors/splittable_range_adapter.hpp
 declaration: "template <class Iterator>\nclass nw::graph::splittable_range_adapter;"
 dtor: unspecified
+typedefs:
+  iterator:
+    definition: Iterator
+    description: __MISSING__
+  value_type:
+    definition: typename iterator::value_type
+    description: __MISSING__
 fields:
   begin_:
     annotation:

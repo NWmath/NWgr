@@ -12,10 +12,11 @@
 
 using json = nlohmann::json;
 
-#include "adaptors/bfs_edge_range.hpp"
-#include "containers/compressed.hpp"
-#include "containers/edge_list.hpp"
-#include "util/timer.hpp"
+#include "nwgraph/adaptors/bfs_edge_range.hpp"
+#include "nwgraph/adjacency.hpp"
+#include "nwgraph/containers/compressed.hpp"
+#include "nwgraph/edge_list.hpp"
+#include "nwgraph/util/timer.hpp"
 
 std::string delink(const std::string& link) {
   auto opening = link.find("[[");
@@ -58,7 +59,7 @@ int main() {
   std::vector<std::string>      titles;
   std::vector<std::string>      names;
 
-  nw::graph::edge_list<nw::graph::directed> edges;
+  nw::graph::edge_list<nw::graph::directedness::directed> edges;
   edges.open_for_push_back();
 
   size_t title_counter = 0;
@@ -120,7 +121,7 @@ int main() {
 
   nw::util::timer t5("build s_overlap");
 
-  nw::graph::edge_list<nw::graph::undirected, size_t> s_overlap;
+  nw::graph::edge_list<nw::graph::directedness::undirected, size_t> s_overlap;
   s_overlap.open_for_push_back();
 
   for (size_t i = 0; i < H.size(); ++i) {
@@ -131,9 +132,9 @@ int main() {
 
     for (auto&& [k] : H[i]) {
       for (auto&& [j] : G[k]) {
-	//        if (j > i) {
-          s_overlap.push_back(i, j, k);
-	  //        }
+        //        if (j > i) {
+        s_overlap.push_back(i, j, k);
+        //        }
       }
     }
   }
@@ -168,8 +169,7 @@ int main() {
 
     size_t d = distance[the_actor];
     while (the_actor != kevin_bacon) {
-      std::cout << names[the_actor] << " starred with " << names[parents[the_actor]] << " in " << titles[together_in[the_actor]]
-                << std::endl;
+      std::cout << names[the_actor] << " starred with " << names[parents[the_actor]] << " in " << titles[together_in[the_actor]] << std::endl;
       the_actor = parents[the_actor];
       if (d-- == 0) {
         break;

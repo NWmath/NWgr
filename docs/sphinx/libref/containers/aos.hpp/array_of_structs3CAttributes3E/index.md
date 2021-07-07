@@ -5,7 +5,7 @@ owner: __MISSING__
 brief: __MISSING__
 tags:
   - class
-defined_in_file: aos.hpp
+defined_in_file: containers/aos.hpp
 declaration: "template <typename... Attributes>\nclass nw::graph::array_of_structs;"
 ctor: unspecified
 dtor: unspecified

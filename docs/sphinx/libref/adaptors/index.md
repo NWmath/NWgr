@@ -5,5 +5,5 @@ layout: directory
 title: adaptors
 ---
 
-```{index} 
+```{index} Range adaptors
 ```

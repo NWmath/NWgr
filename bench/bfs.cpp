@@ -32,7 +32,7 @@ static constexpr const char USAGE[] =
       -V, --verbose           run in verbose mode
 )";
 
-#include "algorithms/bfs.hpp"
+#include "nwgraph/algorithms/bfs.hpp"
 #include "Log.hpp"
 #include "common.hpp"
 #include <docopt.h>
@@ -41,27 +41,29 @@ using namespace nw::graph::bench;
 using namespace nw::graph;
 using namespace nw::util;
 
-template<typename Graph, typename GraphT>
-bool BFSVerifier(Graph& g, GraphT& g_t, vertex_id_t source, std::vector<vertex_id_t>& parent) {
-  std::vector<vertex_id_t> depth(g.max() + 1, std::numeric_limits<vertex_id_t>::max());
+template <typename Graph, typename GraphT>
+bool BFSVerifier(const Graph& g, GraphT& g_t, vertex_id_t<Graph> source, std::vector<vertex_id_t<Graph>>& parent) {
+  using vertex_id_type = vertex_id_t<Graph>;
+
+  std::vector<vertex_id_type> depth(num_vertices(g), std::numeric_limits<vertex_id_type>::max());
   depth[source] = 0;
-  std::vector<vertex_id_t> to_visit;
-  to_visit.reserve(g.max() + 1);
+  std::vector<vertex_id_type> to_visit;
+  to_visit.reserve(num_vertices(g));
   to_visit.push_back(source);
   auto out_neigh = g.begin();
   auto in_neigh  = g_t.begin();
   for (auto it = to_visit.begin(); it != to_visit.end(); it++) {
-    vertex_id_t u = *it;
+    vertex_id_type u = *it;
     for (auto edge : out_neigh[u]) {
-      vertex_id_t v = std::get<0>(edge);
-      if (depth[v] == std::numeric_limits<vertex_id_t>::max()) {
+      vertex_id_type v = std::get<0>(edge);
+      if (depth[v] == std::numeric_limits<vertex_id_type>::max()) {
         depth[v] = depth[u] + 1;
         to_visit.push_back(v);
       }
     }
   }
-  for (vertex_id_t u = 0; u < g.max() + 1; ++u) {
-    if ((depth[u] != std::numeric_limits<vertex_id_t>::max()) && (parent[u] != std::numeric_limits<vertex_id_t>::max())) {
+  for (vertex_id_type u = 0; u < num_vertices(g); ++u) {
+    if ((depth[u] != std::numeric_limits<vertex_id_type>::max()) && (parent[u] != std::numeric_limits<vertex_id_type>::max())) {
       if (u == source) {
         if (!((parent[u] == u) && (depth[u] == 0))) {
           std::cout << "Source wrong " << u << " " << parent[u] << " " << depth[u] << std::endl;
@@ -71,7 +73,7 @@ bool BFSVerifier(Graph& g, GraphT& g_t, vertex_id_t source, std::vector<vertex_i
       }
       bool parent_found = false;
       for (auto edge : in_neigh[u]) {
-        vertex_id_t v = std::get<0>(edge);
+        vertex_id_type v = std::get<0>(edge);
         if (v == parent[u]) {
           //if(it != out_neigh[v].end()) {
           if (depth[v] != depth[u] - 1) {
@@ -112,14 +114,14 @@ int main(int argc, char* argv[]) {
   std::vector ids     = parse_ids(args["--version"].asStringList());
   std::vector threads = parse_n_threads(args["THREADS"].asStringList());
 
-  auto aos_a = load_graph<directed>(file);
+  auto aos_a = load_graph<nw::graph::directedness::directed>(file);
 
   if (verbose) {
     aos_a.stream_stats();
   }
 
   auto graph = build_adjacency<1>(aos_a);
-  auto    gx = build_adjacency<0>(aos_a);
+  auto gx    = build_adjacency<0>(aos_a);
 
   if (verbose) {
     graph.stream_stats();
@@ -129,7 +131,9 @@ int main(int argc, char* argv[]) {
     graph.stream_indices();
   }
 
-  std::vector<vertex_id_t> sources;
+  using vertex_id_type = vertex_id_t<decltype(graph)>;
+
+  std::vector<vertex_id_type> sources;
   if (args["--sources"]) {
     sources = load_sources_from_file(graph, args["--sources"].asString());
     trials  = sources.size();
@@ -140,7 +144,7 @@ int main(int argc, char* argv[]) {
     sources = build_random_sources(graph, trials, args["--seed"].asLong());
   }
 
-  Times<vertex_id_t> times;
+  Times<vertex_id_type> times;
 
   std::map<long, std::vector<size_t>> levels;
 
@@ -153,21 +157,30 @@ int main(int argc, char* argv[]) {
         }
 
         auto&& [time, parents] = time_op([&] {
-            switch (id) {
-             case  0: return bfs_v0(graph, source);
-             case  6: return bfs_v6(graph, source);
-             case  7: return bfs_v7(graph, source);
-             case  8: return bfs_v8(graph, source);
-             case  9: return bfs_v9(graph, source);
-             case 10: return bfs_top_down(graph, source);
-	     case 11: return bfs_v11(graph, gx, source, num_bins, alpha, beta);
-             case 12: return bfs_top_down_bitmap(graph, source);
-             case 13: return bfs_bottom_up(graph, gx, source);
-             default:
+          switch (id) {
+            case 0:
+              return bfs_v0(graph, source);
+            case 6:
+              return bfs_v6(graph, source);
+            case 7:
+              return bfs_v7(graph, source);
+            case 8:
+              return bfs_v8(graph, source);
+            case 9:
+              return bfs_v9(graph, source);
+            case 10:
+              return bfs_top_down(graph, source);
+            case 11:
+              return bfs_v11(graph, gx, source, num_bins, alpha, beta);
+            case 12:
+              return bfs_top_down_bitmap(graph, source);
+            case 13:
+              return bfs_bottom_up(graph, gx, source);
+            default:
               std::cerr << "Unknown version " << id << "\n";
-              return std::vector<vertex_id_t>();
-            }
-          });
+              return std::vector<vertex_id_type>();
+          }
+        });
 
         if (verify) {
           BFSVerifier(graph, gx, source, parents);

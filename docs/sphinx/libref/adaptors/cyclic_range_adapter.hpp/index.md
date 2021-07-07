@@ -1,6 +1,6 @@
 ---
 layout: library
-title: cyclic_range_adapter.hpp
+title: adaptors/cyclic_range_adapter.hpp
 owner: Luke D'Alessandro
 brief: A range adapter for splitting an underlying range into cycles for TBB
 tags:

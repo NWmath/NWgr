@@ -1,6 +1,6 @@
 ---
 layout: library
-title: compressed.hpp
+title: containers/compressed.hpp
 owner: Andrew Lumsdaine
 brief: Classes for compressed adjacency structures
 tags:

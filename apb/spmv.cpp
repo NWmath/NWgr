@@ -1,26 +1,24 @@
 
+#if NW_GRAPH_NEED_HPX
+#include <hpx/hpx_main.hpp>
+#endif
 
 #include <iostream>
 #include <vector>
 
-#include "compressed.hpp"
-#include "edge_list.hpp"
-#include "io/mmio.hpp"
-#include "edge_range.hpp"
-
-#if defined(CL_SYCL_LANGUAGE_VERSioN)
-#include <dpstd/iterator>
-#else
-#include "tbb/iterators.h"
-#endif
-
+#include "nwgraph/adaptors/edge_range.hpp"
+#include "nwgraph/containers/compressed.hpp"
+#include "nwgraph/edge_list.hpp"
+#include "nwgraph/io/mmio.hpp"
+#include "nwgraph/util/counting_iterator.hpp"
 using namespace nw::graph;
 using namespace nw::util;
 
-template<typename Adjacency>
+template <typename Adjacency>
 auto apb_adj(Adjacency& graph, size_t ntrial) {
+  using vertex_id_type = vertex_id_t<Adjacency>;
 
-  vertex_id_t        N = graph.max() + 1;
+  vertex_id_type     N = num_vertices(graph);
   std::vector<float> x(N), y(N);
   std::iota(x.begin(), x.end(), 0);
 
@@ -29,17 +27,17 @@ auto apb_adj(Adjacency& graph, size_t ntrial) {
 
     std::cout << "edge_range\n";
 
-    double time = 0;
+    double   time = 0;
     ms_timer t1("raw for loop");
-    for(size_t t = 0; t < ntrial; ++t) {
+    for (size_t t = 0; t < ntrial; ++t) {
       std::fill(y.begin(), y.end(), 0);
       t1.start();
 
       auto ptr = graph.indices_.data();
-      auto idx = std::get<0>(graph.to_be_indexed_).data();
-      auto dat = std::get<1>(graph.to_be_indexed_).data();
+      auto idx = std::get<0>(graph.to_be_indexed_.tuple()).data();
+      auto dat = std::get<1>(graph.to_be_indexed_.tuple()).data();
 
-      for (vertex_id_t i = 0; i < N; ++i) {
+      for (vertex_id_type i = 0; i < N; ++i) {
         for (auto j = ptr[i]; j < ptr[i + 1]; ++j) {
           y[i] += x[idx[j]] * dat[j];
         }
@@ -47,16 +45,15 @@ auto apb_adj(Adjacency& graph, size_t ntrial) {
       t1.stop();
       time += t1.elapsed();
     }
-    std::cout << t1.name() << " " << time/ntrial << " ms" << std::endl;
-
+    std::cout << t1.name() << " " << time / ntrial << " ms" << std::endl;
 
     time = 0;
     ms_timer t2("iterator based for loop with iterator based for loop");
-    for(size_t t = 0; t < ntrial; ++t) {
+    for (size_t t = 0; t < ntrial; ++t) {
       std::fill(y.begin(), y.end(), 0);
       t2.start();
 
-      vertex_id_t k = 0;
+      vertex_id_type k = 0;
       for (auto i = graph.begin(); i != graph.end(); ++i) {
         for (auto j = (*i).begin(); j != (*i).end(); ++j) {
           y[k] += x[std::get<0>(*j)] * std::get<1>(*j);
@@ -66,16 +63,15 @@ auto apb_adj(Adjacency& graph, size_t ntrial) {
       t2.stop();
       time += t2.elapsed();
     }
-    std::cout << t2.name() << " " << time/ntrial << " ms" << std::endl;
-
+    std::cout << t2.name() << " " << time / ntrial << " ms" << std::endl;
 
     time = 0;
     ms_timer t3("range based for loop with range based for loop with compound initializer");
-    for(size_t t = 0; t < ntrial; ++t) {
+    for (size_t t = 0; t < ntrial; ++t) {
       std::fill(y.begin(), y.end(), 0);
       t3.start();
 
-      vertex_id_t k = 0;
+      vertex_id_type k = 0;
       for (auto&& i : graph) {
         for (auto&& [j, v] : i) {
           y[k] += x[j] * v;
@@ -85,11 +81,11 @@ auto apb_adj(Adjacency& graph, size_t ntrial) {
       t3.stop();
       time += t3.elapsed();
     }
-    std::cout << t3.name() << " " << time/ntrial << " ms" << std::endl;
+    std::cout << t3.name() << " " << time / ntrial << " ms" << std::endl;
 
     time = 0;
     ms_timer t4("range based for loop auto");
-    for(size_t t = 0; t < ntrial; ++t) {
+    for (size_t t = 0; t < ntrial; ++t) {
       std::fill(y.begin(), y.end(), 0);
       t4.start();
 
@@ -99,12 +95,11 @@ auto apb_adj(Adjacency& graph, size_t ntrial) {
       t4.stop();
       time += t4.elapsed();
     }
-    std::cout << t4.name() << " " << time/ntrial << " ms" << std::endl;
-
+    std::cout << t4.name() << " " << time / ntrial << " ms" << std::endl;
 
     time = 0;
     ms_timer t5("range based for loop auto &&");
-    for(size_t t = 0; t < ntrial; ++t) {
+    for (size_t t = 0; t < ntrial; ++t) {
       std::fill(y.begin(), y.end(), 0);
       t5.start();
 
@@ -114,12 +109,11 @@ auto apb_adj(Adjacency& graph, size_t ntrial) {
       t5.stop();
       time += t5.elapsed();
     }
-    std::cout << t5.name() << " " << time/ntrial << " ms" << std::endl;
-
+    std::cout << t5.name() << " " << time / ntrial << " ms" << std::endl;
 
     time = 0;
     ms_timer t6("range based for loop compound initialization auto");
-    for(size_t t = 0; t < ntrial; ++t) {
+    for (size_t t = 0; t < ntrial; ++t) {
       std::fill(y.begin(), y.end(), 0);
       t6.start();
 
@@ -129,12 +123,11 @@ auto apb_adj(Adjacency& graph, size_t ntrial) {
       t6.stop();
       time += t6.elapsed();
     }
-    std::cout << t6.name() << " " << time/ntrial << " ms" << std::endl;
-
+    std::cout << t6.name() << " " << time / ntrial << " ms" << std::endl;
 
     time = 0;
     ms_timer t7("range based for loop compound initialization auto &&");
-    for(size_t t = 0; t < ntrial; ++t) {
+    for (size_t t = 0; t < ntrial; ++t) {
       std::fill(y.begin(), y.end(), 0);
       t7.start();
 
@@ -144,12 +137,11 @@ auto apb_adj(Adjacency& graph, size_t ntrial) {
       t7.stop();
       time += t7.elapsed();
     }
-    std::cout << t7.name() << " " << time/ntrial << " ms" << std::endl;
-
+    std::cout << t7.name() << " " << time / ntrial << " ms" << std::endl;
 
     time = 0;
     ms_timer t8("std for_each auto");
-    for(size_t t = 0; t < ntrial; ++t) {
+    for (size_t t = 0; t < ntrial; ++t) {
       std::fill(y.begin(), y.end(), 0);
       t8.start();
 
@@ -157,12 +149,11 @@ auto apb_adj(Adjacency& graph, size_t ntrial) {
       t8.stop();
       time += t8.elapsed();
     }
-    std::cout << t8.name() << " " << time/ntrial << " ms" << std::endl;
-
+    std::cout << t8.name() << " " << time / ntrial << " ms" << std::endl;
 
     time = 0;
     ms_timer t9("std for_each auto &&");
-    for(size_t t = 0; t < ntrial; ++t) {
+    for (size_t t = 0; t < ntrial; ++t) {
       std::fill(y.begin(), y.end(), 0);
       t9.start();
 
@@ -170,25 +161,24 @@ auto apb_adj(Adjacency& graph, size_t ntrial) {
       t9.stop();
       time += t9.elapsed();
     }
-    std::cout << t9.name() << " " << time/ntrial << " ms" << std::endl;
-
+    std::cout << t9.name() << " " << time / ntrial << " ms" << std::endl;
   }
-  if constexpr(false){
+  if constexpr (false) {
     auto per = edge_range(graph);
 
     std::cout << "edge_range" << std::endl;
 
-    double time = 0;
+    double   time = 0;
     ms_timer t1("raw for loop");
-    for(size_t t = 0; t < ntrial; ++t) {
+    for (size_t t = 0; t < ntrial; ++t) {
       std::fill(y.begin(), y.end(), 0);
       t1.start();
 
       auto ptr = graph.indices_.data();
-      auto idx = std::get<0>(graph.to_be_indexed_).data();
-      auto dat = std::get<1>(graph.to_be_indexed_).data();
+      auto idx = std::get<0>(graph.to_be_indexed_.tuple()).data();
+      auto dat = std::get<1>(graph.to_be_indexed_.tuple()).data();
 
-      for (vertex_id_t i = 0; i < N; ++i) {
+      for (vertex_id_type i = 0; i < N; ++i) {
         for (auto j = ptr[i]; j < ptr[i + 1]; ++j) {
           y[i] += x[idx[j]] * dat[j];
         }
@@ -196,16 +186,15 @@ auto apb_adj(Adjacency& graph, size_t ntrial) {
       t1.stop();
       time += t1.elapsed();
     }
-    std::cout << t1.name() << " " << time/ntrial << " ms" << std::endl;
-
+    std::cout << t1.name() << " " << time / ntrial << " ms" << std::endl;
 
     time = 0;
     ms_timer t2("iterator based for loop with iterator based for loop");
-    for(size_t t = 0; t < ntrial; ++t) {
+    for (size_t t = 0; t < ntrial; ++t) {
       std::fill(y.begin(), y.end(), 0);
       t2.start();
 
-      vertex_id_t k = 0;
+      vertex_id_type k = 0;
       for (auto i = graph.begin(); i != graph.end(); ++i) {
         for (auto j = (*i).begin(); j != (*i).end(); ++j) {
           y[k] += x[std::get<0>(*j)] * std::get<1>(*j);
@@ -215,13 +204,11 @@ auto apb_adj(Adjacency& graph, size_t ntrial) {
       t2.stop();
       time += t2.elapsed();
     }
-    std::cout << t2.name() << " " << time/ntrial << " ms" << std::endl;
-
-
+    std::cout << t2.name() << " " << time / ntrial << " ms" << std::endl;
 
     time = 0;
     ms_timer t3("range based for loop auto");
-    for(size_t t = 0; t < ntrial; ++t) {
+    for (size_t t = 0; t < ntrial; ++t) {
       std::fill(y.begin(), y.end(), 0);
       t3.start();
 
@@ -231,12 +218,11 @@ auto apb_adj(Adjacency& graph, size_t ntrial) {
       t3.stop();
       time += t3.elapsed();
     }
-    std::cout << t3.name() << " " << time/ntrial << " ms" << std::endl;
-
+    std::cout << t3.name() << " " << time / ntrial << " ms" << std::endl;
 
     time = 0;
     ms_timer t4("range based for loop auto &&");
-    for(size_t t = 0; t < ntrial; ++t) {
+    for (size_t t = 0; t < ntrial; ++t) {
       std::fill(y.begin(), y.end(), 0);
       t4.start();
 
@@ -246,12 +232,11 @@ auto apb_adj(Adjacency& graph, size_t ntrial) {
       t4.stop();
       time += t4.elapsed();
     }
-    std::cout << t4.name() << " " << time/ntrial << " ms" << std::endl;
-
+    std::cout << t4.name() << " " << time / ntrial << " ms" << std::endl;
 
     time = 0;
     ms_timer t5("range based for loop compound initialization auto");
-    for(size_t t = 0; t < ntrial; ++t) {
+    for (size_t t = 0; t < ntrial; ++t) {
       std::fill(y.begin(), y.end(), 0);
       t5.start();
 
@@ -261,12 +246,11 @@ auto apb_adj(Adjacency& graph, size_t ntrial) {
       t5.stop();
       time += t5.elapsed();
     }
-    std::cout << t5.name() << " " << time/ntrial << " ms" << std::endl;
-
+    std::cout << t5.name() << " " << time / ntrial << " ms" << std::endl;
 
     time = 0;
     ms_timer t6("range based for loop compound initialization auto &&");
-    for(size_t t = 0; t < ntrial; ++t) {
+    for (size_t t = 0; t < ntrial; ++t) {
       std::fill(y.begin(), y.end(), 0);
       t6.start();
 
@@ -276,12 +260,11 @@ auto apb_adj(Adjacency& graph, size_t ntrial) {
       t6.stop();
       time += t6.elapsed();
     }
-    std::cout << t6.name() << " " << time/ntrial << " ms" << std::endl;
-
+    std::cout << t6.name() << " " << time / ntrial << " ms" << std::endl;
 
     time = 0;
     ms_timer t7("std for_each auto");
-    for(size_t t = 0; t < ntrial; ++t) {
+    for (size_t t = 0; t < ntrial; ++t) {
       std::fill(y.begin(), y.end(), 0);
       t7.start();
 
@@ -289,12 +272,11 @@ auto apb_adj(Adjacency& graph, size_t ntrial) {
       t7.stop();
       time += t7.elapsed();
     }
-    std::cout << t7.name() << " " << time/ntrial << " ms" << std::endl;
-
+    std::cout << t7.name() << " " << time / ntrial << " ms" << std::endl;
 
     time = 0;
     ms_timer t8("std for_each auto &&");
-    for(size_t t = 0; t < ntrial; ++t) {
+    for (size_t t = 0; t < ntrial; ++t) {
       std::fill(y.begin(), y.end(), 0);
       t8.start();
 
@@ -302,8 +284,7 @@ auto apb_adj(Adjacency& graph, size_t ntrial) {
       t8.stop();
       time += t8.elapsed();
     }
-    std::cout << t8.name() << " " << time/ntrial << " ms" << std::endl;
-
+    std::cout << t8.name() << " " << time / ntrial << " ms" << std::endl;
   }
 }
 
@@ -315,10 +296,12 @@ int main(int argc, char* argv[]) {
   std::string read_processed_edgelist  = "";
   std::string write_processed_edgelist = "";
 
-  bool         verbose      = false;
-  bool         debug        = false;
-  size_t       nthread      = 1; (void)nthread; // silence warnings
-  size_t       ntrial       = 1; (void)ntrial;  // silence warnings
+  bool   verbose = false;
+  bool   debug   = false;
+  size_t nthread = 1;
+  (void)nthread;    // silence warnings
+  size_t ntrial = 1;
+  (void)ntrial;    // silence warnings
   const size_t max_versions = 16;
 
   for (int argIndex = 1; argIndex < argc; ++argIndex) {
@@ -366,16 +349,16 @@ int main(int argc, char* argv[]) {
 
   auto el_a = [&]() {
     if (read_processed_edgelist != "") {
-      life_timer                  _("deserialize");
-      edge_list<directed, double> el_a(0);
+      life_timer                                _("deserialize");
+      edge_list<directedness::directed, double> el_a(0);
       el_a.deserialize(read_processed_edgelist);
       return el_a;
     } else if (edgelistFile != "") {
       life_timer _("read mm");
-      return read_mm<directed, double>(edgelistFile);
+      return read_mm<directedness::directed, double>(edgelistFile);
     } else {
       usage(argv[0]);
-      return edge_list<directed, double>(0);
+      return edge_list<directedness::directed, double>(0);
     }
   }();
 

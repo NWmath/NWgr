@@ -152,13 +152,13 @@ int main(int argc, char* argv[]) {
   size_t kyra_sedgwick = names_map["nm0001718"];
 
   {
-    using vertex_id_t = nw::graph::vertex_id_t;
+    using vertex_id_type = nw::graph::vertex_id_type;
     
-    vertex_id_t root = kevin_bacon;
+    vertex_id_type root = kevin_bacon;
 
-    std::deque<vertex_id_t>  q1, q2;
-    std::vector<vertex_id_t> level(L.max() + 1, std::numeric_limits<vertex_id_t>::max());
-    std::vector<vertex_id_t> parents(L.max() + 1, std::numeric_limits<vertex_id_t>::max());
+    std::deque<vertex_id_type>  q1, q2;
+    std::vector<vertex_id_type> level(L.max() + 1, std::numeric_limits<vertex_id_type>::max());
+    std::vector<vertex_id_type> parents(L.max() + 1, std::numeric_limits<vertex_id_type>::max());
     size_t                   lvl = 0;
     
     q1.push_back(root);
@@ -169,10 +169,10 @@ int main(int argc, char* argv[]) {
     
     while (!q1.empty()) {
       
-      std::for_each(q1.begin(), q1.end(), [&](vertex_id_t u) {
+      std::for_each(q1.begin(), q1.end(), [&](vertex_id_type u) {
 	std::for_each(g[u].begin(), g[u].end(), [&](auto&& x) {
-	  vertex_id_t v = std::get<0>(x);
-	  if (level[v] == std::numeric_limits<vertex_id_t>::max()) {
+	  vertex_id_type v = std::get<0>(x);
+	  if (level[v] == std::numeric_limits<vertex_id_type>::max()) {
 	    q2.push_back(v);
 	    level[v]   = lvl;
 	    parents[v] = u;

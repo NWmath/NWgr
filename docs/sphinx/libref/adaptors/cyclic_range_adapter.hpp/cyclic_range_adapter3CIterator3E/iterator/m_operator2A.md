@@ -5,7 +5,7 @@ owner: __MISSING__
 brief: __MISSING__
 tags:
   - method
-defined_in_file: cyclic_range_adapter.hpp
+defined_in_file: adaptors/cyclic_range_adapter.hpp
 overloads:
   decltype(auto) operator*():
     description: __OPTIONAL__

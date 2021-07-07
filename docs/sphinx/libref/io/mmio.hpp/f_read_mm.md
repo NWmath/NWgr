@@ -5,7 +5,7 @@ owner: __MISSING__
 brief: __MISSING__
 tags:
   - function
-defined_in_file: mmio.hpp
+defined_in_file: io/mmio.hpp
 overloads:
   "template <nw::graph::directedness sym, typename... Attributes>\nedge_list<sym, Attributes...> read_mm(const std::string &)":
     arguments:
