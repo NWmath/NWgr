@@ -16,7 +16,7 @@
 #define NW_GRAPH_SPLITTABLE_RANGE_ADAPTER_HPP
 
 #include <cstddef>
-#include <tbb/tbb_stddef.h>
+#include <oneapi/tbb.h>
 
 namespace nw {
 namespace graph {
@@ -50,8 +50,8 @@ public:
   splittable_range_adapter(const splittable_range_adapter&) = default;
   splittable_range_adapter(splittable_range_adapter&&)      = default;
 
-  decltype(auto) begin() { return begin_; }
-  decltype(auto) end() { return end_; }
+  decltype(auto) begin() const { return begin_; }
+  decltype(auto) end() const { return end_; }
 
   decltype(auto) cutoff(std::size_t cutoff) {
     cutoff_ = cutoff;

@@ -41,7 +41,7 @@ public:
 
   void open_for_push_back() {}
   void close_for_push_back() {}
-  void push_back(size_t i, Attributes... attrs) {
+  void push_back(size_t i, Attributes... attrs) { 
     if (i >= base::size()) {
       for (size_t j = base::size(); j <= i; ++j) {
         base::emplace_back();

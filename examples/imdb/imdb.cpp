@@ -17,6 +17,7 @@
 #include "nwgraph/util/timer.hpp"
 
 int main() {
+  const int s = 8;
 
   nw::util::timer               t0("load titles");
   std::string                   title_basics_tsv = "../data/title.basics.tsv";

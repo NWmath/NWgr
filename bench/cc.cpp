@@ -32,6 +32,7 @@ static constexpr const char USAGE[] =
 
 #include "Log.hpp"
 #include "nwgraph/adaptors/plain_range.hpp"
+#include "nwgraph/adaptors/vertex_range.hpp"
 #include "nwgraph/algorithms/connected_components.hpp"
 #include "common.hpp"
 #include "nwgraph/adjacency.hpp"
@@ -39,12 +40,6 @@ static constexpr const char USAGE[] =
 #include "nwgraph/util/atomic.hpp"
 #include "nwgraph/util/traits.hpp"
 #include <docopt.h>
-
-#ifdef CL_SYCL_LANGUAGE_VERSION
-#define cins dpstd
-#else
-#define cins tbb
-#endif
 
 using namespace nw::graph::bench;
 using namespace nw::graph;
@@ -69,7 +64,7 @@ static void link(vertex_id_type u, vertex_id_type v, Vector& comp) {
 
 template <typename Execution, typename Graph, typename Vector>
 static void compress(Execution exec, const Graph& g, Vector& comp) {
-  std::for_each(exec, cins::counting_iterator(0ul), cins::counting_iterator(comp.size()), [&](auto n) {
+  std::for_each(exec, counting_iterator(0ul), counting_iterator(comp.size()), [&](auto n) {
     while (comp[n] != comp[comp[n]]) {
       auto foo = nw::graph::acquire(comp[n]);
       auto bar = nw::graph::acquire(comp[foo]);
@@ -98,10 +93,10 @@ static vertex_id_type sample_frequent_element(const Vector& comp, size_t num_sam
 template <typename Execution, typename Graph1, typename Graph2>
 static auto afforest(Execution&& exec, Graph1&& graph, Graph2&& t_graph, size_t neighbor_rounds = 2) {
   std::vector<std::atomic<vertex_id_type>> comp(graph.size() + 1);
-  std::for_each(exec, cins::counting_iterator(0ul), cins::counting_iterator(comp.size()), [&](vertex_id_type n) { comp[n] = n; });
+  std::for_each(exec, counting_iterator(0ul), counting_iterator(comp.size()), [&](vertex_id_type n) { comp[n] = n; });
   auto g = graph.begin();
   for (size_t r = 0; r < neighbor_rounds; ++r) {
-    std::for_each(exec, cins::counting_iterator(0ul), cins::counting_iterator(comp.size()), [&](vertex_id_type u) {
+    std::for_each(exec, counting_iterator(0ul), counting_iterator(comp.size()), [&](vertex_id_type u) {
       if (r < (g[u]).size()) {
         link(u, std::get<0>(g[u].begin()[r]), comp);
       }
@@ -111,7 +106,7 @@ static auto afforest(Execution&& exec, Graph1&& graph, Graph2&& t_graph, size_t 
 
   vertex_id_type c = sample_frequent_element(comp);
 
-  std::for_each(exec, cins::counting_iterator(0ul), cins::counting_iterator(comp.size()), [&](vertex_id_type u) {
+  std::for_each(exec, counting_iterator(0ul), counting_iterator(comp.size()), [&](vertex_id_type u) {
     if (comp[u] == c) return;
 
     if (neighbor_rounds < g[u].size()) {
