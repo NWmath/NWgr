@@ -248,6 +248,12 @@ public:    // fixme
   }
 
   void push_back(index_t i, const Attributes&... attrs) {
+    if (i >= indices_.size()) {
+      for (index_t j = indices_.size(); j <= i; ++j) {
+        indices_.emplace_back(0);
+        ++N_;
+      }
+    }
     ++indices_[i];
     to_be_indexed_.push_back(attrs...);
   }
