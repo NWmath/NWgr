@@ -53,6 +53,7 @@ target_sources(nw_graph
   nwgraph/adaptors/plain_range.hpp
   nwgraph/adaptors/random_range.hpp
   nwgraph/adaptors/reverse.hpp
+  nwgraph/adaptors/vertex_range.hpp
   nwgraph/adaptors/worklist.hpp
   nwgraph/algorithms/betweenness_centrality.hpp
   nwgraph/algorithms/bfs.hpp

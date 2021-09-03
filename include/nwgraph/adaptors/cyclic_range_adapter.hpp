@@ -14,7 +14,6 @@
 
 #include "nwgraph/util/util.hpp"
 #include <iterator>
-#include <tbb/tbb_stddef.h>
 
 namespace nw {
 namespace graph {
@@ -64,7 +63,7 @@ public:
   };
 
   /// Return an iterator that points to the start of the cycle.
-  iterator begin() { return {begin_ + cycle_, stride_}; }
+  iterator begin() const { return {begin_ + cycle_, stride_}; }
 
   /// Return an iterator that points to the end of the cycle.
   ///
@@ -72,7 +71,7 @@ public:
   /// than or equal to the end_ iterator in the underlying range. End iterators
   /// for different cycles will be different even if the underlying range and
   /// strides match, so tests should not be performed across cycles.
-  iterator end() {
+  iterator end() const {
     difference_type n = end_ - begin_ - cycle_;     // shifted span for cycle
     difference_type r = n % stride_;                // remainder in last stride
     difference_type e = (stride_ - r) % stride_;    // amount past `end_` we'll go

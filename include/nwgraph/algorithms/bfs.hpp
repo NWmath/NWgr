@@ -21,25 +21,13 @@
 #include "nwgraph/util/parallel_for.hpp"
 #include "nwgraph/adaptors/neighbor_range.hpp"
 #include "nwgraph/adaptors/cyclic_range_adapter.hpp"
+#include "nwgraph/adaptors/vertex_range.hpp"
 #include <queue>
 
 #include <tbb/concurrent_queue.h>
 #include <tbb/concurrent_vector.h>
 #include <tbb/parallel_for_each.h>
 
-#if defined(CL_SYCL_LANGUAGE_VERSION)
-#include <dpstd/iterators.h>
-namespace nw::graph {
-template <class T>
-using counting_iterator = dpstd::counting_iterator<T>;
-}
-#else
-#include <tbb/iterators.h>
-namespace nw::graph {
-template <class T>
-using counting_iterator = tbb::counting_iterator<T>;
-}
-#endif
 
 namespace nw {
 namespace graph {
@@ -83,7 +71,7 @@ class _concurrent_queue : public tbb::concurrent_queue<T> {
   using base = tbb::concurrent_queue<T>;
 
 public:
-  auto internal_swap(_concurrent_queue& src) { base::internal_swap(src); }
+  //auto internal_swap(_concurrent_queue& src) { base::internal_swap(src); }
 };
 
 template <typename Graph>
@@ -112,7 +100,8 @@ auto bfs_v4(const Graph& graph, typename graph_traits<Graph>::vertex_id_type roo
         }
       });
     });
-    q1.internal_swap(q2);
+    q1(q2);
+    //q1.internal_swap(q2);
     q2.clear();
 
     ++lvl;
@@ -206,31 +195,34 @@ auto bfs_v8(const Graph& graph, typename graph_traits<Graph>::vertex_id_type roo
 
   using vertex_id_type = typename graph_traits<Graph>::vertex_id_type;
 
-  _concurrent_queue<vertex_id_type> q1, q2;
+  tbb::concurrent_queue<vertex_id_type> q[2];// q1, q2;
   std::vector                       level(num_vertices(graph), std::numeric_limits<vertex_id_type>::max());
   std::vector                       parents(num_vertices(graph), std::numeric_limits<vertex_id_type>::max());
   size_t                            lvl = 0;
 
-  q1.push(root);
+  bool cur = false;
+  q[cur].push(root);
+  //q1.push(root);
   level[root]   = lvl++;
   parents[root] = root;
 
   auto g = graph.begin();
 
-  while (!q1.empty()) {
+  while (!q[cur].empty()) {
 
-    std::for_each(std::execution::par_unseq, q1.unsafe_begin(), q1.unsafe_end(), [&](vertex_id_type u) {
+    std::for_each(std::execution::par_unseq, q[cur].unsafe_begin(), q[cur].unsafe_end(), [&](vertex_id_type u) {
       std::for_each(std::execution::par_unseq, g[u].begin(), g[u].end(), [&](auto&& x) {
         vertex_id_type v = std::get<0>(x);
         if (level[v] == std::numeric_limits<vertex_id_type>::max()) {
-          q2.push(v);
+          q[!cur].push(v);
           level[v]   = lvl;
           parents[v] = u;
         }
       });
     });
-    q1.internal_swap(q2);
-    q2.clear();
+    cur = !cur;
+    //q1.internal_swap(q2);
+    q[!cur].clear();
 
     ++lvl;
   }
@@ -611,7 +603,7 @@ Vector& cur, std::vector<Vector>& next) {
   scout_count = tbb::parallel_reduce(
     tbb::blocked_range(0ul, N), 0ul,
     [&](auto&& range, auto n) {
-      int worker_index = tbb::task_arena::current_thread_index();
+      int worker_index = tbb::this_task_arena::current_thread_index();
       for (auto&& i = range.begin(), e = range.end(); i != e; ++i) {
         auto u = cur[i];
         for (auto&& [v] : g[u]) {
@@ -638,7 +630,7 @@ inline void queue_to_bitmap(std::vector<vertex_id_t<Graph>>& queue, nw::graph::A
 template<typename Graph, typename Vector>
 inline void bitmap_to_queue(nw::graph::AtomicBitVector<>& bitmap, std::vector<Vector>& lqueue) {
   tbb::parallel_for(bitmap.non_zeros(nw::graph::pow2(15)), [&](auto&& range) {
-    int worker_index = tbb::task_arena::current_thread_index();
+    int worker_index = tbb::this_task_arena::current_thread_index();
     for (auto &&i = range.begin(), e = range.end(); i != e; ++i) {
       lqueue[worker_index].push_back(*i);
     }
@@ -661,7 +653,7 @@ void flush(std::vector<Vector>& lqueue, Vector& queue) {
   }
   //resize 'queue'
   queue.resize(size); 
-  std::for_each(std::execution::par_unseq, tbb::counting_iterator(0ul), tbb::counting_iterator(n), [&](auto i) {
+  std::for_each(std::execution::par_unseq, counting_iterator(0ul), counting_iterator(n), [&](auto i) {
     //copy each thread-local queue to global queue based on their size offset
     auto begin = std::next(queue.begin(), size_array[i]);
     std::copy(std::execution::par_unseq, lqueue[i].begin(), lqueue[i].end(), begin);
@@ -740,7 +732,7 @@ template <typename OutGraph, typename InGraph>
       edges_to_check -= scout_count;
       scout_count = tbb::parallel_reduce(tbb::blocked_range(0ul, queue.size()), 0ul,
                                          [&](auto&&range, auto count) {
-            int worker_index = tbb::task_arena::current_thread_index();
+            int worker_index = tbb::this_task_arena::current_thread_index();
             for (auto&& i = range.begin(), e = range.end(); i != e; ++i) {
               auto u = queue[i];
               for (auto&& [v] : out_graph[u]) {

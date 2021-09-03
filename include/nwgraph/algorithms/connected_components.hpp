@@ -16,6 +16,7 @@
 
 #include "nwgraph/adaptors/bfs_edge_range.hpp"
 #include "nwgraph/adaptors/edge_range.hpp"
+#include "nwgraph/adaptors/vertex_range.hpp"
 #include <atomic>
 #include <iostream>
 #include <random>
@@ -24,19 +25,9 @@
 #if defined(CL_SYCL_LANGUAGE_VERSION)
 #include <dpstd/algorithm>
 #include <dpstd/execution>
-#include <dpstd/iterators.h>
-namespace nw::graph {
-template <class T>
-using counting_iterator = dpstd::counting_iterator<T>;
-}
 #else
 #include <algorithm>
 #include <execution>
-#include <tbb/iterators.h>
-namespace nw::graph {
-template <class T>
-using counting_iterator = tbb::counting_iterator<T>;
-}
 #endif
 
 namespace nw {

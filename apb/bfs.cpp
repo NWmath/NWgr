@@ -9,12 +9,6 @@
 #include "nwgraph/edge_list.hpp"
 #include "nwgraph/io/mmio.hpp"
 
-#if defined(CL_SYCL_LANGUAGE_VERSioN)
-#include <dpstd/iterator>
-#else
-#include "tbb/iterators.h"
-#endif
-
 using namespace nw::graph;
 using namespace nw::util;
 
