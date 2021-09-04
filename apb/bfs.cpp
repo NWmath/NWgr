@@ -135,6 +135,11 @@ auto apb_adj(Adjacency& graph, size_t ntrial, vertex_id_t<Adjacency> seed) {
     time += t5.elapsed();
   }
   std::cout << t5.name() << " " << time / ntrial << " ms" << std::endl;
+
+  // Add version with adjacent_vertices (ranges::elements<0>)
+  // Add version with std::vector<std::vector<int>>
+  // Add version with std::vector<std::vector<std::tuple<int>>>
+
 }
 
 void usage(const std::string& msg = "") { std::cout << std::string("Usage: ") + msg + " " << std::endl; }
