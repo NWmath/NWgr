@@ -28,7 +28,7 @@ namespace graph {
 
 enum three_colors { black, white, grey };
 
-#if 1
+#if 0
 template <typename Graph, typename Queue = std::queue<vertex_id_t<Graph>>>
 class bfs_edge_range {
 private:
