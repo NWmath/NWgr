@@ -165,6 +165,7 @@ auto apb_adj(Adjacency& graph, size_t ntrial, vertex_id_t<Adjacency> seed) {
     int k = 0;
     for (auto&& j : graph[i]) {
       vgraph[i][k] = std::get<0>(j);
+      ++k;
     }
   }
 
@@ -191,17 +192,18 @@ auto apb_adj(Adjacency& graph, size_t ntrial, vertex_id_t<Adjacency> seed) {
   }
   std::cout << t7.name() << " " << time / ntrial << " ms" << std::endl;
 
-  std::vector<std::vector<std::tuple<int,int>>> tgraph(num_vertices(graph));
+  std::vector<std::vector<std::tuple<int>>> tgraph(num_vertices(graph));
   for (vertex_id_type i = 0; i < num_vertices(graph); ++i) {
     tgraph[i].resize(graph[i].size());
     int k = 0;
     for (auto&& j : graph[i]) {
       std::get<0>(tgraph[i][k]) = std::get<0>(j);
+      ++k;
     }
   }
 
   time = 0;
-  ms_timer t8("range based for with std::vector<std::vector<<std::tuple<int,int>>>");
+  ms_timer t8("range based for with std::vector<std::vector<<std::tuple<int>>>");
   for (size_t t = 0; t < ntrial; ++t) {
     std::fill(visited.begin(), visited.end(), false);
     t8.start();
@@ -223,6 +225,29 @@ auto apb_adj(Adjacency& graph, size_t ntrial, vertex_id_t<Adjacency> seed) {
     time += t8.elapsed();
   }
   std::cout << t8.name() << " " << time / ntrial << " ms" << std::endl;
+
+  time = 0;
+  ms_timer t9("range based for with std::vector<std::vector<<std::tuple<int>>> and elements()");
+  for (size_t t = 0; t < ntrial; ++t) {
+    std::fill(visited.begin(), visited.end(), false);
+    t9.start();
+
+    std::queue<vertex_id_type> Q;
+    Q.push(seed);
+    while (!Q.empty()) {
+      vertex_id_type vtx = Q.front();
+      Q.pop();
+      for (auto&& n : std::views::elements<0>(tgraph[vtx])) {
+        if (!visited[n]) {
+          visited[n] = true;
+          Q.push(n);
+        }
+      }
+    }
+    t9.stop();
+    time += t9.elapsed();
+  }
+  std::cout << t9.name() << " " << time / ntrial << " ms" << std::endl;
 
 
   // Add version with adjacent_vertices (ranges::elements<0>)
