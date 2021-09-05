@@ -5,9 +5,12 @@
 #include <vector>
 
 #include "nwgraph/adaptors/edge_range.hpp"
+#include "nwgraph/adaptors/bfs_range.hpp"
+#include "nwgraph/adaptors/bfs_edge_range.hpp"
 #include "nwgraph/containers/compressed.hpp"
 #include "nwgraph/edge_list.hpp"
 #include "nwgraph/io/mmio.hpp"
+
 
 using namespace nw::graph;
 using namespace nw::util;
@@ -248,6 +251,33 @@ auto apb_adj(Adjacency& graph, size_t ntrial, vertex_id_t<Adjacency> seed) {
     time += t9.elapsed();
   }
   std::cout << t9.name() << " " << time / ntrial << " ms" << std::endl;
+
+  time = 0;
+  ms_timer t10("topdown_bfs_range");
+  for (size_t t = 0; t < ntrial; ++t) {
+    std::fill(visited.begin(), visited.end(), false);
+    t10.start();
+
+    for (auto&& j : topdown_bfs_range(graph)) ;
+
+    t10.stop();
+    time += t10.elapsed();
+  }
+  std::cout << t10.name() << " " << time / ntrial << " ms" << std::endl;
+
+  time = 0;
+  ms_timer t11("bfs_edge_range");
+  for (size_t t = 0; t < ntrial; ++t) {
+    std::fill(visited.begin(), visited.end(), false);
+    t11.start();
+
+    for (auto&& j : bfs_edge_range(graph)) ;
+
+    t11.stop();
+    time += t11.elapsed();
+  }
+  std::cout << t11.name() << " " << time / ntrial << " ms" << std::endl;
+
 
 
   // Add version with adjacent_vertices (ranges::elements<0>)
