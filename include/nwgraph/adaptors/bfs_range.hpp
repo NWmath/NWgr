@@ -117,18 +117,21 @@ class topdown_bfs_range {
 
   /// Initialize the range with a vertex id.
   void init(vertex_id_type u) {
+    visited_[u] = true;
     queue_.push(u);
   }
 
   /// Visit a vertex by enumerating its ready neighbors.
   void visit(vertex_id_type v) {
-    for (auto&& e : graph_[v]) {
-      auto u = std::get<0>(e);
-      if (visited_[u] == false) {
-        visited_[u] = true;
-        queue_.push(u);
+    //    for (auto&& e : graph_[v]) {
+    // auto u = std::get<0>(e);
+    std::for_each(graph_[v].begin(), graph_[v].end(), [&] (auto&& e) {
+
+      if (visited_[std::get<0>(e)] == false) {
+        visited_[std::get<0>(e)] = true;
+        queue_.push(std::get<0>(e));
       }
-    }
+    });
   }
 
   /// Process the next vertex by marking the head as processed, popping it, and

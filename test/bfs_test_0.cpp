@@ -95,11 +95,12 @@ TEST_CASE("BFS traversal", "[bfs]") {
 
     REQUIRE(validate(aos_a, seed, distance, predecessor));
   }
-  /*
+
+#if 0
   SECTION("Top-down BFS default seed using bfs_range") {
-    vertex_id_type seed = 0;
+    vertex_id_t<directed_csr_graph_t> seed = 0;
     distance[seed]      = 0;
-    bfs_range ranges(A, seed);
+    topdown_bfs_range ranges(A, seed);
     auto      ite = ranges.begin();
     for (; ite != ranges.end(); ++ite) {
       auto v         = std::get<0>(*ite);
@@ -111,9 +112,9 @@ TEST_CASE("BFS traversal", "[bfs]") {
     REQUIRE(validate(aos_a, seed, distance, predecessor));
   }
     SECTION("Top-down BFS another seed using bfs_range") {
-    vertex_id_type seed = 7;
+    vertex_id_t<directed_csr_graph_t> seed = 1;
     distance[seed]      = 0;
-    bfs_range ranges(A, seed);
+    topdown_bfs_range ranges(A, seed);
     auto      ite = ranges.begin();
     for (; ite != ranges.end(); ++ite) {
       auto v         = std::get<0>(*ite);
@@ -124,7 +125,8 @@ TEST_CASE("BFS traversal", "[bfs]") {
 
     REQUIRE(validate(aos_a, seed, distance, predecessor));
   }
-*/
+#endif
+
   SECTION("Bottom-up BFS default seed using bottomup_bfs_range") {
     vertex_id_t<directed_csr_graph_t> seed = 0;
     distance[seed]      = 0;

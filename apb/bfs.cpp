@@ -32,6 +32,7 @@ auto apb_adj(Adjacency& graph, size_t ntrial, vertex_id_t<Adjacency> seed) {
 
     std::queue<vertex_id_type> Q;
     Q.push(seed);
+    visited[seed] = true;
     while (!Q.empty()) {
       vertex_id_type vtx = Q.front();
       Q.pop();
@@ -55,6 +56,7 @@ auto apb_adj(Adjacency& graph, size_t ntrial, vertex_id_t<Adjacency> seed) {
 
     std::queue<vertex_id_type> Q;
     Q.push(seed);
+    visited[seed] = true;
     while (!Q.empty()) {
       vertex_id_type vtx = Q.front();
       Q.pop();
@@ -78,6 +80,7 @@ auto apb_adj(Adjacency& graph, size_t ntrial, vertex_id_t<Adjacency> seed) {
 
     std::queue<vertex_id_type> Q;
     Q.push(seed);
+    visited[seed] = true;
     while (!Q.empty()) {
       vertex_id_type vtx = Q.front();
       Q.pop();
@@ -101,6 +104,7 @@ auto apb_adj(Adjacency& graph, size_t ntrial, vertex_id_t<Adjacency> seed) {
 
     std::queue<vertex_id_type> Q;
     Q.push(seed);
+    visited[seed] = true;
     while (!Q.empty()) {
       vertex_id_type vtx = Q.front();
       Q.pop();
@@ -124,6 +128,7 @@ auto apb_adj(Adjacency& graph, size_t ntrial, vertex_id_t<Adjacency> seed) {
 
     std::queue<vertex_id_type> Q;
     Q.push(seed);
+    visited[seed] = true;
     while (!Q.empty()) {
       vertex_id_type vtx = Q.front();
       Q.pop();
@@ -147,6 +152,7 @@ auto apb_adj(Adjacency& graph, size_t ntrial, vertex_id_t<Adjacency> seed) {
 
     std::queue<vertex_id_type> Q;
     Q.push(seed);
+    visited[seed] = true;
     while (!Q.empty()) {
       vertex_id_type vtx = Q.front();
       Q.pop();
@@ -180,6 +186,7 @@ auto apb_adj(Adjacency& graph, size_t ntrial, vertex_id_t<Adjacency> seed) {
 
     std::queue<vertex_id_type> Q;
     Q.push(seed);
+    visited[seed] = true;
     while (!Q.empty()) {
       vertex_id_type vtx = Q.front();
       Q.pop();
@@ -213,6 +220,7 @@ auto apb_adj(Adjacency& graph, size_t ntrial, vertex_id_t<Adjacency> seed) {
 
     std::queue<vertex_id_type> Q;
     Q.push(seed);
+    visited[seed] = true;
     while (!Q.empty()) {
       vertex_id_type vtx = Q.front();
       Q.pop();
@@ -237,6 +245,7 @@ auto apb_adj(Adjacency& graph, size_t ntrial, vertex_id_t<Adjacency> seed) {
 
     std::queue<vertex_id_type> Q;
     Q.push(seed);
+    visited[seed] = true;
     while (!Q.empty()) {
       vertex_id_type vtx = Q.front();
       Q.pop();
