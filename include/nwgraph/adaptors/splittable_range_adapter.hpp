@@ -18,10 +18,12 @@
 #include <cstddef>
 #include <oneapi/tbb.h>
 
+#include <ranges>
+
 namespace nw {
 namespace graph {
 template <class Iterator>
-class splittable_range_adapter {
+class splittable_range_adapter : public std::ranges::view_base {
   Iterator    begin_;
   Iterator    end_;
   std::size_t cutoff_ = 16384;
@@ -49,6 +51,11 @@ public:
   splittable_range_adapter(splittable_range_adapter&)       = default;
   splittable_range_adapter(const splittable_range_adapter&) = default;
   splittable_range_adapter(splittable_range_adapter&&)      = default;
+
+  splittable_range_adapter& operator=(const splittable_range_adapter&) = default;
+  splittable_range_adapter& operator=(splittable_range_adapter&&)      = default;
+
+  splittable_range_adapter() = default;
 
   decltype(auto) begin() const { return begin_; }
   decltype(auto) end() const { return end_; }

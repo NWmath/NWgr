@@ -136,6 +136,95 @@ auto apb_adj(Adjacency& graph, size_t ntrial, vertex_id_t<Adjacency> seed) {
   }
   std::cout << t5.name() << " " << time / ntrial << " ms" << std::endl;
 
+  time = 0;
+  ms_timer t6("range based for with ranges::elements<0>");
+  for (size_t t = 0; t < ntrial; ++t) {
+    std::fill(visited.begin(), visited.end(), false);
+    t6.start();
+
+    std::queue<vertex_id_type> Q;
+    Q.push(seed);
+    while (!Q.empty()) {
+      vertex_id_type vtx = Q.front();
+      Q.pop();
+      for (auto&& n : std::views::elements<0>(graph[vtx])) {
+        if (!visited[n]) {
+          visited[n] = true;
+          Q.push(n);
+        }
+      }
+    }
+    t6.stop();
+    time += t6.elapsed();
+  }
+  std::cout << t6.name() << " " << time / ntrial << " ms" << std::endl;
+
+  std::vector<std::vector<int>> vgraph(num_vertices(graph));
+  for (vertex_id_type i = 0; i < num_vertices(graph); ++i) {
+    vgraph[i].resize(graph[i].size());
+    int k = 0;
+    for (auto&& j : graph[i]) {
+      vgraph[i][k] = std::get<0>(j);
+    }
+  }
+
+  time = 0;
+  ms_timer t7("range based for with std::vector<std::vector<int>>");
+  for (size_t t = 0; t < ntrial; ++t) {
+    std::fill(visited.begin(), visited.end(), false);
+    t7.start();
+
+    std::queue<vertex_id_type> Q;
+    Q.push(seed);
+    while (!Q.empty()) {
+      vertex_id_type vtx = Q.front();
+      Q.pop();
+      for (auto&& n : vgraph[vtx]) {
+        if (!visited[n]) {
+          visited[n] = true;
+          Q.push(n);
+        }
+      }
+    }
+    t7.stop();
+    time += t7.elapsed();
+  }
+  std::cout << t7.name() << " " << time / ntrial << " ms" << std::endl;
+
+  std::vector<std::vector<std::tuple<int,int>>> tgraph(num_vertices(graph));
+  for (vertex_id_type i = 0; i < num_vertices(graph); ++i) {
+    tgraph[i].resize(graph[i].size());
+    int k = 0;
+    for (auto&& j : graph[i]) {
+      std::get<0>(tgraph[i][k]) = std::get<0>(j);
+    }
+  }
+
+  time = 0;
+  ms_timer t8("range based for with std::vector<std::vector<<std::tuple<int,int>>>");
+  for (size_t t = 0; t < ntrial; ++t) {
+    std::fill(visited.begin(), visited.end(), false);
+    t8.start();
+
+    std::queue<vertex_id_type> Q;
+    Q.push(seed);
+    while (!Q.empty()) {
+      vertex_id_type vtx = Q.front();
+      Q.pop();
+      for (auto&& t : tgraph[vtx]) {
+	auto n = std::get<0>(t);
+        if (!visited[n]) {
+          visited[n] = true;
+          Q.push(n);
+        }
+      }
+    }
+    t8.stop();
+    time += t8.elapsed();
+  }
+  std::cout << t8.name() << " " << time / ntrial << " ms" << std::endl;
+
+
   // Add version with adjacent_vertices (ranges::elements<0>)
   // Add version with std::vector<std::vector<int>>
   // Add version with std::vector<std::vector<std::tuple<int>>>
