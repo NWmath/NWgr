@@ -66,29 +66,17 @@ public:    // fixme
 
   indexed_struct_of_arrays(size_t N) : N_(N), indices_(N + 1) {}
   indexed_struct_of_arrays(size_t N, size_t M) : N_(N), indices_(N + 1), to_be_indexed_(M) {}
-<<<<<<< HEAD:include/containers/compressed.hpp
-<<<<<<< HEAD:include/containers/compressed.hpp
+
   //move constructor, assume indices_[N_] == to_be_indexed_.size();
   indexed_struct_of_arrays(std::vector<vertex_id_t>&& indices, std::vector<vertex_id_t>&& to_be_indexed)
   : N_(indices.size() - 1), indices_(indices), to_be_indexed_(to_be_indexed) {
     assert(indices_[N_] == to_be_indexed_.size());
-=======
+  }
+
   //copy constructor, assume indices_[N_] == to_be_indexed_.size();
   indexed_struct_of_arrays(std::vector<vertex_id_t>& indices, std::vector<vertex_id_t>& to_be_indexed)
   : N_(indices.size() - 1), indices_(indices), to_be_indexed_(to_be_indexed) {
     assert(indices_[N_] == to_be_indexed.size());
-  }
-  //move constructor, assume indices_[N_] == to_be_indexed_.size();
-  indexed_struct_of_arrays(std::vector<vertex_id_t>&& indices, std::vector<vertex_id_t>&& to_be_indexed)
-  : N_(indices.size() - 1), indices_(indices), to_be_indexed_(to_be_indexed) {
-    assert(indices_[N_] == to_be_indexed.size());
->>>>>>> c01b6f9 (add copy and move constructor of adjacency list):include/compressed.hpp
-=======
-  //move constructor, assume indices_[N_] == to_be_indexed_.size();
-  indexed_struct_of_arrays(std::vector<vertex_id_t>&& indices, std::vector<vertex_id_t>&& to_be_indexed)
-  : N_(indices.size() - 1), indices_(indices), to_be_indexed_(to_be_indexed) {
-    assert(indices_[N_] == to_be_indexed_.size());
->>>>>>> 5340ae3 (remove indice_[N] modification, assert only, trust user will do it):include/compressed.hpp
   }
 
   /// A linear edge iterator that supports random-access operations.
