@@ -12,9 +12,10 @@
 #define CONNECTED_COMPONENT_HPP
 
 #include "util/types.hpp"
-#include "adaptors/bfs_edge_range.hpp"
-#include "util/disjoint_set.hpp"
-#include "adaptors/edge_range.hpp"
+#include "util/atomic.hpp"
+#include "bfs_edge_range.hpp"
+#include "disjoint_set.hpp"
+#include "edge_range.hpp"
 #include <atomic>
 #include <iostream>
 #include <random>
@@ -27,6 +28,7 @@
 namespace nw::graph {
 template <class T>
 using counting_iterator = dpstd::counting_iterator<T>;
+#define cins dpstd
 }
 #else
 #include <algorithm>
@@ -35,6 +37,7 @@ using counting_iterator = dpstd::counting_iterator<T>;
 namespace nw::graph {
 template <class T>
 using counting_iterator = tbb::counting_iterator<T>;
+#define cins tbb
 }
 #endif
 
@@ -110,6 +113,18 @@ void compress(std::vector<T>& comp) {
       });
 }
 
+template<typename Execution, typename Graph, typename Vector>
+static void compress(Execution&& exec, Graph&& g, Vector& comp) {
+  size_t N = comp.size();
+  std::for_each(exec, cins::counting_iterator(0ul), cins::counting_iterator(N), [&](auto n) {
+    while (comp[n] != comp[comp[n]]) {
+      auto foo = nw::graph::acquire(comp[n]);
+      auto bar = nw::graph::acquire(comp[foo]);
+      nw::graph::release(comp[n], bar);
+    }
+  });
+}
+
 template <typename T>
 T find_dominant_component_id(const std::vector<T>& comp, size_t nsamples = 1024) {
   if (0 == comp.size()) return 0;
@@ -133,6 +148,25 @@ T find_dominant_component_id(const std::vector<T>& comp, size_t nsamples = 1024)
   return dominant->first;
 }
 
+template<typename Vector>
+static vertex_id_t sample_frequent_element(const Vector& comp, size_t num_samples = 1024) {
+  std::unordered_map<vertex_id_t, int>       counts(32);
+  std::mt19937                               gen;
+  std::uniform_int_distribution<vertex_id_t> distribution(0, comp.size() - 1);
+
+  for (size_t i = 0; i < num_samples; ++i) {
+    vertex_id_t n = distribution(gen);
+    counts[comp[n]]++;
+  }
+
+  auto&& [num, count] = *std::max_element(counts.begin(), counts.end(),
+                                          [](auto&& a, auto&& b) { return std::get<1>(a) < std::get<1>(b); });
+  float frac_of_graph = static_cast<float>(count) / num_samples;
+  std::cout << "Skipping largest intermediate component (ID: " << num << ", approx. "
+            << int(frac_of_graph * 100) << "% of the graph)\n";
+  return num;
+}
+
 template <typename Graph>
 void push(Graph& g, const vertex_id_t u, std::vector<vertex_id_t>& comp) {
   vertex_id_t v;
@@ -151,7 +185,20 @@ void link(Graph& g, const vertex_id_t u, std::vector<vertex_id_t>& comp, const s
     hook(u, v, comp);
   }
 }
+template<typename Vector>
+static void link(vertex_id_t u, vertex_id_t v, Vector& comp) {
+  vertex_id_t p1 = nw::graph::acquire(comp[u]);
+  vertex_id_t p2 = comp[v];
+  while (p1 != p2) {
+    vertex_id_t high   = std::max(p1, p2);
+    vertex_id_t low    = p1 + (p2 - high);
+    vertex_id_t p_high = comp[high];
 
+    if ((p_high == low) || (p_high == high && comp[high].compare_exchange_strong(high, low))) break;
+    p1 = comp[p_high];
+    p2 = comp[low];
+  }
+}
 // fetch the smallest comp_id among u's neighbors
 template <typename Graph, typename T>
 bool pull(Graph& g, const T u, std::vector<T>& comp) {
@@ -315,17 +362,17 @@ std::vector<vertex_id_t> ccv1(Graph& g) {
   return comp;
 }
 
-template <typename Graph, typename Graph2>
-std::vector<vertex_id_t> Afforest(Graph& g, Graph2& t_graph, size_t neighbor_bound = 2) {
+template <typename Execution, typename Graph, typename Graph2>
+std::vector<vertex_id_t> Afforest(Execution& exec, Graph& g, Graph2& t_graph, size_t neighbor_bound = 2) {
   std::vector<vertex_id_t> comp(g.size());
   // set component id of vertex v to v
   std::for_each(
-      std::execution::par_unseq,
+      exec,
       counting_iterator<vertex_id_t>(0), counting_iterator<vertex_id_t>(g.size()), [&](auto n) { comp[n] = n; });
   // approximate the dominant component by linking certain neighbors of each
   // vertex v (a sparse subgraph)
   std::for_each(
-      std::execution::par_unseq,
+      exec,
       counting_iterator<vertex_id_t>(0), counting_iterator<vertex_id_t>(g.size()),
       [&](auto u) { link(g, u, comp, neighbor_bound); });
   compress(comp);
@@ -333,7 +380,7 @@ std::vector<vertex_id_t> Afforest(Graph& g, Graph2& t_graph, size_t neighbor_bou
   vertex_id_t dominant_c = find_dominant_component_id(comp);
   // link the rest vertices outside of dominant component
   std::for_each(
-      std::execution::par_unseq,
+      exec,
       counting_iterator<vertex_id_t>(0), counting_iterator<vertex_id_t>(g.size()), [&](auto u) {
         if (dominant_c != comp[u]) {
           push(g, u, comp);
@@ -343,6 +390,45 @@ std::vector<vertex_id_t> Afforest(Graph& g, Graph2& t_graph, size_t neighbor_bou
         }
       });
   compress(comp);
+
+  return comp;
+}
+
+template<typename Execution, typename Graph1, typename Graph2>
+static auto afforest(Execution exec, Graph1& graph, Graph2& t_graph, size_t neighbor_rounds = 2)
+{
+  std::vector<std::atomic<vertex_id_t>> comp(graph.max() + 1);
+  std::for_each(exec, cins::counting_iterator(0ul), cins::counting_iterator(comp.size()),
+                [&](vertex_id_t n) { comp[n] = n; });
+  auto g = graph.begin();
+  for (size_t r = 0; r < neighbor_rounds; ++r) {
+    std::for_each(exec, cins::counting_iterator(0ul), cins::counting_iterator(comp.size()), [&](vertex_id_t u) {
+      if (r < (g[u]).size()) {
+        link(u, std::get<0>(g[u].begin()[r]), comp);
+      }
+    });
+    compress(exec, graph, comp);
+  }
+
+  vertex_id_t c = sample_frequent_element(comp);
+
+  std::for_each(exec, cins::counting_iterator(0ul), cins::counting_iterator(comp.size()), [&](vertex_id_t u) {
+    if (comp[u] == c) return;
+
+    if (neighbor_rounds < g[u].size()) {
+      for (auto v = g[u].begin() + neighbor_rounds; v != g[u].end(); ++v) {
+        link(u, std::get<0>(*v), comp);
+      }
+    }
+
+    if (t_graph.size() != 0) {
+      for (auto&& [v] : (t_graph.begin())[u]) {
+        link(u, v, comp);
+      }
+    }
+  });
+
+  compress(exec, g, comp);
 
   return comp;
 }
