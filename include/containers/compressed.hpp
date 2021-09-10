@@ -566,6 +566,21 @@ public:    // fixme
     relabel_to_be_indexed(perm, ex_policy);
   }
   
+  /*
+  * Permute the adjacency based on the degree of each vertex
+  * There are two major steps: 1. permute the indices_ and the to_be_indexed_
+  * 2. relabel the to_be_indexed_ if needed (which is not needed if it is part of bi-adjacency)
+  * WARNING:
+  * If sort_by_degree on a bi-adjacency, do NOT use sort_by_degree.
+  * Call permute_by_degree on adjacency<idx>, 
+  * then call relabel_to_be_indexed on adjacency<(idx + 1) % 2>.
+  */
+  template <class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
+  void sort_by_degree(std::string direction = "descending", ExecutionPolicy&& ex_policy = {}) {
+    auto&& perm = permute_by_degree(direction, ex_policy);
+    relabel_to_be_indexed(perm, ex_policy);
+  }
+
   void stream_indices(std::ostream& out = std::cout) {
     auto s = std::get<0>(to_be_indexed_).begin();
     out << "\n+++\n";
