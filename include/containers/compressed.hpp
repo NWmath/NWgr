@@ -534,6 +534,14 @@ public:
       : indexed_struct_of_arrays<vertex_id_t, Attributes...>(std::max(A.max()[0], A.max()[1]) + 1) {
     A.fill(*this, policy);
   }
+  adjacency(size_t N, edge_list<directed, Attributes...>& A)
+   : indexed_struct_of_arrays<vertex_id_t, Attributes...>(N) {
+    A.fill(*this);
+  }
+  adjacency(size_t N, edge_list<undirected, Attributes...>& A)
+    : indexed_struct_of_arrays<vertex_id_t, Attributes...>(N) {
+    A.fill(*this);
+  }
   //move constructor
   adjacency(std::vector<vertex_id_t>&& indices, std::vector<vertex_id_t>&& to_be_indexed) :
   indexed_struct_of_arrays<vertex_id_t, Attributes...>(std::move(indices), std::move(to_be_indexed)) {

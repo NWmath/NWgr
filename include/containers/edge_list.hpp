@@ -440,6 +440,7 @@ public:
 
         auto degree = Tmp.template degrees<idx>();    // Can have a fast version if we know it is sorted -- using equal_range
         //NOTICE: bipartite graph cannot resize indices_ based on the max of column 0/1
+        
         //cs.indices_.resize(Tmp.max_[idx] + 1 + 1);
 
         std::inclusive_scan(std::execution::par, degree.begin(), degree.end(), cs.indices_.begin() + 1);
@@ -609,6 +610,46 @@ public:
     base::resize(past_the_end - base::begin());
   }
 
+  // Make entries unique -- in place -- collapse adjacent redundancies into one
+  // which contains the number of redundancies as edge weight
+  // Requires entries to be sorted in both dimensions
+  template <class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
+  void collapse(ExecutionPolicy&& policy = {}) {
+    int status = -4;
+    prv.push_back(nw::graph::demangle(typeid(*this).name(), nullptr, nullptr, &status) + "::" + __func__);
+
+    auto cmp = [](auto&& x, auto&& y) { 
+      return std::get<0>(x) == std::get<0>(y) && std::get<1>(x) == std::get<1>(y);
+    };
+    auto cmp_and_count = [](auto&& x, auto&& y) {
+      if (std::get<0>(x) == std::get<0>(y) && std::get<1>(x) == std::get<1>(y)) {
+        ++std::get<2>(x);
+        return true;
+      }
+      else
+        return false;
+    };
+    auto combine = []<class ForwardIt, class BinaryPredicate>(ForwardIt first, ForwardIt last, BinaryPredicate p) {
+      if (first == last)
+        return last;
+
+      ForwardIt result = first;
+      while (++first != last)
+      {
+        if (!p(*result, *first) && ++result != first)
+        {
+          *result = std::move(*first);
+        }
+      }
+      return ++result;
+    };
+    auto past_the_end =
+        std::unique(policy, base::begin(), base::end(),
+                    [](auto&& x, auto&& y) { return std::get<0>(x) == std::get<0>(y) && std::get<1>(x) == std::get<1>(y); });
+
+    // base::erase(past_the_end, base::end());
+    base::resize(past_the_end - base::begin());
+  }  
   void remove_self_loops() {
     int status = -4;
     prv.push_back(nw::graph::demangle(typeid(*this).name(), nullptr, nullptr, &status) + "::" + __func__);
