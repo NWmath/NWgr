@@ -13,10 +13,7 @@
 
 #include "util/types.hpp"
 #include "util/atomic.hpp"
-<<<<<<< HEAD
 #include "util/AtomicBitVector.hpp"
-=======
->>>>>>> 789be7a (add exec for Afforest)
 #include "bfs_edge_range.hpp"
 #include "disjoint_set.hpp"
 #include "edge_range.hpp"
