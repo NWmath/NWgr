@@ -550,7 +550,7 @@ public:    // fixme
     auto&& perm = permute_by_degree(direction, ex_policy);
     relabel_to_be_indexed(perm, ex_policy);
   }
-
+  
   void stream_indices(std::ostream& out = std::cout) {
     auto s = std::get<0>(to_be_indexed_).begin();
     out << "\n+++\n";
