@@ -599,10 +599,11 @@ public:
   using attributes_t = std::tuple<Attributes...>;
   static constexpr std::size_t getNAttr() { return sizeof...(Attributes); }
   using vertex_id_t = nw::graph::vertex_id_t;
-
+  //an adjacency which each list is empty
+  adjacency(size_t N = 0) : indexed_struct_of_arrays<vertex_id_t, Attributes...>(N) {}
   adjacency(size_t N = 0, size_t M = 0) : indexed_struct_of_arrays<vertex_id_t, Attributes...>(N, M) {}
   template <class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
-  adjacency(edge_list<directed, Attributes...>& A, ExecutionPolicy&& policy = {}) : indexed_struct_of_arrays<vertex_id_t, Attributes...>(A.max()[idx] + 1) {
+  adjacency(edge_list<directed, Attributes...>& A, ExecutionPolicy&& policy = {}) : indexed_struct_of_arrays<vertex_id_t, Attributes...>(std::max(A.max()[0], A.max()[1]) + 1) {
     A.fill(*this, policy);
   }
   template <class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
@@ -610,16 +611,16 @@ public:
       : indexed_struct_of_arrays<vertex_id_t, Attributes...>(std::max(A.max()[0], A.max()[1]) + 1) {
     A.fill(*this, policy);
   }
-  adjacency(edge_list<undirected, Attributes...>& A) : indexed_struct_of_arrays<vertex_id_t, Attributes...>(std::max(A.max()[0], A.max()[1]) + 1) {
-    A.fill(*this);
-  }
-  adjacency(size_t N, edge_list<directed, Attributes...>& A)
+
+  template <class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
+  adjacency(size_t N, edge_list<directed, Attributes...>& A, ExecutionPolicy&& policy = {})
    : indexed_struct_of_arrays<vertex_id_t, Attributes...>(N) {
-    A.fill(*this);
+    A.fill(*this, policy);
   }
-  adjacency(size_t N, edge_list<undirected, Attributes...>& A)
+  template <class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
+  adjacency(size_t N, edge_list<undirected, Attributes...>& A, ExecutionPolicy&& policy = {})
     : indexed_struct_of_arrays<vertex_id_t, Attributes...>(N) {
-    A.fill(*this);
+    A.fill(*this, policy);
   }
   //move constructor
   adjacency(std::vector<vertex_id_t>&& indices, std::vector<vertex_id_t>&& to_be_indexed) :
