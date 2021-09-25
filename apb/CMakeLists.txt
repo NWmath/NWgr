@@ -15,6 +15,9 @@ target_link_Libraries(tbb nw_graph)
 add_executable(bfs bfs.cpp)
 target_link_Libraries(bfs nw_graph)
 
+add_executable(dijkstra dijkstra.cpp)
+target_link_Libraries(dijkstra nw_graph)
+
 add_executable(dfs dfs.cpp)
 target_link_Libraries(dfs nw_graph)
 
