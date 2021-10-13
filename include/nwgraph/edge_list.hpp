@@ -237,6 +237,17 @@ auto tag_invoke(const num_vertices_tag, const index_edge_list<vertex_id, graph_b
   return b.num_vertices()[0];
 }
 
+template <std::unsigned_integral vertex_id, typename graph_base_t, directedness direct = directedness::undirected, typename... Attributes>
+auto tag_invoke(const target_tag, const index_edge_list<vertex_id, graph_base_t, direct, Attributes...>&, const std::tuple<vertex_id, vertex_id, Attributes...>& e) {
+  return std::get<1>(e);
+}
+
+template <std::unsigned_integral vertex_id, typename graph_base_t, directedness direct = directedness::undirected, typename... Attributes>
+auto tag_invoke(const source_tag, const index_edge_list<vertex_id, graph_base_t, direct, Attributes...>&, const std::tuple<vertex_id, vertex_id, Attributes...>& e) {
+  return std::get<0>(e);
+}
+
+
 template <std::unsigned_integral vertex_id, typename graph_base_t, directedness direct, typename... Attributes>
 struct graph_traits<index_edge_list<vertex_id, graph_base_t, direct, Attributes...>> {
   using G = index_edge_list<vertex_id, graph_base_t, direct, Attributes...>;
@@ -252,6 +263,8 @@ struct graph_traits<index_edge_list<vertex_id, graph_base_t, direct, Attributes.
   using const_outer_iterator = std::false_type;
   using const_inner_iterator = std::false_type;
 };
+
+
 
 }    // namespace graph
 }    // namespace nw

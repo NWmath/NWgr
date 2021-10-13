@@ -274,6 +274,12 @@ zipped<Ranges...> make_zipped(Ranges&... rs) {
   return { rs... };
 }
 
+template <std::ranges::random_access_range... Ranges>
+zipped<Ranges...> make_zipped(Ranges&&... rs) {
+  return { rs... };
+}
+
+
 
 
 

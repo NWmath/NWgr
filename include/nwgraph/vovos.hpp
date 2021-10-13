@@ -25,6 +25,7 @@
 namespace nw {
 namespace graph {
 
+
 template <typename... Attributes>
 class vector_of_vector_of_structs : public std::vector<std::vector<std::tuple<Attributes...>>> {
 
@@ -53,6 +54,7 @@ public:
   auto size() const { return base::size(); }
 };
 
+
 template <int idx, std::unsigned_integral vertex_id, typename... Attributes>
 class index_vov : public unipartite_graph_base, public vector_of_vector_of_structs<vertex_id, Attributes...> {
   using base = vector_of_vector_of_structs<vertex_id, Attributes...>;
@@ -79,7 +81,6 @@ private:
 
 template <int idx, typename... Attributes>
 using vov = index_vov<idx, default_vertex_id_type, Attributes...>;
-
 
 }    // namespace graph
 }    // namespace nw

@@ -150,7 +150,7 @@ int main() {
 
   std::cout << "Kevin Bacon has a Bacon number of " << distance[kevin_bacon] << std::endl;
 
-  std::cout << "Kyra Sedgwick has a bacon number of " << distance[kyra_sedgwick] << std::endl;
+  std::cout << "Kyra Sedgwick has a Bacon number of " << distance[kyra_sedgwick] << std::endl;
   size_t d = distance[kyra_sedgwick];
   while (kyra_sedgwick != kevin_bacon) {
     std::cout << names(kyra_sedgwick, 1) << " starred with " << names(parents[kyra_sedgwick], 1) << " in "
