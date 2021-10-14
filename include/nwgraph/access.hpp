@@ -35,19 +35,6 @@ DECL_TAG_INVOKE(degree);
 DECL_TAG_INVOKE(source);
 DECL_TAG_INVOKE(target);
 
-#if 0
-// Too liberal
-template <std::ranges::random_access_range T>
-auto tag_invoke(const num_vertices_tag, const T& b) {
-  return b.size();
-}
-
-// Too liberal
-template <std::ranges::sized_range T>
-auto tag_invoke(const degree_tag, T& n) {
-  return n.size();
-}
-#endif
 
 }    // namespace graph
 }    // namespace nw

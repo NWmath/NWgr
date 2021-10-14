@@ -23,20 +23,10 @@
 
 namespace nw::graph {
 
-
-
-  //template <class T>
-  //class graph_traits {
-  //  using vertex_id_type = typename T::vertex_id_type;
-  //};
-
-  //template <typename G>
-  // using vertex_id_t = typename graph_traits<G>::vertex_id_type;
-
-
 template <typename G>
 concept graph = std::semiregular<G> && requires(G g) {
   typename vertex_id_t<G>;
+  { num_vertices(g) } -> std::convertible_to<std::ranges::range_difference_t<G>>;
 };
 
 template <typename G>
@@ -44,7 +34,6 @@ using inner_range_t = std::ranges::range_value_t<G>;
 
 template <typename G>
 using inner_value_t = std::ranges::range_value_t<inner_range_t<G>>;
-
 
 template <typename G>
 concept adjacency_list_graph = graph<G>
@@ -112,7 +101,7 @@ concept min_idx_adjacency_list =
 };
 
 template <typename G>
-concept idx_adjacency_list =
+concept idx_adjacency_list = 
      std::ranges::random_access_range<G>
   && edge_list_c<inner_range_t<G>>
   && std::is_convertible_v<std::tuple_element_t<0, inner_value_t<G>>, std::ranges::range_difference_t<G>>
@@ -121,9 +110,9 @@ concept idx_adjacency_list =
 };
 
 
-
 // Based on the above concepts, we define concept-based overloads for vertex_id_type and some CPOs
 
+// Graph traits
 template <min_idx_adjacency_list G>
 struct graph_traits<G> {
   using vertex_id_type = inner_value_t<G>;
@@ -134,15 +123,29 @@ struct graph_traits<G> {
   using vertex_id_type = std::tuple_element_t<0, inner_value_t<G>>;
 };
 
+// target CPO
+template <idx_adjacency_list T, class U>
+auto tag_invoke(const target_tag, const T& graph, const U& e) {
+  return std::get<0>(e);
+}
+
 template <min_idx_adjacency_list T, class U>
 auto tag_invoke(const target_tag, const T& graph, const U& e) {
   return e;
 }
 
-template <idx_adjacency_list T, class U>
-auto tag_invoke(const target_tag, const T& graph, const U& e) {
-  return std::get<0>(e);
+// num_vertices CPO
+template <idx_adjacency_list T>
+auto tag_invoke(const num_vertices_tag, const T& graph) {
+  return graph.size();
 }
+
+template <min_idx_adjacency_list T>
+auto tag_invoke(const num_vertices_tag, const T& graph) {
+  return graph.size();
+}
+
+
 
 
 }    // namespace nw::graph
