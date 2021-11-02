@@ -33,6 +33,7 @@ static constexpr const char USAGE[] =
 )";
 
 #include "nwgraph/algorithms/bfs.hpp"
+#include "nwgraph/experimental/algorithms/bfs.hpp"
 #include "Log.hpp"
 #include "common.hpp"
 #include <docopt.h>
