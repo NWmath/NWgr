@@ -64,7 +64,7 @@ option(NW_GRAPH_USE_TBBMALLOC "Link to tbbmalloc" OFF)
 
 add_subdirectory(include)
 
-include(Docopt)
+oinclude(Docopt)
   
 if (NW_GRAPH_BUILD_TESTS)
   include(CTest)
