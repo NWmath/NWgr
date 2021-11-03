@@ -71,6 +71,7 @@ target_sources(nw_graph
   nwgraph/algorithms/prim.hpp
   nwgraph/algorithms/spMatspMat.hpp
   nwgraph/algorithms/triangle_count.hpp
+  nwgraph/experimental/algorithms/betweenness_centrality.hpp
   nwgraph/experimental/algorithms/bfs.hpp
   nwgraph/containers/aos.hpp
   nwgraph/containers/compressed.hpp
