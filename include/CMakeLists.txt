@@ -73,6 +73,7 @@ target_sources(nw_graph
   nwgraph/algorithms/triangle_count.hpp
   nwgraph/experimental/algorithms/betweenness_centrality.hpp
   nwgraph/experimental/algorithms/bfs.hpp
+  nwgraph/experimental/algorithms/connected_components.hpp
   nwgraph/containers/aos.hpp
   nwgraph/containers/compressed.hpp
   nwgraph/containers/soa.hpp
