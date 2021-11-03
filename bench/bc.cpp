@@ -22,7 +22,7 @@ static constexpr const char USAGE[] =
       -r NODE                 start from node r (default is random)
       -s, --sources FILE      sources file
       --seed NUM              random seed [default: 27491095]
-      --version ID            algorithm version to run [default: 0]
+      --version ID            algorithm version to run [default: 5]
       --log FILE              log times to a file
       --log-header            add a header to the log file
       -d, --debug             run in debug mode
@@ -35,6 +35,7 @@ static constexpr const char USAGE[] =
 
 #include "Log.hpp"
 #include "nwgraph/algorithms/betweenness_centrality.hpp"
+#include "nwgraph/experimental/algorithms/betweenness_centrality.hpp"
 #include "common.hpp"
 #include <docopt.h>
 
