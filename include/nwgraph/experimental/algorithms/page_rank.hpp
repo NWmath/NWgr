@@ -163,7 +163,9 @@ void page_rank_v1(const Graph& graph, const std::vector<typename Graph::vertex_i
       page_rank[i]  = base_score + damping_factor * z;
       error += fabs(page_rank[i] - old_rank);
     }
+
     //std::cout << iter << " " << error << std::endl;
+
     if (error < threshold) break;
   }
 }
