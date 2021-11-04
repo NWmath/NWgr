@@ -44,6 +44,7 @@ static constexpr const char USAGE[] =
 
 #include "common.hpp"
 #include "nwgraph/algorithms/triangle_count.hpp"
+#include "nwgraph/experimental/algorithms/triangle_count.hpp"
 #include <docopt.h>
 #include <tuple>
 
