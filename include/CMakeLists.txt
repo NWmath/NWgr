@@ -74,6 +74,7 @@ target_sources(nw_graph
   nwgraph/experimental/algorithms/betweenness_centrality.hpp
   nwgraph/experimental/algorithms/bfs.hpp
   nwgraph/experimental/algorithms/connected_components.hpp
+  nwgraph/experimental/algorithms/jaccard.hpp
   nwgraph/containers/aos.hpp
   nwgraph/containers/compressed.hpp
   nwgraph/containers/soa.hpp
