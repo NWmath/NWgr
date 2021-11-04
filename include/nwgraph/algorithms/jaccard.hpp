@@ -55,8 +55,6 @@ size_t jaccard_similarity_v0(const GraphT& G, Weight weight) {
   return ctr;
 }
 
-
-
 }    // namespace graph
 }    // namespace nw
 
