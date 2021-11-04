@@ -33,6 +33,7 @@ static constexpr const char USAGE[] =
 
 #include "Log.hpp"
 #include "nwgraph/algorithms/delta_stepping.hpp"
+#include "nwgraph/experimental/algorithms/delta_stepping.hpp"
 #include "common.hpp"
 #include "nwgraph/util/make_priority_queue.hpp"
 #include "nwgraph/util/traits.hpp"

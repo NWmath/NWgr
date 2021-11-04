@@ -76,6 +76,7 @@ target_sources(nw_graph
   nwgraph/experimental/algorithms/connected_components.hpp
   nwgraph/experimental/algorithms/jaccard.hpp
   nwgraph/experimental/algorithms/page_rank.hpp
+  nwgraph/experimental/algorithms/delta_stepping.hpp
   nwgraph/containers/aos.hpp
   nwgraph/containers/compressed.hpp
   nwgraph/containers/soa.hpp
