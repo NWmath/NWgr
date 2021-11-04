@@ -12,11 +12,11 @@ static constexpr const char USAGE[] =
     R"(pr.exe: BGL17 page rank benchmark driver.
   Usage:
       pr.exe (-h | --help)
-      pr.exe --version ID... -f FILE... [-i NUM] [-t NUM] [-n NUM] [-dvV] [--log FILE] [--log-header] [THREADS]...
+      pr.exe [--version ID...] -f FILE... [-i NUM] [-t NUM] [-n NUM] [-dvV] [--log FILE] [--log-header] [THREADS]...
 
   Options:
       -h, --help          show this screen
-      --version ID        algorithm version to run
+      --version ID        algorithm version to run [default: 11]
       -f FILE             input file path
       -i NUM              maximum iteration [default: 20]
       -t NUM              tolerance [default: 1e-4]
@@ -30,6 +30,7 @@ static constexpr const char USAGE[] =
 
 #include "Log.hpp"
 #include "nwgraph/algorithms/page_rank.hpp"
+#include "nwgraph/experimental/algorithms/page_rank.hpp"
 #include "common.hpp"
 #include <docopt.h>
 
