@@ -21,42 +21,38 @@ DECL_TAG_INVOKE(out_edges);
 DECL_TAG_INVOKE(target);
 
 template <typename Graph, typename Int>
-auto tag_invoke(const out_edges_tag, const Graph &g, Int u) {
+auto tag_invoke(const out_edges_tag, const Graph& g, Int u) {
   return g[u];
 }
 
 template <typename Graph, typename Edge>
-auto tag_invoke(const target_tag, const Graph &g, Edge e) {
+auto tag_invoke(const target_tag, const Graph& g, Edge e) {
   return std::get<0>(e);
 }
 
-} // namespace nw::graph
+}    // namespace nw::graph
 
 template <typename Adjacency, class F>
-auto apb_adj(Adjacency &graph, size_t ntrial, vertex_id_t<Adjacency> seed,
-             F fun) {
+auto apb_adj(Adjacency& graph, size_t ntrial, vertex_id_t<Adjacency> seed, F fun) {
   double time = 0;
 
-  using vertex_id_type = vertex_id_t<Adjacency>;
-  using weight_type = std::tuple_element_t<1, inner_value<Adjacency>>;
+  using vertex_id_type  = vertex_id_t<Adjacency>;
+  using weight_type     = std::tuple_element_t<1, inner_value<Adjacency>>;
   using weighted_vertex = std::tuple<vertex_id_type, weight_type>;
 
-  vertex_id_type N = num_vertices(graph);
+  vertex_id_type N      = num_vertices(graph);
   vertex_id_type source = seed;
 
   std::vector<weight_type> distance(N, std::numeric_limits<weight_type>::max());
 
   std::priority_queue<weighted_vertex, std::vector<weighted_vertex>,
-                      decltype([](auto &&a, auto &&b) {
-                        return (std::get<1>(a) > std::get<1>(b));
-                      })>
+                      decltype([](auto&& a, auto&& b) { return (std::get<1>(a) > std::get<1>(b)); })>
       Q;
 
   ms_timer t1("Access stored properties directly");
   for (size_t t = 0; t < ntrial; ++t) {
 
-    std::fill(distance.begin(), distance.end(),
-              std::numeric_limits<weight_type>::max());
+    std::fill(distance.begin(), distance.end(), std::numeric_limits<weight_type>::max());
 
     t1.start();
 
@@ -70,9 +66,9 @@ auto apb_adj(Adjacency &graph, size_t ntrial, vertex_id_t<Adjacency> seed,
 
       // for (auto&& [v, w] : g[u]) -- pretty but would only allow one property
 
-      for (auto &&e : graph[u]) {
-        auto v = std::get<0>(e); // target vertex (neighbor)
-        auto w = std::get<1>(e); // edge weight
+      for (auto&& e : graph[u]) {
+        auto v = std::get<0>(e);    // target vertex (neighbor)
+        auto w = std::get<1>(e);    // edge weight
 
         // relax
         if (distance[u] + w < distance[v]) {
@@ -92,8 +88,7 @@ auto apb_adj(Adjacency &graph, size_t ntrial, vertex_id_t<Adjacency> seed,
 
   for (size_t t = 0; t < ntrial; ++t) {
 
-    std::fill(distance.begin(), distance.end(),
-              std::numeric_limits<weight_type>::max());
+    std::fill(distance.begin(), distance.end(), std::numeric_limits<weight_type>::max());
 
     t2.start();
 
@@ -107,9 +102,9 @@ auto apb_adj(Adjacency &graph, size_t ntrial, vertex_id_t<Adjacency> seed,
 
       // for (auto&& [v, w] : g[u]) -- pretty but would only allow one property
 
-      for (auto &&e : graph[u]) {
-        auto v = std::get<0>(e); // target vertex (neighbor)
-        auto w = fun(e);         // edge weight
+      for (auto&& e : graph[u]) {
+        auto v = std::get<0>(e);    // target vertex (neighbor)
+        auto w = fun(e);            // edge weight
 
         // relax
         if (distance[u] + w < distance[v]) {
@@ -128,8 +123,7 @@ auto apb_adj(Adjacency &graph, size_t ntrial, vertex_id_t<Adjacency> seed,
   ms_timer t3("access stored properties directly and neighbors through CPO");
   for (size_t t = 0; t < ntrial; ++t) {
 
-    std::fill(distance.begin(), distance.end(),
-              std::numeric_limits<weight_type>::max());
+    std::fill(distance.begin(), distance.end(), std::numeric_limits<weight_type>::max());
 
     t3.start();
 
@@ -143,9 +137,9 @@ auto apb_adj(Adjacency &graph, size_t ntrial, vertex_id_t<Adjacency> seed,
 
       // for (auto&& [v, w] : g[u]) -- pretty but would only allow one property
 
-      for (auto &&e : out_edges(graph, u)) {
-        auto v = std::get<0>(e); // target vertex (neighbor)
-        auto w = std::get<1>(e); // edge weight
+      for (auto&& e : out_edges(graph, u)) {
+        auto v = std::get<0>(e);    // target vertex (neighbor)
+        auto w = std::get<1>(e);    // edge weight
 
         // relax
         if (distance[u] + w < distance[v]) {
@@ -164,8 +158,7 @@ auto apb_adj(Adjacency &graph, size_t ntrial, vertex_id_t<Adjacency> seed,
   ms_timer t4("access stored properties directly and target through CPO");
   for (size_t t = 0; t < ntrial; ++t) {
 
-    std::fill(distance.begin(), distance.end(),
-              std::numeric_limits<weight_type>::max());
+    std::fill(distance.begin(), distance.end(), std::numeric_limits<weight_type>::max());
 
     t4.start();
 
@@ -179,9 +172,9 @@ auto apb_adj(Adjacency &graph, size_t ntrial, vertex_id_t<Adjacency> seed,
 
       // for (auto&& [v, w] : g[u]) -- pretty but would only allow one property
 
-      for (auto &&e : graph[u]) {
-        auto v = target(graph, e); // target vertex (neighbor)
-        auto w = std::get<1>(e);   // edge weight
+      for (auto&& e : graph[u]) {
+        auto v = target(graph, e);    // target vertex (neighbor)
+        auto w = std::get<1>(e);      // edge weight
 
         // relax
         if (distance[u] + w < distance[v]) {
@@ -199,8 +192,7 @@ auto apb_adj(Adjacency &graph, size_t ntrial, vertex_id_t<Adjacency> seed,
   ms_timer t5("All indirections");
   for (size_t t = 0; t < ntrial; ++t) {
 
-    std::fill(distance.begin(), distance.end(),
-              std::numeric_limits<weight_type>::max());
+    std::fill(distance.begin(), distance.end(), std::numeric_limits<weight_type>::max());
 
     t5.start();
 
@@ -214,9 +206,9 @@ auto apb_adj(Adjacency &graph, size_t ntrial, vertex_id_t<Adjacency> seed,
 
       // for (auto&& [v, w] : g[u]) -- pretty but would only allow one property
 
-      for (auto &&e : out_edges(graph, u)) {
-        auto v = target(graph, e); // target vertex (neighbor)
-        auto w = fun(e);           // edge weight
+      for (auto&& e : out_edges(graph, u)) {
+        auto v = target(graph, e);    // target vertex (neighbor)
+        auto w = fun(e);              // edge weight
 
         // relax
         if (distance[u] + w < distance[v]) {
@@ -235,8 +227,7 @@ auto apb_adj(Adjacency &graph, size_t ntrial, vertex_id_t<Adjacency> seed,
   ms_timer t6("No indirections (again)");
   for (size_t t = 0; t < ntrial; ++t) {
 
-    std::fill(distance.begin(), distance.end(),
-              std::numeric_limits<weight_type>::max());
+    std::fill(distance.begin(), distance.end(), std::numeric_limits<weight_type>::max());
 
     t6.start();
 
@@ -250,9 +241,9 @@ auto apb_adj(Adjacency &graph, size_t ntrial, vertex_id_t<Adjacency> seed,
 
       // for (auto&& [v, w] : g[u]) -- pretty but would only allow one property
 
-      for (auto &&e : graph[u]) {
-        auto v = std::get<0>(e); // target vertex (neighbor)
-        auto w = std::get<1>(e); // edge weight
+      for (auto&& e : graph[u]) {
+        auto v = std::get<0>(e);    // target vertex (neighbor)
+        auto w = std::get<1>(e);    // edge weight
 
         // relax
         if (distance[u] + w < distance[v]) {
@@ -266,28 +257,24 @@ auto apb_adj(Adjacency &graph, size_t ntrial, vertex_id_t<Adjacency> seed,
     time += t6.elapsed();
   }
   std::cout << t6.name() << " " << time / ntrial << " ms" << std::endl;
-
-
 }
 
-void usage(const std::string &msg = "") {
-  std::cout << std::string("Usage: ") + msg + " " << std::endl;
-}
+void usage(const std::string& msg = "") { std::cout << std::string("Usage: ") + msg + " " << std::endl; }
 
-int main(int argc, char *argv[]) {
-  std::string edgelistFile = "";
-  std::string versions = "0";
-  std::string read_processed_edgelist = "";
+int main(int argc, char* argv[]) {
+  std::string edgelistFile             = "";
+  std::string versions                 = "0";
+  std::string read_processed_edgelist  = "";
   std::string write_processed_edgelist = "";
 
-  bool verbose = false;
-  bool debug = false;
+  bool   verbose = false;
+  bool   debug   = false;
   size_t nthread = 1;
-  (void)nthread; // silence warnings
+  (void)nthread;    // silence warnings
   size_t ntrial = 1;
-  (void)ntrial; // silence warnings
-  default_vertex_id_type seed = 0;
-  const size_t max_versions = 16;
+  (void)ntrial;    // silence warnings
+  default_vertex_id_type seed         = 0;
+  const size_t           max_versions = 16;
 
   for (int argIndex = 1; argIndex < argc; ++argIndex) {
     std::string arg(argv[argIndex]);
@@ -339,7 +326,7 @@ int main(int argc, char *argv[]) {
 
   auto el_a = [&]() {
     if (read_processed_edgelist != "") {
-      life_timer _("deserialize");
+      life_timer                                _("deserialize");
       edge_list<directedness::directed, double> el_a(0);
       el_a.deserialize(read_processed_edgelist);
       return el_a;
@@ -374,7 +361,7 @@ int main(int argc, char *argv[]) {
     adj_a.stream_indices();
   }
 
-  apb_adj(adj_a, ntrial, seed, [](auto &&elt) { return std::get<1>(elt); });
+  apb_adj(adj_a, ntrial, seed, [](auto&& elt) { return std::get<1>(elt); });
 
   return 0;
 }
