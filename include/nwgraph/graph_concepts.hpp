@@ -19,7 +19,7 @@
 #include <tuple>
 
 #include "nwgraph/graph_traits.hpp"
-
+#include "nwgraph/util/tag_invoke.hpp"
 
 namespace nw::graph {
 
