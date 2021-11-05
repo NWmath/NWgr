@@ -17,7 +17,6 @@
 #include <tuple>
 #include <vector>
 
-#include "nwgraph/access.hpp"
 #include "nwgraph/build.hpp"
 #include "edge_list.hpp"
 #include "nwgraph/graph_base.hpp"

@@ -44,8 +44,6 @@
 #include "nwgraph/util/defaults.hpp"
 #include "nwgraph/util/demangle.hpp"
 
-#include "nwgraph/access.hpp"
-
 namespace nw {
 namespace graph {
 
