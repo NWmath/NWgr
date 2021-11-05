@@ -22,7 +22,6 @@
 
 #include <concepts>
 
-#include "nwgraph/access.hpp"
 #include "nwgraph/graph_concepts.hpp"
 
 
