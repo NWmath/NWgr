@@ -6,8 +6,9 @@
 // Licensed under terms of include LICENSE file 
 // 
 // Authors: 
-//     Andrew Lumsdaine	
-//     Kevin Deweese	
+//     Andrew Lumsdaine
+//     Scott McMillan
+//     Kevin Deweese
 //
 
 #ifndef NW_GRAPH_SPMATSPMAT_HPP

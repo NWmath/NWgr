@@ -19,9 +19,18 @@
 #include <tuple>
 
 #include "nwgraph/graph_traits.hpp"
-
+#include "nwgraph/util/tag_invoke.hpp"
 
 namespace nw::graph {
+
+  /**
+   * Forward-declare our CPO tags
+   */
+DECL_TAG_INVOKE(num_vertices);
+DECL_TAG_INVOKE(num_edges);
+DECL_TAG_INVOKE(degree);
+DECL_TAG_INVOKE(source);
+DECL_TAG_INVOKE(target);
 
 template <typename G>
 concept graph = std::semiregular<G> && requires(G g) {
