@@ -17,8 +17,6 @@
 #include <tuple>
 #include <vector>
 
-#include "nwgraph/access.hpp"
-
 #include "nwgraph/graph_traits.hpp"
 
 namespace nw {

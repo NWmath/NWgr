@@ -146,12 +146,12 @@ auto tag_invoke(const target_tag, const T& graph, const U& e) {
 // num_vertices CPO
 template <idx_adjacency_list T>
 auto tag_invoke(const num_vertices_tag, const T& graph) {
-  return graph.size();
+  return (vertex_id_t<T>) graph.size();
 }
 
 template <min_idx_adjacency_list T>
 auto tag_invoke(const num_vertices_tag, const T& graph) {
-  return graph.size();
+  return (vertex_id_t<T>) graph.size();
 }
 
 
