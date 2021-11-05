@@ -6,11 +6,14 @@
 // https://creativecommons.org/licenses/by-nc-sa/4.0/
 //
 // Author: Andrew Lumsdaine
-//         Haley Read
+//         Haley Riggs
 //
 
 #include <tuple>
 #include <vector>
+
+
+#include "nwgraph/adaptors/edge_range.hpp"
 
 #include "nwgraph/graph_concepts.hpp"
 
@@ -52,4 +55,8 @@ TEST_CASE("Row times Row", "[row-row") {
   };
 
   auto d = nw::graph::spMatspMat<double>(A, B);
+
+  auto c_range = nw::graph::edge_range(C);
+
+  REQUIRE(std::equal(d.begin(), d.end(), c_range.begin()));
 }

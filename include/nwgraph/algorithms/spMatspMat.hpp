@@ -29,6 +29,12 @@ namespace graph {
 // A * B
 //****************************************************************************
 
+  /*
+  adjacency<double> A(number_rows);
+  push_back_fill(A, zip(rows, cols, vals));
+  */
+  
+
 //****************************************************************************
 /// @todo cannot currently pass "const &" for A or B
 /// @todo Need to discuss interface options
