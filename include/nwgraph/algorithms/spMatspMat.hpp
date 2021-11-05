@@ -32,8 +32,8 @@ namespace graph {
 //****************************************************************************
 /// @todo cannot currently pass "const &" for A or B
 /// @todo Need to discuss interface options
-template <typename ScalarT, typename LGraphT, typename RGraphT, typename MapOpT = std::multiplies<ScalarT>,
-          typename ReduceOpT = std::plus<ScalarT>>
+template <typename ScalarT, adjacency_list_graph LGraphT, adjacency_list_graph RGraphT, 
+	  typename MapOpT = std::multiplies<ScalarT>, typename ReduceOpT = std::plus<ScalarT>>
 edge_list<directedness::directed, ScalarT> spMatspMat(const LGraphT& A, const RGraphT& B) {
   edge_list<directedness::directed, ScalarT> edges(0);
   edges.open_for_push_back();
@@ -46,11 +46,11 @@ edge_list<directedness::directed, ScalarT> spMatspMat(const LGraphT& A, const RG
 
     for (auto && [k, a_ik] : A[i]) {
       for (auto && [j, b_kj] : B[k]) {
-
+	
         // TODO: Do we really want semiring support.  If so,
         // what is best way to deal with additive identity?
         ScalarT tmp = MapOpT()(a_ik, b_kj);    // C_ij partial product
-
+	
         if (Ci_tmp.find(j) != Ci_tmp.end()) {
           Ci_tmp[j] = ReduceOpT()(Ci_tmp[j], tmp);
         } else {
@@ -58,6 +58,7 @@ edge_list<directedness::directed, ScalarT> spMatspMat(const LGraphT& A, const RG
         }
       }
     }
+
     // extract from the map and put in edge_list
     for (auto const elt : Ci_tmp) {
       edges.push_back(i, elt.first, elt.second);
@@ -65,7 +66,8 @@ edge_list<directedness::directed, ScalarT> spMatspMat(const LGraphT& A, const RG
   }
 
   edges.close_for_push_back();
-  sort_by<0>(edges);
+
+  // sort_by<0>(edges);  // They should be already sorted
   return edges;
 }
 
