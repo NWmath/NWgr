@@ -368,11 +368,7 @@ template <class Graph, class SetExecutionPolicy = std::execution::sequenced_poli
 template <class Graph, class SetExecutionPolicy = std::execution::sequenced_policy>
 [[gnu::noinline]] std::size_t triangle_count_v14(const Graph& graph, SetExecutionPolicy&& set = {}) {
   return nw::graph::parallel_for(
-<<<<<<< HEAD
       make_edge_range(graph), [&](auto&& u, auto&& v) { return nw::graph::intersection_size(graph[u], graph[v], set); }, std::plus{}, 0ul);
-=======
-      edge_range(graph), [&](auto&& u, auto&& v) { return nw::graph::intersection_size(graph[u], graph[v], set); }, std::plus{}, 0ul);
->>>>>>> 03f1e23 (split experimental tc)
 }
 
 #ifdef ONE_DIMENSIONAL_EDGE
