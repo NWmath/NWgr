@@ -15,7 +15,7 @@
 #ifndef NW_GRAPH_EDGE_RANGE_HPP
 #define NW_GRAPH_EDGE_RANGE_HPP
 
-#include "nwgraph/graph_traits.hpp"
+#include "nwgraph/graph_concepts.hpp"
 #include "nwgraph/util/arrow_proxy.hpp"
 #include "nwgraph/util/print_types.hpp"
 #include "nwgraph/util/util.hpp"
@@ -28,15 +28,16 @@
 namespace nw {
 namespace graph {
 
+
 template <class Graph, std::size_t... Is>
 class edge_range {
-  static_assert(((Is < Graph::getNAttr()) && ...), "Attribute index out of range");
+  //  static_assert(((Is < Graph::getNAttr()) && ...), "Attribute index out of range");
   static constexpr size_t cutoff_ = 16;
 
   using vertex_id_type = vertex_id_t<Graph>;
 
   using graph_iterator       = std::conditional_t<std::is_const_v<Graph>, typename Graph::const_iterator, typename Graph::iterator>;
-  using graph_inner_iterator = std::conditional_t<std::is_const_v<Graph>, typename Graph::const_inner_iterator, typename Graph::inner_iterator>;
+  using graph_inner_iterator = std::conditional_t<std::is_const_v<Graph>, const inner_iterator_t<Graph>, inner_iterator_t<Graph>>;
 
   graph_iterator outer_base_;
   graph_iterator outer_begin_;
@@ -64,12 +65,12 @@ public:
   public:
     using iterator_category = std::forward_iterator_tag;
     using value_type        = std::tuple<
-        vertex_id_type, vertex_id_type,
-        typename std::tuple_element_t<Is, std::conditional_t<is_const, const typename Graph::attributes_t, typename Graph::attributes_t>>...>;
+      vertex_id_type, vertex_id_type,
+      typename std::tuple_element_t<Is, std::conditional_t<is_const, const attributes_t<Graph>, attributes_t<Graph>>> ...>;
     using difference_type = std::ptrdiff_t;
     using reference       = std::tuple<
         vertex_id_type, vertex_id_type,
-        typename std::tuple_element_t<Is, std::conditional_t<is_const, const typename Graph::attributes_t, typename Graph::attributes_t>>&...>;
+      typename std::tuple_element_t<Is, std::conditional_t<is_const, const attributes_t<Graph>, attributes_t<Graph>>>&...>;
     using pointer = arrow_proxy<reference>;
 
   private:
@@ -173,6 +174,11 @@ static inline edge_range<Graph, Is...> make_edge_range(Graph& g, std::size_t off
 
 template <std::size_t... Is, class Graph>
 static inline edge_range<Graph, Is...> make_edge_range(Graph& g) {
+  return {g};
+}
+
+template <std::size_t... Is, class Graph>
+static inline edge_range<Graph, Is...> make_edge_range(Graph&& g) {
   return {g};
 }
 

@@ -64,5 +64,17 @@ int main(int argc, char* argv[]) {
     ;
   }
 
+  for (auto&& [u, v] : make_edge_range(std::vector<std::vector<std::tuple<size_t>>>{})) {
+    ;
+  }
+
+  for (auto&& [u, v, w] : make_edge_range<0>(std::vector<std::vector<std::tuple<size_t, double>>>{})) {
+    ;
+  }
+
+  for (auto&& [u, v, w] : make_edge_range<1>(std::vector<std::list<std::tuple<size_t, double, char>>>{})) {
+    ;
+  }
+
   return 0;
 }

@@ -42,7 +42,20 @@ template <typename G>
 using inner_range_t = std::ranges::range_value_t<G>;
 
 template <typename G>
+using inner_iterator_t = std::ranges::iterator_t<inner_range_t<G>>;
+
+template <typename G>
 using inner_value_t = std::ranges::range_value_t<inner_range_t<G>>;
+
+template <size_t N, typename... Ts>
+auto nth_cdr(std::tuple<Ts...> t) {
+  return [&]<std::size_t... Ns>(std::index_sequence<Ns...>) { return std::tuple{std::get<Ns + N>(t)...}; }
+  (std::make_index_sequence<sizeof...(Ts) - N>());
+}
+
+template <typename G>
+using attributes_t = decltype(nth_cdr<1>(inner_value_t<G>{}));
+
 
 template <typename G>
 concept adjacency_list_graph = graph<G>
