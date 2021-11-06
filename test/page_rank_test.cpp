@@ -15,6 +15,7 @@
 #include <vector>
 
 #include "nwgraph/algorithms/page_rank.hpp"
+#include "nwgraph/experimental/algorithms/page_rank.hpp"
 #include "nwgraph/adjacency.hpp"
 #include "nwgraph/edge_list.hpp"
 #include "nwgraph/volos.hpp"
