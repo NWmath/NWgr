@@ -46,8 +46,8 @@ using vertex_id_t = typename graph_traits<G>::vertex_id_type;
 // template <typename G>
 // using outer_iterator_t = typename graph_traits<G>::outer_iterator;
 
-//   //template <typename G>
-//   //using inner_iterator_t = typename graph_traits<G>::inner_iterator;
+// template <typename G>
+// using inner_iterator_t = typename graph_traits<G>::inner_iterator;
 
 // template <typename G>
 // using const_outer_iterator_t = typename graph_traits<G>::const_outer_iterator;
