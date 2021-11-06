@@ -13,7 +13,7 @@
 #include <vector>
 
 #include "nwgraph/graph_concepts.hpp"
-
+#include "nwgraph/adaptors/edge_range.hpp"
 #include "common/test_header.hpp"
 
 #include "nwgraph/algorithms/spMatspMat.hpp"
@@ -52,4 +52,6 @@ TEST_CASE("Row times Row", "[row-row") {
   };
 
   auto d = nw::graph::spMatspMat<double>(A, B);
+
+  REQUIRE(std::equal(begin(d), end(d), begin(nw::graph::make_edge_range<0>(C))));
 }
