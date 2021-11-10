@@ -126,20 +126,6 @@ auto tag_invoke(const degree_tag, const splittable_range_adapter<Iterator>& n) {
   return n.size();
 }
 
-
-  //template <int idx, std::unsigned_integral index_type, std::unsigned_integral vertex_id_type, typename... Attributes>
-  //auto tag_invoke(const degree_tag, typename index_adjacency<idx, index_type, vertex_id_type, Attributes...>::sub_view& n) {
-  //  return n.size();
-  //}
-
-
-
-  //template <int idx, std::unsigned_integral index_type, std::unsigned_integral vertex_id_type, typename... Attributes>
-  //auto tag_invoke(const degree_tag, typename index_adjacency<idx, index_type, vertex_id_type, Attributes...>::sub_view& n) {
-  //  return n.size();
-  //}
-
-
 }    // namespace graph
 }    // namespace nw
 
