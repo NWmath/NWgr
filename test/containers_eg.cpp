@@ -6,18 +6,15 @@
 #include <tuple>
 #include <vector>
 
-#include "nwgraph/access.hpp"
-
-#include "nwgraph/graph_traits.hpp"
 
 #include "nwgraph/adjacency.hpp"
 #include "nwgraph/edge_list.hpp"
+#include "nwgraph/graph_concepts.hpp"
+#include "nwgraph/graph_traits.hpp"
 #include "nwgraph/volos.hpp"
 #include "nwgraph/vovos.hpp"
 
-#include "nwgraph/compat.hpp"
 
-#include "nwgraph/graph_concepts.hpp"
 
 template <nw::graph::edge_list_graph edge_list_t>
 auto t0(edge_list_t el) {}
@@ -28,16 +25,16 @@ auto t1(const edge_list_t& el) {}
 template <nw::graph::edge_list_graph edge_list_t>
 auto t2(edge_list_t&& el) {}
 
-template <nw::graph::adjacency_graph adjacency_t>
+template <nw::graph::adjacency_list_graph adjacency_t>
 auto t3(adjacency_t el) {}
 
-template <nw::graph::adjacency_graph adjacency_t>
+template <nw::graph::adjacency_list_graph adjacency_t>
 auto t4(const adjacency_t& el) {}
 
-template <nw::graph::adjacency_graph adjacency_t>
+template <nw::graph::adjacency_list_graph adjacency_t>
 auto t5(adjacency_t&& el) {}
 
-template <nw::graph::adjacency_graph Graph>
+template <nw::graph::adjacency_list_graph Graph>
 // template <typename Graph>
 auto bfs_vv(const Graph& graph, typename nw::graph::graph_traits<Graph>::vertex_id_type root) {
   using vertex_id_type = typename nw::graph::graph_traits<Graph>::vertex_id_type;
@@ -89,7 +86,7 @@ void adjacency_container_test(T a) {
 template <typename T>
 void adjacency_concept_test(T a) {
 
-  static_assert(nw::graph::adjacency_graph<T>);
+  static_assert(nw::graph::adjacency_list_graph<T>);
 
   t3(a);
   t4(a);
