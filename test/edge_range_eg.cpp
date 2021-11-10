@@ -19,6 +19,22 @@
 using namespace nw::graph;
 using namespace nw::util;
 
+
+template <class Graph>
+void foo(const Graph& g) {
+  
+  auto f = make_edge_range(g);
+  for (auto&& [u, v] : f) {
+    ;
+  }
+
+  for (auto&& [u, v] : make_edge_range(g)) {
+    ;
+  }
+
+}
+
+
 int main(int argc, char* argv[]) {
 
   edge_list<nw::graph::directedness::directed> a{{0, 3}, {1, 1}, {2, 4}, {3, 1}, {4, 5}, {3, 9}, {2, 2}, {1, 7}};
@@ -45,6 +61,7 @@ int main(int argc, char* argv[]) {
                                                          {4, 5, 3.1}, {3, 9, .04}, {2, 2, 1.5}, {1, 7, 9}};
 
   auto d = adjacency<0, double>(c);
+
 
   auto f = make_edge_range(d);
   for (auto&& [u, v] : f) {
@@ -75,6 +92,9 @@ int main(int argc, char* argv[]) {
   for (auto&& [u, v, w] : make_edge_range<1>(std::vector<std::list<std::tuple<size_t, double, char>>>{})) {
     ;
   }
+
+  foo(d);
+
 
   return 0;
 }

@@ -14,6 +14,7 @@
 #include "nwgraph/util/print_types.hpp"
 
 
+#if 0
 namespace nw::graph {
 template <class Iterator>
 auto tag_invoke(const degree_tag, const splittable_range_adapter<Iterator>& n) {
@@ -25,10 +26,8 @@ auto tag_invoke(const degree_tag, const index_adjacency<idx, index_type, vertex_
 		const typename index_adjacency<idx, index_type, vertex_id_type, Attributes...>::sub_view& v) {
   return v.size();
 }
-
-
 }
-
+#endif
 
 int main() {
 
