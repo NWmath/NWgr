@@ -33,6 +33,7 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 # -----------------------------------------------------------------------------
 
 message("Architecture is ${CMAKE_HOST_SYSTEM_PROCESSOR}")
+
 if (CMAKE_HOST_SYSTEM_PROCESSOR STREQUAL arm64)
   set(CMAKE_CXX_FLAGS_DEBUG "-O0 -g -fno-elide-constructors -fconcepts-diagnostics-depth=3 " CACHE STRING "" FORCE)
   set(CMAKE_CXX_FLAGS_RELEASE "-Ofast -DNDEBUG " CACHE STRING "" FORCE)
