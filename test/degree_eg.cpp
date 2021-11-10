@@ -15,6 +15,7 @@
 
 
 #if 0
+
 namespace nw::graph {
 template <class Iterator>
 auto tag_invoke(const degree_tag, const splittable_range_adapter<Iterator>& n) {
