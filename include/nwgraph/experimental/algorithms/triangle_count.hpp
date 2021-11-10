@@ -149,7 +149,7 @@ size_t triangle_count_v2(const GraphT& A) {
 template <class Graph>
 size_t triangle_count_v3(const Graph& A) {
   size_t triangles = 0;
-  for (auto&& [v, u] : edge_range(A)) {
+  for (auto&& [v, u] : make_edge_range(A)) {
     triangles += nw::graph::intersection_size(A[v], A[u]);
   }
   return triangles;
@@ -367,7 +367,7 @@ template <class Graph, class SetExecutionPolicy = std::execution::sequenced_poli
 template <class Graph, class SetExecutionPolicy = std::execution::sequenced_policy>
 [[gnu::noinline]] std::size_t triangle_count_v14(const Graph& graph, SetExecutionPolicy&& set = {}) {
   return nw::graph::parallel_for(
-      edge_range(graph), [&](auto&& u, auto&& v) { return nw::graph::intersection_size(graph[u], graph[v], set); }, std::plus{}, 0ul);
+      make_edge_range(graph), [&](auto&& u, auto&& v) { return nw::graph::intersection_size(graph[u], graph[v], set); }, std::plus{}, 0ul);
 }
 
 #ifdef ONE_DIMENSIONAL_EDGE
