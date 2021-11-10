@@ -25,4 +25,8 @@ int main() {
     std::cout << nw::graph::degree(j) << std::endl;    
   }
 
+  for (auto&& j : A) {
+    std::cout << nw::graph::degree(A, j) << std::endl;    
+  }
+
 }
