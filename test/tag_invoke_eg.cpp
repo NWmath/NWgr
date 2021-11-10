@@ -38,7 +38,6 @@ struct edges_t final {
 };
 static inline constexpr edges_t edges{};
 
-#endif
 
 #define DECL_TAG_INVOKE(str)                                                                                                \
   struct str##_t final {                                                                                                    \
@@ -48,6 +47,8 @@ static inline constexpr edges_t edges{};
     }                                                                                                                       \
   };                                                                                                                        \
   static inline constexpr str##_t str {}
+
+#endif
 
 DECL_TAG_INVOKE(edges);
 DECL_TAG_INVOKE(vertices);
@@ -63,11 +64,11 @@ struct bar {
   void three() const { std::cout << "This is bar three" << std::endl; }
 };
 
-auto tag_invoke(const edges_t, const bar& b, const std::string& msg) { b.one(msg); }
-auto tag_invoke(const edges_t, const foo& f, const std::string& msg) { f.one(msg); }
+auto tag_invoke(const edges_tag, const bar& b, const std::string& msg) { b.one(msg); }
+auto tag_invoke(const edges_tag, const foo& f, const std::string& msg) { f.one(msg); }
 
-auto tag_invoke(const vertices_t, const foo& f) { f.two(); }
-auto tag_invoke(const vertices_t, const bar& b) { b.three(); }
+auto tag_invoke(const vertices_tag, const foo& f) { f.two(); }
+auto tag_invoke(const vertices_tag, const bar& b) { b.three(); }
 
 //template <typename T>
 //auto tag_invoke(const num_vertices_t, const std::vector<T>& b) {
@@ -75,7 +76,7 @@ auto tag_invoke(const vertices_t, const bar& b) { b.three(); }
 //}
 
 template <std::ranges::sized_range T>
-auto tag_invoke(const num_vertices_t, const T& b) {
+auto tag_invoke(const num_vertices_tag, const T& b) {
   return b.size();
 }
 
