@@ -149,7 +149,6 @@ size_t triangle_count_v2(const GraphT& A) {
 template <class Graph>
 size_t triangle_count_v3(const Graph& A) {
   size_t triangles = 0;
-
   for (auto&& [v, u] : make_edge_range(A)) {
     triangles += nw::graph::intersection_size(A[v], A[u]);
   }
