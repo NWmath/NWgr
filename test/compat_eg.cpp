@@ -37,9 +37,9 @@ using vov = std::vector<std::vector<std::tuple<int>>>;
 
 
 
-static_assert(vertex_list_c<fot>);
-static_assert(vertex_list_c<lot>);
-static_assert(vertex_list_c<vot>);
+static_assert(vertex_list_c<std::forward_list<int>>);
+static_assert(vertex_list_c<std::list<int>>);
+static_assert(vertex_list_c<std::vector<int>>);
 
 
 static_assert(edge_list_c<fot>);
@@ -64,9 +64,9 @@ static_assert(edge_list_c<zipped<std::vector<int>,std::vector<int>>>);
 // static_assert(edge_list_graph<vot>); // Has num_edges, does not have num_vertices
 
 
-static_assert(adjacency_graph<vof>);
-static_assert(adjacency_graph<vol>);
-static_assert(adjacency_graph<vov>);
+static_assert(adjacency_list_graph<vof>);
+static_assert(adjacency_list_graph<vol>);
+static_assert(adjacency_list_graph<vov>);
 
 
 

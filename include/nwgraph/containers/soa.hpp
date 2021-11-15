@@ -147,12 +147,13 @@ struct struct_of_arrays : std::tuple<std::vector<Attributes>...> {
     for_each(l.begin(), l.end(), [&](value_type x) { push_back(x); });
   }
 
-  iterator       begin() { return {this}; }
-  const_iterator begin() const { return {this}; }
+  iterator       begin()        { return {this}; }
+  const_iterator begin()  const { return {this}; }
+  const_iterator cbegin() const { return {this}; }
 
-  iterator end() { return begin() + size(); }
-
-  const_iterator end() const { return begin() + size(); }
+  iterator end()              { return begin() + size(); }
+  const_iterator end()  const { return begin() + size(); }
+  const_iterator cend() const { return begin() + size(); }
 
   reference operator[](std::size_t i) {
     return std::apply([&](auto&&... r) { return std::forward_as_tuple(std::forward<decltype(r)>(r)[i]...); }, *this);
