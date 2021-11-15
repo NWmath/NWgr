@@ -75,7 +75,7 @@ static void print_top_n(const Graph& g, Vector&& comp, size_t n = 5) {
 // - Asserts every vertex is visited (degree-0 vertex should have own label)
 template <class Graph, class Transpose, class Vector>
 static bool CCVerifier(const Graph& graph, Transpose&& xpose, Vector&& comp) {
-  using NodeID = typename nw::graph::vertex_id<std::decay_t<Graph>>::type;
+  using NodeID = typename nw::graph::vertex_id_t<std::decay_t<Graph>>;
   std::unordered_map<NodeID, NodeID> label_to_source;
   for (auto&& [n] : plain_range(graph)) {
     label_to_source[comp[n]] = n;

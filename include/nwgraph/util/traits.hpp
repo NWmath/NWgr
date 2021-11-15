@@ -44,22 +44,6 @@ struct remove_atomic<std::atomic_ref<T>> {
 template <class T>
 using remove_atomic_t = typename remove_atomic<T>::type;
 
-/// Simple trait so that clients can bring their own vertex id type.
-template <class T>
-struct vertex_id {
-  using type = typename T::vertex_id_type;
-};
-
-// template <class T>
-// using vertex_id_type = typename vertex_id<T>::type;
-
-template <class>
-struct edge_id {
-  using type = std::ptrdiff_t;
-};
-template <class T>
-using edge_id_t = typename edge_id<T>::type;
-
 template <class>
 inline constexpr bool is_tbb_range_v = false;
 template <class T>
