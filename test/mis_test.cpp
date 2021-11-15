@@ -45,6 +45,7 @@ TEST_CASE("Maximal independent set", "[mis]") {
   // for (auto v: independentSet)
   //   std::cout << v << " ";
   std::vector<size_t> result = {0, 3, 4, 5, 6};
+  std::vector<size_t> result2 = {1, 2, 7};
   CHECK(independentSet == result);
 
   std::vector<bool> inIndependentSet(N, true);
@@ -59,5 +60,6 @@ TEST_CASE("Maximal independent set", "[mis]") {
     }
     i++;
   }
-  CHECK(mis2 == result);
+  CHECK_FALSE(mis2 == result);
+  CHECK(mis2 == result2);
 }
