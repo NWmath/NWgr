@@ -41,9 +41,6 @@ Reference Manual
 .. toctree::
    :maxdepth: 2
 
-   libref/index.md
-
-
 
 
 =====
@@ -53,11 +50,9 @@ Index
 * :ref:`genindex`
 
 
-
 .. toctree::
    :hidden:
 
-   libref/libref.rst
 
 .. * :ref:`modindex`
 .. * :ref:`search`
