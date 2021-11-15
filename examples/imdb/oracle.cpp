@@ -51,7 +51,7 @@ std::string delink(const std::string& link) {
 
 template <class Graph>
 auto build_random_sources(Graph&& graph, size_t n, long seed) {
-  using Id = typename nw::graph::vertex_id<std::decay_t<Graph>>::type;
+  using Id = typename nw::graph::vertex_id_t<std::decay_t<Graph>>;
 
   auto sources = std::vector<Id>(n);
   auto degrees = graph.degrees();
