@@ -54,7 +54,10 @@ template <typename G>
 using inner_const_iterator_t = const_iterator_t<inner_range_t<G>>;
 
 template <typename G>
-using inner_iterator_t = std::ranges::iterator_t<inner_range_t<G>>;
+using inner_iterator_t = iterator_t<inner_range_t<G>>;
+
+template <typename G>
+using inner_const_iterator_t = const_iterator_t<inner_range_t<G>>;
 
 template <typename G>
 using inner_value_t = std::ranges::range_value_t<inner_range_t<G>>;
