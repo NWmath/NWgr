@@ -36,8 +36,11 @@ class edge_range {
 
   using vertex_id_type = vertex_id_t<Graph>;
 
-  using graph_iterator       = std::conditional_t<std::is_const_v<Graph>, typename Graph::const_iterator, typename Graph::iterator>;
-  using graph_inner_iterator = std::conditional_t<std::is_const_v<Graph>, inner_iterator_t<Graph>, inner_iterator_t<Graph>>;
+  using graph_iterator       = std::conditional_t<std::is_const_v<Graph>, const_iterator_t<const Graph>, iterator_t<Graph>>;
+  using graph_inner_iterator = std::conditional_t<std::is_const_v<Graph>, inner_const_iterator_t<Graph>, inner_iterator_t<Graph>>;
+
+  // using graph_iterator       = std::conditional_t<std::is_const_v<Graph>, typename Graph::const_iterator, typename Graph::iterator>;
+  // using graph_inner_iterator = std::conditional_t<std::is_const_v<Graph>, decltype(graph_iterator{}.cbegin()), decltype(graph_iterator{}.begin())>
 
   graph_iterator outer_base_;
   graph_iterator outer_begin_;
