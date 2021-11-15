@@ -50,8 +50,8 @@ nw_graph_add_test(vov_test)
 
 
 # expected failures for now
-set_tests_properties(jp_coloring_test
-  PROPERTIES WILL_FAIL TRUE)
+# set_tests_properties(jp_coloring_test
+#  PROPERTIES WILL_FAIL TRUE)
 
 # Example programs (not catch2)
 # nw_graph_add_exe(compat_eg)
