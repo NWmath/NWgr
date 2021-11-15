@@ -34,15 +34,10 @@ sys.path.append(os.path.abspath('_extensions'))
 # ones.
 extensions = [
     'sphinx.ext.mathjax', 'sphinx.ext.intersphinx', 'sphinx.ext.viewcode', 'sphinx.ext.graphviz',
-    'sphinxcontrib.bibtex',
-    'myst_parser',
-    'sphinx_copybutton', 
-    'hydeme'
 ]
 
 source_suffix = {
     '.rst': 'restructuredtext',
-    '.md': 'markdown',
 }
 
 
@@ -97,7 +92,6 @@ html_theme = 'sphinx13'
 html_static_path = ['_static']
 
 html_css_files = [
-    'css/hyde_light.css'
 ]
 
 # html_favicon = nwgraph.ico
@@ -110,8 +104,3 @@ html_css_files = [
 cpp_index_common_prefix = ['nw::', 'nw::graph::']
 
 
-# -- Jinja stuff -------------------------------------------------------------
-
-import hydeme
-
-html_context = hydeme.hydeme_context()
