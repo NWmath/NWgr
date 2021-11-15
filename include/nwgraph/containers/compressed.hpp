@@ -191,10 +191,12 @@ public:    // fixme
   using reverse_iterator       = std::reverse_iterator<iterator>;
   using const_reverse_iterator = std::reverse_iterator<const_iterator>;
 
-  iterator       begin() { return {indices_.begin(), to_be_indexed_.begin(), 0}; }
-  const_iterator begin() const { return {indices_.begin(), to_be_indexed_.begin(), 0}; }
-  iterator       end() { return {indices_.begin(), to_be_indexed_.begin(), N_}; }
-  const_iterator end() const { return {indices_.begin(), to_be_indexed_.begin(), N_}; }
+  iterator       begin()        { return {indices_.begin(), to_be_indexed_.begin(), 0}; }
+  const_iterator begin()  const { return {indices_.begin(), to_be_indexed_.begin(), 0}; }
+  const_iterator cbegin() const { return {indices_.begin(), to_be_indexed_.begin(), 0}; }
+  iterator       end()        { return {indices_.begin(), to_be_indexed_.begin(), N_}; }
+  const_iterator end()  const { return {indices_.begin(), to_be_indexed_.begin(), N_}; }
+  const_iterator cend() const { return {indices_.begin(), to_be_indexed_.begin(), N_}; }
 
   /// Random access to the outer range.
   sub_view       operator[](index_t i) { return begin()[i]; }

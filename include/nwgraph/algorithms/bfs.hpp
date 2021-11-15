@@ -15,6 +15,7 @@
 #define NW_GRAPH_BFS_HPP
 
 #include "nwgraph/containers/compressed.hpp"
+#include "nwgraph/graph_concepts.hpp"
 #include "nwgraph/graph_traits.hpp"
 #include "nwgraph/util/AtomicBitVector.hpp"
 #include "nwgraph/util/atomic.hpp"

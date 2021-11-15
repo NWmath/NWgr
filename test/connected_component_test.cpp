@@ -17,6 +17,7 @@
 #include <list>
 
 #include "nwgraph/algorithms/connected_components.hpp"
+#include "nwgraph/experimental/algorithms/connected_components.hpp"
 #include "nwgraph/containers/aos.hpp"
 #include "nwgraph/containers/compressed.hpp"
 #include "nwgraph/io/mmio.hpp"

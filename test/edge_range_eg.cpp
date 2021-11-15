@@ -15,6 +15,8 @@
 #include "nwgraph/adjacency.hpp"
 #include "nwgraph/edge_list.hpp"
 #include "nwgraph/io/mmio.hpp"
+#include "nwgraph/vovos.hpp"
+
 
 using namespace nw::graph;
 using namespace nw::util;
@@ -94,6 +96,10 @@ int main(int argc, char* argv[]) {
   }
 
   foo(d);
+
+  foo(std::vector<std::vector<std::tuple<int, double>>>{});
+
+  foo(nw::graph::vov<0, double>(0));
 
 
   return 0;
