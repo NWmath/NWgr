@@ -41,6 +41,7 @@ Reference Manual
 .. toctree::
    :maxdepth: 2
 
+   doxyref/index.rst
 
 
 =====
