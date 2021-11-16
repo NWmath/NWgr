@@ -34,6 +34,7 @@ sys.path.append(os.path.abspath('_extensions'))
 # ones.
 extensions = [
     'sphinx.ext.mathjax', 'sphinx.ext.intersphinx', 'sphinx.ext.viewcode', 'sphinx.ext.graphviz',
+    'breathe',
 ]
 
 source_suffix = {
@@ -103,4 +104,8 @@ html_css_files = [
 
 cpp_index_common_prefix = ['nw::', 'nw::graph::']
 
+# -- Options for Breathe -----------------------------------------------------
 
+sys.path.append('_breathe')
+breathe_projects = { "NWgraph": "../../build/docs/doxygen/xml"}
+breathe_default_project = "NWgraph"

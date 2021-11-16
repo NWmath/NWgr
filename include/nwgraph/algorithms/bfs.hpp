@@ -29,13 +29,28 @@
 #include <tbb/concurrent_vector.h>
 #include <tbb/parallel_for_each.h>
 
+/**
+ * @file bfs.hpp
+ *
+ * Breadth-first search algorithms
+ */
+
 
 namespace nw {
 namespace graph {
 
+  /**
+   * \brief Breadth-First Search.
+   * 
+   * Perform breadth-first search of a graph.
+   *
+   * \param graph The graph to be searched.
+   * \param root The starting vertex.
+   * \return The parent list.
+   */
 template <typename Graph>
-auto bfs_v0(const Graph& graph, typename graph_traits<Graph>::vertex_id_type root) {
-  using vertex_id_type = typename graph_traits<Graph>::vertex_id_type;
+auto bfs_v0(const Graph& graph, vertex_id_t<Graph> root) {
+  using vertex_id_type = vertex_id_t<Graph>;
 
   std::deque<vertex_id_type>  q1, q2;
   std::vector<vertex_id_type> level(num_vertices(graph), std::numeric_limits<vertex_id_type>::max());
@@ -68,6 +83,16 @@ auto bfs_v0(const Graph& graph, typename graph_traits<Graph>::vertex_id_type roo
 }
 
 
+  /**
+   * \brief Parallel Breadth-First Search.
+   * 
+   * Perform parallel breadth-first search of a graph, using the graph and its transpose
+   *
+   * \param out_graph The graph to be searched, representing out edges
+   * \param in_graph The transpose of the graph to be searched, representing in edges
+   * \param root The starting vertex.
+   * \return The parent list.
+   */
 template <typename OutGraph, typename InGraph>
 [[gnu::noinline]] auto bfs_v11(const OutGraph& out_graph, const InGraph& in_graph, vertex_id_t<OutGraph> root, int num_bins = 32,
                                int alpha = 15, int beta = 18) {
