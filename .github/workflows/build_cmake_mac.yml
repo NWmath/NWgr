@@ -1,0 +1,51 @@
+# Workflow to configure with cmake and build with gcc-10
+
+name: Build with gcc-11
+
+on:
+  push: 
+    branches: [ master, sc_release ]
+  workflow_dispatch: 
+    branches: [ master, sc_release ]
+  pull_request:
+    branches:
+      - '*'
+
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
+
+jobs:
+  build:
+
+    runs-on: macos-latest
+
+    steps:
+
+    - name: Checkout NWgr
+      uses: actions/checkout@v2
+      with:
+        path: NWgr
+
+    - name: prep
+      run: |
+        brew install tbb
+
+    - name: cmake
+      run: |
+        cd NWgr
+        mkdir build
+        cd build
+        export TBBROOT=/opt/intel/oneapi/tbb/latest
+        cmake .. -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_CXX_COMPILER=g++-11 -DNW_GRAPH_BUILD_DOCS=OFF -DNW_GRAPH_BUILD_TESTS=ON
+
+    - name: make
+      run: |
+        cd NWgr/build
+        make -j -k
+
+  test:
+    needs: build
+    steps:
+    - name: run_test
+      run: |
+        make test
