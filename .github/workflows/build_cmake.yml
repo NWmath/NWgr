@@ -6,7 +6,7 @@ on:
   push: 
     branches: [ master, sc_release ]
   workflow_dispatch: 
-    branches: [ master, sc_release ]
+
 
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
