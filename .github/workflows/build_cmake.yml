@@ -55,6 +55,7 @@ jobs:
         cd NWgr
         mkdir build
         cd build
+        export TBBROOT=/opt/intel/oneapi/tbb/latest
         cmake .. -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_CXX_COMPILER=g++-11
 
     - name: make
