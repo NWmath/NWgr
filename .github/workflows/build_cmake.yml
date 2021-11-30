@@ -68,4 +68,5 @@ jobs:
 
     - name: run_test
       run: |
+        cd NWgr/build
         make test
