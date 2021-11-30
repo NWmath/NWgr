@@ -66,9 +66,6 @@ jobs:
         cd NWgr/build
         make -j -k
 
-  test:
-    needs: build
-    steps:
     - name: run_test
       run: |
         make test
