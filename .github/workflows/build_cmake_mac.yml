@@ -26,8 +26,10 @@ jobs:
       with:
         path: NWgr
 
+# The macos image evidently has gcc-11 and cmake 3.22 pre-installed
     - name: prep
       run: |
+        brew update
         brew install tbb
 
     - name: cmake
