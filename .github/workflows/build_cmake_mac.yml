@@ -1,6 +1,6 @@
 # Workflow to configure with cmake and build with gcc-10
 
-name: Build with gcc-11
+name: Build with gcc-11 (Mac)
 
 on:
   push: 
