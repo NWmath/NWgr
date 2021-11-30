@@ -7,9 +7,9 @@ on:
     branches: [ master, sc_release ]
   workflow_dispatch: 
     branches: [ master, sc_release ]
-  pull_request:
-    branches:
-      - '*'
+#  pull_request:
+#    branches:
+#      - '*'
 
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
