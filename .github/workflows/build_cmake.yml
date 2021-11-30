@@ -70,3 +70,5 @@ jobs:
     needs: build
     steps:
     - name: run_test
+      run: |
+        make test
