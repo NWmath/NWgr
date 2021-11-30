@@ -61,5 +61,5 @@ jobs:
     - name: make
       run: |
         cd NWgr/build
-        make -k
+        make -j -k
 
