@@ -62,5 +62,7 @@ jobs:
       run: |
         cd NWgr/build
         make -j -k
-        make test
 
+    - name: test
+      run: |
+        make test
