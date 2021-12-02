@@ -17,8 +17,6 @@
 #include "nwgraph/edge_list.hpp"
 #include "nwgraph/io/mmio.hpp"
 
-#include "common/test_header.hpp"
-
 using namespace nw::graph;
 using namespace nw::util;
 
