@@ -24,7 +24,6 @@ add_library(catch_main STATIC catch_main.cpp)
 target_link_libraries(catch_main Catch2::Catch2)
 
 # Add Catch2 tests
-nw_graph_add_test(adjacency_test)
 nw_graph_add_test(aos_test)
 nw_graph_add_test(back_edge_test)
 nw_graph_add_test(bfs_test_0)
@@ -57,6 +56,7 @@ nw_graph_add_test(vov_test)
 #  PROPERTIES WILL_FAIL TRUE)
 
 # Example programs (not catch2)
+nw_graph_add_exe(adjacency_eg)
 nw_graph_add_exe(compat_eg)
 nw_graph_add_exe(concepts_eg)
 nw_graph_add_exe(containers_eg)

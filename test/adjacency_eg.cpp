@@ -22,16 +22,18 @@
 using namespace nw::graph;
 using namespace nw::util;
 
-TEST_CASE("adjacency", "[adjacency]") {
+int main() {
   size_t n_vtx = 5;
 
-  edge_list<directedness::directed, double> A_list(n_vtx);
-  A_list.push_back(0, 1, 1);
-  A_list.push_back(1, 2, 2);
-  A_list.push_back(2, 3, 3);
-  A_list.push_back(3, 4, 4);
+  edge_list<directedness::directed, double> A_list { { 0, 1, 1 }, 
+						     { 1, 2, 2 },
+						     { 2, 3, 3 },
+						     { 3, 4, 4 }
+  };
 
   adjacency<0, double> A(A_list);
+
+  A.stream_indices();
 
   for (auto&& [u, v, w] : make_edge_range<0>(A)) {
     std::cout << "edge " << u << " to " << v << " has weight " << w << std::endl;
