@@ -17,6 +17,7 @@
 
 #include "nwgraph/containers/soa.hpp"
 #include "nwgraph/graph_base.hpp"
+#include "nwgraph/graph_concepts.hpp"
 #include "nwgraph/graph_traits.hpp"
 
 #if defined(CL_SYCL_LANGUAGE_VERSION)

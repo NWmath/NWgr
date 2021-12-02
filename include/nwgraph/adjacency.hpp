@@ -15,6 +15,7 @@
 #include "nwgraph/containers/compressed.hpp"
 #include "nwgraph/edge_list.hpp"
 #include "nwgraph/graph_base.hpp"
+#include "nwgraph/graph_concepts.hpp"
 #include "nwgraph/util/defaults.hpp"
 
 #include "nwgraph/build.hpp"
