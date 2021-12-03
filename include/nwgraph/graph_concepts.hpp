@@ -128,6 +128,8 @@ concept property_edge_list_c = std::ranges::forward_range<R> && requires(std::ra
   std::get<1>(e);
 };
 
+//This concept is for CPO definition. It is not a graph concept,
+// comparing with adjacency_list_graph concept.
 template <typename G>
 concept min_idx_adjacency_list = 
      std::ranges::random_access_range<G>
@@ -137,6 +139,8 @@ concept min_idx_adjacency_list =
      { g[u] } -> std::convertible_to<inner_range_t<G>>;
 };
 
+//This concept is for CPO definition. It is not a graph concept,
+// comparing with adjacency_list_graph concept.
 template <typename G>
 concept idx_adjacency_list = 
      std::ranges::random_access_range<G>

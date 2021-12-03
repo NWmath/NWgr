@@ -86,7 +86,7 @@ auto push_back_fill_helper(adjacency_t& cs, std::tuple<Ts...> const& theTuple) {
   std::apply([&](Ts const&... args) { cs.push_back(args...); }, theTuple);
 }
 
-template <class edge_list_t, class adjacency_t>
+template <edge_list_graph edge_list_t, adjacency_list_graph adjacency_t>
 void push_back_fill(edge_list_t& el, adjacency_t& cs) {
   cs.open_for_push_back();
 

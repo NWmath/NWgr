@@ -69,14 +69,14 @@ public:
   template <class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
   index_adjacency(index_edge_list<vertex_id_type, unipartite_graph_base, directedness::directed, Attributes...>& A,
                   ExecutionPolicy&&                                                                              policy = {})
-      : base(A.num_vertices()[0]) {
+      : base(A.num_vertices()[0] + 1) {
     fill<idx>(A, *this, policy);
   }
 
   template <class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
   index_adjacency(index_edge_list<vertex_id_type, unipartite_graph_base, directedness::undirected, Attributes...>& A,
                   ExecutionPolicy&&                                                                                policy = {})
-      : base(A.num_vertices()[0]) {
+      : base(A.num_vertices()[0] + 1) {
     fill<idx>(A, *this, policy);
   }
 

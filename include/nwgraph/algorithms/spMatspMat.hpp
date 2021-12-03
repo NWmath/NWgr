@@ -95,7 +95,7 @@ void set_ewise_intersection(InputIt1 first1, InputIt1 last1, InputIt2 first2, In
 
 //****************************************************************************
 /// @todo cannot currently pass "const &" for A or BT
-template <typename ScalarT, typename LGraphT, typename RGraphT, typename MapOpT = std::multiplies<ScalarT>,
+template <typename ScalarT, adjacency_list_graph LGraphT, adjacency_list_graph RGraphT, typename MapOpT = std::multiplies<ScalarT>,
           typename ReduceOpT = std::plus<ScalarT>>
 edge_list<directedness::directed, ScalarT> spMatspMatT(LGraphT& A, RGraphT& BT) {
   std::vector<ScalarT> products;
