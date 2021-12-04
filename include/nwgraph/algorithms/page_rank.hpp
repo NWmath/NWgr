@@ -21,6 +21,7 @@
 #include <tuple>
 #include <vector>
 
+#include "nwgraph/graph_concepts.hpp"
 #include "nwgraph/adaptors/edge_range.hpp"
 #include "nwgraph/containers/compressed.hpp"
 #include "nwgraph/edge_list.hpp"
@@ -62,7 +63,7 @@ auto time_op(Op&& op) {
 }    // namespace page_rank
 
 
-template <typename Graph, typename Real>
+template <adjacency_list_graph Graph, typename Real>
 [[gnu::noinline]] void page_rank_v11(const Graph& graph, const std::vector<typename Graph::vertex_id_type>& degrees,
                                      std::vector<Real>& page_rank, Real damping_factor, Real threshold, size_t max_iters, size_t num_threads) {
   std::size_t N          = graph.size();

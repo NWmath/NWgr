@@ -69,7 +69,7 @@ public:
 
   static constexpr std::size_t getNAttr() { return sizeof...(Attributes); }
 
-  index_vov(size_t N) : base(N) {}
+  index_vov(size_t N = 0) : base(N) {}
 
   index_vov(edge_list<directedness::directed, Attributes...>& A) : base(num_vertices(A)) { num_edges_ = fill_adj_list(A, *this); }
 

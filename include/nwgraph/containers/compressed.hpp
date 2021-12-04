@@ -227,8 +227,7 @@ public:    // fixme
   void close_for_push_back() {
     if (to_be_indexed_.size() == 0) return;
 
-    // std::exclusive_scan(std::execution::par, indices_.begin(), indices_.end(), indices_.begin(), 0);
-
+    indices_.resize(N_ + 1);
     std::exclusive_scan(indices_.begin(), indices_.end(), indices_.begin(), 0);
     assert(indices_.back() == to_be_indexed_.size());
     is_open_ = false;
