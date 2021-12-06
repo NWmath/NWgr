@@ -13,6 +13,7 @@
 #ifndef NW_GRAPH_TRIANGLE_COUNT_HPP
 #define NW_GRAPH_TRIANGLE_COUNT_HPP
 
+#include "nwgraph/graph_concepts.hpp"
 #include "nwgraph/adaptors/cyclic_range_adapter.hpp"
 #include "nwgraph/adaptors/neighbor_range.hpp"
 #include "nwgraph/adaptors/edge_range.hpp"
@@ -30,7 +31,7 @@
 namespace nw {
 namespace graph {
 
-template <typename GraphT>
+template <adjacency_list_graph GraphT>
 size_t triangle_count_v0(const GraphT& A) {
   size_t triangles = 0;
   auto   first     = A.begin();
