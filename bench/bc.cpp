@@ -54,7 +54,7 @@ void print_n_ranks(const Vector& centrality, size_t n) {
   }
 }
 
-template <class score_t, class accum_t, class Graph>
+template <class score_t, class accum_t, adjacency_list_graph Graph>
 bool BCVerifier(const Graph& g, std::vector<typename graph_traits<Graph>::vertex_id_type>& trial_sources,
                 std::vector<score_t>& scores_to_test) {
   using vertex_id_type = typename graph_traits<Graph>::vertex_id_type;
@@ -72,7 +72,7 @@ bool BCVerifier(const Graph& g, std::vector<typename graph_traits<Graph>::vertex
     for (auto it = to_visit.begin(); it != to_visit.end(); it++) {
       vertex_id_type u = *it;
       for (auto edge : out_neigh[u]) {
-        vertex_id_type v = std::get<0>(edge);
+        vertex_id_type v = target(g, edge);
         if (depths[v] == -1) {
           depths[v] = depths[u] + 1;
           to_visit.push_back(v);
@@ -97,7 +97,7 @@ bool BCVerifier(const Graph& g, std::vector<typename graph_traits<Graph>::vertex
     for (int depth = verts_at_depth.size() - 1; depth >= 0; depth--) {
       for (vertex_id_type u : verts_at_depth[depth]) {
         for (auto edge : out_neigh[u]) {
-          vertex_id_type v = std::get<0>(edge);
+          vertex_id_type v = target(g, edge);
           if (depths[v] == depths[u] + 1) {
             deltas[u] += static_cast<double>(path_counts[u]) / static_cast<double>(path_counts[v]) * (1 + deltas[v]);
           }
