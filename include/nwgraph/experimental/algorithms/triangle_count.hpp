@@ -110,8 +110,9 @@ size_t triangle_count_v1(const GraphT& A) {
   auto   last      = A.end();
 
   for (auto G = first; first != last; ++first) {
-    for (auto v = (*first).begin(); v != (*first).end(); ++v) {
-      triangles += nw::graph::intersection_size(v, (*first).end(), G[std::get<0>(*v)]);
+    for (auto elt = (*first).begin(); elt != (*first).end(); ++elt) {
+      auto v = target(A, *elt);
+      triangles += nw::graph::intersection_size(elt, (*first).end(), G[v]);
     }
   }
   return triangles;
@@ -122,7 +123,8 @@ size_t triangle_count_v15(const GraphT& A) {
   size_t triangles = 0;
 
   for (auto&& [u, u_neighbors] : make_neighbor_range(A)) {
-    for (auto&& [v] : u_neighbors) {
+    for (auto&& elt : u_neighbors) {
+      auto v = target(A, elt);
       triangles += nw::graph::intersection_size(u_neighbors, A[v]);
     }
   }
@@ -138,7 +140,8 @@ size_t triangle_count_v2(const GraphT& A) {
   auto   G         = A.begin();
 
   for (auto&& node : A) {
-    for (auto&& [u] : node) {
+    for (auto&& elt : node) {
+      auto u = target(A, elt);
       triangles += nw::graph::intersection_size(G[u], G[i]);
     }
     ++i;
@@ -338,7 +341,8 @@ template <adjacency_list_graph Graph, class SetExecutionPolicy = std::execution:
       nw::graph::cyclic(graph, stride),
       [&](auto&& i) {
         std::size_t triangles = 0;
-        for (auto&& [j] : i) {
+        for (auto&& elt : i) {
+          auto j = target(graph, elt);
           triangles += nw::graph::intersection_size(i, graph[j], set);
         }
         return triangles;
@@ -453,7 +457,8 @@ template <adjacency_list_graph Graph>
     auto&& [v, ve]        = nw::graph::block(graph.to_be_indexed_.size(), threads, tid);
     nw::util::life_timer _(std::to_string(tid) + " " + std::to_string(graph.source(ve) - graph.source(v)));
     for (auto &&u = graph.source(v), e = graph.source(ve); u != e; ++u) {
-      for (auto&& [v] : graph[u]) {
+      for (auto&& elt : graph[u]) {
+        auto v = target(graph, elt);
         triangles += nw::graph::intersection_size(graph[u], graph[v]);
       }
     }

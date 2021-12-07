@@ -36,10 +36,10 @@ size_t triangle_count_v0(const GraphT& A) {
   size_t triangles = 0;
   auto   first     = A.begin();
   auto   last      = A.end();
-
-  for (auto G = first; first != last; ++first) {
-    for (auto v = (*first).begin(); v != (*first).end(); ++v) {
-      triangles += nw::graph::intersection_size(*first, G[std::get<0>(*v)]);
+  for (auto u_neighors = first; u_neighors != last; ++u_neighors) {
+    for (auto elt = (*u_neighors).begin(); elt != (*u_neighors).end(); ++elt) {
+      auto v = target(A, *elt);
+      triangles += nw::graph::intersection_size(*u_neighors, A[v]);
     }
   }
   return triangles;
