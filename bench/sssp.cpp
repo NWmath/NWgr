@@ -46,8 +46,9 @@ using namespace nw::util;
 using distance_t = std::uint64_t;
 
 /// Basic sequential sssp (Dijkstra) copied from GAP benchmark suite.
-template <class Graph>
-static auto dijkstra(const Graph& graph, vertex_id_t<Graph> source) {
+template <adjacency_list_graph Graph, class Weight>
+static auto dijkstra(const Graph& graph, vertex_id_t<Graph> source,
+  Weight weight = [](auto& e) -> auto& { return std::get<1>(e); }) {
   using vertex_id_type = vertex_id_t<Graph>;
 
   // Workqueue
@@ -64,7 +65,9 @@ static auto dijkstra(const Graph& graph, vertex_id_t<Graph> source) {
     auto [u, td] = mq.top();    // don't capture auto&& references here
     mq.pop();
     if (td == dist[u]) {
-      for (auto&& [v, w] : g[u]) {
+      for (auto&& elt : g[u]) {
+        auto v = target(graph, elt);
+        auto w = weight(elt);
         assert(w > 0);
         assert(td < td + w);
         if (td + w < dist[v]) {
@@ -77,10 +80,11 @@ static auto dijkstra(const Graph& graph, vertex_id_t<Graph> source) {
   return dist;
 }
 
-template <class Graph, class Dist>
-static bool SSSPVerifier(const Graph& graph, vertex_id_t<Graph> source, Dist&& dist, bool verbose) {
+template <adjacency_list_graph Graph, class Dist, class Weight>
+static bool SSSPVerifier(const Graph& graph, vertex_id_t<Graph> source, Dist&& dist, bool verbose,
+Weight weight) {
 
-  auto oracle = dijkstra(graph, source);
+  auto oracle = dijkstra(graph, source, weight);
   if (std::equal(dist.begin(), dist.end(), oracle.begin())) {
     return true;
   }
@@ -104,23 +108,23 @@ static bool SSSPVerifier(const Graph& graph, vertex_id_t<Graph> source, Dist&& d
 /// The heart of the SSSP benchmark, dispatches to the right algorithm version
 /// and verifies the result, based on the verifier. Returns the time it took to
 /// run, as well as a boolean indicating if we passed verification.
-template <class Graph, class Verifier>
-static std::tuple<double, bool> sssp(int id, const Graph& graph, vertex_id_t<Graph> source, distance_t delta, Verifier&& verifier) {
+template <adjacency_list_graph Graph, class Weight, class Verifier>
+static std::tuple<double, bool> sssp(int id, const Graph& graph, vertex_id_t<Graph> source, distance_t delta, Weight weight, Verifier&& verifier) {
   switch (id) {
     case 0:
-      return time_op_verify([&] { return delta_stepping_v0<distance_t>(graph, source, delta); }, std::forward<Verifier>(verifier));
+      return time_op_verify([&] { return delta_stepping_v0<distance_t>(graph, source, delta, weight); }, std::forward<Verifier>(verifier));
     case 1:
-      return time_op_verify([&] { return delta_stepping_m1<distance_t>(graph, source, delta); }, std::forward<Verifier>(verifier));
+      return time_op_verify([&] { return delta_stepping_m1<distance_t>(graph, source, delta, weight); }, std::forward<Verifier>(verifier));
     case 6:
       return time_op_verify([&] { return delta_stepping_v6<distance_t>(graph, source, delta); }, std::forward<Verifier>(verifier));
     case 8:
-      return time_op_verify([&] { return delta_stepping_v8<distance_t>(graph, source, delta); }, std::forward<Verifier>(verifier));
+      return time_op_verify([&] { return delta_stepping_v8<distance_t>(graph, source, delta, weight); }, std::forward<Verifier>(verifier));
     case 9:
-      return time_op_verify([&] { return delta_stepping_v9<distance_t>(graph, source, delta); }, std::forward<Verifier>(verifier));
+      return time_op_verify([&] { return delta_stepping_v9<distance_t>(graph, source, delta, weight); }, std::forward<Verifier>(verifier));
     case 10:
-      return time_op_verify([&] { return delta_stepping_v10<distance_t>(graph, source, delta); }, std::forward<Verifier>(verifier));
+      return time_op_verify([&] { return delta_stepping_v10<distance_t>(graph, source, delta, weight); }, std::forward<Verifier>(verifier));
     case 11:
-      return time_op_verify([&] { return delta_stepping_v11<distance_t>(graph, source, delta); }, std::forward<Verifier>(verifier));
+      return time_op_verify([&] { return delta_stepping_v11<distance_t>(graph, source, delta, weight); }, std::forward<Verifier>(verifier));
     case 12:
       return time_op_verify([&] { return delta_stepping_v12<distance_t>(graph, source, delta); }, std::forward<Verifier>(verifier));
     default:
@@ -152,6 +156,7 @@ int main(int argc, char* argv[]) {
   }
 
   auto graph = build_adjacency<0>(aos_a);
+  auto weight = [](auto& e) -> auto& { return std::get<1>(e); };
 
   if (verbose) {
     graph.stream_stats();
@@ -186,9 +191,9 @@ int main(int argc, char* argv[]) {
           if (verbose) {
             std::cout << "iteration: " << j << " source: " << source << "\n";
           }
-          auto [t, v] = sssp(id, graph, source, delta, [&](auto&& dist) {
+          auto [t, v] = sssp(id, graph, source, delta, weight, [&](auto&& dist) {
             if (verify) {
-              return SSSPVerifier(graph, source, std::forward<decltype(dist)>(dist), verbose);
+              return SSSPVerifier(graph, source, std::forward<decltype(dist)>(dist), verbose, weight);
             }
             return true;
           });

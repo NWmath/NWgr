@@ -20,6 +20,7 @@
 #include <type_traits>
 #include <vector>
 
+#include "nwgraph/graph_concepts.hpp"
 #include "nwgraph/containers/compressed.hpp"
 #include "nwgraph/edge_list.hpp"
 #include "nwgraph/util/atomic.hpp"
@@ -47,8 +48,10 @@ public:
   auto end() const { return base::c.begin(); }
 };
 
-template <class distance_t, class Graph, class Id>
-auto delta_stepping_m1(const Graph& graph, Id source, distance_t) {
+template <class distance_t, adjacency_list_graph Graph, class Id,
+          class Weight>
+auto delta_stepping_m1(const Graph& graph, Id source, distance_t,
+    Weight weight = [](auto& e) -> auto& { return std::get<1>(e); }) {
   std::vector<distance_t> tdist(num_vertices(graph), std::numeric_limits<distance_t>::max());
   size_t                  top_bin = 0;
 
@@ -75,7 +78,9 @@ auto delta_stepping_m1(const Graph& graph, Id source, distance_t) {
 
     std::for_each(frontier.begin(), frontier.end(), [&](Id i) {
       std::for_each(g[i].begin(), g[i].end(), [&](auto&& elt) {
-        auto&& [j, wt] = elt;    // i == v
+        auto j = target(graph, elt);
+        auto wt = weight(elt);
+        //auto&& [j, wt] = elt;    // i == v
         relax(i, j, wt);
       });
     });
@@ -85,8 +90,11 @@ auto delta_stepping_m1(const Graph& graph, Id source, distance_t) {
 }
 
 // Inspired by gapbs implementation
-template <class distance_t, class Graph, class Id, class T>
-auto delta_stepping_v0(const Graph& graph, Id source, T delta) {
+template <class distance_t, adjacency_list_graph Graph, class Id, class T,
+          class Weight>
+auto delta_stepping_v0(
+    const Graph& graph, Id source, T delta,
+    Weight weight = [](auto& e) -> auto& { return std::get<1>(e); }) {
   std::vector<distance_t>      tdist(num_vertices(graph), std::numeric_limits<distance_t>::max());
   std::vector<std::vector<Id>> bins(1);
   std::size_t                  top_bin = 0;
@@ -117,7 +125,9 @@ auto delta_stepping_v0(const Graph& graph, Id source, T delta) {
     std::for_each(frontier.begin(), frontier.end(), [&](Id i) {
       if (tdist[i] >= delta * top_bin) {
         std::for_each(g[i].begin(), g[i].end(), [&](auto&& elt) {
-          auto&& [j, wt] = elt;    // i == v
+          auto j = target(graph, elt);
+          auto wt = weight(elt);
+          //auto&& [j, wt] = elt;    // i == v
           relax(i, j, wt);
         });
       }
@@ -131,7 +141,7 @@ auto delta_stepping_v0(const Graph& graph, Id source, T delta) {
   return tdist;
 }
 
-template <class distance_t, class Graph, class Id, class T>
+template <class distance_t, adjacency_list_graph Graph, class Id, class T>
 auto delta_stepping_v12(const Graph& graph, Id source, T delta) {
   tbb::queuing_mutex                                 lock;
   std::atomic<std::size_t>                           size = 1;

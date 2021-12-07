@@ -38,7 +38,7 @@ namespace graph {
 
 
 // Inspired by gapbs implementation
-template <class distance_t, class Graph, class Id, class T>
+template <class distance_t, adjacency_list_graph Graph, class Id, class T>
 auto delta_stepping_v6(const Graph& graph, Id source, T delta) {
   tbb::concurrent_vector<tbb::concurrent_vector<Id>> bins(1);
   std::size_t                                        top_bin = 0;
@@ -82,8 +82,9 @@ auto delta_stepping_v6(const Graph& graph, Id source, T delta) {
 }
 
 // Inspired by gapbs implementation
-template <class distance_t, class Graph, class Id, class T>
-auto delta_stepping_v8(const Graph& graph, Id source, T delta) {
+template <class distance_t, adjacency_list_graph Graph, class Id, class T, class Weight>
+auto delta_stepping_v8(const Graph& graph, Id source, T delta,
+    Weight weight = [](auto& e) -> auto& { return std::get<1>(e); }) {
   Id                                                 N = num_vertices(graph);
   std::vector<std::atomic<distance_t>>               tdist(N);
   tbb::concurrent_vector<tbb::concurrent_vector<Id>> bins(1);
@@ -127,7 +128,9 @@ auto delta_stepping_v8(const Graph& graph, Id source, T delta) {
     std::for_each(std::execution::par_unseq, frontier.begin(), frontier.end(), [&](Id i) {
       if (tdist[i] >= delta * top_bin) {
         std::for_each(std::execution::par_unseq, g[i].begin(), g[i].end(), [&](auto&& elt) {
-          auto&& [j, wt] = elt;    // i == v
+          auto j = target(graph, elt);
+          auto wt = weight(elt);
+          //auto&& [j, wt] = elt;    // i == v
           relax(i, j, wt);
         });
       }
@@ -141,8 +144,9 @@ auto delta_stepping_v8(const Graph& graph, Id source, T delta) {
   return tdist;
 }
 
-template <class distance_t, class Graph, class Id, class T>
-auto delta_stepping_v9(const Graph& graph, Id source, T delta) {
+template <class distance_t, adjacency_list_graph Graph, class Id, class T, class Weight>
+auto delta_stepping_v9(const Graph& graph, Id source, T delta,
+  Weight weight = [](auto& e) -> auto& { return std::get<1>(e); }) {
   tbb::queuing_mutex                                 lock;
   std::atomic<std::size_t>                           size = 1;
   tbb::concurrent_vector<tbb::concurrent_vector<Id>> bins(size);
@@ -184,7 +188,10 @@ auto delta_stepping_v9(const Graph& graph, Id source, T delta) {
     std::swap(frontier, bins[top_bin]);
     tbb::parallel_for_each(frontier, [&](auto&& i) {
       if (tdist[i] >= delta * top_bin) {
-        for (auto&& [j, wt] : g[i]) {
+        for (auto&& elt : g[i]) {
+          auto j = target(graph, elt);
+          auto wt = weight(elt);
+          //auto&& [j, wt] = elt;    // i == v
           relax(i, j, wt);
         }
       }
@@ -197,8 +204,9 @@ auto delta_stepping_v9(const Graph& graph, Id source, T delta) {
   return tdist;
 }
 
-template <class distance_t, class Graph, class Id, class T>
-auto delta_stepping_v10(const Graph& graph, Id source, T delta) {
+template <class distance_t, adjacency_list_graph Graph, class Id, class T, class Weight>
+auto delta_stepping_v10(const Graph& graph, Id source, T delta,
+  Weight weight = [](auto& e) -> auto& { return std::get<1>(e); }) {
   tbb::queuing_mutex                                 lock;
   std::atomic<std::size_t>                           size = 1;
   tbb::concurrent_vector<tbb::concurrent_vector<Id>> bins(size);
@@ -242,7 +250,10 @@ auto delta_stepping_v10(const Graph& graph, Id source, T delta) {
       for (auto id = range.begin(), e = range.end(); id < e; ++id) {
         auto i = frontier[id];
         if (tdist[i] >= delta * top_bin) {
-          for (auto&& [j, wt] : g[i]) {
+          for (auto&& elt : g[i]) {
+            auto j = target(graph, elt);
+            auto wt = weight(elt);
+            //auto&& [j, wt] = elt;    // i == v
             relax(i, j, wt);
           }
         }
@@ -256,8 +267,9 @@ auto delta_stepping_v10(const Graph& graph, Id source, T delta) {
   return tdist;
 }
 
-template <class distance_t, class Graph, class Id, class T>
-auto delta_stepping_v11(const Graph& graph, Id source, T delta) {
+template <class distance_t, adjacency_list_graph Graph, class Id, class T, class Weight>
+auto delta_stepping_v11(const Graph& graph, Id source, T delta,
+  Weight weight = [](auto& e) -> auto& { return std::get<1>(e); }) {
   tbb::queuing_mutex                                 lock;
   std::atomic<std::size_t>                           size = 1;
   tbb::concurrent_vector<tbb::concurrent_vector<Id>> bins(size);
@@ -302,7 +314,10 @@ auto delta_stepping_v11(const Graph& graph, Id source, T delta) {
         auto i = frontier[id];
         if (tdist[i] >= delta * top_bin) {
           tbb::parallel_for(g[i], [&](auto&& range) {
-            for (auto&& [j, wt] : range) {
+            for (auto&& elt : range) {
+              auto j = target(graph, elt);
+              auto wt = weight(elt);
+              //auto&& [j, wt] = elt;    // i == v
               relax(i, j, wt);
             }
           });
