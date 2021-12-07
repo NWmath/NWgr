@@ -63,7 +63,7 @@ public:
   void unlock() { flag.clear(std::memory_order_release); }
 };
 
-template <typename Graph, typename score_t = float, typename accum_t = size_t>
+template <adjacency_list_graph Graph, typename score_t = float, typename accum_t = size_t>
 std::vector<score_t> approx_betweenness_brandes(const Graph& A, std::vector<typename Graph::vertex_id_type>& sources) {
   using vertex_id_type = typename Graph::vertex_id_type;
 
@@ -90,7 +90,8 @@ std::vector<score_t> approx_betweenness_brandes(const Graph& A, std::vector<type
       Q.pop();
       S.push(v);
       for (auto inner = G[v].begin(); inner != G[v].end(); ++inner) {
-        auto w = std::get<0>(*inner);
+        auto w = target(A, *inner);
+        //auto w = std::get<0>(*inner);
         if (d[w] < 0) {
           Q.push(w);
           d[w] = d[v] + 1;
@@ -120,7 +121,7 @@ std::vector<score_t> approx_betweenness_brandes(const Graph& A, std::vector<type
   return centrality;
 }
 
-template <typename Graph, typename score_t = float, typename accum_t = size_t>
+template <adjacency_list_graph Graph, typename score_t = float, typename accum_t = size_t>
 std::vector<score_t> approx_betweenness_worklist_serial(const Graph& A, std::vector<typename Graph::vertex_id_type>& sources) {
   using vertex_id_type = typename Graph::vertex_id_type;
 
@@ -288,7 +289,7 @@ std::vector<score_t> approx_betweenness_worklist_serial(const Graph& A, std::vec
   return centrality;
 }
 
-template <typename Graph, typename score_t = float, typename accum_t = size_t>
+template <adjacency_list_graph Graph, typename score_t = float, typename accum_t = size_t>
 std::vector<score_t> approx_betweenness_worklist(const Graph& A, std::vector<typename Graph::vertex_id_type>& sources, size_t num_threads,
                                                  size_t DELTA) {
   using vertex_id_type = typename Graph::vertex_id_type;
@@ -616,7 +617,7 @@ std::vector<score_t> approx_betweenness_worklist(const Graph& A, std::vector<typ
   return centrality;
 }
 
-template <typename Graph, typename score_t = float, typename accum_t = size_t>
+template <adjacency_list_graph Graph, typename score_t = float, typename accum_t = size_t>
 std::vector<score_t> approx_betweenness_worklist_noabstraction(const Graph& A, std::vector<typename Graph::vertex_id_type>& sources,
                                                                size_t num_threads, size_t par_thresh, size_t DELTA = 1) {
   using vertex_id_type = typename Graph::vertex_id_type;
@@ -1229,7 +1230,7 @@ std::vector<score_t> Brandes(const Graph &g, const std::vector<vertex_id_type> s
 }
 #endif
 
-template <typename Graph, typename score_t = float, typename accum_t = size_t>
+template <adjacency_list_graph Graph, typename score_t = float, typename accum_t = size_t>
 auto bc2_v0(const Graph& graph, const std::vector<typename Graph::vertex_id_type> sources) {
   using vertex_id_type = typename Graph::vertex_id_type;
 
@@ -1256,7 +1257,8 @@ auto bc2_v0(const Graph& graph, const std::vector<typename Graph::vertex_id_type
       count = 0;
 
       for (vertex_id_type v : S[phase]) {
-        for (auto&& [w] : g[v]) {
+        for (auto&& elt : g[v]) {
+          auto w = target(graph, elt);
 
           if (depths[w] == std::numeric_limits<vertex_id_type>::max()) {
             S[phase + 1].push_front(w);
@@ -1295,7 +1297,7 @@ auto bc2_v0(const Graph& graph, const std::vector<typename Graph::vertex_id_type
   return bc;
 }
 
-template <typename Graph, typename score_t = float, typename accum_t = size_t>
+template <adjacency_list_graph Graph, typename score_t = float, typename accum_t = size_t>
 auto bc2_v1(const Graph& graph, const std::vector<typename Graph::vertex_id_type> sources) {
   using vertex_id_type = typename Graph::vertex_id_type;
 
@@ -1323,7 +1325,8 @@ auto bc2_v1(const Graph& graph, const std::vector<typename Graph::vertex_id_type
       count = 0;
 
       for (vertex_id_type v : S[phase]) {
-        for (auto&& [w] : g[v]) {
+        for (auto&& elt : g[v]) {
+          auto w = target(graph, elt);
 
           vertex_id_type neg_one = std::numeric_limits<vertex_id_type>::max();
           if (depths[w].compare_exchange_strong(neg_one, depths[v] + 1)) {
@@ -1361,7 +1364,7 @@ auto bc2_v1(const Graph& graph, const std::vector<typename Graph::vertex_id_type
   return bc;
 }
 
-template <typename Graph, typename score_t = float, typename accum_t = size_t,
+template <adjacency_list_graph Graph, typename score_t = float, typename accum_t = size_t,
           class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
 auto bc2_v2(const Graph& graph, const std::vector<typename Graph::vertex_id_type>& sources, ExecutionPolicy&& policy = {}) {
   using vertex_id_type = typename Graph::vertex_id_type;
@@ -1394,7 +1397,8 @@ auto bc2_v2(const Graph& graph, const std::vector<typename Graph::vertex_id_type
 
       std::for_each(policy, S[phase].begin(), S[phase].end(), [&](auto&& v) {
         tbb::parallel_for(g[v], [&](auto&& elt) {
-          for (auto&& [w] : elt) {
+          for (auto&& e : elt) {
+            auto w = target(graph, e);
 
             vertex_id_type neg_one = std::numeric_limits<vertex_id_type>::max();
             if ((depths[w] == neg_one) && depths[w].compare_exchange_strong(neg_one, depth)) {
@@ -1435,7 +1439,7 @@ auto bc2_v2(const Graph& graph, const std::vector<typename Graph::vertex_id_type
   return bc;
 }
 
-template <typename Graph, typename score_t = float, typename accum_t = size_t,
+template <adjacency_list_graph Graph, typename score_t = float, typename accum_t = size_t,
           class OuterExecutionPolicy = std::execution::parallel_unsequenced_policy,
           class InnerExecutionPolicy = std::execution::parallel_unsequenced_policy>
 auto bc2_v3(const Graph& graph, const std::vector<typename Graph::vertex_id_type>& sources, OuterExecutionPolicy&& outer_policy = {},
@@ -1478,7 +1482,8 @@ auto bc2_v3(const Graph& graph, const std::vector<typename Graph::vertex_id_type
           // tbb::parallel_for(g[u], [&](auto&& gu) {
           auto gu = g[u];
           for (auto x = gu.begin(); x != gu.end(); ++x) {
-            auto&&         v       = std::get<0>(*x);
+            auto v = target(graph, *x);
+            //auto&&         v       = std::get<0>(*x);
             vertex_id_type neg_one = std::numeric_limits<vertex_id_type>::max();
             if (levels[v] == neg_one && levels[v].compare_exchange_strong(neg_one, lvl)) {
               q2[u & bin_mask].push_back(v);
@@ -1519,7 +1524,8 @@ auto bc2_v3(const Graph& graph, const std::vector<typename Graph::vertex_id_type
         std::for_each(inner_policy, vv.begin(), vv.end(), [&](auto&& u) {
           score_t delta = 0;
           for (auto x = g[u].begin(); x != g[u].end(); ++x) {
-            vertex_id_type v = std::get<0>(*x);
+            auto v = target(graph, *x);
+            //vertex_id_type v = std::get<0>(*x);
             if (succ[x - neighbors]) {
               delta += static_cast<double>(path_counts[u]) / static_cast<double>(path_counts[v]) * (1 + deltas[v]);
             }
@@ -1537,7 +1543,7 @@ auto bc2_v3(const Graph& graph, const std::vector<typename Graph::vertex_id_type
   return bc;
 }
 
-template <class score_t, class accum_t, class Graph, class OuterExecutionPolicy = std::execution::parallel_unsequenced_policy,
+template <class score_t, class accum_t, adjacency_list_graph Graph, class OuterExecutionPolicy = std::execution::parallel_unsequenced_policy,
           class InnerExecutionPolicy = std::execution::parallel_unsequenced_policy>
 auto bc2_v4(const Graph& graph, const std::vector<typename Graph::vertex_id_type>& sources, int threads,
             OuterExecutionPolicy&& outer_policy = {}, InnerExecutionPolicy&& inner_policy = {}) {
@@ -1573,7 +1579,8 @@ auto bc2_v4(const Graph& graph, const std::vector<typename Graph::vertex_id_type
     while (!done) {
       std::for_each(outer_policy, q1.begin(), q1.end(), [&](auto&& q) {
         std::for_each(inner_policy, q.begin(), q.end(), [&](auto&& u) {
-          for (auto&& [v] : g[u]) {
+          for (auto&& elt : g[u]) {
+            auto v = target(graph, elt);
             auto&& neg_one = std::numeric_limits<vertex_id_type>::max();
             if (nw::graph::acquire(levels[v]) == neg_one && nw::graph::cas(levels[v], neg_one, lvl)) {
               q2[u & bin_mask].push_back(v);
@@ -1610,7 +1617,8 @@ auto bc2_v4(const Graph& graph, const std::vector<typename Graph::vertex_id_type
         std::for_each(inner_policy, vv.begin(), vv.end(), [&](auto&& u) {
           score_t delta = 0;
           for (auto x = g[u].begin(); x != g[u].end(); ++x) {
-            auto&& v = std::get<0>(*x);
+            auto v = target(graph, *x);
+            //auto&& v = std::get<0>(*x);
             if (succ.get(&v - &edges)) {
               delta += path_counts[u] / path_counts[v] * (1 + deltas[v]);
             }

@@ -200,6 +200,10 @@ int main(int argc, char* argv[]) {
               return bc2_v4<score_t, accum_t>(graph, trial_sources, thread);
             case 5:
               return bc2_v5<score_t, accum_t>(graph, trial_sources, thread);
+            case 6:
+              return betweenness_brandes(graph);
+            case 7:
+              return approx_betweenness_brandes(graph, trial_sources);
             default:
               std::cerr << "Invalid BC version " << id << "\n";
               return {};

@@ -14,6 +14,7 @@
 #ifndef BETWEENNESS_CENTRALITY_HPP
 #define BETWEENNESS_CENTRALITY_HPP
 
+#include "nwgraph/graph_concepts.hpp"
 #include "nwgraph/adaptors/worklist.hpp"
 #include "nwgraph/util/AtomicBitVector.hpp"
 #include "nwgraph/util/atomic.hpp"
@@ -52,7 +53,7 @@ namespace nw {
 namespace graph {
 
 //****************************************************************************
-template <typename Graph, typename score_t = float, typename accum_t = size_t>
+template <adjacency_list_graph Graph, typename score_t = float, typename accum_t = size_t>
 std::vector<score_t> betweenness_brandes(const Graph& A) {
   using vertex_id_type = typename Graph::vertex_id_type;
 
@@ -66,7 +67,7 @@ std::vector<score_t> betweenness_brandes(const Graph& A) {
   std::vector<score_t>       d(n_vtx);
 
   for (auto outer = G; outer != A.end(); ++outer) {
-    auto s = outer - G;
+    vertex_id_type s = outer - G;
 
     path_counts.assign(n_vtx, 0);
     d.assign(n_vtx, -1);
@@ -81,7 +82,8 @@ std::vector<score_t> betweenness_brandes(const Graph& A) {
       Q.pop();
       S.push(v);
       for (auto inner = G[v].begin(); inner != G[v].end(); ++inner) {
-        auto w = std::get<0>(*inner);
+        auto w = target(A, *inner);
+        //auto w = std::get<0>(*inner);
         if (d[w] < 0) {
           Q.push(w);
           d[w] = d[v] + 1;
@@ -111,7 +113,7 @@ std::vector<score_t> betweenness_brandes(const Graph& A) {
   return final;
 }
 
-template <class score_t, class accum_t, class Graph, class OuterExecutionPolicy = std::execution::parallel_unsequenced_policy,
+template <class score_t, class accum_t, adjacency_list_graph Graph, class OuterExecutionPolicy = std::execution::parallel_unsequenced_policy,
           class InnerExecutionPolicy = std::execution::parallel_unsequenced_policy>
 auto bc2_v5(const Graph& graph, const std::vector<typename Graph::vertex_id_type>& sources, int threads,
             OuterExecutionPolicy&& outer_policy = {}, InnerExecutionPolicy&& inner_policy = {}) {
@@ -151,7 +153,8 @@ auto bc2_v5(const Graph& graph, const std::vector<typename Graph::vertex_id_type
           while (!done) {
             std::for_each(outer_policy, q1.begin(), q1.end(), [&](auto&& q) {
               std::for_each(inner_policy, q.begin(), q.end(), [&](auto&& u) {
-                for (auto&& [v] : graph[u]) {
+                for (auto&& elt : graph[u]) {
+                  auto v = target(graph, elt);
                   auto&& infinity = std::numeric_limits<vertex_id_type>::max();
                   auto&& lvl_v    = nw::graph::acquire(levels[v]);
 
@@ -195,7 +198,8 @@ auto bc2_v5(const Graph& graph, const std::vector<typename Graph::vertex_id_type
             std::for_each(outer_policy, vvv.begin(), vvv.end(), [&](auto&& vv) {
               std::for_each(inner_policy, vv.begin(), vv.end(), [&](auto&& u) {
                 score_t delta = 0;
-                for (auto&& [v] : graph[u]) {
+                for (auto&& elt : graph[u]) {
+                  auto v = target(graph, elt);
                   if (succ.get(&v - &edges)) {
                     delta += path_counts[u] / path_counts[v] * (1.0f + deltas[v]);
                   }
