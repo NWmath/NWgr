@@ -32,7 +32,7 @@
 namespace nw {
 namespace graph {
 
-template <typename Graph>
+template <adjacency_list_graph Graph>
 auto bfs_v4(const Graph& graph, typename graph_traits<Graph>::vertex_id_type root) {
   using vertex_id_type = typename graph_traits<Graph>::vertex_id_type;
 
@@ -50,7 +50,7 @@ auto bfs_v4(const Graph& graph, typename graph_traits<Graph>::vertex_id_type roo
 
     std::for_each(std::execution::par_unseq, q1.unsafe_begin(), q1.unsafe_end(), [&](vertex_id_type u) {
       std::for_each(g[u].begin(), g[u].end(), [&](auto&& x) {
-        vertex_id_type v = std::get<0>(x);
+        vertex_id_type v = target(graph, x);
         if (level[v] == std::numeric_limits<vertex_id_type>::max()) {
           q2.push(v);
           level[v]   = lvl;
@@ -67,7 +67,7 @@ auto bfs_v4(const Graph& graph, typename graph_traits<Graph>::vertex_id_type roo
   return parents;
 }
 
-template <typename Graph>
+template <adjacency_list_graph Graph>
 auto bfs_v6(const Graph& graph, typename graph_traits<Graph>::vertex_id_type root) {
   using vertex_id_type = typename graph_traits<Graph>::vertex_id_type;
 
@@ -86,7 +86,7 @@ auto bfs_v6(const Graph& graph, typename graph_traits<Graph>::vertex_id_type roo
 
     std::for_each(q1.begin(), q1.end(), [&](vertex_id_type u) {
       std::for_each(g[u].begin(), g[u].end(), [&](auto&& x) {
-        vertex_id_type v = std::get<0>(x);
+        vertex_id_type v = target(graph, x);
         if (level[v] == std::numeric_limits<vertex_id_type>::max()) {
           q2.push_back(v);
           level[v]   = lvl;
@@ -101,7 +101,7 @@ auto bfs_v6(const Graph& graph, typename graph_traits<Graph>::vertex_id_type roo
   return parents;
 }
 
-template <typename Graph>
+template <adjacency_list_graph Graph>
 auto bfs_v7(const Graph& graph, typename graph_traits<Graph>::vertex_id_type root) {
   using vertex_id_type = typename graph_traits<Graph>::vertex_id_type;
 
@@ -122,7 +122,7 @@ auto bfs_v7(const Graph& graph, typename graph_traits<Graph>::vertex_id_type roo
   while (!q1.empty()) {
     std::for_each(std::execution::par_unseq, q1.begin(), q1.end(), [&](vertex_id_type u) {
       std::for_each(g[u].begin(), g[u].end(), [&](auto&& x) {
-        vertex_id_type v       = std::get<0>(x);
+        vertex_id_type v = target(graph, x);
         vertex_id_type old_lvl = level[v];
         vertex_id_type new_lvl = lvl;
         if (new_lvl < old_lvl) {
@@ -148,7 +148,7 @@ auto bfs_v7(const Graph& graph, typename graph_traits<Graph>::vertex_id_type roo
   return parents;
 }
 
-template <typename Graph>
+template <adjacency_list_graph Graph>
 auto bfs_v8(const Graph& graph, typename graph_traits<Graph>::vertex_id_type root) {
 
   using vertex_id_type = typename graph_traits<Graph>::vertex_id_type;
@@ -170,7 +170,7 @@ auto bfs_v8(const Graph& graph, typename graph_traits<Graph>::vertex_id_type roo
 
     std::for_each(std::execution::par_unseq, q[cur].unsafe_begin(), q[cur].unsafe_end(), [&](vertex_id_type u) {
       std::for_each(std::execution::par_unseq, g[u].begin(), g[u].end(), [&](auto&& x) {
-        vertex_id_type v = std::get<0>(x);
+        vertex_id_type v = target(graph, x);
         if (level[v] == std::numeric_limits<vertex_id_type>::max()) {
           q[!cur].push(v);
           level[v]   = lvl;
@@ -187,7 +187,7 @@ auto bfs_v8(const Graph& graph, typename graph_traits<Graph>::vertex_id_type roo
   return parents;
 }
 
-template <typename Graph>
+template <adjacency_list_graph Graph>
 auto bfs_v9(const Graph& graph, typename graph_traits<Graph>::vertex_id_type root) {
   using vertex_id_type = typename graph_traits<Graph>::vertex_id_type;
 
@@ -211,7 +211,7 @@ auto bfs_v9(const Graph& graph, typename graph_traits<Graph>::vertex_id_type roo
       std::for_each(std::execution::par_unseq, q.begin(), q.end(), [&](vertex_id_type u) {
         tbb::parallel_for(g[u], [&](auto&& gu) {
           std::for_each(gu.begin(), gu.end(), [&](auto&& x) {
-            vertex_id_type v = std::get<0>(x);
+            vertex_id_type v = target(graph, x);
             if (level[v] == std::numeric_limits<vertex_id_type>::max()) {
               q2[u & bin_mask].push_back(v);
               level[v]   = lvl;
@@ -241,7 +241,7 @@ auto bfs_v9(const Graph& graph, typename graph_traits<Graph>::vertex_id_type roo
   return parents;
 }
 
-template <class Graph>
+template <adjacency_list_graph Graph>
 [[gnu::noinline]] auto bfs_top_down(const Graph& graph, typename graph_traits<Graph>::vertex_id_type root) {
   using vertex_id_type = typename Graph::vertex_id_type;
 
@@ -288,7 +288,7 @@ template <class Graph>
   return parents;
 }
 
-template <class Graph>
+template <adjacency_list_graph Graph>
 [[gnu::noinline]] auto bfs_top_down_bitmap(const Graph& graph, typename graph_traits<Graph>::vertex_id_type root) {
   using vertex_id_type = vertex_id_t<Graph>;
 
@@ -337,7 +337,7 @@ template <class Graph>
   return parents;
 }
 
-template <class Graph, class Transpose>
+template <adjacency_list_graph Graph, adjacency_list_graph Transpose>
 [[gnu::noinline]] auto bfs_bottom_up(const Graph& g, const Transpose& gx, vertex_id_t<Graph> root) {
   using vertex_id_type = vertex_id_t<Graph>;
 
@@ -357,7 +357,8 @@ template <class Graph, class Transpose>
                                          [&](auto&&range, auto n) {
                                            for (auto &&v = range.begin(), e = range.end(); v != e; ++v) {
                                              if (parents[v] == null_vertex) {
-                                               for (auto&& [u] : gx[v]) {
+                                               for (auto&& elt : gx[v]) {
+                                                 vertex_id_type u = target(g, elt);
                                                  if (frontier.get(u)) {
                                                    next.atomic_set(v);
                                                    parents[v] = u;
@@ -377,8 +378,8 @@ template <class Graph, class Transpose>
 }
 
 
-template<typename Graph>
-size_t BU_step(Graph& g, std::vector<vertex_id_t<Graph>>& parents,
+template<adjacency_list_graph Graph>
+size_t BU_step(const Graph& g, std::vector<vertex_id_t<Graph>>& parents,
 nw::graph::AtomicBitVector<>& front, nw::graph::AtomicBitVector<>& next) {
   size_t N = num_vertices(g);    // number of nodes
   next.clear();
@@ -388,7 +389,8 @@ nw::graph::AtomicBitVector<>& front, nw::graph::AtomicBitVector<>& next) {
         for (auto&& [u, neighbors] : range) {
           if (null_vertex_v<vertex_id_t<Graph>>() == parents[u]) {
             //if u has not found a parent (not visited)
-            for (auto &&[v] : neighbors) {
+            for (auto&& elt : neighbors) {
+              auto v = target(g, elt);
               if (front.get(v)) {
                 //if v is not visited
                 next.atomic_set(u);
@@ -403,8 +405,8 @@ nw::graph::AtomicBitVector<>& front, nw::graph::AtomicBitVector<>& next) {
       }, std::plus{});
 }
 
-template<typename Graph, typename Vector>
-size_t TD_step(Graph& g, std::vector<vertex_id_t<Graph>>& parents,
+template<adjacency_list_graph Graph, typename Vector>
+size_t TD_step(const Graph& g, std::vector<vertex_id_t<Graph>>& parents,
 Vector& cur, std::vector<Vector>& next) {
   size_t scout_count = 0;
   size_t N = cur.size();
@@ -414,7 +416,8 @@ Vector& cur, std::vector<Vector>& next) {
       int worker_index = tbb::this_task_arena::current_thread_index();
       for (auto&& i = range.begin(), e = range.end(); i != e; ++i) {
         auto u = cur[i];
-        for (auto&& [v] : g[u]) {
+        for (auto&& elt : g[u]) {
+          auto v = target(g, elt);
           auto curr_val = parents[v];
           if (null_vertex_v<vertex_id_t<Graph>>() == curr_val) {
             //if u has not found a parent (not visited)
@@ -429,17 +432,17 @@ Vector& cur, std::vector<Vector>& next) {
   }, std::plus{});
   return scout_count;
 }
-template<typename Graph>
-inline void queue_to_bitmap(std::vector<vertex_id_t<Graph>>& queue, nw::graph::AtomicBitVector<>& bitmap) {
+template<class T>
+inline void queue_to_bitmap(std::vector<T>& queue, nw::graph::AtomicBitVector<>& bitmap) {
   std::for_each(std::execution::par_unseq, queue.begin(), queue.end(), [&](auto&& u) { 
     bitmap.atomic_set(u); 
   });
 }
-template<typename Graph, typename Vector>
+template<typename Vector>
 inline void bitmap_to_queue(nw::graph::AtomicBitVector<>& bitmap, std::vector<Vector>& lqueue) {
   tbb::parallel_for(bitmap.non_zeros(nw::graph::pow2(15)), [&](auto&& range) {
     int worker_index = tbb::this_task_arena::current_thread_index();
-    for (auto &&i = range.begin(), e = range.end(); i != e; ++i) {
+    for (auto&& i = range.begin(), e = range.end(); i != e; ++i) {
       lqueue[worker_index].push_back(*i);
     }
   });
@@ -469,7 +472,7 @@ void flush(std::vector<Vector>& lqueue, Vector& queue) {
   });
 }
 
-template <typename OutGraph, typename InGraph>
+template <adjacency_list_graph OutGraph, adjacency_list_graph InGraph>
 [[gnu::noinline]] auto bfs_v1(const OutGraph& out_graph, const InGraph& in_graph, vertex_id_t<OutGraph> root, int num_bins = 32,
                                int alpha = 15, int beta = 18) {
 
@@ -501,7 +504,7 @@ template <typename OutGraph, typename InGraph>
       std::size_t                awake_count = queue.size();
       // Initialize the frontier bitmap from the frontier queues, and count the
       // number of non-zeros.
-      queue_to_bitmap<InGraph>(queue, curr);
+      queue_to_bitmap<vertex_id_type>(queue, curr);
 
       std::size_t old_awake_count = 0;
       do {
@@ -514,7 +517,8 @@ template <typename OutGraph, typename InGraph>
             [&](auto&& range, auto n) {
               for (auto&& u = range.begin(), e = range.end(); u != e; ++u) {
                 if (null_vertex == parents[u]) {
-                  for (auto&& [v] : in_graph[u]) {
+                  for (auto&& elt : in_graph[u]) {
+                    auto v = target(in_graph, elt);
                     if (front.get(v)) {
                       curr.atomic_set(u);
                       parents[u] = v;
@@ -532,7 +536,7 @@ template <typename OutGraph, typename InGraph>
         return parents;
       }
 
-      bitmap_to_queue<InGraph>(curr, lqueue);
+      bitmap_to_queue(curr, lqueue);
       flush(lqueue, queue);
 
       scout_count = 1;
@@ -543,7 +547,8 @@ template <typename OutGraph, typename InGraph>
             int worker_index = tbb::this_task_arena::current_thread_index();
             for (auto&& i = range.begin(), e = range.end(); i != e; ++i) {
               auto u = queue[i];
-              for (auto&& [v] : out_graph[u]) {
+              for (auto&& elt : out_graph[u]) {
+                auto v = target(out_graph, elt);
                 auto curr_val = parents[v];
                 if (null_vertex == curr_val) {
                   if (nw::graph::cas(parents[v], curr_val, u)) {
@@ -562,7 +567,7 @@ template <typename OutGraph, typename InGraph>
   return parents;
 }
 
-template <typename OutGraph, typename InGraph>
+template <adjacency_list_graph OutGraph, adjacency_list_graph InGraph>
 [[gnu::noinline]] auto bfs_v2(const OutGraph& out_graph, const InGraph& in_graph, vertex_id_t<OutGraph> root, 
                               int num_bins = 32, int alpha = 15, int beta = 18) {
 
@@ -585,14 +590,14 @@ template <typename OutGraph, typename InGraph>
   while (!frontier.empty()) {
     if (scout_count > edges_to_check / alpha) {
       size_t old_awake_count;
-      queue_to_bitmap<InGraph>(frontier, front);
+      queue_to_bitmap<vertex_id_type>(frontier, front);
       size_t awake_count = frontier.size();
       do {
         old_awake_count = awake_count;
         awake_count = BU_step(in_graph, parents, front, cur);
         std::swap(front, cur);
       } while ((awake_count >= old_awake_count) || (awake_count > N / beta));
-      bitmap_to_queue<InGraph>(front, nextfrontier);
+      bitmap_to_queue(front, nextfrontier);
       flush(nextfrontier, frontier);
       scout_count = 1;
     }

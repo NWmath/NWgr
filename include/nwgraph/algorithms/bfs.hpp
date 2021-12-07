@@ -48,7 +48,7 @@ namespace graph {
    * \param root The starting vertex.
    * \return The parent list.
    */
-template <typename Graph>
+template <adjacency_list_graph Graph>
 auto bfs_v0(const Graph& graph, vertex_id_t<Graph> root) {
   using vertex_id_type = vertex_id_t<Graph>;
 
@@ -67,7 +67,7 @@ auto bfs_v0(const Graph& graph, vertex_id_t<Graph> root) {
 
     std::for_each(q1.begin(), q1.end(), [&](vertex_id_type u) {
       std::for_each(g[u].begin(), g[u].end(), [&](auto&& x) {
-        vertex_id_type v = std::get<0>(x);
+        vertex_id_type v = target(graph, x);
         if (level[v] == std::numeric_limits<vertex_id_type>::max()) {
           q2.push_back(v);
           level[v]   = lvl;
@@ -93,7 +93,7 @@ auto bfs_v0(const Graph& graph, vertex_id_t<Graph> root) {
    * \param root The starting vertex.
    * \return The parent list.
    */
-template <typename OutGraph, typename InGraph>
+template <adjacency_list_graph OutGraph, adjacency_list_graph InGraph>
 [[gnu::noinline]] auto bfs_v11(const OutGraph& out_graph, const InGraph& in_graph, vertex_id_t<OutGraph> root, int num_bins = 32,
                                int alpha = 15, int beta = 18) {
 
@@ -148,7 +148,8 @@ template <typename OutGraph, typename InGraph>
             [&](auto&& range, auto count) {
               for (auto&& u = range.begin(), e = range.end(); u != e; ++u) {
                 if (null_vertex == parents[u]) {
-                  for (auto&& [v] : in_graph[u]) {
+                  for (auto&& elt : in_graph[u]) {
+                    auto v = target(in_graph, elt);
                     if (front.get(v)) {
                       curr.atomic_set(u);
                       parents[u] = v;
@@ -212,7 +213,8 @@ template <typename OutGraph, typename InGraph>
                 [&](auto&& i) {
                   size_t count = 0;
                   auto&& u = q[i];
-                  for (auto&& [v] : out_graph[u]) {
+                  for (auto&& elt : out_graph[u]) {
+                    auto v = target(out_graph, elt);
                     auto curr_val = parents[v];
                     if (null_vertex == curr_val) {
                       if (nw::graph::cas(parents[v], curr_val, u)) {
