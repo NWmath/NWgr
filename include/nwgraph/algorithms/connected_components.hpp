@@ -48,8 +48,8 @@ static void link(T u, T v, Vector& comp) {
   }
 }
 
-template <typename Execution, typename Graph, typename Vector>
-static void compress(Execution exec, const Graph& g, Vector& comp) {
+template <typename Execution, typename Vector>
+static void compress(Execution exec, Vector& comp) {
   std::for_each(exec, counting_iterator(0ul), counting_iterator(comp.size()), [&](auto n) {
     while (comp[n] != comp[comp[n]]) {
       auto foo = nw::graph::acquire(comp[n]);
@@ -76,8 +76,8 @@ static T sample_frequent_element(const Vector& comp, size_t num_samples = 1024) 
   return num;
 }
 
-template <typename Execution, typename Graph1, typename Graph2>
-static auto afforest(Execution&& exec, Graph1&& graph, Graph2&& t_graph, size_t neighbor_rounds = 2) {
+template <typename Execution, adjacency_list_graph Graph1, adjacency_list_graph Graph2>
+static auto afforest(Execution& exec, Graph1& graph, Graph2& t_graph, const size_t neighbor_rounds = 2) {
   using vertex_id_type = vertex_id_t<Graph1>;
   std::vector<std::atomic<vertex_id_type>> comp(graph.size() + 1);
   std::for_each(exec, counting_iterator(0ul), counting_iterator(comp.size()), [&](vertex_id_type n) { comp[n] = n; });
@@ -88,7 +88,7 @@ static auto afforest(Execution&& exec, Graph1&& graph, Graph2&& t_graph, size_t 
         link(u, std::get<0>(g[u].begin()[r]), comp);
       }
     });
-    compress(exec, graph, comp);
+    compress(exec, comp);
   }
 
   vertex_id_type c = sample_frequent_element<std::vector<std::atomic<vertex_id_type>>, vertex_id_type>(comp);
@@ -103,13 +103,14 @@ static auto afforest(Execution&& exec, Graph1&& graph, Graph2&& t_graph, size_t 
     }
 
     if (t_graph.size() != 0) {
-      for (auto&& [v] : (t_graph.begin())[u]) {
+      for (auto&& elt : (t_graph.begin())[u]) {
+        auto v = target(t_graph, elt);
         link(u, v, comp);
       }
     }
   });
 
-  compress(exec, g, comp);
+  compress(exec, comp);
 
   return comp;
 }

@@ -73,7 +73,7 @@ static void print_top_n(const Graph& g, Vector&& comp, size_t n = 5) {
 // - Asserts search does not reach a vertex with a different component label
 // - If the graph is directed, it performs the search as if it was undirected
 // - Asserts every vertex is visited (degree-0 vertex should have own label)
-template <class Graph, class Transpose, class Vector>
+template <adjacency_list_graph Graph, class Transpose, class Vector>
 static bool CCVerifier(const Graph& graph, Transpose&& xpose, Vector&& comp) {
   using NodeID = typename nw::graph::vertex_id_t<std::decay_t<Graph>>;
   std::unordered_map<NodeID, NodeID> label_to_source;
@@ -91,7 +91,8 @@ static bool CCVerifier(const Graph& graph, Transpose&& xpose, Vector&& comp) {
     visited[source] = true;
     for (auto it = frontier.begin(); it != frontier.end(); it++) {
       NodeID u = *it;
-      for (auto&& [v] : g[u]) {
+      for (auto&& elt : g[u]) {
+        auto v = target(graph, elt);
         if (comp[v] != curr_label) {
           return false;
         }
@@ -101,7 +102,8 @@ static bool CCVerifier(const Graph& graph, Transpose&& xpose, Vector&& comp) {
         }
       }
       if (u < xpose.size()) {
-        for (auto&& [v] : x[u]) {
+        for (auto&& elt : x[u]) {
+          auto v = target(xpose, elt);
           if (comp[v] != curr_label) {
             return false;
           }

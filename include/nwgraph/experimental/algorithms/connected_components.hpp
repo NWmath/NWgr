@@ -54,8 +54,8 @@ struct atomwrapper {
 };
 
 // BFS-based connected component algorithm
-template <typename Graph, typename T>
-void compute_connected_components(Graph A, std::vector<T>& component_ids) {
+template <adjacency_list_graph Graph, typename T>
+void compute_connected_components(Graph& A, std::vector<T>& component_ids) {
   size_t         N                        = A.size();
   std::atomic<T> global_component_counter = -1;
   std::for_each(std::execution::par_unseq, counting_iterator<T>(0), counting_iterator<T>(N), [&](auto vtx) {
@@ -67,7 +67,8 @@ void compute_connected_components(Graph A, std::vector<T>& component_ids) {
       bfs_edge_range3 ranges(A, vtx);
       for (auto ite = ranges.begin(); ite != ranges.end(); ++ite) {
         // auto u = std::get<0>(*ite);
-        auto v           = std::get<1>(*ite);
+        auto v = target(A, *ite);
+        //auto v           = std::get<1>(*ite);
         component_ids[v] = global_component_counter.load();
       }
     }
@@ -120,30 +121,32 @@ T findDominantComponentID(const std::vector<T>& comp, size_t nsamples = 1024) {
   return dominant->first;
 }
 
-template <typename Graph, typename T>
+template <adjacency_list_graph Graph, typename T>
 void push(const Graph& g, const T u, std::vector<T>& comp) {
   for (auto j = g.begin()[u].begin(); j != g.begin()[u].end(); ++j) {
-    auto v = std::get<0>(*j);
+    auto v = target(g, *j);
+    //auto v = std::get<0>(*j);
     hook(u, v, comp);
   }
 }
 
-template <typename Graph, typename T>
+template <adjacency_list_graph Graph, typename T>
 void link(const Graph& g, const T u, std::vector<T>& comp, const size_t neighbor_bound) {
   size_t i = 0;
   for (auto j = g.begin()[u].begin(); j != g.begin()[u].end() && i < neighbor_bound; ++j, ++i) {
-    auto v = std::get<0>(*j);
+    auto v = target(g, *j);
     hook(u, v, comp);
   }
 }
 
 // fetch the smallest comp_id among u's neighbors
-template <typename Graph, typename T>
+template <adjacency_list_graph Graph, typename T>
 bool pull(const Graph& g, const T u, std::vector<T>& comp) {
   T min_compid = comp[u];
   T v;
   for (auto j = g.begin()[u].begin(); j != g.begin()[u].end(); ++j) {
-    v          = std::get<0>(*j);
+    v          = target(g, *j);
+    //v          = std::get<0>(*j);
     min_compid = std::min(min_compid, comp[v]);
   }
   bool change = false;
@@ -164,7 +167,7 @@ bool pull(const Graph& g, const T u, std::vector<T>& comp) {
   return change;
 }
 
-template <typename Graph, typename T = vertex_id_t<Graph>>
+template <adjacency_list_graph Graph, typename T = vertex_id_t<Graph>>
 std::vector<T> compute_connected_components_v1(const Graph& g) {
   size_t N = g.size();
   // std::vector<atomwrapper<T>> comp(N,
@@ -210,7 +213,8 @@ std::vector<T> compute_connected_components_v1(const Graph& g) {
     std::for_each(std::execution::par_unseq, counting_iterator<T>(0), counting_iterator<T>(N), [&](auto u) {
       T v;
       for (auto j = g.begin()[u].begin(); j != g.begin()[u].end(); ++j) {
-        v = std::get<0>(*j);
+        v = target(g, *j);
+        //v = std::get<0>(*j);
         //      if (v != comp[v]._a.load()) continue;
         auto p1 = comp[u]._a.load();
         auto p2 = comp[v]._a.load();
@@ -251,7 +255,7 @@ std::vector<T> compute_connected_components_v1(const Graph& g) {
   return res;
 }    // compute_connected_components_v1
 
-template <typename Graph, typename T = vertex_id_t<Graph>>
+template <adjacency_list_graph Graph, typename T = vertex_id_t<Graph>>
 std::vector<T> compute_connected_components_v2(const Graph& g) {
   size_t         N = g.size();
   std::vector<T> comp(g.size());
@@ -274,7 +278,7 @@ std::vector<T> compute_connected_components_v2(const Graph& g) {
   return comp;
 }    // compute_connected_components_v2
 
-template <typename Graph, typename T>
+template <adjacency_list_graph Graph, typename T>
 std::vector<T> ccv1(const Graph& g) {
   std::vector<T> comp(g.size());
   std::for_each(std::execution::par_unseq, counting_iterator<T>(0), counting_iterator<T>(g.size()), [&](auto n) { comp[n] = n; });
@@ -284,7 +288,7 @@ std::vector<T> ccv1(const Graph& g) {
   return comp;
 }
 
-template <typename Graph, typename Graph2, typename T = vertex_id_t<Graph>>
+template <adjacency_list_graph Graph, adjacency_list_graph Graph2, typename T = vertex_id_t<Graph>>
 std::vector<T> Afforest(const Graph& g, Graph2& t_graph, size_t neighbor_bound = 2) {
   std::vector<T> comp(g.size());
   // set component id of vertex v to v
@@ -310,7 +314,7 @@ std::vector<T> Afforest(const Graph& g, Graph2& t_graph, size_t neighbor_bound =
   return comp;
 }
 
-template <typename Graph, typename T = vertex_id_t<Graph>>
+template <adjacency_list_graph Graph, typename T = vertex_id_t<Graph>>
 std::vector<T> ccv5(const Graph& g) {
   size_t         N = g.size();
   std::vector<T> comp(g.size());
@@ -326,7 +330,7 @@ std::vector<T> ccv5(const Graph& g) {
   return comp;
 }
 
-template <typename Graph, typename T= vertex_id_t<Graph>>
+template <adjacency_list_graph Graph, typename T= vertex_id_t<Graph>>
 auto sv_v6(const Graph& g) {
   std::vector<T> comp(g.size());
 
@@ -345,7 +349,8 @@ auto sv_v6(const Graph& g) {
     change = false;
 
     std::for_each(std::execution::par_unseq, counting_iterator<T>(0), counting_iterator<T>(g.size()), [&](auto u) {
-      for (auto&& [v] : G[u]) {
+      for (auto&& elt : G[u]) {
+        auto v = target(g, elt);
         T comp_u = comp[u];
         T comp_v = comp[v];
         if (comp_u == comp_v) continue;
@@ -368,7 +373,7 @@ auto sv_v6(const Graph& g) {
   return comp;
 }
 
-template <typename Graph, typename T = vertex_id_t<Graph>>
+template <adjacency_list_graph Graph, typename T = vertex_id_t<Graph>>
 auto sv_v8(Graph& g) {
   std::vector<T> comp(g.size());
 
@@ -388,7 +393,8 @@ auto sv_v8(Graph& g) {
     std::for_each(std::execution::par_unseq, counting_iterator<T>(0), counting_iterator<T>(g.size()), [&](auto u) {
       auto Gu = G[u];
       // tbb::parallel_for(G[u], [&] (auto& Gu) {
-      for (auto&& [v] : Gu) {
+      for (auto&& elt : Gu) {
+        auto v = target(g, elt);
         T comp_u = comp[u];
         T comp_v = comp[v];
         if (comp_u == comp_v) continue;
@@ -413,7 +419,7 @@ auto sv_v8(Graph& g) {
   return comp;
 }
 
-template <typename Graph, typename T = vertex_id_t<Graph>>
+template <adjacency_list_graph Graph, typename T = vertex_id_t<Graph>>
 auto sv_v9(Graph& g) {
   std::vector<T> comp(g.size());
 
