@@ -33,7 +33,7 @@ DECL_TAG_INVOKE(source);
 DECL_TAG_INVOKE(target);
 
 template <typename G>
-concept graph = std::semiregular<G> && requires(G g) {
+concept graph = std::copyable<G> && requires(G g) {
   typename vertex_id_t<G>;
   { num_vertices(g) } -> std::convertible_to<std::ranges::range_difference_t<G>>;
 };
