@@ -73,6 +73,22 @@ template <typename RandomAccessIterator>
   });
 }
 
+template <adjacency_list_graph Graph>
+[[gnu::noinline]] std::size_t triangle_count_v4a(const Graph& G, std::size_t threads = 1) {
+  auto first = G.begin();
+  auto last = G.end();
+  return triangle_count_async(threads, [&](std::size_t tid) {
+    std::size_t triangles = 0;
+    for (auto i = first + tid; i < last; i += threads) {
+      for (auto j = (*i).begin(), end = (*i).end(); j != end; ++j) {
+        // assert(j < end);
+        triangles += nw::graph::intersection_size(j, end, first[target(G, *j)]);
+      }
+    }
+    return triangles;
+  });
+}
+
 }    // namespace graph
 }    // namespace nw
 
