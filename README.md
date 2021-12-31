@@ -99,14 +99,38 @@ $ bfs.exe -f karate.mtx
 ```
 
 
-## Supported graph file format in NWGraph
+## Supported graph file format
 
 NWGraph recogonizes the following types of file format:
 * [Matrix Market Exchange Formats](https://math.nist.gov/MatrixMarket/formats.html)
 
 
-## Running benchmarks in NWGraph
+## Running benchmarks
 
 ```
 $ bfs.exe -f karate.mtx
+```
+
+
+## Benchmarking abstraction penalties
+
+### What is abstraction penalty?
+
+There are two types of abstraction penalties here.
+Using a range-based interface introduces a variety of different ways to iterate through a graph (including the use of graph adaptors).
+While ranges and range based for loops are useful programming abstractions, it is important to consider any performance abstraction penalties associated with their use. We benchmark these penalties to ensure they will not significantly limit performance compared to a raw for loop implementation.
+
+We also evaluated the abstraction penalty incurred for storing a graph in different containers. In particular, we have selected `struct_of_array`, `vector_of_vector`, `vector_of_list`, `vector_of_forward_list` containers.
+
+### Running abstraction penalty experiments
+
+For example let us consider the sparse matrix-dense vector multiplication (SpMV) kernel used in page rank, which multiplies the adjacency matrix representation of a graph by a dense vector x and stores the result in another vector y.
+To experimentally evaluate the abstraction penalty of different ways to iterate through a graph:
+```
+$ ./apb/spmv.exe -f karate.mtx
+```
+
+To experimentally evaluate the abstraction penalty of different containers for storing a graph:
+```
+./apb/containers -f ../data/karate.mtx --format CSR --format VOV --format VOL --format VOF
 ```
