@@ -9,9 +9,32 @@ NWGraph is a high-performance header-only generic C++ graph library, based on C+
 
 ## Organization
 
-The genericity of different algorithms available in the NWGraph library stems from a taxonomy of graph concepts. The definition of these concepts can be found in the `include/nwgraph/graph_concepts.hpp` file. The header files containing various sequential and parallel graph algorithms for well-known graph kernels can be found under the `$NWGraph_HOME/include/nwgraph/algorithms/` directory (some of the experimental algorithms are located in the`$NWGraph_HOME/include/nwgraph/experimental/algorithms/` subdirectory). The header files for the range adaptors are under `$NWGraph_HOME/include/nwgraph/adaptors/` directory. The code for the applications is located in the `$NWGraph_HOME/bench/` diretory. The abstraction penalty expirements for benchmarking different containers and a variety of different ways to iterate through a graph (including the use of graphadaptors) are under the `$NWGraph_HOME/abp` directory. Various examples of how to use NWGraph can be found in the `$NWGraph_HOME/example/imdb/` directory.
 
-
+The organization of our library is shown as follow:
+```
+$NWGraph_HOME/
+├── README.md
+├── CMakeLists.txt
+├── apb/
+├── bench/
+├── examples/
+│   └── imdb/
+├── include/
+│   └── nwgraph/
+│       ├── adaptors/
+│       ├── algorithms/
+│       ├── containers/
+│       ├── experimental/
+│       │   └── algorithms/
+│       ├── graphs/
+│       ├── io/
+│       ├── util/
+│       ├── graph_concepts.hpp
+│       └── ...
+├── test/
+└── ...
+```
+The genericity of different algorithms available in the NWGraph library stems from a taxonomy of graph concepts. The definition of these concepts can be found in the `include/nwgraph/graph_concepts.hpp` file. The header files containing various sequential and parallel graph algorithms for well-known graph kernels can be found under the `$NWGraph_HOME/include/nwgraph/algorithms/` directory (some of the experimental algorithms are located in the`$NWGraph_HOME/include/nwgraph/experimental/algorithms/` subdirectory). The header files for the range adaptors are under `$NWGraph_HOME/include/nwgraph/adaptors/` directory. The code for the applications is located in the `$NWGraph_HOME/bench/` diretory. The abstraction penalty benchmark for benchmarking different containers and a variety of different ways to iterate through a graph (including the use of graphadaptors) are under the `$NWGraph_HOME/apb/` directory. Various examples of how to use NWGraph can be found in the `$NWGraph_HOME/example/imdb/` directory.
 
 ## How to compile
 
@@ -31,7 +54,9 @@ NWGraph uses [Intel OneTBB](https://github.com/oneapi-src/oneTBB) as the paralle
 ```
 $ mkdir build; cd build
 $ cmake ..
+$ make -j4
 ```
+Once compiled, the drivers of the graph benchmarks can be found under the `$NWGraph_HOME/build/bench/` folder. The binary files of the abstraction penalty benchmarks are under the `$NWGraph_HOME/build/abp/` folder. The binaries of the IMDB examples are under the `$NWGraph_HOME/build/examples/` folder. The binary files of the examples to show case the features of NWGraph library are under the `$NWGraph_HOME/build/test/` folder.
 
 ### Useful things to know 
 To specify compiler:
@@ -65,7 +90,7 @@ $ make VERBOSE=1
 
 ## Running code in NWGraph
 
-Once compiled, the binary files can be found under the `$NWGraph_HOME/build/bench` folder. NWGraph uses command-line interface description language [DOCOPT](http://docopt.org/) to define the interface of our command-line applications and abstraction penalty experiments.
+NWGraph uses command-line interface description language [DOCOPT](http://docopt.org/) to define the interface of our command-line applications and abstraction penalty experiments.
 
 A typical interface of the binary looks like this:
 ```
@@ -110,29 +135,34 @@ NWGraph recogonizes the following types of file format:
 We have five main benchmarks: Breadth-first Search, Connected Component Decomposition, Page rank, Single Source Shortest Path, and Triangle Counting. 
 
 ### Breadth-first Search
-The default sequential version of BFS is version 0 (default). The fastest parallel version of BFS is version 11, the direction-optimizing BFS. 
+The default sequential version of BFS is version 0 (default). The fastest parallel version of BFS is version 11, the direction-optimizing BFS. As an alternative to specifying one seed at a time, one or more sources can be provided in a Matrix Market format file as an input of BFS driver. Also, number of trials can be specified with `-n`. In this way, if no seed or seed file is provided, each trial will generate one random number from 0 to |V|-1 as the random source for BFS as an input.
 ```
-$ bench/bfs.exe -f karate.mtx --seed 0 --version 11
+$ bench/bfs.exe -f karate.mtx --seed 0 --version 11 -n 3
 ```
 ### Connected Component Decomposition
 The default sequential version of CC is version 0 (default). The fastest parallel version of CC is version 7, Afforest.
 ```
 $ bench/cc.exe -f karate.mtx --relabel --direction ascending
 ```
-### Page rank
-The fastest parallel version of PR is version 11 (default).
+### Page Rank
+The fastest parallel version of PR is version 11 (default). The max iterations can be set with `-i`.
 ```
-$ bench/pr.exe -f karate.mtx
+$ bench/pr.exe -f karate.mtx -i 1000
 ```
 ### Single Source Shortest Path
-The default sequential version of CC SSSP version 0 (default). The fastest parallel version of SSSP is version 12, Delta-stepping.
+The default sequential version of CC SSSP version 0 (default). The fastest parallel version of SSSP is version 12, Delta-stepping. As an alternative to specifying one seed at a time, one or more sources can be provided in a Matrix Market format file as an input of SSSP driver. Also, number of trials can be specified with `-n`. In this way, if no seed or seed file is provided, each trial will generate one random number from 0 to |V|-1 as the random source for SSSP as an input.
 ```
-$ bench/sssp.exe -f karate.mtx
+$ bench/sssp.exe -f karate.mtx --seed 0 -n 3
 ```
 ### Triangle Counting
 The default sequential version of TC is version 0 (default). The fastest parallel version of TC is version 4.
 ```
 $ bench/tc.exe -f karate.mtx --version 4 --relabel --upper
+```
+### Betweenness Centrality
+The default sequential version of BC is version 0 (default). The fastest parallel version of BC is version 5. As an alternative to specifying one seed at a time, one or more sources can be provided in a Matrix Market format file as an input of BC driver. 
+```
+$ bench/bc.exe -f karate.mtx --version 5 --seed 0
 ```
 
 ### Other useful things
@@ -163,6 +193,15 @@ Each algorithm/benchmark has both sequential version and parallel version. When 
 ```
 $ bench/cc.exe -f karate.mtx 128
 ```
+
+## Benchmarking with GAP Datasets
+
+To obtain the performance results reported in the PVLDB paper for NWGraph, "NWGraph: A Library of Generic Graph Algorithms and DataStructures in C++20", please follow the following steps.
+
+* Download the GAP datasets from [Suitesparse Matrix Collection](https://sparse.tamu.edu/GAP/) in Matrix Market format
+* Run different graph benchmarks with the GAP datasets
+
+Note that BFS and SSSP are run with 64 sources provided in a Matrix Market file, and BC are run with 4 sources. For PR, the max iterations has been set to 1000.
 
 ## Benchmarking abstraction penalties
 
