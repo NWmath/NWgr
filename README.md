@@ -4,12 +4,12 @@
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/0788903a1d134b47b351e6a346123875)](https://www.codacy.com?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=NWmath/NWgr&amp;utm_campaign=Badge_Grade)
 
 # NWGraph: Northwest Graph Library
-NWGraph is a high-performance header-only C++ graph library. It consists of multiple graph algorithms and data structures.
+NWGraph is a high-performance header-only generic C++ graph library, based on C++20 `concept` and `range` language feature. It consists of multiple graph algorithms for well-known graph kernels and supporting data structures. Both sequential and parallel algorithms are available.
 
 
 ## Organization
 
-The graph algorithms are under include/nwgraph/algorithms/ diretory (some of the experimental algorithms are under include/nwgraph/experimental/algorithms/). The range adaptors are under include/nwgraph/adaptors/ directory. The code for the applications is under bench/ diretory. The abstraction penalty expirements for different containers and a variety of different ways to iterate through a graph (including the use of graphadaptors) are under abp directory. The code for various examples is under example/imdb/ directory.
+The genericity of different algorithms available in the NWGraph library stems from a taxonomy of graph concepts. The definition of these concepts can be found in the `include/nwgraph/graph_concepts.hpp` file. The header files containing various sequential and parallel graph algorithms for well-known graph kernels can be found under the `$NWGraph_HOME/include/nwgraph/algorithms/` directory (some of the experimental algorithms are located in the`$NWGraph_HOME/include/nwgraph/experimental/algorithms/` subdirectory). The header files for the range adaptors are under `$NWGraph_HOME/include/nwgraph/adaptors/` directory. The code for the applications is located in the `$NWGraph_HOME/bench/` diretory. The abstraction penalty expirements for benchmarking different containers and a variety of different ways to iterate through a graph (including the use of graphadaptors) are under the `$NWGraph_HOME/abp` directory. Various examples of how to use NWGraph can be found in the `$NWGraph_HOME/example/imdb/` directory.
 
 
 
@@ -65,7 +65,7 @@ $ make VERBOSE=1
 
 ## Running code in NWGraph
 
-NWGraph uses command-line interface description language [DOCOPT](http://docopt.org/) to define the interface of our command-line applications and abstraction penalty experiments.
+Once compiled, the binary files can be found under the `$NWGraph_HOME/build/bench` folder. NWGraph uses command-line interface description language [DOCOPT](http://docopt.org/) to define the interface of our command-line applications and abstraction penalty experiments.
 
 A typical interface of the binary looks like this:
 ```
