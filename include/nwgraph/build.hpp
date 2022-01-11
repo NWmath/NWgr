@@ -360,7 +360,16 @@ auto fill(edge_list_t& el, adjacency_t& cs, directedness dir, ExecutionPolicy&& 
   return cs.to_be_indexed_.size();
 }
 
-
+template <int idx, class edge_list_t, class biadjacency_t, class ExecutionPolicy = default_execution_policy>
+require edge_list_t::edge_directedness == nw::graph::directedness::directed
+auto fill(edge_list_t& el, biadjacency_t& cs, ExecutionPolicy&& policy = {}) {
+  if constexpr (edge_list_t::edge_directedness == nw::graph::directedness::directed) {
+    fill_directed<idx>(el, num_vertices(el)[0], num_vertices(el)[1], cs, policy);
+  } else {    // undirected -- this cannot be a bipartite graph
+    fill_undirected<idx>(el, num_vertices(el)[0], num_vertices(el)[1], cs, policy);
+  }
+  return cs.to_be_indexed_.size();
+}
 
 template <int idx, class edge_list_t>
 void swap_to_triangular(edge_list_t& el, succession cessor) {

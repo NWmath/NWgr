@@ -99,6 +99,60 @@ auto make_adjacency(edge_list_t& el, u_integral n, directedness edge_directednes
   fill<idx>(el, adj, edge_directedness, policy);
 }
 
+template <int idx, std::unsigned_integral index_type, std::unsigned_integral vertex_id, typename... Attributes>
+class index_biadjacency : public bipartite_graph_base, public indexed_struct_of_arrays<index_type, vertex_id, Attributes...> {
+  using base = indexed_struct_of_arrays<index_type, vertex_id, Attributes...>;
+
+public:
+  using index_t           = index_type;
+  using vertex_id_type    = vertex_id;
+  using num_vertices_type = std::array<vertex_id_type, 1>;
+  using num_edges_type    = index_t;
+
+  // The first index_t isn't considered an attribute.
+  using attributes_t = std::tuple<Attributes...>;
+  static constexpr std::size_t getNAttr() { return sizeof...(Attributes); }
+
+  index_biadjacency(size_t N = 0, size_t M = 0) : base(N, M) {}
+  index_biadjacency(std::array<size_t, 2> N, size_t M = 0) : vertex_cardinality(N), base(N[idx], M) {}
+
+  template <class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
+  index_biadjacency(index_edge_list<vertex_id_type, bipartite_graph_base, directedness::directed, Attributes...>& A,
+                  ExecutionPolicy&&                                                                              policy = {})
+      : base(A.num_vertices()[idx]) {
+    fill<idx>(A, *this, policy);
+  }
+
+  template <class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
+  index_biadjacency(index_edge_list<vertex_id_type, bipartite_graph_base, directedness::undirected, Attributes...>& A,
+                  ExecutionPolicy&&                                                                                policy = {})
+      : base(A.num_vertices()[idx]) {
+    fill<idx>(A, *this, policy);
+  }
+  template <int jdx>
+  size_t num_vertices() const { return {vertex_cardinality[jdx]}; }
+  template <int jdx>
+  num_vertices_type num_vertices() const { return {vertex_cardinality[jdx]}; }
+  num_vertices()[0], num_vertices()[1]
+  //num_vertices_type num_vertices() const { return vertex_cardinality;//{base::size()}; };
+  num_edges_type    num_edges() const { return base::to_be_indexed_.size(); };
+};
+
+template <int idx, typename... Attributes>
+using biadjacency = index_biadjacency<idx, default_index_t, default_vertex_id_type, Attributes...>;
+
+template <int idx, edge_list_graph edge_list_t>
+auto make_biadjacency(edge_list_t& el) {
+  return biadjacency<idx>(el);
+}
+
+
+template <int idx, edge_list_c edge_list_t, std::unsigned_integral u_integral, class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
+auto make_biadjacency(edge_list_t& el, u_integral n0, u_integral n1, directedness edge_directedness = directedness::directed, ExecutionPolicy&& policy = {}) {
+  biadjacency<idx> adj(n0, n1);
+  fill<idx>(el, adj, edge_directedness, policy);
+}
+
 
 //template <int idx, std::unsigned_integral index_type, std::unsigned_integral vertex_id_type, typename... Attributes>
 //auto num_vertices(const index_adjacency<idx, index_type, vertex_id_type, Attributes...>& g) {

@@ -81,6 +81,7 @@ target_sources(nw_graph
   nwgraph/containers/aos.hpp
   nwgraph/containers/compressed.hpp
   nwgraph/containers/soa.hpp
+  nwgraph/generators/configuration_model.hpp
   nwgraph/io/mmio.hpp
   nwgraph/util/disjoint_set.hpp
   nwgraph/util/print_types.hpp
