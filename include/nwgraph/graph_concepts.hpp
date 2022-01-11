@@ -68,6 +68,11 @@ auto nth_cdr(std::tuple<Ts...> t) {
   (std::make_index_sequence<sizeof...(Ts) - N>());
 }
 
+template <typename... Ts>
+auto props(std::tuple<Ts...> t) {
+  return nth_cdr<2>(t);
+}
+
 template <typename G>
 using attributes_t = decltype(nth_cdr<1>(inner_value_t<G>{}));
 
