@@ -19,7 +19,7 @@
 #include <tuple>
 
 #include "nwgraph/graph_traits.hpp"
-
+#include "nwgraph/util/tag_invoke.hpp"
 
 namespace nw::graph {
 
@@ -33,7 +33,7 @@ DECL_TAG_INVOKE(source);
 DECL_TAG_INVOKE(target);
 
 template <typename G>
-concept graph = std::semiregular<G> && requires(G g) {
+concept graph = std::copyable<G> && requires(G g) {
   typename vertex_id_t<G>;
   { num_vertices(g) } -> std::convertible_to<std::ranges::range_difference_t<G>>;
 };
@@ -41,8 +41,41 @@ concept graph = std::semiregular<G> && requires(G g) {
 template <typename G>
 using inner_range_t = std::ranges::range_value_t<G>;
 
+template <class T>
+using iterator_t = decltype(std::ranges::begin(std::declval<T&>()));
+
+template <class T>
+using const_iterator_t = decltype(std::ranges::cbegin(std::declval<T&>()));
+
+template <typename G>
+using inner_iterator_t = iterator_t<inner_range_t<G>>;
+
+template <typename G>
+using inner_const_iterator_t = const_iterator_t<inner_range_t<G>>;
+
+template <typename G>
+using inner_iterator_t = iterator_t<inner_range_t<G>>;
+
+template <typename G>
+using inner_const_iterator_t = const_iterator_t<inner_range_t<G>>;
+
 template <typename G>
 using inner_value_t = std::ranges::range_value_t<inner_range_t<G>>;
+
+template <size_t N, typename... Ts>
+auto nth_cdr(std::tuple<Ts...> t) {
+  return [&]<std::size_t... Ns>(std::index_sequence<Ns...>) { return std::tuple{std::get<Ns + N>(t)...}; }
+  (std::make_index_sequence<sizeof...(Ts) - N>());
+}
+
+template <typename... Ts>
+auto props(std::tuple<Ts...> t) {
+  return nth_cdr<2>(t);
+}
+
+template <typename G>
+using attributes_t = decltype(nth_cdr<1>(inner_value_t<G>{}));
+
 
 template <typename G>
 concept adjacency_list_graph = graph<G>
@@ -100,6 +133,8 @@ concept property_edge_list_c = std::ranges::forward_range<R> && requires(std::ra
   std::get<1>(e);
 };
 
+//This concept is for CPO definition. It is not a graph concept,
+// comparing with adjacency_list_graph concept.
 template <typename G>
 concept min_idx_adjacency_list = 
      std::ranges::random_access_range<G>
@@ -109,6 +144,8 @@ concept min_idx_adjacency_list =
      { g[u] } -> std::convertible_to<inner_range_t<G>>;
 };
 
+//This concept is for CPO definition. It is not a graph concept,
+// comparing with adjacency_list_graph concept.
 template <typename G>
 concept idx_adjacency_list = 
      std::ranges::random_access_range<G>
@@ -146,12 +183,12 @@ auto tag_invoke(const target_tag, const T& graph, const U& e) {
 // num_vertices CPO
 template <idx_adjacency_list T>
 auto tag_invoke(const num_vertices_tag, const T& graph) {
-  return graph.size();
+  return (vertex_id_t<T>) graph.size();
 }
 
 template <min_idx_adjacency_list T>
 auto tag_invoke(const num_vertices_tag, const T& graph) {
-  return graph.size();
+  return (vertex_id_t<T>) graph.size();
 }
 
 

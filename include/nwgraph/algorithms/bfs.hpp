@@ -15,6 +15,7 @@
 #define NW_GRAPH_BFS_HPP
 
 #include "nwgraph/containers/compressed.hpp"
+#include "nwgraph/graph_concepts.hpp"
 #include "nwgraph/graph_traits.hpp"
 #include "nwgraph/util/AtomicBitVector.hpp"
 #include "nwgraph/util/atomic.hpp"
@@ -28,13 +29,28 @@
 #include <tbb/concurrent_vector.h>
 #include <tbb/parallel_for_each.h>
 
+/**
+ * @file bfs.hpp
+ *
+ * Breadth-first search algorithms
+ */
+
 
 namespace nw {
 namespace graph {
 
-template <typename Graph>
-auto bfs_v0(const Graph& graph, typename graph_traits<Graph>::vertex_id_type root) {
-  using vertex_id_type = typename graph_traits<Graph>::vertex_id_type;
+  /**
+   * \brief Breadth-First Search.
+   * 
+   * Perform breadth-first search of a graph.
+   *
+   * \param graph The graph to be searched.
+   * \param root The starting vertex.
+   * \return The parent list.
+   */
+template <adjacency_list_graph Graph>
+auto bfs_v0(const Graph& graph, vertex_id_t<Graph> root) {
+  using vertex_id_type = vertex_id_t<Graph>;
 
   std::deque<vertex_id_type>  q1, q2;
   std::vector<vertex_id_type> level(num_vertices(graph), std::numeric_limits<vertex_id_type>::max());
@@ -51,7 +67,7 @@ auto bfs_v0(const Graph& graph, typename graph_traits<Graph>::vertex_id_type roo
 
     std::for_each(q1.begin(), q1.end(), [&](vertex_id_type u) {
       std::for_each(g[u].begin(), g[u].end(), [&](auto&& x) {
-        vertex_id_type v = std::get<0>(x);
+        vertex_id_type v = target(graph, x);
         if (level[v] == std::numeric_limits<vertex_id_type>::max()) {
           q2.push_back(v);
           level[v]   = lvl;
@@ -67,7 +83,17 @@ auto bfs_v0(const Graph& graph, typename graph_traits<Graph>::vertex_id_type roo
 }
 
 
-template <typename OutGraph, typename InGraph>
+  /**
+   * \brief Parallel Breadth-First Search.
+   * 
+   * Perform parallel breadth-first search of a graph, using the graph and its transpose
+   *
+   * \param out_graph The graph to be searched, representing out edges
+   * \param in_graph The transpose of the graph to be searched, representing in edges
+   * \param root The starting vertex.
+   * \return The parent list.
+   */
+template <adjacency_list_graph OutGraph, adjacency_list_graph InGraph>
 [[gnu::noinline]] auto bfs_v11(const OutGraph& out_graph, const InGraph& in_graph, vertex_id_t<OutGraph> root, int num_bins = 32,
                                int alpha = 15, int beta = 18) {
 
@@ -122,7 +148,8 @@ template <typename OutGraph, typename InGraph>
             [&](auto&& range, auto count) {
               for (auto&& u = range.begin(), e = range.end(); u != e; ++u) {
                 if (null_vertex == parents[u]) {
-                  for (auto&& [v] : in_graph[u]) {
+                  for (auto&& elt : in_graph[u]) {
+                    auto v = target(in_graph, elt);
                     if (front.get(v)) {
                       curr.atomic_set(u);
                       parents[u] = v;
@@ -186,7 +213,8 @@ template <typename OutGraph, typename InGraph>
                 [&](auto&& i) {
                   size_t count = 0;
                   auto&& u = q[i];
-                  for (auto&& [v] : out_graph[u]) {
+                  for (auto&& elt : out_graph[u]) {
+                    auto v = target(out_graph, elt);
                     auto curr_val = parents[v];
                     if (null_vertex == curr_val) {
                       if (nw::graph::cas(parents[v], curr_val, u)) {

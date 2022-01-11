@@ -41,7 +41,6 @@
 #include <tuple>
 #include <type_traits>
 
-#include "nwgraph/access.hpp"
 
 namespace nw {
 namespace graph {

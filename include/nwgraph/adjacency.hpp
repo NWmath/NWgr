@@ -22,7 +22,6 @@
 
 #include <concepts>
 
-#include "nwgraph/access.hpp"
 #include "nwgraph/graph_concepts.hpp"
 
 
@@ -70,14 +69,14 @@ public:
   template <class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
   index_adjacency(index_edge_list<vertex_id_type, unipartite_graph_base, directedness::directed, Attributes...>& A,
                   ExecutionPolicy&&                                                                              policy = {})
-      : base(A.num_vertices()[0]) {
+      : base(A.num_vertices()[0] + 1) {
     fill<idx>(A, *this, policy);
   }
 
   template <class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
   index_adjacency(index_edge_list<vertex_id_type, unipartite_graph_base, directedness::undirected, Attributes...>& A,
                   ExecutionPolicy&&                                                                                policy = {})
-      : base(A.num_vertices()[0]) {
+      : base(A.num_vertices()[0] + 1) {
     fill<idx>(A, *this, policy);
   }
 
@@ -105,15 +104,26 @@ auto make_adjacency(edge_list_t& el, u_integral n, directedness edge_directednes
 //auto num_vertices(const index_adjacency<idx, index_type, vertex_id_type, Attributes...>& g) {
 //  return g.num_vertices();
 //}
-
+//num_vertices CPO
 template <int idx, std::unsigned_integral index_type, std::unsigned_integral vertex_id_type, typename... Attributes>
 auto tag_invoke(const num_vertices_tag, const index_adjacency<idx, index_type, vertex_id_type, Attributes...>& g) {
   return g.num_vertices()[0];
 }
-
+//degree CPO
 template <int idx, std::unsigned_integral index_type, std::unsigned_integral vertex_id_type, std::unsigned_integral lookup_type, typename... Attributes>
 auto tag_invoke(const degree_tag, const index_adjacency<idx, index_type, vertex_id_type, Attributes...>& g, lookup_type i) {
   return g[i].size();
+}
+//degree CPO
+template <int idx, std::unsigned_integral index_type, std::unsigned_integral vertex_id_type, typename... Attributes>
+auto tag_invoke(const degree_tag, const index_adjacency<idx, index_type, vertex_id_type, Attributes...>& g,
+                const typename index_adjacency<idx, index_type, vertex_id_type, Attributes...>::sub_view& v) {
+  return v.size();
+}
+//degree CPO
+template <class Iterator>
+auto tag_invoke(const degree_tag, const splittable_range_adapter<Iterator>& n) {
+  return n.size();
 }
 
 }    // namespace graph

@@ -13,21 +13,23 @@
 #ifndef NW_GRAPH_MIS_HPP
 #define NW_GRAPH_MIS_HPP
 
+#include "nwgraph/graph_concepts.hpp"
 #include "nwgraph/adaptors/bfs_range.hpp"
 
 namespace nw {
 namespace graph {
 
-template <typename Graph>
-void mis_algorithm(Graph A, std::vector<size_t>& mis) {
+template <adjacency_list_graph Graph>
+void mis_algorithm(const Graph& A, std::vector<size_t>& mis) {
+  using vertex_id_type = vertex_id_t<Graph>;
   size_t            N = A.size();
   std::vector<bool> removedVertices(N);
-  for (size_t vtx = 0; vtx < N; vtx++) {
+  for (vertex_id_type vtx = 0; vtx < N; vtx++) {
     if (!removedVertices[vtx]) {
       mis.push_back(vtx);
-      for (auto ite = A.begin()[vtx].begin(); ite != A.begin()[vtx].end(); ++ite) {
+      for (auto ite = A[vtx].begin(); ite != A[vtx].end(); ++ite) {
         // Explore neighbors
-        auto u             = std::get<0>(*ite);
+        auto u = target(A, *ite);
         removedVertices[u] = true;
       }
     }

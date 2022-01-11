@@ -26,6 +26,7 @@ static constexpr const char USAGE[] =
 #include <iostream>
 #include <docopt.h>
 
+#include "nwgraph/build.hpp"
 #include "nwgraph/adjacency.hpp"
 #include "nwgraph/edge_list.hpp"
 #include "nwgraph/volos.hpp"
@@ -63,7 +64,7 @@ edge_list<Directedness, Attributes...> load_graph(std::string file) {
   }
 }
 
-template <typename Graph>
+template <adjacency_list_graph Graph>
 auto compress(edge_list<nw::graph::directedness::undirected, double>& A) {
   life_timer _(__func__);
   Graph      B(num_vertices(A));
@@ -71,7 +72,7 @@ auto compress(edge_list<nw::graph::directedness::undirected, double>& A) {
   return B;
 }
 
-template <typename Graph, typename EdgeList>
+template <adjacency_list_graph Graph, typename EdgeList>
 void run_bench(int argc, char* argv[], EdgeList& el_a) {
   std::vector<std::string> strings(argv + 1, argv + argc);
   auto                     args = docopt::docopt(USAGE, strings, true);

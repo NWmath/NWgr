@@ -43,6 +43,7 @@ TEST_CASE("Jones-Plassmann Coloring", "[jp]") {
   std::vector<size_t> colors(N, std::numeric_limits<std::uint32_t>::max());
 
   std::vector<size_t> result = {0, 1, 1, 0, 0, 0, 0, 1};
+  std::vector<size_t> result2 = {1, 0, 0, 1, 1, 1, 1, 0};
   jones_plassmann_coloring(A, colors);
-  REQUIRE(colors == result);
+  REQUIRE((colors == result || colors == result2));
 }

@@ -42,7 +42,7 @@ using namespace nw::graph::bench;
 using namespace nw::graph;
 using namespace nw::util;
 
-template <typename Graph, typename GraphT>
+template <adjacency_list_graph Graph, typename GraphT>
 bool BFSVerifier(const Graph& g, GraphT& g_t, vertex_id_t<Graph> source, std::vector<vertex_id_t<Graph>>& parent) {
   using vertex_id_type = vertex_id_t<Graph>;
 
@@ -56,7 +56,8 @@ bool BFSVerifier(const Graph& g, GraphT& g_t, vertex_id_t<Graph> source, std::ve
   for (auto it = to_visit.begin(); it != to_visit.end(); it++) {
     vertex_id_type u = *it;
     for (auto edge : out_neigh[u]) {
-      vertex_id_type v = std::get<0>(edge);
+      vertex_id_type v = target(g, edge);
+      //vertex_id_type v = std::get<0>(edge);
       if (depth[v] == std::numeric_limits<vertex_id_type>::max()) {
         depth[v] = depth[u] + 1;
         to_visit.push_back(v);
@@ -74,7 +75,7 @@ bool BFSVerifier(const Graph& g, GraphT& g_t, vertex_id_t<Graph> source, std::ve
       }
       bool parent_found = false;
       for (auto edge : in_neigh[u]) {
-        vertex_id_type v = std::get<0>(edge);
+        vertex_id_type v = target(g_t, edge);
         if (v == parent[u]) {
           //if(it != out_neigh[v].end()) {
           if (depth[v] != depth[u] - 1) {

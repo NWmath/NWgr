@@ -15,6 +15,7 @@
 #include <vector>
 
 #include "nwgraph/algorithms/page_rank.hpp"
+#include "nwgraph/experimental/algorithms/page_rank.hpp"
 #include "nwgraph/adjacency.hpp"
 #include "nwgraph/edge_list.hpp"
 #include "nwgraph/volos.hpp"
@@ -87,7 +88,7 @@ TEST_CASE("PageRank") {
     // Check the answers
     REQUIRE(answer.size() == page_rank.size());
 
-    double tolerance(0.0001);
+    double tolerance(0.005);
     for (size_t idx = 0; idx < page_rank.size(); ++idx) {
       //std::cout << "Vertex " << idx << ": PR = " << page_rank[idx] << std::endl;
       REQUIRE(page_rank[idx] == Approx(answer[idx]).epsilon(tolerance));
@@ -114,7 +115,7 @@ TEST_CASE("PageRank") {
     // Check the answers
     REQUIRE(answer.size() == page_rank.size());
 
-    double tolerance(0.0001);
+    double tolerance(0.005);
     for (size_t idx = 0; idx < page_rank.size(); ++idx) {
       //std::cout << "Vertex " << idx << ": PR = " << page_rank[idx] << std::endl;
       REQUIRE(page_rank[idx] == Approx(answer[idx]).epsilon(tolerance));

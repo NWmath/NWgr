@@ -1,10 +1,7 @@
 
 
 include(Catch2)
-
-
 # message("Supported features = ${CMAKE_CXX_COMPILE_FEATURES}")
-
 
 macro (nw_graph_add_exe EXENAME)
   add_executable(${EXENAME}.exe ${EXENAME}.cpp)
@@ -52,7 +49,7 @@ nw_graph_add_test(vov_test)
 
 
 # expected failures for now
-#set_tests_properties(mis_test jp_coloring_test page_rank_test
+# set_tests_properties(jp_coloring_test
 #  PROPERTIES WILL_FAIL TRUE)
 
 # Example programs (not catch2)
@@ -69,12 +66,14 @@ nw_graph_add_exe(graph_traits_eg)
 nw_graph_add_exe(index_soa_eg)
 nw_graph_add_exe(indexing_eg)
 nw_graph_add_exe(init_eg)
+nw_graph_add_exe(jaccard_eg)
 nw_graph_add_exe(neighbor_range_eg)
 nw_graph_add_exe(plain_range_eg)
 nw_graph_add_exe(proxysort_eg)
 nw_graph_add_exe(random_eg)
 nw_graph_add_exe(spmm_eg)
 nw_graph_add_exe(stream_eg)
+nw_graph_add_exe(std_containers_eg)
 nw_graph_add_exe(tag_invoke_eg)
 nw_graph_add_exe(tbb_eg)
 nw_graph_add_exe(triangular_eg)

@@ -34,6 +34,7 @@ static constexpr const char USAGE[] =
 #include "nwgraph/adaptors/plain_range.hpp"
 #include "nwgraph/adaptors/vertex_range.hpp"
 #include "nwgraph/algorithms/connected_components.hpp"
+#include "nwgraph/experimental/algorithms/connected_components.hpp"
 #include "common.hpp"
 #include "nwgraph/adjacency.hpp"
 #include "nwgraph/edge_list.hpp"
@@ -46,86 +47,6 @@ using namespace nw::graph;
 using namespace nw::util;
 
 using vertex_id_type = default_vertex_id_type;
-
-template <typename Vector>
-static void link(vertex_id_type u, vertex_id_type v, Vector& comp) {
-  vertex_id_type p1 = nw::graph::acquire(comp[u]);
-  vertex_id_type p2 = comp[v];
-  while (p1 != p2) {
-    vertex_id_type high   = std::max(p1, p2);
-    vertex_id_type low    = p1 + (p2 - high);
-    vertex_id_type p_high = comp[high];
-
-    if ((p_high == low) || (p_high == high && comp[high].compare_exchange_strong(high, low))) break;
-    p1 = comp[p_high];
-    p2 = comp[low];
-  }
-}
-
-template <typename Execution, typename Graph, typename Vector>
-static void compress(Execution exec, const Graph& g, Vector& comp) {
-  std::for_each(exec, counting_iterator(0ul), counting_iterator(comp.size()), [&](auto n) {
-    while (comp[n] != comp[comp[n]]) {
-      auto foo = nw::graph::acquire(comp[n]);
-      auto bar = nw::graph::acquire(comp[foo]);
-      nw::graph::release(comp[n], bar);
-    }
-  });
-}
-
-template <typename Vector>
-static vertex_id_type sample_frequent_element(const Vector& comp, size_t num_samples = 1024) {
-  std::unordered_map<vertex_id_type, int>       counts(32);
-  std::mt19937                                  gen;
-  std::uniform_int_distribution<vertex_id_type> distribution(0, comp.size() - 1);
-
-  for (size_t i = 0; i < num_samples; ++i) {
-    vertex_id_type n = distribution(gen);
-    counts[comp[n]]++;
-  }
-
-  auto&& [num, count] = *std::max_element(counts.begin(), counts.end(), [](auto&& a, auto&& b) { return std::get<1>(a) < std::get<1>(b); });
-  float frac_of_graph = static_cast<float>(count) / num_samples;
-  std::cout << "Skipping largest intermediate component (ID: " << num << ", approx. " << int(frac_of_graph * 100) << "% of the graph)\n";
-  return num;
-}
-
-template <typename Execution, typename Graph1, typename Graph2>
-static auto afforest(Execution&& exec, Graph1&& graph, Graph2&& t_graph, size_t neighbor_rounds = 2) {
-  std::vector<std::atomic<vertex_id_type>> comp(graph.size() + 1);
-  std::for_each(exec, counting_iterator(0ul), counting_iterator(comp.size()), [&](vertex_id_type n) { comp[n] = n; });
-  auto g = graph.begin();
-  for (size_t r = 0; r < neighbor_rounds; ++r) {
-    std::for_each(exec, counting_iterator(0ul), counting_iterator(comp.size()), [&](vertex_id_type u) {
-      if (r < (g[u]).size()) {
-        link(u, std::get<0>(g[u].begin()[r]), comp);
-      }
-    });
-    compress(exec, graph, comp);
-  }
-
-  vertex_id_type c = sample_frequent_element(comp);
-
-  std::for_each(exec, counting_iterator(0ul), counting_iterator(comp.size()), [&](vertex_id_type u) {
-    if (comp[u] == c) return;
-
-    if (neighbor_rounds < g[u].size()) {
-      for (auto v = g[u].begin() + neighbor_rounds; v != g[u].end(); ++v) {
-        link(u, std::get<0>(*v), comp);
-      }
-    }
-
-    if (t_graph.size() != 0) {
-      for (auto&& [v] : (t_graph.begin())[u]) {
-        link(u, v, comp);
-      }
-    }
-  });
-
-  compress(exec, g, comp);
-
-  return comp;
-}
 
 template <typename Graph, typename Vector>
 static void print_top_n(const Graph& g, Vector&& comp, size_t n = 5) {
@@ -152,9 +73,9 @@ static void print_top_n(const Graph& g, Vector&& comp, size_t n = 5) {
 // - Asserts search does not reach a vertex with a different component label
 // - If the graph is directed, it performs the search as if it was undirected
 // - Asserts every vertex is visited (degree-0 vertex should have own label)
-template <class Graph, class Transpose, class Vector>
+template <adjacency_list_graph Graph, class Transpose, class Vector>
 static bool CCVerifier(const Graph& graph, Transpose&& xpose, Vector&& comp) {
-  using NodeID = typename nw::graph::vertex_id<std::decay_t<Graph>>::type;
+  using NodeID = typename nw::graph::vertex_id_t<std::decay_t<Graph>>;
   std::unordered_map<NodeID, NodeID> label_to_source;
   for (auto&& [n] : plain_range(graph)) {
     label_to_source[comp[n]] = n;
@@ -170,7 +91,8 @@ static bool CCVerifier(const Graph& graph, Transpose&& xpose, Vector&& comp) {
     visited[source] = true;
     for (auto it = frontier.begin(); it != frontier.end(); it++) {
       NodeID u = *it;
-      for (auto&& [v] : g[u]) {
+      for (auto&& elt : g[u]) {
+        auto v = target(graph, elt);
         if (comp[v] != curr_label) {
           return false;
         }
@@ -180,7 +102,8 @@ static bool CCVerifier(const Graph& graph, Transpose&& xpose, Vector&& comp) {
         }
       }
       if (u < xpose.size()) {
-        for (auto&& [v] : x[u]) {
+        for (auto&& elt : x[u]) {
+          auto v = target(xpose, elt);
           if (comp[v] != curr_label) {
             return false;
           }

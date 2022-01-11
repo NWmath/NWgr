@@ -9,9 +9,26 @@
 //     Andrew Lumsdaine	
 //
 
-#include "nwgraph/edge_list.hpp"
 #include "nwgraph/adjacency.hpp"
 #include "karate.hpp"
+#include "nwgraph/util/print_types.hpp"
+
+
+#if 0
+
+namespace nw::graph {
+template <class Iterator>
+auto tag_invoke(const degree_tag, const splittable_range_adapter<Iterator>& n) {
+  return n.size();
+}
+
+template <int idx, std::unsigned_integral index_type, std::unsigned_integral vertex_id_type, typename... Attributes>
+auto tag_invoke(const degree_tag, const index_adjacency<idx, index_type, vertex_id_type, Attributes...>& g,
+		const typename index_adjacency<idx, index_type, vertex_id_type, Attributes...>::sub_view& v) {
+  return v.size();
+}
+}
+#endif
 
 int main() {
 
@@ -23,6 +40,10 @@ int main() {
 
   for (auto&& j : A) {
     std::cout << nw::graph::degree(j) << std::endl;    
+  }
+
+  for (auto&& j : A) {
+    std::cout << nw::graph::degree(A, j) << std::endl;    
   }
 
 }

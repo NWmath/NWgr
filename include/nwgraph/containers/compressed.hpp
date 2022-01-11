@@ -44,8 +44,6 @@
 #include "nwgraph/util/defaults.hpp"
 #include "nwgraph/util/demangle.hpp"
 
-#include "nwgraph/access.hpp"
-
 namespace nw {
 namespace graph {
 
@@ -193,10 +191,12 @@ public:    // fixme
   using reverse_iterator       = std::reverse_iterator<iterator>;
   using const_reverse_iterator = std::reverse_iterator<const_iterator>;
 
-  iterator       begin() { return {indices_.begin(), to_be_indexed_.begin(), 0}; }
-  const_iterator begin() const { return {indices_.begin(), to_be_indexed_.begin(), 0}; }
-  iterator       end() { return {indices_.begin(), to_be_indexed_.begin(), N_}; }
-  const_iterator end() const { return {indices_.begin(), to_be_indexed_.begin(), N_}; }
+  iterator       begin()        { return {indices_.begin(), to_be_indexed_.begin(), 0}; }
+  const_iterator begin()  const { return {indices_.begin(), to_be_indexed_.begin(), 0}; }
+  const_iterator cbegin() const { return {indices_.begin(), to_be_indexed_.begin(), 0}; }
+  iterator       end()        { return {indices_.begin(), to_be_indexed_.begin(), N_}; }
+  const_iterator end()  const { return {indices_.begin(), to_be_indexed_.begin(), N_}; }
+  const_iterator cend() const { return {indices_.begin(), to_be_indexed_.begin(), N_}; }
 
   /// Random access to the outer range.
   sub_view       operator[](index_t i) { return begin()[i]; }
@@ -227,8 +227,7 @@ public:    // fixme
   void close_for_push_back() {
     if (to_be_indexed_.size() == 0) return;
 
-    // std::exclusive_scan(std::execution::par, indices_.begin(), indices_.end(), indices_.begin(), 0);
-
+    indices_.resize(N_ + 1);
     std::exclusive_scan(indices_.begin(), indices_.end(), indices_.begin(), 0);
     assert(indices_.back() == to_be_indexed_.size());
     is_open_ = false;

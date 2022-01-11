@@ -12,14 +12,18 @@
 #ifndef NWGRAPH_COMPAT_HPP
 #define NWGRAPH_COMPAT_HPP
 
+#warning "compat.hpp is deprecated"
+
+#if 0
+
 #include <forward_list>
 #include <list>
 #include <tuple>
 #include <vector>
 
-#include "nwgraph/access.hpp"
-
 #include "nwgraph/graph_traits.hpp"
+
+
 
 namespace nw {
   namespace graph {
@@ -129,5 +133,5 @@ struct graph_traits<std::vector<std::vector<std::tuple<Attributes...>>>> {
 
   }
 }
-
+#endif
 #endif // NWGRAPH_COMPAT_HPP

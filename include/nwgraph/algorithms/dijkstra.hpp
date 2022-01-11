@@ -19,12 +19,13 @@
 #include <tuple>
 #include <vector>
 
+#include "nwgraph/graph_concepts.hpp"
 #include "nwgraph/adaptors/bfs_edge_range.hpp"
 
 namespace nw {
 namespace graph {
 
-template <typename DistanceT, typename GraphT>
+template <typename DistanceT, adjacency_list_graph GraphT>
 std::vector<DistanceT> dijkstra(const GraphT& graph, vertex_id_t<GraphT> source) {
   using vertex_id_type = vertex_id_t<GraphT>;
 
@@ -49,9 +50,15 @@ std::vector<DistanceT> dijkstra(const GraphT& graph, vertex_id_t<GraphT> source)
   return distance;
 }
 
-template <typename DistanceT, typename GraphT>
-auto dijkstra_v0(const GraphT& graph, vertex_id_t<GraphT> source) {
-  using vertex_id_type = vertex_id_t<GraphT>;
+template <typename DistanceT, adjacency_list_graph Graph,
+          std::invocable<inner_value_t<Graph>> Weight = std::function<std::tuple_element_t<
+              1, inner_value_t<Graph>>(const inner_value_t<Graph>&)>> 
+auto dijkstra_v0(
+          const Graph& graph, vertex_id_t<Graph> source,
+          Weight weight = [](auto& e) {
+            return std::get<1>(e);
+          }) {
+  using vertex_id_type = vertex_id_t<Graph>;
 
   size_t N(graph.end() - graph.begin());
   assert(source < N);
@@ -73,8 +80,8 @@ auto dijkstra_v0(const GraphT& graph, vertex_id_t<GraphT> source) {
     Q.pop();
 
     std::for_each(g[u].begin(), g[u].end(), [&](auto&& e) {
-      auto v = std::get<0>(e);
-      auto w = std::get<1>(e);
+      auto v = target(graph, e);
+      auto w = weight(e);
       if (distance[u] + w < distance[v]) {
         distance[v] = distance[u] + w;
         Q.push({v, distance[v]});

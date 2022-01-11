@@ -15,9 +15,27 @@
 #include "nwgraph/adjacency.hpp"
 #include "nwgraph/edge_list.hpp"
 #include "nwgraph/io/mmio.hpp"
+#include "nwgraph/vovos.hpp"
+
 
 using namespace nw::graph;
 using namespace nw::util;
+
+
+template <class Graph>
+void foo(const Graph& g) {
+  
+  auto f = make_edge_range(g);
+  for (auto&& [u, v] : f) {
+    ;
+  }
+
+  for (auto&& [u, v] : make_edge_range(g)) {
+    ;
+  }
+
+}
+
 
 int main(int argc, char* argv[]) {
 
@@ -46,6 +64,7 @@ int main(int argc, char* argv[]) {
 
   auto d = adjacency<0, double>(c);
 
+
   auto f = make_edge_range(d);
   for (auto&& [u, v] : f) {
     ;
@@ -63,6 +82,25 @@ int main(int argc, char* argv[]) {
   for (auto&& [u, v, w] : make_edge_range<0>(d)) {
     ;
   }
+
+  for (auto&& [u, v] : make_edge_range(std::vector<std::vector<std::tuple<size_t>>>{})) {
+    ;
+  }
+
+  for (auto&& [u, v, w] : make_edge_range<0>(std::vector<std::vector<std::tuple<size_t, double>>>{})) {
+    ;
+  }
+
+  for (auto&& [u, v, w] : make_edge_range<1>(std::vector<std::list<std::tuple<size_t, double, char>>>{})) {
+    ;
+  }
+
+  foo(d);
+
+  foo(std::vector<std::vector<std::tuple<int, double>>>{});
+
+  foo(nw::graph::vov<0, double>(0));
+
 
   return 0;
 }

@@ -44,6 +44,7 @@ static constexpr const char USAGE[] =
 
 #include "common.hpp"
 #include "nwgraph/algorithms/triangle_count.hpp"
+#include "nwgraph/experimental/algorithms/triangle_count.hpp"
 #include <docopt.h>
 #include <tuple>
 
@@ -58,13 +59,13 @@ using namespace nw::graph;
 using namespace nw::util;
 
 template <class Vector>
-static void tc_relabel(edge_list<nw::graph::directedness::undirected>& A, Vector&& degrees, const std::string& direction) {
+static void tc_relabel(edge_list<directedness::undirected>& A, Vector&& degrees, const std::string& direction) {
   life_timer _(__func__);
   relabel_by_degree<0>(A, direction, degrees);
 }
 
 template <std::size_t id = 0>
-static void clean(edge_list<nw::graph::directedness::undirected>& A, const std::string& succession) {
+static void clean(edge_list<directedness::undirected>& A, const std::string& succession) {
   life_timer _(__func__);
   swap_to_triangular<id>(A, succession);
   lexical_sort_by<id>(A);
@@ -72,8 +73,8 @@ static void clean(edge_list<nw::graph::directedness::undirected>& A, const std::
   remove_self_loops(A);
 }
 
-template <typename Graph>
-auto compress(edge_list<nw::graph::directedness::undirected>& A) {
+template <adjacency_list_graph Graph>
+auto compress(edge_list<directedness::undirected>& A) {
   life_timer _(__func__);
   Graph      B(num_vertices(A));
   push_back_fill(A, B);
@@ -81,7 +82,7 @@ auto compress(edge_list<nw::graph::directedness::undirected>& A) {
 }
 
 // heuristic to see if sufficently dense power-law graph
-template <class EdgeList, class Vector>
+template <edge_list_graph EdgeList, class Vector>
 static bool worth_relabeling(const EdgeList& el, const Vector& degree) {
   using vertex_id_type = typename EdgeList::vertex_id_type;
 
@@ -106,7 +107,7 @@ static bool worth_relabeling(const EdgeList& el, const Vector& degree) {
 }
 
 // Taken from GAP and adapted to NW Graph
-template <class Graph>
+template <adjacency_list_graph Graph>
 static std::size_t TCVerifier(Graph& graph) {
   using vertex_id_type = typename Graph::vertex_id_type;
 

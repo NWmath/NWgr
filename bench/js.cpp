@@ -22,7 +22,7 @@ static constexpr const char USAGE[] =
 
   Options:
       -h, --help            show this screen
-      --version ID          algorithm version to run [default: 4]
+      --version ID          algorithm version to run [default: 0]
       -f FILE               input file path
       -n NUM                number of trials [default: 1]
       --lower               lower triangular order [default: false]
@@ -44,6 +44,7 @@ static constexpr const char USAGE[] =
 
 #include "common.hpp"
 #include "nwgraph/algorithms/jaccard.hpp"
+#include "nwgraph/experimental/algorithms/jaccard.hpp"
 #include <docopt.h>
 #include <tuple>
 

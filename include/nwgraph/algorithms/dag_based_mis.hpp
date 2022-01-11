@@ -25,8 +25,8 @@
 namespace nw {
 namespace graph {
 
-template <typename Graph>
-void dag_based_mis(Graph A, std::vector<bool>& mis) {
+template <adjacency_list_graph Graph>
+void dag_based_mis(Graph& A, std::vector<bool>& mis) {
   size_t N = A.size();
 #ifdef PRINT_DEBUG
   std::cout << "size: " << N << std::endl;

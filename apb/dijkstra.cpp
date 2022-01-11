@@ -4,6 +4,7 @@
 #include <queue>
 #include <vector>
 
+#include "nwgraph/graph_concepts.hpp"
 #include "nwgraph/adaptors/bfs_edge_range.hpp"
 #include "nwgraph/adaptors/bfs_range.hpp"
 #include "nwgraph/adaptors/edge_range.hpp"
@@ -12,11 +13,13 @@
 #include "nwgraph/io/mmio.hpp"
 #include "nwgraph/util/tag_invoke.hpp"
 
+
 using namespace nw::graph;
 using namespace nw::util;
 
 namespace nw::graph {
 
+#if 0
 DECL_TAG_INVOKE(out_edges);
 DECL_TAG_INVOKE(target);
 
@@ -29,6 +32,7 @@ template <typename Graph, typename Edge>
 auto tag_invoke(const target_tag, const Graph& g, Edge e) {
   return std::get<0>(e);
 }
+#endif
 
 }    // namespace nw::graph
 
@@ -37,7 +41,7 @@ auto apb_adj(Adjacency& graph, size_t ntrial, vertex_id_t<Adjacency> seed, F fun
   double time = 0;
 
   using vertex_id_type  = vertex_id_t<Adjacency>;
-  using weight_type     = std::tuple_element_t<1, inner_value<Adjacency>>;
+  using weight_type     = std::tuple_element_t<1, inner_value_t<Adjacency>>;
   using weighted_vertex = std::tuple<vertex_id_type, weight_type>;
 
   vertex_id_type N      = num_vertices(graph);
@@ -137,8 +141,8 @@ auto apb_adj(Adjacency& graph, size_t ntrial, vertex_id_t<Adjacency> seed, F fun
 
       // for (auto&& [v, w] : g[u]) -- pretty but would only allow one property
 
-      for (auto&& e : out_edges(graph, u)) {
-        auto v = std::get<0>(e);    // target vertex (neighbor)
+      for (auto&& e : graph[u]) {
+        auto v = std::get<0>(e);         // target vertex (neighbor)
         auto w = std::get<1>(e);    // edge weight
 
         // relax
@@ -206,7 +210,7 @@ auto apb_adj(Adjacency& graph, size_t ntrial, vertex_id_t<Adjacency> seed, F fun
 
       // for (auto&& [v, w] : g[u]) -- pretty but would only allow one property
 
-      for (auto&& e : out_edges(graph, u)) {
+      for (auto&& e : graph[u]) {
         auto v = target(graph, e);    // target vertex (neighbor)
         auto w = fun(e);              // edge weight
 

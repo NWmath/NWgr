@@ -13,6 +13,7 @@
 
 #include "nwgraph/algorithms/triangle_count.hpp"
 #include "nwgraph/containers/compressed.hpp"
+#include "nwgraph/experimental/algorithms/triangle_count.hpp"
 #include "nwgraph/edge_list.hpp"
 #include "nwgraph/io/mmio.hpp"
 
