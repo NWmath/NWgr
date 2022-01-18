@@ -275,7 +275,7 @@ void aos_stream(std::ofstream& outputStream, edge_list<sym, Attributes...> A, co
   if constexpr (is_unipartite<edge_list<sym, Attributes...>>::value) {
     outputStream << num_vertices(A) << " " << num_vertices(A) << " ";    // + 1 ???
   } else {
-    outputStream << A.num_vertices()[0] << " " << A.num_vertice()[1] << " ";    // + 1 ???
+    outputStream << num_vertices(A, 0) << " " << num_vertices(A, 1) << " ";    // + 1 ???
   }
 
   if (file_symmetry == "general" && sym == directedness::undirected)

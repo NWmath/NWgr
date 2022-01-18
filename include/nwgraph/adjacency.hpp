@@ -63,20 +63,21 @@ public:
   using attributes_t = std::tuple<Attributes...>;
   static constexpr std::size_t getNAttr() { return sizeof...(Attributes); }
 
-  index_adjacency(size_t N = 0, size_t M = 0) : base(N, M), unipartite_graph_base(N) {}
-  index_adjacency(std::array<size_t, 1> N, size_t M = 0) : base(N[0], M), unipartite_graph_base(N) {}
+  index_adjacency(size_t N = 0, size_t M = 0) : unipartite_graph_base(N), base(N, M) {}
+  index_adjacency(std::array<size_t, 1> N, size_t M = 0) : unipartite_graph_base(N), base(N[0], M) {}
 
   template <class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
   index_adjacency(index_edge_list<vertex_id_type, unipartite_graph_base, directedness::directed, Attributes...>& A,
                   ExecutionPolicy&&                                                                              policy = {})
-      : base(A.num_vertices()[0] + 1) {
+      : unipartite_graph_base(A.num_vertices()[0]), base(A.num_vertices()[0] + 1) {
+        std::cout << "!!" << unipartite_graph_base::vertex_cardinality[0] << std::endl;
     fill<idx>(A, *this, policy);
   }
 
   template <class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
   index_adjacency(index_edge_list<vertex_id_type, unipartite_graph_base, directedness::undirected, Attributes...>& A,
                   ExecutionPolicy&&                                                                                policy = {})
-      : base(A.num_vertices()[0] + 1) {
+      : unipartite_graph_base(A.num_vertices()[0]), base(A.num_vertices()[0] + 1) {
     fill<idx>(A, *this, policy);
   }
 
@@ -113,20 +114,20 @@ public:
   using attributes_t = std::tuple<Attributes...>;
   static constexpr std::size_t getNAttr() { return sizeof...(Attributes); }
 
-  index_biadjacency(size_t N = 0, size_t M = 0) : base(N, M), bipartite_graph_base(N) {}
-  index_biadjacency(std::array<size_t, 2> N, size_t M = 0) : base(N[idx], M), bipartite_graph_base(N[idx], N[(idx + 1) % 2]) {}
+  index_biadjacency(size_t N0 = 0, size_t N1 = 0, size_t M = 0) : bipartite_graph_base(N0, N1), base(N0, M) {}
+  index_biadjacency(std::array<size_t, 2> N, size_t M = 0) : bipartite_graph_base(N[idx], N[(idx + 1) % 2]), base(N[idx], M) {}
 
   template <class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
   index_biadjacency(index_edge_list<vertex_id_type, bipartite_graph_base, directedness::directed, Attributes...>& A,
                   ExecutionPolicy&&                                                                              policy = {})
-      : bipartite_graph_base(A.num_vertices()[idx], A.num_vertices()[(idx + 1) % 2]), base(A.num_vertices()[idx]) {
+      : bipartite_graph_base(A.num_vertices()[idx], A.num_vertices()[(idx + 1) % 2]), base(A.num_vertices()[idx] + 1) {
     fill_biadjacency<idx>(A, *this, policy);
   }
 
   template <class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
   index_biadjacency(index_edge_list<vertex_id_type, bipartite_graph_base, directedness::undirected, Attributes...>& A,
                   ExecutionPolicy&&                                                                                policy = {})
-      : bipartite_graph_base(A.num_vertices()[idx], A.num_vertices()[(idx + 1) % 2]), base(A.num_vertices()[idx]) {
+      : bipartite_graph_base(A.num_vertices()[idx], A.num_vertices()[(idx + 1) % 2]), base(A.num_vertices()[idx] + 1) {
     fill_biadjacency<idx>(A, *this, policy);
   }
   auto num_vertices() const { return vertex_cardinality; }
