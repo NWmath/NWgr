@@ -70,6 +70,7 @@ public:
   using vertex_cardinality_t = std::array<size_t, 2>;
 
   bipartite_graph_base(size_t d0 = 0, size_t d1 = 0) : vertex_cardinality{d0, d1}, is_open(false) {}
+  bipartite_graph_base(vertex_cardinality_t cardinality) : vertex_cardinality(cardinality), is_open(false) {}
 
   // auto num_edges() { return num_edges_; }
 
@@ -78,12 +79,17 @@ protected:
   bool                 is_open;               // can we mutate graph
 };
 
-
+// In NON-unipartite_graph_base, is_unipartite<unipartite_graph_base> == false
 template <typename Graph>
 struct is_unipartite {
-  constexpr static const bool value = true;
+  constexpr static const bool value = false;
 };
 
+// for unipartite_graph_base, is_unipartite<unipartite_graph_base> == true
+template <>
+struct is_unipartite<unipartite_graph_base> {
+  constexpr static const bool value = true;
+};
 
 }    // namespace graph
 }    // namespace nw

@@ -202,7 +202,7 @@ void fill_helper_tmp(edge_list_t& el, adjacency_t& cs, std::index_sequence<Is...
 }
 
 
-template <int idx, class edge_list_t, class adjacency_t, class Int, class ExecutionPolicy = default_execution_policy>
+template <int idx, edge_list_graph edge_list_t, adjacency_list_graph adjacency_t, class Int, class ExecutionPolicy = default_execution_policy>
 auto fill_directed(edge_list_t& el, Int N, adjacency_t& cs, ExecutionPolicy&& policy = {}) {
 
   auto degree = degrees<idx>(el);
@@ -267,7 +267,7 @@ auto fill_directed(edge_list_t& el, Int N, adjacency_t& cs, ExecutionPolicy&& po
 
 template <int idx, class edge_list_t, class Int, class adjacency_t, class ExecutionPolicy = default_execution_policy>
 auto fill_undirected(edge_list_t& el, Int N, adjacency_t& cs, ExecutionPolicy&& policy = {}) {
-  assert(is_unipartite<edge_list_t>::value);
+  assert(false == is_unipartite<edge_list_t>::value);
 
 
 #if 1
@@ -340,7 +340,7 @@ auto fill_undirected(edge_list_t& el, Int N, adjacency_t& cs, ExecutionPolicy&& 
 }
 
 
-template <int idx, class edge_list_t, class adjacency_t, class ExecutionPolicy = default_execution_policy>
+template <int idx, edge_list_graph edge_list_t, adjacency_list_graph adjacency_t, class ExecutionPolicy = default_execution_policy>
 auto fill(edge_list_t& el, adjacency_t& cs, ExecutionPolicy&& policy = {}) {
   if constexpr (edge_list_t::edge_directedness == nw::graph::directedness::directed) {
     fill_directed<idx>(el, num_vertices(el), cs, policy);
@@ -350,7 +350,7 @@ auto fill(edge_list_t& el, adjacency_t& cs, ExecutionPolicy&& policy = {}) {
   return cs.to_be_indexed_.size();
 }
 
-template <int idx, class edge_list_t, class adjacency_t, class ExecutionPolicy = default_execution_policy>
+template <int idx, edge_list_graph edge_list_t, adjacency_list_graph adjacency_t, class ExecutionPolicy = default_execution_policy>
 auto fill(edge_list_t& el, adjacency_t& cs, directedness dir, ExecutionPolicy&& policy = {}) {
   if (dir == nw::graph::directedness::directed) {
     fill_directed<idx>(el, num_vertices(el), cs, policy);
@@ -360,13 +360,12 @@ auto fill(edge_list_t& el, adjacency_t& cs, directedness dir, ExecutionPolicy&& 
   return cs.to_be_indexed_.size();
 }
 
-template <int idx, class edge_list_t, class biadjacency_t, class ExecutionPolicy = default_execution_policy>
-require edge_list_t::edge_directedness == nw::graph::directedness::directed
-auto fill(edge_list_t& el, biadjacency_t& cs, ExecutionPolicy&& policy = {}) {
-  if constexpr (edge_list_t::edge_directedness == nw::graph::directedness::directed) {
-    fill_directed<idx>(el, num_vertices(el)[0], num_vertices(el)[1], cs, policy);
+template <int idx, edge_list_graph bi_edge_list_t, adjacency_list_graph biadjacency_t, class ExecutionPolicy = default_execution_policy>
+auto fill_biadjacency(bi_edge_list_t& el, biadjacency_t& cs, ExecutionPolicy&& policy = {}) {
+  if constexpr (bi_edge_list_t::edge_directedness == nw::graph::directedness::directed) {
+    fill_directed<idx>(el, num_vertices(el, idx), cs, policy);
   } else {    // undirected -- this cannot be a bipartite graph
-    fill_undirected<idx>(el, num_vertices(el)[0], num_vertices(el)[1], cs, policy);
+    fill_undirected<idx>(el, num_vertices(el, idx), cs, policy);
   }
   return cs.to_be_indexed_.size();
 }

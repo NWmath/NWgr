@@ -142,10 +142,10 @@ public:
     vertex_id_type j = std::get<1>(elem);
 
     if constexpr (is_unipartite<graph_base>::value) {
-      graph_base::vertex_cardinality[0] = std::max<vertex_id_type>(std::max(i, j), graph_base::vertex_cardinality[0]);
+      graph_base::vertex_cardinality[0] = std::max<vertex_id_type>(std::max(i, j)+1, graph_base::vertex_cardinality[0]);
     } else {
-      graph_base::vertex_cardinality[0] = std::max<vertex_id_type>(i, graph_base::vertex_cardinality[0]);
-      graph_base::vertex_cardinality[1] = std::max<vertex_id_type>(j, graph_base::vertex_cardinality[1]);
+      graph_base::vertex_cardinality[0] = std::max<vertex_id_type>(i + 1, graph_base::vertex_cardinality[0]);
+      graph_base::vertex_cardinality[1] = std::max<vertex_id_type>(j + 1, graph_base::vertex_cardinality[1]);
     }
 
     base::push_back(elem);
@@ -224,17 +224,17 @@ public:
 template <directedness edge_directedness = directedness::undirected, typename... Attributes>
 using edge_list = index_edge_list<default_vertex_id_type, unipartite_graph_base, edge_directedness, Attributes...>;
 
-template <directedness edge_directedness = directedness::undirected, typename... Attributes>
+template <directedness edge_directedness = directedness::directed, typename... Attributes>
 using bi_edge_list = index_edge_list<default_vertex_id_type, bipartite_graph_base, edge_directedness, Attributes...>;
 
 template <std::unsigned_integral vertex_id, typename graph_base_t, directedness direct = directedness::undirected, typename... Attributes>
 auto tag_invoke(const num_edges_tag, const index_edge_list<vertex_id, graph_base_t, direct, Attributes...>& b) {
   return b.num_edges();
 }
-
+//num_vertics CPO, works for both unipartite_graph_base and bipartite_graph_base
 template <std::unsigned_integral vertex_id, typename graph_base_t, directedness direct = directedness::undirected, typename... Attributes>
-auto tag_invoke(const num_vertices_tag, const index_edge_list<vertex_id, graph_base_t, direct, Attributes...>& b) {
-  return b.num_vertices()[0];
+auto tag_invoke(const num_vertices_tag, const index_edge_list<vertex_id, graph_base_t, direct, Attributes...>& b, int idx = 0) {
+  return b.num_vertices()[idx];
 }
 
 template <std::unsigned_integral vertex_id, typename graph_base_t, directedness direct = directedness::undirected, typename... Attributes>
