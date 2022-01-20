@@ -75,7 +75,7 @@ public:    // fixme
   //move constructor, assume indices_[N_] == to_be_indexed_.size();
   indexed_struct_of_arrays(std::vector<vertex_id_t>&& indices, std::vector<vertex_id_t>&& to_be_indexed)
   : N_(indices.size() - 1), indices_(indices), to_be_indexed_(to_be_indexed) {
-    assert(indices_[N_] == to_be_indexed.size());
+    assert(indices_[N_] == to_be_indexed_.size());
   }
 
   /// A linear edge iterator that supports random-access operations.
@@ -288,14 +288,6 @@ public:    // fixme
     //indices_ = std::move(indices); 
     to_be_indexed_.move(to_be_indexed);
     assert(indices_.back() == to_be_indexed_.size());
-  }
-  void open_for_copy() {
-    is_open_ = true;
-  }
-
-  void close_for_copy() {
-    indices_[N_] = to_be_indexed_.size();
-    is_open_ = false;
   }
 
   void copy(std::vector<vertex_id_t>& indices, std::vector<vertex_id_t>& to_be_indexed) {
