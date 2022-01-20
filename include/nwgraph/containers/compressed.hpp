@@ -75,14 +75,14 @@ public:    // fixme
   indexed_struct_of_arrays(size_t N) : N_(N), indices_(N + 1) {}
   indexed_struct_of_arrays(size_t N, size_t M) : N_(N), indices_(N + 1), to_be_indexed_(M) {}
   //move constructor, assume indices_[N_] == to_be_indexed_.size()
-  indexed_struct_of_arrays(std::vector<vertex_id_t>&& indices, std::vector<Attributes>&&... to_be_indexed)
+  indexed_struct_of_arrays(std::vector<index_t>&& indices, std::vector<Attributes>&&... to_be_indexed)
   : N_(indices.size() - 1), indices_(std::move(indices)), to_be_indexed_(std::move(to_be_indexed)...) {}
-  indexed_struct_of_arrays(std::vector<vertex_id_t>&& indices, std::tuple<std::vector<Attributes>...>&& to_be_indexed)
+  indexed_struct_of_arrays(std::vector<index_t>&& indices, std::tuple<std::vector<Attributes>...>&& to_be_indexed)
   : N_(indices.size() - 1), indices_(std::move(indices)), to_be_indexed_(std::move(to_be_indexed)) {}
   //copy constructor, assume indices_[N_] == to_be_indexed_.size()
-  indexed_struct_of_arrays(const std::vector<vertex_id_t>& indices, const std::vector<Attributes>&... to_be_indexed)
+  indexed_struct_of_arrays(const std::vector<index_t>& indices, const std::vector<Attributes>&... to_be_indexed)
   : N_(indices.size() - 1), indices_(indices), to_be_indexed_(to_be_indexed...) {}
-  indexed_struct_of_arrays(const std::vector<vertex_id_t>& indices, const std::tuple<std::vector<Attributes>...>& to_be_indexed)
+  indexed_struct_of_arrays(const std::vector<index_t>& indices, const std::tuple<std::vector<Attributes>...>& to_be_indexed)
   : N_(indices.size() - 1), indices_(indices), to_be_indexed_(to_be_indexed) {}
 
   template <bool is_const = false>

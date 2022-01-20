@@ -1231,7 +1231,7 @@ std::vector<score_t> Brandes(const Graph &g, const std::vector<vertex_id_type> s
 #endif
 
 template <adjacency_list_graph Graph, typename score_t = float, typename accum_t = size_t>
-auto bc2_v0(const Graph& graph, const std::vector<typename Graph::vertex_id_type> sources) {
+auto bc2_v0(const Graph& graph, const std::vector<typename Graph::vertex_id_type> sources, bool normalize = true) {
   using vertex_id_type = typename Graph::vertex_id_type;
 
   auto                 g = graph.begin();
@@ -1298,7 +1298,7 @@ auto bc2_v0(const Graph& graph, const std::vector<typename Graph::vertex_id_type
 }
 
 template <adjacency_list_graph Graph, typename score_t = float, typename accum_t = size_t>
-auto bc2_v1(const Graph& graph, const std::vector<typename Graph::vertex_id_type> sources) {
+auto bc2_v1(const Graph& graph, const std::vector<typename Graph::vertex_id_type> sources, bool normalize = true) {
   using vertex_id_type = typename Graph::vertex_id_type;
 
   auto                 g = graph.begin();
@@ -1367,7 +1367,7 @@ auto bc2_v1(const Graph& graph, const std::vector<typename Graph::vertex_id_type
 
 template <adjacency_list_graph Graph, typename score_t = float, typename accum_t = size_t,
           class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
-auto bc2_v2(const Graph& graph, const std::vector<typename Graph::vertex_id_type>& sources, ExecutionPolicy&& policy = {}) {
+auto bc2_v2(const Graph& graph, const std::vector<typename Graph::vertex_id_type>& sources, ExecutionPolicy&& policy = {}, bool normalize = true) {
   using vertex_id_type = typename Graph::vertex_id_type;
 
   auto                 g = graph.begin();
@@ -1444,7 +1444,7 @@ template <adjacency_list_graph Graph, typename score_t = float, typename accum_t
           class OuterExecutionPolicy = std::execution::parallel_unsequenced_policy,
           class InnerExecutionPolicy = std::execution::parallel_unsequenced_policy>
 auto bc2_v3(const Graph& graph, const std::vector<typename Graph::vertex_id_type>& sources, OuterExecutionPolicy&& outer_policy = {},
-            InnerExecutionPolicy&& inner_policy = {}) {
+            InnerExecutionPolicy&& inner_policy = {}, bool normalize = true) {
   using vertex_id_type = typename Graph::vertex_id_type;
 
   auto           g = graph.begin();
@@ -1547,7 +1547,7 @@ auto bc2_v3(const Graph& graph, const std::vector<typename Graph::vertex_id_type
 template <class score_t, class accum_t, adjacency_list_graph Graph, class OuterExecutionPolicy = std::execution::parallel_unsequenced_policy,
           class InnerExecutionPolicy = std::execution::parallel_unsequenced_policy>
 auto bc2_v4(const Graph& graph, const std::vector<typename Graph::vertex_id_type>& sources, int threads,
-            OuterExecutionPolicy&& outer_policy = {}, InnerExecutionPolicy&& inner_policy = {}) {
+            OuterExecutionPolicy&& outer_policy = {}, InnerExecutionPolicy&& inner_policy = {}, bool normalize = true) {
   using vertex_id_type = typename Graph::vertex_id_type;
 
   auto                 g     = graph.begin();

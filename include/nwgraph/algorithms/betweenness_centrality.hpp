@@ -125,7 +125,7 @@ bool BCVerifier(const Graph& g, std::vector<typename graph_traits<Graph>::vertex
 
 //****************************************************************************
 template <adjacency_list_graph Graph, typename score_t = float, typename accum_t = size_t>
-std::vector<score_t> betweenness_brandes(const Graph& A) {
+std::vector<score_t> betweenness_brandes(const Graph& A, bool normalize = true) {
   using vertex_id_type = typename Graph::vertex_id_type;
 
   size_t               n_vtx = A.size();
@@ -178,16 +178,17 @@ std::vector<score_t> betweenness_brandes(const Graph& A) {
       }
     }
   }
-  std::vector<score_t> final(n_vtx);
-  score_t              largest = *std::max_element(centrality.begin(), centrality.end());
-  std::transform(centrality.begin(), centrality.end(), final.begin(), [&](auto& val) { return val / largest; });
-  return final;
+  if (normalize) {
+    score_t largest = *std::max_element(centrality.begin(), centrality.end());
+    std::transform(centrality.begin(), centrality.end(), centrality.begin(), [&](auto &val) { return val /= largest; });
+  }
+  return centrality;
 }
 
 template <class score_t, class accum_t, adjacency_list_graph Graph, class OuterExecutionPolicy = std::execution::parallel_unsequenced_policy,
           class InnerExecutionPolicy = std::execution::parallel_unsequenced_policy>
 auto bc2_v5(const Graph& graph, const std::vector<typename Graph::vertex_id_type>& sources, int threads,
-            OuterExecutionPolicy&& outer_policy = {}, InnerExecutionPolicy&& inner_policy = {}) {
+            OuterExecutionPolicy&& outer_policy = {}, InnerExecutionPolicy&& inner_policy = {}, bool normalize = true) {
   using vertex_id_type = typename Graph::vertex_id_type;
 
   vertex_id_type       N     = num_vertices(graph);
@@ -287,9 +288,10 @@ auto bc2_v5(const Graph& graph, const std::vector<typename Graph::vertex_id_type
     f.wait();
   }
 
-  auto max = std::reduce(outer_policy, bc.begin(), bc.end(), 0.0f, nw::graph::max{});
-  std::for_each(outer_policy, bc.begin(), bc.end(), [&](auto&& j) { j /= max; });
-
+  if (normalize) {
+    auto max = std::reduce(outer_policy, bc.begin(), bc.end(), 0.0f, nw::graph::max{});
+    std::for_each(outer_policy, bc.begin(), bc.end(), [&](auto&& j) { j /= max; });
+  }
   return bc;
 }
 
