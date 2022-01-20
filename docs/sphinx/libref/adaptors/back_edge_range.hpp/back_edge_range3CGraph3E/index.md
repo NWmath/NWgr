@@ -5,7 +5,7 @@ owner: __MISSING__
 brief: __MISSING__
 tags:
   - class
-defined_in_file: back_edge_range.hpp
+defined_in_file: adaptors/back_edge_range.hpp
 declaration: "template <typename Graph>\nclass nw::graph::back_edge_range;"
 dtor: unspecified
 typedefs:
@@ -20,6 +20,9 @@ typedefs:
     description: __MISSING__
   reference:
     definition: typename std::iterator_traits<typename Graph::inner_iterator>::reference
+    description: __MISSING__
+  vertex_id_type:
+    definition: vertex_id_t<Graph>
     description: __MISSING__
 fields:
   address_extra:

@@ -5,20 +5,20 @@ owner: __MISSING__
 brief: __MISSING__
 tags:
   - method
-defined_in_file: new_dfs_range.hpp
+defined_in_file: adaptors/new_dfs_range.hpp
 is_ctor: true
 overloads:
-  dfs_range<Graph, Stack>(Graph &, nw::graph::vertex_id_t):
+  dfs_range<Graph, Stack>(Graph &, vertex_id_t<Graph>):
     arguments:
       - description: __OPTIONAL__
         name: graph
         type: Graph &
       - description: __OPTIONAL__
         name: seed
-        type: nw::graph::vertex_id_t
+        type: vertex_id_t<Graph>
     description: __MISSING__
     return: __OPTIONAL__
-    signature_with_names: dfs_range<Graph, Stack>(Graph & graph, nw::graph::vertex_id_t seed)
+    signature_with_names: dfs_range<Graph, Stack>(Graph & graph, vertex_id_t<Graph> seed)
   dfs_range<Graph, Stack>(const dfs_range<Graph, Stack> &&):
     annotation:
       - delete

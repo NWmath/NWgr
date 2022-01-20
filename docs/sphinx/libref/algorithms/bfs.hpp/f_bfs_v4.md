@@ -7,17 +7,17 @@ tags:
   - function
 defined_in_file: algorithms/bfs.hpp
 overloads:
-  "template <typename Graph>\nauto bfs_v4(Graph &, nw::graph::vertex_id_t)":
+  "template <typename Graph>\nauto bfs_v4(const Graph &, typename graph_traits<Graph>::vertex_id_type)":
     arguments:
-      - description: Adjacency graph
+      - description: __OPTIONAL__
         name: graph
-        type: Graph &
-      - description: Root of BFS search
+        type: const Graph &
+      - description: __OPTIONAL__
         name: root
-        type: nw::graph::vertex_id_t
-    description: Breadth first search using parallel std::for_each for processing frontier and sequential std::for_each for processing neighbor lists.
-    return: Vector of parent vertices forming BFS tree
-    signature_with_names: "template <typename Graph>\nauto bfs_v4(Graph & graph, nw::graph::vertex_id_t root)"
+        type: typename graph_traits<Graph>::vertex_id_type
+    description: __OPTIONAL__
+    return: __OPTIONAL__
+    signature_with_names: "template <typename Graph>\nauto bfs_v4(const Graph & graph, typename graph_traits<Graph>::vertex_id_type root)"
 namespace:
   - nw
   - graph

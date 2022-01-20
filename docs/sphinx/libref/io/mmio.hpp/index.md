@@ -1,6 +1,6 @@
 ---
 layout: library
-title: mmio.hpp
+title: io/mmio.hpp
 owner: Andrew Lumsdaine
 brief: Matrix market file I/O
 tags:

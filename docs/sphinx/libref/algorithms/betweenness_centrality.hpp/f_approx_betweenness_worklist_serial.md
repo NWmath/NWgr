@@ -7,17 +7,17 @@ tags:
   - function
 defined_in_file: algorithms/betweenness_centrality.hpp
 overloads:
-  "template <typename Graph, typename score_t, typename accum_t>\nstd::vector<score_t> approx_betweenness_worklist_serial(Graph &, std::vector<vertex_id_t> &)":
+  "template <typename Graph, typename score_t, typename accum_t>\nstd::vector<score_t> approx_betweenness_worklist_serial(const Graph &, std::vector<typename Graph::vertex_id_type> &)":
     arguments:
-      - description: Adjacency graph
+      - description: __OPTIONAL__
         name: A
-        type: Graph &
-      - description: Vector of sources
+        type: const Graph &
+      - description: __OPTIONAL__
         name: sources
-        type: std::vector<vertex_id_t> &
-    description: Weighted approximate betweenness centrality based on the worklist model described by Prountzos and Pingali in "Betweenness Centrality&#58; Algorithms and Implementations". Uses sequential data structures for testing.
-    return: A vector containing the approximate betweenness centrality of every vertex
-    signature_with_names: "template <typename Graph, typename score_t, typename accum_t>\nstd::vector<score_t> approx_betweenness_worklist_serial(Graph & A, std::vector<vertex_id_t> & sources)"
+        type: std::vector<typename Graph::vertex_id_type> &
+    description: __OPTIONAL__
+    return: __OPTIONAL__
+    signature_with_names: "template <typename Graph, typename score_t, typename accum_t>\nstd::vector<score_t> approx_betweenness_worklist_serial(const Graph & A, std::vector<typename Graph::vertex_id_type> & sources)"
 namespace:
   - nw
   - graph

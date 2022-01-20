@@ -5,7 +5,7 @@ owner: __MISSING__
 brief: __MISSING__
 tags:
   - function
-defined_in_file: MatrixMarketFile.hpp
+defined_in_file: io/MatrixMarketFile.hpp
 overloads:
   void release(mmio::MatrixMarketFile &):
     arguments:

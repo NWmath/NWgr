@@ -1,6 +1,6 @@
 ---
 layout: library
-title: MatrixMarketFile.hpp
+title: io/MatrixMarketFile.hpp
 owner: __MISSING__
 brief: __MISSING__
 tags:

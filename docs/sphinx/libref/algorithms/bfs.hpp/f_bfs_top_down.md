@@ -7,17 +7,17 @@ tags:
   - function
 defined_in_file: algorithms/bfs.hpp
 overloads:
-  "template <class Graph>\nauto bfs_top_down(Graph &&, nw::graph::vertex_id_t)":
+  "template <class Graph>\nauto bfs_top_down(const Graph &, typename graph_traits<Graph>::vertex_id_type)":
     arguments:
-      - description: Adjacency graph
+      - description: __OPTIONAL__
         name: graph
-        type: Graph &&
-      - description: Root of BFS search
+        type: const Graph &
+      - description: __OPTIONAL__
         name: root
-        type: nw::graph::vertex_id_t
-    description: Top-down breadth first search uses parallel std::for_each to process frontier bins and frontier, uses nw::graph::parallel_for to process neighbor lists.
-    return: Vector of parent vertices forming BFS tree
-    signature_with_names: "template <class Graph>\nauto bfs_top_down(Graph && graph, nw::graph::vertex_id_t root)"
+        type: typename graph_traits<Graph>::vertex_id_type
+    description: __OPTIONAL__
+    return: __OPTIONAL__
+    signature_with_names: "template <class Graph>\nauto bfs_top_down(const Graph & graph, typename graph_traits<Graph>::vertex_id_type root)"
 namespace:
   - nw
   - graph

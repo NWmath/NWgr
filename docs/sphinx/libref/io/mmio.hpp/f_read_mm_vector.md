@@ -5,7 +5,7 @@ owner: __MISSING__
 brief: __MISSING__
 tags:
   - function
-defined_in_file: mmio.hpp
+defined_in_file: io/mmio.hpp
 overloads:
   "template <typename T>\nauto read_mm_vector(const std::string &)":
     arguments:

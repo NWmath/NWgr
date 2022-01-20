@@ -1,0 +1,72 @@
+// 
+// This file is part of NW Graph (aka GraphPack) 
+// (c) Pacific Northwest National Laboratory 2018-2021 
+// (c) University of Washington 2018-2021 
+// 
+// Licensed under terms of include LICENSE file 
+// 
+// Authors: 
+//     Andrew Lumsdaine	
+//     Luke D'Alessandro	
+//
+
+#ifndef NW_GRAPH_TRAITS_HPP
+#define NW_GRAPH_TRAITS_HPP
+
+#include <atomic>
+#include <iterator>
+#include <tbb/blocked_range.h>
+#include <tuple>
+
+namespace nw {
+namespace graph {
+
+template <class>
+inline constexpr bool is_atomic_v = false;
+template <class T>
+inline constexpr bool is_atomic_v<std::atomic<T>> = true;
+template <class T>
+inline constexpr bool is_atomic_v<std::atomic_ref<T>> = true;
+
+/// Simple type trait that we can use to remove `std::atomic` from types.
+template <class T>
+struct remove_atomic {
+  using type = T;
+};
+template <class T>
+struct remove_atomic<std::atomic<T>> {
+  using type = T;
+};
+template <class T>
+struct remove_atomic<std::atomic_ref<T>> {
+  using type = T;
+};
+template <class T>
+using remove_atomic_t = typename remove_atomic<T>::type;
+
+template <class>
+inline constexpr bool is_tbb_range_v = false;
+template <class T>
+inline constexpr bool is_tbb_range_v<tbb::blocked_range<T>> = true;
+
+template <class>
+inline constexpr bool is_tuple_v = false;
+template <class... Ts>
+inline constexpr bool is_tuple_v<std::tuple<Ts...>> = true;
+
+template <class, class = void>
+struct is_iterator : std::false_type {};
+template <class T>
+struct is_iterator<T*, void> : std::true_type {};
+template <class T>
+struct is_iterator<const T*, void> : std::true_type {};
+template <class T>
+struct is_iterator<T, std::enable_if_t<!std::is_same_v<typename std::iterator_traits<T>::value_type, void>>> : std::true_type {};
+
+template <class T>
+inline constexpr bool is_iterator_v = is_iterator<T>::value;
+
+}    // namespace graph
+}    // namespace nw
+
+#endif    // NW_GRAPH_TRAITS_HPP

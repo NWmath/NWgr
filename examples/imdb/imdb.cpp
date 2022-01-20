@@ -10,12 +10,14 @@
 
 #include "xtensor/xcsv.hpp"
 
-#include "adaptors/bfs_edge_range.hpp"
-#include "containers/compressed.hpp"
-#include "containers/edge_list.hpp"
-#include "util/timer.hpp"
+#include "nwgraph/adaptors/bfs_edge_range.hpp"
+#include "nwgraph/adjacency.hpp"
+#include "nwgraph/containers/compressed.hpp"
+#include "nwgraph/edge_list.hpp"
+#include "nwgraph/util/timer.hpp"
 
 int main() {
+  const int s = 8;
 
   nw::util::timer               t0("load titles");
   std::string                   title_basics_tsv = "../data/title.basics.tsv";
@@ -55,7 +57,7 @@ int main() {
 
   nw::util::timer t3("build hypergraph");
 
-  nw::graph::edge_list<nw::graph::directed> edges;
+  nw::graph::edge_list<nw::graph::directedness::directed> edges;
   edges.open_for_push_back();
 
   size_t title_counter = 0;
@@ -98,7 +100,7 @@ int main() {
 
   nw::util::timer t5("build s_overlap");
 
-  nw::graph::edge_list<nw::graph::undirected, size_t> s_overlap;
+  nw::graph::edge_list<nw::graph::directedness::undirected, size_t> s_overlap;
   s_overlap.open_for_push_back();
 
   for (size_t i = 0; i < H.size(); ++i) {
@@ -148,7 +150,7 @@ int main() {
 
   std::cout << "Kevin Bacon has a Bacon number of " << distance[kevin_bacon] << std::endl;
 
-  std::cout << "Kyra Sedgwick has a bacon number of " << distance[kyra_sedgwick] << std::endl;
+  std::cout << "Kyra Sedgwick has a Bacon number of " << distance[kyra_sedgwick] << std::endl;
   size_t d = distance[kyra_sedgwick];
   while (kyra_sedgwick != kevin_bacon) {
     std::cout << names(kyra_sedgwick, 1) << " starred with " << names(parents[kyra_sedgwick], 1) << " in "
@@ -162,8 +164,8 @@ int main() {
   std::cout << "David Suchet has a Bacon number of " << distance[david_suchet] << std::endl;
   d = distance[david_suchet];
   while (david_suchet != kevin_bacon) {
-    std::cout << names(david_suchet, 1) << " starred with " << names(parents[david_suchet], 1) << " in "
-              << titles(together_in[david_suchet], 2) << std::endl;
+    std::cout << names(david_suchet, 1) << " starred with " << names(parents[david_suchet], 1) << " in " << titles(together_in[david_suchet], 2)
+              << std::endl;
     david_suchet = parents[david_suchet];
     if (d-- == 0) {
       break;

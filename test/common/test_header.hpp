@@ -16,9 +16,8 @@
 #error "test_header is included multiple times. test header must be included only once"
 #endif
 
-#include "containers/compressed.hpp"
-#include "containers/edge_list.hpp"
-#include "io/mmio.hpp"
+#include "nwgraph/containers/compressed.hpp"
+#include "nwgraph/edge_list.hpp"
+#include "nwgraph/io/mmio.hpp"
 
-#define CATCH_CONFIG_MAIN  // This tells Catch to provide a main() - only do this in one cpp file
 #include <catch2/catch.hpp>

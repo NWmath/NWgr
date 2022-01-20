@@ -12,11 +12,10 @@
 #include <iostream>
 #include <vector>
 
-#include "util/proxysort.hpp"
+#include "nwgraph/util/proxysort.hpp"
 
 using namespace nw::graph;
 using namespace nw::util;
-
 
 template <typename Vector>
 void print_n_ranks(const Vector& page_rank, size_t n) {
@@ -28,9 +27,9 @@ void print_n_ranks(const Vector& page_rank, size_t n) {
 
 int main() {
 
-std::vector<float> x { 3., 1., .14, .15, 9};
+  std::vector<float> x{3., 1., .14, .15, 9};
 
-auto perm = proxysort(x);
+  auto perm = proxysort(x);
 
-return 0;
+  return 0;
 }

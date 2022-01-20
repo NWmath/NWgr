@@ -12,8 +12,8 @@
 #include <queue>
 #include <vector>
 
-#include "containers/aos.hpp"
-#include "algorithms/bfs.hpp"
+#include "nwgraph/algorithms/bfs.hpp"
+#include "nwgraph/containers/aos.hpp"
 
 #include "common/abstract_test.hpp"
 
@@ -23,8 +23,9 @@ using namespace nw::graph;
 using namespace nw::util;
 
 //****************************************************************************
-template<typename EdgeListT>
-bool validate(EdgeListT& aos, size_t seed, std::vector<vertex_id_t> const& distance, std::vector<vertex_id_t> const& predecessor) {
+template <typename EdgeListT>
+bool validate(EdgeListT& aos, size_t seed, std::vector<vertex_id_t<EdgeListT>> const& distance,
+              std::vector<vertex_id_t<EdgeListT>> const& predecessor) {
   bool pass(true);
 
   /// @note Should we parse the orginal mmio file instead?
@@ -32,13 +33,12 @@ bool validate(EdgeListT& aos, size_t seed, std::vector<vertex_id_t> const& dista
     int    localdiff = distance[u] - distance[v];
     size_t diff      = abs(localdiff);
 #ifdef PRINT_OUT
-    std::cout << "Checking edge: " << u << " (" << distance[u] << ", " << predecessor[u] << ") -> " << v << " (" << distance[v]
-              << ", " << predecessor[v] << "), diff = " << diff << std::endl;
+    std::cout << "Checking edge: " << u << " (" << distance[u] << ", " << predecessor[u] << ") -> " << v << " (" << distance[v] << ", "
+              << predecessor[v] << "), diff = " << diff << std::endl;
 #endif
     if (diff > 1) {
 #ifdef PRINT_OUT
-      std::cerr << "ERROR: too far: dist[" << u << "] = " << distance[u] << " too far from dist[" << v << "] = " << distance[v]
-                << std::endl;
+      std::cerr << "ERROR: too far: dist[" << u << "] = " << distance[u] << " too far from dist[" << v << "] = " << distance[v] << std::endl;
 #endif
       pass = false;
       break;
@@ -58,13 +58,14 @@ bool validate(EdgeListT& aos, size_t seed, std::vector<vertex_id_t> const& dista
   return pass;
 }
 
-template<typename Graph>
-auto bfs_m1(Graph& graph, vertex_id_t root) {
+template <typename Graph>
+auto bfs_m1(const Graph& graph, vertex_id_t<Graph> root) {
+  using vertex_id_type = vertex_id_t<Graph>;
 
-  std::deque<vertex_id_t>  q1, q2;
-  std::vector<vertex_id_t> level(graph.size(), std::numeric_limits<vertex_id_t>::max());
-  std::vector<vertex_id_t> pred(graph.size());
-  size_t                   lvl = 0;
+  std::deque<vertex_id_type>  q1, q2;
+  std::vector<vertex_id_type> level(graph.size(), std::numeric_limits<vertex_id_type>::max());
+  std::vector<vertex_id_type> pred(graph.size());
+  size_t                      lvl = 0;
 
   q1.push_back(root);
   level[root] = lvl++;
@@ -73,13 +74,13 @@ auto bfs_m1(Graph& graph, vertex_id_t root) {
 
   while (!q1.empty()) {
 
-    std::for_each(q1.begin(), q1.end(), [&](vertex_id_t u) {
-      std::for_each(g[u].begin(), g[u].end(), [&](auto &&x) {
-	vertex_id_t v = std::get<0>(x);
-        if (level[v] == std::numeric_limits<vertex_id_t>::max()) {
+    std::for_each(q1.begin(), q1.end(), [&](vertex_id_type u) {
+      std::for_each(g[u].begin(), g[u].end(), [&](auto&& x) {
+        auto v = target(graph, x);
+        if (level[v] == std::numeric_limits<vertex_id_type>::max()) {
           q2.push_back(v);
           level[v] = lvl;
-	  pred[v] = u;
+          pred[v]  = u;
         }
       });
     });
@@ -90,13 +91,11 @@ auto bfs_m1(Graph& graph, vertex_id_t root) {
   return std::make_pair(level, pred);
 }
 
-
 TEST_CASE("BFS traversal", "[bfs]") {
 
   test_util            util;
   auto                 aos_a = util.generate_directed_aos();
   directed_csr_graph_t A(aos_a);
-
 
   SECTION("default seed") {
     auto&& [distance, predecessor] = bfs_m1(A, 0);
@@ -107,5 +106,4 @@ TEST_CASE("BFS traversal", "[bfs]") {
     auto&& [distance, predecessor] = bfs_m1(A, 1);
     REQUIRE(validate(aos_a, 1, distance, predecessor));
   }
-
 }

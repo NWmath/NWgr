@@ -5,7 +5,7 @@ owner: __MISSING__
 brief: __MISSING__
 tags:
   - method
-defined_in_file: random_range.hpp
+defined_in_file: adaptors/random_range.hpp
 is_ctor: true
 overloads:
   edge_range_iterator(random_range<Graph> &):

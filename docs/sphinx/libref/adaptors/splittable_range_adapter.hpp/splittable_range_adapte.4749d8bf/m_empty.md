@@ -5,7 +5,7 @@ owner: __MISSING__
 brief: __MISSING__
 tags:
   - method
-defined_in_file: splittable_range_adapter.hpp
+defined_in_file: adaptors/splittable_range_adapter.hpp
 overloads:
   bool empty() const:
     description: __OPTIONAL__
