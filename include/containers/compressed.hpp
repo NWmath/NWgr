@@ -607,9 +607,8 @@ public:
   //an adjacency which each list is empty
   adjacency(size_t N = 0) : indexed_struct_of_arrays<vertex_id_t, Attributes...>(N) {}
   adjacency(size_t N = 0, size_t M = 0) : indexed_struct_of_arrays<vertex_id_t, Attributes...>(N, M) {}
-  template <class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
-  adjacency(edge_list<directed, Attributes...>& A, ExecutionPolicy&& policy = {}) : indexed_struct_of_arrays<vertex_id_t, Attributes...>(std::max(A.max()[0], A.max()[1]) + 1) {
-    A.fill(*this, policy);
+  adjacency(edge_list<directed, Attributes...>& A) : indexed_struct_of_arrays<vertex_id_t, Attributes...>(A.max()[idx] + 1) {
+    A.fill(*this);
   }
   template <class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
   adjacency(edge_list<undirected, Attributes...>& A, ExecutionPolicy&& policy = {})
