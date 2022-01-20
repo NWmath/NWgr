@@ -3,16 +3,11 @@
 #include <iostream>
 #include <vector>
 
-#include "compressed.hpp"
-#include "edge_list.hpp"
+#include "containers/compressed.hpp"
+#include "containers/edge_list.hpp"
 #include "io/mmio.hpp"
-#include "edge_range.hpp"
+#include "adaptors/edge_range.hpp"
 
-#if defined(CL_SYCL_LANGUAGE_VERSioN)
-#include <dpstd/iterator>
-#else
-#include "tbb/iterators.h"
-#endif
 
 using namespace nw::graph;
 using namespace nw::util;

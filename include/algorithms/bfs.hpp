@@ -22,20 +22,6 @@
 #include <tbb/concurrent_vector.h>
 #include <tbb/parallel_for_each.h>
 
-#if defined(CL_SYCL_LANGUAGE_VERSION)
-#include <dpstd/iterators.h>
-namespace nw::graph {
-template <class T>
-using counting_iterator = dpstd::counting_iterator<T>;
-}
-#else
-#include <tbb/iterators.h>
-namespace nw::graph {
-template <class T>
-using counting_iterator = tbb::counting_iterator<T>;
-}
-#endif
-
 namespace nw {
 namespace graph {
 template<typename Graph, typename GraphT>
@@ -124,18 +110,10 @@ auto bfs_v0(Graph& graph, vertex_id_t root) {
   return parents;
 }
 
-template <typename T>
-class _concurrent_queue : public tbb::concurrent_queue<T> {
-  using base = tbb::concurrent_queue<T>;
-
-public:
-  auto internal_swap(_concurrent_queue& src) { base::internal_swap(src); }
-};
-
 template <typename Graph>
 auto bfs_v4(Graph& graph, vertex_id_t root) {
 
-  _concurrent_queue<vertex_id_t> q1, q2;
+  tbb::concurrent_queue<vertex_id_t> q1, q2;
   std::vector                    level(graph.max() + 1, std::numeric_limits<vertex_id_t>::max());
   std::vector                    parents(graph.max() + 1, std::numeric_limits<vertex_id_t>::max());
   size_t                         lvl = 0;
@@ -247,31 +225,33 @@ auto bfs_v7(Graph& graph, vertex_id_t root) {
 template <typename Graph>
 auto bfs_v8(Graph& graph, vertex_id_t root) {
 
-  _concurrent_queue<vertex_id_t> q1, q2;
+  tbb::concurrent_queue<vertex_id_t> q[2];
   std::vector                    level(graph.max() + 1, std::numeric_limits<vertex_id_t>::max());
   std::vector                    parents(graph.max() + 1, std::numeric_limits<vertex_id_t>::max());
   size_t                         lvl = 0;
 
-  q1.push(root);
+  bool cur = false;
+  q[cur].push(root);
   level[root]   = lvl++;
   parents[root] = root;
 
   auto g = graph.begin();
 
-  while (!q1.empty()) {
+  while (!q[cur].empty()) {
 
-    std::for_each(std::execution::par_unseq, q1.unsafe_begin(), q1.unsafe_end(), [&](vertex_id_t u) {
+    std::for_each(std::execution::par_unseq, q[cur].unsafe_begin(), q[cur].unsafe_end(), [&](vertex_id_t u) {
       std::for_each(std::execution::par_unseq, g[u].begin(), g[u].end(), [&](auto&& x) {
         vertex_id_t v = std::get<0>(x);
         if (level[v] == std::numeric_limits<vertex_id_t>::max()) {
-          q2.push(v);
+          q[!cur].push(v);
           level[v]   = lvl;
           parents[v] = u;
         }
       });
     });
-    q1.internal_swap(q2);
-    q2.clear();
+    cur = !cur;
+    //q1.internal_swap(q2);
+    q[!cur].clear();
 
     ++lvl;
   }

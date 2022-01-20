@@ -605,11 +605,14 @@ public:
   using attributes_t = std::tuple<Attributes...>;
   static constexpr std::size_t getNAttr() { return sizeof...(Attributes); }
   using vertex_id_t = nw::graph::vertex_id_t;
-  //an adjacency which each list is empty
+  //an adjacency with an empty outter range
   adjacency(size_t N = 0) : indexed_struct_of_arrays<vertex_id_t, Attributes...>(N) {}
   adjacency(size_t N = 0, size_t M = 0) : indexed_struct_of_arrays<vertex_id_t, Attributes...>(N, M) {}
-  adjacency(edge_list<directed, Attributes...>& A) : indexed_struct_of_arrays<vertex_id_t, Attributes...>(A.max()[idx] + 1) {
-    A.fill(*this);
+
+  template <class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
+  adjacency(edge_list<directed, Attributes...>& A, ExecutionPolicy&& policy = {})
+      : indexed_struct_of_arrays<vertex_id_t, Attributes...>(A.max()[idx] + 1) {
+    A.fill(*this, policy);
   }
   template <class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
   adjacency(edge_list<undirected, Attributes...>& A, ExecutionPolicy&& policy = {})

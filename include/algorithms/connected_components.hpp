@@ -14,10 +14,12 @@
 #include "util/types.hpp"
 #include "util/atomic.hpp"
 #include "util/AtomicBitVector.hpp"
-#include "bfs_edge_range.hpp"
-#include "disjoint_set.hpp"
-#include "edge_range.hpp"
-#include "cyclic_range_adapter.hpp"
+#include "adaptors/bfs_edge_range.hpp"
+#include "util/disjoint_set.hpp"
+#include "adaptors/edge_range.hpp"
+#include "adaptors/cyclic_neighbor_range.hpp"
+#include "adaptors/neighbor_range.hpp"
+#include "adaptors/vertex_range.hpp"
 #include <atomic>
 #include <iostream>
 #include <random>
@@ -26,21 +28,9 @@
 #if defined(CL_SYCL_LANGUAGE_VERSION)
 #include <dpstd/algorithm>
 #include <dpstd/execution>
-#include <dpstd/iterators.h>
-namespace nw::graph {
-template <class T>
-using counting_iterator = dpstd::counting_iterator<T>;
-#define cins dpstd
-}
 #else
 #include <algorithm>
 #include <execution>
-#include <tbb/iterators.h>
-namespace nw::graph {
-template <class T>
-using counting_iterator = tbb::counting_iterator<T>;
-#define cins tbb
-}
 #endif
 
 namespace nw {
@@ -128,7 +118,7 @@ void compress(std::vector<T>& comp) {
 template<typename Execution, typename Graph, typename Vector>
 static void compress(Execution&& exec, Graph&& g, Vector& comp) {
   size_t N = comp.size();
-  std::for_each(exec, cins::counting_iterator(0ul), cins::counting_iterator(N), [&](auto n) {
+  std::for_each(exec, counting_iterator(0ul), counting_iterator(N), [&](auto n) {
     while (comp[n] != comp[comp[n]]) {
       auto foo = nw::graph::acquire(comp[n]);
       auto bar = nw::graph::acquire(comp[foo]);
@@ -389,7 +379,7 @@ std::vector<vertex_id_t> lpcc(Execution& exec, Graph& g, int num_bins = 32) {
   std::vector<vertex_id_t> frontier[num_bins];
   auto propagate = [&](auto& g, auto& cur, auto& bitmap, auto& labels) {
     tbb::parallel_for(tbb::blocked_range<vertex_id_t>(0ul, cur.size()), [&](tbb::blocked_range<vertex_id_t>& r) {
-      int worker_index = tbb::task_arena::current_thread_index();
+      int worker_index = tbb::this_task_arena::current_thread_index();
       for (auto i = r.begin(), e = r.end(); i < e; ++i) {
         vertex_id_t x = cur[i];
         vertex_id_t labelx = labels[x];
@@ -417,7 +407,7 @@ std::vector<vertex_id_t> lpcc(Execution& exec, Graph& g, int num_bins = 32) {
     }
     //resize next frontier
     next.resize(size); 
-    std::for_each(exec, tbb::counting_iterator(0), tbb::counting_iterator(num_bins), [&](auto i) {
+    std::for_each(exec, counting_iterator(0), counting_iterator(num_bins), [&](auto i) {
       //copy each thread-local frontier to next frontier based on their size offset
       auto begin = std::next(next.begin(), size_array[i]);
       std::copy(exec, frontier[i].begin(), frontier[i].end(), begin);
@@ -451,8 +441,8 @@ std::vector<vertex_id_t> lpcc_cyclic(Execution& exec, Graph& g, int num_bins = 3
 
   std::vector<vertex_id_t> frontier[num_bins];
   auto propagate = [&](auto& g, auto& cur, auto& bitmap, auto& labels) {
-    tbb::parallel_for(cyclic(g, num_bins), [&](auto& i) {
-      int worker_index = tbb::task_arena::current_thread_index();
+    tbb::parallel_for(cyclic_neighbor_range(g, num_bins), [&](auto& i) {
+      int worker_index = tbb::this_task_arena::current_thread_index();
       for (auto&& j = i.begin(); j != i.end(); ++j) {
         auto&& [x, x_ngh] = *j;
         vertex_id_t labelx = labels[x];
@@ -479,7 +469,7 @@ std::vector<vertex_id_t> lpcc_cyclic(Execution& exec, Graph& g, int num_bins = 3
     }
     //resize next frontier
     next.resize(size); 
-    std::for_each(exec, tbb::counting_iterator(0), tbb::counting_iterator(num_bins), [&](auto i) {
+    std::for_each(exec, counting_iterator(0), counting_iterator(num_bins), [&](auto i) {
       //copy each thread-local frontier to next frontier based on their size offset
       auto begin = std::next(next.begin(), size_array[i]);
       std::copy(exec, frontier[i].begin(), frontier[i].end(), begin);
@@ -533,11 +523,11 @@ template<typename Execution, typename Graph1, typename Graph2>
 static auto afforest(Execution exec, Graph1& graph, Graph2& t_graph, size_t neighbor_rounds = 2)
 {
   std::vector<std::atomic<vertex_id_t>> comp(graph.max() + 1);
-  std::for_each(exec, cins::counting_iterator(0ul), cins::counting_iterator(comp.size()),
+  std::for_each(exec, counting_iterator(0ul), counting_iterator(comp.size()),
                 [&](vertex_id_t n) { comp[n] = n; });
   auto g = graph.begin();
   for (size_t r = 0; r < neighbor_rounds; ++r) {
-    std::for_each(exec, cins::counting_iterator(0ul), cins::counting_iterator(comp.size()), [&](vertex_id_t u) {
+    std::for_each(exec, counting_iterator(0ul), counting_iterator(comp.size()), [&](vertex_id_t u) {
       if (r < (g[u]).size()) {
         link(u, std::get<0>(g[u].begin()[r]), comp);
       }
@@ -547,7 +537,7 @@ static auto afforest(Execution exec, Graph1& graph, Graph2& t_graph, size_t neig
 
   vertex_id_t c = sample_frequent_element(comp);
 
-  std::for_each(exec, cins::counting_iterator(0ul), cins::counting_iterator(comp.size()), [&](vertex_id_t u) {
+  std::for_each(exec, counting_iterator(0ul), counting_iterator(comp.size()), [&](vertex_id_t u) {
     if (comp[u] == c) return;
 
     if (neighbor_rounds < g[u].size()) {

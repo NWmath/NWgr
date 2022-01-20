@@ -16,6 +16,7 @@
 #include <queue>
 #include <tuple>
 #include <vector>
+#include <limits>
 
 #include "adaptors/bfs_edge_range.hpp"
 #include "util/types.hpp"

@@ -22,18 +22,8 @@
 
 #if defined(CL_SYCL_LANGUAGE_VERSION)
 #include <dpstd/execution>
-#include <dpstd/iterators.h>
-namespace nw::graph {
-template <class T>
-using counting_iterator = dpstd::counting_iterator<T>;
-}
 #else
 #include <execution>
-#include <tbb/iterators.h>
-namespace nw::graph {
-template <class T>
-using counting_iterator = tbb::counting_iterator<T>;
-}
 #endif
 
 namespace nw {

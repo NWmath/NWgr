@@ -1,5 +1,5 @@
-#ifndef NW_GRAPH_CYCLIC_RANGE_ADAPTER_HPP
-#define NW_GRAPH_CYCLIC_RANGE_ADAPTER_HPP
+#ifndef NW_GRAPH_CYCLIC_NEIGHBOR_RANGE_HPP
+#define NW_GRAPH_CYCLIC_NEIGHBOR_RANGE_HPP
 
 #include "util/util.hpp"
 #include "util/types.hpp"
@@ -7,7 +7,7 @@
 
 namespace nw {
 namespace graph {
-/// The cyclic range adapter.
+/// The cyclic neighbor range adapter.
 ///
 /// This adapter takes an underlying random access range and provides the
 /// ability to split the range into cycles for TBB. A cycle is a subset of the
@@ -26,7 +26,7 @@ namespace graph {
 /// @tparam    Iterator The type of the underlying range iterator (must be at
 ///                     least random access).
 template <class Iterator>
-class cyclic_range_adapter {
+class cyclic_neighbor_range {
   static_assert(std::is_base_of_v<std::random_access_iterator_tag, typename std::iterator_traits<Iterator>::iterator_category>);
 
 public:
@@ -41,20 +41,21 @@ private:
 
 public:
   template <class Range, class Cutoff>
-  cyclic_range_adapter(Range&& range, Cutoff cutoff)
+  cyclic_neighbor_range(Range&& range, Cutoff cutoff)
       : begin_(range.begin()), end_(range.end()), cutoff_(nw::graph::pow2(nw::graph::ceil_log2(cutoff))) {}
 
-  cyclic_range_adapter(const cyclic_range_adapter&) = default;
-  cyclic_range_adapter(cyclic_range_adapter&&)      = default;
+  cyclic_neighbor_range(const cyclic_neighbor_range&) = default;
+  cyclic_neighbor_range(cyclic_neighbor_range&&)      = default;
 
-  cyclic_range_adapter(cyclic_range_adapter& rhs, tbb::split)
+  cyclic_neighbor_range(cyclic_neighbor_range& rhs, tbb::split)
       : begin_(rhs.begin_), end_(rhs.end_), cutoff_(rhs.cutoff_), cycle_(rhs.cycle_ + rhs.stride_), stride_(rhs.stride_ *= 2) {}
 
   struct iterator {
+    Iterator        begin_;
     Iterator        i_;
     difference_type stride_;
 
-    decltype(auto) operator*() { return *i_; }
+    decltype(auto) operator*() { return std::make_tuple(i_ - begin_, *i_); }
     
     iterator& operator++() {
       i_ += stride_;
@@ -65,7 +66,7 @@ public:
   };
 
   /// Return an iterator that points to the start of the cycle.
-  iterator begin() const { return {begin_ + cycle_, stride_}; }
+  iterator begin() const { return {begin_, begin_ + cycle_, stride_}; }
 
   /// Return an iterator that points to the end of the cycle.
   ///
@@ -77,7 +78,7 @@ public:
     difference_type n = end_ - begin_ - cycle_;     // shifted span for cycle
     difference_type r = n % stride_;                // remainder in last stride
     difference_type e = (stride_ - r) % stride_;    // amount past `end_` we'll go
-    return {end_ + e, stride_};
+    return {begin_, end_ + e, stride_};
   }
 
   difference_type size() const {
@@ -97,12 +98,7 @@ public:
 };
 
 template <class Range, class Cutoff>
-cyclic_range_adapter(Range range, Cutoff) -> cyclic_range_adapter<decltype(range.begin())>;
-
-template <class Range, class Cutoff>
-constexpr decltype(auto) cyclic(Range&& range, Cutoff cutoff) {
-  return cyclic_range_adapter{std::forward<Range>(range), cutoff};
-}
+cyclic_neighbor_range(Range range, Cutoff) -> cyclic_neighbor_range<decltype(range.begin())>;
 }    // namespace graph
 }    // namespace nw
-#endif // NW_GRAPH_CYCLIC_RANGE_ADAPTER_HPP
+#endif // NW_GRAPH_CYCLIC_NEIGHBOR_RANGE_HPP

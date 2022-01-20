@@ -4,7 +4,6 @@
 #define NW_GRAPH_SPLITTABLE_RANGE_ADAPTER_HPP
 
 #include <cstddef>
-#include <tbb/tbb_stddef.h>
 
 namespace nw {
 namespace graph {

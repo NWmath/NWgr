@@ -24,20 +24,7 @@
 #include "containers/edge_list.hpp"
 #include "adaptors/edge_range.hpp"
 #include "util/parallel_for.hpp"
-
-#if defined(CL_SYCL_LANGUAGE_VERSION)
-#include <dpstd/iterators.h>
-namespace nw::graph {
-template <class T>
-using counting_iterator = dpstd::counting_iterator<T>;
-}
-#else
-#include <tbb/iterators.h>
-namespace nw::graph {
-template <class T>
-using counting_iterator = tbb::counting_iterator<T>;
-}
-#endif
+#include "adaptors/vertex_range.hpp"
 
 namespace nw {
 namespace graph {

@@ -14,14 +14,8 @@
 
 #if defined(CL_SYCL_LANGUAGE_VERSioN)
 #  include <dpstd/execution>
-#  include <dpstd/iterators.h>
-template<class T>
-using counting_iterator = dpstd::counting_iterator<T>;
 #else
 #  include <execution>
-#  include <tbb/iterators.h>
-template<class T>
-using counting_iterator = tbb::counting_iterator<T>;
 #endif
 
 #include "containers/compressed.hpp"
