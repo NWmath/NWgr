@@ -50,6 +50,11 @@ struct struct_of_arrays : std::tuple<std::vector<Attributes>...> {
   //tuple of vectors move constructor in constant time
   struct_of_arrays(std::tuple<std::vector<Attributes>...>&& soa_s) : base(soa_s) {}
 
+  //single vector copy constructor in constant time
+  struct_of_arrays(const std::vector<Attributes>&... soa): base((soa)...) {}
+  //tuple of vectors copy constructor in constant time
+  struct_of_arrays(const std::tuple<std::vector<Attributes>...>& soa_s) : base(soa_s) {}  
+
   template <class... RandomAccessIterators>
   class It {
     std::tuple<RandomAccessIterators...> start;
@@ -152,20 +157,20 @@ struct struct_of_arrays : std::tuple<std::vector<Attributes>...> {
 
   iterator end() const { return begin() + size(); }
 
-  void move(std::vector<Attributes>&... attrs) {
-    std::apply([&](auto&... vs) { (vs.swap(attrs), ...); }, *this);
+  void move(std::vector<Attributes>&&... attrs) {
+    std::apply([&](auto&&... vs) { (vs.swap(attrs), ...); }, *this);
   }
 
-  void move(std::tuple<std::vector<Attributes>...>& attrs) {
-    std::apply([&](Attributes... attr) { move(attr...); }, attrs);
+  void move(std::tuple<std::vector<Attributes>...>&& attrs) {
+    std::apply([&](std::vector<Attributes>&&... attr) { move(std::move(attr)...); }, attrs);
   }
 
-  void copy(std::vector<Attributes>... attrs) {
-    std::apply([&](auto&... vs) { (std::copy(attrs.begin(), attrs.end(), vs.begin()), ...); }, *this);
+  void copy(const std::vector<Attributes>&... attrs) {
+    std::apply([&](std::vector<Attributes>&... vs) { (std::copy(attrs.begin(), attrs.end(), vs.begin()), ...); }, *this);
   }
 
-  void copy(std::tuple<std::vector<Attributes>...> attrs) {
-    std::apply([&](Attributes... attr) { copy(attr...); }, attrs);
+  void copy(const std::tuple<std::vector<Attributes>...>& attrs) {
+    std::apply([&](const std::vector<Attributes>&... attr) { copy(attr...); }, attrs);
   }
 
   void push_back(Attributes... attrs) {

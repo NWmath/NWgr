@@ -34,12 +34,13 @@ TEST_CASE("Size Test", "[size test]") {
     REQUIRE(A_list.size() == 4);
 
     edge_list<directed> E_list2(N);
+    //for directed edge list, the size should be the max of column 0
     E_list2.push_back(0, 1);
     E_list2.push_back(1, 2);
     E_list2.push_back(2, 3);
 
     adjacency<0> A2(E_list2);
-    REQUIRE(A2.size() == 4);
+    REQUIRE(A2.size() == 3);
 
     adj_list<> A_list2(E_list2);
     REQUIRE(A_list2.size() == 4);

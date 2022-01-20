@@ -66,11 +66,23 @@ public:    // fixme
 
   indexed_struct_of_arrays(size_t N) : N_(N), indices_(N + 1) {}
   indexed_struct_of_arrays(size_t N, size_t M) : N_(N), indices_(N + 1), to_be_indexed_(M) {}
-
+  //move constructor, assume indices_[N_] == to_be_indexed_.size();
+  indexed_struct_of_arrays(std::vector<vertex_id_t>&& indices, std::vector<Attributes>&&... to_be_indexed)
+  : N_(indices.size() - 1), indices_(std::move(indices)), to_be_indexed_(std::move(to_be_indexed)...) {
+    //assert(indices_[N_] == to_be_indexed_.size());
+  }
+  indexed_struct_of_arrays(std::vector<vertex_id_t>&& indices, std::tuple<std::vector<Attributes>...>&& to_be_indexed)
+  : N_(indices.size() - 1), indices_(std::move(indices)), to_be_indexed_(std::move(to_be_indexed)) {
+    //assert(indices_[N_] == to_be_indexed_.size());
+  }
   //copy constructor, assume indices_[N_] == to_be_indexed_.size();
-  indexed_struct_of_arrays(std::vector<vertex_id_t>& indices, std::vector<vertex_id_t>& to_be_indexed)
+  indexed_struct_of_arrays(const std::vector<vertex_id_t>& indices, const std::vector<Attributes>&... to_be_indexed)
+  : N_(indices.size() - 1), indices_(indices), to_be_indexed_(to_be_indexed...) {
+    //assert(indices_[N_] == to_be_indexed_.size());
+  }
+  indexed_struct_of_arrays(const std::vector<vertex_id_t>& indices, const std::tuple<std::vector<Attributes>...>& to_be_indexed)
   : N_(indices.size() - 1), indices_(indices), to_be_indexed_(to_be_indexed) {
-    assert(indices_[N_] == to_be_indexed.size());
+    //assert(indices_[N_] == to_be_indexed_.size());
   }
   //move constructor, assume indices_[N_] == to_be_indexed_.size();
   indexed_struct_of_arrays(std::vector<vertex_id_t>&& indices, std::vector<vertex_id_t>&& to_be_indexed)
@@ -283,14 +295,24 @@ public:    // fixme
     is_open_ = false;
   }
 
-  void move(std::vector<vertex_id_t>&& indices, std::vector<vertex_id_t>&& to_be_indexed) {
+  void move(std::vector<vertex_id_t>&& indices, std::vector<Attributes>&&... to_be_indexed) {
     indices_.swap(indices); //equivalent to 
     //indices_ = std::move(indices); 
-    to_be_indexed_.move(to_be_indexed);
+    to_be_indexed_.move(std::move(to_be_indexed)...);
     assert(indices_.back() == to_be_indexed_.size());
   }
-
-  void copy(std::vector<vertex_id_t>& indices, std::vector<vertex_id_t>& to_be_indexed) {
+  void move(std::vector<vertex_id_t>&& indices, std::tuple<std::vector<Attributes>...>&& to_be_indexed) {
+    indices_.swap(indices); //equivalent to 
+    //indices_ = std::move(indices); 
+    to_be_indexed_.move(std::move(to_be_indexed));
+    assert(indices_.back() == to_be_indexed_.size());
+  }
+  void copy(const std::vector<vertex_id_t>& indices, const std::vector<Attributes>&... to_be_indexed) {
+    std::copy(indices.begin(), indices.end(), indices_.begin());
+    to_be_indexed_.copy(to_be_indexed...);
+    assert(indices_.back() == to_be_indexed_.size());
+  }
+  void copy(const std::vector<vertex_id_t>& indices, const std::tuple<std::vector<Attributes>...>& to_be_indexed) {
     std::copy(indices.begin(), indices.end(), indices_.begin());
     to_be_indexed_.copy(to_be_indexed);
     assert(indices_.back() == to_be_indexed_.size());
@@ -630,17 +652,16 @@ public:
     : indexed_struct_of_arrays<vertex_id_t, Attributes...>(N) {
     A.fill(*this, policy);
   }
-  //move constructor
-  adjacency(std::vector<vertex_id_t>&& indices, std::vector<vertex_id_t>&& to_be_indexed) :
+  //customized move constructor
+  adjacency(std::vector<vertex_id_t>&& indices, std::vector<vertex_id_t>&& first_to_be, std::vector<Attributes>&&... rest_to_be) :
+  indexed_struct_of_arrays<vertex_id_t, Attributes...>(std::move(indices), std::move(first_to_be), std::move(rest_to_be)...) {}
+  adjacency(std::vector<vertex_id_t>&& indices, std::tuple<std::vector<vertex_id_t>, std::vector<Attributes>...>&& to_be_indexed) :
   indexed_struct_of_arrays<vertex_id_t, Attributes...>(std::move(indices), std::move(to_be_indexed)) {}
-  //copy constructor
-  adjacency(std::vector<vertex_id_t>& indices, std::vector<vertex_id_t>& to_be_indexed) :
+  //customized copy constructor
+  adjacency(const std::vector<vertex_id_t>& indices, const std::vector<vertex_id_t>& first_to_be, const std::vector<Attributes>&... rest_to_be) :
+  indexed_struct_of_arrays<vertex_id_t, Attributes...>(indices, first_to_be, rest_to_be...) {}
+  adjacency(const std::vector<vertex_id_t>& indices, const std::tuple<std::vector<vertex_id_t>, std::vector<Attributes>...>& to_be_indexed) :
   indexed_struct_of_arrays<vertex_id_t, Attributes...>(indices, to_be_indexed) {}
-
-  
-  void fill(std::vector<vertex_id_t>& indices, std::vector<vertex_id_t>& to_be_indexed) {
-    *this->copy(indices, to_be_indexed);
-  }
   //  size_t size() const { return indexed_struct_of_arrays<vertex_id_t, Attributes...>::size(); }
 
 #if 0
