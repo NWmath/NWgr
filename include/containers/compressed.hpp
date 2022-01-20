@@ -84,11 +84,6 @@ public:    // fixme
   : N_(indices.size() - 1), indices_(indices), to_be_indexed_(to_be_indexed) {
     //assert(indices_[N_] == to_be_indexed_.size());
   }
-  //move constructor, assume indices_[N_] == to_be_indexed_.size();
-  indexed_struct_of_arrays(std::vector<vertex_id_t>&& indices, std::vector<vertex_id_t>&& to_be_indexed)
-  : N_(indices.size() - 1), indices_(indices), to_be_indexed_(to_be_indexed) {
-    assert(indices_[N_] == to_be_indexed_.size());
-  }
 
   /// A linear edge iterator that supports random-access operations.
   ///
@@ -629,7 +624,7 @@ public:
   using vertex_id_t = nw::graph::vertex_id_t;
   //an adjacency with an empty outter range
   adjacency(size_t N = 0) : indexed_struct_of_arrays<vertex_id_t, Attributes...>(N) {}
-  adjacency(size_t N = 0, size_t M = 0) : indexed_struct_of_arrays<vertex_id_t, Attributes...>(N, M) {}
+  adjacency(size_t N, size_t M) : indexed_struct_of_arrays<vertex_id_t, Attributes...>(N, M) {}
 
   template <class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
   adjacency(edge_list<directed, Attributes...>& A, ExecutionPolicy&& policy = {})
