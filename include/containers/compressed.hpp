@@ -398,11 +398,12 @@ public:    // fixme
   * Use adjacent_difference to compute the degrees of each vertex:
   * degs[0] = 0 after the computation hence
   * we need to erase the first element of the vector
-  */   
+  */
   std::vector<index_t> degrees() const {
     std::vector<index_t> degs(indices_.size());
     std::adjacent_difference(indices_.begin(), indices_.end(), degs.begin());
-    degs.erase( dedegsgrees_.begin() );
+    degs.erase( degs.begin() );
+
     if (g_debug_compressed) {
       for (size_t i = 0, e = indices_.size() - 1; i < e; ++i) 
         assert(degs[i] == indices_[i + 1] - indices_[i]);
@@ -543,7 +544,7 @@ public:    // fixme
     auto&& perm = permute_by_degree(direction, ex_policy);
     relabel_to_be_indexed(perm, ex_policy);
   }
-  
+
   void stream_indices(std::ostream& out = std::cout) {
     auto s = std::get<0>(to_be_indexed_).begin();
     out << "\n+++\n";
