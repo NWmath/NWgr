@@ -1288,10 +1288,10 @@ auto bc2_v0(const Graph& graph, const std::vector<typename Graph::vertex_id_type
       }
     }
   }
-
-  score_t biggest_score = *max_element(bc.begin(), bc.end());
-  for (auto& j : bc) {
-    j = j / biggest_score;
+  if (normalize) {
+    score_t biggest_score = *max_element(bc.begin(), bc.end());
+    for (auto &j : bc)
+      j = j / biggest_score; 
   }
 
   return bc;
@@ -1356,9 +1356,10 @@ auto bc2_v1(const Graph& graph, const std::vector<typename Graph::vertex_id_type
     }
   }
 
-  score_t biggest_score = *max_element(bc.begin(), bc.end());
-  for (auto& j : bc) {
-    j = j / biggest_score;
+  if (normalize) {
+    score_t biggest_score = *max_element(bc.begin(), bc.end());
+    for (auto &j : bc)
+      j = j / biggest_score; 
   }
 
   return bc;
@@ -1432,10 +1433,10 @@ auto bc2_v2(const Graph& graph, const std::vector<typename Graph::vertex_id_type
       });
     }
   }
-
-  score_t biggest_score = *max_element(policy, bc.begin(), bc.end());
-  std::for_each(policy, bc.begin(), bc.end(), [&](score_t& j) { j = j / biggest_score; });
-
+  if (normalize) {
+    score_t biggest_score = *max_element(policy, bc.begin(), bc.end());
+    std::for_each(policy, bc.begin(), bc.end(), [&](score_t& j) { j = j / biggest_score; });
+  }
   return bc;
 }
 
@@ -1536,10 +1537,10 @@ auto bc2_v3(const Graph& graph, const std::vector<typename Graph::vertex_id_type
       });
     });
   }
-
-  score_t biggest_score = *max_element(outer_policy, bc.begin(), bc.end());
-  std::for_each(outer_policy, bc.begin(), bc.end(), [&](score_t& j) { j = j / biggest_score; });
-
+  if (normalize) {
+    score_t biggest_score = *max_element(outer_policy, bc.begin(), bc.end());
+    std::for_each(outer_policy, bc.begin(), bc.end(), [&](score_t& j) { j = j / biggest_score; });
+  }
   return bc;
 }
 
@@ -1630,9 +1631,10 @@ auto bc2_v4(const Graph& graph, const std::vector<typename Graph::vertex_id_type
     });
   }
 
-  score_t biggest_score = *max_element(outer_policy, bc.begin(), bc.end());
-  std::for_each(outer_policy, bc.begin(), bc.end(), [&](score_t& j) { j = j / biggest_score; });
-
+  if (normalize) {
+    score_t biggest_score = *max_element(outer_policy, bc.begin(), bc.end());
+    std::for_each(outer_policy, bc.begin(), bc.end(), [&](score_t& j) { j = j / biggest_score; });
+  }
   return bc;
 }
 

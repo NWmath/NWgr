@@ -18,6 +18,7 @@
 #include <queue>
 #include <tuple>
 #include <vector>
+#include <limits>
 
 #include "nwgraph/graph_concepts.hpp"
 #include "nwgraph/adaptors/bfs_edge_range.hpp"

@@ -69,65 +69,6 @@ static void print_top_n(const Graph& g, Vector&& comp, size_t n = 5) {
   std::cout << "There are " << count.size() << " components\n";
 }
 
-// Verifies CC result by performing a BFS from a vertex in each component
-// - Asserts search does not reach a vertex with a different component label
-// - If the graph is directed, it performs the search as if it was undirected
-// - Asserts every vertex is visited (degree-0 vertex should have own label)
-template <adjacency_list_graph Graph, class Transpose, class Vector>
-static bool CCVerifier(const Graph& graph, Transpose&& xpose, Vector&& comp) {
-  using NodeID = typename nw::graph::vertex_id_t<std::decay_t<Graph>>;
-  std::unordered_map<NodeID, NodeID> label_to_source;
-  for (auto&& [n] : plain_range(graph)) {
-    label_to_source[comp[n]] = n;
-  }
-  std::vector<bool>   visited(graph.size() + 1);
-  std::vector<NodeID> frontier;
-  frontier.reserve(graph.size() + 1);
-  auto g = graph.begin();
-  auto x = xpose.begin();
-  for (auto&& [curr_label, source] : label_to_source) {
-    frontier.clear();
-    frontier.push_back(source);
-    visited[source] = true;
-    for (auto it = frontier.begin(); it != frontier.end(); it++) {
-      NodeID u = *it;
-      for (auto&& elt : g[u]) {
-        auto v = target(graph, elt);
-        if (comp[v] != curr_label) {
-          return false;
-        }
-        if (!visited[v]) {
-          visited[v] = true;
-          frontier.push_back(v);
-        }
-      }
-      if (u < xpose.size()) {
-        for (auto&& elt : x[u]) {
-          auto v = target(xpose, elt);
-          if (comp[v] != curr_label) {
-            return false;
-          }
-          if (!visited[v]) {
-            visited[v] = true;
-            frontier.push_back(v);
-          }
-        }
-      }
-    }
-  }
-  NodeID i = 0;
-  for (auto&& visited : visited) {
-    if (!visited) {
-      //return false;
-      ++i;
-    }
-  }
-  if (0 < i) {
-    std::cout << "unvisited " << i << " " << graph.size() + 1 << " ";
-    return false;
-  }
-  return true;
-}
 
 int main(int argc, char* argv[]) {
   std::vector<std::string> strings(argv + 1, argv + argc);
@@ -277,6 +218,12 @@ int main(int argc, char* argv[]) {
               break;
             case 9:
               record([&] { return sv_v9<Graph, vertex_id_type>(graph); });    //sv
+              break;
+            case 10: 
+              record([&] { return lpcc(std::execution::par_unseq, graph, thread); }); //lp
+              break;
+           case 11: 
+              record([&] { return lpcc_cyclic(std::execution::par_unseq, graph, thread); }); //lp
               break;
             default:
               std::cout << "Unknown version v" << id << "\n";

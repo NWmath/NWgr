@@ -63,14 +63,14 @@ public:
   using attributes_t = std::tuple<Attributes...>;
   static constexpr std::size_t getNAttr() { return sizeof...(Attributes); }
 
-  index_adjacency(size_t N = 0, size_t M = 0) : unipartite_graph_base(N), base(N, M) {}
+  index_adjacency(size_t N = 0) : unipartite_graph_base(N), base(N) {}
+  index_adjacency(size_t N, size_t M = 0) : unipartite_graph_base(N), base(N, M) {}
   index_adjacency(std::array<size_t, 1> N, size_t M = 0) : unipartite_graph_base(N), base(N[0], M) {}
 
   template <class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
   index_adjacency(index_edge_list<vertex_id_type, unipartite_graph_base, directedness::directed, Attributes...>& A,
                   ExecutionPolicy&&                                                                              policy = {})
       : unipartite_graph_base(A.num_vertices()[0]), base(A.num_vertices()[0] + 1) {
-        std::cout << "!!" << unipartite_graph_base::vertex_cardinality[0] << std::endl;
     fill<idx>(A, *this, policy);
   }
 
@@ -80,6 +80,41 @@ public:
       : unipartite_graph_base(A.num_vertices()[0]), base(A.num_vertices()[0] + 1) {
     fill<idx>(A, *this, policy);
   }
+
+  template <class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
+  index_adjacency(size_t N,
+                  index_edge_list<vertex_id_type, unipartite_graph_base,
+                                  directedness::directed, Attributes...>& A,
+                  ExecutionPolicy&& policy = {})
+      : unipartite_graph_base(N), base(N) {
+    fill<idx>(A, *this, policy);
+  }
+  template <class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
+  index_adjacency(size_t N,
+                  index_edge_list<vertex_id_type, unipartite_graph_base,
+                                  directedness::undirected, Attributes...>& A,
+                  ExecutionPolicy&& policy = {})
+      : unipartite_graph_base(N), base(N) {
+    fill<idx>(A, *this, policy);
+  }
+  // customized move constructor
+  index_adjacency(std::vector<vertex_id_t>&& indices,
+                  std::vector<vertex_id_t>&& first_to_be,
+                  std::vector<Attributes>&&... rest_to_be)
+      : unipartite_graph_base(indices.size() - 1), base(std::move(indices), std::move(first_to_be), std::move(rest_to_be)...) {}
+  index_adjacency(std::vector<vertex_id_t>&& indices,
+                  std::tuple<std::vector<vertex_id_t>,
+                             std::vector<Attributes>...>&& to_be_indexed)
+      : unipartite_graph_base(indices.size() - 1), base(std::move(indices), std::move(to_be_indexed)) {}
+  // customized copy constructor
+  index_adjacency(const std::vector<vertex_id_t>& indices,
+                  const std::vector<vertex_id_t>& first_to_be,
+                  const std::vector<Attributes>&... rest_to_be)
+      : unipartite_graph_base(indices.size() - 1), base(indices, first_to_be, rest_to_be...) {}
+  index_adjacency(const std::vector<vertex_id_t>& indices,
+                  const std::tuple<std::vector<vertex_id_t>,
+                                   std::vector<Attributes>...>& to_be_indexed)
+      : unipartite_graph_base(indices.size() - 1), base(indices, to_be_indexed) {}
 
   num_vertices_type num_vertices() const { return {base::size()}; };
   num_edges_type    num_edges() const { return base::to_be_indexed_.size(); };
@@ -130,6 +165,27 @@ public:
       : bipartite_graph_base(A.num_vertices()[idx], A.num_vertices()[(idx + 1) % 2]), base(A.num_vertices()[idx] + 1) {
     fill_biadjacency<idx>(A, *this, policy);
   }
+  //TODO bipartite_graph_base is not fully initialized
+  //TODO only N0 is passed in, missing N1
+  // customized move constructor
+  index_biadjacency(size_t N1, std::vector<vertex_id_t>&& indices,
+                  std::vector<vertex_id_t>&& first_to_be,
+                  std::vector<Attributes>&&... rest_to_be)
+      : bipartite_graph_base(indices.size() - 1, N1), base(std::move(indices), std::move(first_to_be), std::move(rest_to_be)...) {}
+  index_biadjacency(size_t N1, std::vector<vertex_id_t>&& indices,
+                  std::tuple<std::vector<vertex_id_t>,
+                             std::vector<Attributes>...>&& to_be_indexed)
+      : bipartite_graph_base(indices.size() - 1, N1), base(std::move(indices), std::move(to_be_indexed)) {}
+  // customized copy constructor
+  index_biadjacency(size_t N1, const std::vector<vertex_id_t>& indices,
+                  const std::vector<vertex_id_t>& first_to_be,
+                  const std::vector<Attributes>&... rest_to_be)
+      : bipartite_graph_base(indices.size() - 1, N1), base(indices, first_to_be, rest_to_be...) {}
+  index_biadjacency(size_t N1, const std::vector<vertex_id_t>& indices,
+                  const std::tuple<std::vector<vertex_id_t>,
+                                   std::vector<Attributes>...>& to_be_indexed)
+      : bipartite_graph_base(indices.size() - 1, N1), base(indices, to_be_indexed) {}
+
   auto num_vertices() const { return vertex_cardinality; }
   num_edges_type    num_edges() const { return base::to_be_indexed_.size(); };
 };
