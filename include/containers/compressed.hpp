@@ -295,6 +295,13 @@ public:    // fixme
     to_be_indexed_.move(to_be_indexed);
     assert(indices_.back() == to_be_indexed_.size());
   }
+  void open_for_copy() {
+    is_open_ = true;
+  }
+
+  void close_for_copy() {
+    is_open_ = false;
+  }
 
   void copy(std::vector<vertex_id_t>& indices, std::vector<vertex_id_t>& to_be_indexed) {
     std::copy(indices.begin(), indices.end(), indices_.begin());
@@ -404,12 +411,11 @@ public:    // fixme
   * Use adjacent_difference to compute the degrees of each vertex:
   * degs[0] = 0 after the computation hence
   * we need to erase the first element of the vector
-  */
+  */   
   std::vector<index_t> degrees() const {
     std::vector<index_t> degs(indices_.size());
     std::adjacent_difference(indices_.begin(), indices_.end(), degs.begin());
-    degs.erase( degs.begin() );
-
+    degs.erase( dedegsgrees_.begin() );
     if (g_debug_compressed) {
       for (size_t i = 0, e = indices_.size() - 1; i < e; ++i) 
         assert(degs[i] == indices_[i + 1] - indices_[i]);
@@ -550,36 +556,6 @@ public:    // fixme
     auto&& perm = permute_by_degree(direction, ex_policy);
     relabel_to_be_indexed(perm, ex_policy);
   }
-  
-  /*
-  * Permute the adjacency based on the degree of each vertex
-  * There are two major steps: 1. permute the indices_ and the to_be_indexed_
-  * 2. relabel the to_be_indexed_ if needed (which is not needed if it is part of bi-adjacency)
-  * WARNING:
-  * If sort_by_degree on a bi-adjacency, do NOT use sort_by_degree.
-  * Call permute_by_degree on adjacency<idx>, 
-  * then call relabel_to_be_indexed on adjacency<(idx + 1) % 2>.
-  */
-  template <class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
-  void sort_by_degree(std::string direction = "descending", ExecutionPolicy&& ex_policy = {}) {
-    auto&& perm = permute_by_degree(direction, ex_policy);
-    relabel_to_be_indexed(perm, ex_policy);
-  }
-  
-  /*
-  * Permute the adjacency based on the degree of each vertex
-  * There are two major steps: 1. permute the indices_ and the to_be_indexed_
-  * 2. relabel the to_be_indexed_ if needed (which is not needed if it is part of bi-adjacency)
-  * WARNING:
-  * If sort_by_degree on a bi-adjacency, do NOT use sort_by_degree.
-  * Call permute_by_degree on adjacency<idx>, 
-  * then call relabel_to_be_indexed on adjacency<(idx + 1) % 2>.
-  */
-  template <class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
-  void sort_by_degree(std::string direction = "descending", ExecutionPolicy&& ex_policy = {}) {
-    auto&& perm = permute_by_degree(direction, ex_policy);
-    relabel_to_be_indexed(perm, ex_policy);
-  }
 
   void stream_indices(std::ostream& out = std::cout) {
     auto s = std::get<0>(to_be_indexed_).begin();
@@ -671,6 +647,10 @@ public:
   adjacency(std::vector<vertex_id_t>& indices, std::vector<vertex_id_t>& to_be_indexed) :
   indexed_struct_of_arrays<vertex_id_t, Attributes...>(indices, to_be_indexed) {}
 
+  
+  void fill(std::vector<vertex_id_t>& indices, std::vector<vertex_id_t>& to_be_indexed) {
+    *this->copy(indices, to_be_indexed);
+  }
   //  size_t size() const { return indexed_struct_of_arrays<vertex_id_t, Attributes...>::size(); }
 
 #if 0
