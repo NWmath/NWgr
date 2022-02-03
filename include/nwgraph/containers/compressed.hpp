@@ -214,6 +214,8 @@ public:    // fixme
 
   index_t size() const { return indices_.size() - 1; }
   index_t max() const { return indices_.size() - 2; }
+  auto get_indices() const { return indices_; }
+  auto get_to_be_indexed() const {return to_be_indexed_; }
 
   index_t source(difference_type edge) const {
     auto i = std::upper_bound(indices_.begin(), indices_.end(), edge);

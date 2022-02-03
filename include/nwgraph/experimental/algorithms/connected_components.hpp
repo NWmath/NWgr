@@ -290,7 +290,7 @@ std::vector<T> compute_connected_components_v2(const Graph& g) {
   return comp;
 }    // compute_connected_components_v2
 
-template <adjacency_list_graph Graph, typename T>
+template <adjacency_list_graph Graph, typename T = vertex_id_t<Graph>>
 std::vector<T> ccv1(const Graph& g) {
   std::vector<T> comp(g.size());
   std::for_each(std::execution::par_unseq, counting_iterator<T>(0), counting_iterator<T>(g.size()), [&](auto n) { comp[n] = n; });

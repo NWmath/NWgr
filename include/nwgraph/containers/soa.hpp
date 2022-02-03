@@ -142,7 +142,10 @@ struct struct_of_arrays : std::tuple<std::vector<Attributes>...> {
 
   struct_of_arrays() = default;
   struct_of_arrays(size_t M) : base(std::vector<Attributes>(M)...) {}
-
+  struct_of_arrays(std::vector<Attributes>&&... l) : base(std::move(l)...) {}
+  struct_of_arrays(const std::vector<Attributes>&... l) : base(l...) {}
+  struct_of_arrays(std::tuple<std::vector<Attributes>...>&& l) : base(std::move(l)) {}
+  struct_of_arrays(const std::tuple<std::vector<Attributes>...>& l) : base(l) {}
   struct_of_arrays(std::initializer_list<value_type> l) {
     for_each(l.begin(), l.end(), [&](value_type x) { push_back(x); });
   }
@@ -163,20 +166,20 @@ struct struct_of_arrays : std::tuple<std::vector<Attributes>...> {
     return std::apply([&](auto&&... r) { return std::forward_as_tuple(std::forward<decltype(r)>(r)[i]...); }, *this);
   }
 
-  void move(std::vector<Attributes>&... attrs) {
-    std::apply([&](auto&... vs) { (vs.swap(attrs), ...); }, *this);
+  void move(std::vector<Attributes>&&... attrs) {
+    std::apply([&](auto&&... vs) { (vs.swap(attrs), ...); }, *this);
   }
 
-  void move(std::tuple<std::vector<Attributes>...>& attrs) {
-    std::apply([&](Attributes... attr) { move(attr...); }, attrs);
+  void move(std::tuple<std::vector<Attributes>...>&& attrs) {
+    std::apply([&](Attributes&&... attr) { move(attr...); }, attrs);
   }
 
-  void copy(std::vector<Attributes>... attrs) {
+  void copy(const std::vector<Attributes>&... attrs) {
     std::apply([&](auto&... vs) { (std::copy(attrs.begin(), attrs.end(), vs.begin()), ...); }, *this);
   }
 
-  void copy(std::tuple<std::vector<Attributes>...> attrs) {
-    std::apply([&](Attributes... attr) { copy(attr...); }, attrs);
+  void copy(const std::tuple<std::vector<Attributes>...>& attrs) {
+    std::apply([&](const std::vector<Attributes>&... attr) { copy(attr...); }, attrs);
   }
 
   void push_back(Attributes... attrs) {

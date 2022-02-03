@@ -39,7 +39,7 @@
 namespace nw {
 namespace graph {
   
-template <adjacency_list_graph Graph, typename GraphT>
+template <adjacency_list_graph Graph, adjacency_list_graph GraphT>
 bool BFSVerifier(const Graph& g, GraphT& g_t, vertex_id_t<Graph> source, std::vector<vertex_id_t<Graph>>& parent) {
   using vertex_id_type = vertex_id_t<Graph>;
 

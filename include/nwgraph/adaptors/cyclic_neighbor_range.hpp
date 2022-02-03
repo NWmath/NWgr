@@ -64,7 +64,7 @@ public:
     Iterator        i_;
     difference_type stride_;
 
-    decltype(auto) operator*() { return std::make_tuple(i_ - begin_, *i_); }
+    decltype(auto) operator*() { return std::make_tuple(static_cast<std::size_t>(i_ - begin_), *i_); }
     
     iterator& operator++() {
       i_ += stride_;

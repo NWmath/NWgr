@@ -41,22 +41,23 @@ public:
         for (auto inner = (*outer_it).begin(); inner != (*outer_it).end(); ++inner) {
           vertex_id_type neighbor = std::get<0>(*inner);
           auto           back_it  = outer[neighbor].begin();
-          if (back_address[outer_it - outer].find(neighbor) != back_address[outer_it - outer].end()) {
+          std::size_t end = outer_it - outer;
+          if (back_address[end].find(neighbor) != back_address[end].end()) {
             continue;
           }
-          for (; back_it != outer[neighbor].end() && std::get<0>(*back_it) != outer_it - outer; ++back_it)
+          for (; back_it != outer[neighbor].end() && std::get<0>(*back_it) != end; ++back_it)
             ;
           if (back_it != outer[neighbor].end()) {
-            if (outer_it - outer < std::get<0>(*inner)) {
-              back_address[outer_it - outer].insert_or_assign(std::get<0>(*inner), *back_it);
-              back_address[std::get<0>(*inner)].insert_or_assign(outer_it - outer, *inner);
+            if (end < std::get<0>(*inner)) {
+              back_address[end].insert_or_assign(std::get<0>(*inner), *back_it);
+              back_address[std::get<0>(*inner)].insert_or_assign(end, *inner);
             }
           } else {
             edge extra_edge;
-            std::get<0>(extra_edge) = outer_it - outer;
-            back_address_extra[outer_it - outer].emplace(std::get<0>(*inner), extra_edge);
-            address_extra[std::get<0>(*inner)].emplace(outer_it - outer, extra_edge);
-            back_address[std::get<0>(*inner)].emplace(outer_it - outer, *inner);
+            std::get<0>(extra_edge) = end;
+            back_address_extra[end].emplace(std::get<0>(*inner), extra_edge);
+            address_extra[std::get<0>(*inner)].emplace(end, extra_edge);
+            back_address[std::get<0>(*inner)].emplace(end, *inner);
           }
         }
       }

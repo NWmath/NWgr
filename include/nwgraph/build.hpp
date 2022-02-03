@@ -44,18 +44,18 @@ namespace graph {
 
 using default_execution_policy = std::execution::parallel_unsequenced_policy;
 
-template <int idx, class edge_list_t, class ExecutionPolicy = default_execution_policy>
+template <int idx, edge_list_graph edge_list_t, class ExecutionPolicy = default_execution_policy>
 void sort_by(edge_list_t& el, ExecutionPolicy&& policy = {}) {
   std::sort(std::execution::seq, el.begin(), el.end(),
             [](const auto& a, const auto& b) -> bool { return (std::get<idx>(a) < std::get<idx>(b)); });
 }
 
-template <int idx, class edge_list_t, class ExecutionPolicy = default_execution_policy>
+template <int idx, edge_list_graph edge_list_t, class ExecutionPolicy = default_execution_policy>
 void stable_sort_by(edge_list_t& el, ExecutionPolicy&& policy = {}) {
   std::stable_sort(policy, el.begin(), el.end(), [](const auto& a, const auto& b) -> bool { return (std::get<idx>(a) < std::get<idx>(b)); });
 }
 
-template <int idx, class edge_list_t, class ExecutionPolicy = default_execution_policy>
+template <int idx, edge_list_graph edge_list_t, class ExecutionPolicy = default_execution_policy>
 void lexical_sort_by(edge_list_t& el, ExecutionPolicy&& policy = {}) {
   static_assert(std::is_same_v<decltype(el.begin()), typename edge_list_t::iterator>);
 
@@ -70,7 +70,7 @@ void lexical_sort_by(edge_list_t& el, ExecutionPolicy&& policy = {}) {
   }
 }
 
-template <int idx, class edge_list_t, class ExecutionPolicy = default_execution_policy>
+template <int idx, edge_list_graph edge_list_t, class ExecutionPolicy = default_execution_policy>
 void lexical_stable_sort_by(edge_list_t& el, ExecutionPolicy&& policy = {}) {
 
   const int jdx = (idx + 1) % 2;
@@ -81,13 +81,13 @@ void lexical_stable_sort_by(edge_list_t& el, ExecutionPolicy&& policy = {}) {
 }
 
 
-template <class adjacency_t, typename... Ts>
+template <adjacency_list_graph adjacency_t, typename... Ts>
 auto push_back_fill_helper(adjacency_t& cs, std::tuple<Ts...> const& theTuple) {
 
   std::apply([&](Ts const&... args) { cs.push_back(args...); }, theTuple);
 }
 
-template <edge_list_graph edge_list_t, adjacency_list_graph adjacency_t>
+template <edge_list_c edge_list_t, adjacency_list_graph adjacency_t>
 void push_back_fill(edge_list_t& el, adjacency_t& cs) {
   cs.open_for_push_back();
 
@@ -134,7 +134,7 @@ void push_back_fill(const EdgeList& edge_list, Adjacency& adj, bool directed, si
   }
 }
 
-template <typename edge_list_t, typename adj_list_t>
+template <edge_list_graph edge_list_t, adjacency_list_graph adj_list_t>
 auto fill_adj_list(edge_list_t& el, adj_list_t& al) {
   size_t num_edges = 0;
 
@@ -165,37 +165,37 @@ void permute(const Vector1& vec1, Vector2& vec2, const Perm& perm) {
   });
 }
 
-template <class edge_list_t, class adjacency_t, class Perm, size_t... Is>
+template <edge_list_graph edge_list_t, adjacency_list_graph adjacency_t, class Perm, size_t... Is>
 void permute_helper(edge_list_t& el, adjacency_t& cs, std::index_sequence<Is...> is, const Perm& perm) {
   (..., (permute(std::get<Is + 2>(dynamic_cast<typename edge_list_t::base&>(el)), std::get<Is + 1>(cs.to_be_indexed_), perm)));
 }
 
-template <class edge_list_t, class adjacency_t, class Perm, size_t... Is>
+template <edge_list_graph edge_list_t, adjacency_list_graph adjacency_t, class Perm, size_t... Is>
 void permute_helper_all(edge_list_t& el, adjacency_t& cs, std::index_sequence<Is...> is, const Perm& perm) {
   (..., (permute(std::get<Is + 1>(dynamic_cast<typename edge_list_t::base&>(el)), std::get<Is>(cs.to_be_indexed_), perm)));
 }
 
 
 
-template <class edge_list_t, class adjacency_t, class T, class Perm, size_t... Is>
+template <edge_list_graph edge_list_t, adjacency_list_graph adjacency_t, class T, class Perm, size_t... Is>
 void permute_helper(edge_list_t& el, adjacency_t& cs, std::index_sequence<Is...> is, T& Tmp, Perm& perm) {
   (..., (permute(std::get<Is + 2>(dynamic_cast<typename edge_list_t::base&>(Tmp)),std::get<Is + 1>(cs.to_be_indexed_), perm)));
 }
 
 
-template <class edge_list_t, class adjacency_t, class ExecutionPolicy = default_execution_policy, size_t... Is>
+template <edge_list_graph edge_list_t, adjacency_list_graph adjacency_t, class ExecutionPolicy = default_execution_policy, size_t... Is>
 void fill_helper(edge_list_t& el, adjacency_t& cs, std::index_sequence<Is...> is, ExecutionPolicy&& policy = {}) {
   (..., (std::copy(policy, std::get<Is + 2>(dynamic_cast<typename edge_list_t::base&>(el)).begin(),
                    std::get<Is + 2>(dynamic_cast<typename edge_list_t::base&>(el)).end(), std::get<Is + 1>(cs.to_be_indexed_).begin())));
 }
 
-template <class edge_list_t, class adjacency_t, class ExecutionPolicy = default_execution_policy, size_t... Is>
+template <edge_list_graph edge_list_t, adjacency_list_graph adjacency_t, class ExecutionPolicy = default_execution_policy, size_t... Is>
 void copy_helper(edge_list_t& el, adjacency_t& cs, std::index_sequence<Is...> is, size_t offset, ExecutionPolicy&& policy = {}) {
   (..., (std::copy(policy, std::get<Is + 2>(dynamic_cast<typename edge_list_t::base&>(el)).begin(),
                    std::get<Is + 2>(dynamic_cast<typename edge_list_t::base&>(el)).end(), std::get<Is + 1>(cs.to_be_indexed_).begin()+offset)));
 }
 
-template <class edge_list_t, class adjacency_t, class T, class ExecutionPolicy = default_execution_policy, size_t... Is>
+template <edge_list_graph edge_list_t, adjacency_list_graph adjacency_t, class T, class ExecutionPolicy = default_execution_policy, size_t... Is>
 void fill_helper_tmp(edge_list_t& el, adjacency_t& cs, std::index_sequence<Is...> is, T& Tmp, ExecutionPolicy&& policy = {}) {
   (..., (std::copy(policy, std::get<Is + 2>(dynamic_cast<typename edge_list_t::base&>(Tmp)).begin(),
                    std::get<Is + 2>(dynamic_cast<typename edge_list_t::base&>(Tmp)).end(), std::get<Is + 1>(cs.to_be_indexed_).begin())));
@@ -265,7 +265,7 @@ auto fill_directed(edge_list_t& el, Int N, adjacency_t& cs, ExecutionPolicy&& po
 }
 
 
-template <int idx, class edge_list_t, class Int, class adjacency_t, class ExecutionPolicy = default_execution_policy>
+template <int idx, edge_list_graph edge_list_t, class Int, adjacency_list_graph adjacency_t, class ExecutionPolicy = default_execution_policy>
 auto fill_undirected(edge_list_t& el, Int N, adjacency_t& cs, ExecutionPolicy&& policy = {}) {
   assert(false == is_unipartite<edge_list_t>::value);
 
@@ -370,7 +370,7 @@ auto fill_biadjacency(bi_edge_list_t& el, biadjacency_t& cs, ExecutionPolicy&& p
   return cs.to_be_indexed_.size();
 }
 
-template <int idx, class edge_list_t>
+template <int idx, edge_list_graph edge_list_t>
 void swap_to_triangular(edge_list_t& el, succession cessor) {
   if (cessor == succession::predecessor) {
     swap_to_triangular<idx, edge_list_t, succession::predecessor>(el);
@@ -381,7 +381,7 @@ void swap_to_triangular(edge_list_t& el, succession cessor) {
   }
 }
 
-template <int idx, class edge_list_t>
+template <int idx, edge_list_graph edge_list_t>
 void swap_to_triangular(edge_list_t& el, const std::string& cessor = "predecessor") {
   if (cessor == "predecessor") {
     swap_to_triangular<idx, edge_list_t, succession::predecessor>(el);
@@ -392,7 +392,7 @@ void swap_to_triangular(edge_list_t& el, const std::string& cessor = "predecesso
   }
 }
 
-template <int idx, class edge_list_t, succession cessor = succession::predecessor, class ExecutionPolicy = default_execution_policy>
+template <int idx, edge_list_graph edge_list_t, succession cessor = succession::predecessor, class ExecutionPolicy = default_execution_policy>
 void swap_to_triangular(edge_list_t& el, ExecutionPolicy&& policy = {}) {
 
   if constexpr ((idx == 0 && cessor == succession::predecessor) || (idx == 1 && cessor == succession::successor)) {
@@ -412,7 +412,7 @@ void swap_to_triangular(edge_list_t& el, ExecutionPolicy&& policy = {}) {
 
 // Make entries unique -- in place -- remove adjacent redundancies
 // Requires entries to be sorted in both dimensions
-template <class edge_list_t, class ExecutionPolicy = default_execution_policy>
+template <edge_list_graph edge_list_t, class ExecutionPolicy = default_execution_policy>
 void uniq(edge_list_t& el, ExecutionPolicy&& policy = {}) {
 
   auto past_the_end = std::unique(policy, el.begin(), el.end(),
@@ -422,7 +422,7 @@ void uniq(edge_list_t& el, ExecutionPolicy&& policy = {}) {
   el.resize(past_the_end - el.begin());
 }
 
-template <class edge_list_t>
+template <edge_list_graph edge_list_t>
 void remove_self_loops(edge_list_t& el) {
   auto past_the_end =
       std::remove_if(/*std::execution::par_unseq,*/ el.begin(), el.end(), [](auto&& x) { return std::get<0>(x) == std::get<1>(x); });
@@ -444,7 +444,7 @@ auto degrees(const Graph& graph, ExecutionPolicy&& policy = {}) {
 }
 
 
-template <int d_idx = 0, class edge_list_t, class ExecutionPolicy = default_execution_policy>
+template <int d_idx = 0, edge_list_graph edge_list_t, class ExecutionPolicy = default_execution_policy>
 auto degrees(edge_list_t& el, ExecutionPolicy&& policy = {}) requires(!degree_enumerable_graph<edge_list_t>) {
 
   size_t d_size = 0;
@@ -477,13 +477,13 @@ auto degrees(edge_list_t& el, ExecutionPolicy&& policy = {}) requires(!degree_en
   return degree;
 }
 
-template <int idx = 0, class edge_list_t>
+template <int idx = 0, edge_list_graph edge_list_t>
 auto perm_by_degree(edge_list_t& el, std::string direction = "ascending") {
   auto degree = degrees<idx>(el);
   return perm_by_degree<idx>(el, degree, direction);
 }
 
-template <int idx = 0, class edge_list_t, class Vector, class ExecutionPolicy = default_execution_policy>
+template <int idx = 0, edge_list_graph edge_list_t, class Vector, class ExecutionPolicy = default_execution_policy>
 auto perm_by_degree(edge_list_t& el, const Vector& degree, std::string direction = "ascending", ExecutionPolicy&& policy = {}) {
 
   std::vector<typename edge_list_t::vertex_id_type> perm(degree.size());
@@ -507,7 +507,8 @@ auto perm_by_degree(edge_list_t& el, const Vector& degree, std::string direction
   return perm;
 }
 
-template <class edge_list_t, class Vector, class ExecutionPolicy = default_execution_policy>
+template <edge_list_graph edge_list_t, class Vector, class ExecutionPolicy = default_execution_policy>
+requires(is_unipartite<edge_list_t>::value)
 void relabel(edge_list_t& el, const Vector& perm, ExecutionPolicy&& policy = {}) {
   std::vector<typename edge_list_t::vertex_id_type> iperm(perm.size());
 
@@ -523,13 +524,39 @@ void relabel(edge_list_t& el, const Vector& perm, ExecutionPolicy&& policy = {})
   });
 }
 
-template <int idx, class edge_list_t, class Vector = std::vector<int>>
+template <int idx, edge_list_graph edge_list_t, class Vector, class ExecutionPolicy = default_execution_policy>
+auto relabel(edge_list_t& el, const Vector& perm, ExecutionPolicy&& policy = {}) {
+  std::vector<typename edge_list_t::vertex_id_type> iperm(perm.size());
+
+  tbb::parallel_for(tbb::blocked_range(0ul, iperm.size()), [&](auto&& r) {
+    for (auto i = r.begin(), e = r.end(); i != e; ++i) {
+      iperm[perm[i]] = i;
+    }
+  });
+
+  std::for_each(policy, el.begin(), el.end(), [&](auto&& x) {
+    std::get<idx>(x) = iperm[std::get<idx>(x)];
+  });
+  return iperm;
+}
+
+template <edge_list_graph edge_list_t, class Vector = std::vector<int>>
+requires(is_unipartite<edge_list_t>::value)
 void relabel_by_degree(edge_list_t& el, std::string direction = "ascending", const Vector& degree = std::vector<int>(0)) {
 
   std::vector<typename edge_list_t::vertex_id_type> perm =
       degree.size() == 0 ? perm_by_degree<0>(el, direction) : perm_by_degree<0>(el, degree, direction);
 
   relabel(el, perm);
+}
+
+template <int idx, edge_list_graph edge_list_t, class Vector = std::vector<int>>
+auto relabel_by_degree(edge_list_t& el, std::string direction = "ascending", const Vector& degree = std::vector<int>(0)) {
+
+  std::vector<typename edge_list_t::vertex_id_type> perm =
+      degree.size() == 0 ? perm_by_degree<idx>(el, direction) : perm_by_degree<idx>(el, degree, direction);
+
+  return relabel<idx>(el, perm);
 }
 
 /**
