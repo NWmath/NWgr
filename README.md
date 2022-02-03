@@ -69,7 +69,7 @@ $ cmake .. -DCMAKE_BUILD_TYPE=Release (or Debug)
 ```
 To enable test cases and examples under build/test directory:
 ```
-$ cmake .. -DNW_GRAPH_BUILD_TEST=ON (or OFF)
+$ cmake .. -DNW_GRAPH_BUILD_TESTS=ON (or OFF)
 ```
 To generate applications under build/bench/ directory:
 ```

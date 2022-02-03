@@ -448,7 +448,7 @@ template <int d_idx = 0, edge_list_graph edge_list_t, class ExecutionPolicy = de
 auto degrees(edge_list_t& el, ExecutionPolicy&& policy = {}) requires(!degree_enumerable_graph<edge_list_t>) {
 
   size_t d_size = 0;
-  if constexpr (false == is_unipartite<edge_list_t>::value) {
+  if constexpr (is_unipartite<edge_list_t>::value) {
     d_size = num_vertices(el);
   } else {
     d_size = el.num_vertices()[d_idx];
