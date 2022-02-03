@@ -451,9 +451,8 @@ auto degrees(edge_list_t& el, ExecutionPolicy&& policy = {}) requires(!degree_en
   if constexpr (is_unipartite<edge_list_t>::value) {
     d_size = num_vertices(el);
   } else {
-    d_size = el.num_vertices()[d_idx];
+    d_size = num_vertices(el, d_idx);
   }
-
   using vertex_id_type = typename edge_list_t::vertex_id_type;
   
   std::vector<vertex_id_type> degree(d_size);
