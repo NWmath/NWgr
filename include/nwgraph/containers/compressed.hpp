@@ -408,32 +408,12 @@ public:    // fixme
     return degs;
   }
 
-    /*
-  * Based on the new_id_perm of the vertices, relabel each vertex i into new_id_perm[i]
-  * and then sort each neighbor list.
+  /*
+  * Sort each neighbor list.
   */
   template <class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
-  void relabel_to_be_indexed(const std::vector<index_t>& new_id_perm, ExecutionPolicy&& ex_policy = {}) {
-    /*
+  void sort_to_be_indexed(ExecutionPolicy&& ex_policy = {}) {
     auto s = std::get<0>(to_be_indexed_).begin();
-    tbb::parallel_for(tbb::blocked_range(0ul, indices_.size() - 1), [&](auto&& r) {
-      for (auto i = r.begin(), e = r.end(); i != e; ++i) {
-        for (size_t j = indices_[i]; j < indices_[i + 1]; ++j) {
-          vertex_id_t v = s[j];
-          s[j] = new_id_perm[s[j]];
-        }
-        std::sort(ex_policy, s + indices_[i], s + indices_[i + 1]);
-      }
-    });
-    */
-    auto s = std::get<0>(to_be_indexed_).begin();
-    tbb::parallel_for(tbb::blocked_range(0ul, std::get<0>(to_be_indexed_).size()), [&](auto&& r) {
-      for (auto i = r.begin(), e = r.end(); i != e; ++i) {
-          s[i] = new_id_perm[s[i]];
-      }
-    });
-
-    s = std::get<0>(to_be_indexed_).begin();
 
     for (size_t i = 0, e = indices_.size() - 1; i < e; ++i) {
       std::sort(ex_policy, s + indices_[i], s + indices_[i + 1]);
@@ -442,6 +422,21 @@ public:    // fixme
     if (g_debug_compressed) {
       stream_indices(std::cout);
     }
+  }
+  
+  /*
+  * Based on the new_id_perm of the vertices, relabel each vertex i into new_id_perm[i]
+  * and then sort each neighbor list.
+  */
+  template <class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
+  void relabel_to_be_indexed(const std::vector<index_t>& new_id_perm, ExecutionPolicy&& ex_policy = {}) {
+    auto s = std::get<0>(to_be_indexed_).begin();
+    tbb::parallel_for(tbb::blocked_range(0ul, std::get<0>(to_be_indexed_).size()), [&](auto&& r) {
+      for (auto i = r.begin(), e = r.end(); i != e; ++i) {
+          s[i] = new_id_perm[s[i]];
+      }
+    });
+    sort_to_be_indexed(ex_policy);
   }
   
   /*

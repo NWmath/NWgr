@@ -213,6 +213,7 @@ auto fill_directed(edge_list_t& el, Int N, adjacency_t& cs, ExecutionPolicy&& po
     cs.indices_.resize(N + 1);
   }
 
+  cs.indices_[0] = 0;
   std::inclusive_scan(policy, degree.begin(), degree.end(), cs.indices_.begin() + 1);
   cs.to_be_indexed_.resize(el.size());
   
@@ -341,31 +342,43 @@ auto fill_undirected(edge_list_t& el, Int N, adjacency_t& cs, ExecutionPolicy&& 
 
 
 template <int idx, edge_list_graph edge_list_t, adjacency_list_graph adjacency_t, class ExecutionPolicy = default_execution_policy>
-auto fill(edge_list_t& el, adjacency_t& cs, ExecutionPolicy&& policy = {}) {
+auto fill(edge_list_t& el, adjacency_t& cs, bool sort_adjacency = false, ExecutionPolicy&& policy = {}) {
   if constexpr (edge_list_t::edge_directedness == nw::graph::directedness::directed) {
     fill_directed<idx>(el, num_vertices(el), cs, policy);
   } else {    // undirected -- this cannot be a bipartite graph
     fill_undirected<idx>(el, num_vertices(el), cs, policy);
   }
+  if (sort_adjacency) {
+    //make adjacency sorted
+    cs.sort_to_be_indexed();
+  }
   return cs.to_be_indexed_.size();
 }
 
 template <int idx, edge_list_graph edge_list_t, adjacency_list_graph adjacency_t, class ExecutionPolicy = default_execution_policy>
-auto fill(edge_list_t& el, adjacency_t& cs, directedness dir, ExecutionPolicy&& policy = {}) {
+auto fill(edge_list_t& el, adjacency_t& cs, directedness dir, bool sort_adjacency = false, ExecutionPolicy&& policy = {}) {
   if (dir == nw::graph::directedness::directed) {
     fill_directed<idx>(el, num_vertices(el), cs, policy);
   } else {    // undirected -- this cannot be a bipartite graph
     fill_undirected<idx>(el, num_vertices(el), cs, policy);
   }
+  if (sort_adjacency) {
+    //make adjacency sorted
+    cs.sort_to_be_indexed();
+  }
   return cs.to_be_indexed_.size();
 }
 
 template <int idx, edge_list_graph bi_edge_list_t, adjacency_list_graph biadjacency_t, class ExecutionPolicy = default_execution_policy>
-auto fill_biadjacency(bi_edge_list_t& el, biadjacency_t& cs, ExecutionPolicy&& policy = {}) {
+auto fill_biadjacency(bi_edge_list_t& el, biadjacency_t& cs, bool sort_adjacency = false, ExecutionPolicy&& policy = {}) {
   if constexpr (bi_edge_list_t::edge_directedness == nw::graph::directedness::directed) {
     fill_directed<idx>(el, num_vertices(el, idx), cs, policy);
   } else {    // undirected -- this cannot be a bipartite graph
     fill_undirected<idx>(el, num_vertices(el, idx), cs, policy);
+  }
+  if (sort_adjacency) {
+    //make adjacency sorted
+    cs.sort_to_be_indexed();
   }
   return cs.to_be_indexed_.size();
 }
@@ -448,7 +461,7 @@ template <int d_idx = 0, edge_list_graph edge_list_t, class ExecutionPolicy = de
 auto degrees(edge_list_t& el, ExecutionPolicy&& policy = {}) requires(!degree_enumerable_graph<edge_list_t>) {
 
   size_t d_size = 0;
-  if constexpr (is_unipartite<edge_list_t>::value) {
+  if constexpr (false == is_unipartite<edge_list_t>::value) {
     d_size = num_vertices(el);
   } else {
     d_size = num_vertices(el, d_idx);

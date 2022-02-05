@@ -69,33 +69,37 @@ public:
 
   template <class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
   index_adjacency(index_edge_list<vertex_id_type, unipartite_graph_base, directedness::directed, Attributes...>& A,
+                  bool sort_adjacency = false,
                   ExecutionPolicy&&                                                                              policy = {})
       : unipartite_graph_base(A.num_vertices()[0]), base(A.num_vertices()[0] + 1) {
-    fill<idx>(A, *this, policy);
+    fill<idx>(A, *this, sort_adjacency, policy);
   }
 
   template <class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
   index_adjacency(index_edge_list<vertex_id_type, unipartite_graph_base, directedness::undirected, Attributes...>& A,
+                  bool sort_adjacency = false,
                   ExecutionPolicy&&                                                                                policy = {})
       : unipartite_graph_base(A.num_vertices()[0]), base(A.num_vertices()[0] + 1) {
-    fill<idx>(A, *this, policy);
+    fill<idx>(A, *this, sort_adjacency, policy);
   }
 
   template <class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
   index_adjacency(size_t N,
                   index_edge_list<vertex_id_type, unipartite_graph_base,
                                   directedness::directed, Attributes...>& A,
+                  bool sort_adjacency = false,                
                   ExecutionPolicy&& policy = {})
       : unipartite_graph_base(N), base(N) {
-    fill<idx>(A, *this, policy);
+    fill<idx>(A, *this, sort_adjacency, policy);
   }
   template <class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
   index_adjacency(size_t N,
                   index_edge_list<vertex_id_type, unipartite_graph_base,
                                   directedness::undirected, Attributes...>& A,
+                  bool sort_adjacency = false,
                   ExecutionPolicy&& policy = {})
       : unipartite_graph_base(N), base(N) {
-    fill<idx>(A, *this, policy);
+    fill<idx>(A, *this, sort_adjacency, policy);
   }
   // customized move constructor
   index_adjacency(std::vector<vertex_id>&& indices,
@@ -154,17 +158,25 @@ public:
   index_biadjacency(std::array<size_t, 2> N, size_t M = 0) requires(std::is_same<bipartite_graph_base, bipartite_graph_base>::value) : bipartite_graph_base(N[idx], N[(idx + 1) % 2]), base(N[idx], M) {}
 
   template <class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
-  index_biadjacency(index_edge_list<vertex_id_type, bipartite_graph_base, directedness::directed, Attributes...>& A,
-                  ExecutionPolicy&&                                                                              policy = {})
-      : bipartite_graph_base(A.num_vertices()[idx], A.num_vertices()[(idx + 1) % 2]), base(A.num_vertices()[idx] + 1) {
-    fill_biadjacency<idx>(A, *this, policy);
+  index_biadjacency(index_edge_list<vertex_id_type, bipartite_graph_base,
+                                    directedness::directed, Attributes...>& A,
+                    bool sort_biadjacency = false,
+                    ExecutionPolicy&& policy = {})
+      : bipartite_graph_base(A.num_vertices()[idx],
+                             A.num_vertices()[(idx + 1) % 2]),
+        base(A.num_vertices()[idx] + 1) {
+    fill_biadjacency<idx>(A, *this, sort_biadjacency, policy);
   }
 
   template <class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
-  index_biadjacency(index_edge_list<vertex_id_type, bipartite_graph_base, directedness::undirected, Attributes...>& A,
-                  ExecutionPolicy&&                                                                                policy = {})
-      : bipartite_graph_base(A.num_vertices()[idx], A.num_vertices()[(idx + 1) % 2]), base(A.num_vertices()[idx] + 1) {
-    fill_biadjacency<idx>(A, *this, policy);
+  index_biadjacency(index_edge_list<vertex_id_type, bipartite_graph_base,
+                                    directedness::undirected, Attributes...>& A,
+                    bool sort_biadjacency = false,
+                    ExecutionPolicy&& policy = {})
+      : bipartite_graph_base(A.num_vertices()[idx],
+                             A.num_vertices()[(idx + 1) % 2]),
+        base(A.num_vertices()[idx] + 1) {
+    fill_biadjacency<idx>(A, *this, sort_biadjacency, policy);
   }
   // customized move constructor
   index_biadjacency(size_t N1, std::vector<vertex_id>&& indices,
