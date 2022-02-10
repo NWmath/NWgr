@@ -276,9 +276,10 @@ auto fill_undirected(edge_list_t& el, Int N, adjacency_t& cs, ExecutionPolicy&& 
   using vertex_id_type = vertex_id_t<edge_list_t>;
 
   std::vector<vertex_id_type> Tmp(2*el.size());
+  const int kdx = (idx + 1) % 2;
 
-  std::copy(policy, std::get<0>(el).begin(), std::get<0>(el).end(), Tmp.begin());
-  std::copy(policy, std::get<1>(el).begin(), std::get<1>(el).end(), Tmp.begin()+el.size());
+  std::copy(policy, std::get<idx>(el).begin(), std::get<idx>(el).end(), Tmp.begin());
+  std::copy(policy, std::get<kdx>(el).begin(), std::get<kdx>(el).end(), Tmp.begin()+el.size());
 
   {
     std::vector<vertex_id_type> degrees(N);
@@ -290,7 +291,6 @@ auto fill_undirected(edge_list_t& el, Int N, adjacency_t& cs, ExecutionPolicy&& 
 
   cs.to_be_indexed_.resize(Tmp.size());
 
-  const int kdx = (idx + 1) % 2;
   std::copy(policy, std::get<kdx>(el).begin(), std::get<kdx>(el).end(), std::get<0>(cs.to_be_indexed_).begin());
   std::copy(policy, std::get<idx>(el).begin(), std::get<idx>(el).end(), std::get<0>(cs.to_be_indexed_).begin()+el.size());
 
