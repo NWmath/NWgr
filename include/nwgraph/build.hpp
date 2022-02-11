@@ -475,18 +475,18 @@ auto degrees(edge_list_t& el, ExecutionPolicy&& policy = {}) requires(!degree_en
   if constexpr (edge_list_t::edge_directedness == directedness::directed) {
     std::vector<std::atomic<vertex_id_type>> tmp(degree.size());
 
-    std::for_each(/* policy, */ el.begin(), el.end(), [&](auto&& x) { ++tmp[std::get<d_idx>(x)]; });
+    std::for_each(policy, el.begin(), el.end(), [&](auto&& x) { ++tmp[std::get<d_idx>(x)]; });
 
-    std::copy(/* policy, */ tmp.begin(), tmp.end(), degree.begin());
+    std::copy(policy, tmp.begin(), tmp.end(), degree.begin());
 
   } else if constexpr (edge_list_t::edge_directedness == directedness::undirected) {
     std::vector<std::atomic<vertex_id_type>> tmp(degree.size());
 
-    std::for_each(/* policy, */ el.begin(), el.end(), [&](auto&& x) {
+    std::for_each(policy, el.begin(), el.end(), [&](auto&& x) {
       ++tmp[std::get<0>(x)];
       ++tmp[std::get<1>(x)];
     });
-    std::copy(/* policy, */ tmp.begin(), tmp.end(), degree.begin());
+    std::copy(policy, tmp.begin(), tmp.end(), degree.begin());
   }
   return degree;
 }
