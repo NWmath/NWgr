@@ -462,9 +462,11 @@ auto degrees(edge_list_t& el, ExecutionPolicy&& policy = {}) requires(!degree_en
 
   size_t d_size = 0;
   if constexpr (false == is_unipartite<edge_list_t>::value) {
-    d_size = num_vertices(el);
-  } else {
+    //for bipartite graph
     d_size = num_vertices(el, d_idx);
+  } else {
+    //for unipartite graph
+    d_size = num_vertices(el);
   }
   using vertex_id_type = typename edge_list_t::vertex_id_type;
   
