@@ -80,7 +80,7 @@ protected:
 };
 
 // In NON-unipartite_graph_base, is_unipartite<unipartite_graph_base> == false
-template <typename Graph>
+template <typename Graph_base>
 struct is_unipartite {
   constexpr static const bool value = false;
 };

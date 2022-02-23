@@ -234,7 +234,10 @@ auto tag_invoke(const num_edges_tag, const index_edge_list<vertex_id, graph_base
 //num_vertics CPO, works for both unipartite_graph_base and bipartite_graph_base
 template <std::unsigned_integral vertex_id, typename graph_base_t, directedness direct = directedness::undirected, typename... Attributes>
 auto tag_invoke(const num_vertices_tag, const index_edge_list<vertex_id, graph_base_t, direct, Attributes...>& b, int idx = 0) {
-  return b.num_vertices()[idx];
+  if constexpr (true == is_unipartite<graph_base_t>::value)
+    return b.num_vertices()[0]; //for unipartite graph ignore idx value
+  else 
+    return b.num_vertices()[idx];
 }
 
 template <std::unsigned_integral vertex_id, typename graph_base_t, directedness direct = directedness::undirected, typename... Attributes>
