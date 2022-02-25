@@ -60,12 +60,11 @@ static auto dijkstra(const Graph& graph, vertex_id_t<Graph> source,
   std::vector<distance_t> dist(num_vertices(graph), std::numeric_limits<distance_t>::max());
   dist[source] = 0;
 
-  auto g = graph.begin();
   while (!mq.empty()) {
     auto [u, td] = mq.top();    // don't capture auto&& references here
     mq.pop();
     if (td == dist[u]) {
-      for (auto&& elt : g[u]) {
+      for (auto&& elt : graph[u]) {
         auto v = target(graph, elt);
         auto w = weight(elt);
         assert(w > 0);

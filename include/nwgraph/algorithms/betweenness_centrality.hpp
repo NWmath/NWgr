@@ -66,10 +66,9 @@ bool BCVerifier(const Graph& g, std::vector<typename graph_traits<Graph>::vertex
     std::vector<vertex_id_type> to_visit;
     to_visit.reserve(num_vertices(g));
     to_visit.push_back(source);
-    auto out_neigh = g.begin();
     for (auto it = to_visit.begin(); it != to_visit.end(); it++) {
       vertex_id_type u = *it;
-      for (auto edge : out_neigh[u]) {
+      for (auto edge : g[u]) {
         vertex_id_type v = target(g, edge);
         if (depths[v] == -1) {
           depths[v] = depths[u] + 1;
@@ -94,7 +93,7 @@ bool BCVerifier(const Graph& g, std::vector<typename graph_traits<Graph>::vertex
     std::vector<score_t> deltas(num_vertices(g), 0);
     for (int depth = verts_at_depth.size() - 1; depth >= 0; depth--) {
       for (vertex_id_type u : verts_at_depth[depth]) {
-        for (auto edge : out_neigh[u]) {
+        for (auto edge : g[u]) {
           vertex_id_type v = target(g, edge);
           if (depths[v] == depths[u] + 1) {
             deltas[u] += static_cast<double>(path_counts[u]) / static_cast<double>(path_counts[v]) * (1 + deltas[v]);

@@ -261,9 +261,8 @@ auto apb_adj(Adjacency& graph, size_t ntrial) {
       degrees.resize(N);
       t7.start();
 
-      auto gr = graph.begin();
       for (vertex_id_type i = 0; i < N; ++i) {
-        for (auto j = gr[i].begin(); j != gr[i].end(); ++j) {
+        for (auto j = graph[i].begin(); j != graph[i].end(); ++j) {
           ++degrees[i];
         }
       }

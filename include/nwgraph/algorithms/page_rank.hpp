@@ -95,7 +95,6 @@ template <adjacency_list_graph Graph, typename Real>
     });
   }
 
-  auto G = graph.begin();
   for (size_t iter = 0; iter < max_iters; ++iter) {
 
     auto&& [time, error] = page_rank::time_op([&] {
@@ -104,7 +103,7 @@ template <adjacency_list_graph Graph, typename Real>
           [&](auto&& r, auto partial_sum) {
             for (size_t i = r.begin(), e = r.end(); i != e; ++i) {
               Real z = 0.0;
-              for (auto&& j : G[i]) {
+              for (auto&& j : graph[i]) {
                 z += outgoing_contrib[std::get<0>(j)];
               }
               auto old_rank = page_rank[i];

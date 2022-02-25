@@ -63,13 +63,12 @@ auto delta_stepping_v6(const Graph& graph, Id source, T delta) {
 
   tbb::concurrent_vector<Id> frontier;
 
-  auto g = graph.begin();
   while (top_bin < bins.size()) {
     frontier.resize(0);
     std::swap(frontier, bins[top_bin]);
     tbb::parallel_for_each(frontier, [&](Id i) {
       if (tdist[i] >= delta * top_bin) {
-        std::for_each(g[i].begin(), g[i].end(), [&](auto&& elt) { std::apply([&](Id j, auto wt) { relax(i, j, wt); }, std::move(elt)); });
+        std::for_each(graph[i].begin(), graph[i].end(), [&](auto&& elt) { std::apply([&](Id j, auto wt) { relax(i, j, wt); }, std::move(elt)); });
       }
     });
 
@@ -119,7 +118,6 @@ auto delta_stepping_v8(const Graph& graph, Id source, T delta,
 
   tbb::concurrent_vector<Id> frontier;
 
-  auto g = graph.begin();
   while (top_bin < bins.size()) {
 
     frontier.resize(0);
@@ -127,7 +125,7 @@ auto delta_stepping_v8(const Graph& graph, Id source, T delta,
 
     std::for_each(std::execution::par_unseq, frontier.begin(), frontier.end(), [&](Id i) {
       if (tdist[i] >= delta * top_bin) {
-        std::for_each(std::execution::par_unseq, g[i].begin(), g[i].end(), [&](auto&& elt) {
+        std::for_each(std::execution::par_unseq, graph[i].begin(), graph[i].end(), [&](auto&& elt) {
           auto j = target(graph, elt);
           auto wt = weight(elt);
           //auto&& [j, wt] = elt;    // i == v
@@ -182,13 +180,12 @@ auto delta_stepping_v9(const Graph& graph, Id source, T delta,
 
   tbb::concurrent_vector<Id> frontier;
 
-  auto g = graph.begin();
   while (top_bin < bins.size()) {
     frontier.resize(0);
     std::swap(frontier, bins[top_bin]);
     tbb::parallel_for_each(frontier, [&](auto&& i) {
       if (tdist[i] >= delta * top_bin) {
-        for (auto&& elt : g[i]) {
+        for (auto&& elt : graph[i]) {
           auto j = target(graph, elt);
           auto wt = weight(elt);
           //auto&& [j, wt] = elt;    // i == v

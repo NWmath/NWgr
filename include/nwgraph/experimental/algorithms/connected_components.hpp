@@ -135,7 +135,7 @@ T findDominantComponentID(const std::vector<T>& comp, size_t nsamples = 1024) {
 
 template <adjacency_list_graph Graph, typename T>
 void push(const Graph& g, const T u, std::vector<T>& comp) {
-  for (auto j = g.begin()[u].begin(); j != g.begin()[u].end(); ++j) {
+  for (auto j = g[u].begin(); j != g[u].end(); ++j) {
     auto v = target(g, *j);
     //auto v = std::get<0>(*j);
     hook(u, v, comp);
@@ -145,7 +145,7 @@ void push(const Graph& g, const T u, std::vector<T>& comp) {
 template <adjacency_list_graph Graph, typename T>
 void link(const Graph& g, const T u, std::vector<T>& comp, const size_t neighbor_bound) {
   size_t i = 0;
-  for (auto j = g.begin()[u].begin(); j != g.begin()[u].end() && i < neighbor_bound; ++j, ++i) {
+  for (auto j = g[u].begin(); j != g[u].end() && i < neighbor_bound; ++j, ++i) {
     auto v = target(g, *j);
     hook(u, v, comp);
   }
@@ -156,7 +156,7 @@ template <adjacency_list_graph Graph, typename T>
 bool pull(const Graph& g, const T u, std::vector<T>& comp) {
   T min_compid = comp[u];
   T v;
-  for (auto j = g.begin()[u].begin(); j != g.begin()[u].end(); ++j) {
+  for (auto j = g[u].begin(); j != g[u].end(); ++j) {
     v          = target(g, *j);
     //v          = std::get<0>(*j);
     min_compid = std::min(min_compid, comp[v]);
@@ -224,7 +224,7 @@ std::vector<T> compute_connected_components_v1(const Graph& g) {
     */
     std::for_each(std::execution::par_unseq, counting_iterator<T>(0), counting_iterator<T>(N), [&](auto u) {
       T v;
-      for (auto j = g.begin()[u].begin(); j != g.begin()[u].end(); ++j) {
+      for (auto j = g[u].begin(); j != g[u].end(); ++j) {
         v = target(g, *j);
         //v = std::get<0>(*j);
         //      if (v != comp[v]._a.load()) continue;

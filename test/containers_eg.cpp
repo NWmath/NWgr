@@ -48,12 +48,11 @@ auto bfs_vv(const Graph& graph, typename nw::graph::graph_traits<Graph>::vertex_
   level[root]   = lvl++;
   parents[root] = root;
 
-  auto g = graph.begin();
 
   while (!q1.empty()) {
 
     std::for_each(q1.begin(), q1.end(), [&](vertex_id_type u) {
-      std::for_each(g[u].begin(), g[u].end(), [&](auto&& x) {
+      std::for_each(graph[u].begin(), graph[u].end(), [&](auto&& x) {
         vertex_id_type v = std::get<0>(x);
         if (level[v] == std::numeric_limits<vertex_id_type>::max()) {
           q2.push_back(v);

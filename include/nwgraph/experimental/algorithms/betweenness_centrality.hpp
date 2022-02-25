@@ -69,7 +69,6 @@ std::vector<score_t> approx_betweenness_brandes(const Graph& A, std::vector<type
 
   size_t               n_vtx = A.size();
   std::vector<score_t> centrality(n_vtx, 0);
-  auto                 G = A.begin();
 
   std::stack<vertex_id_type> S;
   std::queue<vertex_id_type> Q;
@@ -89,7 +88,7 @@ std::vector<score_t> approx_betweenness_brandes(const Graph& A, std::vector<type
       auto v = Q.front();
       Q.pop();
       S.push(v);
-      for (auto inner = G[v].begin(); inner != G[v].end(); ++inner) {
+      for (auto inner = A[v].begin(); inner != A[v].end(); ++inner) {
         auto w = target(A, *inner);
         //auto w = std::get<0>(*inner);
         if (d[w] < 0) {
@@ -127,7 +126,6 @@ std::vector<score_t> approx_betweenness_worklist_serial(const Graph& A, std::vec
 
   size_t               n_vtx = A.size();
   std::vector<score_t> centrality(n_vtx, 0);
-  auto                 G = A.begin();
 
   struct nodeinfo {
     size_t                                                         l;
@@ -191,7 +189,7 @@ std::vector<score_t> approx_betweenness_worklist_serial(const Graph& A, std::vec
     vertices[s].path_counts = 1;
     std::fill(delta.begin(), delta.end(), 0);
 
-    for (auto inner = G[s].begin(); inner != G[s].end(); ++inner) {
+    for (auto inner = A[s].begin(); inner != A[s].end(); ++inner) {
       worklist.push_back(std::pair(s, std::get<0>(*inner)));
     }
 
@@ -218,7 +216,7 @@ std::vector<score_t> approx_betweenness_worklist_serial(const Graph& A, std::vec
         apply_spfu(u, v, udata, vdata);
         // unlock u,v
 
-        for (auto inner = G[v].begin(); inner != G[v].end(); ++inner) {
+        for (auto inner = A[v].begin(); inner != A[v].end(); ++inner) {
           worklist.push_back(std::pair(v, std::get<0>(*inner)));
         }
         // Should this be all incoming edges?
@@ -233,7 +231,7 @@ std::vector<score_t> approx_betweenness_worklist_serial(const Graph& A, std::vec
         // unlock u,v
         // should this include all neighbors of v?
         if (vdata->succs.begin() != vdata->succs.end()) {
-          for (auto inner = G[v].begin(); inner != G[v].end(); ++inner) {
+          for (auto inner = A[v].begin(); inner != A[v].end(); ++inner) {
             worklist.push_back(std::pair(v, std::get<0>(*inner)));
           }
         }
@@ -245,8 +243,8 @@ std::vector<score_t> approx_betweenness_worklist_serial(const Graph& A, std::vec
         // unlock u,v
 
         // should this only be all neighbors of v?
-        /*for (auto inner = (A.begin()[v]).begin(); inner !=
-        (A.begin()[v]).end(); ++inner) { worklist.push_back(std::pair(v,
+        /*for (auto inner =A[v].begin(); inner !=
+       A[v].end(); ++inner) { worklist.push_back(std::pair(v,
         std::get<0>(*inner)));
         }*/
         for (auto it = vdata->succs.begin(); it != vdata->succs.end(); ++it) {
@@ -296,7 +294,6 @@ std::vector<score_t> approx_betweenness_worklist(const Graph& A, std::vector<typ
 
   size_t               n_vtx = A.size();
   std::vector<score_t> centrality(n_vtx, 0);
-  auto                 G = A.begin();
   // size_t             DELTA = 200;
   struct nodeinfo {
     size_t                                                         l;
@@ -362,8 +359,7 @@ std::vector<score_t> approx_betweenness_worklist(const Graph& A, std::vector<typ
     // tbbworklist_range<decltype(A), std::pair<std::pair<vertex_id_type,
     // vertex_id_type>, size_t>, DELTAQ> worklist(A);
     tbbworklist_range2<decltype(A), std::pair<vertex_id_type, vertex_id_type>> worklist(A);
-    auto                                                                       first = A.begin();
-    for (auto inner = (first[s]).begin(); inner != (first[s]).end(); ++inner) {
+    for (auto inner = A[s].begin(); inner != A[s].end(); ++inner) {
       // worklist.push_back(std::pair(s, std::get<0>(*inner)));
       worklist.push_back(std::pair(s, std::get<0>(*inner)), 0);
       // myqueue.push(std::pair(s, std::get<0>(*inner)));
@@ -429,7 +425,7 @@ std::vector<score_t> approx_betweenness_worklist(const Graph& A, std::vector<typ
                   // unlock u,v
                   vector_spinlocks[u].unlock();
 
-                  for (auto inner = (A.begin()[v]).begin(); inner != (A.begin()[v]).end(); ++inner) {
+                  for (auto inner = A[v].begin(); inner != A[v].end(); ++inner) {
                     size_t priority = (vdata->l + 1) / DELTA;
                     // worklist.push_back(std::pair(v, std::get<0>(*inner)));
                     // myqueue.push(std::pair(v, std::get<0>(*inner)));
@@ -451,7 +447,7 @@ std::vector<score_t> approx_betweenness_worklist(const Graph& A, std::vector<typ
 
                   // should this only be succ of v?
                   if (vdata->succs.begin() != vdata->succs.end()) {
-                    for (auto inner = (A.begin()[v]).begin(); inner != (A.begin()[v]).end(); ++inner) {
+                    for (auto inner = A[v].begin(); inner != A[v].end(); ++inner) {
                       size_t priority = (vdata->l + 1) / DELTA;
                       // worklist.push_back(std::pair(v, std::get<0>(*inner)));
                       // myqueue.push(std::pair(v, std::get<0>(*inner)));
@@ -469,8 +465,8 @@ std::vector<score_t> approx_betweenness_worklist(const Graph& A, std::vector<typ
                   vector_spinlocks[u].unlock();
 
                   // should this only be succ of v?
-                  /*for (auto inner = (A.begin()[v]).begin(); inner !=
-                     (A.begin()[v]).end(); ++inner) {
+                  /*for (auto inner =A[v].begin(); inner !=
+                    A[v].end(); ++inner) {
                          worklist.push_back(std::pair(v, std::get<0>(*inner)));
                        }*/
 
@@ -519,7 +515,7 @@ std::vector<score_t> approx_betweenness_worklist(const Graph& A, std::vector<typ
           apply_spfu(u, v, udata, vdata);
           // unlock u,v
 
-          for (auto inner = (A.begin()[v]).begin(); inner != (A.begin()[v]).end(); ++inner) {
+          for (auto inner =A[v].begin(); inner !=A[v].end(); ++inner) {
             size_t priority = (vdata->l + 1) / DELTA;
             // worklist.push_back(std::pair(v, std::get<0>(*inner)));
             worklist.push_back(std::pair(v, std::get<0>(*inner)), priority);
@@ -535,7 +531,7 @@ std::vector<score_t> approx_betweenness_worklist(const Graph& A, std::vector<typ
           // unlock u,v
           // should this include all neighbors of v?
           if (vdata->succs.begin() != vdata->succs.end()) {
-            for (auto inner = (A.begin()[v]).begin(); inner != (A.begin()[v]).end(); ++inner) {
+            for (auto inner =A[v].begin(); inner !=A[v].end(); ++inner) {
               size_t priority = (vdata->l + 1) / DELTA;
               worklist.push_back(std::pair(v, std::get<0>(*inner)), priority);
             }
@@ -624,7 +620,6 @@ std::vector<score_t> approx_betweenness_worklist_noabstraction(const Graph& A, s
 
   size_t               n_vtx = A.size();
   std::vector<score_t> centrality(n_vtx, 0.0);
-  auto                 G               = A.begin();
   bool                 levelsets       = true;
   size_t               back_buffersize = 100;
   bool                 asyncv1         = true;
@@ -715,7 +710,7 @@ std::vector<score_t> approx_betweenness_worklist_noabstraction(const Graph& A, s
     if (asyncv1) {
       tbb::concurrent_vector<tbb::concurrent_vector<std::pair<vertex_id_type, vertex_id_type>>> buckets(num_buckets);
       tbb::concurrent_vector<std::pair<vertex_id_type, vertex_id_type>>                         currentlevel;
-      for (auto it = G[s].begin(); it != G[s].end(); ++it) {
+      for (auto it = A[s].begin(); it != A[s].end(); ++it) {
         buckets[0].push_back(std::pair(s, std::get<0>(*it)));
       }
 
@@ -751,7 +746,7 @@ std::vector<score_t> approx_betweenness_worklist_noabstraction(const Graph& A, s
             vector_spinlocks[u].unlock();
             vector_spinlocks[v].unlock();
           }
-          for (auto inner = (A.begin()[v]).begin(); inner != (A.begin()[v]).end(); ++inner) {
+          for (auto inner =A[v].begin(); inner !=A[v].end(); ++inner) {
             size_t priority = (vdata->l + 1) / DELTA;
             // if (priority > maxbucket) {
             if (priority + 1 > num_buckets) {
@@ -789,7 +784,7 @@ std::vector<score_t> approx_betweenness_worklist_noabstraction(const Graph& A, s
           }
           // should this only be succ of v?
           if (vdata->succs.begin() != vdata->succs.end()) {
-            for (auto inner = (A.begin()[v]).begin(); inner != (A.begin()[v]).end(); ++inner) {
+            for (auto inner =A[v].begin(); inner !=A[v].end(); ++inner) {
               size_t priority = (vdata->l + 1) / DELTA;
               // if (priority > maxbucket) {
               if (priority + 1 > num_buckets) {
@@ -853,7 +848,7 @@ std::vector<score_t> approx_betweenness_worklist_noabstraction(const Graph& A, s
       tbb::concurrent_vector<vertex_id_type>                         currentlevel;
       buckets[0].push_back(s);
       auto async2 = [&](auto& u) {
-        for (auto inner = G[u].begin(); inner != G[u].end(); ++inner) {
+        for (auto inner = A[u].begin(); inner != A[u].end(); ++inner) {
           auto v = std::get<0>(*inner);
           if (u == v) {
             continue;
@@ -1234,7 +1229,6 @@ template <adjacency_list_graph Graph, typename score_t = float, typename accum_t
 auto bc2_v0(const Graph& graph, const std::vector<typename Graph::vertex_id_type> sources, bool normalize = true) {
   using vertex_id_type = typename Graph::vertex_id_type;
 
-  auto                 g = graph.begin();
   vertex_id_type       N = num_vertices(graph);
   std::vector<score_t> bc(N);
 
@@ -1257,7 +1251,7 @@ auto bc2_v0(const Graph& graph, const std::vector<typename Graph::vertex_id_type
       count = 0;
 
       for (vertex_id_type v : S[phase]) {
-        for (auto&& elt : g[v]) {
+        for (auto&& elt : graph[v]) {
           auto w = target(graph, elt);
 
           if (depths[w] == std::numeric_limits<vertex_id_type>::max()) {

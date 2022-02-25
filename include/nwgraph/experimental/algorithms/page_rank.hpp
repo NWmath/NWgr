@@ -153,11 +153,10 @@ void page_rank_v1(const Graph& graph, const std::vector<typename Graph::vertex_i
       return x / (y + 0);
     });
 
-    auto G = graph.begin();
 
     for (vertex_id_type i = 0; i < page_rank.size(); ++i) {
       Real z = 0;
-      for (auto j = G[i].begin(); j != G[i].end(); ++j) {
+      for (auto j = graph[i].begin(); j != graph[i].end(); ++j) {
         z += outgoing_contrib[std::get<0>(*j)];
       }
       auto old_rank = page_rank[i];
@@ -188,11 +187,10 @@ void page_rank_v2(const Graph& graph, const std::vector<typename Graph::vertex_i
 
     double error = 0;
 
-    auto G = graph.begin();
 
     for (vertex_id_type i = 0; i < page_rank.size(); ++i) {
       Real z = 0;
-      for (auto j = G[i].begin(); j != G[i].end(); ++j) {
+      for (auto j = graph[i].begin(); j != graph[i].end(); ++j) {
         z += outgoing_contrib[std::get<0>(*j)];
       }
       auto old_rank = page_rank[i];
