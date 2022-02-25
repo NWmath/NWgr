@@ -119,7 +119,7 @@ void parallel_for(Range&& range, Op&& op) {
 /// @returns            The result of `reduce(op(i), ...)` for all `i` in
 ///                     `range`.
 template <class Range, class Op, class Reduce, class T>
-auto parallel_for(Range&& range, Op&& op, Reduce&& reduce, T init) {
+auto parallel_reduce(Range&& range, Op&& op, Reduce&& reduce, T init) {
   if (range.is_divisible()) {
     return tbb::parallel_reduce(
         std::forward<Range>(range), init,

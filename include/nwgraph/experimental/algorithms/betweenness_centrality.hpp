@@ -1542,10 +1542,9 @@ auto bc2_v4(const Graph& graph, const std::vector<typename Graph::vertex_id_type
             OuterExecutionPolicy&& outer_policy = {}, InnerExecutionPolicy&& inner_policy = {}, bool normalize = true) {
   using vertex_id_type = typename Graph::vertex_id_type;
 
-  auto                 g     = graph.begin();
   vertex_id_type       N     = num_vertices(graph);
   size_t               M     = graph.to_be_indexed_.size();
-  auto&&               edges = std::get<0>(*(*g).begin());
+  auto&&               edges = std::get<0>(*(*graph.begin()).begin());
   std::vector<score_t> bc(N);
 
   const vertex_id_type num_bins = nw::graph::pow2(nw::graph::ceil_log2(threads));
@@ -1572,7 +1571,7 @@ auto bc2_v4(const Graph& graph, const std::vector<typename Graph::vertex_id_type
     while (!done) {
       std::for_each(outer_policy, q1.begin(), q1.end(), [&](auto&& q) {
         std::for_each(inner_policy, q.begin(), q.end(), [&](auto&& u) {
-          for (auto&& elt : g[u]) {
+          for (auto&& elt : graph[u]) {
             auto v = target(graph, elt);
             auto&& neg_one = std::numeric_limits<vertex_id_type>::max();
             if (nw::graph::acquire(levels[v]) == neg_one && nw::graph::cas(levels[v], neg_one, lvl)) {
@@ -1609,7 +1608,7 @@ auto bc2_v4(const Graph& graph, const std::vector<typename Graph::vertex_id_type
       std::for_each(outer_policy, vvv.begin(), vvv.end(), [&](auto&& vv) {
         std::for_each(inner_policy, vv.begin(), vv.end(), [&](auto&& u) {
           score_t delta = 0;
-          for (auto x = g[u].begin(); x != g[u].end(); ++x) {
+          for (auto x = graph[u].begin(); x != graph[u].end(); ++x) {
             auto v = target(graph, *x);
             //auto&& v = std::get<0>(*x);
             if (succ.get(&v - &edges)) {

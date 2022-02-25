@@ -385,14 +385,13 @@ void page_rank_v8(const Graph& graph, const std::vector<typename Graph::vertex_i
                      return x / (y + 0);
                    });
 
-    auto G = graph.begin();
 
     double error =
         std::transform_reduce(std::execution::par_unseq, counting_iterator<vertex_id_type>(0),
                               counting_iterator<vertex_id_type>(page_rank.size()), Real(0.0), std::plus<Real>(),
 
                               [&](auto i) {
-                                Real z        = std::transform_reduce(std::execution::par_unseq, G[i].begin(), G[i].end(), Real(0.0),
+                                Real z        = std::transform_reduce(std::execution::par_unseq, graph[i].begin(), graph[i].end(), Real(0.0),
                                                                std::plus<Real>(), [&](auto&& j) { return outgoing_contrib[std::get<0>(j)]; });
                                 auto old_rank = page_rank[i];
                                 page_rank[i]  = base_score + damping_factor * z;
@@ -423,13 +422,12 @@ template <adjacency_list_graph Graph, typename Real>
                      [&](auto&& x, auto&& y) { return x / y; });
     });
 
-    auto G = graph.begin();
 
     auto&& [time, error] = page_rank::time_op([&] {
       return std::transform_reduce(std::execution::par_unseq, counting_iterator<vertex_id_type>(0), counting_iterator<vertex_id_type>(N),
                                    Real(0.0), std::plus{}, [&](auto&& i) {
                                      Real z = 0.0;
-                                     for (auto&& j : G[i]) {
+                                     for (auto&& j : graph[i]) {
                                        z += outgoing_contrib[std::get<0>(j)];
                                      }
                                      auto old_rank = page_rank[i];
@@ -468,7 +466,6 @@ template <adjacency_list_graph Graph, typename Real>
 
   page_rank::trace("iter", "error", "time", "outgoing");
 
-  auto G = graph.begin();
   for (size_t iter = 0; iter < max_iters; ++iter) {
     auto&& [outgoing] = page_rank::time_op([&] {
       tbb::parallel_for(tbb::blocked_range(0ul, N), [&](auto&& r) {
@@ -484,7 +481,7 @@ template <adjacency_list_graph Graph, typename Real>
           [&](auto&& r, auto partial_sum) {
             for (size_t i = r.begin(), e = r.end(); i != e; ++i) {
               Real z = 0.0;
-              for (auto&& j : G[i]) {
+              for (auto&& j : graph[i]) {
                 z += outgoing_contrib[std::get<0>(j)];
               }
               auto old_rank = page_rank[i];
@@ -532,7 +529,6 @@ template <adjacency_list_graph Graph, typename Real>
     }
   });
 
-  auto G = graph.begin();
   for (size_t iter = 0; iter < max_iters; ++iter) {
 
     auto&& [time, error] = page_rank::time_op([&] {
@@ -541,7 +537,7 @@ template <adjacency_list_graph Graph, typename Real>
           [&](auto&& r, auto partial_sum) {
             for (size_t i = r.begin(), e = r.end(); i != e; ++i) {
               Real z = 0.0;
-              for (auto&& j : G[i]) {
+              for (auto&& j : graph[i]) {
                 if (outgoing_contrib[std::get<0>(j)] > threshold) {
                   z += outgoing_contrib[std::get<0>(j)];
                 }
@@ -582,10 +578,6 @@ template <adjacency_list_graph Graph, typename Real>
     residual[i]  = 1.0 - damping_factor;    // Own contribution in the first iteration
   }
 
-  std::cout << graph.size() << std::endl;
-
-  auto G = graph.begin();
-
   for (size_t iter = 0; iter < max_iters; ++iter) {
 
     bool changed = false;
@@ -613,7 +605,7 @@ template <adjacency_list_graph Graph, typename Real>
 
     for (size_t i = 0; i < N; ++i) {
       Real sum = 0.0;
-      for (auto&& j : G[i]) {
+      for (auto&& j : graph[i]) {
         if (delta[std::get<0>(j)] > 0) {
           sum += delta[std::get<0>(j)];
         }
@@ -655,7 +647,6 @@ template <adjacency_list_graph Graph, typename Real>
     });
   }
 
-  auto G = graph.begin();
 
   for (size_t iter = 0; iter < max_iters; ++iter) {
     bool changed = false;
@@ -682,7 +673,7 @@ template <adjacency_list_graph Graph, typename Real>
         for (size_t i = r.begin(), e = r.end(); i != e; ++i) {
 
           Real sum = 0.0;
-          for (auto&& j : G[i]) {
+          for (auto&& j : graph[i]) {
             if (delta[std::get<0>(j)] > 0) {
               sum += delta[std::get<0>(j)];
             }
@@ -717,13 +708,13 @@ template <adjacency_list_graph Graph, typename Real>
     outgoing_contrib[i] = init_score / degrees[i];
   });
 
-  auto G = graph.begin();
   for (size_t iter = 0; iter < max_iters; ++iter) {
-    Real error = nw::graph::parallel_for(
+    Real error = nw::graph::parallel_reduce(
         tbb::blocked_range(0ul, N),
         [&](auto&& u) {
           Real z = 0.0;
-          for (auto&& [v] : G[u]) {
+          for (auto&& elt : graph[u]) {
+            auto v = target(graph, elt);
             z += outgoing_contrib[v];
           }
           Real old_rank       = page_rank[u];

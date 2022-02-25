@@ -70,14 +70,13 @@ auto delta_stepping_m1(const Graph& graph, Id source, distance_t,
     }
   };
 
-  auto g = graph.begin();
   while (!Q.empty()) {
 
     frontier = _priority_queue<Id, std::vector<Id>, std::function<bool(Id, Id)>>(tdist_comp);
     std::swap(frontier, Q);
 
     std::for_each(frontier.begin(), frontier.end(), [&](Id i) {
-      std::for_each(g[i].begin(), g[i].end(), [&](auto&& elt) {
+      std::for_each(graph[i].begin(), graph[i].end(), [&](auto&& elt) {
         auto j = target(graph, elt);
         auto wt = weight(elt);
         //auto&& [j, wt] = elt;    // i == v

@@ -115,11 +115,10 @@ auto bfs_v7(const Graph& graph, typename graph_traits<Graph>::vertex_id_type roo
   level[root]   = lvl++;
   parents[root] = root;
 
-  auto g = graph.begin();
 
   while (!q1.empty()) {
     std::for_each(std::execution::par_unseq, q1.begin(), q1.end(), [&](vertex_id_type u) {
-      std::for_each(g[u].begin(), g[u].end(), [&](auto&& x) {
+      std::for_each(graph[u].begin(), graph[u].end(), [&](auto&& x) {
         vertex_id_type v = target(graph, x);
         vertex_id_type old_lvl = level[v];
         vertex_id_type new_lvl = lvl;

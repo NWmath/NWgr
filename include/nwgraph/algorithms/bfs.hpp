@@ -258,11 +258,11 @@ template <adjacency_list_graph OutGraph, adjacency_list_graph InGraph>
           },
           std::plus{}, 0ul);
           */
-        scout_count = nw::graph::parallel_for(
+        scout_count = nw::graph::parallel_reduce(
           tbb::blocked_range(0ul, q1.size()),
           [&](auto&& i) {
             auto&& q = q1[i];
-            return nw::graph::parallel_for(
+            return nw::graph::parallel_reduce(
                 tbb::blocked_range(0ul, q.size()),
                 [&](auto&& i) {
                   size_t count = 0;

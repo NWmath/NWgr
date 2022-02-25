@@ -304,7 +304,7 @@ template <adjacency_list_graph Graph, class OuterExecutionPolicy = std::executio
 /// @returns            The number of triangles in the graph.
 template <adjacency_list_graph Graph, class SetExecutionPolicy = std::execution::sequenced_policy>
 [[gnu::noinline]] std::size_t triangle_count_v12(const Graph& graph, int stride, SetExecutionPolicy&& set = {}) {
-  return nw::graph::parallel_for(
+  return nw::graph::parallel_reduce(
       nw::graph::cyclic(graph, stride),
       [&](auto&& i) {
         std::size_t triangles = 0;
@@ -337,7 +337,7 @@ template <adjacency_list_graph Graph, class SetExecutionPolicy = std::execution:
 /// @returns            The number of triangles in the graph.
 template <adjacency_list_graph Graph, class SetExecutionPolicy = std::execution::sequenced_policy>
 [[gnu::noinline]] std::size_t triangle_count_v13(const Graph& graph, int stride, SetExecutionPolicy&& set = {}) {
-  return nw::graph::parallel_for(
+  return nw::graph::parallel_reduce(
       nw::graph::cyclic(graph, stride),
       [&](auto&& i) {
         std::size_t triangles = 0;
@@ -371,7 +371,7 @@ template <adjacency_list_graph Graph, class SetExecutionPolicy = std::execution:
 /// @return             The number of triangles in the graph.
 template <adjacency_list_graph Graph, class SetExecutionPolicy = std::execution::sequenced_policy>
 [[gnu::noinline]] std::size_t triangle_count_v14(const Graph& graph, SetExecutionPolicy&& set = {}) {
-  return nw::graph::parallel_for(
+  return nw::graph::parallel_reduce(
       make_edge_range(graph), [&](auto&& u, auto&& v) { return nw::graph::intersection_size(graph[u], graph[v], set); }, std::plus{}, 0ul);
 }
 
