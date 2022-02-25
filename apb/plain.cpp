@@ -304,9 +304,8 @@ auto apb_adj(Adjacency& graph, size_t ntrial) {
       degrees.resize(N);
       t10.start();
 
-      auto gr = graph.begin();
       std::for_each(counting_iterator<vertex_id_type>(0), counting_iterator<vertex_id_type>(N), [&](auto i) {
-        for (auto j = gr[i].begin(); j != gr[i].end(); ++j) {
+        for (auto j = graph[i].begin(); j != graph[i].end(); ++j) {
           ++degrees[i];
         }
       });
@@ -424,9 +423,8 @@ auto apb_adj(Adjacency& graph, size_t ntrial) {
       degrees.resize(N);
       t7.start();
 
-      auto gr = graph.begin();
       for (vertex_id_type i = 0; i < N; ++i) {
-        for (auto j = gr[i].begin(); j != gr[i].end(); ++j) {
+        for (auto j = graph[i].begin(); j != graph[i].end(); ++j) {
           ++degrees[std::get<0>(*j)];
         }
       }

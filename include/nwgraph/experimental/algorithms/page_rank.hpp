@@ -225,7 +225,6 @@ void page_rank_v4(const Graph& graph, const std::vector<typename Graph::vertex_i
                      return x / (y + 0);
                    });
 
-    auto G = graph.begin();
 
     for (size_t thread = 0; thread < num_threads; ++thread) {
       futures[thread] = std::async(
@@ -235,7 +234,7 @@ void page_rank_v4(const Graph& graph, const std::vector<typename Graph::vertex_i
 
             for (vertex_id_type i = thread; i < page_rank.size(); i += num_threads) {
               Real z = 0;
-              for (auto j = G[i].begin(); j != G[i].end(); ++j) {
+              for (auto j = graph[i].begin(); j != graph[i].end(); ++j) {
                 z += outgoing_contrib[std::get<0>(*j)];
                 // for (auto&& [j] : G[i]) {
                 // z += outgoing_contrib[j];
@@ -342,14 +341,13 @@ void page_rank_v7(const Graph& graph, const std::vector<typename Graph::vertex_i
                        return x / (y + 0);
                      });
 
-      auto G = graph.begin();
 
       double error = std::transform_reduce(std::execution::par_unseq, counting_iterator<vertex_id_type>(0),
                                            counting_iterator<vertex_id_type>(page_rank.size()), Real(0.0), std::plus<Real>(),
 
                                            [&](auto i) {
                                              Real z = tbb::parallel_reduce(
-                                                 G[i], Real(0.0),
+                                                 graph[i], Real(0.0),
                                                  [&](auto&& j, const Real& foo) {
                                                    return foo + std::transform_reduce(
                                                                     std::execution::seq, j.begin(), j.end(), Real(0.0), std::plus<Real>(),

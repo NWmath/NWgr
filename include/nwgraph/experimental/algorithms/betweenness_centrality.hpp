@@ -1441,7 +1441,6 @@ auto bc2_v3(const Graph& graph, const std::vector<typename Graph::vertex_id_type
             InnerExecutionPolicy&& inner_policy = {}, bool normalize = true) {
   using vertex_id_type = typename Graph::vertex_id_type;
 
-  auto           g = graph.begin();
   vertex_id_type N = num_vertices(graph);
   size_t         M = graph.to_be_indexed_.size();
 
@@ -1475,8 +1474,7 @@ auto bc2_v3(const Graph& graph, const std::vector<typename Graph::vertex_id_type
       std::for_each(outer_policy, q1.begin(), q1.end(), [&](auto& q) {
         std::for_each(inner_policy, q.begin(), q.end(), [&](vertex_id_type u) {
           // tbb::parallel_for(g[u], [&](auto&& gu) {
-          auto gu = g[u];
-          for (auto x = gu.begin(); x != gu.end(); ++x) {
+          for (auto x = graph[u].begin(); x != graph[u].end(); ++x) {
             auto v = target(graph, *x);
             //auto&&         v       = std::get<0>(*x);
             vertex_id_type neg_one = std::numeric_limits<vertex_id_type>::max();
@@ -1518,7 +1516,7 @@ auto bc2_v3(const Graph& graph, const std::vector<typename Graph::vertex_id_type
       std::for_each(outer_policy, vvv.begin(), vvv.end(), [&](auto&& vv) {
         std::for_each(inner_policy, vv.begin(), vv.end(), [&](auto&& u) {
           score_t delta = 0;
-          for (auto x = g[u].begin(); x != g[u].end(); ++x) {
+          for (auto x = graph[u].begin(); x != graph[u].end(); ++x) {
             auto v = target(graph, *x);
             //vertex_id_type v = std::get<0>(*x);
             if (succ[x - neighbors]) {

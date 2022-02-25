@@ -162,12 +162,11 @@ auto bfs_v8(const Graph& graph, typename graph_traits<Graph>::vertex_id_type roo
   level[root]   = lvl++;
   parents[root] = root;
 
-  auto g = graph.begin();
 
   while (!q[cur].empty()) {
 
     std::for_each(std::execution::par_unseq, q[cur].unsafe_begin(), q[cur].unsafe_end(), [&](vertex_id_type u) {
-      std::for_each(std::execution::par_unseq, g[u].begin(), g[u].end(), [&](auto&& x) {
+      std::for_each(std::execution::par_unseq, graph[u].begin(), graph[u].end(), [&](auto&& x) {
         vertex_id_type v = target(graph, x);
         if (level[v] == std::numeric_limits<vertex_id_type>::max()) {
           q[!cur].push(v);
@@ -201,13 +200,12 @@ auto bfs_v9(const Graph& graph, typename graph_traits<Graph>::vertex_id_type roo
   level[root]   = lvl++;
   parents[root] = root;
 
-  auto g = graph.begin();
 
   bool done = false;
   while (!done) {
     std::for_each(std::execution::par_unseq, q1.begin(), q1.end(), [&](auto& q) {
       std::for_each(std::execution::par_unseq, q.begin(), q.end(), [&](vertex_id_type u) {
-        tbb::parallel_for(g[u], [&](auto&& gu) {
+        tbb::parallel_for(graph[u], [&](auto&& gu) {
           std::for_each(gu.begin(), gu.end(), [&](auto&& x) {
             vertex_id_type v = target(graph, x);
             if (level[v] == std::numeric_limits<vertex_id_type>::max()) {

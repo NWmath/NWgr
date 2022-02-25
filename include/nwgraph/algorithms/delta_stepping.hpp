@@ -116,7 +116,6 @@ auto delta_stepping_v0(
 
   std::vector<Id> frontier;
 
-  auto g = graph.begin();
   while (top_bin < bins.size()) {
 
     frontier.resize(0);
@@ -124,7 +123,7 @@ auto delta_stepping_v0(
 
     std::for_each(frontier.begin(), frontier.end(), [&](Id i) {
       if (tdist[i] >= delta * top_bin) {
-        std::for_each(g[i].begin(), g[i].end(), [&](auto&& elt) {
+        std::for_each(graph[i].begin(), graph[i].end(), [&](auto&& elt) {
           auto j = target(graph, elt);
           auto wt = weight(elt);
           //auto&& [j, wt] = elt;    // i == v
@@ -178,13 +177,12 @@ auto delta_stepping_v12(const Graph& graph, Id source, T delta) {
 
   tbb::concurrent_vector<Id> frontier;
 
-  auto g = graph.begin();
   while (top_bin < bins.size()) {
     frontier.resize(0);
     std::swap(frontier, bins[top_bin]);
     tbb::parallel_for_each(frontier, [&](auto&& u) {
       if (tdist[u] >= delta * top_bin) {
-        nw::graph::parallel_for(g[u], [&](auto&& v, auto&& wt) { relax(u, v, wt); });
+        nw::graph::parallel_for(graph[u], [&](auto&& v, auto&& wt) { relax(u, v, wt); });
       }
     });
 
