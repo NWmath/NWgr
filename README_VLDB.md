@@ -84,15 +84,15 @@ To obtain the performance results of the abstraction penalty benchmarks reported
 ### Benchmarking different ways to iterate through a graph
 To experimentally evaluate the abstraction penalty of different ways to iterate through a graph:
 ```
-$ apb/spmv.exe -f circuit5M.mtx
-$ apb/spmv.exe -f GAP-road.mtx
-$ apb/spmv.exe -f hugebubbles-00000.mtx
+$ apb/spmv -f circuit5M.mtx
+$ apb/spmv -f GAP-road.mtx
+$ apb/spmv -f hugebubbles-00000.mtx
 ```
 
 ### Benchmarking different containers for storing a graph
 To experimentally evaluate the abstraction penalty of different containers for storing a graph:
 ```
-$ apb/containers.exe -f circuit5M.mtx  --format CSR --format VOV --format VOL --format VOF
-$ apb/containers.exe -f GAP-road.mtx  --format CSR --format VOV --format VOL --format VOF
-$ apb/containers.exe -f hugebubbles-00000.mtx  --format CSR --format VOV --format VOL --format VOF
+$ apb/containers -f circuit5M.mtx  --format CSR --format VOV --format VOL --format VOF
+$ apb/containers -f GAP-road.mtx  --format CSR --format VOV --format VOL --format VOF
+$ apb/containers -f hugebubbles-00000.mtx  --format CSR --format VOV --format VOL --format VOF
 ```
