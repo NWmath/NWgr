@@ -124,21 +124,18 @@ bool BCVerifier(const Graph& g, std::vector<typename graph_traits<Graph>::vertex
 
 //****************************************************************************
 template <adjacency_list_graph Graph, typename score_t = float, typename accum_t = size_t>
-std::vector<score_t> betweenness_brandes(const Graph& A, bool normalize = true) {
+std::vector<score_t> betweenness_brandes(const Graph& G, bool normalize = true) {
   using vertex_id_type = typename Graph::vertex_id_type;
 
-  size_t               n_vtx = A.size();
+  size_t               n_vtx = num_vertices(G);
   std::vector<score_t> centrality(n_vtx, 0);
-  auto                 G = A.begin();
 
   std::stack<vertex_id_type> S;
   std::queue<vertex_id_type> Q;
   std::vector<accum_t>       path_counts(n_vtx);
   std::vector<score_t>       d(n_vtx);
 
-  for (auto outer = G; outer != A.end(); ++outer) {
-    vertex_id_type s = outer - G;
-
+  for (vertex_id_type s = 0; s < n_vtx; ++s) {
     path_counts.assign(n_vtx, 0);
     d.assign(n_vtx, -1);
     std::vector<std::list<size_t>> P(n_vtx);
@@ -152,7 +149,7 @@ std::vector<score_t> betweenness_brandes(const Graph& A, bool normalize = true) 
       Q.pop();
       S.push(v);
       for (auto inner = G[v].begin(); inner != G[v].end(); ++inner) {
-        auto w = target(A, *inner);
+        auto w = target(G, *inner);
         //auto w = std::get<0>(*inner);
         if (d[w] < 0) {
           Q.push(w);
