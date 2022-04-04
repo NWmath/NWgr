@@ -44,12 +44,10 @@ auto bfs_v4(const Graph& graph, typename graph_traits<Graph>::vertex_id_type roo
   q1.push(root);
   level[root] = lvl++;
 
-  auto g = graph.begin();
-
   while (!q1.empty()) {
 
     std::for_each(std::execution::par_unseq, q1.unsafe_begin(), q1.unsafe_end(), [&](vertex_id_type u) {
-      std::for_each(g[u].begin(), g[u].end(), [&](auto&& x) {
+      std::for_each(graph[u].begin(), graph[u].end(), [&](auto&& x) {
         vertex_id_type v = target(graph, x);
         if (level[v] == std::numeric_limits<vertex_id_type>::max()) {
           q2.push(v);
@@ -80,12 +78,9 @@ auto bfs_v6(const Graph& graph, typename graph_traits<Graph>::vertex_id_type roo
   level[root]   = lvl++;
   parents[root] = root;
 
-  auto g = graph.begin();
-
   while (!q1.empty()) {
-
     std::for_each(q1.begin(), q1.end(), [&](vertex_id_type u) {
-      std::for_each(g[u].begin(), g[u].end(), [&](auto&& x) {
+      std::for_each(graph[u].begin(), graph[u].end(), [&](auto&& x) {
         vertex_id_type v = target(graph, x);
         if (level[v] == std::numeric_limits<vertex_id_type>::max()) {
           q2.push_back(v);
@@ -117,11 +112,9 @@ auto bfs_v7(const Graph& graph, typename graph_traits<Graph>::vertex_id_type roo
   level[root]   = lvl++;
   parents[root] = root;
 
-  auto g = graph.begin();
-
   while (!q1.empty()) {
     std::for_each(std::execution::par_unseq, q1.begin(), q1.end(), [&](vertex_id_type u) {
-      std::for_each(g[u].begin(), g[u].end(), [&](auto&& x) {
+      std::for_each(graph[u].begin(), graph[u].end(), [&](auto&& x) {
         vertex_id_type v = target(graph, x);
         vertex_id_type old_lvl = level[v];
         vertex_id_type new_lvl = lvl;
@@ -164,12 +157,10 @@ auto bfs_v8(const Graph& graph, typename graph_traits<Graph>::vertex_id_type roo
   level[root]   = lvl++;
   parents[root] = root;
 
-  auto g = graph.begin();
-
   while (!q[cur].empty()) {
 
     std::for_each(std::execution::par_unseq, q[cur].unsafe_begin(), q[cur].unsafe_end(), [&](vertex_id_type u) {
-      std::for_each(std::execution::par_unseq, g[u].begin(), g[u].end(), [&](auto&& x) {
+      std::for_each(std::execution::par_unseq, graph[u].begin(), graph[u].end(), [&](auto&& x) {
         vertex_id_type v = target(graph, x);
         if (level[v] == std::numeric_limits<vertex_id_type>::max()) {
           q[!cur].push(v);
@@ -203,13 +194,11 @@ auto bfs_v9(const Graph& graph, typename graph_traits<Graph>::vertex_id_type roo
   level[root]   = lvl++;
   parents[root] = root;
 
-  auto g = graph.begin();
-
   bool done = false;
   while (!done) {
     std::for_each(std::execution::par_unseq, q1.begin(), q1.end(), [&](auto& q) {
       std::for_each(std::execution::par_unseq, q.begin(), q.end(), [&](vertex_id_type u) {
-        tbb::parallel_for(g[u], [&](auto&& gu) {
+        tbb::parallel_for(graph[u], [&](auto&& gu) {
           std::for_each(gu.begin(), gu.end(), [&](auto&& x) {
             vertex_id_type v = target(graph, x);
             if (level[v] == std::numeric_limits<vertex_id_type>::max()) {
