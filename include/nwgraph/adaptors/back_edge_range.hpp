@@ -36,18 +36,17 @@ public:
       : the_graph_(graph), back_address(graph.end() - graph.begin()), back_address_extra(graph.end() - graph.begin()),
         address_extra(graph.end() - graph.begin()) {
     if (!as_needed) {
-      auto outer = graph.begin();
-      for (auto outer_it = outer; outer_it != graph.end(); ++outer_it) {
+      for (auto outer_it = graph.begin(); outer_it != graph.end(); ++outer_it) {
         for (auto inner = (*outer_it).begin(); inner != (*outer_it).end(); ++inner) {
           vertex_id_type neighbor = std::get<0>(*inner);
-          auto           back_it  = outer[neighbor].begin();
-          std::size_t end = outer_it - outer;
+          auto           back_it  = graph[neighbor].begin();
+          std::size_t end = outer_it - graph.begin();
           if (back_address[end].find(neighbor) != back_address[end].end()) {
             continue;
           }
-          for (; back_it != outer[neighbor].end() && std::get<0>(*back_it) != end; ++back_it)
+          for (; back_it != graph[neighbor].end() && std::get<0>(*back_it) != end; ++back_it)
             ;
-          if (back_it != outer[neighbor].end()) {
+          if (back_it != graph[neighbor].end()) {
             if (end < std::get<0>(*inner)) {
               back_address[end].insert_or_assign(std::get<0>(*inner), *back_it);
               back_address[std::get<0>(*inner)].insert_or_assign(end, *inner);
@@ -181,16 +180,15 @@ public:
       return ref_tuple(it2->second);
     }
 
-    auto outer = the_graph_.begin();
-    for (auto it = outer[vtx].begin(); it != outer[vtx].end(); ++it) {
+    for (auto it = the_graph_[vtx].begin(); it != the_graph_[vtx].end(); ++it) {
       vertex_id_type neighbor = std::get<0>(*it);
       if (neighbor != vtx2) {
         continue;
       }
-      auto back_it = outer[neighbor].begin();
-      for (; back_it != outer[neighbor].end() && std::get<0>(*back_it) != vtx; ++back_it)
+      auto back_it = the_graph_[neighbor].begin();
+      for (; back_it != the_graph_[neighbor].end() && std::get<0>(*back_it) != vtx; ++back_it)
         ;
-      if (back_it != outer[neighbor].end()) {
+      if (back_it != the_graph_[neighbor].end()) {
         back_address[vtx2].insert_or_assign(vtx, *it);
         back_address[vtx].insert_or_assign(vtx2, *back_it);
       } else {

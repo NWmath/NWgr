@@ -47,15 +47,13 @@ static bool CCVerifier(const Graph& graph, Transpose&& xpose, Vector&& comp) {
   std::vector<bool>   visited(graph.size() + 1);
   std::vector<NodeID> frontier;
   frontier.reserve(graph.size() + 1);
-  auto g = graph.begin();
-  auto x = xpose.begin();
   for (auto&& [curr_label, source] : label_to_source) {
     frontier.clear();
     frontier.push_back(source);
     visited[source] = true;
     for (auto it = frontier.begin(); it != frontier.end(); it++) {
       NodeID u = *it;
-      for (auto&& elt : g[u]) {
+      for (auto&& elt : graph[u]) {
         auto v = target(graph, elt);
         if (comp[v] != curr_label) {
           return false;
@@ -66,7 +64,7 @@ static bool CCVerifier(const Graph& graph, Transpose&& xpose, Vector&& comp) {
         }
       }
       if (u < xpose.size()) {
-        for (auto&& elt : x[u]) {
+        for (auto&& elt : xpose[u]) {
           auto v = target(xpose, elt);
           if (comp[v] != curr_label) {
             return false;
@@ -141,11 +139,10 @@ static auto afforest(Execution& exec, Graph1& graph, Graph2& t_graph, const size
   using vertex_id_type = vertex_id_t<Graph1>;
   std::vector<std::atomic<vertex_id_type>> comp(graph.size() + 1);
   std::for_each(exec, counting_iterator(0ul), counting_iterator(comp.size()), [&](vertex_id_type n) { comp[n] = n; });
-  auto g = graph.begin();
   for (size_t r = 0; r < neighbor_rounds; ++r) {
     std::for_each(exec, counting_iterator(0ul), counting_iterator(comp.size()), [&](vertex_id_type u) {
-      if (r < (g[u]).size()) {
-        link(u, std::get<0>(g[u].begin()[r]), comp);
+      if (r < graph[u].size()) {
+        link(u, std::get<0>(graph[u].begin()[r]), comp);
       }
     });
     compress(exec, comp);
@@ -156,14 +153,14 @@ static auto afforest(Execution& exec, Graph1& graph, Graph2& t_graph, const size
   std::for_each(exec, counting_iterator(0ul), counting_iterator(comp.size()), [&](vertex_id_type u) {
     if (comp[u] == c) return;
 
-    if (neighbor_rounds < g[u].size()) {
-      for (auto v = g[u].begin() + neighbor_rounds; v != g[u].end(); ++v) {
+    if (neighbor_rounds < graph[u].size()) {
+      for (auto v = graph[u].begin() + neighbor_rounds; v != graph[u].end(); ++v) {
         link(u, std::get<0>(*v), comp);
       }
     }
 
     if (t_graph.size() != 0) {
-      for (auto&& elt : (t_graph.begin())[u]) {
+      for (auto&& elt : t_graph[u]) {
         auto v = target(t_graph, elt);
         link(u, v, comp);
       }

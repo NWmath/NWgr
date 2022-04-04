@@ -66,10 +66,9 @@ bool BCVerifier(const Graph& g, std::vector<typename graph_traits<Graph>::vertex
     std::vector<vertex_id_type> to_visit;
     to_visit.reserve(num_vertices(g));
     to_visit.push_back(source);
-    auto out_neigh = g.begin();
     for (auto it = to_visit.begin(); it != to_visit.end(); it++) {
       vertex_id_type u = *it;
-      for (auto edge : out_neigh[u]) {
+      for (auto edge : g[u]) {
         vertex_id_type v = target(g, edge);
         if (depths[v] == -1) {
           depths[v] = depths[u] + 1;
@@ -94,7 +93,7 @@ bool BCVerifier(const Graph& g, std::vector<typename graph_traits<Graph>::vertex
     std::vector<score_t> deltas(num_vertices(g), 0);
     for (int depth = verts_at_depth.size() - 1; depth >= 0; depth--) {
       for (vertex_id_type u : verts_at_depth[depth]) {
-        for (auto edge : out_neigh[u]) {
+        for (auto edge : g[u]) {
           vertex_id_type v = target(g, edge);
           if (depths[v] == depths[u] + 1) {
             deltas[u] += static_cast<double>(path_counts[u]) / static_cast<double>(path_counts[v]) * (1 + deltas[v]);
@@ -125,21 +124,18 @@ bool BCVerifier(const Graph& g, std::vector<typename graph_traits<Graph>::vertex
 
 //****************************************************************************
 template <adjacency_list_graph Graph, typename score_t = float, typename accum_t = size_t>
-std::vector<score_t> betweenness_brandes(const Graph& A, bool normalize = true) {
+std::vector<score_t> betweenness_brandes(const Graph& G, bool normalize = true) {
   using vertex_id_type = typename Graph::vertex_id_type;
 
-  size_t               n_vtx = A.size();
+  size_t               n_vtx = num_vertices(G);
   std::vector<score_t> centrality(n_vtx, 0);
-  auto                 G = A.begin();
 
   std::stack<vertex_id_type> S;
   std::queue<vertex_id_type> Q;
   std::vector<accum_t>       path_counts(n_vtx);
   std::vector<score_t>       d(n_vtx);
 
-  for (auto outer = G; outer != A.end(); ++outer) {
-    vertex_id_type s = outer - G;
-
+  for (vertex_id_type s = 0; s < n_vtx; ++s) {
     path_counts.assign(n_vtx, 0);
     d.assign(n_vtx, -1);
     std::vector<std::list<size_t>> P(n_vtx);
@@ -153,7 +149,7 @@ std::vector<score_t> betweenness_brandes(const Graph& A, bool normalize = true) 
       Q.pop();
       S.push(v);
       for (auto inner = G[v].begin(); inner != G[v].end(); ++inner) {
-        auto w = target(A, *inner);
+        auto w = target(G, *inner);
         //auto w = std::get<0>(*inner);
         if (d[w] < 0) {
           Q.push(w);

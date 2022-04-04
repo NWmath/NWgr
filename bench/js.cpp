@@ -115,10 +115,9 @@ static std::size_t TCVerifier(Graph& graph) {
   std::size_t                             total = 0;
   std::vector<std::tuple<vertex_id_type>> intersection;
   intersection.reserve(graph.size());
-  auto g = graph.begin();
   for (auto&& [u, v] : edge_range(graph)) {
-    auto u_out = g[u];
-    auto v_out = g[v];
+    auto u_out = graph[u];
+    auto v_out = graph[v];
     auto end   = std::set_intersection(u_out.begin(), u_out.end(), v_out.begin(), v_out.end(), intersection.begin());
     intersection.resize(end - intersection.begin());
     total += intersection.size();

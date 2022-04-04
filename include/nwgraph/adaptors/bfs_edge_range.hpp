@@ -298,7 +298,7 @@ public:
     Q_[0].push(seed);
     colors_[seed] = grey;
     //After adding seed, add the neighbors of seed to next queue
-    for (auto ite = the_graph_.begin()[seed].begin(); ite != the_graph_.begin()[seed].end(); ++ite) {    // Explore neighbors
+    for (auto ite = the_graph_[seed].begin(); ite != the_graph_[seed].end(); ++ite) {    // Explore neighbors
       auto u = std::get<0>(*ite);
       if (colors_[u] == white) {
         colors_[u] = grey;

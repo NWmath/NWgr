@@ -201,18 +201,26 @@ void fill_helper_tmp(edge_list_t& el, adjacency_t& cs, std::index_sequence<Is...
                    std::get<Is + 2>(dynamic_cast<typename edge_list_t::base&>(Tmp)).end(), std::get<Is + 1>(cs.to_be_indexed_).begin())));
 }
 
-
+/**
+ * @brief This function fills an adjacency list with an edge list.
+ * The graph can eithr be a unipartite or bipartite graph.
+ * 
+ * @tparam idx, which end point to fill in the edge list
+ * @tparam edge_list_t, the type of the edge list
+ * @tparam adjacency_t, the type of the adjacency list
+ * @tparam Int, the type of number of vertices
+ * @tparam ExecutionPolicy, the type of the execution policy
+ * @param el, the edge list
+ * @param N, number of vertices at [idx] partition
+ * @param cs, adjacency list
+ * @param policy, execution policy
+ */
 template <int idx, edge_list_graph edge_list_t, adjacency_list_graph adjacency_t, class Int, class ExecutionPolicy = default_execution_policy>
-auto fill_directed(edge_list_t& el, Int N, adjacency_t& cs, ExecutionPolicy&& policy = {}) {
+void fill_directed(edge_list_t& el, Int N, adjacency_t& cs, ExecutionPolicy&& policy = {}) {
 
   auto degree = degrees<idx>(el);
 
-  if constexpr (is_unipartite<edge_list_t>::value) {  // Compress idx
-    cs.indices_.resize(N + 1);
-  } else {
-    cs.indices_.resize(N + 1);
-  }
-
+  cs.indices_.resize(N + 1);
   cs.indices_[0] = 0;
   std::inclusive_scan(policy, degree.begin(), degree.end(), cs.indices_.begin() + 1);
   cs.to_be_indexed_.resize(el.size());
@@ -267,9 +275,9 @@ auto fill_directed(edge_list_t& el, Int N, adjacency_t& cs, ExecutionPolicy&& po
 
 
 template <int idx, edge_list_graph edge_list_t, class Int, adjacency_list_graph adjacency_t, class ExecutionPolicy = default_execution_policy>
-auto fill_undirected(edge_list_t& el, Int N, adjacency_t& cs, ExecutionPolicy&& policy = {}) {
-  assert(false == is_unipartite<edge_list_t>::value);
-
+void fill_undirected(edge_list_t& el, Int N, adjacency_t& cs, ExecutionPolicy&& policy = {}) {
+  //if the edge is undirected, it means the edge list must be a unipartite graph
+  assert(is_unipartite<typename edge_list_t::unipartite_graph_base>::value);
 
 #if 1
 
@@ -458,15 +466,16 @@ auto degrees(const Graph& graph, ExecutionPolicy&& policy = {}) {
 
 
 template <int d_idx = 0, edge_list_graph edge_list_t, class ExecutionPolicy = default_execution_policy>
+requires(is_unipartite<typename edge_list_t::unipartite_graph_base>::value)
 auto degrees(edge_list_t& el, ExecutionPolicy&& policy = {}) requires(!degree_enumerable_graph<edge_list_t>) {
 
   size_t d_size = 0;
-  if constexpr (false == is_unipartite<edge_list_t>::value) {
-    //for bipartite graph
-    d_size = num_vertices(el, d_idx);
-  } else {
+  if constexpr (is_unipartite<typename edge_list_t::unipartite_graph_base>::value) {
     //for unipartite graph
     d_size = num_vertices(el);
+  } else {
+    //for bipartite graph
+    d_size = num_vertices(el, d_idx);
   }
   using vertex_id_type = typename edge_list_t::vertex_id_type;
   
@@ -487,6 +496,27 @@ auto degrees(edge_list_t& el, ExecutionPolicy&& policy = {}) requires(!degree_en
       ++tmp[std::get<1>(x)];
     });
     std::copy(policy, tmp.begin(), tmp.end(), degree.begin());
+  }
+  return degree;
+}
+
+//for bipartite graph
+template <int d_idx, edge_list_graph edge_list_t, class ExecutionPolicy = default_execution_policy>
+requires(false == is_unipartite<typename edge_list_t::bipartite_graph_base>::value)
+auto degrees(edge_list_t& el, ExecutionPolicy&& policy = {}) requires(!degree_enumerable_graph<edge_list_t>) {
+
+  size_t d_size = num_vertices(el, d_idx);
+  using vertex_id_type = typename edge_list_t::vertex_id_type;
+  
+  std::vector<vertex_id_type> degree(d_size);
+
+  if constexpr (edge_list_t::edge_directedness == directedness::directed) {
+    std::vector<std::atomic<vertex_id_type>> tmp(degree.size());
+
+    std::for_each(policy, el.begin(), el.end(), [&](auto&& x) { ++tmp[std::get<d_idx>(x)]; });
+
+    std::copy(policy, tmp.begin(), tmp.end(), degree.begin());
+
   }
   return degree;
 }
@@ -521,9 +551,20 @@ auto perm_by_degree(edge_list_t& el, const Vector& degree, std::string direction
   return perm;
 }
 
+/**
+ * @brief This function relabels edge list of unipartite graph. It will relabel both endpoints.
+ * 
+ * @tparam edge_list_t, edge list type
+ * @tparam Vector, permutation array type
+ * @tparam ExecutionPolicy, execution polity type
+ * @tparam edge_list_t, edge list
+ * @tparam Vector, permutation array of the IDs of vertices
+ * @tparam ExecutionPolicy, excution policy
+ * @return the new IDs of the vertices after permutation
+ */
 template <edge_list_graph edge_list_t, class Vector, class ExecutionPolicy = default_execution_policy>
-requires(is_unipartite<edge_list_t>::value)
-void relabel(edge_list_t& el, const Vector& perm, ExecutionPolicy&& policy = {}) {
+requires(true == is_unipartite<typename edge_list_t::unipartite_graph_base>::value)
+auto relabel(edge_list_t& el, const Vector& perm, ExecutionPolicy&& policy = {}) {
   std::vector<typename edge_list_t::vertex_id_type> iperm(perm.size());
 
   tbb::parallel_for(tbb::blocked_range(0ul, iperm.size()), [&](auto&& r) {
@@ -536,9 +577,23 @@ void relabel(edge_list_t& el, const Vector& perm, ExecutionPolicy&& policy = {})
     std::get<0>(x) = iperm[std::get<0>(x)];
     std::get<1>(x) = iperm[std::get<1>(x)];
   });
+  return iperm;
 }
 
+/**
+ * @brief This function relabels edge list of bipartite graph. It only relabels one endpoint.
+ * 
+ * @tparam idx, which end point to relabel
+ * @tparam edge_list_t, edge list type
+ * @tparam Vector, permutation array type
+ * @tparam ExecutionPolicy, execution polity type
+ * @param el, edge list
+ * @param perm, permutation array of the IDs of vertices
+ * @param policy, excution policy
+ * @return the new IDs of the vertices after permutation
+ */
 template <int idx, edge_list_graph edge_list_t, class Vector, class ExecutionPolicy = default_execution_policy>
+requires(false == is_unipartite<typename edge_list_t::bipartite_graph_base>::value)
 auto relabel(edge_list_t& el, const Vector& perm, ExecutionPolicy&& policy = {}) {
   std::vector<typename edge_list_t::vertex_id_type> iperm(perm.size());
 
@@ -554,8 +609,17 @@ auto relabel(edge_list_t& el, const Vector& perm, ExecutionPolicy&& policy = {})
   return iperm;
 }
 
+/**
+ * @brief This relabel function for edge list handles unipartite graph. It will relabel both endpoints.
+ * 
+ * @tparam edge_list_t, edge list type
+ * @tparam Vector, degree array type
+ * @param el, edge list
+ * @param direction, sort the degrees of vertices in which direction
+ * @param degree, the degree array
+ */
 template <edge_list_graph edge_list_t, class Vector = std::vector<int>>
-requires(is_unipartite<edge_list_t>::value)
+requires(is_unipartite<typename edge_list_t::unipartite_graph_base>::value)
 void relabel_by_degree(edge_list_t& el, std::string direction = "ascending", const Vector& degree = std::vector<int>(0)) {
 
   std::vector<typename edge_list_t::vertex_id_type> perm =
@@ -564,13 +628,31 @@ void relabel_by_degree(edge_list_t& el, std::string direction = "ascending", con
   relabel(el, perm);
 }
 
+/**
+ * @brief This function relabels edge list of either unipartite graph or bipartite graph.
+ * 
+ * @tparam idx, which end point to relabel. Unipartite graph will ignore idx.
+ * @tparam edge_list_t, edge list type
+ * @tparam Vector, degree array type
+ * @param el, edge list
+ * @param direction, sort the degrees of vertices in which direction
+ * @param degree, the degree array
+ * @return the new IDs of the vertices after permutation
+ */
 template <int idx, edge_list_graph edge_list_t, class Vector = std::vector<int>>
+requires(is_unipartite<typename edge_list_t::unipartite_graph_base>::value)
 auto relabel_by_degree(edge_list_t& el, std::string direction = "ascending", const Vector& degree = std::vector<int>(0)) {
 
   std::vector<typename edge_list_t::vertex_id_type> perm =
       degree.size() == 0 ? perm_by_degree<idx>(el, direction) : perm_by_degree<idx>(el, degree, direction);
-
-  return relabel<idx>(el, perm);
+  if constexpr (true == is_unipartite<typename edge_list_t::unipartite_graph_base>::value) {  // Compress idx
+    //unipartite graph relabels both endpoints of the edge
+    return relabel(el, perm);
+    //return perm;
+  } else {
+    //bipartite graph relabels one endponit of the edge
+    return relabel<idx>(el, perm);
+  }
 }
 
 /**
