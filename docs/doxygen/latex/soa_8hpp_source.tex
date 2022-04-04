@@ -1,0 +1,294 @@
+\hypertarget{soa_8hpp_source}{}\doxysection{soa.\+hpp}
+\label{soa_8hpp_source}\index{/Users/lums/NWmath/NWgr/include/nwgraph/containers/soa.hpp@{/Users/lums/NWmath/NWgr/include/nwgraph/containers/soa.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// }}
+\DoxyCodeLine{2 \textcolor{comment}{// This file is part of NW Graph (aka GraphPack) }}
+\DoxyCodeLine{3 \textcolor{comment}{// (c) Pacific Northwest National Laboratory 2018-\/2021 }}
+\DoxyCodeLine{4 \textcolor{comment}{// (c) University of Washington 2018-\/2021 }}
+\DoxyCodeLine{5 \textcolor{comment}{// }}
+\DoxyCodeLine{6 \textcolor{comment}{// Licensed under terms of include LICENSE file }}
+\DoxyCodeLine{7 \textcolor{comment}{// }}
+\DoxyCodeLine{8 \textcolor{comment}{// Authors: }}
+\DoxyCodeLine{9 \textcolor{comment}{//     Andrew Lumsdaine }}
+\DoxyCodeLine{10 \textcolor{comment}{//     Kevin Deweese    }}
+\DoxyCodeLine{11 \textcolor{comment}{//     Luke D'Alessandro    }}
+\DoxyCodeLine{12 \textcolor{comment}{//     Xu Tony Liu}}
+\DoxyCodeLine{13 \textcolor{comment}{//}}
+\DoxyCodeLine{14 }
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#ifndef NW\_GRAPH\_SOA\_HPP}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#define NW\_GRAPH\_SOA\_HPP}}
+\DoxyCodeLine{17 }
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include <cassert>}}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#include <fstream>}}
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#include <functional>}}
+\DoxyCodeLine{22 \textcolor{preprocessor}{\#include <initializer\_list>}}
+\DoxyCodeLine{23 \textcolor{preprocessor}{\#include <iostream>}}
+\DoxyCodeLine{24 \textcolor{preprocessor}{\#include <istream>}}
+\DoxyCodeLine{25 \textcolor{preprocessor}{\#include <iterator>}}
+\DoxyCodeLine{26 \textcolor{preprocessor}{\#include <ostream>}}
+\DoxyCodeLine{27 \textcolor{preprocessor}{\#include <tuple>}}
+\DoxyCodeLine{28 \textcolor{preprocessor}{\#include <utility>}}
+\DoxyCodeLine{29 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{30 }
+\DoxyCodeLine{31 \textcolor{preprocessor}{\#include "{}nwgraph/util/arrow\_proxy.hpp"{}}}
+\DoxyCodeLine{32 \textcolor{preprocessor}{\#include "{}nwgraph/util/print\_types.hpp"{}}}
+\DoxyCodeLine{33 \textcolor{preprocessor}{\#include "{}nwgraph/util/util.hpp"{}}}
+\DoxyCodeLine{34 }
+\DoxyCodeLine{35 \textcolor{preprocessor}{\#if defined(CL\_SYCL\_LANGUAGE\_VERSION)}}
+\DoxyCodeLine{36 \textcolor{preprocessor}{\#include <dpstd/algorithm>}}
+\DoxyCodeLine{37 \textcolor{preprocessor}{\#include <dpstd/execution>}}
+\DoxyCodeLine{38 \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{39 \textcolor{preprocessor}{\#include <algorithm>}}
+\DoxyCodeLine{40 \textcolor{preprocessor}{\#include <execution>}}
+\DoxyCodeLine{41 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{42 }
+\DoxyCodeLine{43 \textcolor{keyword}{namespace }nw \{}
+\DoxyCodeLine{44 \textcolor{keyword}{namespace }graph \{}
+\DoxyCodeLine{45 }
+\DoxyCodeLine{46 \textcolor{comment}{// Bare bones struct of arrays (tuple of vectors)}}
+\DoxyCodeLine{47 \textcolor{keyword}{template} <\textcolor{keyword}{class}... Attributes>}
+\DoxyCodeLine{48 \textcolor{keyword}{struct }\mbox{\hyperlink{structnw_1_1graph_1_1struct__of__arrays}{struct\_of\_arrays}} : std::tuple<std::vector<Attributes>...> \{}
+\DoxyCodeLine{49   \textcolor{keyword}{using} storage\_type = std::tuple<std::vector<Attributes>...>;}
+\DoxyCodeLine{50   \textcolor{keyword}{using} base         = std::tuple<std::vector<Attributes>...>;}
+\DoxyCodeLine{51 }
+\DoxyCodeLine{52   \textcolor{keyword}{template} <\textcolor{keywordtype}{bool} is\_const = false>}
+\DoxyCodeLine{53   \textcolor{keyword}{class }\mbox{\hyperlink{classnw_1_1graph_1_1struct__of__arrays_1_1soa__iterator}{soa\_iterator}} \{}
+\DoxyCodeLine{54     \textcolor{keyword}{friend} \textcolor{keyword}{class }\mbox{\hyperlink{classnw_1_1graph_1_1struct__of__arrays_1_1soa__iterator}{soa\_iterator}}<!is\_const>;}
+\DoxyCodeLine{55 }
+\DoxyCodeLine{56     \textcolor{keyword}{using} soa\_t = std::conditional\_t<is\_const, const struct\_of\_arrays, struct\_of\_arrays>;}
+\DoxyCodeLine{57 }
+\DoxyCodeLine{58     std::size\_t i\_;}
+\DoxyCodeLine{59     soa\_t*      soa\_;}
+\DoxyCodeLine{60 }
+\DoxyCodeLine{61   \textcolor{keyword}{public}:}
+\DoxyCodeLine{62     \textcolor{keyword}{using} value\_type        = std::conditional\_t<is\_const, std::tuple<\textcolor{keyword}{const} Attributes...>, std::tuple<Attributes...>>;}
+\DoxyCodeLine{63     \textcolor{keyword}{using} difference\_type   = std::ptrdiff\_t;}
+\DoxyCodeLine{64     \textcolor{keyword}{using} reference         = std::conditional\_t<is\_const, std::tuple<\textcolor{keyword}{const} Attributes\&...>, std::tuple<Attributes\&...>>;}
+\DoxyCodeLine{65     \textcolor{keyword}{using} \mbox{\hyperlink{structnw_1_1graph_1_1arrow__proxy}{pointer}}           = \mbox{\hyperlink{structnw_1_1graph_1_1arrow__proxy}{arrow\_proxy<reference>}};}
+\DoxyCodeLine{66     \textcolor{keyword}{using} iterator\_category = std::random\_access\_iterator\_tag;}
+\DoxyCodeLine{67 }
+\DoxyCodeLine{68     \mbox{\hyperlink{classnw_1_1graph_1_1struct__of__arrays_1_1soa__iterator}{soa\_iterator}}() = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{69 }
+\DoxyCodeLine{70     \mbox{\hyperlink{classnw_1_1graph_1_1struct__of__arrays_1_1soa__iterator}{soa\_iterator}}(soa\_t* soa, std::size\_t i = 0) : i\_(i), soa\_(soa) \{\}}
+\DoxyCodeLine{71 }
+\DoxyCodeLine{72     \mbox{\hyperlink{classnw_1_1graph_1_1struct__of__arrays_1_1soa__iterator}{soa\_iterator}}(\textcolor{keyword}{const} \mbox{\hyperlink{classnw_1_1graph_1_1struct__of__arrays_1_1soa__iterator}{soa\_iterator}}\&) = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{73     \mbox{\hyperlink{classnw_1_1graph_1_1struct__of__arrays_1_1soa__iterator}{soa\_iterator}}(\textcolor{keyword}{const} \mbox{\hyperlink{classnw_1_1graph_1_1struct__of__arrays_1_1soa__iterator}{soa\_iterator<false>}}\& b) \textcolor{keyword}{requires}(is\_const) : i\_(b.i\_), soa\_(b.soa\_) \{\}}
+\DoxyCodeLine{74 }
+\DoxyCodeLine{75     \mbox{\hyperlink{classnw_1_1graph_1_1struct__of__arrays_1_1soa__iterator}{soa\_iterator}}\& operator=(\textcolor{keyword}{const} \mbox{\hyperlink{classnw_1_1graph_1_1struct__of__arrays_1_1soa__iterator}{soa\_iterator}}\&) = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{76     \mbox{\hyperlink{classnw_1_1graph_1_1struct__of__arrays_1_1soa__iterator}{soa\_iterator}}\& operator                       =(\textcolor{keyword}{const} \mbox{\hyperlink{classnw_1_1graph_1_1struct__of__arrays_1_1soa__iterator}{soa\_iterator<false>}}\& b) \textcolor{keyword}{requires}(is\_const) \{}
+\DoxyCodeLine{77       i\_   = b.i\_;}
+\DoxyCodeLine{78       soa\_ = b.soa\_;}
+\DoxyCodeLine{79       \textcolor{keywordflow}{return} *\textcolor{keyword}{this};}
+\DoxyCodeLine{80     \}}
+\DoxyCodeLine{81 }
+\DoxyCodeLine{82     \textcolor{keywordtype}{bool} operator==(\textcolor{keyword}{const} \mbox{\hyperlink{classnw_1_1graph_1_1struct__of__arrays_1_1soa__iterator}{soa\_iterator}}\&) \textcolor{keyword}{const}  = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{83     \textcolor{keyword}{auto} operator<=>(\textcolor{keyword}{const} \mbox{\hyperlink{classnw_1_1graph_1_1struct__of__arrays_1_1soa__iterator}{soa\_iterator}}\&) \textcolor{keyword}{const} = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{84 }
+\DoxyCodeLine{85     \mbox{\hyperlink{classnw_1_1graph_1_1struct__of__arrays_1_1soa__iterator}{soa\_iterator}} operator++(\textcolor{keywordtype}{int}) \{ \textcolor{keywordflow}{return} \mbox{\hyperlink{classnw_1_1graph_1_1struct__of__arrays_1_1soa__iterator}{soa\_iterator}}(i\_++, soa\_); \}}
+\DoxyCodeLine{86     \mbox{\hyperlink{classnw_1_1graph_1_1struct__of__arrays_1_1soa__iterator}{soa\_iterator}} operator-\/-\/(\textcolor{keywordtype}{int}) \{ \textcolor{keywordflow}{return} \mbox{\hyperlink{classnw_1_1graph_1_1struct__of__arrays_1_1soa__iterator}{soa\_iterator}}(i\_-\/-\/, soa\_); \}}
+\DoxyCodeLine{87 }
+\DoxyCodeLine{88     \mbox{\hyperlink{classnw_1_1graph_1_1struct__of__arrays_1_1soa__iterator}{soa\_iterator}}\& operator++() \{}
+\DoxyCodeLine{89       ++i\_;}
+\DoxyCodeLine{90       \textcolor{keywordflow}{return} *\textcolor{keyword}{this};}
+\DoxyCodeLine{91     \}}
+\DoxyCodeLine{92     \mbox{\hyperlink{classnw_1_1graph_1_1struct__of__arrays_1_1soa__iterator}{soa\_iterator}}\& operator-\/-\/() \{}
+\DoxyCodeLine{93       -\/-\/i\_;}
+\DoxyCodeLine{94       \textcolor{keywordflow}{return} *\textcolor{keyword}{this};}
+\DoxyCodeLine{95     \}}
+\DoxyCodeLine{96     \mbox{\hyperlink{classnw_1_1graph_1_1struct__of__arrays_1_1soa__iterator}{soa\_iterator}}\& operator+=(std::ptrdiff\_t n) \{}
+\DoxyCodeLine{97       i\_ += n;}
+\DoxyCodeLine{98       \textcolor{keywordflow}{return} *\textcolor{keyword}{this};}
+\DoxyCodeLine{99     \}}
+\DoxyCodeLine{100     \mbox{\hyperlink{classnw_1_1graph_1_1struct__of__arrays_1_1soa__iterator}{soa\_iterator}}\& operator-\/=(std::ptrdiff\_t n) \{}
+\DoxyCodeLine{101       i\_ -\/= n;}
+\DoxyCodeLine{102       \textcolor{keywordflow}{return} *\textcolor{keyword}{this};}
+\DoxyCodeLine{103     \}}
+\DoxyCodeLine{104 }
+\DoxyCodeLine{105     \mbox{\hyperlink{classnw_1_1graph_1_1struct__of__arrays_1_1soa__iterator}{soa\_iterator}} operator+(std::ptrdiff\_t n)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \{soa\_, i\_ + n\}; \}}
+\DoxyCodeLine{106     \mbox{\hyperlink{classnw_1_1graph_1_1struct__of__arrays_1_1soa__iterator}{soa\_iterator}} operator-\/(std::ptrdiff\_t n)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \{soa\_, i\_ -\/ n\}; \}}
+\DoxyCodeLine{107 }
+\DoxyCodeLine{108     std::ptrdiff\_t operator-\/(\textcolor{keyword}{const} \mbox{\hyperlink{classnw_1_1graph_1_1struct__of__arrays_1_1soa__iterator}{soa\_iterator}}\& b)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} i\_ -\/ b.i\_; \}}
+\DoxyCodeLine{109 }
+\DoxyCodeLine{110     \textcolor{keyword}{friend} \mbox{\hyperlink{classnw_1_1graph_1_1struct__of__arrays_1_1soa__iterator}{soa\_iterator}} operator+(std::ptrdiff\_t n, \mbox{\hyperlink{classnw_1_1graph_1_1struct__of__arrays_1_1soa__iterator}{soa\_iterator}} i) \{ \textcolor{keywordflow}{return} i + n; \}}
+\DoxyCodeLine{111     \textcolor{keyword}{friend} \mbox{\hyperlink{classnw_1_1graph_1_1struct__of__arrays_1_1soa__iterator}{soa\_iterator}} operator-\/(std::ptrdiff\_t n, \mbox{\hyperlink{classnw_1_1graph_1_1struct__of__arrays_1_1soa__iterator}{soa\_iterator}} i) \{ \textcolor{keywordflow}{return} i -\/ n; \}}
+\DoxyCodeLine{112 }
+\DoxyCodeLine{113 }
+\DoxyCodeLine{114     reference operator*()\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{115       \textcolor{keywordflow}{return} std::apply(}
+\DoxyCodeLine{116           [\textcolor{keyword}{this}]<\textcolor{keyword}{class}... Vectors>(Vectors \&\& ... v) \{ \textcolor{keywordflow}{return} reference(std::forward<Vectors>(v)[i\_]...); \}, *soa\_);}
+\DoxyCodeLine{117     \}}
+\DoxyCodeLine{118 }
+\DoxyCodeLine{119     reference operator[](std::ptrdiff\_t n)\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{120       \textcolor{keywordflow}{return} std::apply(}
+\DoxyCodeLine{121           [\textcolor{keyword}{this}, n]<\textcolor{keyword}{class}... Vectors>(Vectors \&\& ... v) \{ \textcolor{keywordflow}{return} reference(std::forward<Vectors>(v)[i\_ + n]...); \}, *soa\_);}
+\DoxyCodeLine{122     \}}
+\DoxyCodeLine{123 }
+\DoxyCodeLine{124     \mbox{\hyperlink{structnw_1_1graph_1_1arrow__proxy}{pointer}} operator-\/>()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \{**\textcolor{keyword}{this}\}; \}}
+\DoxyCodeLine{125     \mbox{\hyperlink{structnw_1_1graph_1_1arrow__proxy}{pointer}} operator-\/>() \{ \textcolor{keywordflow}{return} \{**\textcolor{keyword}{this}\}; \}}
+\DoxyCodeLine{126   \};}
+\DoxyCodeLine{127 }
+\DoxyCodeLine{128   \textcolor{keyword}{using} \mbox{\hyperlink{classnw_1_1graph_1_1struct__of__arrays_1_1soa__iterator}{iterator}} = \mbox{\hyperlink{classnw_1_1graph_1_1struct__of__arrays_1_1soa__iterator}{soa\_iterator<false>}};}
+\DoxyCodeLine{129 }
+\DoxyCodeLine{130   \textcolor{keyword}{using} value\_type      = \textcolor{keyword}{typename} iterator::value\_type;}
+\DoxyCodeLine{131   \textcolor{keyword}{using} reference       = \textcolor{keyword}{typename} iterator::reference;}
+\DoxyCodeLine{132   \textcolor{keyword}{using} size\_type       = std::size\_t;}
+\DoxyCodeLine{133   \textcolor{keyword}{using} difference\_type = \textcolor{keyword}{typename} iterator::difference\_type;}
+\DoxyCodeLine{134   \textcolor{keyword}{using} pointer         = \textcolor{keyword}{typename} \mbox{\hyperlink{structnw_1_1graph_1_1arrow__proxy}{iterator::pointer}};}
+\DoxyCodeLine{135 }
+\DoxyCodeLine{136   \textcolor{keyword}{using} \mbox{\hyperlink{classnw_1_1graph_1_1struct__of__arrays_1_1soa__iterator}{const\_iterator}}  = \mbox{\hyperlink{classnw_1_1graph_1_1struct__of__arrays_1_1soa__iterator}{soa\_iterator<true>}};}
+\DoxyCodeLine{137   \textcolor{keyword}{using} const\_reference = \textcolor{keyword}{typename} const\_iterator::reference;}
+\DoxyCodeLine{138   \textcolor{keyword}{using} const\_pointer   = \textcolor{keyword}{typename} \mbox{\hyperlink{structnw_1_1graph_1_1arrow__proxy}{const\_iterator::pointer}};}
+\DoxyCodeLine{139 }
+\DoxyCodeLine{140   \textcolor{keyword}{using} reverse\_iterator       = std::reverse\_iterator<iterator>;}
+\DoxyCodeLine{141   \textcolor{keyword}{using} const\_reverse\_iterator = std::reverse\_iterator<const\_iterator>;}
+\DoxyCodeLine{142 }
+\DoxyCodeLine{143   \mbox{\hyperlink{structnw_1_1graph_1_1struct__of__arrays}{struct\_of\_arrays}}() = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{144   \mbox{\hyperlink{structnw_1_1graph_1_1struct__of__arrays}{struct\_of\_arrays}}(\textcolor{keywordtype}{size\_t} M) : base(std::vector<Attributes>(M)...) \{\}}
+\DoxyCodeLine{145   \mbox{\hyperlink{structnw_1_1graph_1_1struct__of__arrays}{struct\_of\_arrays}}(std::vector<Attributes>\&\&... l) : base(std::move(l)...) \{\}}
+\DoxyCodeLine{146   struct\_of\_arrays(\textcolor{keyword}{const} std::vector<Attributes>\&... l) : base(l...) \{\}}
+\DoxyCodeLine{147   struct\_of\_arrays(std::tuple<std::vector<Attributes>...>\&\& l) : base(std::move(l)) \{\}}
+\DoxyCodeLine{148   struct\_of\_arrays(\textcolor{keyword}{const} std::tuple<std::vector<Attributes>...>\& l) : base(l) \{\}}
+\DoxyCodeLine{149   struct\_of\_arrays(std::initializer\_list<value\_type> l) \{}
+\DoxyCodeLine{150     for\_each(l.begin(), l.end(), [\&](value\_type x) \{ push\_back(x); \});}
+\DoxyCodeLine{151   \}}
+\DoxyCodeLine{152 }
+\DoxyCodeLine{153   iterator       begin()        \{ \textcolor{keywordflow}{return} \{\textcolor{keyword}{this}\}; \}}
+\DoxyCodeLine{154   const\_iterator begin()\textcolor{keyword}{  const }\{ \textcolor{keywordflow}{return} \{\textcolor{keyword}{this}\}; \}}
+\DoxyCodeLine{155   const\_iterator cbegin()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \{\textcolor{keyword}{this}\}; \}}
+\DoxyCodeLine{156 }
+\DoxyCodeLine{157   iterator end()              \{ \textcolor{keywordflow}{return} begin() + size(); \}}
+\DoxyCodeLine{158   const\_iterator end()\textcolor{keyword}{  const }\{ \textcolor{keywordflow}{return} begin() + size(); \}}
+\DoxyCodeLine{159   const\_iterator cend()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} begin() + size(); \}}
+\DoxyCodeLine{160 }
+\DoxyCodeLine{161   reference operator[](std::size\_t i) \{}
+\DoxyCodeLine{162     \textcolor{keywordflow}{return} std::apply([\&](\textcolor{keyword}{auto}\&\&... r) \{ \textcolor{keywordflow}{return} std::forward\_as\_tuple(std::forward<\textcolor{keyword}{decltype}(r)>(r)[i]...); \}, *\textcolor{keyword}{this});}
+\DoxyCodeLine{163   \}}
+\DoxyCodeLine{164 }
+\DoxyCodeLine{165   const\_reference operator[](std::size\_t i)\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{166     \textcolor{keywordflow}{return} std::apply([\&](\textcolor{keyword}{auto}\&\&... r) \{ \textcolor{keywordflow}{return} std::forward\_as\_tuple(std::forward<\textcolor{keyword}{decltype}(r)>(r)[i]...); \}, *\textcolor{keyword}{this});}
+\DoxyCodeLine{167   \}}
+\DoxyCodeLine{168 }
+\DoxyCodeLine{169   \textcolor{keywordtype}{void} move(std::vector<Attributes>\&\&... attrs) \{}
+\DoxyCodeLine{170     std::apply([\&](\textcolor{keyword}{auto}\&\&... vs) \{ (vs.swap(attrs), ...); \}, *\textcolor{keyword}{this});}
+\DoxyCodeLine{171   \}}
+\DoxyCodeLine{172 }
+\DoxyCodeLine{173   \textcolor{keywordtype}{void} move(std::tuple<std::vector<Attributes>...>\&\& attrs) \{}
+\DoxyCodeLine{174     std::apply([\&](Attributes\&\&... attr) \{ move(attr...); \}, attrs);}
+\DoxyCodeLine{175   \}}
+\DoxyCodeLine{176 }
+\DoxyCodeLine{177   \textcolor{keywordtype}{void} copy(\textcolor{keyword}{const} std::vector<Attributes>\&... attrs) \{}
+\DoxyCodeLine{178     std::apply([\&](\textcolor{keyword}{auto}\&... vs) \{ (std::copy(attrs.begin(), attrs.end(), vs.begin()), ...); \}, *\textcolor{keyword}{this});}
+\DoxyCodeLine{179   \}}
+\DoxyCodeLine{180 }
+\DoxyCodeLine{181   \textcolor{keywordtype}{void} copy(\textcolor{keyword}{const} std::tuple<std::vector<Attributes>...>\& attrs) \{}
+\DoxyCodeLine{182     std::apply([\&](\textcolor{keyword}{const} std::vector<Attributes>\&... attr) \{ copy(attr...); \}, attrs);}
+\DoxyCodeLine{183   \}}
+\DoxyCodeLine{184 }
+\DoxyCodeLine{185   \textcolor{keywordtype}{void} push\_back(Attributes... attrs) \{}
+\DoxyCodeLine{186     std::apply([\&](\textcolor{keyword}{auto}\&... vs) \{ (vs.push\_back(attrs), ...); \}, *\textcolor{keyword}{this});}
+\DoxyCodeLine{187   \}}
+\DoxyCodeLine{188 }
+\DoxyCodeLine{189   \textcolor{keywordtype}{void} push\_back(std::tuple<Attributes...> attrs) \{}
+\DoxyCodeLine{190     std::apply([\&](Attributes... attr) \{ push\_back(attr...); \}, attrs);}
+\DoxyCodeLine{191   \}}
+\DoxyCodeLine{192 }
+\DoxyCodeLine{193   \textcolor{keywordtype}{void} push\_at(std::size\_t i, Attributes... attrs) \{}
+\DoxyCodeLine{194     std::apply([\&](\textcolor{keyword}{auto}\&... vs) \{ ((vs[i] = attrs), ...); \}, *\textcolor{keyword}{this});}
+\DoxyCodeLine{195   \}}
+\DoxyCodeLine{196 }
+\DoxyCodeLine{197   \textcolor{keywordtype}{void} push\_at(std::size\_t i, std::tuple<Attributes...> attrs) \{}
+\DoxyCodeLine{198     std::apply([\&](Attributes... attr) \{ push\_at(i, attr...); \}, attrs);}
+\DoxyCodeLine{199   \}}
+\DoxyCodeLine{200 }
+\DoxyCodeLine{201   \textcolor{keywordtype}{void} clear() \{}
+\DoxyCodeLine{202     std::apply([\&](\textcolor{keyword}{auto}\&... vs) \{ (vs.clear(), ...); \}, *\textcolor{keyword}{this});}
+\DoxyCodeLine{203   \}}
+\DoxyCodeLine{204 }
+\DoxyCodeLine{205   \textcolor{keywordtype}{void} resize(\textcolor{keywordtype}{size\_t} N) \{}
+\DoxyCodeLine{206     std::apply([\&](\textcolor{keyword}{auto}\&\&... vs) \{ (vs.resize(N), ...); \}, *\textcolor{keyword}{this});}
+\DoxyCodeLine{207   \}}
+\DoxyCodeLine{208 }
+\DoxyCodeLine{209   \textcolor{keywordtype}{void} reserve(\textcolor{keywordtype}{size\_t} N) \{}
+\DoxyCodeLine{210     std::apply([\&](\textcolor{keyword}{auto}\&\&... vs) \{ (vs.reserve(N), ...); \}, *\textcolor{keyword}{this});}
+\DoxyCodeLine{211   \}}
+\DoxyCodeLine{212 }
+\DoxyCodeLine{213   \textcolor{keyword}{template} <\textcolor{keyword}{class} T>}
+\DoxyCodeLine{214   \textcolor{keywordtype}{void} serialize(std::ostream\& outfile, \textcolor{keyword}{const} T\& vs)\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{215     \textcolor{keywordtype}{size\_t} st\_size = vs.size();}
+\DoxyCodeLine{216     \textcolor{keywordtype}{size\_t} el\_size = \textcolor{keyword}{sizeof}(vs[0]);}
+\DoxyCodeLine{217     outfile.write(\textcolor{keyword}{reinterpret\_cast<}\textcolor{keywordtype}{char}*\textcolor{keyword}{>}(\&st\_size), \textcolor{keyword}{sizeof}(size\_t));}
+\DoxyCodeLine{218     outfile.write(\textcolor{keyword}{reinterpret\_cast<}\textcolor{keywordtype}{char}*\textcolor{keyword}{>}(\&el\_size), \textcolor{keyword}{sizeof}(size\_t));}
+\DoxyCodeLine{219     outfile.write(\textcolor{keyword}{reinterpret\_cast<}\textcolor{keyword}{const }\textcolor{keywordtype}{char}*\textcolor{keyword}{>}(vs.data()), st\_size * el\_size);}
+\DoxyCodeLine{220   \}}
+\DoxyCodeLine{221 }
+\DoxyCodeLine{222   \textcolor{keyword}{template} <\textcolor{keyword}{class} T>}
+\DoxyCodeLine{223   \textcolor{keywordtype}{void} deserialize(std::istream\& infile, T\& vs) \{}
+\DoxyCodeLine{224     \textcolor{keywordtype}{size\_t} st\_size = -\/1;}
+\DoxyCodeLine{225     \textcolor{keywordtype}{size\_t} el\_size = -\/1;}
+\DoxyCodeLine{226     infile.read(\textcolor{keyword}{reinterpret\_cast<}\textcolor{keywordtype}{char}*\textcolor{keyword}{>}(\&st\_size), \textcolor{keyword}{sizeof}(\textcolor{keywordtype}{size\_t}));}
+\DoxyCodeLine{227     infile.read(\textcolor{keyword}{reinterpret\_cast<}\textcolor{keywordtype}{char}*\textcolor{keyword}{>}(\&el\_size), \textcolor{keyword}{sizeof}(\textcolor{keywordtype}{size\_t}));}
+\DoxyCodeLine{228     infile.read(\textcolor{keyword}{reinterpret\_cast<}\textcolor{keywordtype}{char}*\textcolor{keyword}{>}(vs.data()), st\_size * el\_size);}
+\DoxyCodeLine{229   \}}
+\DoxyCodeLine{230 }
+\DoxyCodeLine{231   \textcolor{keywordtype}{void} serialize(std::ostream\& outfile)\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{232     \textcolor{keywordtype}{size\_t} st\_size = std::get<0>(*this).size();}
+\DoxyCodeLine{233     \textcolor{keywordtype}{size\_t} el\_size = std::tuple\_size<storage\_type>::value;}
+\DoxyCodeLine{234     outfile.write(\textcolor{keyword}{reinterpret\_cast<}\textcolor{keywordtype}{char}*\textcolor{keyword}{>}(\&st\_size), \textcolor{keyword}{sizeof}(\textcolor{keywordtype}{size\_t}));}
+\DoxyCodeLine{235     outfile.write(\textcolor{keyword}{reinterpret\_cast<}\textcolor{keywordtype}{char}*\textcolor{keyword}{>}(\&el\_size), \textcolor{keyword}{sizeof}(\textcolor{keywordtype}{size\_t}));}
+\DoxyCodeLine{236     std::apply([\&](\textcolor{keyword}{auto}\&... vs) \{ (serialize(outfile, vs), ...); \}, *\textcolor{keyword}{this});}
+\DoxyCodeLine{237   \}}
+\DoxyCodeLine{238 }
+\DoxyCodeLine{239   \textcolor{keywordtype}{void} deserialize(std::istream\& infile) \{}
+\DoxyCodeLine{240     \textcolor{keywordtype}{size\_t} st\_size = -\/1;}
+\DoxyCodeLine{241     \textcolor{keywordtype}{size\_t} el\_size = -\/1;}
+\DoxyCodeLine{242     infile.read(\textcolor{keyword}{reinterpret\_cast<}\textcolor{keywordtype}{char}*\textcolor{keyword}{>}(\&st\_size), \textcolor{keyword}{sizeof}(\textcolor{keywordtype}{size\_t}));}
+\DoxyCodeLine{243     infile.read(\textcolor{keyword}{reinterpret\_cast<}\textcolor{keywordtype}{char}*\textcolor{keyword}{>}(\&el\_size), \textcolor{keyword}{sizeof}(\textcolor{keywordtype}{size\_t}));}
+\DoxyCodeLine{244     resize(st\_size);}
+\DoxyCodeLine{245     std::apply([\&](\textcolor{keyword}{auto}\&... vs) \{ (deserialize(infile, vs), ...); \}, *\textcolor{keyword}{this});}
+\DoxyCodeLine{246   \}}
+\DoxyCodeLine{247 }
+\DoxyCodeLine{248   \textcolor{keyword}{template} <\textcolor{keyword}{typename} index\_t, \textcolor{keyword}{typename} vertex\_\textcolor{keywordtype}{id}\_type, \textcolor{keyword}{class} T, \textcolor{keyword}{class} ExecutionPolicy = std::execution::parallel\_unsequenced\_policy>}
+\DoxyCodeLine{249   \textcolor{keywordtype}{void} permute(\textcolor{keyword}{const} std::vector<index\_t>\& indices, \textcolor{keyword}{const} std::vector<index\_t>\& new\_indices, \textcolor{keyword}{const} std::vector<vertex\_id\_type>\& perm, T\& vs,}
+\DoxyCodeLine{250                ExecutionPolicy\&\& ex\_policy = \{\}) \{}
+\DoxyCodeLine{251     T ws(vs.size());}
+\DoxyCodeLine{252     \textcolor{keywordflow}{for} (\textcolor{keywordtype}{size\_t} i = 0, e = indices.size() -\/ 1; i < e; ++i) \{}
+\DoxyCodeLine{253       vertex\_id\_type j = perm[i];}
+\DoxyCodeLine{254       std::copy(ex\_policy, vs.begin() + indices[j], vs.begin() + indices[j + 1], ws.begin() + new\_indices[i]);}
+\DoxyCodeLine{255     \}}
+\DoxyCodeLine{256     std::copy(ex\_policy, ws.begin(), ws.end(), vs.begin());}
+\DoxyCodeLine{257   \}}
+\DoxyCodeLine{258 }
+\DoxyCodeLine{259   \textcolor{keyword}{template} <\textcolor{keyword}{typename} index\_t, \textcolor{keyword}{typename} vertex\_\textcolor{keywordtype}{id}\_type>}
+\DoxyCodeLine{260   \textcolor{keywordtype}{void} permute(\textcolor{keyword}{const} std::vector<index\_t>\& indices, \textcolor{keyword}{const} std::vector<index\_t>\& new\_indices, \textcolor{keyword}{const} std::vector<vertex\_id\_type>\& perm) \{}
+\DoxyCodeLine{261     std::apply([\&](\textcolor{keyword}{auto}\&... vs) \{ (permute(indices, new\_indices, perm, vs), ...); \}, *\textcolor{keyword}{this});}
+\DoxyCodeLine{262   \}}
+\DoxyCodeLine{263 }
+\DoxyCodeLine{264   \textcolor{keywordtype}{size\_t} size()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} std::get<0>(*this).size(); \}}
+\DoxyCodeLine{265 }
+\DoxyCodeLine{266   \textcolor{keywordtype}{bool} operator==(struct\_of\_arrays\& a) \{ \textcolor{keywordflow}{return} std::equal(std::execution::par, begin(), end(), a.begin()); \}}
+\DoxyCodeLine{267 }
+\DoxyCodeLine{268   \textcolor{keywordtype}{bool} operator!=(\textcolor{keyword}{const} storage\_type\& a) \{ \textcolor{keywordflow}{return} !operator==(a); \}}
+\DoxyCodeLine{269 \};}
+\DoxyCodeLine{270 }
+\DoxyCodeLine{271 \}    \textcolor{comment}{// namespace graph}}
+\DoxyCodeLine{272 \}    \textcolor{comment}{// namespace nw}}
+\DoxyCodeLine{273 }
+\DoxyCodeLine{274 }
+\DoxyCodeLine{275 \textcolor{keyword}{namespace }std \{}
+\DoxyCodeLine{276 \textcolor{keyword}{template} <\textcolor{keyword}{class}... Attributes>}
+\DoxyCodeLine{277 \textcolor{keyword}{class }tuple\_size<nw::graph::struct\_of\_arrays<Attributes...>> : \textcolor{keyword}{public} std::integral\_constant<std::size\_t, sizeof...(Attributes)> \{\};}
+\DoxyCodeLine{278 }
+\DoxyCodeLine{279 \}    \textcolor{comment}{// namespace std}}
+\DoxyCodeLine{280 }
+\DoxyCodeLine{283 }
+\DoxyCodeLine{284 \textcolor{preprocessor}{\#include "{}nwgraph/util/tuple\_hack.hpp"{}}}
+\DoxyCodeLine{285 }
+\DoxyCodeLine{286 }
+\DoxyCodeLine{287 }
+\DoxyCodeLine{288 }
+\DoxyCodeLine{289 }
+\DoxyCodeLine{290 \textcolor{preprocessor}{\#endif    }\textcolor{comment}{// NW\_GRAPH\_SOA\_HPP}}
+
+\end{DoxyCode}

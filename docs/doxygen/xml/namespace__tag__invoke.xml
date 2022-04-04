@@ -1,0 +1,138 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.3" xml:lang="en-US">
+  <compounddef id="namespace__tag__invoke" kind="namespace" language="C++">
+    <compoundname>_tag_invoke</compoundname>
+    <innerclass refid="struct__tag__invoke_1_1__fn" prot="public">_tag_invoke::_fn</innerclass>
+    <innerclass refid="struct__tag__invoke_1_1defer" prot="public">_tag_invoke::defer</innerclass>
+    <innerclass refid="struct__tag__invoke_1_1empty" prot="public">_tag_invoke::empty</innerclass>
+      <sectiondef kind="typedef">
+      <memberdef kind="typedef" id="tag__invoke_8hpp_1aeec3eee89e80d4a8e33d4d92b3f1cf01" prot="public" static="no">
+        <templateparamlist>
+          <param>
+            <type>typename CPO</type>
+          </param>
+          <param>
+            <type>typename...</type>
+            <declname>Args</declname>
+            <defname>Args</defname>
+          </param>
+        </templateparamlist>
+        <type>decltype(tag_invoke(std::declval&lt; CPO &gt;(), std::declval&lt; Args &gt;()...))</type>
+        <definition>using _tag_invoke::tag_invoke_result_t = typedef decltype(tag_invoke(std::declval&lt;CPO&gt;(), std::declval&lt;Args&gt;()...))</definition>
+        <argsstring></argsstring>
+        <name>tag_invoke_result_t</name>
+        <qualifiedname>_tag_invoke::tag_invoke_result_t</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/util/tag_invoke.hpp" line="29" column="1" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/util/tag_invoke.hpp" bodystart="29" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="tag__invoke_8hpp_1a0fe843f6da63395ee61dd4e46963923b" prot="public" static="no">
+        <type>char</type>
+        <definition>using _tag_invoke::yes_type = typedef char</definition>
+        <argsstring></argsstring>
+        <name>yes_type</name>
+        <qualifiedname>_tag_invoke::yes_type</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/util/tag_invoke.hpp" line="31" column="1" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/util/tag_invoke.hpp" bodystart="31" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="tag__invoke_8hpp_1aa5e09234508687bae00e698f29a32e2b" prot="public" static="no">
+        <type>char(&amp;)[2]</type>
+        <definition>using _tag_invoke::no_type = typedef char (&amp;)[2]</definition>
+        <argsstring></argsstring>
+        <name>no_type</name>
+        <qualifiedname>_tag_invoke::no_type</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/util/tag_invoke.hpp" line="32" column="1" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/util/tag_invoke.hpp" bodystart="32" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="tag__invoke_8hpp_1a9ee1eb0e0197ef8dfbee41dfed68c97d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>void</type>
+        <definition>void _tag_invoke::tag_invoke</definition>
+        <argsstring>()</argsstring>
+        <name>tag_invoke</name>
+        <qualifiedname>_tag_invoke::tag_invoke</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/util/tag_invoke.hpp" line="18" column="6" declfile="/Users/lums/NWmath/NWgr/include/nwgraph/util/tag_invoke.hpp" declline="18" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="tag__invoke_8hpp_1a95c0343bdd709adfc9ac60c815bc605e" prot="public" static="no" const="no" explicit="no" inline="no" noexcept="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename CPO</type>
+          </param>
+          <param>
+            <type>typename...</type>
+            <declname>Args</declname>
+            <defname>Args</defname>
+          </param>
+        </templateparamlist>
+        <type>auto</type>
+        <definition>auto _tag_invoke::try_tag_invoke</definition>
+        <argsstring>(int) noexcept(noexcept(tag_invoke(std::declval&lt; CPO &gt;(), std::declval&lt; Args &gt;()...))) -&gt; decltype(static_cast&lt; void &gt;(tag_invoke(std::declval&lt; CPO &gt;(), std::declval&lt; Args &gt;()...)), yes_type{})</argsstring>
+        <name>try_tag_invoke</name>
+        <qualifiedname>_tag_invoke::try_tag_invoke</qualifiedname>
+        <param>
+          <type>int</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/util/tag_invoke.hpp" line="35" column="6" declfile="/Users/lums/NWmath/NWgr/include/nwgraph/util/tag_invoke.hpp" declline="35" declcolumn="6"/>
+      </memberdef>
+      <memberdef kind="function" id="tag__invoke_8hpp_1a9189b4b289ef505be81fa00bb253b509" prot="public" static="no" const="no" explicit="no" inline="no" noexcept="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename CPO</type>
+          </param>
+          <param>
+            <type>typename...</type>
+            <declname>Args</declname>
+            <defname>Args</defname>
+          </param>
+        </templateparamlist>
+        <type>no_type</type>
+        <definition>no_type _tag_invoke::try_tag_invoke</definition>
+        <argsstring>(...) noexcept(false)</argsstring>
+        <name>try_tag_invoke</name>
+        <qualifiedname>_tag_invoke::try_tag_invoke</qualifiedname>
+        <param>
+          <type>...</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/util/tag_invoke.hpp" line="40" column="9" declfile="/Users/lums/NWmath/NWgr/include/nwgraph/util/tag_invoke.hpp" declline="40" declcolumn="9"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/Users/lums/NWmath/NWgr/include/nwgraph/util/tag_invoke.hpp" line="17" column="1"/>
+  </compounddef>
+</doxygen>

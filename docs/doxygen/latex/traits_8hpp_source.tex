@@ -1,0 +1,77 @@
+\hypertarget{traits_8hpp_source}{}\doxysection{traits.\+hpp}
+\label{traits_8hpp_source}\index{/Users/lums/NWmath/NWgr/include/nwgraph/util/traits.hpp@{/Users/lums/NWmath/NWgr/include/nwgraph/util/traits.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// }}
+\DoxyCodeLine{2 \textcolor{comment}{// This file is part of NW Graph (aka GraphPack) }}
+\DoxyCodeLine{3 \textcolor{comment}{// (c) Pacific Northwest National Laboratory 2018-\/2021 }}
+\DoxyCodeLine{4 \textcolor{comment}{// (c) University of Washington 2018-\/2021 }}
+\DoxyCodeLine{5 \textcolor{comment}{// }}
+\DoxyCodeLine{6 \textcolor{comment}{// Licensed under terms of include LICENSE file }}
+\DoxyCodeLine{7 \textcolor{comment}{// }}
+\DoxyCodeLine{8 \textcolor{comment}{// Authors: }}
+\DoxyCodeLine{9 \textcolor{comment}{//     Andrew Lumsdaine }}
+\DoxyCodeLine{10 \textcolor{comment}{//     Luke D'Alessandro    }}
+\DoxyCodeLine{11 \textcolor{comment}{//}}
+\DoxyCodeLine{12 }
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#ifndef NW\_GRAPH\_TRAITS\_HPP}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#define NW\_GRAPH\_TRAITS\_HPP}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include <atomic>}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include <iterator>}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include <tbb/blocked\_range.h>}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include <tuple>}}
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 \textcolor{keyword}{namespace }nw \{}
+\DoxyCodeLine{22 \textcolor{keyword}{namespace }graph \{}
+\DoxyCodeLine{23 }
+\DoxyCodeLine{24 \textcolor{keyword}{template} <\textcolor{keyword}{class}>}
+\DoxyCodeLine{25 \textcolor{keyword}{inline} \textcolor{keyword}{constexpr} \textcolor{keywordtype}{bool} is\_atomic\_v = \textcolor{keyword}{false};}
+\DoxyCodeLine{26 \textcolor{keyword}{template} <\textcolor{keyword}{class} T>}
+\DoxyCodeLine{27 \textcolor{keyword}{inline} \textcolor{keyword}{constexpr} \textcolor{keywordtype}{bool} is\_atomic\_v<std::atomic<T>> = \textcolor{keyword}{true};}
+\DoxyCodeLine{28 \textcolor{keyword}{template} <\textcolor{keyword}{class} T>}
+\DoxyCodeLine{29 \textcolor{keyword}{inline} \textcolor{keyword}{constexpr} \textcolor{keywordtype}{bool} is\_atomic\_v<std::atomic\_ref<T>> = \textcolor{keyword}{true};}
+\DoxyCodeLine{30 }
+\DoxyCodeLine{32 \textcolor{keyword}{template} <\textcolor{keyword}{class} T>}
+\DoxyCodeLine{33 \textcolor{keyword}{struct }\mbox{\hyperlink{structnw_1_1graph_1_1remove__atomic}{remove\_atomic}} \{}
+\DoxyCodeLine{34   \textcolor{keyword}{using} type = T;}
+\DoxyCodeLine{35 \};}
+\DoxyCodeLine{36 \textcolor{keyword}{template} <\textcolor{keyword}{class} T>}
+\DoxyCodeLine{37 \textcolor{keyword}{struct }\mbox{\hyperlink{structnw_1_1graph_1_1remove__atomic}{remove\_atomic}}<std::atomic<T>> \{}
+\DoxyCodeLine{38   \textcolor{keyword}{using} type = T;}
+\DoxyCodeLine{39 \};}
+\DoxyCodeLine{40 \textcolor{keyword}{template} <\textcolor{keyword}{class} T>}
+\DoxyCodeLine{41 \textcolor{keyword}{struct }\mbox{\hyperlink{structnw_1_1graph_1_1remove__atomic}{remove\_atomic}}<std::atomic\_ref<T>> \{}
+\DoxyCodeLine{42   \textcolor{keyword}{using} type = T;}
+\DoxyCodeLine{43 \};}
+\DoxyCodeLine{44 \textcolor{keyword}{template} <\textcolor{keyword}{class} T>}
+\DoxyCodeLine{45 \textcolor{keyword}{using} remove\_atomic\_t = \textcolor{keyword}{typename} remove\_atomic<T>::type;}
+\DoxyCodeLine{46 }
+\DoxyCodeLine{47 \textcolor{keyword}{template} <\textcolor{keyword}{class}>}
+\DoxyCodeLine{48 \textcolor{keyword}{inline} \textcolor{keyword}{constexpr} \textcolor{keywordtype}{bool} is\_tbb\_range\_v = \textcolor{keyword}{false};}
+\DoxyCodeLine{49 \textcolor{keyword}{template} <\textcolor{keyword}{class} T>}
+\DoxyCodeLine{50 \textcolor{keyword}{inline} \textcolor{keyword}{constexpr} \textcolor{keywordtype}{bool} is\_tbb\_range\_v<tbb::blocked\_range<T>> = \textcolor{keyword}{true};}
+\DoxyCodeLine{51 }
+\DoxyCodeLine{52 \textcolor{keyword}{template} <\textcolor{keyword}{class}>}
+\DoxyCodeLine{53 \textcolor{keyword}{inline} \textcolor{keyword}{constexpr} \textcolor{keywordtype}{bool} is\_tuple\_v = \textcolor{keyword}{false};}
+\DoxyCodeLine{54 \textcolor{keyword}{template} <\textcolor{keyword}{class}... Ts>}
+\DoxyCodeLine{55 \textcolor{keyword}{inline} \textcolor{keyword}{constexpr} \textcolor{keywordtype}{bool} is\_tuple\_v<std::tuple<Ts...>> = \textcolor{keyword}{true};}
+\DoxyCodeLine{56 }
+\DoxyCodeLine{57 \textcolor{keyword}{template} <\textcolor{keyword}{class}, \textcolor{keyword}{class} = \textcolor{keywordtype}{void}>}
+\DoxyCodeLine{58 \textcolor{keyword}{struct }\mbox{\hyperlink{structnw_1_1graph_1_1is__iterator}{is\_iterator}} : std::false\_type \{\};}
+\DoxyCodeLine{59 \textcolor{keyword}{template} <\textcolor{keyword}{class} T>}
+\DoxyCodeLine{60 \textcolor{keyword}{struct }\mbox{\hyperlink{structnw_1_1graph_1_1is__iterator}{is\_iterator}}<T*, \textcolor{keywordtype}{void}> : std::true\_type \{\};}
+\DoxyCodeLine{61 \textcolor{keyword}{template} <\textcolor{keyword}{class} T>}
+\DoxyCodeLine{62 \textcolor{keyword}{struct }\mbox{\hyperlink{structnw_1_1graph_1_1is__iterator}{is\_iterator}}<const T*, \textcolor{keywordtype}{void}> : std::true\_type \{\};}
+\DoxyCodeLine{63 \textcolor{keyword}{template} <\textcolor{keyword}{class} T>}
+\DoxyCodeLine{64 \textcolor{keyword}{struct }\mbox{\hyperlink{structnw_1_1graph_1_1is__iterator}{is\_iterator}}<T, std::enable\_if\_t<!std::is\_same\_v<typename std::iterator\_traits<T>::value\_type, void>>> : std::true\_type \{\};}
+\DoxyCodeLine{65 }
+\DoxyCodeLine{66 \textcolor{keyword}{template} <\textcolor{keyword}{class} T>}
+\DoxyCodeLine{67 \textcolor{keyword}{inline} \textcolor{keyword}{constexpr} \textcolor{keywordtype}{bool} is\_iterator\_v = \mbox{\hyperlink{structnw_1_1graph_1_1is__iterator}{is\_iterator<T>::value}};}
+\DoxyCodeLine{68 }
+\DoxyCodeLine{69 \}    \textcolor{comment}{// namespace graph}}
+\DoxyCodeLine{70 \}    \textcolor{comment}{// namespace nw}}
+\DoxyCodeLine{71 }
+\DoxyCodeLine{72 \textcolor{preprocessor}{\#endif    }\textcolor{comment}{// NW\_GRAPH\_TRAITS\_HPP}}
+
+\end{DoxyCode}

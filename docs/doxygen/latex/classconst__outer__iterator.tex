@@ -1,0 +1,94 @@
+\hypertarget{classconst__outer__iterator}{}\doxysection{const\+\_\+outer\+\_\+iterator Class Reference}
+\label{classconst__outer__iterator}\index{const\_outer\_iterator@{const\_outer\_iterator}}
+\doxysubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classconst__outer__iterator_a70c85a5ca4e6b186e0c3c039ed6e3a25}\label{classconst__outer__iterator_a70c85a5ca4e6b186e0c3c039ed6e3a25}} 
+using {\bfseries difference\+\_\+type} = std\+::make\+\_\+signed\+\_\+t$<$ index\+\_\+t $>$
+\item 
+\mbox{\Hypertarget{classconst__outer__iterator_a37513c13f0d9e9486238da113e50da32}\label{classconst__outer__iterator_a37513c13f0d9e9486238da113e50da32}} 
+using {\bfseries value\+\_\+type} = const\+\_\+sub\+\_\+view
+\item 
+\mbox{\Hypertarget{classconst__outer__iterator_a39f8a3cf161cb2b7d05fb562247d2331}\label{classconst__outer__iterator_a39f8a3cf161cb2b7d05fb562247d2331}} 
+using {\bfseries reference} = const\+\_\+sub\+\_\+view
+\item 
+\mbox{\Hypertarget{classconst__outer__iterator_ad72af18e4a2086530d16c430ea04c04c}\label{classconst__outer__iterator_ad72af18e4a2086530d16c430ea04c04c}} 
+using {\bfseries pointer} = const value\+\_\+type $\ast$
+\item 
+\mbox{\Hypertarget{classconst__outer__iterator_ade158bc77ba0cd94ecc38d3a19d033ae}\label{classconst__outer__iterator_ade158bc77ba0cd94ecc38d3a19d033ae}} 
+using {\bfseries iterator\+\_\+category} = std\+::random\+\_\+access\+\_\+iterator\+\_\+tag
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classconst__outer__iterator_ad1f4e6684b57c572c5a495aff54fc14d}\label{classconst__outer__iterator_ad1f4e6684b57c572c5a495aff54fc14d}} 
+{\bfseries const\+\_\+outer\+\_\+iterator} (std\+::vector$<$ index\+\_\+t $>$\+::const\+\_\+iterator indices, typename struct\+\_\+of\+\_\+arrays$<$ Attributes... $>$\+::const\+\_\+iterator indexed, index\+\_\+t i)
+\item 
+\mbox{\Hypertarget{classconst__outer__iterator_a405d150fa4153286d534d827019b184c}\label{classconst__outer__iterator_a405d150fa4153286d534d827019b184c}} 
+\mbox{\hyperlink{classconst__outer__iterator}{const\+\_\+outer\+\_\+iterator}} \& {\bfseries operator++} ()
+\item 
+\mbox{\Hypertarget{classconst__outer__iterator_a966588ab4d2387394d162897897b4d8b}\label{classconst__outer__iterator_a966588ab4d2387394d162897897b4d8b}} 
+\mbox{\hyperlink{classconst__outer__iterator}{const\+\_\+outer\+\_\+iterator}} {\bfseries operator++} (int) const
+\item 
+\mbox{\Hypertarget{classconst__outer__iterator_a2ddfc2c8dd641fa7560a6e81335344af}\label{classconst__outer__iterator_a2ddfc2c8dd641fa7560a6e81335344af}} 
+\mbox{\hyperlink{classconst__outer__iterator}{const\+\_\+outer\+\_\+iterator}} \& {\bfseries operator-\/-\/} ()
+\item 
+\mbox{\Hypertarget{classconst__outer__iterator_a86cc8dd2dd88642bc5715b0e82bc466c}\label{classconst__outer__iterator_a86cc8dd2dd88642bc5715b0e82bc466c}} 
+\mbox{\hyperlink{classconst__outer__iterator}{const\+\_\+outer\+\_\+iterator}} {\bfseries operator-\/-\/} (int) const
+\item 
+\mbox{\Hypertarget{classconst__outer__iterator_a1d2e86275ae2cee9da94659ff56892b5}\label{classconst__outer__iterator_a1d2e86275ae2cee9da94659ff56892b5}} 
+\mbox{\hyperlink{classconst__outer__iterator}{const\+\_\+outer\+\_\+iterator}} \& {\bfseries operator+=} (difference\+\_\+type n)
+\item 
+\mbox{\Hypertarget{classconst__outer__iterator_a03a0bcf5e807773c7e96bf183a5e8840}\label{classconst__outer__iterator_a03a0bcf5e807773c7e96bf183a5e8840}} 
+\mbox{\hyperlink{classconst__outer__iterator}{const\+\_\+outer\+\_\+iterator}} \& {\bfseries operator-\/=} (difference\+\_\+type n)
+\item 
+\mbox{\Hypertarget{classconst__outer__iterator_a06bbb0dc63e56cb60d76f510cbd5eecf}\label{classconst__outer__iterator_a06bbb0dc63e56cb60d76f510cbd5eecf}} 
+\mbox{\hyperlink{classconst__outer__iterator}{const\+\_\+outer\+\_\+iterator}} {\bfseries operator+} (difference\+\_\+type n) const
+\item 
+\mbox{\Hypertarget{classconst__outer__iterator_ae3f586eb82c8a64e78e3b7cb6dd40995}\label{classconst__outer__iterator_ae3f586eb82c8a64e78e3b7cb6dd40995}} 
+\mbox{\hyperlink{classconst__outer__iterator}{const\+\_\+outer\+\_\+iterator}} {\bfseries operator-\/} (difference\+\_\+type n) const
+\item 
+\mbox{\Hypertarget{classconst__outer__iterator_ad424261ed57fb9cf534ec9c59c26d410}\label{classconst__outer__iterator_ad424261ed57fb9cf534ec9c59c26d410}} 
+difference\+\_\+type {\bfseries operator-\/} (const \mbox{\hyperlink{classconst__outer__iterator}{const\+\_\+outer\+\_\+iterator}} \&b) const
+\item 
+\mbox{\Hypertarget{classconst__outer__iterator_ae7c149f119bd544c52b0a295edd175a7}\label{classconst__outer__iterator_ae7c149f119bd544c52b0a295edd175a7}} 
+bool {\bfseries operator==} (const \mbox{\hyperlink{classconst__outer__iterator}{const\+\_\+outer\+\_\+iterator}} \&b) const
+\item 
+\mbox{\Hypertarget{classconst__outer__iterator_a278001ca68b511384471e0c7ff7f66f4}\label{classconst__outer__iterator_a278001ca68b511384471e0c7ff7f66f4}} 
+bool {\bfseries operator!=} (const \mbox{\hyperlink{classconst__outer__iterator}{const\+\_\+outer\+\_\+iterator}} \&b) const
+\item 
+\mbox{\Hypertarget{classconst__outer__iterator_a85753bf12be215a13292bb273d91be1f}\label{classconst__outer__iterator_a85753bf12be215a13292bb273d91be1f}} 
+bool {\bfseries operator$<$} (const \mbox{\hyperlink{classconst__outer__iterator}{const\+\_\+outer\+\_\+iterator}} \&b) const
+\item 
+\mbox{\Hypertarget{classconst__outer__iterator_a5e8d13d352ba8c2ef392f3990a60686f}\label{classconst__outer__iterator_a5e8d13d352ba8c2ef392f3990a60686f}} 
+bool {\bfseries operator$>$} (const \mbox{\hyperlink{classconst__outer__iterator}{const\+\_\+outer\+\_\+iterator}} \&b) const
+\item 
+\mbox{\Hypertarget{classconst__outer__iterator_a433d07e87e04cdc2180391f990d49ec2}\label{classconst__outer__iterator_a433d07e87e04cdc2180391f990d49ec2}} 
+bool {\bfseries operator$<$=} (const \mbox{\hyperlink{classconst__outer__iterator}{const\+\_\+outer\+\_\+iterator}} \&b) const
+\item 
+\mbox{\Hypertarget{classconst__outer__iterator_a9d639766b981305d193d7f644591f81f}\label{classconst__outer__iterator_a9d639766b981305d193d7f644591f81f}} 
+bool {\bfseries operator$>$=} (const \mbox{\hyperlink{classconst__outer__iterator}{const\+\_\+outer\+\_\+iterator}} \&b) const
+\item 
+\mbox{\Hypertarget{classconst__outer__iterator_a3477c924a50996e7ceaaa48f1138225b}\label{classconst__outer__iterator_a3477c924a50996e7ceaaa48f1138225b}} 
+reference {\bfseries operator$\ast$} ()
+\item 
+\mbox{\Hypertarget{classconst__outer__iterator_accd6dd88ed0b26e1c861d987308e84a9}\label{classconst__outer__iterator_accd6dd88ed0b26e1c861d987308e84a9}} 
+reference {\bfseries operator$\ast$} () const
+\item 
+\mbox{\Hypertarget{classconst__outer__iterator_a9687f7fdae24398f20554ce340b600b7}\label{classconst__outer__iterator_a9687f7fdae24398f20554ce340b600b7}} 
+pointer {\bfseries operator-\/$>$} ()
+\item 
+\mbox{\Hypertarget{classconst__outer__iterator_a3b66305e0f744ad3600a534542bb73ef}\label{classconst__outer__iterator_a3b66305e0f744ad3600a534542bb73ef}} 
+pointer {\bfseries operator-\/$>$} () const
+\item 
+\mbox{\Hypertarget{classconst__outer__iterator_a8dc52a2c89b17731f7cd0a35f8d26c86}\label{classconst__outer__iterator_a8dc52a2c89b17731f7cd0a35f8d26c86}} 
+reference {\bfseries operator\mbox{[}$\,$\mbox{]}} (index\+\_\+t n)
+\item 
+\mbox{\Hypertarget{classconst__outer__iterator_af2cc11155f62848cec399fab4f1f8323}\label{classconst__outer__iterator_af2cc11155f62848cec399fab4f1f8323}} 
+reference {\bfseries operator\mbox{[}$\,$\mbox{]}} (index\+\_\+t n) const
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/lums/\+NWmath/\+NWgr/include/nwgraph/containers/scrap.\+cpp\end{DoxyCompactItemize}

@@ -1,0 +1,176 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.3" xml:lang="en-US">
+  <compounddef id="classnw_1_1graph_1_1plain__degree__range_1_1iterator" kind="class" language="C++" prot="public">
+    <compoundname>nw::graph::plain_degree_range::iterator</compoundname>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classnw_1_1graph_1_1plain__degree__range_1_1iterator_1ada7af006dd37494d9f55b5579884f709" prot="private" static="no" mutable="no">
+        <type>Graph::iterator</type>
+        <definition>Graph::iterator nw::graph::plain_degree_range&lt; Graph &gt;::iterator::base_</definition>
+        <argsstring></argsstring>
+        <name>base_</name>
+        <qualifiedname>nw::graph::plain_degree_range::iterator::base_</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/plain_range.hpp" line="141" column="30" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/plain_range.hpp" bodystart="141" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classnw_1_1graph_1_1plain__degree__range_1_1iterator_1aac7f76736cd957329f11e48828c5d1ee" prot="private" static="no" mutable="no">
+        <type>Graph::iterator</type>
+        <definition>Graph::iterator nw::graph::plain_degree_range&lt; Graph &gt;::iterator::first_</definition>
+        <argsstring></argsstring>
+        <name>first_</name>
+        <qualifiedname>nw::graph::plain_degree_range::iterator::first_</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/plain_range.hpp" line="142" column="30" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/plain_range.hpp" bodystart="142" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classnw_1_1graph_1_1plain__degree__range_1_1iterator_1a1f3c1c56ce95c59030356cbce31fe6a1" prot="private" static="no" mutable="no">
+        <type>Graph::iterator</type>
+        <definition>Graph::iterator nw::graph::plain_degree_range&lt; Graph &gt;::iterator::last_</definition>
+        <argsstring></argsstring>
+        <name>last_</name>
+        <qualifiedname>nw::graph::plain_degree_range::iterator::last_</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/plain_range.hpp" line="143" column="30" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/plain_range.hpp" bodystart="143" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classnw_1_1graph_1_1plain__degree__range_1_1iterator_1ac7aa2f06b76ce47597e8840666d60e48" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>nw::graph::plain_degree_range&lt; Graph &gt;::iterator::iterator</definition>
+        <argsstring>(typename Graph::iterator base, typename Graph::iterator first, typename Graph::iterator last)</argsstring>
+        <name>iterator</name>
+        <qualifiedname>nw::graph::plain_degree_range::iterator::iterator</qualifiedname>
+        <param>
+          <type>typename Graph::iterator</type>
+          <declname>base</declname>
+        </param>
+        <param>
+          <type>typename Graph::iterator</type>
+          <declname>first</declname>
+        </param>
+        <param>
+          <type>typename Graph::iterator</type>
+          <declname>last</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/plain_range.hpp" line="146" column="5" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/plain_range.hpp" bodystart="146" bodyend="147"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1plain__degree__range_1_1iterator_1ab2879c2d605dfb432360b49213dbd2d4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>nw::graph::plain_degree_range&lt; Graph &gt;::iterator::iterator</definition>
+        <argsstring>(const iterator &amp;b)=default</argsstring>
+        <name>iterator</name>
+        <qualifiedname>nw::graph::plain_degree_range::iterator::iterator</qualifiedname>
+        <param>
+          <type>const <ref refid="classnw_1_1graph_1_1plain__degree__range_1_1iterator" kindref="compound">iterator</ref> &amp;</type>
+          <declname>b</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/plain_range.hpp" line="149" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1plain__degree__range_1_1iterator_1aa4ebb33f2afeb5fbcbe0ec25117d9da3" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classnw_1_1graph_1_1plain__degree__range_1_1iterator" kindref="compound">iterator</ref> &amp;</type>
+        <definition>iterator &amp; nw::graph::plain_degree_range&lt; Graph &gt;::iterator::operator++</definition>
+        <argsstring>()</argsstring>
+        <name>operator++</name>
+        <qualifiedname>nw::graph::plain_degree_range::iterator::operator++</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/plain_range.hpp" line="151" column="14" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/plain_range.hpp" bodystart="151" bodyend="154"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1plain__degree__range_1_1iterator_1a0bbdc472df6bc3ded85c460a93b04c15" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto nw::graph::plain_degree_range&lt; Graph &gt;::iterator::operator*</definition>
+        <argsstring>()</argsstring>
+        <name>operator*</name>
+        <qualifiedname>nw::graph::plain_degree_range::iterator::operator*</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/plain_range.hpp" line="156" column="10" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/plain_range.hpp" bodystart="156" bodyend="156"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1plain__degree__range_1_1iterator_1ad28d2d4f22b62af39fc0e547b5bac4fc" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool nw::graph::plain_degree_range&lt; Graph &gt;::iterator::operator==</definition>
+        <argsstring>(const iterator &amp;b) const</argsstring>
+        <name>operator==</name>
+        <qualifiedname>nw::graph::plain_degree_range::iterator::operator==</qualifiedname>
+        <param>
+          <type>const <ref refid="classnw_1_1graph_1_1plain__degree__range_1_1iterator" kindref="compound">iterator</ref> &amp;</type>
+          <declname>b</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/plain_range.hpp" line="158" column="10" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/plain_range.hpp" bodystart="158" bodyend="158"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1plain__degree__range_1_1iterator_1a6942c17fde69bd1e56f63d47ce258b23" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool nw::graph::plain_degree_range&lt; Graph &gt;::iterator::operator!=</definition>
+        <argsstring>(const iterator &amp;b) const</argsstring>
+        <name>operator!=</name>
+        <qualifiedname>nw::graph::plain_degree_range::iterator::operator!=</qualifiedname>
+        <param>
+          <type>const <ref refid="classnw_1_1graph_1_1plain__degree__range_1_1iterator" kindref="compound">iterator</ref> &amp;</type>
+          <declname>b</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/plain_range.hpp" line="159" column="10" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/plain_range.hpp" bodystart="159" bodyend="159"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/plain_range.hpp" line="140" column="3" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/plain_range.hpp" bodystart="140" bodyend="160"/>
+    <listofallmembers>
+      <member refid="classnw_1_1graph_1_1plain__degree__range_1_1iterator_1ada7af006dd37494d9f55b5579884f709" prot="private" virt="non-virtual"><scope>nw::graph::plain_degree_range::iterator</scope><name>base_</name></member>
+      <member refid="classnw_1_1graph_1_1plain__degree__range_1_1iterator_1aac7f76736cd957329f11e48828c5d1ee" prot="private" virt="non-virtual"><scope>nw::graph::plain_degree_range::iterator</scope><name>first_</name></member>
+      <member refid="classnw_1_1graph_1_1plain__degree__range_1_1iterator_1ac7aa2f06b76ce47597e8840666d60e48" prot="public" virt="non-virtual"><scope>nw::graph::plain_degree_range::iterator</scope><name>iterator</name></member>
+      <member refid="classnw_1_1graph_1_1plain__degree__range_1_1iterator_1ab2879c2d605dfb432360b49213dbd2d4" prot="public" virt="non-virtual"><scope>nw::graph::plain_degree_range::iterator</scope><name>iterator</name></member>
+      <member refid="classnw_1_1graph_1_1plain__degree__range_1_1iterator_1a1f3c1c56ce95c59030356cbce31fe6a1" prot="private" virt="non-virtual"><scope>nw::graph::plain_degree_range::iterator</scope><name>last_</name></member>
+      <member refid="classnw_1_1graph_1_1plain__degree__range_1_1iterator_1a6942c17fde69bd1e56f63d47ce258b23" prot="public" virt="non-virtual"><scope>nw::graph::plain_degree_range::iterator</scope><name>operator!=</name></member>
+      <member refid="classnw_1_1graph_1_1plain__degree__range_1_1iterator_1a0bbdc472df6bc3ded85c460a93b04c15" prot="public" virt="non-virtual"><scope>nw::graph::plain_degree_range::iterator</scope><name>operator*</name></member>
+      <member refid="classnw_1_1graph_1_1plain__degree__range_1_1iterator_1aa4ebb33f2afeb5fbcbe0ec25117d9da3" prot="public" virt="non-virtual"><scope>nw::graph::plain_degree_range::iterator</scope><name>operator++</name></member>
+      <member refid="classnw_1_1graph_1_1plain__degree__range_1_1iterator_1ad28d2d4f22b62af39fc0e547b5bac4fc" prot="public" virt="non-virtual"><scope>nw::graph::plain_degree_range::iterator</scope><name>operator==</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

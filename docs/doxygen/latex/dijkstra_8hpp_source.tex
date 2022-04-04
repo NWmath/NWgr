@@ -1,0 +1,103 @@
+\hypertarget{dijkstra_8hpp_source}{}\doxysection{dijkstra.\+hpp}
+\label{dijkstra_8hpp_source}\index{/Users/lums/NWmath/NWgr/include/nwgraph/algorithms/dijkstra.hpp@{/Users/lums/NWmath/NWgr/include/nwgraph/algorithms/dijkstra.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// }}
+\DoxyCodeLine{2 \textcolor{comment}{// This file is part of NW Graph (aka GraphPack) }}
+\DoxyCodeLine{3 \textcolor{comment}{// (c) Pacific Northwest National Laboratory 2018-\/2021 }}
+\DoxyCodeLine{4 \textcolor{comment}{// (c) University of Washington 2018-\/2021 }}
+\DoxyCodeLine{5 \textcolor{comment}{// }}
+\DoxyCodeLine{6 \textcolor{comment}{// Licensed under terms of include LICENSE file }}
+\DoxyCodeLine{7 \textcolor{comment}{// }}
+\DoxyCodeLine{8 \textcolor{comment}{// Authors: }}
+\DoxyCodeLine{9 \textcolor{comment}{//     Andrew Lumsdaine }}
+\DoxyCodeLine{10 \textcolor{comment}{//     Kevin Deweese    }}
+\DoxyCodeLine{11 \textcolor{comment}{//}}
+\DoxyCodeLine{12 }
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#ifndef DIJKSTRA\_HPP}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#define DIJKSTRA\_HPP}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include <algorithm>}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include <cassert>}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include <queue>}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include <tuple>}}
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#include <limits>}}
+\DoxyCodeLine{22 }
+\DoxyCodeLine{23 \textcolor{preprocessor}{\#include "{}nwgraph/graph\_concepts.hpp"{}}}
+\DoxyCodeLine{24 \textcolor{preprocessor}{\#include "{}nwgraph/adaptors/bfs\_edge\_range.hpp"{}}}
+\DoxyCodeLine{25 }
+\DoxyCodeLine{26 \textcolor{keyword}{namespace }nw \{}
+\DoxyCodeLine{27 \textcolor{keyword}{namespace }graph \{}
+\DoxyCodeLine{28 }
+\DoxyCodeLine{29 \textcolor{keyword}{template} <\textcolor{keyword}{typename} DistanceT, adjacency\_list\_graph GraphT>}
+\DoxyCodeLine{30 std::vector<DistanceT> dijkstra(\textcolor{keyword}{const} GraphT\& graph, vertex\_id\_t<GraphT> source) \{}
+\DoxyCodeLine{31   \textcolor{keyword}{using} vertex\_id\_type = vertex\_id\_t<GraphT>;}
+\DoxyCodeLine{32 }
+\DoxyCodeLine{33   \textcolor{keywordtype}{size\_t} N(graph.end() -\/ graph.begin());}
+\DoxyCodeLine{34   assert(source < N);}
+\DoxyCodeLine{35 }
+\DoxyCodeLine{36   std::vector<DistanceT> distance(N, 0xDEADBEEF);}
+\DoxyCodeLine{37   distance[source] = 0;}
+\DoxyCodeLine{38 }
+\DoxyCodeLine{39   \textcolor{keyword}{using} weight\_t        = DistanceT;}
+\DoxyCodeLine{40   \textcolor{keyword}{using} weighted\_vertex = std::tuple<vertex\_id\_type, weight\_t>;}
+\DoxyCodeLine{41 }
+\DoxyCodeLine{42   std::priority\_queue<weighted\_vertex, std::vector<weighted\_vertex>, std::greater<weighted\_vertex>> Q;}
+\DoxyCodeLine{43 }
+\DoxyCodeLine{44   \textcolor{keywordflow}{for} (\textcolor{keyword}{auto}\&\& [u, v, w] : bfs\_edge\_range2(graph, Q)) \{}
+\DoxyCodeLine{45     \textcolor{keywordflow}{if} (distance[u] + w < distance[v]) \{}
+\DoxyCodeLine{46       distance[v] = distance[u] + w;}
+\DoxyCodeLine{47       Q.push(\{v, distance[v]\});}
+\DoxyCodeLine{48     \}}
+\DoxyCodeLine{49   \}}
+\DoxyCodeLine{50 }
+\DoxyCodeLine{51   \textcolor{keywordflow}{return} distance;}
+\DoxyCodeLine{52 \}}
+\DoxyCodeLine{53 }
+\DoxyCodeLine{54 \textcolor{keyword}{template} <\textcolor{keyword}{typename} DistanceT, adjacency\_list\_graph Graph,}
+\DoxyCodeLine{55           std::invocable<inner\_value\_t<Graph>> Weight = std::function<std::tuple\_element\_t<}
+\DoxyCodeLine{56               1, inner\_value\_t<Graph>>(\textcolor{keyword}{const} inner\_value\_t<Graph>\&)>> }
+\DoxyCodeLine{57 \textcolor{keyword}{auto} dijkstra\_v0(}
+\DoxyCodeLine{58           \textcolor{keyword}{const} Graph\& graph, vertex\_id\_t<Graph> source,}
+\DoxyCodeLine{59           Weight weight = [](\textcolor{keyword}{auto}\& e) \{}
+\DoxyCodeLine{60             \textcolor{keywordflow}{return} std::get<1>(e);}
+\DoxyCodeLine{61           \}) \{}
+\DoxyCodeLine{62   \textcolor{keyword}{using} vertex\_id\_type = vertex\_id\_t<Graph>;}
+\DoxyCodeLine{63 }
+\DoxyCodeLine{64   \textcolor{keywordtype}{size\_t} N(graph.end() -\/ graph.begin());}
+\DoxyCodeLine{65   assert(source < N);}
+\DoxyCodeLine{66 }
+\DoxyCodeLine{67   std::vector<DistanceT> distance(N, std::numeric\_limits<vertex\_id\_type>::max());}
+\DoxyCodeLine{68   distance[source] = 0;}
+\DoxyCodeLine{69 }
+\DoxyCodeLine{70   \textcolor{keyword}{auto} g                = graph.begin();}
+\DoxyCodeLine{71   \textcolor{keyword}{using} weight\_t        = DistanceT;}
+\DoxyCodeLine{72   \textcolor{keyword}{using} weighted\_vertex = std::tuple<vertex\_id\_type, weight\_t>;}
+\DoxyCodeLine{73 }
+\DoxyCodeLine{74   std::priority\_queue<weighted\_vertex, std::vector<weighted\_vertex>, std::greater<weighted\_vertex>> Q;}
+\DoxyCodeLine{75 }
+\DoxyCodeLine{76   Q.push(\{source, distance[source]\});}
+\DoxyCodeLine{77 }
+\DoxyCodeLine{78   \textcolor{keywordflow}{while} (!Q.empty()) \{}
+\DoxyCodeLine{79 }
+\DoxyCodeLine{80     \textcolor{keyword}{auto} u = std::get<0>(Q.top());}
+\DoxyCodeLine{81     Q.pop();}
+\DoxyCodeLine{82 }
+\DoxyCodeLine{83     std::for\_each(g[u].begin(), g[u].end(), [\&](\textcolor{keyword}{auto}\&\& e) \{}
+\DoxyCodeLine{84       \textcolor{keyword}{auto} v = target(graph, e);}
+\DoxyCodeLine{85       \textcolor{keyword}{auto} w = weight(e);}
+\DoxyCodeLine{86       \textcolor{keywordflow}{if} (distance[u] + w < distance[v]) \{}
+\DoxyCodeLine{87         distance[v] = distance[u] + w;}
+\DoxyCodeLine{88         Q.push(\{v, distance[v]\});}
+\DoxyCodeLine{89       \}}
+\DoxyCodeLine{90     \});}
+\DoxyCodeLine{91   \}}
+\DoxyCodeLine{92   \textcolor{keywordflow}{return} distance;}
+\DoxyCodeLine{93 \}}
+\DoxyCodeLine{94 }
+\DoxyCodeLine{95 \}    \textcolor{comment}{// namespace graph}}
+\DoxyCodeLine{96 \}    \textcolor{comment}{// namespace nw}}
+\DoxyCodeLine{97 \textcolor{preprocessor}{\#endif    }\textcolor{comment}{// DIJKSTRA\_HPP}}
+
+\end{DoxyCode}

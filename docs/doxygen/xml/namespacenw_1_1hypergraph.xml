@@ -1,0 +1,119 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.3" xml:lang="en-US">
+  <compounddef id="namespacenw_1_1hypergraph" kind="namespace" language="C++">
+    <compoundname>nw::hypergraph</compoundname>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="configuration__model_8hpp_1a506c9ac063a8db6f12b8642c50bb9dca" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::size_t</type>
+        <definition>std::size_t nw::hypergraph::power_gen</definition>
+        <argsstring>(double dist_min, double dist_max)</argsstring>
+        <name>power_gen</name>
+        <qualifiedname>nw::hypergraph::power_gen</qualifiedname>
+        <param>
+          <type>double</type>
+          <declname>dist_min</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>dist_max</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/generators/configuration_model.hpp" line="25" column="13" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/generators/configuration_model.hpp" bodystart="25" bodyend="34"/>
+      </memberdef>
+      <memberdef kind="function" id="configuration__model_8hpp_1a57a90780ac1060d45636e9a8527eeb77" prot="public" static="yes" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>double</type>
+        <definition>static double nw::hypergraph::standard_exponential_unlikely</definition>
+        <argsstring>(bitgen_t *bitgen_state, uint8_t idx, double x)</argsstring>
+        <name>standard_exponential_unlikely</name>
+        <qualifiedname>nw::hypergraph::standard_exponential_unlikely</qualifiedname>
+        <param>
+          <type>bitgen_t *</type>
+          <declname>bitgen_state</declname>
+        </param>
+        <param>
+          <type>uint8_t</type>
+          <declname>idx</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>x</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/generators/configuration_model.hpp" line="35" column="15" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/generators/configuration_model.hpp" bodystart="35" bodyend="47"/>
+      </memberdef>
+      <memberdef kind="function" id="configuration__model_8hpp_1a34b02d61f02f701f3df23a3f141fb536" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>double</type>
+        <definition>double nw::hypergraph::random_standard_exponential</definition>
+        <argsstring>(bitgen_t *bitgen_state)</argsstring>
+        <name>random_standard_exponential</name>
+        <qualifiedname>nw::hypergraph::random_standard_exponential</qualifiedname>
+        <param>
+          <type>bitgen_t *</type>
+          <declname>bitgen_state</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/generators/configuration_model.hpp" line="48" column="8" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/generators/configuration_model.hpp" bodystart="48" bodyend="61"/>
+      </memberdef>
+      <memberdef kind="function" id="configuration__model_8hpp_1a0517c904cb5ba50a1d07ce9ef81c205b" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>double</type>
+        <definition>double nw::hypergraph::random_power</definition>
+        <argsstring>(bitgen_t *bitgen_state, double a)</argsstring>
+        <name>random_power</name>
+        <qualifiedname>nw::hypergraph::random_power</qualifiedname>
+        <param>
+          <type>bitgen_t *</type>
+          <declname>bitgen_state</declname>
+        </param>
+        <param>
+          <type>double</type>
+          <declname>a</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/generators/configuration_model.hpp" line="63" column="8" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/generators/configuration_model.hpp" bodystart="63" bodyend="65"/>
+      </memberdef>
+      <memberdef kind="function" id="configuration__model_8hpp_1af3d62d5ba46d1576c9739ab9db8a498c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>std::vector&lt; std::size_t &gt;</type>
+        <definition>std::vector&lt; std::size_t &gt; nw::hypergraph::power_law_gen</definition>
+        <argsstring>(double std::size_t samples) template&lt; class T &gt; nw</argsstring>
+        <name>power_law_gen</name>
+        <qualifiedname>nw::hypergraph::power_law_gen</qualifiedname>
+        <param>
+          <type>double std::size_t</type>
+          <declname>samples</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/generators/configuration_model.hpp" line="67" column="13" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/generators/configuration_model.hpp" bodystart="67" bodyend="121"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/Users/lums/NWmath/NWgr/include/nwgraph/generators/configuration_model.hpp" line="19" column="1"/>
+  </compounddef>
+</doxygen>

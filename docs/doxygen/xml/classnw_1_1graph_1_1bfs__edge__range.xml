@@ -1,0 +1,211 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.3" xml:lang="en-US">
+  <compounddef id="classnw_1_1graph_1_1bfs__edge__range" kind="class" language="C++" prot="public">
+    <compoundname>nw::graph::bfs_edge_range</compoundname>
+    <innerclass refid="classnw_1_1graph_1_1bfs__edge__range_1_1bfs__edge__range__iterator" prot="public">nw::graph::bfs_edge_range::bfs_edge_range_iterator</innerclass>
+    <templateparamlist>
+      <param>
+        <type>typename Graph</type>
+      </param>
+      <param>
+        <type>typename Queue</type>
+        <defval>std::queue&lt;vertex_id_t&lt;Graph&gt;&gt;</defval>
+      </param>
+    </templateparamlist>
+      <sectiondef kind="private-type">
+      <memberdef kind="typedef" id="classnw_1_1graph_1_1bfs__edge__range_1a232051b52cb9cf49370a9372055ba7be" prot="private" static="no">
+        <type>vertex_id_t&lt; Graph &gt;</type>
+        <definition>using nw::graph::bfs_edge_range&lt; Graph, Queue &gt;::vertex_id_type =  vertex_id_t&lt;Graph&gt;</definition>
+        <argsstring></argsstring>
+        <name>vertex_id_type</name>
+        <qualifiedname>nw::graph::bfs_edge_range::vertex_id_type</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/bfs_edge_range.hpp" line="122" column="3" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/bfs_edge_range.hpp" bodystart="122" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-type">
+      <memberdef kind="typedef" id="classnw_1_1graph_1_1bfs__edge__range_1ae89854135145d76d5e777d07b10ae1fb" prot="public" static="no">
+        <type><ref refid="classnw_1_1graph_1_1bfs__edge__range_1_1bfs__edge__range__iterator" kindref="compound">bfs_edge_range_iterator</ref></type>
+        <definition>typedef bfs_edge_range_iterator nw::graph::bfs_edge_range&lt; Graph, Queue &gt;::iterator</definition>
+        <argsstring></argsstring>
+        <name>iterator</name>
+        <qualifiedname>nw::graph::bfs_edge_range::iterator</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/bfs_edge_range.hpp" line="191" column="35" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/bfs_edge_range.hpp" bodystart="191" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classnw_1_1graph_1_1bfs__edge__range_1af22910b9ac494a2b6914f1347c28f30d" prot="private" static="no" mutable="no">
+        <type>Graph &amp;</type>
+        <definition>Graph&amp; nw::graph::bfs_edge_range&lt; Graph, Queue &gt;::the_graph_</definition>
+        <argsstring></argsstring>
+        <name>the_graph_</name>
+        <qualifiedname>nw::graph::bfs_edge_range::the_graph_</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/bfs_edge_range.hpp" line="197" column="28" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/bfs_edge_range.hpp" bodystart="197" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classnw_1_1graph_1_1bfs__edge__range_1a4d5905e086475e29249373de74d311d3" prot="private" static="no" mutable="no">
+        <type>Queue</type>
+        <definition>Queue nw::graph::bfs_edge_range&lt; Graph, Queue &gt;::Q_</definition>
+        <argsstring></argsstring>
+        <name>Q_</name>
+        <qualifiedname>nw::graph::bfs_edge_range::Q_</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/bfs_edge_range.hpp" line="198" column="29" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/bfs_edge_range.hpp" bodystart="198" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classnw_1_1graph_1_1bfs__edge__range_1a43f8f9f6e4cb72158084d9fa7db4acfb" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; bool &gt;</type>
+        <definition>std::vector&lt;bool&gt; nw::graph::bfs_edge_range&lt; Graph, Queue &gt;::visited_</definition>
+        <argsstring></argsstring>
+        <name>visited_</name>
+        <qualifiedname>nw::graph::bfs_edge_range::visited_</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/bfs_edge_range.hpp" line="199" column="15" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/bfs_edge_range.hpp" bodystart="199" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classnw_1_1graph_1_1bfs__edge__range_1adbb8aed00f3b9c8a26a6f2c88dc7107f" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>nw::graph::bfs_edge_range&lt; Graph, Queue &gt;::bfs_edge_range</definition>
+        <argsstring>(Graph &amp;graph, vertex_id_type seed=0)</argsstring>
+        <name>bfs_edge_range</name>
+        <qualifiedname>nw::graph::bfs_edge_range::bfs_edge_range</qualifiedname>
+        <param>
+          <type>Graph &amp;</type>
+          <declname>graph</declname>
+        </param>
+        <param>
+          <type>vertex_id_type</type>
+          <declname>seed</declname>
+          <defval>0</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/bfs_edge_range.hpp" line="125" column="3" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/bfs_edge_range.hpp" bodystart="125" bodyend="127"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1bfs__edge__range_1a1c07febf6805d568c45366772391b81e" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>nw::graph::bfs_edge_range&lt; Graph, Queue &gt;::bfs_edge_range</definition>
+        <argsstring>(const bfs_edge_range &amp;)=delete</argsstring>
+        <name>bfs_edge_range</name>
+        <qualifiedname>nw::graph::bfs_edge_range::bfs_edge_range</qualifiedname>
+        <param>
+          <type>const <ref refid="classnw_1_1graph_1_1bfs__edge__range" kindref="compound">bfs_edge_range</ref> &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/bfs_edge_range.hpp" line="129" column="3"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1bfs__edge__range_1a1a9a4f93ebc8eeb61fe34262adb658d4" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>nw::graph::bfs_edge_range&lt; Graph, Queue &gt;::bfs_edge_range</definition>
+        <argsstring>(const bfs_edge_range &amp;&amp;)=delete</argsstring>
+        <name>bfs_edge_range</name>
+        <qualifiedname>nw::graph::bfs_edge_range::bfs_edge_range</qualifiedname>
+        <param>
+          <type>const <ref refid="classnw_1_1graph_1_1bfs__edge__range" kindref="compound">bfs_edge_range</ref> &amp;&amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/bfs_edge_range.hpp" line="130" column="3"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1bfs__edge__range_1a951bf9022b9e05208fa2f3d163a4d7ff" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool nw::graph::bfs_edge_range&lt; Graph, Queue &gt;::empty</definition>
+        <argsstring>()</argsstring>
+        <name>empty</name>
+        <qualifiedname>nw::graph::bfs_edge_range::empty</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/bfs_edge_range.hpp" line="132" column="8" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/bfs_edge_range.hpp" bodystart="132" bodyend="135"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1bfs__edge__range_1abb18e4c5347641b793df3558ccd8cfb3" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto nw::graph::bfs_edge_range&lt; Graph, Queue &gt;::begin</definition>
+        <argsstring>()</argsstring>
+        <name>begin</name>
+        <qualifiedname>nw::graph::bfs_edge_range::begin</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/bfs_edge_range.hpp" line="193" column="8" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/bfs_edge_range.hpp" bodystart="193" bodyend="193"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1bfs__edge__range_1a0cc6c3559491c20e52ff08c5149516ba" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto nw::graph::bfs_edge_range&lt; Graph, Queue &gt;::end</definition>
+        <argsstring>()</argsstring>
+        <name>end</name>
+        <qualifiedname>nw::graph::bfs_edge_range::end</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/bfs_edge_range.hpp" line="194" column="8" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/bfs_edge_range.hpp" bodystart="194" bodyend="194"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/bfs_edge_range.hpp" line="120" column="1" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/bfs_edge_range.hpp" bodystart="120" bodyend="200"/>
+    <listofallmembers>
+      <member refid="classnw_1_1graph_1_1bfs__edge__range_1abb18e4c5347641b793df3558ccd8cfb3" prot="public" virt="non-virtual"><scope>nw::graph::bfs_edge_range</scope><name>begin</name></member>
+      <member refid="classnw_1_1graph_1_1bfs__edge__range_1adbb8aed00f3b9c8a26a6f2c88dc7107f" prot="public" virt="non-virtual"><scope>nw::graph::bfs_edge_range</scope><name>bfs_edge_range</name></member>
+      <member refid="classnw_1_1graph_1_1bfs__edge__range_1a1c07febf6805d568c45366772391b81e" prot="public" virt="non-virtual"><scope>nw::graph::bfs_edge_range</scope><name>bfs_edge_range</name></member>
+      <member refid="classnw_1_1graph_1_1bfs__edge__range_1a1a9a4f93ebc8eeb61fe34262adb658d4" prot="public" virt="non-virtual"><scope>nw::graph::bfs_edge_range</scope><name>bfs_edge_range</name></member>
+      <member refid="classnw_1_1graph_1_1bfs__edge__range_1a951bf9022b9e05208fa2f3d163a4d7ff" prot="public" virt="non-virtual"><scope>nw::graph::bfs_edge_range</scope><name>empty</name></member>
+      <member refid="classnw_1_1graph_1_1bfs__edge__range_1a0cc6c3559491c20e52ff08c5149516ba" prot="public" virt="non-virtual"><scope>nw::graph::bfs_edge_range</scope><name>end</name></member>
+      <member refid="classnw_1_1graph_1_1bfs__edge__range_1ae89854135145d76d5e777d07b10ae1fb" prot="public" virt="non-virtual"><scope>nw::graph::bfs_edge_range</scope><name>iterator</name></member>
+      <member refid="classnw_1_1graph_1_1bfs__edge__range_1a4d5905e086475e29249373de74d311d3" prot="private" virt="non-virtual"><scope>nw::graph::bfs_edge_range</scope><name>Q_</name></member>
+      <member refid="classnw_1_1graph_1_1bfs__edge__range_1af22910b9ac494a2b6914f1347c28f30d" prot="private" virt="non-virtual"><scope>nw::graph::bfs_edge_range</scope><name>the_graph_</name></member>
+      <member refid="classnw_1_1graph_1_1bfs__edge__range_1a232051b52cb9cf49370a9372055ba7be" prot="private" virt="non-virtual"><scope>nw::graph::bfs_edge_range</scope><name>vertex_id_type</name></member>
+      <member refid="classnw_1_1graph_1_1bfs__edge__range_1a43f8f9f6e4cb72158084d9fa7db4acfb" prot="private" virt="non-virtual"><scope>nw::graph::bfs_edge_range</scope><name>visited_</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

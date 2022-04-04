@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.3" xml:lang="en-US">
+  <compounddef id="structnw_1_1graph_1_1remove__atomic_3_01std_1_1atomic__ref_3_01_t_01_4_01_4" kind="struct" language="C++" prot="public">
+    <compoundname>nw::graph::remove_atomic&lt; std::atomic_ref&lt; T &gt; &gt;</compoundname>
+    <templateparamlist>
+      <param>
+        <type>class T</type>
+      </param>
+    </templateparamlist>
+      <sectiondef kind="public-type">
+      <memberdef kind="typedef" id="structnw_1_1graph_1_1remove__atomic_3_01std_1_1atomic__ref_3_01_t_01_4_01_4_1a0fb1fd173551056dc50a7e94b425247c" prot="public" static="no">
+        <type>T</type>
+        <definition>using nw::graph::remove_atomic&lt; std::atomic_ref&lt; T &gt; &gt;::type =  T</definition>
+        <argsstring></argsstring>
+        <name>type</name>
+        <qualifiedname>nw::graph::remove_atomic&lt; std::atomic_ref&lt; T &gt; &gt;::type</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/util/traits.hpp" line="42" column="3" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/util/traits.hpp" bodystart="42" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/Users/lums/NWmath/NWgr/include/nwgraph/util/traits.hpp" line="41" column="1" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/util/traits.hpp" bodystart="41" bodyend="43"/>
+    <listofallmembers>
+      <member refid="structnw_1_1graph_1_1remove__atomic_3_01std_1_1atomic__ref_3_01_t_01_4_01_4_1a0fb1fd173551056dc50a7e94b425247c" prot="public" virt="non-virtual"><scope>nw::graph::remove_atomic&lt; std::atomic_ref&lt; T &gt; &gt;</scope><name>type</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

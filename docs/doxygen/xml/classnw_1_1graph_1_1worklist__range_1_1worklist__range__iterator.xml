@@ -1,0 +1,118 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.3" xml:lang="en-US">
+  <compounddef id="classnw_1_1graph_1_1worklist__range_1_1worklist__range__iterator" kind="class" language="C++" prot="public">
+    <compoundname>nw::graph::worklist_range::worklist_range_iterator</compoundname>
+    <innerclass refid="classnw_1_1graph_1_1worklist__range_1_1worklist__range__iterator_1_1end__sentinel__type" prot="public">nw::graph::worklist_range::worklist_range_iterator::end_sentinel_type</innerclass>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classnw_1_1graph_1_1worklist__range_1_1worklist__range__iterator_1a5f7bd36ffc05f419d7678335e84ac7d7" prot="private" static="no" mutable="no">
+        <type><ref refid="classnw_1_1graph_1_1worklist__range" kindref="compound">worklist_range</ref>&lt; Graph, Workitem &gt; &amp;</type>
+        <definition>worklist_range&lt;Graph, Workitem&gt;&amp; nw::graph::worklist_range&lt; Graph, Workitem, Queue &gt;::worklist_range_iterator::the_range_</definition>
+        <argsstring></argsstring>
+        <name>the_range_</name>
+        <qualifiedname>nw::graph::worklist_range::worklist_range_iterator::the_range_</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/worklist.hpp" line="67" column="20" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/worklist.hpp" bodystart="67" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classnw_1_1graph_1_1worklist__range_1_1worklist__range__iterator_1a1ef3dde115aeed5baea173ac5f7bfc0f" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>nw::graph::worklist_range&lt; Graph, Workitem, Queue &gt;::worklist_range_iterator::worklist_range_iterator</definition>
+        <argsstring>(worklist_range&lt; Graph, Workitem &gt; &amp;range)</argsstring>
+        <name>worklist_range_iterator</name>
+        <qualifiedname>nw::graph::worklist_range::worklist_range_iterator::worklist_range_iterator</qualifiedname>
+        <param>
+          <type><ref refid="classnw_1_1graph_1_1worklist__range" kindref="compound">worklist_range</ref>&lt; Graph, Workitem &gt; &amp;</type>
+          <declname>range</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/worklist.hpp" line="44" column="5" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/worklist.hpp" bodystart="44" bodyend="44"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1worklist__range_1_1worklist__range__iterator_1ac002dd8b2b5ab98b36c9594e8d9ff69d" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classnw_1_1graph_1_1worklist__range_1_1worklist__range__iterator" kindref="compound">worklist_range_iterator</ref> &amp;</type>
+        <definition>worklist_range_iterator &amp; nw::graph::worklist_range&lt; Graph, Workitem, Queue &gt;::worklist_range_iterator::operator++</definition>
+        <argsstring>()</argsstring>
+        <name>operator++</name>
+        <qualifiedname>nw::graph::worklist_range::worklist_range_iterator::operator++</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/worklist.hpp" line="46" column="29" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/worklist.hpp" bodystart="46" bodyend="49"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1worklist__range_1_1worklist__range__iterator_1a785182712696ba255da049ea24af2e61" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto nw::graph::worklist_range&lt; Graph, Workitem, Queue &gt;::worklist_range_iterator::operator*</definition>
+        <argsstring>()</argsstring>
+        <name>operator*</name>
+        <qualifiedname>nw::graph::worklist_range::worklist_range_iterator::operator*</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/worklist.hpp" line="51" column="10" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/worklist.hpp" bodystart="51" bodyend="56"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1worklist__range_1_1worklist__range__iterator_1a1522f1d9934da06d82993c33154c6a89" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto nw::graph::worklist_range&lt; Graph, Workitem, Queue &gt;::worklist_range_iterator::operator==</definition>
+        <argsstring>(const end_sentinel_type &amp;) const</argsstring>
+        <name>operator==</name>
+        <qualifiedname>nw::graph::worklist_range::worklist_range_iterator::operator==</qualifiedname>
+        <param>
+          <type>const <ref refid="classnw_1_1graph_1_1worklist__range_1_1worklist__range__iterator_1_1end__sentinel__type" kindref="compound">end_sentinel_type</ref> &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/worklist.hpp" line="63" column="10" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/worklist.hpp" bodystart="63" bodyend="63"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1worklist__range_1_1worklist__range__iterator_1a765f801973f5513ab8af62484f6827f4" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool nw::graph::worklist_range&lt; Graph, Workitem, Queue &gt;::worklist_range_iterator::operator!=</definition>
+        <argsstring>(const end_sentinel_type &amp;) const</argsstring>
+        <name>operator!=</name>
+        <qualifiedname>nw::graph::worklist_range::worklist_range_iterator::operator!=</qualifiedname>
+        <param>
+          <type>const <ref refid="classnw_1_1graph_1_1worklist__range_1_1worklist__range__iterator_1_1end__sentinel__type" kindref="compound">end_sentinel_type</ref> &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/worklist.hpp" line="64" column="10" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/worklist.hpp" bodystart="64" bodyend="64"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/worklist.hpp" line="42" column="3" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/worklist.hpp" bodystart="42" bodyend="68"/>
+    <listofallmembers>
+      <member refid="classnw_1_1graph_1_1worklist__range_1_1worklist__range__iterator_1a765f801973f5513ab8af62484f6827f4" prot="public" virt="non-virtual"><scope>nw::graph::worklist_range::worklist_range_iterator</scope><name>operator!=</name></member>
+      <member refid="classnw_1_1graph_1_1worklist__range_1_1worklist__range__iterator_1a785182712696ba255da049ea24af2e61" prot="public" virt="non-virtual"><scope>nw::graph::worklist_range::worklist_range_iterator</scope><name>operator*</name></member>
+      <member refid="classnw_1_1graph_1_1worklist__range_1_1worklist__range__iterator_1ac002dd8b2b5ab98b36c9594e8d9ff69d" prot="public" virt="non-virtual"><scope>nw::graph::worklist_range::worklist_range_iterator</scope><name>operator++</name></member>
+      <member refid="classnw_1_1graph_1_1worklist__range_1_1worklist__range__iterator_1a1522f1d9934da06d82993c33154c6a89" prot="public" virt="non-virtual"><scope>nw::graph::worklist_range::worklist_range_iterator</scope><name>operator==</name></member>
+      <member refid="classnw_1_1graph_1_1worklist__range_1_1worklist__range__iterator_1a5f7bd36ffc05f419d7678335e84ac7d7" prot="private" virt="non-virtual"><scope>nw::graph::worklist_range::worklist_range_iterator</scope><name>the_range_</name></member>
+      <member refid="classnw_1_1graph_1_1worklist__range_1_1worklist__range__iterator_1a1ef3dde115aeed5baea173ac5f7bfc0f" prot="public" virt="non-virtual"><scope>nw::graph::worklist_range::worklist_range_iterator</scope><name>worklist_range_iterator</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

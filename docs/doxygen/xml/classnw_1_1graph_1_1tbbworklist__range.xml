@@ -1,0 +1,231 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.3" xml:lang="en-US">
+  <compounddef id="classnw_1_1graph_1_1tbbworklist__range" kind="class" language="C++" prot="public">
+    <compoundname>nw::graph::tbbworklist_range</compoundname>
+    <innerclass refid="classnw_1_1graph_1_1tbbworklist__range_1_1tbbworklist__range__iterator" prot="public">nw::graph::tbbworklist_range::tbbworklist_range_iterator</innerclass>
+    <templateparamlist>
+      <param>
+        <type>typename Graph</type>
+      </param>
+      <param>
+        <type>typename Workitem</type>
+        <defval>typename Graph::vertex_id_type</defval>
+      </param>
+      <param>
+        <type>typename Queue</type>
+        <defval>tbb::concurrent_queue&lt;Workitem&gt;</defval>
+      </param>
+    </templateparamlist>
+      <sectiondef kind="public-type">
+      <memberdef kind="typedef" id="classnw_1_1graph_1_1tbbworklist__range_1ac4c1ac7c15dd80d4a082764974734241" prot="public" static="no">
+        <type><ref refid="classnw_1_1graph_1_1tbbworklist__range_1_1tbbworklist__range__iterator" kindref="compound">tbbworklist_range_iterator</ref></type>
+        <definition>typedef tbbworklist_range_iterator nw::graph::tbbworklist_range&lt; Graph, Workitem, Queue &gt;::iterator</definition>
+        <argsstring></argsstring>
+        <name>iterator</name>
+        <qualifiedname>nw::graph::tbbworklist_range::iterator</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/worklist.hpp" line="133" column="38" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/worklist.hpp" bodystart="133" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classnw_1_1graph_1_1tbbworklist__range_1a05c849e9c189813dc8770a17f0fe5f5d" prot="private" static="no" mutable="no">
+        <type>Graph &amp;</type>
+        <definition>Graph&amp; nw::graph::tbbworklist_range&lt; Graph, Workitem, Queue &gt;::the_graph_</definition>
+        <argsstring></argsstring>
+        <name>the_graph_</name>
+        <qualifiedname>nw::graph::tbbworklist_range::the_graph_</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/worklist.hpp" line="142" column="11" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/worklist.hpp" bodystart="142" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classnw_1_1graph_1_1tbbworklist__range_1afebd2c68e55ae9255b1739608c135831" prot="private" static="no" mutable="no">
+        <type>Queue</type>
+        <definition>Queue nw::graph::tbbworklist_range&lt; Graph, Workitem, Queue &gt;::Q_</definition>
+        <argsstring></argsstring>
+        <name>Q_</name>
+        <qualifiedname>nw::graph::tbbworklist_range::Q_</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/worklist.hpp" line="143" column="12" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/worklist.hpp" bodystart="143" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classnw_1_1graph_1_1tbbworklist__range_1a3f5516ffb31094f4f07dfe29b01ef205" prot="private" static="no" mutable="no">
+        <type>Workitem</type>
+        <definition>Workitem nw::graph::tbbworklist_range&lt; Graph, Workitem, Queue &gt;::dummy_</definition>
+        <argsstring></argsstring>
+        <name>dummy_</name>
+        <qualifiedname>nw::graph::tbbworklist_range::dummy_</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/worklist.hpp" line="144" column="12" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/worklist.hpp" bodystart="144" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classnw_1_1graph_1_1tbbworklist__range_1ae9ec004cb04b4265f42f3eff63f76603" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>nw::graph::tbbworklist_range&lt; Graph, Workitem, Queue &gt;::tbbworklist_range</definition>
+        <argsstring>(Graph &amp;graph)</argsstring>
+        <name>tbbworklist_range</name>
+        <qualifiedname>nw::graph::tbbworklist_range::tbbworklist_range</qualifiedname>
+        <param>
+          <type>Graph &amp;</type>
+          <declname>graph</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/worklist.hpp" line="86" column="3" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/worklist.hpp" bodystart="86" bodyend="86"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1tbbworklist__range_1a4b02f3dc740a1ce216f40006318e18a1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>nw::graph::tbbworklist_range&lt; Graph, Workitem, Queue &gt;::tbbworklist_range</definition>
+        <argsstring>(const tbbworklist_range &amp;)=delete</argsstring>
+        <name>tbbworklist_range</name>
+        <qualifiedname>nw::graph::tbbworklist_range::tbbworklist_range</qualifiedname>
+        <param>
+          <type>const <ref refid="classnw_1_1graph_1_1tbbworklist__range" kindref="compound">tbbworklist_range</ref> &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/worklist.hpp" line="88" column="3"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1tbbworklist__range_1a61e93ae7ebd81d9f577b7582439b530f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>nw::graph::tbbworklist_range&lt; Graph, Workitem, Queue &gt;::tbbworklist_range</definition>
+        <argsstring>(const tbbworklist_range &amp;&amp;)=delete</argsstring>
+        <name>tbbworklist_range</name>
+        <qualifiedname>nw::graph::tbbworklist_range::tbbworklist_range</qualifiedname>
+        <param>
+          <type>const <ref refid="classnw_1_1graph_1_1tbbworklist__range" kindref="compound">tbbworklist_range</ref> &amp;&amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/worklist.hpp" line="89" column="3"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1tbbworklist__range_1a80923f1cbf7ebd2bbd58ffe168a32361" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool nw::graph::tbbworklist_range&lt; Graph, Workitem, Queue &gt;::empty</definition>
+        <argsstring>()</argsstring>
+        <name>empty</name>
+        <qualifiedname>nw::graph::tbbworklist_range::empty</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/worklist.hpp" line="91" column="8" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/worklist.hpp" bodystart="91" bodyend="91"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1tbbworklist__range_1a909928e1ced16bfd2e33869ce0996146" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto nw::graph::tbbworklist_range&lt; Graph, Workitem, Queue &gt;::begin</definition>
+        <argsstring>()</argsstring>
+        <name>begin</name>
+        <qualifiedname>nw::graph::tbbworklist_range::begin</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/worklist.hpp" line="135" column="8" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/worklist.hpp" bodystart="135" bodyend="135"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1tbbworklist__range_1a585eb228141277ec83d57f9700a38239" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto nw::graph::tbbworklist_range&lt; Graph, Workitem, Queue &gt;::end</definition>
+        <argsstring>()</argsstring>
+        <name>end</name>
+        <qualifiedname>nw::graph::tbbworklist_range::end</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/worklist.hpp" line="136" column="8" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/worklist.hpp" bodystart="136" bodyend="136"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1tbbworklist__range_1a909671fcbbb2699a4e3d35a08fdbc396" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void nw::graph::tbbworklist_range&lt; Graph, Workitem, Queue &gt;::push_back</definition>
+        <argsstring>(Workitem work)</argsstring>
+        <name>push_back</name>
+        <qualifiedname>nw::graph::tbbworklist_range::push_back</qualifiedname>
+        <param>
+          <type>Workitem</type>
+          <declname>work</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/worklist.hpp" line="138" column="8" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/worklist.hpp" bodystart="138" bodyend="138"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1tbbworklist__range_1a1cc7e79ec9f9b44a649d639138160923" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void nw::graph::tbbworklist_range&lt; Graph, Workitem, Queue &gt;::set_dummy</definition>
+        <argsstring>(Workitem dummy)</argsstring>
+        <name>set_dummy</name>
+        <qualifiedname>nw::graph::tbbworklist_range::set_dummy</qualifiedname>
+        <param>
+          <type>Workitem</type>
+          <declname>dummy</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/worklist.hpp" line="139" column="8" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/worklist.hpp" bodystart="139" bodyend="139"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/worklist.hpp" line="84" column="1" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/worklist.hpp" bodystart="84" bodyend="145"/>
+    <listofallmembers>
+      <member refid="classnw_1_1graph_1_1tbbworklist__range_1a909928e1ced16bfd2e33869ce0996146" prot="public" virt="non-virtual"><scope>nw::graph::tbbworklist_range</scope><name>begin</name></member>
+      <member refid="classnw_1_1graph_1_1tbbworklist__range_1a3f5516ffb31094f4f07dfe29b01ef205" prot="private" virt="non-virtual"><scope>nw::graph::tbbworklist_range</scope><name>dummy_</name></member>
+      <member refid="classnw_1_1graph_1_1tbbworklist__range_1a80923f1cbf7ebd2bbd58ffe168a32361" prot="public" virt="non-virtual"><scope>nw::graph::tbbworklist_range</scope><name>empty</name></member>
+      <member refid="classnw_1_1graph_1_1tbbworklist__range_1a585eb228141277ec83d57f9700a38239" prot="public" virt="non-virtual"><scope>nw::graph::tbbworklist_range</scope><name>end</name></member>
+      <member refid="classnw_1_1graph_1_1tbbworklist__range_1ac4c1ac7c15dd80d4a082764974734241" prot="public" virt="non-virtual"><scope>nw::graph::tbbworklist_range</scope><name>iterator</name></member>
+      <member refid="classnw_1_1graph_1_1tbbworklist__range_1a909671fcbbb2699a4e3d35a08fdbc396" prot="public" virt="non-virtual"><scope>nw::graph::tbbworklist_range</scope><name>push_back</name></member>
+      <member refid="classnw_1_1graph_1_1tbbworklist__range_1afebd2c68e55ae9255b1739608c135831" prot="private" virt="non-virtual"><scope>nw::graph::tbbworklist_range</scope><name>Q_</name></member>
+      <member refid="classnw_1_1graph_1_1tbbworklist__range_1a1cc7e79ec9f9b44a649d639138160923" prot="public" virt="non-virtual"><scope>nw::graph::tbbworklist_range</scope><name>set_dummy</name></member>
+      <member refid="classnw_1_1graph_1_1tbbworklist__range_1ae9ec004cb04b4265f42f3eff63f76603" prot="public" virt="non-virtual"><scope>nw::graph::tbbworklist_range</scope><name>tbbworklist_range</name></member>
+      <member refid="classnw_1_1graph_1_1tbbworklist__range_1a4b02f3dc740a1ce216f40006318e18a1" prot="public" virt="non-virtual"><scope>nw::graph::tbbworklist_range</scope><name>tbbworklist_range</name></member>
+      <member refid="classnw_1_1graph_1_1tbbworklist__range_1a61e93ae7ebd81d9f577b7582439b530f" prot="public" virt="non-virtual"><scope>nw::graph::tbbworklist_range</scope><name>tbbworklist_range</name></member>
+      <member refid="classnw_1_1graph_1_1tbbworklist__range_1a05c849e9c189813dc8770a17f0fe5f5d" prot="private" virt="non-virtual"><scope>nw::graph::tbbworklist_range</scope><name>the_graph_</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

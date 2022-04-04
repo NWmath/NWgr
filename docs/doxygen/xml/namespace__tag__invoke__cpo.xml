@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.3" xml:lang="en-US">
+  <compounddef id="namespace__tag__invoke__cpo" kind="namespace" language="C++">
+    <compoundname>_tag_invoke_cpo</compoundname>
+      <sectiondef kind="var">
+      <memberdef kind="variable" id="tag__invoke_8hpp_1a33b794a664c1ee7751e5c524f31bd70b" prot="public" static="no" constexpr="yes" mutable="no">
+        <type>constexpr <ref refid="struct__tag__invoke_1_1__fn" kindref="compound">_tag_invoke::_fn</ref></type>
+        <definition>constexpr _tag_invoke::_fn _tag_invoke_cpo::tag_invoke</definition>
+        <argsstring></argsstring>
+        <name>tag_invoke</name>
+        <qualifiedname>_tag_invoke_cpo::tag_invoke</qualifiedname>
+        <initializer>{}</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/util/tag_invoke.hpp" line="51" column="35" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/util/tag_invoke.hpp" bodystart="51" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/Users/lums/NWmath/NWgr/include/nwgraph/util/tag_invoke.hpp" line="50" column="1"/>
+  </compounddef>
+</doxygen>

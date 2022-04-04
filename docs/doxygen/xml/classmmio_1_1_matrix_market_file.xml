@@ -1,0 +1,362 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.3" xml:lang="en-US">
+  <compounddef id="classmmio_1_1_matrix_market_file" kind="class" language="C++" prot="public" final="yes">
+    <compoundname>mmio::MatrixMarketFile</compoundname>
+    <innerclass refid="classmmio_1_1_matrix_market_file_1_1iterator" prot="public">mmio::MatrixMarketFile::iterator</innerclass>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classmmio_1_1_matrix_market_file_1a0cd9006cdcfc54f8dcb3209e2656ccbf" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int mmio::MatrixMarketFile::fd_</definition>
+        <argsstring></argsstring>
+        <name>fd_</name>
+        <qualifiedname>mmio::MatrixMarketFile::fd_</qualifiedname>
+        <initializer>= -1</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/io/MatrixMarketFile.hpp" line="42" column="7" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/io/MatrixMarketFile.hpp" bodystart="42" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classmmio_1_1_matrix_market_file_1ab762cb3e32fa78cdcbbb18773dafc8b7" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int mmio::MatrixMarketFile::n_</definition>
+        <argsstring></argsstring>
+        <name>n_</name>
+        <qualifiedname>mmio::MatrixMarketFile::n_</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/io/MatrixMarketFile.hpp" line="43" column="7" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/io/MatrixMarketFile.hpp" bodystart="43" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classmmio_1_1_matrix_market_file_1a499125bd4d353b870786adabd122db0e" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int mmio::MatrixMarketFile::m_</definition>
+        <argsstring></argsstring>
+        <name>m_</name>
+        <qualifiedname>mmio::MatrixMarketFile::m_</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/io/MatrixMarketFile.hpp" line="44" column="7" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/io/MatrixMarketFile.hpp" bodystart="44" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classmmio_1_1_matrix_market_file_1a216786e02612d924403a06470a883d52" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int mmio::MatrixMarketFile::nnz_</definition>
+        <argsstring></argsstring>
+        <name>nnz_</name>
+        <qualifiedname>mmio::MatrixMarketFile::nnz_</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/io/MatrixMarketFile.hpp" line="45" column="7" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/io/MatrixMarketFile.hpp" bodystart="45" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classmmio_1_1_matrix_market_file_1a985783a0dab62ff0e7b2a208b856d5d6" prot="private" static="no" mutable="no">
+        <type>char *</type>
+        <definition>char* mmio::MatrixMarketFile::base_</definition>
+        <argsstring></argsstring>
+        <name>base_</name>
+        <qualifiedname>mmio::MatrixMarketFile::base_</qualifiedname>
+        <initializer>= nullptr</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/io/MatrixMarketFile.hpp" line="47" column="8" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/io/MatrixMarketFile.hpp" bodystart="47" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classmmio_1_1_matrix_market_file_1acd534cec5801b202face624976c74649" prot="private" static="no" mutable="no">
+        <type>long</type>
+        <definition>long mmio::MatrixMarketFile::i_</definition>
+        <argsstring></argsstring>
+        <name>i_</name>
+        <qualifiedname>mmio::MatrixMarketFile::i_</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/io/MatrixMarketFile.hpp" line="48" column="9" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/io/MatrixMarketFile.hpp" bodystart="48" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classmmio_1_1_matrix_market_file_1adff438644d8853e896d39c8dfa0772c6" prot="private" static="no" mutable="no">
+        <type>long</type>
+        <definition>long mmio::MatrixMarketFile::e_</definition>
+        <argsstring></argsstring>
+        <name>e_</name>
+        <qualifiedname>mmio::MatrixMarketFile::e_</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/io/MatrixMarketFile.hpp" line="49" column="9" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/io/MatrixMarketFile.hpp" bodystart="49" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classmmio_1_1_matrix_market_file_1ae2065fdaea48e6b08e6333b232bd8cef" prot="private" static="no" mutable="no">
+        <type>MM_typecode</type>
+        <definition>MM_typecode mmio::MatrixMarketFile::type_</definition>
+        <argsstring></argsstring>
+        <name>type_</name>
+        <qualifiedname>mmio::MatrixMarketFile::type_</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/io/MatrixMarketFile.hpp" line="51" column="15" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/io/MatrixMarketFile.hpp" bodystart="51" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classmmio_1_1_matrix_market_file_1af65658737eb11e83ce7100d2bb209530" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>mmio::MatrixMarketFile::MatrixMarketFile</definition>
+        <argsstring>(std::filesystem::path path)</argsstring>
+        <name>MatrixMarketFile</name>
+        <qualifiedname>mmio::MatrixMarketFile::MatrixMarketFile</qualifiedname>
+        <param>
+          <type>std::filesystem::path</type>
+          <declname>path</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/io/MatrixMarketFile.hpp" line="54" column="3" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/io/MatrixMarketFile.hpp" bodystart="54" bodyend="97"/>
+      </memberdef>
+      <memberdef kind="function" id="classmmio_1_1_matrix_market_file_1ad73c428f363ce7aea197f084f849186e" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>mmio::MatrixMarketFile::~MatrixMarketFile</definition>
+        <argsstring>()</argsstring>
+        <name>~MatrixMarketFile</name>
+        <qualifiedname>mmio::MatrixMarketFile::~MatrixMarketFile</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/io/MatrixMarketFile.hpp" line="99" column="3" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/io/MatrixMarketFile.hpp" bodystart="99" bodyend="99"/>
+      </memberdef>
+      <memberdef kind="function" id="classmmio_1_1_matrix_market_file_1ad85445697beca19901e616047fc2c875" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void mmio::MatrixMarketFile::release</definition>
+        <argsstring>()</argsstring>
+        <name>release</name>
+        <qualifiedname>mmio::MatrixMarketFile::release</qualifiedname>
+        <briefdescription>
+<para>Release the memory mapping and file descriptor early. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/io/MatrixMarketFile.hpp" line="102" column="8" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/io/MatrixMarketFile.hpp" bodystart="102" bodyend="112"/>
+      </memberdef>
+      <memberdef kind="function" id="classmmio_1_1_matrix_market_file_1a0f3083b6d9173380bb1b31778ca351a9" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int mmio::MatrixMarketFile::getNRows</definition>
+        <argsstring>() const</argsstring>
+        <name>getNRows</name>
+        <qualifiedname>mmio::MatrixMarketFile::getNRows</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/io/MatrixMarketFile.hpp" line="117" column="7" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/io/MatrixMarketFile.hpp" bodystart="117" bodyend="117"/>
+      </memberdef>
+      <memberdef kind="function" id="classmmio_1_1_matrix_market_file_1a9a1fe6e92fd60d219b4d683d34529d62" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int mmio::MatrixMarketFile::getNCols</definition>
+        <argsstring>() const</argsstring>
+        <name>getNCols</name>
+        <qualifiedname>mmio::MatrixMarketFile::getNCols</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/io/MatrixMarketFile.hpp" line="119" column="7" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/io/MatrixMarketFile.hpp" bodystart="119" bodyend="119"/>
+      </memberdef>
+      <memberdef kind="function" id="classmmio_1_1_matrix_market_file_1a9066a0ac779faff02f34500c70a9ead8" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>int</type>
+        <definition>int mmio::MatrixMarketFile::getNEdges</definition>
+        <argsstring>() const</argsstring>
+        <name>getNEdges</name>
+        <qualifiedname>mmio::MatrixMarketFile::getNEdges</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/io/MatrixMarketFile.hpp" line="121" column="7" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/io/MatrixMarketFile.hpp" bodystart="121" bodyend="121"/>
+      </memberdef>
+      <memberdef kind="function" id="classmmio_1_1_matrix_market_file_1aea7fa0510670c5ab0bbedbd24e9f1c2b" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool mmio::MatrixMarketFile::isPattern</definition>
+        <argsstring>() const</argsstring>
+        <name>isPattern</name>
+        <qualifiedname>mmio::MatrixMarketFile::isPattern</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/io/MatrixMarketFile.hpp" line="123" column="8" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/io/MatrixMarketFile.hpp" bodystart="123" bodyend="123"/>
+      </memberdef>
+      <memberdef kind="function" id="classmmio_1_1_matrix_market_file_1a3cf6b32e2ae4dfc063c31ae8b7168232" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool mmio::MatrixMarketFile::isSymmetric</definition>
+        <argsstring>() const</argsstring>
+        <name>isSymmetric</name>
+        <qualifiedname>mmio::MatrixMarketFile::isSymmetric</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/io/MatrixMarketFile.hpp" line="125" column="8" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/io/MatrixMarketFile.hpp" bodystart="125" bodyend="125"/>
+      </memberdef>
+      <memberdef kind="function" id="classmmio_1_1_matrix_market_file_1aec97435afe0ac45b5e22b4a3dd005a5f" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename...</type>
+            <declname>Vs</declname>
+            <defname>Vs</defname>
+          </param>
+        </templateparamlist>
+        <type><ref refid="classmmio_1_1_matrix_market_file_1_1iterator" kindref="compound">iterator</ref>&lt; Vs... &gt;</type>
+        <definition>iterator&lt; Vs... &gt; mmio::MatrixMarketFile::begin</definition>
+        <argsstring>() const</argsstring>
+        <name>begin</name>
+        <qualifiedname>mmio::MatrixMarketFile::begin</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/io/MatrixMarketFile.hpp" line="168" column="12" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/io/MatrixMarketFile.hpp" bodystart="168" bodyend="170"/>
+      </memberdef>
+      <memberdef kind="function" id="classmmio_1_1_matrix_market_file_1a90281a8ffd584fd45cd778160f9655ee" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename...</type>
+            <declname>Vs</declname>
+            <defname>Vs</defname>
+          </param>
+        </templateparamlist>
+        <type><ref refid="classmmio_1_1_matrix_market_file_1_1iterator" kindref="compound">iterator</ref>&lt; Vs... &gt;</type>
+        <definition>iterator&lt; Vs... &gt; mmio::MatrixMarketFile::end</definition>
+        <argsstring>() const</argsstring>
+        <name>end</name>
+        <qualifiedname>mmio::MatrixMarketFile::end</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/io/MatrixMarketFile.hpp" line="173" column="12" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/io/MatrixMarketFile.hpp" bodystart="173" bodyend="175"/>
+      </memberdef>
+      <memberdef kind="function" id="classmmio_1_1_matrix_market_file_1a03a9486a08804fc85e5c636ae915c4f0" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename...</type>
+            <declname>Vs</declname>
+            <defname>Vs</defname>
+          </param>
+        </templateparamlist>
+        <type><ref refid="classmmio_1_1_matrix_market_file_1_1iterator" kindref="compound">iterator</ref>&lt; Vs... &gt;</type>
+        <definition>iterator&lt; Vs... &gt; mmio::MatrixMarketFile::at</definition>
+        <argsstring>(long edge) const</argsstring>
+        <name>at</name>
+        <qualifiedname>mmio::MatrixMarketFile::at</qualifiedname>
+        <param>
+          <type>long</type>
+          <declname>edge</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/io/MatrixMarketFile.hpp" line="178" column="12" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/io/MatrixMarketFile.hpp" bodystart="178" bodyend="191"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="friend">
+      <memberdef kind="friend" id="classmmio_1_1_matrix_market_file_1ab0b71963f43840d3c3e46b9af4f46a9f" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void release</definition>
+        <argsstring>(MatrixMarketFile &amp;mm)</argsstring>
+        <name>release</name>
+        <qualifiedname>mmio::MatrixMarketFile::release</qualifiedname>
+        <param>
+          <type><ref refid="classmmio_1_1_matrix_market_file" kindref="compound">MatrixMarketFile</ref> &amp;</type>
+          <declname>mm</declname>
+        </param>
+        <briefdescription>
+<para>ADL. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/io/MatrixMarketFile.hpp" line="115" column="15" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/io/MatrixMarketFile.hpp" bodystart="115" bodyend="115"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/Users/lums/NWmath/NWgr/include/nwgraph/io/MatrixMarketFile.hpp" line="41" column="1" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/io/MatrixMarketFile.hpp" bodystart="41" bodyend="192"/>
+    <listofallmembers>
+      <member refid="classmmio_1_1_matrix_market_file_1a03a9486a08804fc85e5c636ae915c4f0" prot="public" virt="non-virtual"><scope>mmio::MatrixMarketFile</scope><name>at</name></member>
+      <member refid="classmmio_1_1_matrix_market_file_1a985783a0dab62ff0e7b2a208b856d5d6" prot="private" virt="non-virtual"><scope>mmio::MatrixMarketFile</scope><name>base_</name></member>
+      <member refid="classmmio_1_1_matrix_market_file_1aec97435afe0ac45b5e22b4a3dd005a5f" prot="public" virt="non-virtual"><scope>mmio::MatrixMarketFile</scope><name>begin</name></member>
+      <member refid="classmmio_1_1_matrix_market_file_1adff438644d8853e896d39c8dfa0772c6" prot="private" virt="non-virtual"><scope>mmio::MatrixMarketFile</scope><name>e_</name></member>
+      <member refid="classmmio_1_1_matrix_market_file_1a90281a8ffd584fd45cd778160f9655ee" prot="public" virt="non-virtual"><scope>mmio::MatrixMarketFile</scope><name>end</name></member>
+      <member refid="classmmio_1_1_matrix_market_file_1a0cd9006cdcfc54f8dcb3209e2656ccbf" prot="private" virt="non-virtual"><scope>mmio::MatrixMarketFile</scope><name>fd_</name></member>
+      <member refid="classmmio_1_1_matrix_market_file_1a9a1fe6e92fd60d219b4d683d34529d62" prot="public" virt="non-virtual"><scope>mmio::MatrixMarketFile</scope><name>getNCols</name></member>
+      <member refid="classmmio_1_1_matrix_market_file_1a9066a0ac779faff02f34500c70a9ead8" prot="public" virt="non-virtual"><scope>mmio::MatrixMarketFile</scope><name>getNEdges</name></member>
+      <member refid="classmmio_1_1_matrix_market_file_1a0f3083b6d9173380bb1b31778ca351a9" prot="public" virt="non-virtual"><scope>mmio::MatrixMarketFile</scope><name>getNRows</name></member>
+      <member refid="classmmio_1_1_matrix_market_file_1acd534cec5801b202face624976c74649" prot="private" virt="non-virtual"><scope>mmio::MatrixMarketFile</scope><name>i_</name></member>
+      <member refid="classmmio_1_1_matrix_market_file_1aea7fa0510670c5ab0bbedbd24e9f1c2b" prot="public" virt="non-virtual"><scope>mmio::MatrixMarketFile</scope><name>isPattern</name></member>
+      <member refid="classmmio_1_1_matrix_market_file_1a3cf6b32e2ae4dfc063c31ae8b7168232" prot="public" virt="non-virtual"><scope>mmio::MatrixMarketFile</scope><name>isSymmetric</name></member>
+      <member refid="classmmio_1_1_matrix_market_file_1a499125bd4d353b870786adabd122db0e" prot="private" virt="non-virtual"><scope>mmio::MatrixMarketFile</scope><name>m_</name></member>
+      <member refid="classmmio_1_1_matrix_market_file_1af65658737eb11e83ce7100d2bb209530" prot="public" virt="non-virtual"><scope>mmio::MatrixMarketFile</scope><name>MatrixMarketFile</name></member>
+      <member refid="classmmio_1_1_matrix_market_file_1ab762cb3e32fa78cdcbbb18773dafc8b7" prot="private" virt="non-virtual"><scope>mmio::MatrixMarketFile</scope><name>n_</name></member>
+      <member refid="classmmio_1_1_matrix_market_file_1a216786e02612d924403a06470a883d52" prot="private" virt="non-virtual"><scope>mmio::MatrixMarketFile</scope><name>nnz_</name></member>
+      <member refid="classmmio_1_1_matrix_market_file_1ad85445697beca19901e616047fc2c875" prot="public" virt="non-virtual"><scope>mmio::MatrixMarketFile</scope><name>release</name></member>
+      <member refid="classmmio_1_1_matrix_market_file_1ab0b71963f43840d3c3e46b9af4f46a9f" prot="public" virt="non-virtual"><scope>mmio::MatrixMarketFile</scope><name>release</name></member>
+      <member refid="classmmio_1_1_matrix_market_file_1ae2065fdaea48e6b08e6333b232bd8cef" prot="private" virt="non-virtual"><scope>mmio::MatrixMarketFile</scope><name>type_</name></member>
+      <member refid="classmmio_1_1_matrix_market_file_1ad73c428f363ce7aea197f084f849186e" prot="public" virt="non-virtual"><scope>mmio::MatrixMarketFile</scope><name>~MatrixMarketFile</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

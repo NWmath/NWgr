@@ -1,0 +1,202 @@
+\hypertarget{graph__concepts_8hpp_source}{}\doxysection{graph\+\_\+concepts.\+hpp}
+\label{graph__concepts_8hpp_source}\index{/Users/lums/NWmath/NWgr/include/nwgraph/graph\_concepts.hpp@{/Users/lums/NWmath/NWgr/include/nwgraph/graph\_concepts.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// }}
+\DoxyCodeLine{2 \textcolor{comment}{// This file is part of NW Graph (aka GraphPack) }}
+\DoxyCodeLine{3 \textcolor{comment}{// (c) Pacific Northwest National Laboratory 2018-\/2021 }}
+\DoxyCodeLine{4 \textcolor{comment}{// (c) University of Washington 2018-\/2021 }}
+\DoxyCodeLine{5 \textcolor{comment}{// }}
+\DoxyCodeLine{6 \textcolor{comment}{// Licensed under terms of include LICENSE file }}
+\DoxyCodeLine{7 \textcolor{comment}{// }}
+\DoxyCodeLine{8 \textcolor{comment}{// Authors: }}
+\DoxyCodeLine{9 \textcolor{comment}{//     Andrew Lumsdaine }}
+\DoxyCodeLine{10 \textcolor{comment}{//}}
+\DoxyCodeLine{11 }
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#ifndef NW\_GRAPH\_GRAPH\_CONCEPTS\_HPP}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#define NW\_GRAPH\_GRAPH\_CONCEPTS\_HPP}}
+\DoxyCodeLine{14 }
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#include <array>}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include <concepts>}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include <iterator>}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include <ranges>}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include <tuple>}}
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#include "{}nwgraph/graph\_traits.hpp"{}}}
+\DoxyCodeLine{22 \textcolor{preprocessor}{\#include "{}nwgraph/util/tag\_invoke.hpp"{}}}
+\DoxyCodeLine{23 }
+\DoxyCodeLine{24 \textcolor{keyword}{namespace }nw::graph \{}
+\DoxyCodeLine{25 }
+\DoxyCodeLine{29 DECL\_TAG\_INVOKE(num\_vertices);}
+\DoxyCodeLine{30 DECL\_TAG\_INVOKE(num\_edges);}
+\DoxyCodeLine{31 DECL\_TAG\_INVOKE(degree);}
+\DoxyCodeLine{32 DECL\_TAG\_INVOKE(source);}
+\DoxyCodeLine{33 DECL\_TAG\_INVOKE(target);}
+\DoxyCodeLine{34 }
+\DoxyCodeLine{35 \textcolor{keyword}{template} <\textcolor{keyword}{typename} G>}
+\DoxyCodeLine{36 \textcolor{keyword}{concept }graph = std::copyable<G> \&\& \textcolor{keyword}{requires}(G g) \{}
+\DoxyCodeLine{37   \textcolor{keyword}{typename} vertex\_id\_t<G>;}
+\DoxyCodeLine{38   \{ num\_vertices(g) \} -\/> std::convertible\_to<std::ranges::range\_difference\_t<G>>;}
+\DoxyCodeLine{39 \};}
+\DoxyCodeLine{40 }
+\DoxyCodeLine{41 \textcolor{keyword}{template} <\textcolor{keyword}{typename} G>}
+\DoxyCodeLine{42 \textcolor{keyword}{using} inner\_range\_t = std::ranges::range\_value\_t<G>;}
+\DoxyCodeLine{43 }
+\DoxyCodeLine{44 \textcolor{keyword}{template} <\textcolor{keyword}{class} T>}
+\DoxyCodeLine{45 \textcolor{keyword}{using} iterator\_t = \textcolor{keyword}{decltype}(std::ranges::begin(std::declval<T\&>()));}
+\DoxyCodeLine{46 }
+\DoxyCodeLine{47 \textcolor{keyword}{template} <\textcolor{keyword}{class} T>}
+\DoxyCodeLine{48 \textcolor{keyword}{using} const\_iterator\_t = \textcolor{keyword}{decltype}(std::ranges::cbegin(std::declval<T\&>()));}
+\DoxyCodeLine{49 }
+\DoxyCodeLine{50 \textcolor{keyword}{template} <\textcolor{keyword}{typename} G>}
+\DoxyCodeLine{51 \textcolor{keyword}{using} inner\_iterator\_t = iterator\_t<inner\_range\_t<G>>;}
+\DoxyCodeLine{52 }
+\DoxyCodeLine{53 \textcolor{keyword}{template} <\textcolor{keyword}{typename} G>}
+\DoxyCodeLine{54 \textcolor{keyword}{using} inner\_const\_iterator\_t = const\_iterator\_t<inner\_range\_t<G>>;}
+\DoxyCodeLine{55 }
+\DoxyCodeLine{56 \textcolor{keyword}{template} <\textcolor{keyword}{typename} G>}
+\DoxyCodeLine{57 \textcolor{keyword}{using} inner\_iterator\_t = iterator\_t<inner\_range\_t<G>>;}
+\DoxyCodeLine{58 }
+\DoxyCodeLine{59 \textcolor{keyword}{template} <\textcolor{keyword}{typename} G>}
+\DoxyCodeLine{60 \textcolor{keyword}{using} inner\_const\_iterator\_t = const\_iterator\_t<inner\_range\_t<G>>;}
+\DoxyCodeLine{61 }
+\DoxyCodeLine{62 \textcolor{keyword}{template} <\textcolor{keyword}{typename} G>}
+\DoxyCodeLine{63 \textcolor{keyword}{using} inner\_value\_t = std::ranges::range\_value\_t<inner\_range\_t<G>>;}
+\DoxyCodeLine{64 }
+\DoxyCodeLine{65 \textcolor{keyword}{template} <\textcolor{keywordtype}{size\_t} N, \textcolor{keyword}{typename}... Ts>}
+\DoxyCodeLine{66 \textcolor{keyword}{auto} nth\_cdr(std::tuple<Ts...> t) \{}
+\DoxyCodeLine{67   \textcolor{keywordflow}{return} [\&]<std::size\_t... Ns>(std::index\_sequence<Ns...>) \{ \textcolor{keywordflow}{return} std::tuple\{std::get<Ns + N>(t)...\}; \}}
+\DoxyCodeLine{68   (std::make\_index\_sequence<\textcolor{keyword}{sizeof}...(Ts) -\/ N>());}
+\DoxyCodeLine{69 \}}
+\DoxyCodeLine{70 }
+\DoxyCodeLine{71 \textcolor{keyword}{template} <\textcolor{keyword}{typename}... Ts>}
+\DoxyCodeLine{72 \textcolor{keyword}{auto} props(std::tuple<Ts...> t) \{}
+\DoxyCodeLine{73   \textcolor{keywordflow}{return} nth\_cdr<2>(t);}
+\DoxyCodeLine{74 \}}
+\DoxyCodeLine{75 }
+\DoxyCodeLine{76 \textcolor{keyword}{template} <\textcolor{keyword}{typename} G>}
+\DoxyCodeLine{77 \textcolor{keyword}{using} attributes\_t = \textcolor{keyword}{decltype}(nth\_cdr<1>(inner\_value\_t<G>\{\}));}
+\DoxyCodeLine{78 }
+\DoxyCodeLine{79 }
+\DoxyCodeLine{80 \textcolor{keyword}{template} <\textcolor{keyword}{typename} G>}
+\DoxyCodeLine{81 \textcolor{keyword}{concept }adjacency\_list\_graph = graph<G>}
+\DoxyCodeLine{82   \&\& std::ranges::random\_access\_range<G>}
+\DoxyCodeLine{83   \&\& std::ranges::forward\_range<inner\_range\_t<G>>}
+\DoxyCodeLine{84   \&\& std::convertible\_to<vertex\_id\_t<G>,std::ranges::range\_difference\_t<G>>}
+\DoxyCodeLine{85   \&\& \textcolor{keyword}{requires}(G g, vertex\_id\_t<G> u, inner\_value\_t<G> e) \{}
+\DoxyCodeLine{86   \{ g[u] \} -\/> std::convertible\_to<inner\_range\_t<G>>;}
+\DoxyCodeLine{87   \{ target(g, e) \} -\/> std::convertible\_to<vertex\_id\_t<G>>;}
+\DoxyCodeLine{88 \};}
+\DoxyCodeLine{89 }
+\DoxyCodeLine{90 \textcolor{keyword}{template} <\textcolor{keyword}{typename} G>}
+\DoxyCodeLine{91 \textcolor{keyword}{concept }degree\_enumerable\_graph = adjacency\_list\_graph<G>}
+\DoxyCodeLine{92   \&\& \textcolor{keyword}{requires} (G g, vertex\_id\_t<G> u) \{}
+\DoxyCodeLine{93   \{ degree(g[u]) \} -\/> std::convertible\_to<std::ranges::range\_difference\_t<G>>;}
+\DoxyCodeLine{94 \};}
+\DoxyCodeLine{95 }
+\DoxyCodeLine{96 \textcolor{keyword}{template} <\textcolor{keyword}{typename} G>}
+\DoxyCodeLine{97 \textcolor{keyword}{concept }edge\_list\_graph = graph<G>}
+\DoxyCodeLine{98   \&\& \textcolor{keyword}{requires} (G g, std::ranges::range\_value\_t<G> e) \{}
+\DoxyCodeLine{99   \{ source(g, e) \} -\/> std::convertible\_to<vertex\_id\_t<G>>;}
+\DoxyCodeLine{100   \{ target(g, e) \} -\/> std::convertible\_to<vertex\_id\_t<G>>;}
+\DoxyCodeLine{101 \};}
+\DoxyCodeLine{102 }
+\DoxyCodeLine{103 }
+\DoxyCodeLine{104 \textcolor{comment}{// Some default traits for common classes of graphs}}
+\DoxyCodeLine{105 }
+\DoxyCodeLine{106 \textcolor{keyword}{template} <\textcolor{keyword}{template} <\textcolor{keyword}{class}> \textcolor{keyword}{class }Outer, \textcolor{keyword}{template} <\textcolor{keyword}{class}> \textcolor{keyword}{class }Inner, std::integral Index, \textcolor{keyword}{typename}... Attributes>}
+\DoxyCodeLine{107 \textcolor{keyword}{requires} std::ranges::random\_access\_range<Outer<Inner<std::tuple<Index, Attributes...>>>> \&\&}
+\DoxyCodeLine{108       std::ranges::forward\_range<Inner<std::tuple<Index, Attributes...>>>}
+\DoxyCodeLine{109 \textcolor{keyword}{struct }\mbox{\hyperlink{structnw_1_1graph_1_1graph__traits}{graph\_traits}}<Outer<Inner<std::tuple<Index, Attributes...>>>> \{}
+\DoxyCodeLine{110   \textcolor{keyword}{using} vertex\_id\_type = Index;}
+\DoxyCodeLine{111 \};}
+\DoxyCodeLine{112 }
+\DoxyCodeLine{113 \textcolor{keyword}{template} <\textcolor{keyword}{template} <\textcolor{keyword}{class}> \textcolor{keyword}{class }Outer, \textcolor{keyword}{template} <\textcolor{keyword}{class}> \textcolor{keyword}{class }Inner, std::integral Index>}
+\DoxyCodeLine{114 \textcolor{keyword}{requires} std::ranges::random\_access\_range<Outer<Inner<Index>>> \&\& std::ranges::forward\_range<Inner<Index>>}
+\DoxyCodeLine{115 \textcolor{keyword}{struct }\mbox{\hyperlink{structnw_1_1graph_1_1graph__traits}{graph\_traits}}<Outer<Inner<Index>>> \{}
+\DoxyCodeLine{116   \textcolor{keyword}{using} vertex\_id\_type = Index;}
+\DoxyCodeLine{117 \};}
+\DoxyCodeLine{118 }
+\DoxyCodeLine{119 }
+\DoxyCodeLine{120 \textcolor{comment}{// The following concepts are to capture some general concrete graphs that are used: }}
+\DoxyCodeLine{121 \textcolor{comment}{// range of range of vertex and range of range of tuples}}
+\DoxyCodeLine{122 }
+\DoxyCodeLine{123 \textcolor{keyword}{template} <\textcolor{keyword}{typename} R>}
+\DoxyCodeLine{124 \textcolor{keyword}{concept }vertex\_list\_c = std::ranges::forward\_range<R> \&\& !std::is\_compound\_v<std::ranges::range\_value\_t<R>>;}
+\DoxyCodeLine{125 }
+\DoxyCodeLine{126 \textcolor{keyword}{template} <\textcolor{keyword}{typename} R>}
+\DoxyCodeLine{127 \textcolor{keyword}{concept }edge\_list\_c = std::ranges::forward\_range<R> \&\& \textcolor{keyword}{requires}(std::ranges::range\_value\_t<R> e) \{}
+\DoxyCodeLine{128   std::get<0>(e);}
+\DoxyCodeLine{129 \};}
+\DoxyCodeLine{130 }
+\DoxyCodeLine{131 \textcolor{keyword}{template} <\textcolor{keyword}{typename} R>}
+\DoxyCodeLine{132 \textcolor{keyword}{concept }property\_edge\_list\_c = std::ranges::forward\_range<R> \&\& \textcolor{keyword}{requires}(std::ranges::range\_value\_t<R> e) \{}
+\DoxyCodeLine{133   std::get<1>(e);}
+\DoxyCodeLine{134 \};}
+\DoxyCodeLine{135 }
+\DoxyCodeLine{136 \textcolor{comment}{//This concept is for CPO definition. It is not a graph concept,}}
+\DoxyCodeLine{137 \textcolor{comment}{// comparing with adjacency\_list\_graph concept.}}
+\DoxyCodeLine{138 \textcolor{keyword}{template} <\textcolor{keyword}{typename} G>}
+\DoxyCodeLine{139 \textcolor{keyword}{concept }min\_idx\_adjacency\_list = }
+\DoxyCodeLine{140      std::ranges::random\_access\_range<G>}
+\DoxyCodeLine{141   \&\& vertex\_list\_c<inner\_range\_t<G>>}
+\DoxyCodeLine{142   \&\& std::is\_convertible\_v<inner\_value\_t<G>, std::ranges::range\_difference\_t<G>>}
+\DoxyCodeLine{143   \&\& \textcolor{keyword}{requires}(G g, inner\_value\_t<G> u) \{}
+\DoxyCodeLine{144      \{ g[u] \} -\/> std::convertible\_to<inner\_range\_t<G>>;}
+\DoxyCodeLine{145 \};}
+\DoxyCodeLine{146 }
+\DoxyCodeLine{147 \textcolor{comment}{//This concept is for CPO definition. It is not a graph concept,}}
+\DoxyCodeLine{148 \textcolor{comment}{// comparing with adjacency\_list\_graph concept.}}
+\DoxyCodeLine{149 \textcolor{keyword}{template} <\textcolor{keyword}{typename} G>}
+\DoxyCodeLine{150 \textcolor{keyword}{concept }idx\_adjacency\_list = }
+\DoxyCodeLine{151      std::ranges::random\_access\_range<G>}
+\DoxyCodeLine{152   \&\& edge\_list\_c<inner\_range\_t<G>>}
+\DoxyCodeLine{153   \&\& std::is\_convertible\_v<std::tuple\_element\_t<0, inner\_value\_t<G>>, std::ranges::range\_difference\_t<G>>}
+\DoxyCodeLine{154   \&\& \textcolor{keyword}{requires}(G g, std::tuple\_element\_t<0, inner\_value\_t<G>> u) \{}
+\DoxyCodeLine{155   \{ g[u] \} -\/> std::convertible\_to<inner\_range\_t<G>>;}
+\DoxyCodeLine{156 \};}
+\DoxyCodeLine{157 }
+\DoxyCodeLine{158 }
+\DoxyCodeLine{159 \textcolor{comment}{// Based on the above concepts, we define concept-\/based overloads for vertex\_id\_type and some CPOs}}
+\DoxyCodeLine{160 }
+\DoxyCodeLine{161 \textcolor{comment}{// Graph traits}}
+\DoxyCodeLine{162 \textcolor{keyword}{template} <min\_\textcolor{keywordtype}{id}x\_adjacency\_list G>}
+\DoxyCodeLine{163 \textcolor{keyword}{struct }\mbox{\hyperlink{structnw_1_1graph_1_1graph__traits}{graph\_traits}}<G> \{}
+\DoxyCodeLine{164   \textcolor{keyword}{using} vertex\_id\_type = inner\_value\_t<G>;}
+\DoxyCodeLine{165 \};}
+\DoxyCodeLine{166 }
+\DoxyCodeLine{167 \textcolor{keyword}{template} <\textcolor{keywordtype}{id}x\_adjacency\_list G>}
+\DoxyCodeLine{168 \textcolor{keyword}{struct }\mbox{\hyperlink{structnw_1_1graph_1_1graph__traits}{graph\_traits}}<G> \{}
+\DoxyCodeLine{169   \textcolor{keyword}{using} vertex\_id\_type = std::tuple\_element\_t<0, inner\_value\_t<G>>;}
+\DoxyCodeLine{170 \};}
+\DoxyCodeLine{171 }
+\DoxyCodeLine{172 \textcolor{comment}{// target CPO}}
+\DoxyCodeLine{173 \textcolor{keyword}{template} <\textcolor{keywordtype}{id}x\_adjacency\_list T, \textcolor{keyword}{class} U>}
+\DoxyCodeLine{174 \textcolor{keyword}{auto} tag\_invoke(\textcolor{keyword}{const} target\_tag, \textcolor{keyword}{const} T\& graph, \textcolor{keyword}{const} U\& e) \{}
+\DoxyCodeLine{175   \textcolor{keywordflow}{return} std::get<0>(e);}
+\DoxyCodeLine{176 \}}
+\DoxyCodeLine{177 }
+\DoxyCodeLine{178 \textcolor{keyword}{template} <min\_\textcolor{keywordtype}{id}x\_adjacency\_list T, \textcolor{keyword}{class} U>}
+\DoxyCodeLine{179 \textcolor{keyword}{auto} tag\_invoke(\textcolor{keyword}{const} target\_tag, \textcolor{keyword}{const} T\& graph, \textcolor{keyword}{const} U\& e) \{}
+\DoxyCodeLine{180   \textcolor{keywordflow}{return} e;}
+\DoxyCodeLine{181 \}}
+\DoxyCodeLine{182 }
+\DoxyCodeLine{183 \textcolor{comment}{// num\_vertices CPO}}
+\DoxyCodeLine{184 \textcolor{keyword}{template} <\textcolor{keywordtype}{id}x\_adjacency\_list T>}
+\DoxyCodeLine{185 \textcolor{keyword}{auto} tag\_invoke(\textcolor{keyword}{const} num\_vertices\_tag, \textcolor{keyword}{const} T\& graph) \{}
+\DoxyCodeLine{186   \textcolor{keywordflow}{return} (vertex\_id\_t<T>) graph.size();}
+\DoxyCodeLine{187 \}}
+\DoxyCodeLine{188 }
+\DoxyCodeLine{189 \textcolor{keyword}{template} <min\_\textcolor{keywordtype}{id}x\_adjacency\_list T>}
+\DoxyCodeLine{190 \textcolor{keyword}{auto} tag\_invoke(\textcolor{keyword}{const} num\_vertices\_tag, \textcolor{keyword}{const} T\& graph) \{}
+\DoxyCodeLine{191   \textcolor{keywordflow}{return} (vertex\_id\_t<T>) graph.size();}
+\DoxyCodeLine{192 \}}
+\DoxyCodeLine{193 }
+\DoxyCodeLine{194 }
+\DoxyCodeLine{195 }
+\DoxyCodeLine{196 }
+\DoxyCodeLine{197 \}    \textcolor{comment}{// namespace nw::graph}}
+\DoxyCodeLine{198 }
+\DoxyCodeLine{199 \textcolor{preprocessor}{\#endif    }\textcolor{comment}{//  NW\_GRAPH\_GRAPH\_CONCEPTS\_HPP}}
+
+\end{DoxyCode}

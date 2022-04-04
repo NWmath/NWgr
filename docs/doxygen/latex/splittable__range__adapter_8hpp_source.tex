@@ -1,0 +1,88 @@
+\hypertarget{splittable__range__adapter_8hpp_source}{}\doxysection{splittable\+\_\+range\+\_\+adapter.\+hpp}
+\label{splittable__range__adapter_8hpp_source}\index{/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/splittable\_range\_adapter.hpp@{/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/splittable\_range\_adapter.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// }}
+\DoxyCodeLine{2 \textcolor{comment}{// This file is part of NW Graph (aka GraphPack) }}
+\DoxyCodeLine{3 \textcolor{comment}{// (c) Pacific Northwest National Laboratory 2018-\/2021 }}
+\DoxyCodeLine{4 \textcolor{comment}{// (c) University of Washington 2018-\/2021 }}
+\DoxyCodeLine{5 \textcolor{comment}{// }}
+\DoxyCodeLine{6 \textcolor{comment}{// Licensed under terms of include LICENSE file }}
+\DoxyCodeLine{7 \textcolor{comment}{// }}
+\DoxyCodeLine{8 \textcolor{comment}{// Authors: }}
+\DoxyCodeLine{9 \textcolor{comment}{//     Andrew Lumsdaine }}
+\DoxyCodeLine{10 \textcolor{comment}{//     Kevin Deweese    }}
+\DoxyCodeLine{11 \textcolor{comment}{//     Luke D'Alessandro    }}
+\DoxyCodeLine{12 \textcolor{comment}{//}}
+\DoxyCodeLine{13 }
+\DoxyCodeLine{14 }
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#ifndef NW\_GRAPH\_SPLITTABLE\_RANGE\_ADAPTER\_HPP}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#define NW\_GRAPH\_SPLITTABLE\_RANGE\_ADAPTER\_HPP}}
+\DoxyCodeLine{17 }
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include <cstddef>}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include <oneapi/tbb.h>}}
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#include <ranges>}}
+\DoxyCodeLine{22 }
+\DoxyCodeLine{23 \textcolor{keyword}{namespace }nw \{}
+\DoxyCodeLine{24 \textcolor{keyword}{namespace }graph \{}
+\DoxyCodeLine{25 \textcolor{keyword}{template} <\textcolor{keyword}{class} Iterator>}
+\DoxyCodeLine{26 \textcolor{keyword}{class }\mbox{\hyperlink{classnw_1_1graph_1_1splittable__range__adapter}{splittable\_range\_adapter}} : \textcolor{keyword}{public} std::ranges::view\_base \{}
+\DoxyCodeLine{27   Iterator    begin\_;}
+\DoxyCodeLine{28   Iterator    end\_;}
+\DoxyCodeLine{29   std::size\_t cutoff\_ = 16384;}
+\DoxyCodeLine{30 }
+\DoxyCodeLine{31 \textcolor{keyword}{public}:}
+\DoxyCodeLine{32   \textcolor{keyword}{using} iterator   = Iterator;}
+\DoxyCodeLine{33   \textcolor{keyword}{using} value\_type = \textcolor{keyword}{typename} iterator::value\_type;}
+\DoxyCodeLine{34 }
+\DoxyCodeLine{35   \textcolor{keyword}{template} <\textcolor{keyword}{class} Range>}
+\DoxyCodeLine{36   \textcolor{keyword}{explicit} \mbox{\hyperlink{classnw_1_1graph_1_1splittable__range__adapter}{splittable\_range\_adapter}}(Range\&\& range) : \mbox{\hyperlink{classnw_1_1graph_1_1splittable__range__adapter}{splittable\_range\_adapter}}(range.begin(), range.end()) \{\}}
+\DoxyCodeLine{37 }
+\DoxyCodeLine{38   \textcolor{keyword}{template} <\textcolor{keyword}{class} Range>}
+\DoxyCodeLine{39   \mbox{\hyperlink{classnw_1_1graph_1_1splittable__range__adapter}{splittable\_range\_adapter}}(Range\&\& range, std::size\_t cutoff) : \mbox{\hyperlink{classnw_1_1graph_1_1splittable__range__adapter}{splittable\_range\_adapter}}(range.begin(), range.end(), cutoff) \{\}}
+\DoxyCodeLine{40 }
+\DoxyCodeLine{41   \mbox{\hyperlink{classnw_1_1graph_1_1splittable__range__adapter}{splittable\_range\_adapter}}(Iterator begin, Iterator end) : begin\_(begin > end ? end : begin), end\_(end) \{\}}
+\DoxyCodeLine{42 }
+\DoxyCodeLine{43   \mbox{\hyperlink{classnw_1_1graph_1_1splittable__range__adapter}{splittable\_range\_adapter}}(Iterator begin, Iterator end, std::size\_t cutoff) : begin\_(begin > end ? end : begin), end\_(end), cutoff\_(cutoff) \{\}}
+\DoxyCodeLine{44 }
+\DoxyCodeLine{45   \mbox{\hyperlink{classnw_1_1graph_1_1splittable__range__adapter}{splittable\_range\_adapter}}(\mbox{\hyperlink{classnw_1_1graph_1_1splittable__range__adapter}{splittable\_range\_adapter}}\& rhs, tbb::split)}
+\DoxyCodeLine{46       : begin\_(rhs.begin\_), end\_(rhs.begin\_ += rhs.size() / 2), cutoff\_(rhs.cutoff\_) \{\}}
+\DoxyCodeLine{47 }
+\DoxyCodeLine{48   \textcolor{comment}{// We need the weird ref version to disambiguate the explicit range}}
+\DoxyCodeLine{49   \textcolor{comment}{// initializer, which would otherwise get called incorrectly during a tbb}}
+\DoxyCodeLine{50   \textcolor{comment}{// split event.}}
+\DoxyCodeLine{51   \mbox{\hyperlink{classnw_1_1graph_1_1splittable__range__adapter}{splittable\_range\_adapter}}(\mbox{\hyperlink{classnw_1_1graph_1_1splittable__range__adapter}{splittable\_range\_adapter}}\&)       = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{52   \mbox{\hyperlink{classnw_1_1graph_1_1splittable__range__adapter}{splittable\_range\_adapter}}(\textcolor{keyword}{const} \mbox{\hyperlink{classnw_1_1graph_1_1splittable__range__adapter}{splittable\_range\_adapter}}\&) = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{53   \mbox{\hyperlink{classnw_1_1graph_1_1splittable__range__adapter}{splittable\_range\_adapter}}(\mbox{\hyperlink{classnw_1_1graph_1_1splittable__range__adapter}{splittable\_range\_adapter}}\&\&)      = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{54 }
+\DoxyCodeLine{55   \mbox{\hyperlink{classnw_1_1graph_1_1splittable__range__adapter}{splittable\_range\_adapter}}\& operator=(\textcolor{keyword}{const} \mbox{\hyperlink{classnw_1_1graph_1_1splittable__range__adapter}{splittable\_range\_adapter}}\&) = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{56   \mbox{\hyperlink{classnw_1_1graph_1_1splittable__range__adapter}{splittable\_range\_adapter}}\& operator=(\mbox{\hyperlink{classnw_1_1graph_1_1splittable__range__adapter}{splittable\_range\_adapter}}\&\&)      = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{57 }
+\DoxyCodeLine{58   \mbox{\hyperlink{classnw_1_1graph_1_1splittable__range__adapter}{splittable\_range\_adapter}}() = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{59 }
+\DoxyCodeLine{60   \textcolor{keyword}{decltype}(\textcolor{keyword}{auto}) begin() \textcolor{keyword}{const} \{ \textcolor{keywordflow}{return} begin\_; \}}
+\DoxyCodeLine{61   \textcolor{keyword}{decltype}(\textcolor{keyword}{auto}) end() \textcolor{keyword}{const} \{ \textcolor{keywordflow}{return} end\_; \}}
+\DoxyCodeLine{62 }
+\DoxyCodeLine{63   \textcolor{keyword}{decltype}(\textcolor{keyword}{auto}) cutoff(std::size\_t cutoff) \{}
+\DoxyCodeLine{64     cutoff\_ = cutoff;}
+\DoxyCodeLine{65     \textcolor{keywordflow}{return} *\textcolor{keyword}{this};}
+\DoxyCodeLine{66   \}}
+\DoxyCodeLine{67 }
+\DoxyCodeLine{68   \textcolor{keywordtype}{size\_t} size()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} end\_ -\/ begin\_; \}}
+\DoxyCodeLine{69   \textcolor{keywordtype}{bool}   empty()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} size() == 0; \}}
+\DoxyCodeLine{70   \textcolor{keywordtype}{bool}   is\_divisible()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} size() > cutoff\_; \}}
+\DoxyCodeLine{71 \};}
+\DoxyCodeLine{72 }
+\DoxyCodeLine{73 \textcolor{keyword}{template} <\textcolor{keyword}{class} Range>}
+\DoxyCodeLine{74 \mbox{\hyperlink{classnw_1_1graph_1_1splittable__range__adapter}{splittable\_range\_adapter}}(Range\&\& range) -\/> \mbox{\hyperlink{classnw_1_1graph_1_1splittable__range__adapter}{splittable\_range\_adapter}}<\textcolor{keyword}{decltype}(range.begin())>;}
+\DoxyCodeLine{75 }
+\DoxyCodeLine{76 \textcolor{keyword}{template} <\textcolor{keyword}{class} Range>}
+\DoxyCodeLine{77 \mbox{\hyperlink{classnw_1_1graph_1_1splittable__range__adapter}{splittable\_range\_adapter}}(Range\&\& range, std::size\_t) -\/> \mbox{\hyperlink{classnw_1_1graph_1_1splittable__range__adapter}{splittable\_range\_adapter}}<\textcolor{keyword}{decltype}(range.begin())>;}
+\DoxyCodeLine{78 }
+\DoxyCodeLine{79 \}    \textcolor{comment}{// namespace graph}}
+\DoxyCodeLine{80 \}    \textcolor{comment}{// namespace nw}}
+\DoxyCodeLine{81 }
+\DoxyCodeLine{82 \textcolor{preprocessor}{\#endif    }\textcolor{comment}{// NW\_GRAPH\_SPLITTABLE\_RANGE\_ADAPTER\_HPP}}
+
+\end{DoxyCode}

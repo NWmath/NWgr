@@ -1,0 +1,177 @@
+\hypertarget{classnw_1_1graph_1_1_atomic_bit_vector}{}\doxysection{nw\+::graph\+::Atomic\+Bit\+Vector\texorpdfstring{$<$}{<} Word \texorpdfstring{$>$}{>} Class Template Reference}
+\label{classnw_1_1graph_1_1_atomic_bit_vector}\index{nw::graph::AtomicBitVector$<$ Word $>$@{nw::graph::AtomicBitVector$<$ Word $>$}}
+
+
+{\ttfamily \#include $<$Atomic\+Bit\+Vector.\+hpp$>$}
+
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classnw_1_1graph_1_1_atomic_bit_vector_1_1non__zero__iterator}{non\+\_\+zero\+\_\+iterator}}
+\item 
+class \mbox{\hyperlink{classnw_1_1graph_1_1_atomic_bit_vector_1_1non__zero__range}{non\+\_\+zero\+\_\+range}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classnw_1_1graph_1_1_atomic_bit_vector_ac00d79ade20bf2e720aa4b1ac5f66b99}{Atomic\+Bit\+Vector}} (std\+::size\+\_\+t bits, bool init=true)
+\item 
+\mbox{\Hypertarget{classnw_1_1graph_1_1_atomic_bit_vector_a6b078731ae92a19ec7389b4b08839aa0}\label{classnw_1_1graph_1_1_atomic_bit_vector_a6b078731ae92a19ec7389b4b08839aa0}} 
+{\bfseries $\sim$\+Atomic\+Bit\+Vector} ()
+\begin{DoxyCompactList}\small\item\em Delete the bitmap. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classnw_1_1graph_1_1_atomic_bit_vector_afdfbf00b7d121f7d462c161f71e2f69d}\label{classnw_1_1graph_1_1_atomic_bit_vector_afdfbf00b7d121f7d462c161f71e2f69d}} 
+{\bfseries Atomic\+Bit\+Vector} (\mbox{\hyperlink{classnw_1_1graph_1_1_atomic_bit_vector}{Atomic\+Bit\+Vector}} \&\&rhs)
+\begin{DoxyCompactList}\small\item\em The move constructor needs to be explicit. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classnw_1_1graph_1_1_atomic_bit_vector_af178276b4a0b8c3581853caaa3a357be}\label{classnw_1_1graph_1_1_atomic_bit_vector_af178276b4a0b8c3581853caaa3a357be}} 
+\mbox{\hyperlink{classnw_1_1graph_1_1_atomic_bit_vector}{Atomic\+Bit\+Vector}} \& {\bfseries operator=} (\mbox{\hyperlink{classnw_1_1graph_1_1_atomic_bit_vector}{Atomic\+Bit\+Vector}} \&\&rhs)
+\begin{DoxyCompactList}\small\item\em The move assignment operator needs to be explicit. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classnw_1_1graph_1_1_atomic_bit_vector_ae6f2f9f688910e6ec842382398b67163}\label{classnw_1_1graph_1_1_atomic_bit_vector_ae6f2f9f688910e6ec842382398b67163}} 
+void {\bfseries clear} ()
+\begin{DoxyCompactList}\small\item\em Clear the bitmap. \end{DoxyCompactList}\item 
+{\footnotesize template$<$std\+::memory\+\_\+order order = std\+::memory\+\_\+order\+\_\+relaxed$>$ }\\Word \mbox{\hyperlink{classnw_1_1graph_1_1_atomic_bit_vector_a23bc0b796e66d42abbab4aa60dad5a2d}{get}} (std\+::size\+\_\+t i) const
+\item 
+{\footnotesize template$<$std\+::memory\+\_\+order order = std\+::memory\+\_\+order\+\_\+relaxed$>$ }\\Word \mbox{\hyperlink{classnw_1_1graph_1_1_atomic_bit_vector_a59e4df43dca8844ca3c6969f294ce24d}{set}} (std\+::size\+\_\+t i)
+\item 
+Word \mbox{\hyperlink{classnw_1_1graph_1_1_atomic_bit_vector_adaf44e7fbc7185570e495d8d34d28248}{atomic\+\_\+get}} (std\+::size\+\_\+t i) const
+\item 
+Word \mbox{\hyperlink{classnw_1_1graph_1_1_atomic_bit_vector_acfc0f928fbf09c9a33ec3bf472e19e72}{atomic\+\_\+set}} (std\+::size\+\_\+t i)
+\item 
+\mbox{\Hypertarget{classnw_1_1graph_1_1_atomic_bit_vector_a34261679626a81c24c6e57f95f1bfd47}\label{classnw_1_1graph_1_1_atomic_bit_vector_a34261679626a81c24c6e57f95f1bfd47}} 
+\mbox{\hyperlink{classnw_1_1graph_1_1_atomic_bit_vector_1_1non__zero__iterator}{non\+\_\+zero\+\_\+iterator}} {\bfseries begin} ()
+\item 
+\mbox{\Hypertarget{classnw_1_1graph_1_1_atomic_bit_vector_a9c1c2f1300d994042e223e8ad1d5e410}\label{classnw_1_1graph_1_1_atomic_bit_vector_a9c1c2f1300d994042e223e8ad1d5e410}} 
+\mbox{\hyperlink{classnw_1_1graph_1_1_atomic_bit_vector_1_1non__zero__iterator}{non\+\_\+zero\+\_\+iterator}} {\bfseries end} ()
+\item 
+\mbox{\Hypertarget{classnw_1_1graph_1_1_atomic_bit_vector_aa759a128c05719222407338ff8d146bc}\label{classnw_1_1graph_1_1_atomic_bit_vector_aa759a128c05719222407338ff8d146bc}} 
+\mbox{\hyperlink{classnw_1_1graph_1_1_atomic_bit_vector_1_1non__zero__range}{non\+\_\+zero\+\_\+range}} {\bfseries non\+\_\+zeros} (std\+::size\+\_\+t cutoff)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$class Word = std\+::uint64\+\_\+t$>$\newline
+class nw\+::graph\+::\+Atomic\+Bit\+Vector$<$ Word $>$}
+Really basic concurrent bit vector for use as a bitmap.
+
+This bitmap supports a simple get/set API, where set operations are always implemented using acquire/release, while get operations can either be acquire or relaxed. Though simple to provide, resetting, clearing, and resizing are not supported as those operations are not currently needed in BGL17.
+
+Ideally this data structure or something equivalent would be provided by the standard library in the future. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classnw_1_1graph_1_1_atomic_bit_vector_ac00d79ade20bf2e720aa4b1ac5f66b99}\label{classnw_1_1graph_1_1_atomic_bit_vector_ac00d79ade20bf2e720aa4b1ac5f66b99}} 
+\index{nw::graph::AtomicBitVector$<$ Word $>$@{nw::graph::AtomicBitVector$<$ Word $>$}!AtomicBitVector@{AtomicBitVector}}
+\index{AtomicBitVector@{AtomicBitVector}!nw::graph::AtomicBitVector$<$ Word $>$@{nw::graph::AtomicBitVector$<$ Word $>$}}
+\doxysubsubsection{\texorpdfstring{AtomicBitVector()}{AtomicBitVector()}}
+{\footnotesize\ttfamily template$<$class Word  = std\+::uint64\+\_\+t$>$ \\
+\mbox{\hyperlink{classnw_1_1graph_1_1_atomic_bit_vector}{nw\+::graph\+::\+Atomic\+Bit\+Vector}}$<$ Word $>$\+::\+Atomic\+Bit\+Vector (\begin{DoxyParamCaption}\item[{std\+::size\+\_\+t}]{bits,  }\item[{bool}]{init = {\ttfamily true} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Allocate a bitmap.
+
+The bitmap bits can be allocated in an uninitialized state, which can lead to simpler code in some algorithms that would like to avoid initialization on some code paths.
+
+
+\begin{DoxyParams}{Parameters}
+{\em bits} & The number of bits to allocate. \\
+\hline
+{\em init} & If true, we\textquotesingle{}ll initialize the bitmap data to 0. \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classnw_1_1graph_1_1_atomic_bit_vector_adaf44e7fbc7185570e495d8d34d28248}\label{classnw_1_1graph_1_1_atomic_bit_vector_adaf44e7fbc7185570e495d8d34d28248}} 
+\index{nw::graph::AtomicBitVector$<$ Word $>$@{nw::graph::AtomicBitVector$<$ Word $>$}!atomic\_get@{atomic\_get}}
+\index{atomic\_get@{atomic\_get}!nw::graph::AtomicBitVector$<$ Word $>$@{nw::graph::AtomicBitVector$<$ Word $>$}}
+\doxysubsubsection{\texorpdfstring{atomic\_get()}{atomic\_get()}}
+{\footnotesize\ttfamily template$<$class Word  = std\+::uint64\+\_\+t$>$ \\
+Word \mbox{\hyperlink{classnw_1_1graph_1_1_atomic_bit_vector}{nw\+::graph\+::\+Atomic\+Bit\+Vector}}$<$ Word $>$\+::atomic\+\_\+get (\begin{DoxyParamCaption}\item[{std\+::size\+\_\+t}]{i }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+Get a bit from the vector.
+
+This forwards to the get operation with a stronger memory model and is safe for use in concurrent regions of code.
+
+
+\begin{DoxyParams}{Parameters}
+{\em i} & The bit to set.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The masked value of the word containing the bit. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classnw_1_1graph_1_1_atomic_bit_vector_acfc0f928fbf09c9a33ec3bf472e19e72}\label{classnw_1_1graph_1_1_atomic_bit_vector_acfc0f928fbf09c9a33ec3bf472e19e72}} 
+\index{nw::graph::AtomicBitVector$<$ Word $>$@{nw::graph::AtomicBitVector$<$ Word $>$}!atomic\_set@{atomic\_set}}
+\index{atomic\_set@{atomic\_set}!nw::graph::AtomicBitVector$<$ Word $>$@{nw::graph::AtomicBitVector$<$ Word $>$}}
+\doxysubsubsection{\texorpdfstring{atomic\_set()}{atomic\_set()}}
+{\footnotesize\ttfamily template$<$class Word  = std\+::uint64\+\_\+t$>$ \\
+Word \mbox{\hyperlink{classnw_1_1graph_1_1_atomic_bit_vector}{nw\+::graph\+::\+Atomic\+Bit\+Vector}}$<$ Word $>$\+::atomic\+\_\+set (\begin{DoxyParamCaption}\item[{std\+::size\+\_\+t}]{i }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Set a bit in the vector.
+
+This forward to the set operation with a stronger memory model and is safe to use in concurrent regions of code.
+
+
+\begin{DoxyParams}{Parameters}
+{\em i} & The bit to set.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The masked value of the word containing the bit prior to the set operation. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classnw_1_1graph_1_1_atomic_bit_vector_a23bc0b796e66d42abbab4aa60dad5a2d}\label{classnw_1_1graph_1_1_atomic_bit_vector_a23bc0b796e66d42abbab4aa60dad5a2d}} 
+\index{nw::graph::AtomicBitVector$<$ Word $>$@{nw::graph::AtomicBitVector$<$ Word $>$}!get@{get}}
+\index{get@{get}!nw::graph::AtomicBitVector$<$ Word $>$@{nw::graph::AtomicBitVector$<$ Word $>$}}
+\doxysubsubsection{\texorpdfstring{get()}{get()}}
+{\footnotesize\ttfamily template$<$class Word  = std\+::uint64\+\_\+t$>$ \\
+template$<$std\+::memory\+\_\+order order = std\+::memory\+\_\+order\+\_\+relaxed$>$ \\
+Word \mbox{\hyperlink{classnw_1_1graph_1_1_atomic_bit_vector}{nw\+::graph\+::\+Atomic\+Bit\+Vector}}$<$ Word $>$\+::get (\begin{DoxyParamCaption}\item[{std\+::size\+\_\+t}]{i }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+Get a bit from the vector.
+
+This reads a single bit from the vector, but for performance reasons it returns the bit un-\/shifted in a word. This word can be used in a boolean expression and the compiler will deal with efficiently testing it for 0.
+
+By default it uses the memory\+\_\+order\+\_\+relaxed. This is not safe if there are ever concurrent set operations to the same underlying word, which can be hard to predict, and thus should mainly be used in sequential code. The {\ttfamily atomic\+\_\+get} operation will propery synchronize with concurrent {\ttfamily atomic\+\_\+set} operations.
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em order} & The memory model for the load operation.\\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em i} & The bit to set.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The masked value of the word containing the bit. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classnw_1_1graph_1_1_atomic_bit_vector_a59e4df43dca8844ca3c6969f294ce24d}\label{classnw_1_1graph_1_1_atomic_bit_vector_a59e4df43dca8844ca3c6969f294ce24d}} 
+\index{nw::graph::AtomicBitVector$<$ Word $>$@{nw::graph::AtomicBitVector$<$ Word $>$}!set@{set}}
+\index{set@{set}!nw::graph::AtomicBitVector$<$ Word $>$@{nw::graph::AtomicBitVector$<$ Word $>$}}
+\doxysubsubsection{\texorpdfstring{set()}{set()}}
+{\footnotesize\ttfamily template$<$class Word  = std\+::uint64\+\_\+t$>$ \\
+template$<$std\+::memory\+\_\+order order = std\+::memory\+\_\+order\+\_\+relaxed$>$ \\
+Word \mbox{\hyperlink{classnw_1_1graph_1_1_atomic_bit_vector}{nw\+::graph\+::\+Atomic\+Bit\+Vector}}$<$ Word $>$\+::set (\begin{DoxyParamCaption}\item[{std\+::size\+\_\+t}]{i }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Set a bit in the vector.
+
+This sets a single bit in the vector, and returns the previous value of that bit as a masked word. This returned workd can be used in a boolean expression and the compiler will deal with efficiently testing it for 0.
+
+By default it uses the memory\+\_\+order\+\_\+relaxed. This is not safe if there are ever concurrent set or get operations to the same underlying word, which can be hard to predict, and thus should be used only in sequential code. The {\ttfamily atomic\+\_\+set} operation will properly synchronize with concurrent {\ttfamily atomic\+\_\+get} and {\ttfamily atomic\+\_\+set} operations.
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em order} & The memory model for the load operation.\\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em i} & The bit to set.\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The masked value of the word containing the bit prior to the set operation. 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/lums/\+NWmath/\+NWgr/include/nwgraph/util/Atomic\+Bit\+Vector.\+hpp\end{DoxyCompactItemize}

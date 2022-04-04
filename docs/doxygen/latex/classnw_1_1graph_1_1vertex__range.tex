@@ -1,0 +1,55 @@
+\hypertarget{classnw_1_1graph_1_1vertex__range}{}\doxysection{nw\+::graph\+::vertex\+\_\+range\texorpdfstring{$<$}{<} Graph \texorpdfstring{$>$}{>} Class Template Reference}
+\label{classnw_1_1graph_1_1vertex__range}\index{nw::graph::vertex\_range$<$ Graph $>$@{nw::graph::vertex\_range$<$ Graph $>$}}
+
+
+{\ttfamily \#include $<$vertex\+\_\+range.\+hpp$>$}
+
+\doxysubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classnw_1_1graph_1_1vertex__range_a99bfbc150ebb82441a7643ac5028fa13}\label{classnw_1_1graph_1_1vertex__range_a99bfbc150ebb82441a7643ac5028fa13}} 
+using {\bfseries vertex\+\_\+id\+\_\+type} = vertex\+\_\+id\+\_\+t$<$ Graph $>$
+\item 
+\mbox{\Hypertarget{classnw_1_1graph_1_1vertex__range_a17160b77fdffb9dacc6971470913aeda}\label{classnw_1_1graph_1_1vertex__range_a17160b77fdffb9dacc6971470913aeda}} 
+using {\bfseries difference\+\_\+type} = vertex\+\_\+id\+\_\+type
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classnw_1_1graph_1_1vertex__range_acd4a4a605c42a03b1c7deda2e20a91ca}\label{classnw_1_1graph_1_1vertex__range_acd4a4a605c42a03b1c7deda2e20a91ca}} 
+{\bfseries vertex\+\_\+range} (vertex\+\_\+id\+\_\+type \mbox{\hyperlink{structnw_1_1graph_1_1max}{max}})
+\item 
+\mbox{\Hypertarget{classnw_1_1graph_1_1vertex__range_ab728434e5d1fdf636d3246df168510ae}\label{classnw_1_1graph_1_1vertex__range_ab728434e5d1fdf636d3246df168510ae}} 
+{\bfseries vertex\+\_\+range} (const \mbox{\hyperlink{classnw_1_1graph_1_1vertex__range}{vertex\+\_\+range}} \&)=default
+\item 
+\mbox{\Hypertarget{classnw_1_1graph_1_1vertex__range_a32c6983d66bc21e9b9d93c17ef7e2146}\label{classnw_1_1graph_1_1vertex__range_a32c6983d66bc21e9b9d93c17ef7e2146}} 
+{\bfseries vertex\+\_\+range} (\mbox{\hyperlink{classnw_1_1graph_1_1vertex__range}{vertex\+\_\+range}} \&\&)=default
+\item 
+\mbox{\Hypertarget{classnw_1_1graph_1_1vertex__range_add9b99c4b0db3f28cb741e915093db59}\label{classnw_1_1graph_1_1vertex__range_add9b99c4b0db3f28cb741e915093db59}} 
+{\bfseries vertex\+\_\+range} (\mbox{\hyperlink{classnw_1_1graph_1_1vertex__range}{vertex\+\_\+range}} \&rhs, tbb\+::split)
+\item 
+\mbox{\Hypertarget{classnw_1_1graph_1_1vertex__range_a93b360c63ad6c0188a4bc8e9bf86e903}\label{classnw_1_1graph_1_1vertex__range_a93b360c63ad6c0188a4bc8e9bf86e903}} 
+\mbox{\hyperlink{classnw_1_1graph_1_1counting__iterator}{counting\+\_\+iterator}}$<$ vertex\+\_\+id\+\_\+type $>$ {\bfseries begin} () const
+\item 
+\mbox{\Hypertarget{classnw_1_1graph_1_1vertex__range_a6a54b1517a0fe0f27938d30597241c0e}\label{classnw_1_1graph_1_1vertex__range_a6a54b1517a0fe0f27938d30597241c0e}} 
+\mbox{\hyperlink{classnw_1_1graph_1_1counting__iterator}{counting\+\_\+iterator}}$<$ vertex\+\_\+id\+\_\+type $>$ {\bfseries end} () const
+\item 
+\mbox{\Hypertarget{classnw_1_1graph_1_1vertex__range_a2750c9564de7a7a0d213975edc36f585}\label{classnw_1_1graph_1_1vertex__range_a2750c9564de7a7a0d213975edc36f585}} 
+difference\+\_\+type {\bfseries size} () const
+\item 
+\mbox{\Hypertarget{classnw_1_1graph_1_1vertex__range_ae734894be72a8e608ba701b17c4ca0ee}\label{classnw_1_1graph_1_1vertex__range_ae734894be72a8e608ba701b17c4ca0ee}} 
+bool {\bfseries empty} () const
+\item 
+\mbox{\Hypertarget{classnw_1_1graph_1_1vertex__range_afc8ce796a0d52fe0ba07a064feec5ee8}\label{classnw_1_1graph_1_1vertex__range_afc8ce796a0d52fe0ba07a064feec5ee8}} 
+bool {\bfseries is\+\_\+divisible} () const
+\begin{DoxyCompactList}\small\item\em Runtime check to see if the range is divisible. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$class Graph$>$\newline
+class nw\+::graph\+::vertex\+\_\+range$<$ Graph $>$}
+Vertex\+\_\+range assumes the vertex id space is from 0 to n -\/ 1. n is the number of vertices. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/lums/\+NWmath/\+NWgr/include/nwgraph/adaptors/vertex\+\_\+range.\+hpp\end{DoxyCompactItemize}

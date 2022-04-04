@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.3" xml:lang="en-US">
+  <compounddef id="classnw_1_1graph_1_1dag__range_1_1dag__range__iterator_1_1end__sentinel__type" kind="class" language="C++" prot="public">
+    <compoundname>nw::graph::dag_range::dag_range_iterator::end_sentinel_type</compoundname>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classnw_1_1graph_1_1dag__range_1_1dag__range__iterator_1_1end__sentinel__type_1aee0e28443cfa9538364deb2fb771eca9" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>nw::graph::dag_range&lt; Graph, Queue &gt;::dag_range_iterator::end_sentinel_type::end_sentinel_type</definition>
+        <argsstring>()</argsstring>
+        <name>end_sentinel_type</name>
+        <qualifiedname>nw::graph::dag_range::dag_range_iterator::end_sentinel_type::end_sentinel_type</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/dag_range.hpp" line="103" column="7" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/dag_range.hpp" bodystart="103" bodyend="103"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/dag_range.hpp" line="101" column="5" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/dag_range.hpp" bodystart="101" bodyend="104"/>
+    <listofallmembers>
+      <member refid="classnw_1_1graph_1_1dag__range_1_1dag__range__iterator_1_1end__sentinel__type_1aee0e28443cfa9538364deb2fb771eca9" prot="public" virt="non-virtual"><scope>nw::graph::dag_range::dag_range_iterator::end_sentinel_type</scope><name>end_sentinel_type</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

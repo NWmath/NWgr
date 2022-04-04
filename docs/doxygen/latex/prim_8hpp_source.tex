@@ -1,0 +1,31 @@
+\hypertarget{prim_8hpp_source}{}\doxysection{prim.\+hpp}
+\label{prim_8hpp_source}\index{/Users/lums/NWmath/NWgr/include/nwgraph/algorithms/prim.hpp@{/Users/lums/NWmath/NWgr/include/nwgraph/algorithms/prim.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// }}
+\DoxyCodeLine{2 \textcolor{comment}{// This file is part of NW Graph (aka GraphPack) }}
+\DoxyCodeLine{3 \textcolor{comment}{// (c) Pacific Northwest National Laboratory 2018-\/2021 }}
+\DoxyCodeLine{4 \textcolor{comment}{// (c) University of Washington 2018-\/2021 }}
+\DoxyCodeLine{5 \textcolor{comment}{// }}
+\DoxyCodeLine{6 \textcolor{comment}{// Licensed under terms of include LICENSE file }}
+\DoxyCodeLine{7 \textcolor{comment}{// }}
+\DoxyCodeLine{8 \textcolor{comment}{// Authors: }}
+\DoxyCodeLine{9 \textcolor{comment}{//     Andrew Lumsdaine }}
+\DoxyCodeLine{10 \textcolor{comment}{//}}
+\DoxyCodeLine{11 }
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#ifndef NW\_GRAPH\_PRIM\_HPP}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#define NW\_GRAPH\_PRIM\_HPP}}
+\DoxyCodeLine{14 }
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#include "{}nwgraph/adaptors/bfs\_range.hpp"{}}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include "{}nwgraph/adaptors/graph\_traits.hpp"{}}}
+\DoxyCodeLine{17 }
+\DoxyCodeLine{18 \textcolor{keyword}{namespace }nw \{}
+\DoxyCodeLine{19 \textcolor{keyword}{namespace }graph \{}
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 \textcolor{keyword}{template} <\textcolor{keyword}{typename} DistanceT, \textcolor{keyword}{typename} GraphT>}
+\DoxyCodeLine{22 std::vector<DistanceT> prim(\textcolor{keyword}{const} GraphT\& graph, vertex\_id\_t<GraphT> source) \{\}}
+\DoxyCodeLine{23 }
+\DoxyCodeLine{24 }
+\DoxyCodeLine{25 \textcolor{preprocessor}{\#endif    }\textcolor{comment}{// NW\_GRAPH\_PRIM\_HPP}}
+
+\end{DoxyCode}

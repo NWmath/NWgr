@@ -1,0 +1,302 @@
+\hypertarget{algorithms_2betweenness__centrality_8hpp_source}{}\doxysection{betweenness\+\_\+centrality.\+hpp}
+\label{algorithms_2betweenness__centrality_8hpp_source}\index{/Users/lums/NWmath/NWgr/include/nwgraph/algorithms/betweenness\_centrality.hpp@{/Users/lums/NWmath/NWgr/include/nwgraph/algorithms/betweenness\_centrality.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// }}
+\DoxyCodeLine{2 \textcolor{comment}{// This file is part of NW Graph (aka GraphPack) }}
+\DoxyCodeLine{3 \textcolor{comment}{// (c) Pacific Northwest National Laboratory 2018-\/2021 }}
+\DoxyCodeLine{4 \textcolor{comment}{// (c) University of Washington 2018-\/2021 }}
+\DoxyCodeLine{5 \textcolor{comment}{// }}
+\DoxyCodeLine{6 \textcolor{comment}{// Licensed under terms of include LICENSE file }}
+\DoxyCodeLine{7 \textcolor{comment}{// }}
+\DoxyCodeLine{8 \textcolor{comment}{// Authors: }}
+\DoxyCodeLine{9 \textcolor{comment}{//     Andrew Lumsdaine }}
+\DoxyCodeLine{10 \textcolor{comment}{//     Kevin Deweese    }}
+\DoxyCodeLine{11 \textcolor{comment}{//     Luke D'Alessandro    }}
+\DoxyCodeLine{12 \textcolor{comment}{//}}
+\DoxyCodeLine{13 }
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#ifndef BETWEENNESS\_CENTRALITY\_HPP}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#define BETWEENNESS\_CENTRALITY\_HPP}}
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include "{}nwgraph/graph\_concepts.hpp"{}}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include "{}nwgraph/adaptors/worklist.hpp"{}}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include "{}nwgraph/util/AtomicBitVector.hpp"{}}}
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#include "{}nwgraph/util/atomic.hpp"{}}}
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#include "{}nwgraph/util/parallel\_for.hpp"{}}}
+\DoxyCodeLine{22 \textcolor{preprocessor}{\#include "{}nwgraph/util/util.hpp"{}}}
+\DoxyCodeLine{23 }
+\DoxyCodeLine{24 \textcolor{preprocessor}{\#include <algorithm>}}
+\DoxyCodeLine{25 }
+\DoxyCodeLine{26 \textcolor{preprocessor}{\#if defined(CL\_SYCL\_LANGUAGE\_VERSION)}}
+\DoxyCodeLine{27 \textcolor{preprocessor}{\#include <dpstd/algorithm>}}
+\DoxyCodeLine{28 \textcolor{preprocessor}{\#include <dpstd/execution>}}
+\DoxyCodeLine{29 \textcolor{preprocessor}{\#include <dpstd/numeric>}}
+\DoxyCodeLine{30 \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{31 \textcolor{preprocessor}{\#include <execution>}}
+\DoxyCodeLine{32 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{33 }
+\DoxyCodeLine{34 \textcolor{preprocessor}{\#include <forward\_list>}}
+\DoxyCodeLine{35 \textcolor{preprocessor}{\#include <future>}}
+\DoxyCodeLine{36 \textcolor{preprocessor}{\#include <iostream>}}
+\DoxyCodeLine{37 \textcolor{preprocessor}{\#include <list>}}
+\DoxyCodeLine{38 \textcolor{preprocessor}{\#include <mutex>}}
+\DoxyCodeLine{39 \textcolor{preprocessor}{\#include <queue>}}
+\DoxyCodeLine{40 \textcolor{preprocessor}{\#include <set>}}
+\DoxyCodeLine{41 \textcolor{preprocessor}{\#include <stack>}}
+\DoxyCodeLine{42 \textcolor{preprocessor}{\#include <thread>}}
+\DoxyCodeLine{43 \textcolor{preprocessor}{\#include <tuple>}}
+\DoxyCodeLine{44 \textcolor{preprocessor}{\#include <unordered\_map>}}
+\DoxyCodeLine{45 \textcolor{preprocessor}{\#include <unordered\_set>}}
+\DoxyCodeLine{46 \textcolor{preprocessor}{\#include <utility>}}
+\DoxyCodeLine{47 }
+\DoxyCodeLine{48 \textcolor{preprocessor}{\#include <tbb/concurrent\_queue.h>}}
+\DoxyCodeLine{49 \textcolor{preprocessor}{\#include <tbb/concurrent\_vector.h>}}
+\DoxyCodeLine{50 \textcolor{preprocessor}{\#include <tbb/parallel\_for\_each.h>}}
+\DoxyCodeLine{51 }
+\DoxyCodeLine{52 \textcolor{keyword}{namespace }nw \{}
+\DoxyCodeLine{53 \textcolor{keyword}{namespace }graph \{}
+\DoxyCodeLine{54 }
+\DoxyCodeLine{55 \textcolor{keyword}{template} <\textcolor{keyword}{class} score\_t, \textcolor{keyword}{class} accum\_t, adjacency\_list\_graph Graph>}
+\DoxyCodeLine{56 \textcolor{keywordtype}{bool} BCVerifier(\textcolor{keyword}{const} Graph\& g, std::vector<\textcolor{keyword}{typename} graph\_traits<Graph>::vertex\_id\_type>\& trial\_sources,}
+\DoxyCodeLine{57                 std::vector<score\_t>\& scores\_to\_test) \{}
+\DoxyCodeLine{58   \textcolor{keyword}{using} vertex\_id\_type = \textcolor{keyword}{typename} graph\_traits<Graph>::vertex\_id\_type;}
+\DoxyCodeLine{59 }
+\DoxyCodeLine{60   std::vector<score\_t> scores(num\_vertices(g), 0);}
+\DoxyCodeLine{61   \textcolor{keywordflow}{for} (\textcolor{keyword}{auto}\& source : trial\_sources) \{}
+\DoxyCodeLine{62     std::vector<int> depths(num\_vertices(g), -\/1);}
+\DoxyCodeLine{63     depths[source] = 0;}
+\DoxyCodeLine{64     std::vector<accum\_t> path\_counts(num\_vertices(g) + 1, 0);}
+\DoxyCodeLine{65     path\_counts[source] = 1;}
+\DoxyCodeLine{66     std::vector<vertex\_id\_type> to\_visit;}
+\DoxyCodeLine{67     to\_visit.reserve(num\_vertices(g));}
+\DoxyCodeLine{68     to\_visit.push\_back(source);}
+\DoxyCodeLine{69     \textcolor{keywordflow}{for} (\textcolor{keyword}{auto} it = to\_visit.begin(); it != to\_visit.end(); it++) \{}
+\DoxyCodeLine{70       vertex\_id\_type u = *it;}
+\DoxyCodeLine{71       \textcolor{keywordflow}{for} (\textcolor{keyword}{auto} edge : g[u]) \{}
+\DoxyCodeLine{72         vertex\_id\_type v = target(g, edge);}
+\DoxyCodeLine{73         \textcolor{keywordflow}{if} (depths[v] == -\/1) \{}
+\DoxyCodeLine{74           depths[v] = depths[u] + 1;}
+\DoxyCodeLine{75           to\_visit.push\_back(v);}
+\DoxyCodeLine{76         \}}
+\DoxyCodeLine{77         \textcolor{keywordflow}{if} (depths[v] == depths[u] + 1) \{}
+\DoxyCodeLine{78           path\_counts[v] += path\_counts[u];}
+\DoxyCodeLine{79         \}}
+\DoxyCodeLine{80       \}}
+\DoxyCodeLine{81     \}}
+\DoxyCodeLine{82 }
+\DoxyCodeLine{83     std::vector<std::vector<vertex\_id\_type>> verts\_at\_depth;}
+\DoxyCodeLine{84     \textcolor{keywordflow}{for} (\textcolor{keywordtype}{size\_t} i = 0; i < num\_vertices(g); ++i) \{}
+\DoxyCodeLine{85       \textcolor{keywordflow}{if} (depths[i] != -\/1) \{}
+\DoxyCodeLine{86         \textcolor{keywordflow}{if} (depths[i] >= \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{int}\textcolor{keyword}{>}(verts\_at\_depth.size())) \{}
+\DoxyCodeLine{87           verts\_at\_depth.resize(depths[i] + 1);}
+\DoxyCodeLine{88         \}}
+\DoxyCodeLine{89         verts\_at\_depth[depths[i]].push\_back(i);}
+\DoxyCodeLine{90       \}}
+\DoxyCodeLine{91     \}}
+\DoxyCodeLine{92 }
+\DoxyCodeLine{93     std::vector<score\_t> deltas(num\_vertices(g), 0);}
+\DoxyCodeLine{94     \textcolor{keywordflow}{for} (\textcolor{keywordtype}{int} depth = verts\_at\_depth.size() -\/ 1; depth >= 0; depth-\/-\/) \{}
+\DoxyCodeLine{95       \textcolor{keywordflow}{for} (vertex\_id\_type u : verts\_at\_depth[depth]) \{}
+\DoxyCodeLine{96         \textcolor{keywordflow}{for} (\textcolor{keyword}{auto} edge : g[u]) \{}
+\DoxyCodeLine{97           vertex\_id\_type v = target(g, edge);}
+\DoxyCodeLine{98           \textcolor{keywordflow}{if} (depths[v] == depths[u] + 1) \{}
+\DoxyCodeLine{99             deltas[u] += \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{double}\textcolor{keyword}{>}(path\_counts[u]) / \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{double}\textcolor{keyword}{>}(path\_counts[v]) * (1 + deltas[v]);}
+\DoxyCodeLine{100           \}}
+\DoxyCodeLine{101         \}}
+\DoxyCodeLine{102         scores[u] += deltas[u];}
+\DoxyCodeLine{103       \}}
+\DoxyCodeLine{104     \}}
+\DoxyCodeLine{105   \}}
+\DoxyCodeLine{106 }
+\DoxyCodeLine{107   score\_t biggest\_score = *std::max\_element(scores.begin(), scores.end());}
+\DoxyCodeLine{108   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{size\_t} i = 0; i < num\_vertices(g); ++i) \{}
+\DoxyCodeLine{109     scores[i] = scores[i] / biggest\_score;}
+\DoxyCodeLine{110   \}}
+\DoxyCodeLine{111 }
+\DoxyCodeLine{112   \textcolor{keywordtype}{bool} all\_ok = \textcolor{keyword}{true};}
+\DoxyCodeLine{113 }
+\DoxyCodeLine{114   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{size\_t} i = 0; i < scores.size(); ++i) \{}
+\DoxyCodeLine{115     accum\_t delta = abs(scores\_to\_test[i] -\/ scores[i]);}
+\DoxyCodeLine{116     \textcolor{keywordflow}{if} (delta > 1e-\/6) \{}
+\DoxyCodeLine{117       std::cout << i << \textcolor{stringliteral}{"{}: "{}} << scores[i] << \textcolor{stringliteral}{"{} != "{}} << scores\_to\_test[i] << \textcolor{stringliteral}{"{} "{}} << scores[i] -\/ scores\_to\_test[i] << std::endl;}
+\DoxyCodeLine{118       all\_ok = \textcolor{keyword}{false};}
+\DoxyCodeLine{119     \}}
+\DoxyCodeLine{120   \}}
+\DoxyCodeLine{121 }
+\DoxyCodeLine{122   \textcolor{keywordflow}{return} all\_ok;}
+\DoxyCodeLine{123 \}}
+\DoxyCodeLine{124 }
+\DoxyCodeLine{125 \textcolor{comment}{//****************************************************************************}}
+\DoxyCodeLine{126 \textcolor{keyword}{template} <adjacency\_list\_graph Graph, \textcolor{keyword}{typename} score\_t = \textcolor{keywordtype}{float}, \textcolor{keyword}{typename} accum\_t = \textcolor{keywordtype}{size\_t}>}
+\DoxyCodeLine{127 std::vector<score\_t> betweenness\_brandes(\textcolor{keyword}{const} Graph\& G, \textcolor{keywordtype}{bool} normalize = \textcolor{keyword}{true}) \{}
+\DoxyCodeLine{128   \textcolor{keyword}{using} vertex\_id\_type = \textcolor{keyword}{typename} Graph::vertex\_id\_type;}
+\DoxyCodeLine{129 }
+\DoxyCodeLine{130   \textcolor{keywordtype}{size\_t}               n\_vtx = num\_vertices(G);}
+\DoxyCodeLine{131   std::vector<score\_t> centrality(n\_vtx, 0);}
+\DoxyCodeLine{132 }
+\DoxyCodeLine{133   std::stack<vertex\_id\_type> S;}
+\DoxyCodeLine{134   std::queue<vertex\_id\_type> Q;}
+\DoxyCodeLine{135   std::vector<accum\_t>       path\_counts(n\_vtx);}
+\DoxyCodeLine{136   std::vector<score\_t>       d(n\_vtx);}
+\DoxyCodeLine{137 }
+\DoxyCodeLine{138   \textcolor{keywordflow}{for} (vertex\_id\_type s = 0; s < n\_vtx; ++s) \{}
+\DoxyCodeLine{139     path\_counts.assign(n\_vtx, 0);}
+\DoxyCodeLine{140     d.assign(n\_vtx, -\/1);}
+\DoxyCodeLine{141     std::vector<std::list<size\_t>> P(n\_vtx);}
+\DoxyCodeLine{142 }
+\DoxyCodeLine{143     path\_counts[s] = 1;}
+\DoxyCodeLine{144     d[s]           = 0;}
+\DoxyCodeLine{145     Q.push(s);}
+\DoxyCodeLine{146 }
+\DoxyCodeLine{147     \textcolor{keywordflow}{while} (!Q.empty()) \{}
+\DoxyCodeLine{148       \textcolor{keyword}{auto} v = Q.front();}
+\DoxyCodeLine{149       Q.pop();}
+\DoxyCodeLine{150       S.push(v);}
+\DoxyCodeLine{151       \textcolor{keywordflow}{for} (\textcolor{keyword}{auto} inner = G[v].begin(); inner != G[v].end(); ++inner) \{}
+\DoxyCodeLine{152         \textcolor{keyword}{auto} w = target(G, *inner);}
+\DoxyCodeLine{153         \textcolor{comment}{//auto w = std::get<0>(*inner);}}
+\DoxyCodeLine{154         \textcolor{keywordflow}{if} (d[w] < 0) \{}
+\DoxyCodeLine{155           Q.push(w);}
+\DoxyCodeLine{156           d[w] = d[v] + 1;}
+\DoxyCodeLine{157         \}}
+\DoxyCodeLine{158         \textcolor{keywordflow}{if} (d[w] == (d[v] + 1)) \{}
+\DoxyCodeLine{159           path\_counts[w] += path\_counts[v];}
+\DoxyCodeLine{160           P[w].push\_back(v);}
+\DoxyCodeLine{161         \}}
+\DoxyCodeLine{162       \}}
+\DoxyCodeLine{163     \}}
+\DoxyCodeLine{164 }
+\DoxyCodeLine{165     std::vector<score\_t> delta(n\_vtx, 0);}
+\DoxyCodeLine{166     \textcolor{keywordflow}{while} (!S.empty()) \{}
+\DoxyCodeLine{167       \textcolor{keyword}{auto} w = S.top();}
+\DoxyCodeLine{168       S.pop();}
+\DoxyCodeLine{169       \textcolor{keywordflow}{for} (\textcolor{keyword}{auto} it = P[w].begin(); it != P[w].end(); ++it) \{}
+\DoxyCodeLine{170         delta[*it] += \textcolor{keyword}{static\_cast<}score\_t\textcolor{keyword}{>}(path\_counts[*it]) / \textcolor{keyword}{static\_cast<}score\_t\textcolor{keyword}{>}(path\_counts[w]) * (1 + delta[w]);}
+\DoxyCodeLine{171       \}}
+\DoxyCodeLine{172       \textcolor{keywordflow}{if} (w != s) \{}
+\DoxyCodeLine{173         centrality[w] += delta[w];}
+\DoxyCodeLine{174       \}}
+\DoxyCodeLine{175     \}}
+\DoxyCodeLine{176   \}}
+\DoxyCodeLine{177   \textcolor{keywordflow}{if} (normalize) \{}
+\DoxyCodeLine{178     score\_t largest = *std::max\_element(centrality.begin(), centrality.end());}
+\DoxyCodeLine{179     std::transform(centrality.begin(), centrality.end(), centrality.begin(), [\&](\textcolor{keyword}{auto} \&val) \{ return val /= largest; \});}
+\DoxyCodeLine{180   \}}
+\DoxyCodeLine{181   \textcolor{keywordflow}{return} centrality;}
+\DoxyCodeLine{182 \}}
+\DoxyCodeLine{183 }
+\DoxyCodeLine{184 \textcolor{keyword}{template} <\textcolor{keyword}{class }score\_t, \textcolor{keyword}{class }accum\_t, adjacency\_list\_graph Graph, \textcolor{keyword}{class }OuterExecutionPolicy = std::execution::parallel\_unsequenced\_policy,}
+\DoxyCodeLine{185           \textcolor{keyword}{class }InnerExecutionPolicy = std::execution::parallel\_unsequenced\_policy>}
+\DoxyCodeLine{186 \textcolor{keyword}{auto} bc2\_v5(\textcolor{keyword}{const} Graph\& graph, \textcolor{keyword}{const} std::vector<typename Graph::vertex\_id\_type>\& sources, \textcolor{keywordtype}{int} threads,}
+\DoxyCodeLine{187             OuterExecutionPolicy\&\& outer\_policy = \{\}, InnerExecutionPolicy\&\& inner\_policy = \{\}, \textcolor{keywordtype}{bool} normalize = \textcolor{keyword}{true}) \{}
+\DoxyCodeLine{188   \textcolor{keyword}{using} vertex\_id\_type = \textcolor{keyword}{typename} Graph::vertex\_id\_type;}
+\DoxyCodeLine{189 }
+\DoxyCodeLine{190   vertex\_id\_type       N     = num\_vertices(graph);}
+\DoxyCodeLine{191   \textcolor{keywordtype}{size\_t}               M     = graph.to\_be\_indexed\_.size();}
+\DoxyCodeLine{192   \textcolor{keyword}{auto}\&\&               edges = std::get<0>(*(graph[0]).begin());}
+\DoxyCodeLine{193   std::vector<score\_t> bc(N);}
+\DoxyCodeLine{194 }
+\DoxyCodeLine{195   \textcolor{keyword}{const} vertex\_id\_type num\_bins = nw::graph::pow2(nw::graph::ceil\_log2(threads));}
+\DoxyCodeLine{196   \textcolor{keyword}{const} vertex\_id\_type bin\_mask = num\_bins -\/ 1;}
+\DoxyCodeLine{197 }
+\DoxyCodeLine{198   std::vector<std::future<void>> futures(sources.size());}
+\DoxyCodeLine{199   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{size\_t} s\_idx = 0; s\_idx < sources.size(); ++s\_idx) \{}
+\DoxyCodeLine{200     futures[s\_idx] = std::async(}
+\DoxyCodeLine{201         std::launch::async,}
+\DoxyCodeLine{202         [\&](vertex\_id\_type root) \{}
+\DoxyCodeLine{203           std::vector<vertex\_id\_type> levels(N);}
+\DoxyCodeLine{204           \mbox{\hyperlink{classnw_1_1graph_1_1_atomic_bit_vector}{nw::graph::AtomicBitVector}}  succ(M);}
+\DoxyCodeLine{205 }
+\DoxyCodeLine{206           \textcolor{comment}{// Initialize the levels to infinity.}}
+\DoxyCodeLine{207           std::fill(outer\_policy, levels.begin(), levels.end(), std::numeric\_limits<vertex\_id\_type>::max());}
+\DoxyCodeLine{208 }
+\DoxyCodeLine{209           std::vector<accum\_t>                                             path\_counts(N);}
+\DoxyCodeLine{210           std::vector<tbb::concurrent\_vector<vertex\_id\_type>>              q1(num\_bins);}
+\DoxyCodeLine{211           std::vector<tbb::concurrent\_vector<vertex\_id\_type>>              q2(num\_bins);}
+\DoxyCodeLine{212           std::vector<std::vector<tbb::concurrent\_vector<vertex\_id\_type>>> retired;}
+\DoxyCodeLine{213 }
+\DoxyCodeLine{214           vertex\_id\_type lvl = 0;}
+\DoxyCodeLine{215 }
+\DoxyCodeLine{216           path\_counts[root] = 1;}
+\DoxyCodeLine{217           q1[0].push\_back(root);}
+\DoxyCodeLine{218           levels[root] = lvl++;}
+\DoxyCodeLine{219 }
+\DoxyCodeLine{220           \textcolor{keywordtype}{bool} done = \textcolor{keyword}{false};}
+\DoxyCodeLine{221           \textcolor{keywordflow}{while} (!done) \{}
+\DoxyCodeLine{222             std::for\_each(outer\_policy, q1.begin(), q1.end(), [\&](\textcolor{keyword}{auto}\&\& q) \{}
+\DoxyCodeLine{223               std::for\_each(inner\_policy, q.begin(), q.end(), [\&](auto\&\& u) \{}
+\DoxyCodeLine{224                 for (auto\&\& elt : graph[u]) \{}
+\DoxyCodeLine{225                   auto v = target(graph, elt);}
+\DoxyCodeLine{226                   auto\&\& infinity = std::numeric\_limits<vertex\_id\_type>::max();}
+\DoxyCodeLine{227                   auto\&\& lvl\_v    = nw::graph::acquire(levels[v]);}
+\DoxyCodeLine{228 }
+\DoxyCodeLine{229                   \textcolor{comment}{// If this is our first encounter with this node, or}}
+\DoxyCodeLine{230                   \textcolor{comment}{// it's on the right level, then propagate the counts}}
+\DoxyCodeLine{231                   \textcolor{comment}{// from u to v, and mark the edge from u to v as used.}}
+\DoxyCodeLine{232                   if (lvl\_v == infinity || lvl\_v == lvl) \{}
+\DoxyCodeLine{233                     nw::graph::fetch\_add(path\_counts[v], nw::graph::acquire(path\_counts[u]));}
+\DoxyCodeLine{234                     succ.atomic\_set(\&v -\/ \&edges);    \textcolor{comment}{// edge(w,v) : P[w][v]}}
+\DoxyCodeLine{235                   \}}
+\DoxyCodeLine{236 }
+\DoxyCodeLine{237                   \textcolor{comment}{// We need to add v to the frontier exactly once the}}
+\DoxyCodeLine{238                   \textcolor{comment}{// first time we encounter it, so we race to set its}}
+\DoxyCodeLine{239                   \textcolor{comment}{// level and if we win that race we can be the one to}}
+\DoxyCodeLine{240                   \textcolor{comment}{// add it.}}
+\DoxyCodeLine{241                   if (lvl\_v == infinity \&\& nw::graph::cas(levels[v], infinity, lvl)) \{}
+\DoxyCodeLine{242                     q2[u \& bin\_mask].push\_back(v);}
+\DoxyCodeLine{243                   \}}
+\DoxyCodeLine{244                 \}}
+\DoxyCodeLine{245               \});}
+\DoxyCodeLine{246             \});}
+\DoxyCodeLine{247 }
+\DoxyCodeLine{248             done = \textcolor{keyword}{true};}
+\DoxyCodeLine{249             \textcolor{keywordflow}{for} (\textcolor{keywordtype}{size\_t} i = 0; i < num\_bins; ++i) \{}
+\DoxyCodeLine{250               \textcolor{keywordflow}{if} (q2[i].size() != 0) \{}
+\DoxyCodeLine{251                 done = \textcolor{keyword}{false};}
+\DoxyCodeLine{252                 \textcolor{keywordflow}{break};}
+\DoxyCodeLine{253               \}}
+\DoxyCodeLine{254             \}}
+\DoxyCodeLine{255 }
+\DoxyCodeLine{256             retired.emplace\_back(num\_bins);}
+\DoxyCodeLine{257             std::swap(q1, retired.back());}
+\DoxyCodeLine{258             std::swap(q1, q2);}
+\DoxyCodeLine{259 }
+\DoxyCodeLine{260             ++lvl;}
+\DoxyCodeLine{261           \}}
+\DoxyCodeLine{262 }
+\DoxyCodeLine{263           std::vector<score\_t> deltas(N);}
+\DoxyCodeLine{264 }
+\DoxyCodeLine{265           std::for\_each(retired.rbegin(), retired.rend(), [\&](\textcolor{keyword}{auto}\&\& vvv) \{}
+\DoxyCodeLine{266             std::for\_each(outer\_policy, vvv.begin(), vvv.end(), [\&](auto\&\& vv) \{}
+\DoxyCodeLine{267               std::for\_each(inner\_policy, vv.begin(), vv.end(), [\&](auto\&\& u) \{}
+\DoxyCodeLine{268                 score\_t delta = 0;}
+\DoxyCodeLine{269                 for (auto\&\& elt : graph[u]) \{}
+\DoxyCodeLine{270                   auto v = target(graph, elt);}
+\DoxyCodeLine{271                   if (succ.get(\&v -\/ \&edges)) \{}
+\DoxyCodeLine{272                     delta += path\_counts[u] / path\_counts[v] * (1.0f + deltas[v]);}
+\DoxyCodeLine{273                   \}}
+\DoxyCodeLine{274                 \}}
+\DoxyCodeLine{275                 nw::graph::fetch\_add(bc[u], deltas[u] = delta);}
+\DoxyCodeLine{276               \});}
+\DoxyCodeLine{277             \});}
+\DoxyCodeLine{278           \});}
+\DoxyCodeLine{279         \},}
+\DoxyCodeLine{280         sources[s\_idx]);}
+\DoxyCodeLine{281   \}}
+\DoxyCodeLine{282 }
+\DoxyCodeLine{283   \textcolor{keywordflow}{for} (\textcolor{keyword}{auto}\&\& f : futures) \{}
+\DoxyCodeLine{284     f.wait();}
+\DoxyCodeLine{285   \}}
+\DoxyCodeLine{286 }
+\DoxyCodeLine{287   \textcolor{keywordflow}{if} (normalize) \{}
+\DoxyCodeLine{288     \textcolor{keyword}{auto} max = std::reduce(outer\_policy, bc.begin(), bc.end(), 0.0f, \mbox{\hyperlink{structnw_1_1graph_1_1max}{nw::graph::max}}\{\});}
+\DoxyCodeLine{289     std::for\_each(outer\_policy, bc.begin(), bc.end(), [\&](\textcolor{keyword}{auto}\&\& j) \{ j /= max; \});}
+\DoxyCodeLine{290   \}}
+\DoxyCodeLine{291   \textcolor{keywordflow}{return} bc;}
+\DoxyCodeLine{292 \}}
+\DoxyCodeLine{293 }
+\DoxyCodeLine{294 \}    \textcolor{comment}{// namespace graph}}
+\DoxyCodeLine{295 \}    \textcolor{comment}{// namespace nw}}
+\DoxyCodeLine{296 \textcolor{preprocessor}{\#endif    }\textcolor{comment}{// BETWEENNESS\_CENTRALITY\_HPP}}
+
+\end{DoxyCode}

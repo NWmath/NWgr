@@ -1,0 +1,178 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.3" xml:lang="en-US">
+  <compounddef id="classnw_1_1graph_1_1par__counting__output__iterator" kind="class" language="C++" prot="public">
+    <compoundname>nw::graph::par_counting_output_iterator</compoundname>
+    <basecompoundref prot="public" virt="non-virtual">std::iterator&lt; std::random_access_iterator_tag, size_t &gt;</basecompoundref>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classnw_1_1graph_1_1par__counting__output__iterator_1a057835d1cd901eb67cb2968d6af5cb22" prot="private" static="no" mutable="no">
+        <type>size_t &amp;</type>
+        <definition>size_t&amp; nw::graph::par_counting_output_iterator::count</definition>
+        <argsstring></argsstring>
+        <name>count</name>
+        <qualifiedname>nw::graph::par_counting_output_iterator::count</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/util/util_par.hpp" line="42" column="10" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/util/util_par.hpp" bodystart="42" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classnw_1_1graph_1_1par__counting__output__iterator_1a6bdc270437708aaa2c9c2b005f4cb324" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>nw::graph::par_counting_output_iterator::par_counting_output_iterator</definition>
+        <argsstring>(size_t &amp;count)</argsstring>
+        <name>par_counting_output_iterator</name>
+        <qualifiedname>nw::graph::par_counting_output_iterator::par_counting_output_iterator</qualifiedname>
+        <param>
+          <type>size_t &amp;</type>
+          <declname>count</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/util/util_par.hpp" line="28" column="3" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/util/util_par.hpp" bodystart="28" bodyend="28"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1par__counting__output__iterator_1acf76d4d3128ff3e59216df4b351bddf1" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void nw::graph::par_counting_output_iterator::operator++</definition>
+        <argsstring>()</argsstring>
+        <name>operator++</name>
+        <qualifiedname>nw::graph::par_counting_output_iterator::operator++</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/util/util_par.hpp" line="29" column="33" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/util/util_par.hpp" bodystart="29" bodyend="29"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1par__counting__output__iterator_1a8ac7e59673eaad321b106e21b323294f" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void nw::graph::par_counting_output_iterator::operator++</definition>
+        <argsstring>(int)</argsstring>
+        <name>operator++</name>
+        <qualifiedname>nw::graph::par_counting_output_iterator::operator++</qualifiedname>
+        <param>
+          <type>int</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/util/util_par.hpp" line="30" column="33" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/util/util_par.hpp" bodystart="30" bodyend="30"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1par__counting__output__iterator_1aac82f64df9e467170eecfe799d793a25" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classnw_1_1graph_1_1par__counting__output__iterator" kindref="compound">par_counting_output_iterator</ref> &amp;</type>
+        <definition>par_counting_output_iterator &amp; nw::graph::par_counting_output_iterator::operator*</definition>
+        <argsstring>()</argsstring>
+        <name>operator*</name>
+        <qualifiedname>nw::graph::par_counting_output_iterator::operator*</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/util/util_par.hpp" line="31" column="32" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/util/util_par.hpp" bodystart="31" bodyend="31"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1par__counting__output__iterator_1a7766f39748e957de429b6d0f6e8fe29c" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classnw_1_1graph_1_1par__counting__output__iterator" kindref="compound">par_counting_output_iterator</ref> &amp;</type>
+        <definition>par_counting_output_iterator &amp; nw::graph::par_counting_output_iterator::operator[]</definition>
+        <argsstring>(size_t)</argsstring>
+        <name>operator[]</name>
+        <qualifiedname>nw::graph::par_counting_output_iterator::operator[]</qualifiedname>
+        <param>
+          <type>size_t</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/util/util_par.hpp" line="32" column="32" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/util/util_par.hpp" bodystart="32" bodyend="32"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1par__counting__output__iterator_1afb5500a12ccf8a0bdf1a6693120d5765" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename T</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void nw::graph::par_counting_output_iterator::operator=</definition>
+        <argsstring>(T)</argsstring>
+        <name>operator=</name>
+        <qualifiedname>nw::graph::par_counting_output_iterator::operator=</qualifiedname>
+        <param>
+          <type>T</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/util/util_par.hpp" line="35" column="8" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/util/util_par.hpp" bodystart="35" bodyend="38"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1par__counting__output__iterator_1a0fde60aea6a792ceb38a2d2944ea9dd8" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>size_t</type>
+        <definition>size_t nw::graph::par_counting_output_iterator::get_count</definition>
+        <argsstring>()</argsstring>
+        <name>get_count</name>
+        <qualifiedname>nw::graph::par_counting_output_iterator::get_count</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/util/util_par.hpp" line="39" column="10" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/util/util_par.hpp" bodystart="39" bodyend="39"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>nw::graph::par_counting_output_iterator</label>
+        <link refid="classnw_1_1graph_1_1par__counting__output__iterator"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>std::iterator&lt; std::random_access_iterator_tag, size_t &gt;</label>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>nw::graph::par_counting_output_iterator</label>
+        <link refid="classnw_1_1graph_1_1par__counting__output__iterator"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>std::iterator&lt; std::random_access_iterator_tag, size_t &gt;</label>
+      </node>
+    </collaborationgraph>
+    <location file="/Users/lums/NWmath/NWgr/include/nwgraph/util/util_par.hpp" line="26" column="1" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/util/util_par.hpp" bodystart="26" bodyend="43"/>
+    <listofallmembers>
+      <member refid="classnw_1_1graph_1_1par__counting__output__iterator_1a057835d1cd901eb67cb2968d6af5cb22" prot="private" virt="non-virtual"><scope>nw::graph::par_counting_output_iterator</scope><name>count</name></member>
+      <member refid="classnw_1_1graph_1_1par__counting__output__iterator_1a0fde60aea6a792ceb38a2d2944ea9dd8" prot="public" virt="non-virtual"><scope>nw::graph::par_counting_output_iterator</scope><name>get_count</name></member>
+      <member refid="classnw_1_1graph_1_1par__counting__output__iterator_1aac82f64df9e467170eecfe799d793a25" prot="public" virt="non-virtual"><scope>nw::graph::par_counting_output_iterator</scope><name>operator*</name></member>
+      <member refid="classnw_1_1graph_1_1par__counting__output__iterator_1acf76d4d3128ff3e59216df4b351bddf1" prot="public" virt="non-virtual"><scope>nw::graph::par_counting_output_iterator</scope><name>operator++</name></member>
+      <member refid="classnw_1_1graph_1_1par__counting__output__iterator_1a8ac7e59673eaad321b106e21b323294f" prot="public" virt="non-virtual"><scope>nw::graph::par_counting_output_iterator</scope><name>operator++</name></member>
+      <member refid="classnw_1_1graph_1_1par__counting__output__iterator_1afb5500a12ccf8a0bdf1a6693120d5765" prot="public" virt="non-virtual"><scope>nw::graph::par_counting_output_iterator</scope><name>operator=</name></member>
+      <member refid="classnw_1_1graph_1_1par__counting__output__iterator_1a7766f39748e957de429b6d0f6e8fe29c" prot="public" virt="non-virtual"><scope>nw::graph::par_counting_output_iterator</scope><name>operator[]</name></member>
+      <member refid="classnw_1_1graph_1_1par__counting__output__iterator_1a6bdc270437708aaa2c9c2b005f4cb324" prot="public" virt="non-virtual"><scope>nw::graph::par_counting_output_iterator</scope><name>par_counting_output_iterator</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

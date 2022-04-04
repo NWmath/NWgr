@@ -1,0 +1,110 @@
+\hypertarget{k__core_8hpp_source}{}\doxysection{k\+\_\+core.\+hpp}
+\label{k__core_8hpp_source}\index{/Users/lums/NWmath/NWgr/include/nwgraph/algorithms/k\_core.hpp@{/Users/lums/NWmath/NWgr/include/nwgraph/algorithms/k\_core.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// }}
+\DoxyCodeLine{2 \textcolor{comment}{// This file is part of NW Graph (aka GraphPack) }}
+\DoxyCodeLine{3 \textcolor{comment}{// (c) Pacific Northwest National Laboratory 2018-\/2021 }}
+\DoxyCodeLine{4 \textcolor{comment}{// (c) University of Washington 2018-\/2021 }}
+\DoxyCodeLine{5 \textcolor{comment}{// }}
+\DoxyCodeLine{6 \textcolor{comment}{// Licensed under terms of include LICENSE file }}
+\DoxyCodeLine{7 \textcolor{comment}{// }}
+\DoxyCodeLine{8 \textcolor{comment}{// Authors: }}
+\DoxyCodeLine{9 \textcolor{comment}{//     Andrew Lumsdaine }}
+\DoxyCodeLine{10 \textcolor{comment}{//     Kevin Deweese    }}
+\DoxyCodeLine{11 \textcolor{comment}{//}}
+\DoxyCodeLine{12 }
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#ifndef NW\_GRAPH\_K\_CORE\_HPP}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#define NW\_GRAPH\_K\_CORE\_HPP}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include "{}nwgraph/adaptors/edge\_range.hpp"{}}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include "{}nwgraph/adaptors/new\_dfs\_range.hpp"{}}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include "{}nwgraph/util/defaults.hpp"{}}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include "{}nwgraph/util/util.hpp"{}}}
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#include <algorithm>}}
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#include <tuple>}}
+\DoxyCodeLine{22 \textcolor{preprocessor}{\#include <unordered\_map>}}
+\DoxyCodeLine{23 \textcolor{preprocessor}{\#include <utility>}}
+\DoxyCodeLine{24 }
+\DoxyCodeLine{25 \textcolor{keyword}{namespace }nw \{}
+\DoxyCodeLine{26 \textcolor{keyword}{namespace }graph \{}
+\DoxyCodeLine{27 }
+\DoxyCodeLine{28 \textcolor{keyword}{struct }\mbox{\hyperlink{structnw_1_1graph_1_1pair__hash}{pair\_hash}} \{}
+\DoxyCodeLine{29   std::size\_t operator()(\textcolor{keyword}{const} std::pair<size\_t, size\_t>\& p)\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{30 }
+\DoxyCodeLine{31     \textcolor{keyword}{auto} h1 = std::hash<default\_vertex\_id\_type>\{\}(p.first);}
+\DoxyCodeLine{32     \textcolor{keyword}{auto} h2 = std::hash<default\_vertex\_id\_type>\{\}(p.second);}
+\DoxyCodeLine{33 }
+\DoxyCodeLine{34     \textcolor{keywordflow}{return} h1 \string^ h2;}
+\DoxyCodeLine{35   \}}
+\DoxyCodeLine{36 \};}
+\DoxyCodeLine{37 \textcolor{keyword}{using} Neighbors     = std::pair<size\_t, size\_t>;}
+\DoxyCodeLine{38 \textcolor{keyword}{using} Unordered\_map = std::unordered\_map<Neighbors, bool, pair\_hash>;}
+\DoxyCodeLine{39 }
+\DoxyCodeLine{40 Neighbors make\_my\_pair(default\_vertex\_id\_type x, default\_vertex\_id\_type y) \{}
+\DoxyCodeLine{41   \textcolor{keywordflow}{if} (x < y) \textcolor{keywordflow}{return} std::make\_pair(x, y);}
+\DoxyCodeLine{42   \textcolor{keywordflow}{return} std::make\_pair(y, x);}
+\DoxyCodeLine{43 \}}
+\DoxyCodeLine{44 }
+\DoxyCodeLine{45 \textcolor{comment}{//****************************************************************************}}
+\DoxyCodeLine{46 \textcolor{keyword}{template} <\textcolor{keyword}{typename} Graph>}
+\DoxyCodeLine{47 std::tuple<Unordered\_map, size\_t> k\_core(\textcolor{keyword}{const} Graph\& A, \textcolor{keywordtype}{int} k) \{}
+\DoxyCodeLine{48   Unordered\_map filter;}
+\DoxyCodeLine{49 }
+\DoxyCodeLine{50   \textcolor{keywordtype}{size\_t}                          n\_vtx     = A.size();}
+\DoxyCodeLine{51   \textcolor{keywordtype}{size\_t}                          old\_n\_vtx = n\_vtx;}
+\DoxyCodeLine{52   std::vector<int>                degree(n\_vtx, 0);}
+\DoxyCodeLine{53   std::vector<vertex\_id\_t<Graph>> relabel(n\_vtx);}
+\DoxyCodeLine{54 }
+\DoxyCodeLine{55   \textcolor{keywordflow}{for} (\textcolor{keyword}{auto}\&\& [u, v] : edge\_range(A)) \{}
+\DoxyCodeLine{56     ++degree[v];}
+\DoxyCodeLine{57   \}}
+\DoxyCodeLine{58 }
+\DoxyCodeLine{59   dfs\_edge\_range ranges(A, 0);}
+\DoxyCodeLine{60   \textcolor{keyword}{auto}           ite = ranges.begin();}
+\DoxyCodeLine{61   \textcolor{keywordflow}{for} (; ite != ranges.end(); ++ite) \{}
+\DoxyCodeLine{62     \textcolor{keyword}{auto} v = std::get<1>(*ite);}
+\DoxyCodeLine{63     \textcolor{keyword}{auto} w = std::get<2>(*ite);}
+\DoxyCodeLine{64 }
+\DoxyCodeLine{65     Neighbors edge = make\_my\_pair(v, w);}
+\DoxyCodeLine{66 }
+\DoxyCodeLine{67     \textcolor{keywordflow}{if} (filter.find(edge) == filter.end() \&\& degree[v] < k) \{}
+\DoxyCodeLine{68       \textcolor{keywordflow}{if} (-\/-\/degree[w] == 0) n\_vtx-\/-\/;}
+\DoxyCodeLine{69       \textcolor{keywordflow}{if} (-\/-\/degree[v] == 0) n\_vtx-\/-\/;}
+\DoxyCodeLine{70 }
+\DoxyCodeLine{71       filter.insert(\{edge, \textcolor{keyword}{true}\});}
+\DoxyCodeLine{72     \}}
+\DoxyCodeLine{73   \}}
+\DoxyCodeLine{74 }
+\DoxyCodeLine{75   \textcolor{comment}{/*vertex\_id\_type new\_label = 0;}}
+\DoxyCodeLine{76 \textcolor{comment}{  for(size\_t i = 0; i < old\_n\_vtx; ++i) \{}}
+\DoxyCodeLine{77 \textcolor{comment}{    if(degree[i] != 0)\{}}
+\DoxyCodeLine{78 \textcolor{comment}{      relabel[i] = new\_label;}}
+\DoxyCodeLine{79 \textcolor{comment}{      new\_label++;}}
+\DoxyCodeLine{80 \textcolor{comment}{    \}}}
+\DoxyCodeLine{81 \textcolor{comment}{    \}*/}}
+\DoxyCodeLine{82 }
+\DoxyCodeLine{83   \textcolor{comment}{// edge\_list<undirected> k\_core\_list(n\_vtx);}}
+\DoxyCodeLine{84   \textcolor{comment}{// Graph k\_core\_graph(n\_vtx);}}
+\DoxyCodeLine{85   \textcolor{comment}{// k\_core\_graph.open\_for\_pushback();}}
+\DoxyCodeLine{86   \textcolor{comment}{// first = A.begin();}}
+\DoxyCodeLine{87   \textcolor{comment}{// last = A.end();}}
+\DoxyCodeLine{88 }
+\DoxyCodeLine{89   \textcolor{comment}{/*for(auto G=first; first !=last; ++first) \{}}
+\DoxyCodeLine{90 \textcolor{comment}{    for (auto v = (*first).begin(); v != (*first).end(); ++v) \{}}
+\DoxyCodeLine{91 \textcolor{comment}{      Neighbors edge = make\_my\_pair(first-\/G,std::get<0>(*v));}}
+\DoxyCodeLine{92 \textcolor{comment}{      if(filter.find(edge) != filter.end())}}
+\DoxyCodeLine{93 \textcolor{comment}{    std::cout << "{}removed edge "{} << first-\/G << "{} "{} << std::get<0>(*v) << "{} "{} <<}}
+\DoxyCodeLine{94 \textcolor{comment}{  std::endl; else k\_core\_graph.push\_back(relabel[first-\/G],v);}}
+\DoxyCodeLine{95 \textcolor{comment}{    \}}}
+\DoxyCodeLine{96 \textcolor{comment}{  \}}}
+\DoxyCodeLine{97 \textcolor{comment}{  */}}
+\DoxyCodeLine{98 }
+\DoxyCodeLine{99   \textcolor{keywordflow}{return} std::make\_tuple(filter, n\_vtx);}
+\DoxyCodeLine{100 \}}
+\DoxyCodeLine{101 }
+\DoxyCodeLine{102 \}    \textcolor{comment}{// namespace graph}}
+\DoxyCodeLine{103 \}    \textcolor{comment}{// namespace nw}}
+\DoxyCodeLine{104 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

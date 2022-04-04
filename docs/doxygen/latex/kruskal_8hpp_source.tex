@@ -1,0 +1,59 @@
+\hypertarget{kruskal_8hpp_source}{}\doxysection{kruskal.\+hpp}
+\label{kruskal_8hpp_source}\index{/Users/lums/NWmath/NWgr/include/nwgraph/algorithms/kruskal.hpp@{/Users/lums/NWmath/NWgr/include/nwgraph/algorithms/kruskal.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// }}
+\DoxyCodeLine{2 \textcolor{comment}{// This file is part of NW Graph (aka GraphPack) }}
+\DoxyCodeLine{3 \textcolor{comment}{// (c) Pacific Northwest National Laboratory 2018-\/2021 }}
+\DoxyCodeLine{4 \textcolor{comment}{// (c) University of Washington 2018-\/2021 }}
+\DoxyCodeLine{5 \textcolor{comment}{// }}
+\DoxyCodeLine{6 \textcolor{comment}{// Licensed under terms of include LICENSE file }}
+\DoxyCodeLine{7 \textcolor{comment}{// }}
+\DoxyCodeLine{8 \textcolor{comment}{// Authors: }}
+\DoxyCodeLine{9 \textcolor{comment}{//     Andrew Lumsdaine }}
+\DoxyCodeLine{10 \textcolor{comment}{//}}
+\DoxyCodeLine{11 }
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#ifndef NW\_GRAPH\_KRUSKAL\_HPP}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#define NW\_GRAPH\_KRUSKAL\_HPP}}
+\DoxyCodeLine{14 }
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#include <algorithm>}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include <tuple>}}
+\DoxyCodeLine{17 }
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include "{}nwgraph/util/disjoint\_set.hpp"{}}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include "{}nwgraph/util/util.hpp"{}}}
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 \textcolor{keyword}{namespace }nw \{}
+\DoxyCodeLine{22 \textcolor{keyword}{namespace }graph \{}
+\DoxyCodeLine{23 }
+\DoxyCodeLine{24 \textcolor{keyword}{template} <\textcolor{keyword}{typename} EdgeListT>}
+\DoxyCodeLine{25 EdgeListT kruskal(EdgeListT\& E) \{}
+\DoxyCodeLine{26   \textcolor{keywordflow}{return} kruskal(E, [](\textcolor{keyword}{auto} t1, \textcolor{keyword}{auto} t2) \{ \textcolor{keywordflow}{return} std::get<2>(t1) < std::get<2>(t2); \});}
+\DoxyCodeLine{27 \}}
+\DoxyCodeLine{28 \textcolor{comment}{//****************************************************************************}}
+\DoxyCodeLine{29 \textcolor{keyword}{template} <\textcolor{keyword}{typename} EdgeListT, \textcolor{keyword}{typename} Compare>}
+\DoxyCodeLine{30 EdgeListT kruskal(EdgeListT\& E, Compare comp) \{}
+\DoxyCodeLine{31   \textcolor{keywordtype}{size\_t}    n\_vtx = E.size();}
+\DoxyCodeLine{32   EdgeListT T(n\_vtx);}
+\DoxyCodeLine{33   std::sort(E.begin(), E.end(), comp);}
+\DoxyCodeLine{34 }
+\DoxyCodeLine{35   std::vector<std::pair<vertex\_id\_type, size\_t>> subsets(n\_vtx);}
+\DoxyCodeLine{36   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{size\_t} i = 0; i < n\_vtx; ++i) \{}
+\DoxyCodeLine{37     subsets[i].first  = i;}
+\DoxyCodeLine{38     subsets[i].second = 0;}
+\DoxyCodeLine{39   \}}
+\DoxyCodeLine{40 }
+\DoxyCodeLine{41   \textcolor{keywordflow}{for} (\textcolor{keyword}{auto} y : E) \{}
+\DoxyCodeLine{42     \textcolor{keyword}{auto} u = std::get<0>(y);}
+\DoxyCodeLine{43     \textcolor{keyword}{auto} v = std::get<1>(y);}
+\DoxyCodeLine{44     \textcolor{keywordflow}{if} (disjoint\_union\_find(subsets, u, v)) T.push\_back(y);}
+\DoxyCodeLine{45   \}}
+\DoxyCodeLine{46 }
+\DoxyCodeLine{47   \textcolor{keywordflow}{return} T;}
+\DoxyCodeLine{48 \}}
+\DoxyCodeLine{49 }
+\DoxyCodeLine{50 \}    \textcolor{comment}{// namespace graph}}
+\DoxyCodeLine{51 \}    \textcolor{comment}{// namespace nw}}
+\DoxyCodeLine{52 }
+\DoxyCodeLine{53 \textcolor{preprocessor}{\#endif    }\textcolor{comment}{//  NW\_GRAPH\_KRUSKAL\_HPP}}
+
+\end{DoxyCode}

@@ -1,0 +1,175 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.3" xml:lang="en-US">
+  <compounddef id="intersection__size_8hpp" kind="file" language="C++">
+    <compoundname>intersection_size.hpp</compoundname>
+    <includes local="no">algorithm</includes>
+    <includes local="no">execution</includes>
+    <includes local="no">numeric</includes>
+    <includes local="no">type_traits</includes>
+    <includedby refid="algorithms_2jaccard_8hpp" local="yes">/Users/lums/NWmath/NWgr/include/nwgraph/algorithms/jaccard.hpp</includedby>
+    <includedby refid="k__truss_8hpp" local="yes">/Users/lums/NWmath/NWgr/include/nwgraph/algorithms/k_truss.hpp</includedby>
+    <includedby refid="algorithms_2triangle__count_8hpp" local="yes">/Users/lums/NWmath/NWgr/include/nwgraph/algorithms/triangle_count.hpp</includedby>
+    <includedby refid="experimental_2algorithms_2jaccard_8hpp" local="yes">/Users/lums/NWmath/NWgr/include/nwgraph/experimental/algorithms/jaccard.hpp</includedby>
+    <includedby refid="experimental_2algorithms_2triangle__count_8hpp" local="yes">/Users/lums/NWmath/NWgr/include/nwgraph/experimental/algorithms/triangle_count.hpp</includedby>
+    <incdepgraph>
+      <node id="1">
+        <label>/Users/lums/NWmath/NWgr/include/nwgraph/util/intersection_size.hpp</label>
+        <link refid="intersection__size_8hpp"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>algorithm</label>
+      </node>
+      <node id="3">
+        <label>execution</label>
+      </node>
+      <node id="4">
+        <label>numeric</label>
+      </node>
+      <node id="5">
+        <label>type_traits</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="2">
+        <label>/Users/lums/NWmath/NWgr/include/nwgraph/algorithms/jaccard.hpp</label>
+        <link refid="algorithms_2jaccard_8hpp_source"/>
+      </node>
+      <node id="3">
+        <label>/Users/lums/NWmath/NWgr/include/nwgraph/algorithms/k_truss.hpp</label>
+        <link refid="k__truss_8hpp_source"/>
+      </node>
+      <node id="4">
+        <label>/Users/lums/NWmath/NWgr/include/nwgraph/algorithms/triangle_count.hpp</label>
+        <link refid="algorithms_2triangle__count_8hpp_source"/>
+      </node>
+      <node id="5">
+        <label>/Users/lums/NWmath/NWgr/include/nwgraph/experimental/algorithms/jaccard.hpp</label>
+        <link refid="experimental_2algorithms_2jaccard_8hpp_source"/>
+      </node>
+      <node id="6">
+        <label>/Users/lums/NWmath/NWgr/include/nwgraph/experimental/algorithms/triangle_count.hpp</label>
+        <link refid="experimental_2algorithms_2triangle__count_8hpp_source"/>
+      </node>
+      <node id="1">
+        <label>/Users/lums/NWmath/NWgr/include/nwgraph/util/intersection_size.hpp</label>
+        <link refid="intersection__size_8hpp"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+    </invincdepgraph>
+    <innernamespace refid="namespacenw">nw</innernamespace>
+    <innernamespace refid="namespacenw_1_1graph">nw::graph</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">//<sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="comment">//<sp/>This<sp/>file<sp/>is<sp/>part<sp/>of<sp/>NW<sp/>Graph<sp/>(aka<sp/>GraphPack)<sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight><highlight class="comment">//<sp/>(c)<sp/>Pacific<sp/>Northwest<sp/>National<sp/>Laboratory<sp/>2018-2021<sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight><highlight class="comment">//<sp/>(c)<sp/>University<sp/>of<sp/>Washington<sp/>2018-2021<sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight><highlight class="comment">//<sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Licensed<sp/>under<sp/>terms<sp/>of<sp/>include<sp/>LICENSE<sp/>file<sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight><highlight class="comment">//<sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Authors:<sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/><sp/>Andrew<sp/>Lumsdaine<sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>NW_GRAPH_INTERSECTION_SIZE_HPP</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>NW_GRAPH_INTERSECTION_SIZE_HPP</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight><highlight class="preprocessor">#if<sp/>defined(CL_SYCL_LANGUAGE_VERSION)</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;dpstd/algorithm&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;dpstd/execution&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;dpstd/numeric&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight><highlight class="preprocessor">#else</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;algorithm&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;execution&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="21"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;numeric&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="22"><highlight class="normal"></highlight><highlight class="preprocessor">#endif</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="23"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;type_traits&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="24"><highlight class="normal"></highlight></codeline>
+<codeline lineno="25"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">nw<sp/>{</highlight></codeline>
+<codeline lineno="26"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">graph<sp/>{</highlight></codeline>
+<codeline lineno="46"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>A,<sp/></highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>B,<sp/></highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>C,<sp/></highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>D,<sp/></highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>ExecutionPolicy&gt;</highlight></codeline>
+<codeline lineno="47"><highlight class="normal">std::size_t<sp/>intersection_size(A<sp/>i,<sp/>B&amp;&amp;<sp/>ie,<sp/>C<sp/>j,<sp/>D&amp;&amp;<sp/>je,<sp/>ExecutionPolicy&amp;&amp;<sp/>ep)<sp/>{</highlight></codeline>
+<codeline lineno="48"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>Custom<sp/>comparator<sp/>because<sp/>we<sp/>know<sp/>our<sp/>iterator<sp/>operator*<sp/>produces<sp/>tuples</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="49"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>and<sp/>we<sp/>only<sp/>care<sp/>about<sp/>the<sp/>first<sp/>value.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="50"><highlight class="normal"><sp/><sp/></highlight><highlight class="keyword">static</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>lt<sp/>=<sp/>[](</highlight><highlight class="keyword">auto</highlight><highlight class="normal">&amp;&amp;<sp/>x,<sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal">&amp;&amp;<sp/>y)<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>std::get&lt;0&gt;(x)<sp/>&lt;<sp/>std::get&lt;0&gt;(y);<sp/>};</highlight></codeline>
+<codeline lineno="51"><highlight class="normal"></highlight></codeline>
+<codeline lineno="52"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>Use<sp/>our<sp/>own<sp/>trivial<sp/>loop<sp/>for<sp/>the<sp/>intersection<sp/>size<sp/>when<sp/>the<sp/>execution</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="53"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>policy<sp/>is<sp/>sequential,<sp/>otherwise<sp/>rely<sp/>on<sp/>std::set_intersection.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/>@todo<sp/>We<sp/>really<sp/>don&apos;t<sp/>need<sp/>set<sp/>intersection.<sp/>You&apos;d<sp/>hope<sp/>that<sp/>it<sp/>would<sp/>be</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/><sp/><sp/><sp/>efficient<sp/>with<sp/>the<sp/>output<sp/>counter,<sp/>but<sp/>it<sp/>just<sp/>isn&apos;t.<sp/>Parallelizing</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="57"><highlight class="normal"><sp/><sp/></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/><sp/><sp/><sp/>the<sp/>intersection<sp/>size<sp/>seems<sp/>non-trivial<sp/>though.</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="58"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>(std::is_same_v&lt;std::decay_t&lt;ExecutionPolicy&gt;,<sp/>std::execution::sequenced_policy&gt;)<sp/>{</highlight></codeline>
+<codeline lineno="59"><highlight class="normal"><sp/><sp/><sp/><sp/>std::size_t<sp/>n<sp/>=<sp/>0;</highlight></codeline>
+<codeline lineno="60"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">while</highlight><highlight class="normal"><sp/>(i<sp/>!=<sp/>ie<sp/>&amp;&amp;<sp/>j<sp/>!=<sp/>je)<sp/>{</highlight></codeline>
+<codeline lineno="61"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(lt(*i,<sp/>*j))<sp/>{</highlight></codeline>
+<codeline lineno="62"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>++i;</highlight></codeline>
+<codeline lineno="63"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(lt(*j,<sp/>*i))<sp/>{</highlight></codeline>
+<codeline lineno="64"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>++j;</highlight></codeline>
+<codeline lineno="65"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="66"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>++n;</highlight></codeline>
+<codeline lineno="67"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>++i;</highlight></codeline>
+<codeline lineno="68"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>++j;</highlight></codeline>
+<codeline lineno="69"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="70"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="71"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>n;</highlight></codeline>
+<codeline lineno="72"><highlight class="normal"><sp/><sp/><sp/><sp/>(void)ep;</highlight></codeline>
+<codeline lineno="73"><highlight class="normal"><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>std::set_intersection(std::forward&lt;ExecutionPolicy&gt;(ep),<sp/>std::forward&lt;A&gt;(i),<sp/>std::forward&lt;B&gt;(ie),<sp/>std::forward&lt;C&gt;(j),</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::forward&lt;D&gt;(je),<sp/><ref refid="structnw_1_1graph_1_1counter" kindref="compound">nw::graph::counter</ref>{},<sp/>lt);</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="77"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"></highlight></codeline>
+<codeline lineno="94"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal">R,<sp/></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal">S,<sp/></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal">ExecutionPolicy,</highlight></codeline>
+<codeline lineno="95"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::enable_if_t&lt;std::is_execution_policy_v&lt;std::decay_t&lt;ExecutionPolicy&gt;&gt;,<sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal">**&gt;<sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">&gt;</highlight></codeline>
+<codeline lineno="96"><highlight class="normal">std::size_t<sp/>intersection_size(R&amp;&amp;<sp/>i,<sp/>S&amp;&amp;<sp/>j,<sp/>ExecutionPolicy&amp;&amp;<sp/>ep)<sp/>{</highlight></codeline>
+<codeline lineno="97"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>intersection_size(i.begin(),<sp/>i.end(),<sp/>j.begin(),<sp/>j.end(),<sp/>std::forward&lt;ExecutionPolicy&gt;(ep));</highlight></codeline>
+<codeline lineno="98"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"></highlight></codeline>
+<codeline lineno="117"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal">A,<sp/></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal">B,<sp/></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal">Range,<sp/></highlight><highlight class="keyword">class<sp/></highlight><highlight class="normal">ExecutionPolicy,</highlight></codeline>
+<codeline lineno="118"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::enable_if_t&lt;std::is_execution_policy_v&lt;std::decay_t&lt;ExecutionPolicy&gt;&gt;,<sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal">**&gt;<sp/>=<sp/></highlight><highlight class="keyword">nullptr</highlight><highlight class="normal">&gt;</highlight></codeline>
+<codeline lineno="119"><highlight class="normal">std::size_t<sp/>intersection_size(A&amp;&amp;<sp/>i,<sp/>B&amp;&amp;<sp/>ie,<sp/>Range&amp;&amp;<sp/>j,<sp/>ExecutionPolicy&amp;&amp;<sp/>ep)<sp/>{</highlight></codeline>
+<codeline lineno="120"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>intersection_size(std::forward&lt;A&gt;(i),<sp/>std::forward&lt;B&gt;(ie),<sp/>j.begin(),<sp/>j.end(),<sp/>std::forward&lt;ExecutionPolicy&gt;(ep));</highlight></codeline>
+<codeline lineno="121"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="122"><highlight class="normal"></highlight></codeline>
+<codeline lineno="140"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>A,<sp/></highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>B,<sp/></highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>C,<sp/></highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>D,<sp/>std::enable_if_t&lt;!std::is_execution_policy_v&lt;std::decay_t&lt;D&gt;&gt;,<sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal">**&gt;<sp/>=<sp/></highlight><highlight class="keywordtype">nullptr</highlight><highlight class="normal">&gt;</highlight></codeline>
+<codeline lineno="141"><highlight class="normal">std::size_t<sp/>intersection_size(A&amp;&amp;<sp/>i,<sp/>B&amp;&amp;<sp/>ie,<sp/>C&amp;&amp;<sp/>j,<sp/>D&amp;&amp;<sp/>je)<sp/>{</highlight></codeline>
+<codeline lineno="142"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>intersection_size(std::forward&lt;A&gt;(i),<sp/>std::forward&lt;B&gt;(ie),<sp/>std::forward&lt;C&gt;(j),<sp/>std::forward&lt;D&gt;(je),<sp/>std::execution::seq);</highlight></codeline>
+<codeline lineno="143"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="144"><highlight class="normal"></highlight></codeline>
+<codeline lineno="157"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>R,<sp/></highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>S&gt;</highlight></codeline>
+<codeline lineno="158"><highlight class="normal">std::size_t<sp/>intersection_size(R&amp;&amp;<sp/>i,<sp/>S&amp;&amp;<sp/>j)<sp/>{</highlight></codeline>
+<codeline lineno="159"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>intersection_size(i.begin(),<sp/>i.end(),<sp/>j.begin(),<sp/>j.end(),<sp/>std::execution::seq);</highlight></codeline>
+<codeline lineno="160"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="161"><highlight class="normal"></highlight></codeline>
+<codeline lineno="178"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>A,<sp/></highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>B,<sp/></highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>Range,<sp/>std::enable_if_t&lt;!std::is_execution_policy_v&lt;std::decay_t&lt;Range&gt;&gt;,<sp/></highlight><highlight class="keywordtype">void</highlight><highlight class="normal">**&gt;<sp/>=<sp/></highlight><highlight class="keywordtype">nullptr</highlight><highlight class="normal">&gt;</highlight></codeline>
+<codeline lineno="179"><highlight class="normal">std::size_t<sp/>intersection_size(A&amp;&amp;<sp/>i,<sp/>B&amp;&amp;<sp/>ie,<sp/>Range&amp;&amp;<sp/>j)<sp/>{</highlight></codeline>
+<codeline lineno="180"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>intersection_size(std::forward&lt;A&gt;(i),<sp/>std::forward&lt;B&gt;(ie),<sp/>j.begin(),<sp/>j.end(),<sp/>std::execution::seq);</highlight></codeline>
+<codeline lineno="181"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="182"><highlight class="normal">}<sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>graph</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="183"><highlight class="normal">}<sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>nw</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="184"><highlight class="normal"></highlight></codeline>
+<codeline lineno="185"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>NW_GRAPH_INTERSECTION_SIZE_HPP</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="/Users/lums/NWmath/NWgr/include/nwgraph/util/intersection_size.hpp"/>
+  </compounddef>
+</doxygen>

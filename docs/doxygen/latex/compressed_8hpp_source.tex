@@ -1,0 +1,566 @@
+\hypertarget{compressed_8hpp_source}{}\doxysection{compressed.\+hpp}
+\label{compressed_8hpp_source}\index{/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp@{/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// }}
+\DoxyCodeLine{2 \textcolor{comment}{// This file is part of NW Graph (aka GraphPack) }}
+\DoxyCodeLine{3 \textcolor{comment}{// (c) Pacific Northwest National Laboratory 2018-\/2021 }}
+\DoxyCodeLine{4 \textcolor{comment}{// (c) University of Washington 2018-\/2021 }}
+\DoxyCodeLine{5 \textcolor{comment}{// }}
+\DoxyCodeLine{6 \textcolor{comment}{// Licensed under terms of include LICENSE file }}
+\DoxyCodeLine{7 \textcolor{comment}{// }}
+\DoxyCodeLine{8 \textcolor{comment}{// Authors: }}
+\DoxyCodeLine{9 \textcolor{comment}{//     Andrew Lumsdaine }}
+\DoxyCodeLine{10 \textcolor{comment}{//     Kevin Deweese    }}
+\DoxyCodeLine{11 \textcolor{comment}{//     Luke D'Alessandro    }}
+\DoxyCodeLine{12 \textcolor{comment}{//     Xu Tony Liu  }}
+\DoxyCodeLine{13 \textcolor{comment}{//}}
+\DoxyCodeLine{14 }
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#ifndef NW\_GRAPH\_COMPRESSED\_HPP}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#define NW\_GRAPH\_COMPRESSED\_HPP}}
+\DoxyCodeLine{17 }
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include "{}nwgraph/adaptors/splittable\_range\_adapter.hpp"{}}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include "{}nwgraph/containers/soa.hpp"{}}}
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#include "{}nwgraph/graph\_base.hpp"{}}}
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#include "{}nwgraph/util/defaults.hpp"{}}}
+\DoxyCodeLine{22 \textcolor{preprocessor}{\#include "{}nwgraph/util/proxysort.hpp"{}}}
+\DoxyCodeLine{23 \textcolor{preprocessor}{\#include "{}nwgraph/util/util.hpp"{}}}
+\DoxyCodeLine{24 }
+\DoxyCodeLine{25 \textcolor{preprocessor}{\#include <algorithm>}}
+\DoxyCodeLine{26 \textcolor{preprocessor}{\#include <concepts>}}
+\DoxyCodeLine{27 \textcolor{preprocessor}{\#include <cxxabi.h>}}
+\DoxyCodeLine{28 \textcolor{preprocessor}{\#include <iostream>}}
+\DoxyCodeLine{29 \textcolor{preprocessor}{\#include <istream>}}
+\DoxyCodeLine{30 \textcolor{preprocessor}{\#include <numeric>}}
+\DoxyCodeLine{31 }
+\DoxyCodeLine{32 \textcolor{preprocessor}{\#if defined(CL\_SYCL\_LANGUAGE\_VERSION)}}
+\DoxyCodeLine{33 \textcolor{preprocessor}{\#include <dpstd/algorithm>}}
+\DoxyCodeLine{34 \textcolor{preprocessor}{\#include <dpstd/execution>}}
+\DoxyCodeLine{35 \textcolor{preprocessor}{\#include <dpstd/numeric>}}
+\DoxyCodeLine{36 \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{37 \textcolor{preprocessor}{\#include <execution>}}
+\DoxyCodeLine{38 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{39 }
+\DoxyCodeLine{40 \textcolor{preprocessor}{\#include <tuple>}}
+\DoxyCodeLine{41 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{42 }
+\DoxyCodeLine{43 \textcolor{preprocessor}{\#include "{}nwgraph/util/arrow\_proxy.hpp"{}}}
+\DoxyCodeLine{44 \textcolor{preprocessor}{\#include "{}nwgraph/util/defaults.hpp"{}}}
+\DoxyCodeLine{45 \textcolor{preprocessor}{\#include "{}nwgraph/util/demangle.hpp"{}}}
+\DoxyCodeLine{46 }
+\DoxyCodeLine{47 \textcolor{keyword}{namespace }nw \{}
+\DoxyCodeLine{48 \textcolor{keyword}{namespace }graph \{}
+\DoxyCodeLine{49 }
+\DoxyCodeLine{50 \textcolor{keywordtype}{bool} g\_debug\_compressed = \textcolor{keyword}{false};}
+\DoxyCodeLine{51 \textcolor{keywordtype}{bool} g\_time\_compressed  = \textcolor{keyword}{false};}
+\DoxyCodeLine{52 }
+\DoxyCodeLine{53 \textcolor{keywordtype}{void} debug\_compressed(\textcolor{keywordtype}{bool} flag = \textcolor{keyword}{true}) \{ g\_debug\_compressed = flag; \}}
+\DoxyCodeLine{54 }
+\DoxyCodeLine{55 \textcolor{keywordtype}{void} time\_compressed(\textcolor{keywordtype}{bool} flag = \textcolor{keyword}{true}) \{ g\_time\_compressed = flag; \}}
+\DoxyCodeLine{56 }
+\DoxyCodeLine{57 \textcolor{keyword}{template} <\textcolor{keyword}{typename} index\_t, \textcolor{keyword}{typename}... Attributes>}
+\DoxyCodeLine{58 \textcolor{keyword}{class }\mbox{\hyperlink{classnw_1_1graph_1_1indexed__struct__of__arrays}{indexed\_struct\_of\_arrays}} \{}
+\DoxyCodeLine{59   \textcolor{keyword}{constexpr} \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{char} magic\_[34] = \textcolor{stringliteral}{"{}NW GRAPH indexed\_struct\_of\_arrays"{}};}
+\DoxyCodeLine{60 }
+\DoxyCodeLine{61   \textcolor{keywordtype}{bool}    is\_open\_ = \textcolor{keyword}{false};}
+\DoxyCodeLine{62   index\_t N\_;}
+\DoxyCodeLine{63 }
+\DoxyCodeLine{64 \textcolor{keyword}{public}:    \textcolor{comment}{// fixme}}
+\DoxyCodeLine{65   std::vector<index\_t>            indices\_;}
+\DoxyCodeLine{66   \mbox{\hyperlink{structnw_1_1graph_1_1struct__of__arrays}{struct\_of\_arrays}}<Attributes...> to\_be\_indexed\_;}
+\DoxyCodeLine{67 }
+\DoxyCodeLine{68   \textcolor{keyword}{using} inner\_iterator       = \textcolor{keyword}{typename} \mbox{\hyperlink{structnw_1_1graph_1_1struct__of__arrays}{struct\_of\_arrays}}<Attributes...>::iterator;}
+\DoxyCodeLine{69   \textcolor{keyword}{using} const\_inner\_iterator = \textcolor{keyword}{typename} \mbox{\hyperlink{structnw_1_1graph_1_1struct__of__arrays}{struct\_of\_arrays}}<Attributes...>::const\_iterator;}
+\DoxyCodeLine{70   \textcolor{keyword}{using} \mbox{\hyperlink{classnw_1_1graph_1_1splittable__range__adapter}{sub\_view}}             = \mbox{\hyperlink{classnw_1_1graph_1_1splittable__range__adapter}{nw::graph::splittable\_range\_adapter<inner\_iterator>}};}
+\DoxyCodeLine{71   \textcolor{keyword}{using} \mbox{\hyperlink{classnw_1_1graph_1_1splittable__range__adapter}{const\_sub\_view}}       = \mbox{\hyperlink{classnw_1_1graph_1_1splittable__range__adapter}{nw::graph::splittable\_range\_adapter<const\_inner\_iterator>}};}
+\DoxyCodeLine{72 }
+\DoxyCodeLine{73   \textcolor{keyword}{static} \textcolor{keyword}{constexpr} std::size\_t getNAttr() \{ \textcolor{keywordflow}{return} \textcolor{keyword}{sizeof}...(Attributes); \}}
+\DoxyCodeLine{74 }
+\DoxyCodeLine{75   \mbox{\hyperlink{classnw_1_1graph_1_1indexed__struct__of__arrays}{indexed\_struct\_of\_arrays}}(\textcolor{keywordtype}{size\_t} N) : N\_(N), indices\_(N + 1) \{\}}
+\DoxyCodeLine{76   \mbox{\hyperlink{classnw_1_1graph_1_1indexed__struct__of__arrays}{indexed\_struct\_of\_arrays}}(\textcolor{keywordtype}{size\_t} N, \textcolor{keywordtype}{size\_t} M) : N\_(N), indices\_(N + 1), to\_be\_indexed\_(M) \{\}}
+\DoxyCodeLine{77   \textcolor{comment}{//move constructor, assume indices\_[N\_] == to\_be\_indexed\_.size()}}
+\DoxyCodeLine{78   \mbox{\hyperlink{classnw_1_1graph_1_1indexed__struct__of__arrays}{indexed\_struct\_of\_arrays}}(std::vector<index\_t>\&\& indices, std::vector<Attributes>\&\&... to\_be\_indexed)}
+\DoxyCodeLine{79   : N\_(indices.size() -\/ 1), indices\_(std::move(indices)), to\_be\_indexed\_(std::move(to\_be\_indexed)...) \{\}}
+\DoxyCodeLine{80   \mbox{\hyperlink{classnw_1_1graph_1_1indexed__struct__of__arrays}{indexed\_struct\_of\_arrays}}(std::vector<index\_t>\&\& indices, std::tuple<std::vector<Attributes>...>\&\& to\_be\_indexed)}
+\DoxyCodeLine{81   : N\_(indices.size() -\/ 1), indices\_(std::move(indices)), to\_be\_indexed\_(std::move(to\_be\_indexed)) \{\}}
+\DoxyCodeLine{82   \textcolor{comment}{//copy constructor, assume indices\_[N\_] == to\_be\_indexed\_.size()}}
+\DoxyCodeLine{83   \mbox{\hyperlink{classnw_1_1graph_1_1indexed__struct__of__arrays}{indexed\_struct\_of\_arrays}}(\textcolor{keyword}{const} std::vector<index\_t>\& indices, \textcolor{keyword}{const} std::vector<Attributes>\&... to\_be\_indexed)}
+\DoxyCodeLine{84   : N\_(indices.size() -\/ 1), indices\_(indices), to\_be\_indexed\_(to\_be\_indexed...) \{\}}
+\DoxyCodeLine{85   \mbox{\hyperlink{classnw_1_1graph_1_1indexed__struct__of__arrays}{indexed\_struct\_of\_arrays}}(\textcolor{keyword}{const} std::vector<index\_t>\& indices, \textcolor{keyword}{const} std::tuple<std::vector<Attributes>...>\& to\_be\_indexed)}
+\DoxyCodeLine{86   : N\_(indices.size() -\/ 1), indices\_(indices), to\_be\_indexed\_(to\_be\_indexed) \{\}}
+\DoxyCodeLine{87 }
+\DoxyCodeLine{88   \textcolor{keyword}{template} <\textcolor{keywordtype}{bool} is\_const = false>}
+\DoxyCodeLine{89   \textcolor{keyword}{class }\mbox{\hyperlink{classnw_1_1graph_1_1indexed__struct__of__arrays_1_1my__outer__iterator}{my\_outer\_iterator}} \{}
+\DoxyCodeLine{90   \textcolor{keyword}{public}:}
+\DoxyCodeLine{91     \textcolor{keyword}{using} const\_index\_iterator\_t   = \textcolor{keyword}{typename} std::vector<index\_t>::const\_iterator;}
+\DoxyCodeLine{92     \textcolor{keyword}{using} index\_iterator\_t         = \textcolor{keyword}{typename} std::vector<index\_t>::iterator;}
+\DoxyCodeLine{93     \textcolor{keyword}{using} const\_indexed\_iterator\_t = \textcolor{keyword}{typename} \mbox{\hyperlink{structnw_1_1graph_1_1struct__of__arrays}{struct\_of\_arrays}}<Attributes...>::const\_iterator;}
+\DoxyCodeLine{94     \textcolor{keyword}{using} indexed\_iterator\_t       = \textcolor{keyword}{typename} \mbox{\hyperlink{structnw_1_1graph_1_1struct__of__arrays}{struct\_of\_arrays}}<Attributes...>::iterator;}
+\DoxyCodeLine{95 }
+\DoxyCodeLine{96   \textcolor{keyword}{private}:}
+\DoxyCodeLine{97     \textcolor{keyword}{friend} \textcolor{keyword}{class }\mbox{\hyperlink{classnw_1_1graph_1_1indexed__struct__of__arrays_1_1my__outer__iterator}{my\_outer\_iterator}}<!is\_const>;}
+\DoxyCodeLine{98     \textcolor{keyword}{using} index\_it\_t   = std::conditional\_t<is\_const, const\_index\_iterator\_t, index\_iterator\_t>;}
+\DoxyCodeLine{99     \textcolor{keyword}{using} indexed\_it\_t = std::conditional\_t<is\_const, const\_indexed\_iterator\_t, indexed\_iterator\_t>;}
+\DoxyCodeLine{100 }
+\DoxyCodeLine{101     index\_it\_t   indices\_;}
+\DoxyCodeLine{102     indexed\_it\_t indexed\_;}
+\DoxyCodeLine{103     index\_t      i\_;}
+\DoxyCodeLine{104 }
+\DoxyCodeLine{105   \textcolor{keyword}{public}:}
+\DoxyCodeLine{106     \textcolor{keyword}{using} difference\_type   = std::make\_signed\_t<index\_t>;}
+\DoxyCodeLine{107     \textcolor{keyword}{using} value\_type        = std::conditional\_t<is\_const, const\_sub\_view, sub\_view>;}
+\DoxyCodeLine{108     \textcolor{keyword}{using} reference         = value\_type;}
+\DoxyCodeLine{109     \textcolor{keyword}{using} \mbox{\hyperlink{structnw_1_1graph_1_1arrow__proxy}{pointer}}           = \mbox{\hyperlink{structnw_1_1graph_1_1arrow__proxy}{arrow\_proxy<reference>}};}
+\DoxyCodeLine{110     \textcolor{keyword}{using} iterator\_category = std::random\_access\_iterator\_tag;}
+\DoxyCodeLine{111 }
+\DoxyCodeLine{112     \mbox{\hyperlink{classnw_1_1graph_1_1indexed__struct__of__arrays_1_1my__outer__iterator}{my\_outer\_iterator}}() = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{113 }
+\DoxyCodeLine{114     \mbox{\hyperlink{classnw_1_1graph_1_1indexed__struct__of__arrays_1_1my__outer__iterator}{my\_outer\_iterator}}(index\_iterator\_t indices, indexed\_iterator\_t indexed, index\_t i) \textcolor{keyword}{requires}(is\_const)}
+\DoxyCodeLine{115         : indices\_(indices), indexed\_(indexed), i\_(i) \{\}}
+\DoxyCodeLine{116 }
+\DoxyCodeLine{117     \mbox{\hyperlink{classnw_1_1graph_1_1indexed__struct__of__arrays_1_1my__outer__iterator}{my\_outer\_iterator}}(index\_it\_t indices, indexed\_it\_t indexed, index\_t i) : indices\_(indices), indexed\_(indexed), i\_(i) \{\}}
+\DoxyCodeLine{118 }
+\DoxyCodeLine{119     \mbox{\hyperlink{classnw_1_1graph_1_1indexed__struct__of__arrays_1_1my__outer__iterator}{my\_outer\_iterator}}(\textcolor{keyword}{const} \mbox{\hyperlink{classnw_1_1graph_1_1indexed__struct__of__arrays_1_1my__outer__iterator}{my\_outer\_iterator}}\&) = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{120     \mbox{\hyperlink{classnw_1_1graph_1_1indexed__struct__of__arrays_1_1my__outer__iterator}{my\_outer\_iterator}}(\textcolor{keyword}{const} \mbox{\hyperlink{classnw_1_1graph_1_1indexed__struct__of__arrays_1_1my__outer__iterator}{my\_outer\_iterator<false>}}\& rhs) \textcolor{keyword}{requires}(is\_const) : indices\_(rhs.indices\_), indexed\_(rhs.indexed\_), i\_(rhs.i\_) \{\}}
+\DoxyCodeLine{121 }
+\DoxyCodeLine{122     \mbox{\hyperlink{classnw_1_1graph_1_1indexed__struct__of__arrays_1_1my__outer__iterator}{my\_outer\_iterator}}\& operator=(\textcolor{keyword}{const} \mbox{\hyperlink{classnw_1_1graph_1_1indexed__struct__of__arrays_1_1my__outer__iterator}{my\_outer\_iterator}}\&) = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{123     \mbox{\hyperlink{classnw_1_1graph_1_1indexed__struct__of__arrays_1_1my__outer__iterator}{my\_outer\_iterator}}\& operator                            =(\textcolor{keyword}{const} \mbox{\hyperlink{classnw_1_1graph_1_1indexed__struct__of__arrays_1_1my__outer__iterator}{my\_outer\_iterator<false>}}\& rhs) \textcolor{keyword}{requires}(is\_const) \{}
+\DoxyCodeLine{124       indices\_ = rhs.indices\_;}
+\DoxyCodeLine{125       indexed\_ = rhs.indexed\_;}
+\DoxyCodeLine{126       i\_       = rhs.i\_;}
+\DoxyCodeLine{127       \textcolor{keywordflow}{return} *\textcolor{keyword}{this};}
+\DoxyCodeLine{128     \}}
+\DoxyCodeLine{129 }
+\DoxyCodeLine{130     \mbox{\hyperlink{classnw_1_1graph_1_1indexed__struct__of__arrays_1_1my__outer__iterator}{my\_outer\_iterator}}\& operator++() \{}
+\DoxyCodeLine{131       ++i\_;}
+\DoxyCodeLine{132       \textcolor{keywordflow}{return} *\textcolor{keyword}{this};}
+\DoxyCodeLine{133     \}}
+\DoxyCodeLine{134 }
+\DoxyCodeLine{135     \mbox{\hyperlink{classnw_1_1graph_1_1indexed__struct__of__arrays_1_1my__outer__iterator}{my\_outer\_iterator}} operator++(\textcolor{keywordtype}{int})\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{136       \mbox{\hyperlink{classnw_1_1graph_1_1indexed__struct__of__arrays_1_1my__outer__iterator}{my\_outer\_iterator}} tmp(*\textcolor{keyword}{this});}
+\DoxyCodeLine{137       ++i\_;}
+\DoxyCodeLine{138       \textcolor{keywordflow}{return} tmp;}
+\DoxyCodeLine{139       ;}
+\DoxyCodeLine{140     \}}
+\DoxyCodeLine{141 }
+\DoxyCodeLine{142     \mbox{\hyperlink{classnw_1_1graph_1_1indexed__struct__of__arrays_1_1my__outer__iterator}{my\_outer\_iterator}}\& operator-\/-\/() \{}
+\DoxyCodeLine{143       -\/-\/i\_;}
+\DoxyCodeLine{144       \textcolor{keywordflow}{return} *\textcolor{keyword}{this};}
+\DoxyCodeLine{145     \}}
+\DoxyCodeLine{146 }
+\DoxyCodeLine{147     \mbox{\hyperlink{classnw_1_1graph_1_1indexed__struct__of__arrays_1_1my__outer__iterator}{my\_outer\_iterator}} operator-\/-\/(\textcolor{keywordtype}{int})\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{148       \mbox{\hyperlink{classnw_1_1graph_1_1indexed__struct__of__arrays_1_1my__outer__iterator}{my\_outer\_iterator}} tmp(*\textcolor{keyword}{this});}
+\DoxyCodeLine{149       -\/-\/i\_;}
+\DoxyCodeLine{150       \textcolor{keywordflow}{return} tmp;}
+\DoxyCodeLine{151     \}}
+\DoxyCodeLine{152 }
+\DoxyCodeLine{153     \mbox{\hyperlink{classnw_1_1graph_1_1indexed__struct__of__arrays_1_1my__outer__iterator}{my\_outer\_iterator}}\& operator+=(difference\_type n) \{}
+\DoxyCodeLine{154       i\_ += n;}
+\DoxyCodeLine{155       \textcolor{keywordflow}{return} *\textcolor{keyword}{this};}
+\DoxyCodeLine{156     \}}
+\DoxyCodeLine{157 }
+\DoxyCodeLine{158     \mbox{\hyperlink{classnw_1_1graph_1_1indexed__struct__of__arrays_1_1my__outer__iterator}{my\_outer\_iterator}}\& operator-\/=(difference\_type n) \{}
+\DoxyCodeLine{159       i\_ -\/= n;}
+\DoxyCodeLine{160       \textcolor{keywordflow}{return} *\textcolor{keyword}{this};}
+\DoxyCodeLine{161     \}}
+\DoxyCodeLine{162 }
+\DoxyCodeLine{163     \mbox{\hyperlink{classnw_1_1graph_1_1indexed__struct__of__arrays_1_1my__outer__iterator}{my\_outer\_iterator}} operator+(difference\_type n)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \{indices\_, indexed\_, i\_ + n\}; \}}
+\DoxyCodeLine{164 }
+\DoxyCodeLine{165     \mbox{\hyperlink{classnw_1_1graph_1_1indexed__struct__of__arrays_1_1my__outer__iterator}{my\_outer\_iterator}} operator-\/(difference\_type n)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \{indices\_, indexed\_, i\_ -\/ n\}; \}}
+\DoxyCodeLine{166 }
+\DoxyCodeLine{167     difference\_type operator-\/(\textcolor{keyword}{const} \mbox{\hyperlink{classnw_1_1graph_1_1indexed__struct__of__arrays_1_1my__outer__iterator}{my\_outer\_iterator}}\& b)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} i\_ -\/ b.i\_; \}}
+\DoxyCodeLine{168 }
+\DoxyCodeLine{169     \textcolor{keywordtype}{bool} operator==(\textcolor{keyword}{const} \mbox{\hyperlink{classnw_1_1graph_1_1indexed__struct__of__arrays_1_1my__outer__iterator}{my\_outer\_iterator}}\& b)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} i\_ == b.i\_; \}}
+\DoxyCodeLine{170     \textcolor{keywordtype}{bool} operator!=(\textcolor{keyword}{const} \mbox{\hyperlink{classnw_1_1graph_1_1indexed__struct__of__arrays_1_1my__outer__iterator}{my\_outer\_iterator}}\& b)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} i\_ != b.i\_; \}}
+\DoxyCodeLine{171     \textcolor{keywordtype}{bool} operator<(\textcolor{keyword}{const} \mbox{\hyperlink{classnw_1_1graph_1_1indexed__struct__of__arrays_1_1my__outer__iterator}{my\_outer\_iterator}}\& b)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} i\_ < b.i\_; \}}
+\DoxyCodeLine{172     \textcolor{keywordtype}{bool} operator>(\textcolor{keyword}{const} \mbox{\hyperlink{classnw_1_1graph_1_1indexed__struct__of__arrays_1_1my__outer__iterator}{my\_outer\_iterator}}\& b)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} i\_ > b.i\_; \}}
+\DoxyCodeLine{173     \textcolor{keywordtype}{bool} operator<=(\textcolor{keyword}{const} \mbox{\hyperlink{classnw_1_1graph_1_1indexed__struct__of__arrays_1_1my__outer__iterator}{my\_outer\_iterator}}\& b)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} i\_ <= b.i\_; \}}
+\DoxyCodeLine{174     \textcolor{keywordtype}{bool} operator>=(\textcolor{keyword}{const} \mbox{\hyperlink{classnw_1_1graph_1_1indexed__struct__of__arrays_1_1my__outer__iterator}{my\_outer\_iterator}}\& b)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} i\_ >= b.i\_; \}}
+\DoxyCodeLine{175 }
+\DoxyCodeLine{176     reference operator*() \{ \textcolor{keywordflow}{return} \{indexed\_ + indices\_[i\_], indexed\_ + indices\_[i\_ + 1]\}; \}}
+\DoxyCodeLine{177     reference operator*()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \{indexed\_ + indices\_[i\_], indexed\_ + indices\_[i\_ + 1]\}; \}}
+\DoxyCodeLine{178 }
+\DoxyCodeLine{179     \mbox{\hyperlink{structnw_1_1graph_1_1arrow__proxy}{pointer}} operator-\/>() \{ \textcolor{keywordflow}{return} \{**\textcolor{keyword}{this}\}; \}}
+\DoxyCodeLine{180     \mbox{\hyperlink{structnw_1_1graph_1_1arrow__proxy}{pointer}} operator-\/>()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \{**\textcolor{keyword}{this}\}; \}}
+\DoxyCodeLine{181 }
+\DoxyCodeLine{182     reference operator[](index\_t n) \{ \textcolor{keywordflow}{return} \{indexed\_ + indices\_[i\_ + n], indexed\_ + indices\_[i\_ + n + 1]\}; \}}
+\DoxyCodeLine{183     reference operator[](index\_t n)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \{indexed\_ + indices\_[i\_ + n], indexed\_ + indices\_[i\_ + n + 1]\}; \}}
+\DoxyCodeLine{184   \};}
+\DoxyCodeLine{185 }
+\DoxyCodeLine{186   \textcolor{keyword}{using} \mbox{\hyperlink{classnw_1_1graph_1_1indexed__struct__of__arrays_1_1my__outer__iterator}{const\_outer\_iterator}} = \mbox{\hyperlink{classnw_1_1graph_1_1indexed__struct__of__arrays_1_1my__outer__iterator}{my\_outer\_iterator<true>}};}
+\DoxyCodeLine{187   \textcolor{keyword}{using} \mbox{\hyperlink{classnw_1_1graph_1_1indexed__struct__of__arrays_1_1my__outer__iterator}{outer\_iterator}}       = \mbox{\hyperlink{classnw_1_1graph_1_1indexed__struct__of__arrays_1_1my__outer__iterator}{my\_outer\_iterator<false>}};}
+\DoxyCodeLine{188 }
+\DoxyCodeLine{189   \textcolor{keyword}{using} \mbox{\hyperlink{classnw_1_1graph_1_1indexed__struct__of__arrays_1_1my__outer__iterator}{iterator}} = \mbox{\hyperlink{classnw_1_1graph_1_1indexed__struct__of__arrays_1_1my__outer__iterator}{my\_outer\_iterator<false>}};}
+\DoxyCodeLine{190 }
+\DoxyCodeLine{191   \textcolor{keyword}{using} value\_type      = \textcolor{keyword}{typename} iterator::value\_type;}
+\DoxyCodeLine{192   \textcolor{keyword}{using} reference       = \textcolor{keyword}{typename} iterator::reference;}
+\DoxyCodeLine{193   \textcolor{keyword}{using} size\_type       = std::size\_t;}
+\DoxyCodeLine{194   \textcolor{keyword}{using} difference\_type = \textcolor{keyword}{typename} iterator::difference\_type;}
+\DoxyCodeLine{195   \textcolor{keyword}{using} pointer         = \textcolor{keyword}{typename} \mbox{\hyperlink{structnw_1_1graph_1_1arrow__proxy}{iterator::pointer}};}
+\DoxyCodeLine{196 }
+\DoxyCodeLine{197   \textcolor{keyword}{using} \mbox{\hyperlink{classnw_1_1graph_1_1indexed__struct__of__arrays_1_1my__outer__iterator}{const\_iterator}}  = \mbox{\hyperlink{classnw_1_1graph_1_1indexed__struct__of__arrays_1_1my__outer__iterator}{const\_outer\_iterator}};}
+\DoxyCodeLine{198   \textcolor{keyword}{using} const\_reference = \textcolor{keyword}{typename} const\_iterator::reference;}
+\DoxyCodeLine{199   \textcolor{keyword}{using} const\_pointer   = \textcolor{keyword}{typename} \mbox{\hyperlink{structnw_1_1graph_1_1arrow__proxy}{const\_iterator::pointer}};}
+\DoxyCodeLine{200 }
+\DoxyCodeLine{201   \textcolor{keyword}{using} reverse\_iterator       = std::reverse\_iterator<iterator>;}
+\DoxyCodeLine{202   \textcolor{keyword}{using} const\_reverse\_iterator = std::reverse\_iterator<const\_iterator>;}
+\DoxyCodeLine{203 }
+\DoxyCodeLine{204   \mbox{\hyperlink{classnw_1_1graph_1_1indexed__struct__of__arrays_1_1my__outer__iterator}{iterator}}       begin()        \{ \textcolor{keywordflow}{return} \{indices\_.begin(), to\_be\_indexed\_.begin(), 0\}; \}}
+\DoxyCodeLine{205   const\_iterator begin()\textcolor{keyword}{  const }\{ \textcolor{keywordflow}{return} \{indices\_.begin(), to\_be\_indexed\_.begin(), 0\}; \}}
+\DoxyCodeLine{206   const\_iterator cbegin()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \{indices\_.begin(), to\_be\_indexed\_.begin(), 0\}; \}}
+\DoxyCodeLine{207   iterator       end()        \{ \textcolor{keywordflow}{return} \{indices\_.begin(), to\_be\_indexed\_.begin(), N\_\}; \}}
+\DoxyCodeLine{208   const\_iterator end()\textcolor{keyword}{  const }\{ \textcolor{keywordflow}{return} \{indices\_.begin(), to\_be\_indexed\_.begin(), N\_\}; \}}
+\DoxyCodeLine{209   const\_iterator cend()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \{indices\_.begin(), to\_be\_indexed\_.begin(), N\_\}; \}}
+\DoxyCodeLine{210 }
+\DoxyCodeLine{212   \mbox{\hyperlink{classnw_1_1graph_1_1splittable__range__adapter}{sub\_view}}       \mbox{\hyperlink{classnw_1_1graph_1_1indexed__struct__of__arrays_a219f207dc38507b092c9ef19486cca8b}{operator[]}}(index\_t i) \{ \textcolor{keywordflow}{return} begin()[i]; \}}
+\DoxyCodeLine{213   const\_sub\_view \mbox{\hyperlink{classnw_1_1graph_1_1indexed__struct__of__arrays_a219f207dc38507b092c9ef19486cca8b}{operator[]}}(index\_t i)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} begin()[i]; \}}
+\DoxyCodeLine{214 }
+\DoxyCodeLine{215   index\_t size()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} indices\_.size() -\/ 1; \}}
+\DoxyCodeLine{216   index\_t max()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} indices\_.size() -\/ 2; \}}
+\DoxyCodeLine{217   \textcolor{keyword}{auto} get\_indices()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} indices\_; \}}
+\DoxyCodeLine{218   \textcolor{keyword}{auto} get\_to\_be\_indexed()\textcolor{keyword}{ const }\{\textcolor{keywordflow}{return} to\_be\_indexed\_; \}}
+\DoxyCodeLine{219 }
+\DoxyCodeLine{220   index\_t source(difference\_type edge)\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{221     \textcolor{keyword}{auto} i = std::upper\_bound(indices\_.begin(), indices\_.end(), edge);}
+\DoxyCodeLine{222     \textcolor{keywordflow}{return} i -\/ indices\_.begin() -\/ 1;}
+\DoxyCodeLine{223   \}}
+\DoxyCodeLine{224 }
+\DoxyCodeLine{225   index\_t source(difference\_type edge) \{}
+\DoxyCodeLine{226     \textcolor{keyword}{auto} i = std::upper\_bound(indices\_.begin(), indices\_.end(), edge);}
+\DoxyCodeLine{227     \textcolor{keywordflow}{return} i -\/ indices\_.begin() -\/ 1;}
+\DoxyCodeLine{228   \}}
+\DoxyCodeLine{229 }
+\DoxyCodeLine{230   \textcolor{keywordtype}{void} open\_for\_push\_back() \{}
+\DoxyCodeLine{231     assert(to\_be\_indexed\_.size() == 0);}
+\DoxyCodeLine{232     \textcolor{comment}{//If we decide to allow reopen for pushback, this will undo exclusive\_scan}}
+\DoxyCodeLine{233     \textcolor{comment}{/*if(to\_be\_indexed\_.size() != 0) \{}}
+\DoxyCodeLine{234 \textcolor{comment}{      std::adjacent\_difference(indices\_.begin()+1, indices\_.end(), indices\_.begin());}}
+\DoxyCodeLine{235 \textcolor{comment}{      indices\_[N\_]=0;}}
+\DoxyCodeLine{236 \textcolor{comment}{      \}*/}}
+\DoxyCodeLine{237     is\_open\_ = \textcolor{keyword}{true};}
+\DoxyCodeLine{238   \}}
+\DoxyCodeLine{239 }
+\DoxyCodeLine{240   \textcolor{keywordtype}{void} close\_for\_push\_back() \{}
+\DoxyCodeLine{241     \textcolor{keywordflow}{if} (to\_be\_indexed\_.size() == 0) \textcolor{keywordflow}{return};}
+\DoxyCodeLine{242 }
+\DoxyCodeLine{243     indices\_.resize(N\_ + 1);}
+\DoxyCodeLine{244     std::exclusive\_scan(indices\_.begin(), indices\_.end(), indices\_.begin(), 0);}
+\DoxyCodeLine{245     assert(indices\_.back() == to\_be\_indexed\_.size());}
+\DoxyCodeLine{246     is\_open\_ = \textcolor{keyword}{false};}
+\DoxyCodeLine{247   \}}
+\DoxyCodeLine{248   }
+\DoxyCodeLine{249   \textcolor{keywordtype}{void} move(std::vector<index\_t>\&\& indices, std::vector<Attributes>\&\&... to\_be\_indexed) \{}
+\DoxyCodeLine{250     indices\_.swap(indices); \textcolor{comment}{//equivalent to }}
+\DoxyCodeLine{251     \textcolor{comment}{//indices\_ = std::move(indices); }}
+\DoxyCodeLine{252     to\_be\_indexed\_.move(std::move(to\_be\_indexed)...);}
+\DoxyCodeLine{253     assert(indices\_.back() == to\_be\_indexed\_.size());}
+\DoxyCodeLine{254   \}}
+\DoxyCodeLine{255   \textcolor{keywordtype}{void} move(std::vector<index\_t>\&\& indices, std::tuple<std::vector<Attributes>...>\&\& to\_be\_indexed) \{}
+\DoxyCodeLine{256     indices\_.swap(indices); \textcolor{comment}{//equivalent to }}
+\DoxyCodeLine{257     \textcolor{comment}{//indices\_ = std::move(indices); }}
+\DoxyCodeLine{258     to\_be\_indexed\_.move(std::move(to\_be\_indexed));}
+\DoxyCodeLine{259     assert(indices\_.back() == to\_be\_indexed\_.size());}
+\DoxyCodeLine{260   \}}
+\DoxyCodeLine{261   \textcolor{keywordtype}{void} copy(\textcolor{keyword}{const} std::vector<index\_t>\& indices, \textcolor{keyword}{const} std::vector<Attributes>\&... to\_be\_indexed) \{}
+\DoxyCodeLine{262     std::copy(indices.begin(), indices.end(), indices\_.begin());}
+\DoxyCodeLine{263     to\_be\_indexed\_.copy(to\_be\_indexed...);}
+\DoxyCodeLine{264     assert(indices\_.back() == to\_be\_indexed\_.size());}
+\DoxyCodeLine{265   \}}
+\DoxyCodeLine{266   \textcolor{keywordtype}{void} copy(\textcolor{keyword}{const} std::vector<index\_t>\& indices, \textcolor{keyword}{const} std::tuple<std::vector<Attributes>...>\& to\_be\_indexed) \{}
+\DoxyCodeLine{267     std::copy(indices.begin(), indices.end(), indices\_.begin());}
+\DoxyCodeLine{268     to\_be\_indexed\_.copy(to\_be\_indexed);}
+\DoxyCodeLine{269     assert(indices\_.back() == to\_be\_indexed\_.size());}
+\DoxyCodeLine{270   \}}
+\DoxyCodeLine{271 }
+\DoxyCodeLine{272   \textcolor{keywordtype}{void} push\_back(index\_t i, \textcolor{keyword}{const} Attributes\&... attrs) \{}
+\DoxyCodeLine{273     \textcolor{keywordflow}{if} (i >= indices\_.size()) \{}
+\DoxyCodeLine{274       \textcolor{keywordflow}{for} (index\_t j = indices\_.size(); j <= i; ++j) \{}
+\DoxyCodeLine{275         indices\_.emplace\_back(0);}
+\DoxyCodeLine{276         ++N\_;}
+\DoxyCodeLine{277       \}}
+\DoxyCodeLine{278     \}}
+\DoxyCodeLine{279     ++indices\_[i];}
+\DoxyCodeLine{280     to\_be\_indexed\_.push\_back(attrs...);}
+\DoxyCodeLine{281   \}}
+\DoxyCodeLine{282 }
+\DoxyCodeLine{283   \textcolor{keywordtype}{void} push\_at(index\_t i, \textcolor{keyword}{const} Attributes\&... attrs) \{}
+\DoxyCodeLine{284     index\_t j = indices\_[i]++;}
+\DoxyCodeLine{285     to\_be\_indexed\_.push\_at(j, attrs...);}
+\DoxyCodeLine{286   \}}
+\DoxyCodeLine{287 }
+\DoxyCodeLine{288   \textcolor{keywordtype}{void} stream(\textcolor{keyword}{const} std::string\& msg = \textcolor{stringliteral}{"{}"{}}) \{}
+\DoxyCodeLine{289     \textcolor{keyword}{auto} first = begin();}
+\DoxyCodeLine{290     \textcolor{keyword}{auto} last  = end();}
+\DoxyCodeLine{291 }
+\DoxyCodeLine{292     std::cout << msg;}
+\DoxyCodeLine{293     \textcolor{keywordflow}{for} (\textcolor{keyword}{auto} G = first; first != last; ++first) \{}
+\DoxyCodeLine{294       \textcolor{keywordflow}{for} (\textcolor{keyword}{auto} v = (*first).begin(); v != (*first).end(); ++v) \{}
+\DoxyCodeLine{295         std::cout << \textcolor{stringliteral}{"{}( "{}} << first -\/ G << \textcolor{stringliteral}{"{}, "{}} << std::get<0>(*v) << \textcolor{stringliteral}{"{} )"{}} << std::endl;}
+\DoxyCodeLine{296       \}}
+\DoxyCodeLine{297     \}}
+\DoxyCodeLine{298   \}}
+\DoxyCodeLine{299 }
+\DoxyCodeLine{300   \textcolor{keywordtype}{void} serialize(std::ostream\& outfile) \{}
+\DoxyCodeLine{301     \textcolor{keywordtype}{size\_t} el\_size = \textcolor{keyword}{sizeof}(indices\_[0]);}
+\DoxyCodeLine{302     \textcolor{keywordtype}{size\_t} st\_size = indices\_.size();}
+\DoxyCodeLine{303 }
+\DoxyCodeLine{304     outfile.write(\textcolor{keyword}{reinterpret\_cast<}\textcolor{keyword}{const }\textcolor{keywordtype}{char}*\textcolor{keyword}{>}(magic\_), \textcolor{keyword}{sizeof}(magic\_));}
+\DoxyCodeLine{305     outfile.write(\textcolor{keyword}{reinterpret\_cast<}\textcolor{keywordtype}{char}*\textcolor{keyword}{>}(\&N\_), \textcolor{keyword}{sizeof}(size\_t));}
+\DoxyCodeLine{306 }
+\DoxyCodeLine{307     outfile.write(\textcolor{keyword}{reinterpret\_cast<}\textcolor{keywordtype}{char}*\textcolor{keyword}{>}(\&st\_size), \textcolor{keyword}{sizeof}(size\_t));}
+\DoxyCodeLine{308     outfile.write(\textcolor{keyword}{reinterpret\_cast<}\textcolor{keywordtype}{char}*\textcolor{keyword}{>}(\&el\_size), \textcolor{keyword}{sizeof}(size\_t));}
+\DoxyCodeLine{309     outfile.write(\textcolor{keyword}{reinterpret\_cast<}\textcolor{keywordtype}{char}*\textcolor{keyword}{>}(indices\_.data()), st\_size * el\_size);}
+\DoxyCodeLine{310     to\_be\_indexed\_.serialize(outfile);}
+\DoxyCodeLine{311   \}}
+\DoxyCodeLine{312 }
+\DoxyCodeLine{313   \textcolor{keywordtype}{void} serialize(\textcolor{keyword}{const} std::string\& outfile\_name) \{}
+\DoxyCodeLine{314     std::ofstream out\_file(outfile\_name, std::ofstream::binary);}
+\DoxyCodeLine{315     serialize(out\_file);}
+\DoxyCodeLine{316   \}}
+\DoxyCodeLine{317 }
+\DoxyCodeLine{318   \textcolor{keywordtype}{void} deserialize(std::istream\& infile) \{}
+\DoxyCodeLine{319     \textcolor{keywordtype}{char}   spell[\textcolor{keyword}{sizeof}(magic\_) + 1];}
+\DoxyCodeLine{320     \textcolor{keywordtype}{size\_t} el\_size = -\/1;}
+\DoxyCodeLine{321     \textcolor{keywordtype}{size\_t} st\_size = -\/1;}
+\DoxyCodeLine{322 }
+\DoxyCodeLine{323     infile.read(\textcolor{keyword}{reinterpret\_cast<}\textcolor{keywordtype}{char}*\textcolor{keyword}{>}(spell), \textcolor{keyword}{sizeof}(magic\_));}
+\DoxyCodeLine{324     infile.read(\textcolor{keyword}{reinterpret\_cast<}\textcolor{keywordtype}{char}*\textcolor{keyword}{>}(\&N\_), \textcolor{keyword}{sizeof}(size\_t));}
+\DoxyCodeLine{325 }
+\DoxyCodeLine{326     infile.read(\textcolor{keyword}{reinterpret\_cast<}\textcolor{keywordtype}{char}*\textcolor{keyword}{>}(\&st\_size), \textcolor{keyword}{sizeof}(size\_t));}
+\DoxyCodeLine{327     infile.read(\textcolor{keyword}{reinterpret\_cast<}\textcolor{keywordtype}{char}*\textcolor{keyword}{>}(\&el\_size), \textcolor{keyword}{sizeof}(size\_t));}
+\DoxyCodeLine{328     indices\_.resize(st\_size);}
+\DoxyCodeLine{329     infile.read(\textcolor{keyword}{reinterpret\_cast<}\textcolor{keywordtype}{char}*\textcolor{keyword}{>}(indices\_.data()), st\_size * el\_size);}
+\DoxyCodeLine{330     to\_be\_indexed\_.deserialize(infile);}
+\DoxyCodeLine{331   \}}
+\DoxyCodeLine{332 }
+\DoxyCodeLine{333   \textcolor{keywordtype}{void} deserialize(\textcolor{keyword}{const} std::string\& infile\_name) \{}
+\DoxyCodeLine{334     std::ifstream infile(infile\_name, std::ifstream::binary);}
+\DoxyCodeLine{335     deserialize(infile);}
+\DoxyCodeLine{336   \}}
+\DoxyCodeLine{337 }
+\DoxyCodeLine{338   \textcolor{keyword}{template} <\textcolor{keyword}{typename} Comparator = decltype(std::less<index\_t>\{\})>}
+\DoxyCodeLine{339   \textcolor{keywordtype}{void} triangularize\_(Comparator comp = std::less<index\_t>\{\}) \{}
+\DoxyCodeLine{340     std::vector<index\_t>            new\_indices\_(indices\_.size());}
+\DoxyCodeLine{341     struct\_of\_arrays<Attributes...> new\_to\_be\_indexed\_(0);}
+\DoxyCodeLine{342     new\_to\_be\_indexed\_.reserve(to\_be\_indexed\_.size());}
+\DoxyCodeLine{343 }
+\DoxyCodeLine{344     new\_indices\_[0] = 0;}
+\DoxyCodeLine{345     \textcolor{keywordflow}{for} (\textcolor{keywordtype}{size\_t} i = 0; i < N\_; ++i) \{}
+\DoxyCodeLine{346       \textcolor{keyword}{const} \textcolor{keyword}{auto} begin = to\_be\_indexed\_.begin() + indices\_[i];}
+\DoxyCodeLine{347       \textcolor{keyword}{const} \textcolor{keyword}{auto} end   = to\_be\_indexed\_.begin() + indices\_[i + 1];}
+\DoxyCodeLine{348       \textcolor{keywordtype}{size\_t}     k     = 0;}
+\DoxyCodeLine{349       \textcolor{keywordflow}{for} (\textcolor{keyword}{auto} j = begin; j != end; ++j) \{}
+\DoxyCodeLine{350         \textcolor{keyword}{auto} tmp = std::get<0>(*j);}
+\DoxyCodeLine{351         \textcolor{keywordflow}{if} (comp(tmp, i)) \{}
+\DoxyCodeLine{352           new\_to\_be\_indexed\_.push\_back(*j);}
+\DoxyCodeLine{353           ++k;}
+\DoxyCodeLine{354         \}}
+\DoxyCodeLine{355       \}}
+\DoxyCodeLine{356       new\_indices\_[i + 1] = new\_indices\_[i] + k;}
+\DoxyCodeLine{357     \}}
+\DoxyCodeLine{358     indices\_       = std::move(new\_indices\_);}
+\DoxyCodeLine{359     to\_be\_indexed\_ = std::move(new\_to\_be\_indexed\_);}
+\DoxyCodeLine{360   \}}
+\DoxyCodeLine{361 }
+\DoxyCodeLine{362   \textcolor{keyword}{template} <succession cessor>}
+\DoxyCodeLine{363   \textcolor{keywordtype}{void} triangularize() \{}
+\DoxyCodeLine{364     \textcolor{keywordflow}{if} \textcolor{keyword}{constexpr} (cessor == succession::predecessor) \{}
+\DoxyCodeLine{365       triangularize\_(std::less<index\_t>\{\});}
+\DoxyCodeLine{366     \} \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} \textcolor{keyword}{constexpr} (cessor == succession::successor) \{}
+\DoxyCodeLine{367       triangularize\_(std::greater<index\_t>\{\});}
+\DoxyCodeLine{368     \} \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{369     \}}
+\DoxyCodeLine{370     \textcolor{keywordflow}{if} (g\_debug\_compressed) \{}
+\DoxyCodeLine{371       stream\_indices(std::cout);}
+\DoxyCodeLine{372     \}}
+\DoxyCodeLine{373   \}}
+\DoxyCodeLine{374 }
+\DoxyCodeLine{375   \textcolor{comment}{/*}}
+\DoxyCodeLine{376 \textcolor{comment}{  * Serial version to compute degree of each vertex.}}
+\DoxyCodeLine{377 \textcolor{comment}{  * Use adjacent\_difference to compute the degrees of each vertex:}}
+\DoxyCodeLine{378 \textcolor{comment}{  * degs[0] = 0 after the computation hence}}
+\DoxyCodeLine{379 \textcolor{comment}{  * we need to erase the first element of the vector}}
+\DoxyCodeLine{380 \textcolor{comment}{  */}}
+\DoxyCodeLine{381   std::vector<index\_t> degrees()\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{382     std::vector<index\_t> degs(indices\_.size());}
+\DoxyCodeLine{383     std::adjacent\_difference(indices\_.begin(), indices\_.end(), degs.begin());}
+\DoxyCodeLine{384     degs.erase( degs.begin() );}
+\DoxyCodeLine{385 }
+\DoxyCodeLine{386     \textcolor{keywordflow}{if} (g\_debug\_compressed) \{}
+\DoxyCodeLine{387       \textcolor{keywordflow}{for} (\textcolor{keywordtype}{size\_t} i = 0, e = indices\_.size() -\/ 1; i < e; ++i) }
+\DoxyCodeLine{388         assert(degs[i] == indices\_[i + 1] -\/ indices\_[i]);}
+\DoxyCodeLine{389     \}}
+\DoxyCodeLine{390     \textcolor{keywordflow}{return} degs;}
+\DoxyCodeLine{391   \}}
+\DoxyCodeLine{392 }
+\DoxyCodeLine{393   \textcolor{comment}{/*}}
+\DoxyCodeLine{394 \textcolor{comment}{  * Parallel version to compute degree of each vertex.}}
+\DoxyCodeLine{395 \textcolor{comment}{  */}}
+\DoxyCodeLine{396   \textcolor{keyword}{template} <\textcolor{keyword}{class} ExecutionPolicy = std::execution::parallel\_unsequenced\_policy>}
+\DoxyCodeLine{397   std::vector<index\_t> degrees(ExecutionPolicy\&\& ex\_policy = \{\}) \textcolor{keyword}{const} \{}
+\DoxyCodeLine{398     std::vector<index\_t> degs(indices\_.size() -\/ 1);}
+\DoxyCodeLine{399     tbb::parallel\_for(tbb::blocked\_range(0ul, indices\_.size() -\/ 1), [\&](\textcolor{keyword}{auto}\&\& r) \{}
+\DoxyCodeLine{400       for (auto i = r.begin(), e = r.end(); i != e; ++i) \{}
+\DoxyCodeLine{401         degs[i] = indices\_[i + 1] -\/ indices\_[i];}
+\DoxyCodeLine{402       \}}
+\DoxyCodeLine{403     \});}
+\DoxyCodeLine{404     \textcolor{keywordflow}{if} (g\_debug\_compressed) \{}
+\DoxyCodeLine{405       \textcolor{keywordflow}{for} (\textcolor{keywordtype}{size\_t} i = 0, e = indices\_.size() -\/ 1; i < e; ++i) }
+\DoxyCodeLine{406         assert(degs[i] == indices\_[i + 1] -\/ indices\_[i]);}
+\DoxyCodeLine{407     \}}
+\DoxyCodeLine{408     \textcolor{keywordflow}{return} degs;}
+\DoxyCodeLine{409   \}}
+\DoxyCodeLine{410 }
+\DoxyCodeLine{411   \textcolor{comment}{/*}}
+\DoxyCodeLine{412 \textcolor{comment}{  * Sort each neighbor list.}}
+\DoxyCodeLine{413 \textcolor{comment}{  */}}
+\DoxyCodeLine{414   \textcolor{keyword}{template} <\textcolor{keyword}{class} ExecutionPolicy = std::execution::parallel\_unsequenced\_policy>}
+\DoxyCodeLine{415   \textcolor{keywordtype}{void} sort\_to\_be\_indexed(ExecutionPolicy\&\& ex\_policy = \{\}) \{}
+\DoxyCodeLine{416     \textcolor{keyword}{auto} s = std::get<0>(to\_be\_indexed\_).begin();}
+\DoxyCodeLine{417 }
+\DoxyCodeLine{418     \textcolor{keywordflow}{for} (\textcolor{keywordtype}{size\_t} i = 0, e = indices\_.size() -\/ 1; i < e; ++i) \{}
+\DoxyCodeLine{419       std::sort(ex\_policy, s + indices\_[i], s + indices\_[i + 1]);}
+\DoxyCodeLine{420     \}}
+\DoxyCodeLine{421 }
+\DoxyCodeLine{422     \textcolor{keywordflow}{if} (g\_debug\_compressed) \{}
+\DoxyCodeLine{423       stream\_indices(std::cout);}
+\DoxyCodeLine{424     \}}
+\DoxyCodeLine{425   \}}
+\DoxyCodeLine{426   }
+\DoxyCodeLine{427   \textcolor{comment}{/*}}
+\DoxyCodeLine{428 \textcolor{comment}{  * Based on the new\_id\_perm of the vertices, relabel each vertex i into new\_id\_perm[i]}}
+\DoxyCodeLine{429 \textcolor{comment}{  * and then sort each neighbor list.}}
+\DoxyCodeLine{430 \textcolor{comment}{  */}}
+\DoxyCodeLine{431   \textcolor{keyword}{template} <\textcolor{keyword}{class} ExecutionPolicy = std::execution::parallel\_unsequenced\_policy>}
+\DoxyCodeLine{432   \textcolor{keywordtype}{void} relabel\_to\_be\_indexed(\textcolor{keyword}{const} std::vector<index\_t>\& new\_id\_perm, ExecutionPolicy\&\& ex\_policy = \{\}) \{}
+\DoxyCodeLine{433     \textcolor{keyword}{auto} s = std::get<0>(to\_be\_indexed\_).begin();}
+\DoxyCodeLine{434     tbb::parallel\_for(tbb::blocked\_range(0ul, std::get<0>(to\_be\_indexed\_).size()), [\&](\textcolor{keyword}{auto}\&\& r) \{}
+\DoxyCodeLine{435       \textcolor{keywordflow}{for} (\textcolor{keyword}{auto} i = r.begin(), e = r.end(); i != e; ++i) \{}
+\DoxyCodeLine{436           s[i] = new\_id\_perm[s[i]];}
+\DoxyCodeLine{437       \}}
+\DoxyCodeLine{438     \});}
+\DoxyCodeLine{439     sort\_to\_be\_indexed(ex\_policy);}
+\DoxyCodeLine{440   \}}
+\DoxyCodeLine{441   }
+\DoxyCodeLine{442   \textcolor{comment}{/*}}
+\DoxyCodeLine{443 \textcolor{comment}{  * This function permutes the indices of the adjacency and to\_be\_indexed}}
+\DoxyCodeLine{444 \textcolor{comment}{  * but does NOT relabel the ids in the to\_be\_indexed.}}
+\DoxyCodeLine{445 \textcolor{comment}{  * */}}
+\DoxyCodeLine{446   \textcolor{keyword}{template} <\textcolor{keyword}{class} ExecutionPolicy = std::execution::parallel\_unsequenced\_policy>}
+\DoxyCodeLine{447   std::vector<index\_t> permute\_by\_degree(std::string direction = \textcolor{stringliteral}{"{}descending"{}}, ExecutionPolicy\&\& ex\_policy = \{\}) \{}
+\DoxyCodeLine{448     \textcolor{comment}{//1. get the degrees of all the vertices}}
+\DoxyCodeLine{449     \textcolor{keywordtype}{size\_t}                   n = indices\_.size() -\/ 1;}
+\DoxyCodeLine{450     std::vector              degs = degrees<ExecutionPolicy>(ex\_policy);}
+\DoxyCodeLine{451     \textcolor{comment}{//2. populate permutation with vertex id}}
+\DoxyCodeLine{452     std::vector<index\_t> perm(n);}
+\DoxyCodeLine{453     tbb::parallel\_for(tbb::blocked\_range(0ul, n), [\&](\textcolor{keyword}{auto}\&\& r) \{}
+\DoxyCodeLine{454       \textcolor{keywordflow}{for} (\textcolor{keyword}{auto} i = r.begin(), e = r.end(); i != e; ++i) \{}
+\DoxyCodeLine{455         perm[i] = i;}
+\DoxyCodeLine{456       \}}
+\DoxyCodeLine{457     \});}
+\DoxyCodeLine{458 }
+\DoxyCodeLine{459     \textcolor{comment}{//3. do a proxy sort on the permutation based on the degree of each vertex}}
+\DoxyCodeLine{460     \textcolor{comment}{// in descending or ascending order}}
+\DoxyCodeLine{461     \textcolor{comment}{// this will permutate the vertex id in perm based on the degrees}}
+\DoxyCodeLine{462     \textcolor{keywordflow}{if} (direction == \textcolor{stringliteral}{"{}descending"{}}) \{}
+\DoxyCodeLine{463       std::sort(ex\_policy, perm.begin(), perm.end(), [\&](\textcolor{keyword}{auto} a, \textcolor{keyword}{auto} b) \{ return degs[a] > degs[b]; \});}
+\DoxyCodeLine{464     \} \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (direction == \textcolor{stringliteral}{"{}ascending"{}}) \{}
+\DoxyCodeLine{465       std::sort(ex\_policy, perm.begin(), perm.end(), [\&](\textcolor{keyword}{auto} a, \textcolor{keyword}{auto} b) \{ return degs[a] < degs[b]; \});}
+\DoxyCodeLine{466     \} \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{467       std::cout << \textcolor{stringliteral}{"{}Unknown direction: "{}} << direction << std::endl;}
+\DoxyCodeLine{468       \textcolor{comment}{//return an empty perm array if unknown direction}}
+\DoxyCodeLine{469       \textcolor{keywordflow}{return} std::vector<index\_t>\{\};}
+\DoxyCodeLine{470     \}}
+\DoxyCodeLine{471 }
+\DoxyCodeLine{472     \textcolor{comment}{//4. allocate a vector for new\_indices}}
+\DoxyCodeLine{473     std::vector<index\_t> new\_indices(indices\_);}
+\DoxyCodeLine{474     \textcolor{keyword}{auto}                     new\_tmp = new\_indices.begin() + 1;}
+\DoxyCodeLine{475     std::vector<index\_t> new\_id\_perm(n);}
+\DoxyCodeLine{476 }
+\DoxyCodeLine{477     \textcolor{comment}{//5. permutate the old indices based on the degree of the new\_id }}
+\DoxyCodeLine{478     \textcolor{comment}{// to get the new\_id\_perm}}
+\DoxyCodeLine{479     tbb::parallel\_for(tbb::blocked\_range(0ul, n), [\&](\textcolor{keyword}{auto}\&\& r) \{}
+\DoxyCodeLine{480       \textcolor{keywordflow}{for} (\textcolor{keyword}{auto} old\_id = r.begin(), e = r.end(); old\_id != e; ++old\_id) \{}
+\DoxyCodeLine{481         auto new\_id         = perm[old\_id];}
+\DoxyCodeLine{482         new\_tmp[old\_id]     = degs[new\_id];}
+\DoxyCodeLine{483         new\_id\_perm[new\_id] = old\_id;}
+\DoxyCodeLine{484       \}}
+\DoxyCodeLine{485     \});}
+\DoxyCodeLine{486     }
+\DoxyCodeLine{487     \textcolor{comment}{//6. Computes an inclusive prefix sum operation for the new\_indices}}
+\DoxyCodeLine{488     \textcolor{comment}{// before the computation, new\_indices stores the degree of each vertex (with new id)}}
+\DoxyCodeLine{489     std::inclusive\_scan(ex\_policy, new\_indices.begin(), new\_indices.end(), new\_indices.begin());}
+\DoxyCodeLine{490     \textcolor{comment}{//7. Permute each neighborhood of each vertex in to\_be\_indexed\_ to their new place}}
+\DoxyCodeLine{491     \textcolor{comment}{// based on the new\_id\_perm}}
+\DoxyCodeLine{492     to\_be\_indexed\_.permute(indices\_, new\_indices, new\_id\_perm);}
+\DoxyCodeLine{493 }
+\DoxyCodeLine{494     \textcolor{comment}{//8. Overwrite the old indices\_ with new\_indices}}
+\DoxyCodeLine{495     indices\_ = std::move(new\_indices);}
+\DoxyCodeLine{496 }
+\DoxyCodeLine{497     \textcolor{keywordflow}{if} (g\_debug\_compressed) \{}
+\DoxyCodeLine{498       \textcolor{keyword}{auto} newdegs = degrees();}
+\DoxyCodeLine{499       \textcolor{keywordflow}{for} (\textcolor{keywordtype}{size\_t} i = 0; i < n; ++i) \{}
+\DoxyCodeLine{500         \textcolor{comment}{//std::cout << i << "{}:"{} << newdegs[i] << std::endl;}}
+\DoxyCodeLine{501         assert(degs[i] == newdegs[new\_id\_perm[i]]);}
+\DoxyCodeLine{502       \}}
+\DoxyCodeLine{503       stream\_indices(std::cout);}
+\DoxyCodeLine{504     \}}
+\DoxyCodeLine{505     \textcolor{keywordflow}{return} new\_id\_perm;}
+\DoxyCodeLine{506   \}}
+\DoxyCodeLine{507   }
+\DoxyCodeLine{508   \textcolor{comment}{/*}}
+\DoxyCodeLine{509 \textcolor{comment}{  * Permute the adjacency based on the degree of each vertex}}
+\DoxyCodeLine{510 \textcolor{comment}{  * There are two major steps: 1. permute the indices\_ and the to\_be\_indexed\_}}
+\DoxyCodeLine{511 \textcolor{comment}{  * 2. relabel the to\_be\_indexed\_ if needed (which is not needed if it is part of bi-\/adjacency)}}
+\DoxyCodeLine{512 \textcolor{comment}{  * WARNING:}}
+\DoxyCodeLine{513 \textcolor{comment}{  * If sort\_by\_degree on a bi-\/adjacency, do NOT use sort\_by\_degree.}}
+\DoxyCodeLine{514 \textcolor{comment}{  * Call permute\_by\_degree on adjacency<idx>, }}
+\DoxyCodeLine{515 \textcolor{comment}{  * then call relabel\_to\_be\_indexed on adjacency<(idx + 1) \% 2>.}}
+\DoxyCodeLine{516 \textcolor{comment}{  */}}
+\DoxyCodeLine{517   \textcolor{keyword}{template} <\textcolor{keyword}{class} ExecutionPolicy = std::execution::parallel\_unsequenced\_policy>}
+\DoxyCodeLine{518   \textcolor{keywordtype}{void} sort\_by\_degree(std::string direction = \textcolor{stringliteral}{"{}descending"{}}, ExecutionPolicy\&\& ex\_policy = \{\}) \{}
+\DoxyCodeLine{519     \textcolor{keyword}{auto}\&\& perm = permute\_by\_degree(direction, ex\_policy);}
+\DoxyCodeLine{520     relabel\_to\_be\_indexed(perm, ex\_policy);}
+\DoxyCodeLine{521   \}}
+\DoxyCodeLine{522 }
+\DoxyCodeLine{523   \textcolor{keywordtype}{void} stream\_indices(std::ostream\& out = std::cout) \{}
+\DoxyCodeLine{524     \textcolor{keyword}{auto} s = std::get<0>(to\_be\_indexed\_).begin();}
+\DoxyCodeLine{525     out << \textcolor{stringliteral}{"{}\(\backslash\)n+++\(\backslash\)n"{}};}
+\DoxyCodeLine{526 }
+\DoxyCodeLine{527     \textcolor{keywordflow}{for} (\textcolor{keywordtype}{size\_t} i = 0; i < indices\_.size() -\/ 1; ++i) \{}
+\DoxyCodeLine{528       out << \textcolor{stringliteral}{"{}==> "{}} << i << \textcolor{stringliteral}{"{}: "{}};}
+\DoxyCodeLine{529 }
+\DoxyCodeLine{530       \textcolor{keywordflow}{for} (\textcolor{keywordtype}{size\_t} j = indices\_[i]; j < indices\_[i + 1]; ++j) \{}
+\DoxyCodeLine{531         out << s[j] << \textcolor{stringliteral}{"{}\(\backslash\)t"{}};}
+\DoxyCodeLine{532       \}}
+\DoxyCodeLine{533       out << std::endl;}
+\DoxyCodeLine{534     \}}
+\DoxyCodeLine{535     out << \textcolor{stringliteral}{"{}\(\backslash\)n+++\(\backslash\)n"{}};}
+\DoxyCodeLine{536   \}}
+\DoxyCodeLine{537 }
+\DoxyCodeLine{538   \textcolor{keywordtype}{void} stream\_stats(std::ostream\& os = std::cout)\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{539     \textcolor{keywordtype}{int} status = -\/4;}
+\DoxyCodeLine{540     std::cout << \textcolor{stringliteral}{"{}\% "{}};}
+\DoxyCodeLine{541     std::cout << nw::graph::demangle(\textcolor{keyword}{typeid}(*this).name(), \textcolor{keyword}{nullptr}, \textcolor{keyword}{nullptr}, \&status);}
+\DoxyCodeLine{542     std::cout << std::string(\textcolor{stringliteral}{"{}indices\_.size() "{}}) + std::to\_string(indices\_.size()) + \textcolor{stringliteral}{"{} "{}};}
+\DoxyCodeLine{543     std::cout << std::string(\textcolor{stringliteral}{"{}to\_be\_indexed\_.size() "{}}) + std::to\_string(to\_be\_indexed\_.size());}
+\DoxyCodeLine{544     std::cout << std::endl;}
+\DoxyCodeLine{545   \}}
+\DoxyCodeLine{546 \};}
+\DoxyCodeLine{547 }
+\DoxyCodeLine{548 \textcolor{keyword}{template} <\textcolor{keyword}{typename} index\_t, \textcolor{keyword}{typename}... Attributes>}
+\DoxyCodeLine{549 \textcolor{keyword}{auto} operator+(\textcolor{keyword}{typename} std::iter\_difference\_t<\textcolor{keyword}{typename} indexed\_struct\_of\_arrays<index\_t, Attributes...>::outer\_iterator> n,}
+\DoxyCodeLine{550                \textcolor{keyword}{const} \textcolor{keyword}{typename} indexed\_struct\_of\_arrays<index\_t, Attributes...>::outer\_iterator                            i) \{}
+\DoxyCodeLine{551   \textcolor{keywordflow}{return} i + n;}
+\DoxyCodeLine{552 \}}
+\DoxyCodeLine{553 }
+\DoxyCodeLine{554 \textcolor{keyword}{template} <std::\textcolor{keywordtype}{signed}\_\textcolor{keywordtype}{int}egral T, \textcolor{keyword}{typename} I>}
+\DoxyCodeLine{555 I operator+(T n, \textcolor{keyword}{const} I i) \{}
+\DoxyCodeLine{556   \textcolor{keywordflow}{return} i + n;}
+\DoxyCodeLine{557 \}}
+\DoxyCodeLine{558 }
+\DoxyCodeLine{559 \}    \textcolor{comment}{// namespace graph}}
+\DoxyCodeLine{560 \}    \textcolor{comment}{// namespace nw}}
+\DoxyCodeLine{561 \textcolor{preprocessor}{\#endif    }\textcolor{comment}{// NW\_GRAPH\_COMPRESSED\_HPP}}
+
+\end{DoxyCode}

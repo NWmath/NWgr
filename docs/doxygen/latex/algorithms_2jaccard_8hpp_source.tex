@@ -1,0 +1,62 @@
+\hypertarget{algorithms_2jaccard_8hpp_source}{}\doxysection{jaccard.\+hpp}
+\label{algorithms_2jaccard_8hpp_source}\index{/Users/lums/NWmath/NWgr/include/nwgraph/algorithms/jaccard.hpp@{/Users/lums/NWmath/NWgr/include/nwgraph/algorithms/jaccard.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// }}
+\DoxyCodeLine{2 \textcolor{comment}{// This file is part of NW Graph (aka GraphPack) }}
+\DoxyCodeLine{3 \textcolor{comment}{// (c) Pacific Northwest National Laboratory 2018-\/2021 }}
+\DoxyCodeLine{4 \textcolor{comment}{// (c) University of Washington 2018-\/2021 }}
+\DoxyCodeLine{5 \textcolor{comment}{// }}
+\DoxyCodeLine{6 \textcolor{comment}{// Licensed under terms of include LICENSE file }}
+\DoxyCodeLine{7 \textcolor{comment}{// }}
+\DoxyCodeLine{8 \textcolor{comment}{// Authors: }}
+\DoxyCodeLine{9 \textcolor{comment}{//     Andrew Lumsdaine }}
+\DoxyCodeLine{10 \textcolor{comment}{//}}
+\DoxyCodeLine{11 }
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#ifndef NW\_GRAPH\_JACCARD\_HPP}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#define NW\_GRAPH\_JACCARD\_HPP}}
+\DoxyCodeLine{14 }
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#include <atomic>}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include <future>}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include <thread>}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include <tuple>}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#include "{}nwgraph/graph\_concepts.hpp"{}}}
+\DoxyCodeLine{22 }
+\DoxyCodeLine{23 \textcolor{preprocessor}{\#include "{}nwgraph/adaptors/cyclic\_range\_adapter.hpp"{}}}
+\DoxyCodeLine{24 \textcolor{preprocessor}{\#include "{}nwgraph/adaptors/edge\_range.hpp"{}}}
+\DoxyCodeLine{25 \textcolor{preprocessor}{\#include "{}nwgraph/util/intersection\_size.hpp"{}}}
+\DoxyCodeLine{26 \textcolor{preprocessor}{\#include "{}nwgraph/util/parallel\_for.hpp"{}}}
+\DoxyCodeLine{27 \textcolor{preprocessor}{\#include "{}nwgraph/util/timer.hpp"{}}}
+\DoxyCodeLine{28 \textcolor{preprocessor}{\#include "{}nwgraph/util/util.hpp"{}}}
+\DoxyCodeLine{29 }
+\DoxyCodeLine{30 \textcolor{keyword}{namespace }nw \{}
+\DoxyCodeLine{31 \textcolor{keyword}{namespace }graph \{}
+\DoxyCodeLine{32 }
+\DoxyCodeLine{33 \textcolor{keyword}{template} <adjacency\_list\_graph GraphT, \textcolor{keyword}{typename} Weight>}
+\DoxyCodeLine{34 \textcolor{keywordtype}{size\_t} jaccard\_similarity\_v0(GraphT\& G, Weight weight) \{}
+\DoxyCodeLine{35   \textcolor{keywordtype}{size\_t} ctr = 0;}
+\DoxyCodeLine{36 }
+\DoxyCodeLine{37   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{size\_t} u = 0; u < num\_vertices(G); ++u) \{}
+\DoxyCodeLine{38     \textcolor{keywordflow}{for} (\textcolor{keyword}{auto}\&\& e : G[u]) \{}
+\DoxyCodeLine{39       \textcolor{keyword}{auto} v = target(G, e);}
+\DoxyCodeLine{40       \textcolor{keywordflow}{if} (u < v) \{}
+\DoxyCodeLine{41         \textcolor{keyword}{auto} numer = nw::graph::intersection\_size(G[u], G[v]);}
+\DoxyCodeLine{42         \textcolor{keyword}{auto} denom = degree(G[u]) + degree(G[v]) -\/ numer;}
+\DoxyCodeLine{43         \textcolor{keywordtype}{double} rat = ((double)numer) / ((double)denom);}
+\DoxyCodeLine{44         weight(e) = rat;}
+\DoxyCodeLine{45         ++ctr;}
+\DoxyCodeLine{46       \}}
+\DoxyCodeLine{47     \}}
+\DoxyCodeLine{48   \}}
+\DoxyCodeLine{49 }
+\DoxyCodeLine{50   \textcolor{keywordflow}{return} ctr;}
+\DoxyCodeLine{51 \}}
+\DoxyCodeLine{52 }
+\DoxyCodeLine{53 \}    \textcolor{comment}{// namespace graph}}
+\DoxyCodeLine{54 \}    \textcolor{comment}{// namespace nw}}
+\DoxyCodeLine{55 }
+\DoxyCodeLine{56 \textcolor{preprocessor}{\#endif    }\textcolor{comment}{// NW\_GRAPH\_JACCARD\_HPP}}
+
+\end{DoxyCode}

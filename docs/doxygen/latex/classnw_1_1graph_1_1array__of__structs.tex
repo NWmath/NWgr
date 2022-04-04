@@ -1,0 +1,58 @@
+\hypertarget{classnw_1_1graph_1_1array__of__structs}{}\doxysection{nw\+::graph\+::array\+\_\+of\+\_\+structs\texorpdfstring{$<$}{<} Attributes \texorpdfstring{$>$}{>} Class Template Reference}
+\label{classnw_1_1graph_1_1array__of__structs}\index{nw::graph::array\_of\_structs$<$ Attributes $>$@{nw::graph::array\_of\_structs$<$ Attributes $>$}}
+Inheritance diagram for nw\+::graph\+::array\+\_\+of\+\_\+structs\texorpdfstring{$<$}{<} Attributes \texorpdfstring{$>$}{>}\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classnw_1_1graph_1_1array__of__structs}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classnw_1_1graph_1_1array__of__structs_a459c2f36c1b90fbc22bddaa43a6476b6}\label{classnw_1_1graph_1_1array__of__structs_a459c2f36c1b90fbc22bddaa43a6476b6}} 
+using {\bfseries storage\+\_\+type} = std\+::vector$<$ std\+::tuple$<$ Attributes... $>$ $>$
+\item 
+\mbox{\Hypertarget{classnw_1_1graph_1_1array__of__structs_aea88168bc998249eef0f94297dc4cdd9}\label{classnw_1_1graph_1_1array__of__structs_aea88168bc998249eef0f94297dc4cdd9}} 
+using {\bfseries base} = std\+::vector$<$ std\+::tuple$<$ Attributes... $>$ $>$
+\item 
+\mbox{\Hypertarget{classnw_1_1graph_1_1array__of__structs_a3ce099d37e9e769779214d026a43626e}\label{classnw_1_1graph_1_1array__of__structs_a3ce099d37e9e769779214d026a43626e}} 
+using {\bfseries reference} = typename std\+::iterator\+\_\+traits$<$ typename storage\+\_\+type\+::iterator $>$\+::reference
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classnw_1_1graph_1_1array__of__structs_a6e434f830f33a1d1ac192259a6fd72e9}\label{classnw_1_1graph_1_1array__of__structs_a6e434f830f33a1d1ac192259a6fd72e9}} 
+void {\bfseries push\+\_\+back} (const std\+::tuple$<$ Attributes... $>$ \&attrs)
+\item 
+\mbox{\Hypertarget{classnw_1_1graph_1_1array__of__structs_a6e67dd29ba61731eec015005655115bc}\label{classnw_1_1graph_1_1array__of__structs_a6e67dd29ba61731eec015005655115bc}} 
+void {\bfseries push\+\_\+back} (const std\+::tuple$<$ Attributes \&... $>$ \&attrs)
+\item 
+\mbox{\Hypertarget{classnw_1_1graph_1_1array__of__structs_a1e532088d327b733c96841b3227cc41a}\label{classnw_1_1graph_1_1array__of__structs_a1e532088d327b733c96841b3227cc41a}} 
+void {\bfseries push\+\_\+back} (const Attributes \&... attrs)
+\item 
+\mbox{\Hypertarget{classnw_1_1graph_1_1array__of__structs_a570ce73b1a8caa0789355f3cc6e6701e}\label{classnw_1_1graph_1_1array__of__structs_a570ce73b1a8caa0789355f3cc6e6701e}} 
+bool {\bfseries operator==} (\mbox{\hyperlink{classnw_1_1graph_1_1array__of__structs}{array\+\_\+of\+\_\+structs}} \&a)
+\item 
+\mbox{\Hypertarget{classnw_1_1graph_1_1array__of__structs_af95c56a84535c62d42d8a05fedc3d6c1}\label{classnw_1_1graph_1_1array__of__structs_af95c56a84535c62d42d8a05fedc3d6c1}} 
+bool {\bfseries operator!=} (const storage\+\_\+type \&a)
+\item 
+\mbox{\Hypertarget{classnw_1_1graph_1_1array__of__structs_a0f617e884073678bfcb5b786bab85ffc}\label{classnw_1_1graph_1_1array__of__structs_a0f617e884073678bfcb5b786bab85ffc}} 
+{\footnotesize template$<$size\+\_\+t... Is$>$ }\\void {\bfseries print\+\_\+helper} (std\+::ostream \&output\+\_\+stream, std\+::tuple$<$ Attributes... $>$ attrs, std\+::index\+\_\+sequence$<$ Is... $>$)
+\item 
+\mbox{\Hypertarget{classnw_1_1graph_1_1array__of__structs_a5d42107a627096892400ca604a451125}\label{classnw_1_1graph_1_1array__of__structs_a5d42107a627096892400ca604a451125}} 
+void {\bfseries stream} (std\+::ostream \&output\+\_\+stream, const std\+::string \&msg=\char`\"{}\char`\"{})
+\item 
+\mbox{\Hypertarget{classnw_1_1graph_1_1array__of__structs_a3d9abfbff9ec55a416191e0ef088b15a}\label{classnw_1_1graph_1_1array__of__structs_a3d9abfbff9ec55a416191e0ef088b15a}} 
+void {\bfseries stream} (const std\+::string \&msg=\char`\"{}\char`\"{})
+\item 
+\mbox{\Hypertarget{classnw_1_1graph_1_1array__of__structs_a669d40d4d89ded8055f3d20f4dc12b65}\label{classnw_1_1graph_1_1array__of__structs_a669d40d4d89ded8055f3d20f4dc12b65}} 
+void {\bfseries serialize} (std\+::ostream \&outfile) const
+\item 
+\mbox{\Hypertarget{classnw_1_1graph_1_1array__of__structs_abca753abbad261ff10d6c7709af7ce17}\label{classnw_1_1graph_1_1array__of__structs_abca753abbad261ff10d6c7709af7ce17}} 
+void {\bfseries deserialize} (std\+::istream \&infile)
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/lums/\+NWmath/\+NWgr/include/nwgraph/containers/\mbox{\hyperlink{aos_8hpp}{aos.\+hpp}}\end{DoxyCompactItemize}

@@ -1,0 +1,360 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.3" xml:lang="en-US">
+  <compounddef id="classnw_1_1graph_1_1plain__range" kind="class" language="C++" prot="public">
+    <compoundname>nw::graph::plain_range</compoundname>
+    <innerclass refid="classnw_1_1graph_1_1plain__range_1_1my__iterator" prot="public">nw::graph::plain_range::my_iterator</innerclass>
+    <templateparamlist>
+      <param>
+        <type>class Graph</type>
+      </param>
+      <param>
+        <type>std::size_t...</type>
+        <declname>Is</declname>
+        <defname>Is</defname>
+      </param>
+    </templateparamlist>
+      <sectiondef kind="private-type">
+      <memberdef kind="typedef" id="classnw_1_1graph_1_1plain__range_1af7ea0a1ee396efd7afbe18a8ea95bd2e" prot="private" static="no">
+        <type>vertex_id_t&lt; Graph &gt;</type>
+        <definition>using nw::graph::plain_range&lt; Graph, Is &gt;::vertex_id_type =  vertex_id_t&lt;Graph&gt;</definition>
+        <argsstring></argsstring>
+        <name>vertex_id_type</name>
+        <qualifiedname>nw::graph::plain_range::vertex_id_type</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/plain_range.hpp" line="38" column="3" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/plain_range.hpp" bodystart="38" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="classnw_1_1graph_1_1plain__range_1a7862297dc23f2ecac1eb36e81e9af9f5" prot="private" static="no">
+        <type>typename std::conditional&lt; std::is_const_v&lt; Graph &gt;, typename Graph::const_iterator, typename Graph::iterator &gt;::type</type>
+        <definition>using nw::graph::plain_range&lt; Graph, Is &gt;::graph_iterator =  typename std::conditional&lt;std::is_const_v&lt;Graph&gt;, typename Graph::const_iterator, typename Graph::iterator&gt;::type</definition>
+        <argsstring></argsstring>
+        <name>graph_iterator</name>
+        <qualifiedname>nw::graph::plain_range::graph_iterator</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/plain_range.hpp" line="40" column="3" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/plain_range.hpp" bodystart="40" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-type">
+      <memberdef kind="typedef" id="classnw_1_1graph_1_1plain__range_1a8c8e4a827498226e886cac20e0fcdad8" prot="public" static="no">
+        <type><ref refid="classnw_1_1graph_1_1plain__range_1_1my__iterator" kindref="compound">my_iterator</ref>&lt; false &gt;</type>
+        <definition>using nw::graph::plain_range&lt; Graph, Is &gt;::iterator =  my_iterator&lt;false&gt;</definition>
+        <argsstring></argsstring>
+        <name>iterator</name>
+        <qualifiedname>nw::graph::plain_range::iterator</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/plain_range.hpp" line="111" column="3" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/plain_range.hpp" bodystart="111" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="classnw_1_1graph_1_1plain__range_1af0e4f6ab201fd6a05550be9ef3d63454" prot="public" static="no">
+        <type><ref refid="classnw_1_1graph_1_1plain__range_1_1my__iterator" kindref="compound">my_iterator</ref>&lt; true &gt;</type>
+        <definition>using nw::graph::plain_range&lt; Graph, Is &gt;::const_iterator =  my_iterator&lt;true&gt;</definition>
+        <argsstring></argsstring>
+        <name>const_iterator</name>
+        <qualifiedname>nw::graph::plain_range::const_iterator</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/plain_range.hpp" line="112" column="3" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/plain_range.hpp" bodystart="112" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-static-attrib">
+      <memberdef kind="variable" id="classnw_1_1graph_1_1plain__range_1abcd7a4e01732cfe3c794989277f7788d" prot="private" static="yes" constexpr="yes" mutable="no">
+        <type>constexpr size_t</type>
+        <definition>constexpr size_t nw::graph::plain_range&lt; Graph, Is &gt;::cutoff_</definition>
+        <argsstring></argsstring>
+        <name>cutoff_</name>
+        <qualifiedname>nw::graph::plain_range::cutoff_</qualifiedname>
+        <initializer>= 16</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/plain_range.hpp" line="36" column="27" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/plain_range.hpp" bodystart="36" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classnw_1_1graph_1_1plain__range_1ab117facffe5c51294855af97bb2483fb" prot="private" static="no" mutable="no">
+        <type>graph_iterator</type>
+        <definition>graph_iterator nw::graph::plain_range&lt; Graph, Is &gt;::outer_base_</definition>
+        <argsstring></argsstring>
+        <name>outer_base_</name>
+        <qualifiedname>nw::graph::plain_range::outer_base_</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/plain_range.hpp" line="42" column="18" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/plain_range.hpp" bodystart="42" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classnw_1_1graph_1_1plain__range_1a22855100d22040a8433c56bf2dafbee8" prot="private" static="no" mutable="no">
+        <type>graph_iterator</type>
+        <definition>graph_iterator nw::graph::plain_range&lt; Graph, Is &gt;::outer_begin_</definition>
+        <argsstring></argsstring>
+        <name>outer_begin_</name>
+        <qualifiedname>nw::graph::plain_range::outer_begin_</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/plain_range.hpp" line="43" column="18" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/plain_range.hpp" bodystart="43" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classnw_1_1graph_1_1plain__range_1aa07f13156c7b05299b31f7bd3f11d8d4" prot="private" static="no" mutable="no">
+        <type>graph_iterator</type>
+        <definition>graph_iterator nw::graph::plain_range&lt; Graph, Is &gt;::outer_end_</definition>
+        <argsstring></argsstring>
+        <name>outer_end_</name>
+        <qualifiedname>nw::graph::plain_range::outer_end_</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/plain_range.hpp" line="44" column="18" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/plain_range.hpp" bodystart="44" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classnw_1_1graph_1_1plain__range_1a8f9f17bce1f8e0242a175ac3ee6b3493" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>nw::graph::plain_range&lt; Graph, Is &gt;::plain_range</definition>
+        <argsstring>(Graph &amp;g, std::size_t offset)</argsstring>
+        <name>plain_range</name>
+        <qualifiedname>nw::graph::plain_range::plain_range</qualifiedname>
+        <param>
+          <type>Graph &amp;</type>
+          <declname>g</declname>
+        </param>
+        <param>
+          <type>std::size_t</type>
+          <declname>offset</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/plain_range.hpp" line="47" column="3" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/plain_range.hpp" bodystart="47" bodyend="47"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1plain__range_1acb6c77a889ae85ca40999b58f094d976" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>nw::graph::plain_range&lt; Graph, Is &gt;::plain_range</definition>
+        <argsstring>(Graph &amp;g)</argsstring>
+        <name>plain_range</name>
+        <qualifiedname>nw::graph::plain_range::plain_range</qualifiedname>
+        <param>
+          <type>Graph &amp;</type>
+          <declname>g</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/plain_range.hpp" line="49" column="3" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/plain_range.hpp" bodystart="49" bodyend="49"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1plain__range_1a795e5c1f5b97f30182371cb0aade5cea" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>nw::graph::plain_range&lt; Graph, Is &gt;::plain_range</definition>
+        <argsstring>(plain_range &amp;b, tbb::split)</argsstring>
+        <name>plain_range</name>
+        <qualifiedname>nw::graph::plain_range::plain_range</qualifiedname>
+        <param>
+          <type><ref refid="classnw_1_1graph_1_1plain__range" kindref="compound">plain_range</ref> &amp;</type>
+          <declname>b</declname>
+        </param>
+        <param>
+          <type>tbb::split</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/plain_range.hpp" line="52" column="3" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/plain_range.hpp" bodystart="52" bodyend="56"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1plain__range_1aecac5e020773656f97ba18f63e1b5960" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>nw::graph::plain_range&lt; Graph, Is &gt;::plain_range</definition>
+        <argsstring>(const plain_range &amp;)=default</argsstring>
+        <name>plain_range</name>
+        <qualifiedname>nw::graph::plain_range::plain_range</qualifiedname>
+        <param>
+          <type>const <ref refid="classnw_1_1graph_1_1plain__range" kindref="compound">plain_range</ref> &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/plain_range.hpp" line="58" column="3"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1plain__range_1a293989a8751a54f98447e6845d9c82e1" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classnw_1_1graph_1_1plain__range" kindref="compound">plain_range</ref> &amp;</type>
+        <definition>plain_range &amp; nw::graph::plain_range&lt; Graph, Is &gt;::operator=</definition>
+        <argsstring>(const plain_range &amp;)=default</argsstring>
+        <name>operator=</name>
+        <qualifiedname>nw::graph::plain_range::operator=</qualifiedname>
+        <param>
+          <type>const <ref refid="classnw_1_1graph_1_1plain__range" kindref="compound">plain_range</ref> &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/plain_range.hpp" line="59" column="15"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1plain__range_1a268625676bc0b29ea60903690164e496" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classnw_1_1graph_1_1plain__range_1_1my__iterator" kindref="compound">iterator</ref></type>
+        <definition>iterator nw::graph::plain_range&lt; Graph, Is &gt;::begin</definition>
+        <argsstring>()</argsstring>
+        <name>begin</name>
+        <qualifiedname>nw::graph::plain_range::begin</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/plain_range.hpp" line="114" column="18" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/plain_range.hpp" bodystart="114" bodyend="114"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1plain__range_1a47d2fcf46b10540c906f4e2662ee5de7" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classnw_1_1graph_1_1plain__range_1_1my__iterator" kindref="compound">const_iterator</ref></type>
+        <definition>const_iterator nw::graph::plain_range&lt; Graph, Is &gt;::begin</definition>
+        <argsstring>() const</argsstring>
+        <name>begin</name>
+        <qualifiedname>nw::graph::plain_range::begin</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/plain_range.hpp" line="115" column="18" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/plain_range.hpp" bodystart="115" bodyend="115"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1plain__range_1a43e24a17bd94873e72738ed462eced38" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classnw_1_1graph_1_1plain__range_1_1my__iterator" kindref="compound">iterator</ref></type>
+        <definition>iterator nw::graph::plain_range&lt; Graph, Is &gt;::end</definition>
+        <argsstring>()</argsstring>
+        <name>end</name>
+        <qualifiedname>nw::graph::plain_range::end</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/plain_range.hpp" line="117" column="18" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/plain_range.hpp" bodystart="117" bodyend="117"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1plain__range_1ad2ff113f6c1a7ccd6301170648d4fd0b" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classnw_1_1graph_1_1plain__range_1_1my__iterator" kindref="compound">const_iterator</ref></type>
+        <definition>const_iterator nw::graph::plain_range&lt; Graph, Is &gt;::end</definition>
+        <argsstring>() const</argsstring>
+        <name>end</name>
+        <qualifiedname>nw::graph::plain_range::end</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/plain_range.hpp" line="118" column="18" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/plain_range.hpp" bodystart="118" bodyend="118"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1plain__range_1a8da0ebaaf1681dfe533dfc5d6a3e7738" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>std::size_t</type>
+        <definition>std::size_t nw::graph::plain_range&lt; Graph, Is &gt;::size</definition>
+        <argsstring>() const</argsstring>
+        <name>size</name>
+        <qualifiedname>nw::graph::plain_range::size</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/plain_range.hpp" line="120" column="15" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/plain_range.hpp" bodystart="120" bodyend="120"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1plain__range_1a1490f9a16369ca2f182e84813928fa6e" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool nw::graph::plain_range&lt; Graph, Is &gt;::empty</definition>
+        <argsstring>() const</argsstring>
+        <name>empty</name>
+        <qualifiedname>nw::graph::plain_range::empty</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/plain_range.hpp" line="121" column="15" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/plain_range.hpp" bodystart="121" bodyend="121"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1plain__range_1a8e0c01a28f2f70dad7eeb8cca8f7ccfe" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool nw::graph::plain_range&lt; Graph, Is &gt;::is_divisible</definition>
+        <argsstring>() const</argsstring>
+        <name>is_divisible</name>
+        <qualifiedname>nw::graph::plain_range::is_divisible</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/plain_range.hpp" line="122" column="15" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/plain_range.hpp" bodystart="122" bodyend="122"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/plain_range.hpp" line="35" column="1" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/plain_range.hpp" bodystart="35" bodyend="123"/>
+    <listofallmembers>
+      <member refid="classnw_1_1graph_1_1plain__range_1a268625676bc0b29ea60903690164e496" prot="public" virt="non-virtual"><scope>nw::graph::plain_range</scope><name>begin</name></member>
+      <member refid="classnw_1_1graph_1_1plain__range_1a47d2fcf46b10540c906f4e2662ee5de7" prot="public" virt="non-virtual"><scope>nw::graph::plain_range</scope><name>begin</name></member>
+      <member refid="classnw_1_1graph_1_1plain__range_1af0e4f6ab201fd6a05550be9ef3d63454" prot="public" virt="non-virtual"><scope>nw::graph::plain_range</scope><name>const_iterator</name></member>
+      <member refid="classnw_1_1graph_1_1plain__range_1abcd7a4e01732cfe3c794989277f7788d" prot="private" virt="non-virtual"><scope>nw::graph::plain_range</scope><name>cutoff_</name></member>
+      <member refid="classnw_1_1graph_1_1plain__range_1a1490f9a16369ca2f182e84813928fa6e" prot="public" virt="non-virtual"><scope>nw::graph::plain_range</scope><name>empty</name></member>
+      <member refid="classnw_1_1graph_1_1plain__range_1a43e24a17bd94873e72738ed462eced38" prot="public" virt="non-virtual"><scope>nw::graph::plain_range</scope><name>end</name></member>
+      <member refid="classnw_1_1graph_1_1plain__range_1ad2ff113f6c1a7ccd6301170648d4fd0b" prot="public" virt="non-virtual"><scope>nw::graph::plain_range</scope><name>end</name></member>
+      <member refid="classnw_1_1graph_1_1plain__range_1a7862297dc23f2ecac1eb36e81e9af9f5" prot="private" virt="non-virtual"><scope>nw::graph::plain_range</scope><name>graph_iterator</name></member>
+      <member refid="classnw_1_1graph_1_1plain__range_1a8e0c01a28f2f70dad7eeb8cca8f7ccfe" prot="public" virt="non-virtual"><scope>nw::graph::plain_range</scope><name>is_divisible</name></member>
+      <member refid="classnw_1_1graph_1_1plain__range_1a8c8e4a827498226e886cac20e0fcdad8" prot="public" virt="non-virtual"><scope>nw::graph::plain_range</scope><name>iterator</name></member>
+      <member refid="classnw_1_1graph_1_1plain__range_1a293989a8751a54f98447e6845d9c82e1" prot="public" virt="non-virtual"><scope>nw::graph::plain_range</scope><name>operator=</name></member>
+      <member refid="classnw_1_1graph_1_1plain__range_1ab117facffe5c51294855af97bb2483fb" prot="private" virt="non-virtual"><scope>nw::graph::plain_range</scope><name>outer_base_</name></member>
+      <member refid="classnw_1_1graph_1_1plain__range_1a22855100d22040a8433c56bf2dafbee8" prot="private" virt="non-virtual"><scope>nw::graph::plain_range</scope><name>outer_begin_</name></member>
+      <member refid="classnw_1_1graph_1_1plain__range_1aa07f13156c7b05299b31f7bd3f11d8d4" prot="private" virt="non-virtual"><scope>nw::graph::plain_range</scope><name>outer_end_</name></member>
+      <member refid="classnw_1_1graph_1_1plain__range_1a8f9f17bce1f8e0242a175ac3ee6b3493" prot="public" virt="non-virtual"><scope>nw::graph::plain_range</scope><name>plain_range</name></member>
+      <member refid="classnw_1_1graph_1_1plain__range_1acb6c77a889ae85ca40999b58f094d976" prot="public" virt="non-virtual"><scope>nw::graph::plain_range</scope><name>plain_range</name></member>
+      <member refid="classnw_1_1graph_1_1plain__range_1a795e5c1f5b97f30182371cb0aade5cea" prot="public" virt="non-virtual"><scope>nw::graph::plain_range</scope><name>plain_range</name></member>
+      <member refid="classnw_1_1graph_1_1plain__range_1aecac5e020773656f97ba18f63e1b5960" prot="public" virt="non-virtual"><scope>nw::graph::plain_range</scope><name>plain_range</name></member>
+      <member refid="classnw_1_1graph_1_1plain__range_1a8da0ebaaf1681dfe533dfc5d6a3e7738" prot="public" virt="non-virtual"><scope>nw::graph::plain_range</scope><name>size</name></member>
+      <member refid="classnw_1_1graph_1_1plain__range_1af7ea0a1ee396efd7afbe18a8ea95bd2e" prot="private" virt="non-virtual"><scope>nw::graph::plain_range</scope><name>vertex_id_type</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

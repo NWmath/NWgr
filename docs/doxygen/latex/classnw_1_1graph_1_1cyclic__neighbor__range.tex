@@ -1,0 +1,89 @@
+\hypertarget{classnw_1_1graph_1_1cyclic__neighbor__range}{}\doxysection{nw\+::graph\+::cyclic\+\_\+neighbor\+\_\+range\texorpdfstring{$<$}{<} Iterator \texorpdfstring{$>$}{>} Class Template Reference}
+\label{classnw_1_1graph_1_1cyclic__neighbor__range}\index{nw::graph::cyclic\_neighbor\_range$<$ Iterator $>$@{nw::graph::cyclic\_neighbor\_range$<$ Iterator $>$}}
+
+
+{\ttfamily \#include $<$cyclic\+\_\+neighbor\+\_\+range.\+hpp$>$}
+
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{structnw_1_1graph_1_1cyclic__neighbor__range_1_1iterator}{iterator}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classnw_1_1graph_1_1cyclic__neighbor__range_a877b4c8e418e25c52f9a25640a9b1015}\label{classnw_1_1graph_1_1cyclic__neighbor__range_a877b4c8e418e25c52f9a25640a9b1015}} 
+using {\bfseries difference\+\_\+type} = typename std\+::iterator\+\_\+traits$<$ Iterator $>$\+::difference\+\_\+type
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classnw_1_1graph_1_1cyclic__neighbor__range_a710c77ff0e3bc910a178879f2adea07d}\label{classnw_1_1graph_1_1cyclic__neighbor__range_a710c77ff0e3bc910a178879f2adea07d}} 
+{\footnotesize template$<$class Range , class Cutoff $>$ }\\{\bfseries cyclic\+\_\+neighbor\+\_\+range} (Range \&\&range, Cutoff cutoff)
+\item 
+\mbox{\Hypertarget{classnw_1_1graph_1_1cyclic__neighbor__range_aa61c95704d24c449798e5deac57c3f36}\label{classnw_1_1graph_1_1cyclic__neighbor__range_aa61c95704d24c449798e5deac57c3f36}} 
+{\bfseries cyclic\+\_\+neighbor\+\_\+range} (const \mbox{\hyperlink{classnw_1_1graph_1_1cyclic__neighbor__range}{cyclic\+\_\+neighbor\+\_\+range}} \&)=default
+\item 
+\mbox{\Hypertarget{classnw_1_1graph_1_1cyclic__neighbor__range_a471d269f1ba1988cc8888cc0c6dc3a11}\label{classnw_1_1graph_1_1cyclic__neighbor__range_a471d269f1ba1988cc8888cc0c6dc3a11}} 
+{\bfseries cyclic\+\_\+neighbor\+\_\+range} (\mbox{\hyperlink{classnw_1_1graph_1_1cyclic__neighbor__range}{cyclic\+\_\+neighbor\+\_\+range}} \&\&)=default
+\item 
+\mbox{\Hypertarget{classnw_1_1graph_1_1cyclic__neighbor__range_a75e5e0011c3f77a910d2723dfa69973b}\label{classnw_1_1graph_1_1cyclic__neighbor__range_a75e5e0011c3f77a910d2723dfa69973b}} 
+{\bfseries cyclic\+\_\+neighbor\+\_\+range} (\mbox{\hyperlink{classnw_1_1graph_1_1cyclic__neighbor__range}{cyclic\+\_\+neighbor\+\_\+range}} \&rhs, tbb\+::split)
+\item 
+\mbox{\Hypertarget{classnw_1_1graph_1_1cyclic__neighbor__range_a902dd876fb3cae70d4dc48a594369829}\label{classnw_1_1graph_1_1cyclic__neighbor__range_a902dd876fb3cae70d4dc48a594369829}} 
+\mbox{\hyperlink{structnw_1_1graph_1_1cyclic__neighbor__range_1_1iterator}{iterator}} {\bfseries begin} () const
+\begin{DoxyCompactList}\small\item\em Return an iterator that points to the start of the cycle. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structnw_1_1graph_1_1cyclic__neighbor__range_1_1iterator}{iterator}} \mbox{\hyperlink{classnw_1_1graph_1_1cyclic__neighbor__range_ab31a22b3935e533a2bb1251974047055}{end}} () const
+\item 
+\mbox{\Hypertarget{classnw_1_1graph_1_1cyclic__neighbor__range_a6d4f88f551e04ff04becf5a724773a5c}\label{classnw_1_1graph_1_1cyclic__neighbor__range_a6d4f88f551e04ff04becf5a724773a5c}} 
+difference\+\_\+type {\bfseries size} () const
+\item 
+\mbox{\Hypertarget{classnw_1_1graph_1_1cyclic__neighbor__range_a82e8b5db10757028d740273fef5b96ec}\label{classnw_1_1graph_1_1cyclic__neighbor__range_a82e8b5db10757028d740273fef5b96ec}} 
+bool {\bfseries empty} () const
+\item 
+bool \mbox{\hyperlink{classnw_1_1graph_1_1cyclic__neighbor__range_a355f5f6323c4515f330e38790ebd23b3}{is\+\_\+divisible}} () const
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$class Iterator$>$\newline
+class nw\+::graph\+::cyclic\+\_\+neighbor\+\_\+range$<$ Iterator $>$}
+The cyclic neighbor range adapter.
+
+This adapter takes an underlying random access range and provides the ability to split the range into cycles for TBB. A cycle is a subset of the range such that each subsequent element is some stride from the previous element.
+
+The cyclic range adapter is implemented recursively, that is that each time the range is split it simply returns two ranges that cover the previous range, each with twice the cycle and one offset by one element.
+
+Key to the adapter is the {\itshape cutoff}, which is defined in terms of the maximum stride rather than in terms of the number of elements. A {\itshape cutoff} of {\ttfamily 1} implies that the range can\textquotesingle{}t be split, while a {\ttfamily \+\_\+cutoff\+\_\+} of {\ttfamily n} means that the range can be split into up to {\ttfamily n} cycles.
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em Iterator} & The type of the underlying range iterator (must be at least random access). \\
+\hline
+\end{DoxyTemplParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classnw_1_1graph_1_1cyclic__neighbor__range_ab31a22b3935e533a2bb1251974047055}\label{classnw_1_1graph_1_1cyclic__neighbor__range_ab31a22b3935e533a2bb1251974047055}} 
+\index{nw::graph::cyclic\_neighbor\_range$<$ Iterator $>$@{nw::graph::cyclic\_neighbor\_range$<$ Iterator $>$}!end@{end}}
+\index{end@{end}!nw::graph::cyclic\_neighbor\_range$<$ Iterator $>$@{nw::graph::cyclic\_neighbor\_range$<$ Iterator $>$}}
+\doxysubsubsection{\texorpdfstring{end()}{end()}}
+{\footnotesize\ttfamily template$<$class Iterator $>$ \\
+\mbox{\hyperlink{structnw_1_1graph_1_1cyclic__neighbor__range_1_1iterator}{iterator}} \mbox{\hyperlink{classnw_1_1graph_1_1cyclic__neighbor__range}{nw\+::graph\+::cyclic\+\_\+neighbor\+\_\+range}}$<$ Iterator $>$\+::end (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+Return an iterator that points to the end of the cycle.
+
+The end of the cycle is the first iterator in the cycle that is greater than or equal to the end\+\_\+ iterator in the underlying range. End iterators for different cycles will be different even if the underlying range and strides match, so tests should not be performed across cycles. \mbox{\Hypertarget{classnw_1_1graph_1_1cyclic__neighbor__range_a355f5f6323c4515f330e38790ebd23b3}\label{classnw_1_1graph_1_1cyclic__neighbor__range_a355f5f6323c4515f330e38790ebd23b3}} 
+\index{nw::graph::cyclic\_neighbor\_range$<$ Iterator $>$@{nw::graph::cyclic\_neighbor\_range$<$ Iterator $>$}!is\_divisible@{is\_divisible}}
+\index{is\_divisible@{is\_divisible}!nw::graph::cyclic\_neighbor\_range$<$ Iterator $>$@{nw::graph::cyclic\_neighbor\_range$<$ Iterator $>$}}
+\doxysubsubsection{\texorpdfstring{is\_divisible()}{is\_divisible()}}
+{\footnotesize\ttfamily template$<$class Iterator $>$ \\
+bool \mbox{\hyperlink{classnw_1_1graph_1_1cyclic__neighbor__range}{nw\+::graph\+::cyclic\+\_\+neighbor\+\_\+range}}$<$ Iterator $>$\+::is\+\_\+divisible (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+Runtime check to see if the range is divisible.
+
+The range can be subdivided if its stride can be increased relative to the cutoff. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/lums/\+NWmath/\+NWgr/include/nwgraph/adaptors/cyclic\+\_\+neighbor\+\_\+range.\+hpp\end{DoxyCompactItemize}

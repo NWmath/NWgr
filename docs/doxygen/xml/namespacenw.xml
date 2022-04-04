@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.3" xml:lang="en-US">
+  <compounddef id="namespacenw" kind="namespace" language="C++">
+    <compoundname>nw</compoundname>
+    <innernamespace refid="namespacenw_1_1graph">nw::graph</innernamespace>
+    <innernamespace refid="namespacenw_1_1hypergraph">nw::hypergraph</innernamespace>
+    <innernamespace refid="namespacenw_1_1util">nw::util</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/Users/lums/NWmath/NWgr/include/nwgraph/access.hpp" line="20" column="1"/>
+  </compounddef>
+</doxygen>

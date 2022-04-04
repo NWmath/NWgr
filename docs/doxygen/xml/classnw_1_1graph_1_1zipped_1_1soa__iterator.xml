@@ -1,0 +1,627 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.3" xml:lang="en-US">
+  <compounddef id="classnw_1_1graph_1_1zipped_1_1soa__iterator" kind="class" language="C++" prot="public">
+    <compoundname>nw::graph::zipped::soa_iterator</compoundname>
+    <templateparamlist>
+      <param>
+        <type>bool</type>
+        <declname>is_const</declname>
+        <defname>is_const</defname>
+        <defval>false</defval>
+      </param>
+    </templateparamlist>
+      <sectiondef kind="private-type">
+      <memberdef kind="typedef" id="classnw_1_1graph_1_1zipped_1_1soa__iterator_1a0a79c7c825f1d4d75bc89143afea0985" prot="private" static="no">
+        <type>std::conditional_t&lt; is_const, const <ref refid="structnw_1_1graph_1_1zipped" kindref="compound">zipped</ref>, <ref refid="structnw_1_1graph_1_1zipped" kindref="compound">zipped</ref> &gt;</type>
+        <definition>using nw::graph::zipped&lt; Ranges &gt;::soa_iterator&lt; is_const &gt;::soa_t =  std::conditional_t&lt;is_const, const zipped, zipped&gt;</definition>
+        <argsstring></argsstring>
+        <name>soa_t</name>
+        <qualifiedname>nw::graph::zipped::soa_iterator::soa_t</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/zip.hpp" line="67" column="5" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/containers/zip.hpp" bodystart="67" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-type">
+      <memberdef kind="typedef" id="classnw_1_1graph_1_1zipped_1_1soa__iterator_1a927efc092157cde87aa28b7d184fb979" prot="public" static="no">
+        <type>std::conditional_t&lt; is_const, const_attributes_t, attributes_t &gt;</type>
+        <definition>using nw::graph::zipped&lt; Ranges &gt;::soa_iterator&lt; is_const &gt;::value_type =  std::conditional_t&lt;is_const, const_attributes_t, attributes_t&gt;</definition>
+        <argsstring></argsstring>
+        <name>value_type</name>
+        <qualifiedname>nw::graph::zipped::soa_iterator::value_type</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/zip.hpp" line="73" column="5" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/containers/zip.hpp" bodystart="73" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="classnw_1_1graph_1_1zipped_1_1soa__iterator_1aec460ddc48dc5c713e6ac142475098a7" prot="public" static="no">
+        <type>std::ptrdiff_t</type>
+        <definition>using nw::graph::zipped&lt; Ranges &gt;::soa_iterator&lt; is_const &gt;::difference_type =  std::ptrdiff_t</definition>
+        <argsstring></argsstring>
+        <name>difference_type</name>
+        <qualifiedname>nw::graph::zipped::soa_iterator::difference_type</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/zip.hpp" line="74" column="5" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/containers/zip.hpp" bodystart="74" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="classnw_1_1graph_1_1zipped_1_1soa__iterator_1a030c0e22d47217041485cab1b83b3ede" prot="public" static="no">
+        <type>std::conditional_t&lt; is_const, const_attributes_r, attributes_r &gt;</type>
+        <definition>using nw::graph::zipped&lt; Ranges &gt;::soa_iterator&lt; is_const &gt;::reference =  std::conditional_t&lt;is_const, const_attributes_r, attributes_r&gt;</definition>
+        <argsstring></argsstring>
+        <name>reference</name>
+        <qualifiedname>nw::graph::zipped::soa_iterator::reference</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/zip.hpp" line="75" column="5" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/containers/zip.hpp" bodystart="75" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="classnw_1_1graph_1_1zipped_1_1soa__iterator_1a211b610477b282fb83509029484f106d" prot="public" static="no">
+        <type><ref refid="structnw_1_1graph_1_1arrow__proxy" kindref="compound">arrow_proxy</ref>&lt; reference &gt;</type>
+        <definition>using nw::graph::zipped&lt; Ranges &gt;::soa_iterator&lt; is_const &gt;::pointer =  arrow_proxy&lt;reference&gt;</definition>
+        <argsstring></argsstring>
+        <name>pointer</name>
+        <qualifiedname>nw::graph::zipped::soa_iterator::pointer</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/zip.hpp" line="76" column="5" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/containers/zip.hpp" bodystart="76" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="classnw_1_1graph_1_1zipped_1_1soa__iterator_1a9f5c973d787c731854a40d6ff0d0e11c" prot="public" static="no">
+        <type>std::random_access_iterator_tag</type>
+        <definition>using nw::graph::zipped&lt; Ranges &gt;::soa_iterator&lt; is_const &gt;::iterator_category =  std::random_access_iterator_tag</definition>
+        <argsstring></argsstring>
+        <name>iterator_category</name>
+        <qualifiedname>nw::graph::zipped::soa_iterator::iterator_category</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/zip.hpp" line="77" column="5" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/containers/zip.hpp" bodystart="77" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="friend">
+      <memberdef kind="friend" id="classnw_1_1graph_1_1zipped_1_1soa__iterator_1a7d38cf79495172994461e86cbb77d5a9" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>class</type>
+        <definition>friend class soa_iterator&lt;!is_const &gt;</definition>
+        <argsstring></argsstring>
+        <name>soa_iterator&lt;!is_const &gt;</name>
+        <qualifiedname>nw::graph::zipped::soa_iterator::soa_iterator&lt;!is_const &gt;</qualifiedname>
+        <param>
+          <type><ref refid="classnw_1_1graph_1_1zipped_1_1soa__iterator" kindref="compound">soa_iterator</ref>&lt;!is_const &gt;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/zip.hpp" line="268" column="8" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/containers/zip.hpp" bodystart="65" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="friend" id="classnw_1_1graph_1_1zipped_1_1soa__iterator_1a0fbb9c41c7e83cdcf9f7e9e7a79c7cf4" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classnw_1_1graph_1_1zipped_1_1soa__iterator" kindref="compound">soa_iterator</ref></type>
+        <definition>soa_iterator operator+</definition>
+        <argsstring>(std::ptrdiff_t n, soa_iterator i)</argsstring>
+        <name>operator+</name>
+        <qualifiedname>nw::graph::zipped::soa_iterator::operator+</qualifiedname>
+        <param>
+          <type>std::ptrdiff_t</type>
+          <declname>n</declname>
+        </param>
+        <param>
+          <type><ref refid="classnw_1_1graph_1_1zipped_1_1soa__iterator" kindref="compound">soa_iterator</ref></type>
+          <declname>i</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/zip.hpp" line="123" column="25" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/containers/zip.hpp" bodystart="123" bodyend="123"/>
+      </memberdef>
+      <memberdef kind="friend" id="classnw_1_1graph_1_1zipped_1_1soa__iterator_1abd70f1c4b079dbe101eec264e56aab76" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classnw_1_1graph_1_1zipped_1_1soa__iterator" kindref="compound">soa_iterator</ref></type>
+        <definition>soa_iterator operator-</definition>
+        <argsstring>(std::ptrdiff_t n, soa_iterator i)</argsstring>
+        <name>operator-</name>
+        <qualifiedname>nw::graph::zipped::soa_iterator::operator-</qualifiedname>
+        <param>
+          <type>std::ptrdiff_t</type>
+          <declname>n</declname>
+        </param>
+        <param>
+          <type><ref refid="classnw_1_1graph_1_1zipped_1_1soa__iterator" kindref="compound">soa_iterator</ref></type>
+          <declname>i</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/zip.hpp" line="124" column="25" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/containers/zip.hpp" bodystart="124" bodyend="124"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classnw_1_1graph_1_1zipped_1_1soa__iterator_1ae105bc0f4b20389b02ddbcf52e30f91b" prot="private" static="no" mutable="no">
+        <type>std::size_t</type>
+        <definition>std::size_t nw::graph::zipped&lt; Ranges &gt;::soa_iterator&lt; is_const &gt;::i_</definition>
+        <argsstring></argsstring>
+        <name>i_</name>
+        <qualifiedname>nw::graph::zipped::soa_iterator::i_</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/zip.hpp" line="69" column="17" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/containers/zip.hpp" bodystart="69" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classnw_1_1graph_1_1zipped_1_1soa__iterator_1af7c8f14eb266cf8065b5d1378804cbf3" prot="private" static="no" mutable="no">
+        <type>soa_t *</type>
+        <definition>soa_t* nw::graph::zipped&lt; Ranges &gt;::soa_iterator&lt; is_const &gt;::soa_</definition>
+        <argsstring></argsstring>
+        <name>soa_</name>
+        <qualifiedname>nw::graph::zipped::soa_iterator::soa_</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/zip.hpp" line="70" column="16" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/containers/zip.hpp" bodystart="70" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classnw_1_1graph_1_1zipped_1_1soa__iterator_1afca4e8d69240607d6d70b2f2759bc08d" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>nw::graph::zipped&lt; Ranges &gt;::soa_iterator&lt; is_const &gt;::soa_iterator</definition>
+        <argsstring>()=default</argsstring>
+        <name>soa_iterator</name>
+        <qualifiedname>nw::graph::zipped::soa_iterator::soa_iterator</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/zip.hpp" line="79" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1zipped_1_1soa__iterator_1ac44b846c3b702119f4b54c22a7a9a95b" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>nw::graph::zipped&lt; Ranges &gt;::soa_iterator&lt; is_const &gt;::soa_iterator</definition>
+        <argsstring>(soa_t *soa, std::size_t i=0)</argsstring>
+        <name>soa_iterator</name>
+        <qualifiedname>nw::graph::zipped::soa_iterator::soa_iterator</qualifiedname>
+        <param>
+          <type>soa_t *</type>
+          <declname>soa</declname>
+        </param>
+        <param>
+          <type>std::size_t</type>
+          <declname>i</declname>
+          <defval>0</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/zip.hpp" line="81" column="5" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/containers/zip.hpp" bodystart="81" bodyend="81"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1zipped_1_1soa__iterator_1a32b4a3b3b823b6aa335983147f53a5b7" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>nw::graph::zipped&lt; Ranges &gt;::soa_iterator&lt; is_const &gt;::soa_iterator</definition>
+        <argsstring>(soa_iterator &amp;&amp;)=default</argsstring>
+        <name>soa_iterator</name>
+        <qualifiedname>nw::graph::zipped::soa_iterator::soa_iterator</qualifiedname>
+        <param>
+          <type><ref refid="classnw_1_1graph_1_1zipped_1_1soa__iterator" kindref="compound">soa_iterator</ref> &amp;&amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/zip.hpp" line="83" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1zipped_1_1soa__iterator_1a5a964afe0b0ad9ab520bebc27b51af85" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>nw::graph::zipped&lt; Ranges &gt;::soa_iterator&lt; is_const &gt;::soa_iterator</definition>
+        <argsstring>(const soa_iterator &amp;)=default</argsstring>
+        <name>soa_iterator</name>
+        <qualifiedname>nw::graph::zipped::soa_iterator::soa_iterator</qualifiedname>
+        <param>
+          <type>const <ref refid="classnw_1_1graph_1_1zipped_1_1soa__iterator" kindref="compound">soa_iterator</ref> &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/zip.hpp" line="84" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1zipped_1_1soa__iterator_1a6cc9c8c00cc4332bc2f84d4ec6dac609" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>nw::graph::zipped&lt; Ranges &gt;::soa_iterator&lt; is_const &gt;::soa_iterator</definition>
+        <argsstring>(const soa_iterator&lt; false &gt; &amp;b)</argsstring>
+        <name>soa_iterator</name>
+        <qualifiedname>nw::graph::zipped::soa_iterator::soa_iterator</qualifiedname>
+        <param>
+          <type>const <ref refid="classnw_1_1graph_1_1zipped_1_1soa__iterator" kindref="compound">soa_iterator</ref>&lt; false &gt; &amp;</type>
+          <declname>b</declname>
+        </param>
+    <requiresclause>(is_const)    </requiresclause>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/zip.hpp" line="86" column="5" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/containers/zip.hpp" bodystart="86" bodyend="86"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1zipped_1_1soa__iterator_1ae677fe44413760118e20c840061c07be" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classnw_1_1graph_1_1zipped_1_1soa__iterator" kindref="compound">soa_iterator</ref> &amp;</type>
+        <definition>soa_iterator &amp; nw::graph::zipped&lt; Ranges &gt;::soa_iterator&lt; is_const &gt;::operator=</definition>
+        <argsstring>(const soa_iterator &amp;)=default</argsstring>
+        <name>operator=</name>
+        <qualifiedname>nw::graph::zipped::soa_iterator::operator=</qualifiedname>
+        <param>
+          <type>const <ref refid="classnw_1_1graph_1_1zipped_1_1soa__iterator" kindref="compound">soa_iterator</ref> &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/zip.hpp" line="88" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1zipped_1_1soa__iterator_1a92d3a22c2be14e75c08aa2d8bd716b84" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type><ref refid="classnw_1_1graph_1_1zipped_1_1soa__iterator" kindref="compound">soa_iterator</ref> &amp;</type>
+        <definition>soa_iterator &amp; nw::graph::zipped&lt; Ranges &gt;::soa_iterator&lt; is_const &gt;::operator=</definition>
+        <argsstring>(soa_iterator &amp;&amp;)=default</argsstring>
+        <name>operator=</name>
+        <qualifiedname>nw::graph::zipped::soa_iterator::operator=</qualifiedname>
+        <param>
+          <type><ref refid="classnw_1_1graph_1_1zipped_1_1soa__iterator" kindref="compound">soa_iterator</ref> &amp;&amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/zip.hpp" line="89" column="18"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1zipped_1_1soa__iterator_1a6ea397783641cf8144fe5f83bde0bc03" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classnw_1_1graph_1_1zipped_1_1soa__iterator" kindref="compound">soa_iterator</ref> &amp;</type>
+        <definition>soa_iterator &amp; nw::graph::zipped&lt; Ranges &gt;::soa_iterator&lt; is_const &gt;::operator=</definition>
+        <argsstring>(const soa_iterator&lt; false &gt; &amp;b)</argsstring>
+        <name>operator=</name>
+        <qualifiedname>nw::graph::zipped::soa_iterator::operator=</qualifiedname>
+        <param>
+          <type>const <ref refid="classnw_1_1graph_1_1zipped_1_1soa__iterator" kindref="compound">soa_iterator</ref>&lt; false &gt; &amp;</type>
+          <declname>b</declname>
+        </param>
+    <requiresclause>(is_const)    </requiresclause>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/zip.hpp" line="91" column="18" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/containers/zip.hpp" bodystart="91" bodyend="95"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1zipped_1_1soa__iterator_1a23d9f527acd5122fcd10da60d41153e7" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool nw::graph::zipped&lt; Ranges &gt;::soa_iterator&lt; is_const &gt;::operator==</definition>
+        <argsstring>(const soa_iterator &amp;) const =default</argsstring>
+        <name>operator==</name>
+        <qualifiedname>nw::graph::zipped::soa_iterator::operator==</qualifiedname>
+        <param>
+          <type>const <ref refid="classnw_1_1graph_1_1zipped_1_1soa__iterator" kindref="compound">soa_iterator</ref> &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/zip.hpp" line="97" column="10"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1zipped_1_1soa__iterator_1a86a4c8156b1c7bc7e183271d00496e4a" prot="public" static="no" const="yes" explicit="no" inline="no" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto nw::graph::zipped&lt; Ranges &gt;::soa_iterator&lt; is_const &gt;::operator&lt;=&gt;</definition>
+        <argsstring>(const soa_iterator &amp;) const =default</argsstring>
+        <name>operator&lt;=&gt;</name>
+        <qualifiedname>nw::graph::zipped::soa_iterator::operator&lt;=&gt;</qualifiedname>
+        <param>
+          <type>const <ref refid="classnw_1_1graph_1_1zipped_1_1soa__iterator" kindref="compound">soa_iterator</ref> &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/zip.hpp" line="98" column="5"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1zipped_1_1soa__iterator_1a9a3e8743ebd62bcf6cd4047c1713496e" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classnw_1_1graph_1_1zipped_1_1soa__iterator" kindref="compound">soa_iterator</ref></type>
+        <definition>soa_iterator nw::graph::zipped&lt; Ranges &gt;::soa_iterator&lt; is_const &gt;::operator++</definition>
+        <argsstring>(int)</argsstring>
+        <name>operator++</name>
+        <qualifiedname>nw::graph::zipped::soa_iterator::operator++</qualifiedname>
+        <param>
+          <type>int</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/zip.hpp" line="100" column="18" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/containers/zip.hpp" bodystart="100" bodyend="100"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1zipped_1_1soa__iterator_1af287cda5d21a1605af8cea7037ccab2d" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classnw_1_1graph_1_1zipped_1_1soa__iterator" kindref="compound">soa_iterator</ref></type>
+        <definition>soa_iterator nw::graph::zipped&lt; Ranges &gt;::soa_iterator&lt; is_const &gt;::operator--</definition>
+        <argsstring>(int)</argsstring>
+        <name>operator--</name>
+        <qualifiedname>nw::graph::zipped::soa_iterator::operator--</qualifiedname>
+        <param>
+          <type>int</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/zip.hpp" line="101" column="18" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/containers/zip.hpp" bodystart="101" bodyend="101"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1zipped_1_1soa__iterator_1ab00aac65dcfffb7e971e44e76a50bb32" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classnw_1_1graph_1_1zipped_1_1soa__iterator" kindref="compound">soa_iterator</ref> &amp;</type>
+        <definition>soa_iterator &amp; nw::graph::zipped&lt; Ranges &gt;::soa_iterator&lt; is_const &gt;::operator++</definition>
+        <argsstring>()</argsstring>
+        <name>operator++</name>
+        <qualifiedname>nw::graph::zipped::soa_iterator::operator++</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/zip.hpp" line="103" column="18" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/containers/zip.hpp" bodystart="103" bodyend="106"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1zipped_1_1soa__iterator_1af73c92651e99cc7b034f72eb2e2c7e1b" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classnw_1_1graph_1_1zipped_1_1soa__iterator" kindref="compound">soa_iterator</ref> &amp;</type>
+        <definition>soa_iterator &amp; nw::graph::zipped&lt; Ranges &gt;::soa_iterator&lt; is_const &gt;::operator--</definition>
+        <argsstring>()</argsstring>
+        <name>operator--</name>
+        <qualifiedname>nw::graph::zipped::soa_iterator::operator--</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/zip.hpp" line="107" column="18" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/containers/zip.hpp" bodystart="107" bodyend="110"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1zipped_1_1soa__iterator_1ac5c91cb74016b22935f388a7f85a25fc" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classnw_1_1graph_1_1zipped_1_1soa__iterator" kindref="compound">soa_iterator</ref> &amp;</type>
+        <definition>soa_iterator &amp; nw::graph::zipped&lt; Ranges &gt;::soa_iterator&lt; is_const &gt;::operator+=</definition>
+        <argsstring>(std::ptrdiff_t n)</argsstring>
+        <name>operator+=</name>
+        <qualifiedname>nw::graph::zipped::soa_iterator::operator+=</qualifiedname>
+        <param>
+          <type>std::ptrdiff_t</type>
+          <declname>n</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/zip.hpp" line="111" column="18" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/containers/zip.hpp" bodystart="111" bodyend="114"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1zipped_1_1soa__iterator_1a0b7de632f16558a7b4f4048cb35c1957" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classnw_1_1graph_1_1zipped_1_1soa__iterator" kindref="compound">soa_iterator</ref> &amp;</type>
+        <definition>soa_iterator &amp; nw::graph::zipped&lt; Ranges &gt;::soa_iterator&lt; is_const &gt;::operator-=</definition>
+        <argsstring>(std::ptrdiff_t n)</argsstring>
+        <name>operator-=</name>
+        <qualifiedname>nw::graph::zipped::soa_iterator::operator-=</qualifiedname>
+        <param>
+          <type>std::ptrdiff_t</type>
+          <declname>n</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/zip.hpp" line="115" column="18" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/containers/zip.hpp" bodystart="115" bodyend="118"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1zipped_1_1soa__iterator_1aec2e286416ba15992aed972569b910e0" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classnw_1_1graph_1_1zipped_1_1soa__iterator" kindref="compound">soa_iterator</ref></type>
+        <definition>soa_iterator nw::graph::zipped&lt; Ranges &gt;::soa_iterator&lt; is_const &gt;::operator+</definition>
+        <argsstring>(std::ptrdiff_t n) const</argsstring>
+        <name>operator+</name>
+        <qualifiedname>nw::graph::zipped::soa_iterator::operator+</qualifiedname>
+        <param>
+          <type>std::ptrdiff_t</type>
+          <declname>n</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/zip.hpp" line="120" column="18" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/containers/zip.hpp" bodystart="120" bodyend="120"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1zipped_1_1soa__iterator_1a8ebd28264d918481b868e446723073d1" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classnw_1_1graph_1_1zipped_1_1soa__iterator" kindref="compound">soa_iterator</ref></type>
+        <definition>soa_iterator nw::graph::zipped&lt; Ranges &gt;::soa_iterator&lt; is_const &gt;::operator-</definition>
+        <argsstring>(std::ptrdiff_t n) const</argsstring>
+        <name>operator-</name>
+        <qualifiedname>nw::graph::zipped::soa_iterator::operator-</qualifiedname>
+        <param>
+          <type>std::ptrdiff_t</type>
+          <declname>n</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/zip.hpp" line="121" column="18" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/containers/zip.hpp" bodystart="121" bodyend="121"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1zipped_1_1soa__iterator_1a11555eab81e71f001e57bcb2f826fe5e" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>std::ptrdiff_t</type>
+        <definition>std::ptrdiff_t nw::graph::zipped&lt; Ranges &gt;::soa_iterator&lt; is_const &gt;::operator-</definition>
+        <argsstring>(const soa_iterator &amp;b) const</argsstring>
+        <name>operator-</name>
+        <qualifiedname>nw::graph::zipped::soa_iterator::operator-</qualifiedname>
+        <param>
+          <type>const <ref refid="classnw_1_1graph_1_1zipped_1_1soa__iterator" kindref="compound">soa_iterator</ref> &amp;</type>
+          <declname>b</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/zip.hpp" line="126" column="20" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/containers/zip.hpp" bodystart="126" bodyend="126"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1zipped_1_1soa__iterator_1af5b33863a5edc1d2b80c0b9d86782126" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>reference</type>
+        <definition>reference nw::graph::zipped&lt; Ranges &gt;::soa_iterator&lt; is_const &gt;::operator*</definition>
+        <argsstring>() const</argsstring>
+        <name>operator*</name>
+        <qualifiedname>nw::graph::zipped::soa_iterator::operator*</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/zip.hpp" line="128" column="15" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/containers/zip.hpp" bodystart="128" bodyend="131"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1zipped_1_1soa__iterator_1ac72991a9f0445c2c4ca34c208d7ecb48" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>reference</type>
+        <definition>reference nw::graph::zipped&lt; Ranges &gt;::soa_iterator&lt; is_const &gt;::operator[]</definition>
+        <argsstring>(std::ptrdiff_t n) const</argsstring>
+        <name>operator[]</name>
+        <qualifiedname>nw::graph::zipped::soa_iterator::operator[]</qualifiedname>
+        <param>
+          <type>std::ptrdiff_t</type>
+          <declname>n</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/zip.hpp" line="133" column="15" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/containers/zip.hpp" bodystart="133" bodyend="136"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1zipped_1_1soa__iterator_1a3b083910f0d87711007f074103cee414" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="structnw_1_1graph_1_1arrow__proxy" kindref="compound">pointer</ref></type>
+        <definition>pointer nw::graph::zipped&lt; Ranges &gt;::soa_iterator&lt; is_const &gt;::operator-&gt;</definition>
+        <argsstring>() const</argsstring>
+        <name>operator-&gt;</name>
+        <qualifiedname>nw::graph::zipped::soa_iterator::operator-&gt;</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/zip.hpp" line="138" column="13" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/containers/zip.hpp" bodystart="138" bodyend="138"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1zipped_1_1soa__iterator_1a459544a4583835cbb8780a1a70a81bd6" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="structnw_1_1graph_1_1arrow__proxy" kindref="compound">pointer</ref></type>
+        <definition>pointer nw::graph::zipped&lt; Ranges &gt;::soa_iterator&lt; is_const &gt;::operator-&gt;</definition>
+        <argsstring>()</argsstring>
+        <name>operator-&gt;</name>
+        <qualifiedname>nw::graph::zipped::soa_iterator::operator-&gt;</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/zip.hpp" line="139" column="13" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/containers/zip.hpp" bodystart="139" bodyend="139"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/zip.hpp" line="64" column="3" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/containers/zip.hpp" bodystart="64" bodyend="140"/>
+    <listofallmembers>
+      <member refid="classnw_1_1graph_1_1zipped_1_1soa__iterator_1aec460ddc48dc5c713e6ac142475098a7" prot="public" virt="non-virtual"><scope>nw::graph::zipped::soa_iterator</scope><name>difference_type</name></member>
+      <member refid="classnw_1_1graph_1_1zipped_1_1soa__iterator_1ae105bc0f4b20389b02ddbcf52e30f91b" prot="private" virt="non-virtual"><scope>nw::graph::zipped::soa_iterator</scope><name>i_</name></member>
+      <member refid="classnw_1_1graph_1_1zipped_1_1soa__iterator_1a9f5c973d787c731854a40d6ff0d0e11c" prot="public" virt="non-virtual"><scope>nw::graph::zipped::soa_iterator</scope><name>iterator_category</name></member>
+      <member refid="classnw_1_1graph_1_1zipped_1_1soa__iterator_1af5b33863a5edc1d2b80c0b9d86782126" prot="public" virt="non-virtual"><scope>nw::graph::zipped::soa_iterator</scope><name>operator*</name></member>
+      <member refid="classnw_1_1graph_1_1zipped_1_1soa__iterator_1aec2e286416ba15992aed972569b910e0" prot="public" virt="non-virtual"><scope>nw::graph::zipped::soa_iterator</scope><name>operator+</name></member>
+      <member refid="classnw_1_1graph_1_1zipped_1_1soa__iterator_1a0fbb9c41c7e83cdcf9f7e9e7a79c7cf4" prot="public" virt="non-virtual"><scope>nw::graph::zipped::soa_iterator</scope><name>operator+</name></member>
+      <member refid="classnw_1_1graph_1_1zipped_1_1soa__iterator_1a9a3e8743ebd62bcf6cd4047c1713496e" prot="public" virt="non-virtual"><scope>nw::graph::zipped::soa_iterator</scope><name>operator++</name></member>
+      <member refid="classnw_1_1graph_1_1zipped_1_1soa__iterator_1ab00aac65dcfffb7e971e44e76a50bb32" prot="public" virt="non-virtual"><scope>nw::graph::zipped::soa_iterator</scope><name>operator++</name></member>
+      <member refid="classnw_1_1graph_1_1zipped_1_1soa__iterator_1ac5c91cb74016b22935f388a7f85a25fc" prot="public" virt="non-virtual"><scope>nw::graph::zipped::soa_iterator</scope><name>operator+=</name></member>
+      <member refid="classnw_1_1graph_1_1zipped_1_1soa__iterator_1a8ebd28264d918481b868e446723073d1" prot="public" virt="non-virtual"><scope>nw::graph::zipped::soa_iterator</scope><name>operator-</name></member>
+      <member refid="classnw_1_1graph_1_1zipped_1_1soa__iterator_1abd70f1c4b079dbe101eec264e56aab76" prot="public" virt="non-virtual"><scope>nw::graph::zipped::soa_iterator</scope><name>operator-</name></member>
+      <member refid="classnw_1_1graph_1_1zipped_1_1soa__iterator_1a11555eab81e71f001e57bcb2f826fe5e" prot="public" virt="non-virtual"><scope>nw::graph::zipped::soa_iterator</scope><name>operator-</name></member>
+      <member refid="classnw_1_1graph_1_1zipped_1_1soa__iterator_1af287cda5d21a1605af8cea7037ccab2d" prot="public" virt="non-virtual"><scope>nw::graph::zipped::soa_iterator</scope><name>operator--</name></member>
+      <member refid="classnw_1_1graph_1_1zipped_1_1soa__iterator_1af73c92651e99cc7b034f72eb2e2c7e1b" prot="public" virt="non-virtual"><scope>nw::graph::zipped::soa_iterator</scope><name>operator--</name></member>
+      <member refid="classnw_1_1graph_1_1zipped_1_1soa__iterator_1a0b7de632f16558a7b4f4048cb35c1957" prot="public" virt="non-virtual"><scope>nw::graph::zipped::soa_iterator</scope><name>operator-=</name></member>
+      <member refid="classnw_1_1graph_1_1zipped_1_1soa__iterator_1a3b083910f0d87711007f074103cee414" prot="public" virt="non-virtual"><scope>nw::graph::zipped::soa_iterator</scope><name>operator-&gt;</name></member>
+      <member refid="classnw_1_1graph_1_1zipped_1_1soa__iterator_1a459544a4583835cbb8780a1a70a81bd6" prot="public" virt="non-virtual"><scope>nw::graph::zipped::soa_iterator</scope><name>operator-&gt;</name></member>
+      <member refid="classnw_1_1graph_1_1zipped_1_1soa__iterator_1a86a4c8156b1c7bc7e183271d00496e4a" prot="public" virt="non-virtual"><scope>nw::graph::zipped::soa_iterator</scope><name>operator&lt;=&gt;</name></member>
+      <member refid="classnw_1_1graph_1_1zipped_1_1soa__iterator_1ae677fe44413760118e20c840061c07be" prot="public" virt="non-virtual"><scope>nw::graph::zipped::soa_iterator</scope><name>operator=</name></member>
+      <member refid="classnw_1_1graph_1_1zipped_1_1soa__iterator_1a92d3a22c2be14e75c08aa2d8bd716b84" prot="public" virt="non-virtual"><scope>nw::graph::zipped::soa_iterator</scope><name>operator=</name></member>
+      <member refid="classnw_1_1graph_1_1zipped_1_1soa__iterator_1a6ea397783641cf8144fe5f83bde0bc03" prot="public" virt="non-virtual"><scope>nw::graph::zipped::soa_iterator</scope><name>operator=</name></member>
+      <member refid="classnw_1_1graph_1_1zipped_1_1soa__iterator_1a23d9f527acd5122fcd10da60d41153e7" prot="public" virt="non-virtual"><scope>nw::graph::zipped::soa_iterator</scope><name>operator==</name></member>
+      <member refid="classnw_1_1graph_1_1zipped_1_1soa__iterator_1ac72991a9f0445c2c4ca34c208d7ecb48" prot="public" virt="non-virtual"><scope>nw::graph::zipped::soa_iterator</scope><name>operator[]</name></member>
+      <member refid="classnw_1_1graph_1_1zipped_1_1soa__iterator_1a211b610477b282fb83509029484f106d" prot="public" virt="non-virtual"><scope>nw::graph::zipped::soa_iterator</scope><name>pointer</name></member>
+      <member refid="classnw_1_1graph_1_1zipped_1_1soa__iterator_1a030c0e22d47217041485cab1b83b3ede" prot="public" virt="non-virtual"><scope>nw::graph::zipped::soa_iterator</scope><name>reference</name></member>
+      <member refid="classnw_1_1graph_1_1zipped_1_1soa__iterator_1af7c8f14eb266cf8065b5d1378804cbf3" prot="private" virt="non-virtual"><scope>nw::graph::zipped::soa_iterator</scope><name>soa_</name></member>
+      <member refid="classnw_1_1graph_1_1zipped_1_1soa__iterator_1afca4e8d69240607d6d70b2f2759bc08d" prot="public" virt="non-virtual"><scope>nw::graph::zipped::soa_iterator</scope><name>soa_iterator</name></member>
+      <member refid="classnw_1_1graph_1_1zipped_1_1soa__iterator_1ac44b846c3b702119f4b54c22a7a9a95b" prot="public" virt="non-virtual"><scope>nw::graph::zipped::soa_iterator</scope><name>soa_iterator</name></member>
+      <member refid="classnw_1_1graph_1_1zipped_1_1soa__iterator_1a32b4a3b3b823b6aa335983147f53a5b7" prot="public" virt="non-virtual"><scope>nw::graph::zipped::soa_iterator</scope><name>soa_iterator</name></member>
+      <member refid="classnw_1_1graph_1_1zipped_1_1soa__iterator_1a5a964afe0b0ad9ab520bebc27b51af85" prot="public" virt="non-virtual"><scope>nw::graph::zipped::soa_iterator</scope><name>soa_iterator</name></member>
+      <member refid="classnw_1_1graph_1_1zipped_1_1soa__iterator_1a6cc9c8c00cc4332bc2f84d4ec6dac609" prot="public" virt="non-virtual"><scope>nw::graph::zipped::soa_iterator</scope><name>soa_iterator</name></member>
+      <member refid="classnw_1_1graph_1_1zipped_1_1soa__iterator_1a7d38cf79495172994461e86cbb77d5a9" prot="private" virt="non-virtual"><scope>nw::graph::zipped::soa_iterator</scope><name>soa_iterator&lt;!is_const &gt;</name></member>
+      <member refid="classnw_1_1graph_1_1zipped_1_1soa__iterator_1a0a79c7c825f1d4d75bc89143afea0985" prot="private" virt="non-virtual"><scope>nw::graph::zipped::soa_iterator</scope><name>soa_t</name></member>
+      <member refid="classnw_1_1graph_1_1zipped_1_1soa__iterator_1a927efc092157cde87aa28b7d184fb979" prot="public" virt="non-virtual"><scope>nw::graph::zipped::soa_iterator</scope><name>value_type</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

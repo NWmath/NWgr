@@ -1,0 +1,250 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.3" xml:lang="en-US">
+  <compounddef id="classnw_1_1graph_1_1bottomup__bfs__range" kind="class" language="C++" prot="public">
+    <compoundname>nw::graph::bottomup_bfs_range</compoundname>
+    <innerclass refid="structnw_1_1graph_1_1bottomup__bfs__range_1_1end__sentinel__type" prot="public">nw::graph::bottomup_bfs_range::end_sentinel_type</innerclass>
+    <innerclass refid="classnw_1_1graph_1_1bottomup__bfs__range_1_1iterator" prot="public">nw::graph::bottomup_bfs_range::iterator</innerclass>
+    <templateparamlist>
+      <param>
+        <type>typename Graph</type>
+      </param>
+    </templateparamlist>
+      <sectiondef kind="private-type">
+      <memberdef kind="typedef" id="classnw_1_1graph_1_1bottomup__bfs__range_1afcf87cf405b4b3f1b284ee7edba26471" prot="private" static="no">
+        <type>vertex_id_t&lt; Graph &gt;</type>
+        <definition>using nw::graph::bottomup_bfs_range&lt; Graph &gt;::vertex_id_type =  vertex_id_t&lt;Graph&gt;</definition>
+        <argsstring></argsstring>
+        <name>vertex_id_type</name>
+        <qualifiedname>nw::graph::bottomup_bfs_range::vertex_id_type</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/bfs_range.hpp" line="186" column="3" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/bfs_range.hpp" bodystart="186" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="classnw_1_1graph_1_1bottomup__bfs__range_1ad29e70265e1f51f02ae09825ea7d8b35" prot="private" static="no">
+        <type>std::vector&lt; status &gt;</type>
+        <definition>using nw::graph::bottomup_bfs_range&lt; Graph &gt;::Colors =  std::vector&lt;status&gt;</definition>
+        <argsstring></argsstring>
+        <name>Colors</name>
+        <qualifiedname>nw::graph::bottomup_bfs_range::Colors</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/bfs_range.hpp" line="187" column="3" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/bfs_range.hpp" bodystart="187" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classnw_1_1graph_1_1bottomup__bfs__range_1ae257ce4ff4aea4bcd1574fc158f4e005" prot="private" static="no" mutable="no">
+        <type>Graph &amp;</type>
+        <definition>Graph&amp; nw::graph::bottomup_bfs_range&lt; Graph &gt;::graph_</definition>
+        <argsstring></argsstring>
+        <name>graph_</name>
+        <qualifiedname>nw::graph::bottomup_bfs_range::graph_</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/bfs_range.hpp" line="189" column="17" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/bfs_range.hpp" bodystart="189" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classnw_1_1graph_1_1bottomup__bfs__range_1a42bc88e2691a86ce687b188d2ccd1cef" prot="private" static="no" mutable="no">
+        <type>Colors</type>
+        <definition>Colors nw::graph::bottomup_bfs_range&lt; Graph &gt;::colors_</definition>
+        <argsstring></argsstring>
+        <name>colors_</name>
+        <qualifiedname>nw::graph::bottomup_bfs_range::colors_</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/bfs_range.hpp" line="190" column="18" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/bfs_range.hpp" bodystart="190" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classnw_1_1graph_1_1bottomup__bfs__range_1a0d1fdbbd90d4266072edb1e618a30800" prot="private" static="no" mutable="no">
+        <type>vertex_id_type</type>
+        <definition>vertex_id_type nw::graph::bottomup_bfs_range&lt; Graph &gt;::v_</definition>
+        <argsstring></argsstring>
+        <name>v_</name>
+        <qualifiedname>nw::graph::bottomup_bfs_range::v_</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/bfs_range.hpp" line="191" column="18" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/bfs_range.hpp" bodystart="191" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classnw_1_1graph_1_1bottomup__bfs__range_1a94813a3d4de5680de8d7a32d46009bcd" prot="private" static="no" mutable="no">
+        <type>vertex_id_type</type>
+        <definition>vertex_id_type nw::graph::bottomup_bfs_range&lt; Graph &gt;::parent_v_</definition>
+        <argsstring></argsstring>
+        <name>parent_v_</name>
+        <qualifiedname>nw::graph::bottomup_bfs_range::parent_v_</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/bfs_range.hpp" line="192" column="18" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/bfs_range.hpp" bodystart="192" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classnw_1_1graph_1_1bottomup__bfs__range_1ac166ccad10f739d3d731f9f119613bee" prot="private" static="no" mutable="no">
+        <type>size_t</type>
+        <definition>size_t nw::graph::bottomup_bfs_range&lt; Graph &gt;::n_</definition>
+        <argsstring></argsstring>
+        <name>n_</name>
+        <qualifiedname>nw::graph::bottomup_bfs_range::n_</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/bfs_range.hpp" line="193" column="18" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/bfs_range.hpp" bodystart="193" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-func">
+      <memberdef kind="function" id="classnw_1_1graph_1_1bottomup__bfs__range_1a999da2d1f49c1ba0aa1a790526dc18d0" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void nw::graph::bottomup_bfs_range&lt; Graph &gt;::advance</definition>
+        <argsstring>()</argsstring>
+        <name>advance</name>
+        <qualifiedname>nw::graph::bottomup_bfs_range::advance</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/bfs_range.hpp" line="195" column="8" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/bfs_range.hpp" bodystart="195" bodyend="223"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1bottomup__bfs__range_1ae9bb74c63cd69af541df558d89ab335b" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>decltype(auto)</type>
+        <definition>decltype(auto) nw::graph::bottomup_bfs_range&lt; Graph &gt;::next</definition>
+        <argsstring>()</argsstring>
+        <name>next</name>
+        <qualifiedname>nw::graph::bottomup_bfs_range::next</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/bfs_range.hpp" line="225" column="12" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/bfs_range.hpp" bodystart="225" bodyend="225"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classnw_1_1graph_1_1bottomup__bfs__range_1a85936eb247744654fb8d84bd28d9fb6e" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>nw::graph::bottomup_bfs_range&lt; Graph &gt;::bottomup_bfs_range</definition>
+        <argsstring>(Graph &amp;graph, vertex_id_type seed=0)</argsstring>
+        <name>bottomup_bfs_range</name>
+        <qualifiedname>nw::graph::bottomup_bfs_range::bottomup_bfs_range</qualifiedname>
+        <param>
+          <type>Graph &amp;</type>
+          <declname>graph</declname>
+        </param>
+        <param>
+          <type>vertex_id_type</type>
+          <declname>seed</declname>
+          <defval>0</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/bfs_range.hpp" line="229" column="3" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/bfs_range.hpp" bodystart="229" bodyend="237"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1bottomup__bfs__range_1a3cd4917de003a21326fbf57412162e6c" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>nw::graph::bottomup_bfs_range&lt; Graph &gt;::bottomup_bfs_range</definition>
+        <argsstring>(const bottomup_bfs_range &amp;)=delete</argsstring>
+        <name>bottomup_bfs_range</name>
+        <qualifiedname>nw::graph::bottomup_bfs_range::bottomup_bfs_range</qualifiedname>
+        <param>
+          <type>const <ref refid="classnw_1_1graph_1_1bottomup__bfs__range" kindref="compound">bottomup_bfs_range</ref> &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/bfs_range.hpp" line="239" column="3"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1bottomup__bfs__range_1a071b1ac58c55d80875f90860a83374fe" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classnw_1_1graph_1_1bottomup__bfs__range_1_1iterator" kindref="compound">iterator</ref></type>
+        <definition>iterator nw::graph::bottomup_bfs_range&lt; Graph &gt;::begin</definition>
+        <argsstring>()</argsstring>
+        <name>begin</name>
+        <qualifiedname>nw::graph::bottomup_bfs_range::begin</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/bfs_range.hpp" line="261" column="21" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/bfs_range.hpp" bodystart="261" bodyend="261"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1bottomup__bfs__range_1a491a30847af456b916fb334e3f3beb70" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="structnw_1_1graph_1_1bottomup__bfs__range_1_1end__sentinel__type" kindref="compound">end_sentinel_type</ref></type>
+        <definition>end_sentinel_type nw::graph::bottomup_bfs_range&lt; Graph &gt;::end</definition>
+        <argsstring>()</argsstring>
+        <name>end</name>
+        <qualifiedname>nw::graph::bottomup_bfs_range::end</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/bfs_range.hpp" line="262" column="21" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/bfs_range.hpp" bodystart="262" bodyend="262"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1bottomup__bfs__range_1a5951fb49564632f50a3290d63af396fc" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool nw::graph::bottomup_bfs_range&lt; Graph &gt;::empty</definition>
+        <argsstring>()</argsstring>
+        <name>empty</name>
+        <qualifiedname>nw::graph::bottomup_bfs_range::empty</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/bfs_range.hpp" line="264" column="8" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/bfs_range.hpp" bodystart="264" bodyend="264"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/bfs_range.hpp" line="185" column="1" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/bfs_range.hpp" bodystart="185" bodyend="265"/>
+    <listofallmembers>
+      <member refid="classnw_1_1graph_1_1bottomup__bfs__range_1a999da2d1f49c1ba0aa1a790526dc18d0" prot="private" virt="non-virtual"><scope>nw::graph::bottomup_bfs_range</scope><name>advance</name></member>
+      <member refid="classnw_1_1graph_1_1bottomup__bfs__range_1a071b1ac58c55d80875f90860a83374fe" prot="public" virt="non-virtual"><scope>nw::graph::bottomup_bfs_range</scope><name>begin</name></member>
+      <member refid="classnw_1_1graph_1_1bottomup__bfs__range_1a85936eb247744654fb8d84bd28d9fb6e" prot="public" virt="non-virtual"><scope>nw::graph::bottomup_bfs_range</scope><name>bottomup_bfs_range</name></member>
+      <member refid="classnw_1_1graph_1_1bottomup__bfs__range_1a3cd4917de003a21326fbf57412162e6c" prot="public" virt="non-virtual"><scope>nw::graph::bottomup_bfs_range</scope><name>bottomup_bfs_range</name></member>
+      <member refid="classnw_1_1graph_1_1bottomup__bfs__range_1ad29e70265e1f51f02ae09825ea7d8b35" prot="private" virt="non-virtual"><scope>nw::graph::bottomup_bfs_range</scope><name>Colors</name></member>
+      <member refid="classnw_1_1graph_1_1bottomup__bfs__range_1a42bc88e2691a86ce687b188d2ccd1cef" prot="private" virt="non-virtual"><scope>nw::graph::bottomup_bfs_range</scope><name>colors_</name></member>
+      <member refid="classnw_1_1graph_1_1bottomup__bfs__range_1a5951fb49564632f50a3290d63af396fc" prot="public" virt="non-virtual"><scope>nw::graph::bottomup_bfs_range</scope><name>empty</name></member>
+      <member refid="classnw_1_1graph_1_1bottomup__bfs__range_1a491a30847af456b916fb334e3f3beb70" prot="public" virt="non-virtual"><scope>nw::graph::bottomup_bfs_range</scope><name>end</name></member>
+      <member refid="classnw_1_1graph_1_1bottomup__bfs__range_1ae257ce4ff4aea4bcd1574fc158f4e005" prot="private" virt="non-virtual"><scope>nw::graph::bottomup_bfs_range</scope><name>graph_</name></member>
+      <member refid="classnw_1_1graph_1_1bottomup__bfs__range_1ac166ccad10f739d3d731f9f119613bee" prot="private" virt="non-virtual"><scope>nw::graph::bottomup_bfs_range</scope><name>n_</name></member>
+      <member refid="classnw_1_1graph_1_1bottomup__bfs__range_1ae9bb74c63cd69af541df558d89ab335b" prot="private" virt="non-virtual"><scope>nw::graph::bottomup_bfs_range</scope><name>next</name></member>
+      <member refid="classnw_1_1graph_1_1bottomup__bfs__range_1a94813a3d4de5680de8d7a32d46009bcd" prot="private" virt="non-virtual"><scope>nw::graph::bottomup_bfs_range</scope><name>parent_v_</name></member>
+      <member refid="classnw_1_1graph_1_1bottomup__bfs__range_1a0d1fdbbd90d4266072edb1e618a30800" prot="private" virt="non-virtual"><scope>nw::graph::bottomup_bfs_range</scope><name>v_</name></member>
+      <member refid="classnw_1_1graph_1_1bottomup__bfs__range_1afcf87cf405b4b3f1b284ee7edba26471" prot="private" virt="non-virtual"><scope>nw::graph::bottomup_bfs_range</scope><name>vertex_id_type</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

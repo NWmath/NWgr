@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.3" xml:lang="en-US">
+  <compounddef id="structnw_1_1graph_1_1other__direction_3_01directedness_1_1undirected_01_4" kind="struct" language="C++" prot="public">
+    <compoundname>nw::graph::other_direction&lt; directedness::undirected &gt;</compoundname>
+    <templateparamlist>
+    </templateparamlist>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structnw_1_1graph_1_1other__direction_3_01directedness_1_1undirected_01_4_1a301b3b2d943ade129134341c72a89b82" prot="public" static="no" mutable="no">
+        <type>const directedness</type>
+        <definition>const directedness nw::graph::other_direction&lt; directedness::undirected &gt;::direction</definition>
+        <argsstring></argsstring>
+        <name>direction</name>
+        <qualifiedname>nw::graph::other_direction&lt; directedness::undirected &gt;::direction</qualifiedname>
+        <initializer>= directedness::directed</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/graph_base.hpp" line="46" column="22" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/graph_base.hpp" bodystart="46" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/Users/lums/NWmath/NWgr/include/nwgraph/graph_base.hpp" line="45" column="1" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/graph_base.hpp" bodystart="45" bodyend="47"/>
+    <listofallmembers>
+      <member refid="structnw_1_1graph_1_1other__direction_3_01directedness_1_1undirected_01_4_1a301b3b2d943ade129134341c72a89b82" prot="public" virt="non-virtual"><scope>nw::graph::other_direction&lt; directedness::undirected &gt;</scope><name>direction</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

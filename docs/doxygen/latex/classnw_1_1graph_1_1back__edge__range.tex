@@ -1,0 +1,64 @@
+\hypertarget{classnw_1_1graph_1_1back__edge__range}{}\doxysection{nw\+::graph\+::back\+\_\+edge\+\_\+range\texorpdfstring{$<$}{<} Graph \texorpdfstring{$>$}{>} Class Template Reference}
+\label{classnw_1_1graph_1_1back__edge__range}\index{nw::graph::back\_edge\_range$<$ Graph $>$@{nw::graph::back\_edge\_range$<$ Graph $>$}}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classnw_1_1graph_1_1back__edge__range_1_1back__edge__range__iterator}{back\+\_\+edge\+\_\+range\+\_\+iterator}}
+\item 
+class \mbox{\hyperlink{classnw_1_1graph_1_1back__edge__range_1_1outer__back__edge__range__iterator}{outer\+\_\+back\+\_\+edge\+\_\+range\+\_\+iterator}}
+\item 
+class \mbox{\hyperlink{classnw_1_1graph_1_1back__edge__range_1_1sub__view}{sub\+\_\+view}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classnw_1_1graph_1_1back__edge__range_ae474757139c505f9da8d1bfcd80a50e7}\label{classnw_1_1graph_1_1back__edge__range_ae474757139c505f9da8d1bfcd80a50e7}} 
+using {\bfseries edge} = typename std\+::iterator\+\_\+traits$<$ typename Graph\+::inner\+\_\+iterator $>$\+::value\+\_\+type
+\item 
+\mbox{\Hypertarget{classnw_1_1graph_1_1back__edge__range_a229391d2e91cd3de7a75661bf2eacc93}\label{classnw_1_1graph_1_1back__edge__range_a229391d2e91cd3de7a75661bf2eacc93}} 
+using {\bfseries vertex\+\_\+id\+\_\+type} = vertex\+\_\+id\+\_\+t$<$ Graph $>$
+\item 
+\mbox{\Hypertarget{classnw_1_1graph_1_1back__edge__range_a32dea1ebdec65c9c73be0a2c83b0b71c}\label{classnw_1_1graph_1_1back__edge__range_a32dea1ebdec65c9c73be0a2c83b0b71c}} 
+using {\bfseries reference} = typename std\+::iterator\+\_\+traits$<$ typename Graph\+::inner\+\_\+iterator $>$\+::reference
+\item 
+\mbox{\Hypertarget{classnw_1_1graph_1_1back__edge__range_a09d8382218e6df66233249b2479d4b49}\label{classnw_1_1graph_1_1back__edge__range_a09d8382218e6df66233249b2479d4b49}} 
+using {\bfseries outer\+\_\+iterator} = \mbox{\hyperlink{classnw_1_1graph_1_1back__edge__range_1_1outer__back__edge__range__iterator}{outer\+\_\+back\+\_\+edge\+\_\+range\+\_\+iterator}}
+\item 
+\mbox{\Hypertarget{classnw_1_1graph_1_1back__edge__range_a66f305a621b5aba578d1a53a575de45f}\label{classnw_1_1graph_1_1back__edge__range_a66f305a621b5aba578d1a53a575de45f}} 
+using {\bfseries inner\+\_\+iterator} = \mbox{\hyperlink{classnw_1_1graph_1_1back__edge__range_1_1back__edge__range__iterator}{back\+\_\+edge\+\_\+range\+\_\+iterator}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classnw_1_1graph_1_1back__edge__range_a1717566c96569d1d3907eb972d3284bb}\label{classnw_1_1graph_1_1back__edge__range_a1717566c96569d1d3907eb972d3284bb}} 
+{\bfseries back\+\_\+edge\+\_\+range} (Graph \&graph, bool as\+\_\+needed=false)
+\item 
+\mbox{\Hypertarget{classnw_1_1graph_1_1back__edge__range_a02e1c7f01a51460a8e623dca7b9bcfed}\label{classnw_1_1graph_1_1back__edge__range_a02e1c7f01a51460a8e623dca7b9bcfed}} 
+{\bfseries back\+\_\+edge\+\_\+range} (const \mbox{\hyperlink{classnw_1_1graph_1_1back__edge__range}{back\+\_\+edge\+\_\+range}} \&)=delete
+\item 
+\mbox{\Hypertarget{classnw_1_1graph_1_1back__edge__range_a203aabe23b2bdd456fb2dbb83dc6251b}\label{classnw_1_1graph_1_1back__edge__range_a203aabe23b2bdd456fb2dbb83dc6251b}} 
+{\bfseries back\+\_\+edge\+\_\+range} (const \mbox{\hyperlink{classnw_1_1graph_1_1back__edge__range}{back\+\_\+edge\+\_\+range}} \&\&)=delete
+\item 
+\mbox{\Hypertarget{classnw_1_1graph_1_1back__edge__range_a63ddc9a034f314cf953e7c6f890565bd}\label{classnw_1_1graph_1_1back__edge__range_a63ddc9a034f314cf953e7c6f890565bd}} 
+auto {\bfseries get\+\_\+back\+\_\+edge} (typename Graph\+::outer\+\_\+iterator \&outer, typename Graph\+::inner\+\_\+iterator \&inner)
+\item 
+\mbox{\Hypertarget{classnw_1_1graph_1_1back__edge__range_a2f85e225677ccc1dadf26db2e3d8d485}\label{classnw_1_1graph_1_1back__edge__range_a2f85e225677ccc1dadf26db2e3d8d485}} 
+auto {\bfseries get\+\_\+back\+\_\+edge} (vertex\+\_\+id\+\_\+type vtx, \mbox{\hyperlink{classnw_1_1graph_1_1back__edge__range_1_1back__edge__range__iterator}{back\+\_\+edge\+\_\+range\+\_\+iterator}} \&inner)
+\item 
+\mbox{\Hypertarget{classnw_1_1graph_1_1back__edge__range_a27173e28986e8ba7b3631870d9ffb204}\label{classnw_1_1graph_1_1back__edge__range_a27173e28986e8ba7b3631870d9ffb204}} 
+auto {\bfseries get\+\_\+back\+\_\+edge} (vertex\+\_\+id\+\_\+type vtx, vertex\+\_\+id\+\_\+type vtx2)
+\item 
+\mbox{\Hypertarget{classnw_1_1graph_1_1back__edge__range_a729571373466ef7e48e9b81a378431ba}\label{classnw_1_1graph_1_1back__edge__range_a729571373466ef7e48e9b81a378431ba}} 
+auto {\bfseries begin} ()
+\item 
+\mbox{\Hypertarget{classnw_1_1graph_1_1back__edge__range_ae915d42e7f0990789e321dd99efda400}\label{classnw_1_1graph_1_1back__edge__range_ae915d42e7f0990789e321dd99efda400}} 
+auto {\bfseries end} ()
+\item 
+\mbox{\Hypertarget{classnw_1_1graph_1_1back__edge__range_a78ad45099cde7d5182779682b6c2acd0}\label{classnw_1_1graph_1_1back__edge__range_a78ad45099cde7d5182779682b6c2acd0}} 
+auto {\bfseries size} ()
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/lums/\+NWmath/\+NWgr/include/nwgraph/adaptors/back\+\_\+edge\+\_\+range.\+hpp\end{DoxyCompactItemize}

@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.3" xml:lang="en-US">
+  <compounddef id="dir_f6dec8ab72ef057badd0f143276f6878" kind="dir">
+    <compoundname>/Users/lums/NWmath/NWgr/include/nwgraph/experimental/algorithms</compoundname>
+    <innerfile refid="experimental_2algorithms_2betweenness__centrality_8hpp">betweenness_centrality.hpp</innerfile>
+    <innerfile refid="experimental_2algorithms_2bfs_8hpp">bfs.hpp</innerfile>
+    <innerfile refid="experimental_2algorithms_2connected__components_8hpp">connected_components.hpp</innerfile>
+    <innerfile refid="experimental_2algorithms_2delta__stepping_8hpp">delta_stepping.hpp</innerfile>
+    <innerfile refid="experimental_2algorithms_2jaccard_8hpp">jaccard.hpp</innerfile>
+    <innerfile refid="experimental_2algorithms_2page__rank_8hpp">page_rank.hpp</innerfile>
+    <innerfile refid="experimental_2algorithms_2triangle__count_8hpp">triangle_count.hpp</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/Users/lums/NWmath/NWgr/include/nwgraph/experimental/algorithms/"/>
+  </compounddef>
+</doxygen>

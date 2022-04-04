@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.3" xml:lang="en-US">
+  <compounddef id="struct__tag__invoke_1_1__fn" kind="struct" language="C++" prot="public">
+    <compoundname>_tag_invoke::_fn</compoundname>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="struct__tag__invoke_1_1__fn_1ac47814a3d6c2e0685a3eaa71209244ba" prot="public" static="no" constexpr="yes" const="yes" explicit="no" inline="yes" noexcept="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename CPO</type>
+          </param>
+          <param>
+            <type>typename...</type>
+            <declname>Args</declname>
+            <defname>Args</defname>
+          </param>
+        </templateparamlist>
+        <type>constexpr auto</type>
+        <definition>constexpr auto _tag_invoke::_fn::operator()</definition>
+        <argsstring>(CPO cpo, Args &amp;&amp;... args) const noexcept(noexcept(tag_invoke((CPO &amp;&amp;) cpo,(Args &amp;&amp;) args...))) -&gt; decltype(tag_invoke((CPO &amp;&amp;) cpo,(Args &amp;&amp;) args...))</argsstring>
+        <name>operator()</name>
+        <qualifiedname>_tag_invoke::_fn::operator()</qualifiedname>
+        <param>
+          <type>CPO</type>
+          <declname>cpo</declname>
+        </param>
+        <param>
+          <type>Args &amp;&amp;...</type>
+          <declname>args</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/util/tag_invoke.hpp" line="22" column="18" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/util/tag_invoke.hpp" bodystart="22" bodyend="25"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/Users/lums/NWmath/NWgr/include/nwgraph/util/tag_invoke.hpp" line="20" column="1" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/util/tag_invoke.hpp" bodystart="20" bodyend="26"/>
+    <listofallmembers>
+      <member refid="struct__tag__invoke_1_1__fn_1ac47814a3d6c2e0685a3eaa71209244ba" prot="public" virt="non-virtual"><scope>_tag_invoke::_fn</scope><name>operator()</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

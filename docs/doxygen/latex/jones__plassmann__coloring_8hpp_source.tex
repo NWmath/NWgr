@@ -1,0 +1,193 @@
+\hypertarget{jones__plassmann__coloring_8hpp_source}{}\doxysection{jones\+\_\+plassmann\+\_\+coloring.\+hpp}
+\label{jones__plassmann__coloring_8hpp_source}\index{/Users/lums/NWmath/NWgr/include/nwgraph/algorithms/jones\_plassmann\_coloring.hpp@{/Users/lums/NWmath/NWgr/include/nwgraph/algorithms/jones\_plassmann\_coloring.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// }}
+\DoxyCodeLine{2 \textcolor{comment}{// This file is part of NW Graph (aka GraphPack) }}
+\DoxyCodeLine{3 \textcolor{comment}{// (c) Pacific Northwest National Laboratory 2018-\/2021 }}
+\DoxyCodeLine{4 \textcolor{comment}{// (c) University of Washington 2018-\/2021 }}
+\DoxyCodeLine{5 \textcolor{comment}{// }}
+\DoxyCodeLine{6 \textcolor{comment}{// Licensed under terms of include LICENSE file }}
+\DoxyCodeLine{7 \textcolor{comment}{// }}
+\DoxyCodeLine{8 \textcolor{comment}{// Authors: }}
+\DoxyCodeLine{9 \textcolor{comment}{//     Andrew Lumsdaine }}
+\DoxyCodeLine{10 \textcolor{comment}{//     Kevin Deweese    }}
+\DoxyCodeLine{11 \textcolor{comment}{//}}
+\DoxyCodeLine{12 }
+\DoxyCodeLine{13 \textcolor{comment}{/*Implements Jones-\/Plassmann algorithm for coloring */}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#ifndef JONES\_PLASSMANN\_COLORING\_HPP}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#define JONES\_PLASSMANN\_COLORING\_HPP}}
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include "{}nwgraph/adaptors/dag\_range.hpp"{}}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include "{}nwgraph/adaptors/edge\_range.hpp"{}}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include "{}nwgraph/adaptors/plain\_range.hpp"{}}}
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#include "{}nwgraph/algorithms/mis.hpp"{}}}
+\DoxyCodeLine{22 }
+\DoxyCodeLine{23 \textcolor{keyword}{namespace }nw \{}
+\DoxyCodeLine{24 \textcolor{keyword}{namespace }graph \{}
+\DoxyCodeLine{25 }
+\DoxyCodeLine{26 \textcolor{comment}{/* Graph greedy coloring using maximal independent set. */}}
+\DoxyCodeLine{27 \textcolor{keyword}{template} <\textcolor{keyword}{typename} Graph>}
+\DoxyCodeLine{28 \textcolor{keywordtype}{void} jones\_plassmann\_coloring(Graph A, std::vector<size\_t>\& colors) \{}
+\DoxyCodeLine{29   \textcolor{keywordtype}{size\_t} N = A.size();}
+\DoxyCodeLine{30   \textcolor{comment}{//init every nodes' color to 0}}
+\DoxyCodeLine{31   std::fill(colors.begin(), colors.end(), 0);}
+\DoxyCodeLine{32 }
+\DoxyCodeLine{33   \textcolor{comment}{//find the maximal independent set}}
+\DoxyCodeLine{34   std::vector<size\_t> independentSet;}
+\DoxyCodeLine{35   mis\_algorithm(A, independentSet);}
+\DoxyCodeLine{36 }
+\DoxyCodeLine{37   \textcolor{comment}{// Function for finding the first}}
+\DoxyCodeLine{38   \textcolor{comment}{// missing positive number in an (unsorted) array}}
+\DoxyCodeLine{39   \textcolor{keyword}{auto} firstMissingPositive = []<\textcolor{keyword}{typename} T>(std::vector<T> arr) -\/> T \{}
+\DoxyCodeLine{40     \textcolor{keywordtype}{size\_t} n = arr.size();}
+\DoxyCodeLine{41     \textcolor{comment}{// Loop to traverse the whole array}}
+\DoxyCodeLine{42     \textcolor{keywordflow}{for} (\textcolor{keywordtype}{size\_t} i = 0; i < n; ++i) \{}
+\DoxyCodeLine{43       \textcolor{comment}{// Loop to check boundary}}
+\DoxyCodeLine{44       \textcolor{comment}{// condition and for swapping}}
+\DoxyCodeLine{45       \textcolor{keywordflow}{while} (1 <= arr[i] \&\& arr[i] <= n \&\& arr[i] != arr[arr[i] -\/ 1]) \{}
+\DoxyCodeLine{46         std::swap(arr[i], arr[arr[i] -\/ 1]);}
+\DoxyCodeLine{47       \}}
+\DoxyCodeLine{48     \}}
+\DoxyCodeLine{49 }
+\DoxyCodeLine{50     \textcolor{comment}{// Checking any element which}}
+\DoxyCodeLine{51     \textcolor{comment}{// is not equal to i+1}}
+\DoxyCodeLine{52     \textcolor{keywordflow}{for} (\textcolor{keywordtype}{size\_t} i = 0; i < n; ++i) \{}
+\DoxyCodeLine{53       \textcolor{keywordflow}{if} (arr[i] != i + 1) \{}
+\DoxyCodeLine{54         \textcolor{keywordflow}{return} i + 1;}
+\DoxyCodeLine{55       \}}
+\DoxyCodeLine{56     \}}
+\DoxyCodeLine{57 }
+\DoxyCodeLine{58     \textcolor{comment}{// Nothing is present return last index}}
+\DoxyCodeLine{59     \textcolor{keywordflow}{return} n + 1;}
+\DoxyCodeLine{60   \};}
+\DoxyCodeLine{61 }
+\DoxyCodeLine{62   \textcolor{comment}{//calculate colors based on the maximal independent set}}
+\DoxyCodeLine{63   std::vector<std::vector<size\_t>> neighbor\_colors(N);}
+\DoxyCodeLine{64   \textcolor{keywordflow}{for} (\textcolor{keyword}{auto}\& u : independentSet) \{}
+\DoxyCodeLine{65     \textcolor{comment}{//memorize colors of every independent vertex's neighbors}}
+\DoxyCodeLine{66     \textcolor{keywordflow}{for} (\textcolor{keyword}{auto} it = A[u].begin(); it != A[u].end(); ++it) \{}
+\DoxyCodeLine{67       \textcolor{keyword}{auto} v = std::get<0>(*it);}
+\DoxyCodeLine{68       neighbor\_colors[u].push\_back(colors[v]);}
+\DoxyCodeLine{69     \}}
+\DoxyCodeLine{70     \textcolor{comment}{//find the first unused color within every independent vertex's neighbors}}
+\DoxyCodeLine{71     colors[u] = firstMissingPositive(neighbor\_colors[u]);}
+\DoxyCodeLine{72   \}}
+\DoxyCodeLine{73 \}}
+\DoxyCodeLine{74 }
+\DoxyCodeLine{75 \textcolor{comment}{/* TODO This implemenation is buggy. Need to fix. */}}
+\DoxyCodeLine{76 \textcolor{keyword}{template} <\textcolor{keyword}{typename} Graph>}
+\DoxyCodeLine{77 \textcolor{keywordtype}{void} jones\_plassmann\_coloring2(Graph A, std::vector<size\_t>\& colors) \{}
+\DoxyCodeLine{78   \textcolor{keywordtype}{size\_t} N = A.size();}
+\DoxyCodeLine{79 \textcolor{preprocessor}{\#ifdef PRINT\_DEBUG}}
+\DoxyCodeLine{80   std::cout << \textcolor{stringliteral}{"{}size: "{}} << N << std::endl;}
+\DoxyCodeLine{81 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{82 }
+\DoxyCodeLine{83   std::vector<size\_t> degrees(N, 0);}
+\DoxyCodeLine{84   \textcolor{comment}{// std::vector<size\_t> colors(N, std::numeric\_limits<std::uint32\_t>::max());}}
+\DoxyCodeLine{85 }
+\DoxyCodeLine{86   std::vector<std::vector<size\_t>> predecessor\_list(N);}
+\DoxyCodeLine{87   std::vector<std::vector<size\_t>> successor\_list(N);}
+\DoxyCodeLine{88   std::vector<size\_t>              degree\_list(N, 0);}
+\DoxyCodeLine{89   \textcolor{comment}{/*Need a "{}Degree range"{}*/}}
+\DoxyCodeLine{90   \textcolor{keywordflow}{for} (\textcolor{keyword}{auto}\&\& [v, deg] : plain\_degree\_range(A)) \{}
+\DoxyCodeLine{91 \textcolor{preprocessor}{\#ifdef PRINT\_DEBUG}}
+\DoxyCodeLine{92     std::cout << \textcolor{stringliteral}{"{}v: "{}} << v + 1 << \textcolor{stringliteral}{"{} deg: "{}} << deg << std::endl;}
+\DoxyCodeLine{93 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{94     degrees[v] = deg;}
+\DoxyCodeLine{95   \}}
+\DoxyCodeLine{96 }
+\DoxyCodeLine{97   \textcolor{comment}{/*plain edge range will be used to calculate predecessor/successors*/}}
+\DoxyCodeLine{98   \textcolor{comment}{/*edge\_range returns a tuple every time iterated through*/}}
+\DoxyCodeLine{99 }
+\DoxyCodeLine{100   \textcolor{keywordflow}{for} (\textcolor{keyword}{auto}\&\& [v, u] : edge\_range(A)) \{}
+\DoxyCodeLine{101     \textcolor{keywordflow}{if} (degrees[v] > degrees[u]) \{}
+\DoxyCodeLine{102       successor\_list[v].push\_back(u);}
+\DoxyCodeLine{103       predecessor\_list[u].push\_back(v);}
+\DoxyCodeLine{104     \} \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (degrees[v] < degrees[u]) \{}
+\DoxyCodeLine{105       predecessor\_list[v].push\_back(u);}
+\DoxyCodeLine{106       successor\_list[u].push\_back(v);}
+\DoxyCodeLine{107     \} \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{108       \textcolor{keywordflow}{if} (v > u) \{}
+\DoxyCodeLine{109         predecessor\_list[v].push\_back(u);}
+\DoxyCodeLine{110         successor\_list[u].push\_back(v);}
+\DoxyCodeLine{111       \} \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{112         successor\_list[v].push\_back(u);}
+\DoxyCodeLine{113         predecessor\_list[u].push\_back(v);}
+\DoxyCodeLine{114       \}}
+\DoxyCodeLine{115     \}}
+\DoxyCodeLine{116   \}}
+\DoxyCodeLine{117 }
+\DoxyCodeLine{118   std::vector<std::vector<uint64\_t>> pred\_colors(N);}
+\DoxyCodeLine{119 }
+\DoxyCodeLine{120   \textcolor{comment}{/*TODO: we probably need a vertex range. */}}
+\DoxyCodeLine{121   \textcolor{keywordflow}{for} (uint64\_t vtx = 0; vtx < N; vtx++) \{}
+\DoxyCodeLine{122     pred\_colors[vtx].resize(predecessor\_list[vtx].size(), 0);}
+\DoxyCodeLine{123   \}}
+\DoxyCodeLine{124 }
+\DoxyCodeLine{125   \textcolor{keywordflow}{for} (uint64\_t vtx = 0; vtx < N; vtx++) \{}
+\DoxyCodeLine{126     \textcolor{comment}{/*Set the color of the roots to be zero.*/}}
+\DoxyCodeLine{127     \textcolor{keywordflow}{if} (predecessor\_list[vtx].size() == 0) \{}
+\DoxyCodeLine{128       colors[vtx] = 0;}
+\DoxyCodeLine{129 \textcolor{preprocessor}{\#ifdef PRINT\_DEBUG}}
+\DoxyCodeLine{130       std::cout << \textcolor{stringliteral}{"{}Setting color of "{}} << vtx + 1 << \textcolor{stringliteral}{"{} To "{}} << colors[vtx] << std::endl;}
+\DoxyCodeLine{131 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{132       \textcolor{comment}{/*Update all the sucsessors*/}}
+\DoxyCodeLine{133       \textcolor{keywordflow}{for} (\textcolor{keyword}{const} \textcolor{keyword}{auto}\& u : successor\_list[vtx]) \{}
+\DoxyCodeLine{134         pred\_colors[u][0]++;}
+\DoxyCodeLine{135       \}}
+\DoxyCodeLine{136     \}}
+\DoxyCodeLine{137   \}}
+\DoxyCodeLine{138 }
+\DoxyCodeLine{139   \textcolor{keywordflow}{for} (\textcolor{keyword}{auto}\&\& [v, u, ready\_to\_process] : dag\_range(A, predecessor\_list, successor\_list)) \{}
+\DoxyCodeLine{140 \textcolor{preprocessor}{\#ifdef PRINT\_DEBUG}}
+\DoxyCodeLine{141     std::cout << \textcolor{stringliteral}{"{}V: "{}} << v + 1 << \textcolor{stringliteral}{"{} U:"{}} << u + 1 << std::endl;}
+\DoxyCodeLine{142 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{143     \textcolor{keywordflow}{if} (ready\_to\_process == yes) \{}
+\DoxyCodeLine{144       std::sort(pred\_colors[u].begin(), pred\_colors[u].end());}
+\DoxyCodeLine{145       uint64\_t pred\_count = predecessor\_list[u].size();}
+\DoxyCodeLine{146 }
+\DoxyCodeLine{147       \textcolor{comment}{/*Find the minimum available color*/}}
+\DoxyCodeLine{148       uint64\_t min\_color = pred\_count;}
+\DoxyCodeLine{149       \textcolor{keywordflow}{for} (std::vector<uint64\_t>::iterator it = pred\_colors[u].begin(); it < pred\_colors[u].end(); it++) \{}
+\DoxyCodeLine{150         \textcolor{keywordflow}{if} (*it == 0) \{}
+\DoxyCodeLine{151           min\_color = *it;}
+\DoxyCodeLine{152           \textcolor{keywordflow}{break};}
+\DoxyCodeLine{153         \}}
+\DoxyCodeLine{154       \}}
+\DoxyCodeLine{155 }
+\DoxyCodeLine{156       \textcolor{comment}{/*Set the new color to the vertex*/}}
+\DoxyCodeLine{157       colors[u] = min\_color;}
+\DoxyCodeLine{158 \textcolor{preprocessor}{\#ifdef PRINT\_DEBUG}}
+\DoxyCodeLine{159       std::cout << \textcolor{stringliteral}{"{}-\/-\/-\/>Color of "{}} << u + 1 << \textcolor{stringliteral}{"{} "{}} << colors[u] << std::endl;}
+\DoxyCodeLine{160 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{161       \textcolor{comment}{/*Update all the sucsessors*/}}
+\DoxyCodeLine{162       \textcolor{keywordflow}{for} (\textcolor{keyword}{const} \textcolor{keyword}{auto}\& succ : successor\_list[u]) \{}
+\DoxyCodeLine{163         \textcolor{comment}{/*Check whether the new color by the predecessor is}}
+\DoxyCodeLine{164 \textcolor{comment}{      less than of its total pred count*/}}
+\DoxyCodeLine{165         uint64\_t preds = predecessor\_list[succ].size();}
+\DoxyCodeLine{166 \textcolor{preprocessor}{\#ifdef PRINT\_DEBUG}}
+\DoxyCodeLine{167         std::cout << \textcolor{stringliteral}{"{}succ: "{}} << succ << \textcolor{stringliteral}{"{} predlist size: "{}} << preds << std::endl;}
+\DoxyCodeLine{168 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{169         \textcolor{keywordflow}{if} (min\_color < preds) \{}
+\DoxyCodeLine{170           pred\_colors[succ][min\_color]++;}
+\DoxyCodeLine{171         \}}
+\DoxyCodeLine{172       \}}
+\DoxyCodeLine{173     \}}
+\DoxyCodeLine{174   \}}
+\DoxyCodeLine{175 }
+\DoxyCodeLine{176 \textcolor{preprocessor}{\#ifdef PRINT\_DEBUG}}
+\DoxyCodeLine{177   \textcolor{keywordflow}{for} (\textcolor{keyword}{const} \textcolor{keyword}{auto}\& color : colors) \{}
+\DoxyCodeLine{178     std::cout << color << std::endl;}
+\DoxyCodeLine{179   \}}
+\DoxyCodeLine{180 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{181 }
+\DoxyCodeLine{182   \textcolor{keywordflow}{return};}
+\DoxyCodeLine{183 \}}
+\DoxyCodeLine{184 }
+\DoxyCodeLine{185 \}    \textcolor{comment}{// namespace graph}}
+\DoxyCodeLine{186 \}    \textcolor{comment}{// namespace nw}}
+\DoxyCodeLine{187 \textcolor{preprocessor}{\#endif    }\textcolor{comment}{// JONES\_PLASSMANN\_COLORING\_HPP}}
+
+\end{DoxyCode}

@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.3" xml:lang="en-US">
+  <compounddef id="concepttag__invocable" kind="concept">
+    <compoundname>tag_invocable</compoundname>
+    <templateparamlist>
+      <param>
+        <type>typename CPO</type>
+      </param>
+      <param>
+        <type>typename...</type>
+        <declname>Args</declname>
+        <defname>Args</defname>
+      </param>
+    </templateparamlist>
+    <initializer>template&lt;typename CPO, typename... Args&gt;
+concept tag_invocable =  (sizeof(_tag_invoke::try_tag_invoke&lt;CPO, Args...&gt;(0)) == sizeof(_tag_invoke::yes_type))    </initializer>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/Users/lums/NWmath/NWgr/include/nwgraph/util/tag_invoke.hpp" line="77" column="1"/>
+  </compounddef>
+</doxygen>

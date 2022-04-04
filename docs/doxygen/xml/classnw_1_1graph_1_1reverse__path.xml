@@ -1,0 +1,210 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.3" xml:lang="en-US">
+  <compounddef id="classnw_1_1graph_1_1reverse__path" kind="class" language="C++" prot="public">
+    <compoundname>nw::graph::reverse_path</compoundname>
+    <innerclass refid="classnw_1_1graph_1_1reverse__path_1_1reverse__iterator" prot="public">nw::graph::reverse_path::reverse_iterator</innerclass>
+    <templateparamlist>
+      <param>
+        <type>typename path_edge</type>
+      </param>
+      <param>
+        <type>std::integral</type>
+        <declname>vertex_id</declname>
+        <defname>vertex_id</defname>
+      </param>
+    </templateparamlist>
+      <sectiondef kind="public-type">
+      <memberdef kind="typedef" id="classnw_1_1graph_1_1reverse__path_1a9e5b7f8775a225ddfee7eb7e05b913e0" prot="public" static="no">
+        <type>vertex_id</type>
+        <definition>using nw::graph::reverse_path&lt; path_edge, vertex_id &gt;::vertex_id_type =  vertex_id</definition>
+        <argsstring></argsstring>
+        <name>vertex_id_type</name>
+        <qualifiedname>nw::graph::reverse_path::vertex_id_type</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/reverse.hpp" line="28" column="3" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/reverse.hpp" bodystart="28" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="classnw_1_1graph_1_1reverse__path_1a93d632a90d9f07fff15a547fd9d55bac" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; path_edge &gt;</type>
+        <definition>std::vector&lt;path_edge&gt; nw::graph::reverse_path&lt; path_edge, vertex_id &gt;::path_</definition>
+        <argsstring></argsstring>
+        <name>path_</name>
+        <qualifiedname>nw::graph::reverse_path::path_</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/reverse.hpp" line="29" column="15" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/reverse.hpp" bodystart="29" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classnw_1_1graph_1_1reverse__path_1aaabd8d405336a2348bf08c26c272de8c" prot="public" static="no" mutable="no">
+        <type>double</type>
+        <definition>double nw::graph::reverse_path&lt; path_edge, vertex_id &gt;::update_</definition>
+        <argsstring></argsstring>
+        <name>update_</name>
+        <qualifiedname>nw::graph::reverse_path::update_</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/reverse.hpp" line="30" column="26" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/reverse.hpp" bodystart="30" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classnw_1_1graph_1_1reverse__path_1a90e4b7de92605f088e851d5620672edf" prot="public" static="no" mutable="no">
+        <type>vertex_id_type</type>
+        <definition>vertex_id_type nw::graph::reverse_path&lt; path_edge, vertex_id &gt;::start_</definition>
+        <argsstring></argsstring>
+        <name>start_</name>
+        <qualifiedname>nw::graph::reverse_path::start_</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/reverse.hpp" line="31" column="26" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/reverse.hpp" bodystart="31" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classnw_1_1graph_1_1reverse__path_1a0862452938aeebb16aa45d94bc8f771e" prot="public" static="no" mutable="no">
+        <type>vertex_id_type</type>
+        <definition>vertex_id_type nw::graph::reverse_path&lt; path_edge, vertex_id &gt;::stop_</definition>
+        <argsstring></argsstring>
+        <name>stop_</name>
+        <qualifiedname>nw::graph::reverse_path::stop_</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/reverse.hpp" line="31" column="33" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/reverse.hpp" bodystart="31" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classnw_1_1graph_1_1reverse__path_1a3a4d666f01665227d4ce4734a78f482f" prot="public" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool nw::graph::reverse_path&lt; path_edge, vertex_id &gt;::done</definition>
+        <argsstring></argsstring>
+        <name>done</name>
+        <qualifiedname>nw::graph::reverse_path::done</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/reverse.hpp" line="32" column="26" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/reverse.hpp" bodystart="32" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classnw_1_1graph_1_1reverse__path_1ad42023761abed68b14a30498d11a5563" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>nw::graph::reverse_path&lt; path_edge, vertex_id &gt;::reverse_path</definition>
+        <argsstring>(std::vector&lt; path_edge &gt; &amp;path, vertex_id start, vertex_id stop)</argsstring>
+        <name>reverse_path</name>
+        <qualifiedname>nw::graph::reverse_path::reverse_path</qualifiedname>
+        <param>
+          <type>std::vector&lt; path_edge &gt; &amp;</type>
+          <declname>path</declname>
+        </param>
+        <param>
+          <type>vertex_id</type>
+          <declname>start</declname>
+        </param>
+        <param>
+          <type>vertex_id</type>
+          <declname>stop</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/reverse.hpp" line="26" column="3" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/reverse.hpp" bodystart="26" bodyend="26"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1reverse__path_1ad9366cca2dd721f47658a83b28c43183" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool nw::graph::reverse_path&lt; path_edge, vertex_id &gt;::found</definition>
+        <argsstring>(vertex_id_type current)</argsstring>
+        <name>found</name>
+        <qualifiedname>nw::graph::reverse_path::found</qualifiedname>
+        <param>
+          <type>vertex_id_type</type>
+          <declname>current</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/reverse.hpp" line="34" column="8" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/reverse.hpp" bodystart="34" bodyend="34"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1reverse__path_1a94dd48014485083150ac52cb4eb82b53" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto nw::graph::reverse_path&lt; path_edge, vertex_id &gt;::begin</definition>
+        <argsstring>()</argsstring>
+        <name>begin</name>
+        <qualifiedname>nw::graph::reverse_path::begin</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/reverse.hpp" line="64" column="8" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/reverse.hpp" bodystart="64" bodyend="64"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1reverse__path_1a9f5a159b146d502de4f647ee8d4636ff" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto nw::graph::reverse_path&lt; path_edge, vertex_id &gt;::end</definition>
+        <argsstring>()</argsstring>
+        <name>end</name>
+        <qualifiedname>nw::graph::reverse_path::end</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/reverse.hpp" line="65" column="8" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/reverse.hpp" bodystart="65" bodyend="65"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="1">
+        <label>nw::graph::reverse_path&lt; path_edge, vertex_id &gt;</label>
+        <link refid="classnw_1_1graph_1_1reverse__path"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>start_</edgelabel>
+          <edgelabel>stop_</edgelabel>
+        </childnode>
+      </node>
+      <node id="2">
+        <label>vertex_id</label>
+      </node>
+    </collaborationgraph>
+    <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/reverse.hpp" line="24" column="1" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/reverse.hpp" bodystart="24" bodyend="66"/>
+    <listofallmembers>
+      <member refid="classnw_1_1graph_1_1reverse__path_1a94dd48014485083150ac52cb4eb82b53" prot="public" virt="non-virtual"><scope>nw::graph::reverse_path</scope><name>begin</name></member>
+      <member refid="classnw_1_1graph_1_1reverse__path_1a3a4d666f01665227d4ce4734a78f482f" prot="public" virt="non-virtual"><scope>nw::graph::reverse_path</scope><name>done</name></member>
+      <member refid="classnw_1_1graph_1_1reverse__path_1a9f5a159b146d502de4f647ee8d4636ff" prot="public" virt="non-virtual"><scope>nw::graph::reverse_path</scope><name>end</name></member>
+      <member refid="classnw_1_1graph_1_1reverse__path_1ad9366cca2dd721f47658a83b28c43183" prot="public" virt="non-virtual"><scope>nw::graph::reverse_path</scope><name>found</name></member>
+      <member refid="classnw_1_1graph_1_1reverse__path_1a93d632a90d9f07fff15a547fd9d55bac" prot="public" virt="non-virtual"><scope>nw::graph::reverse_path</scope><name>path_</name></member>
+      <member refid="classnw_1_1graph_1_1reverse__path_1ad42023761abed68b14a30498d11a5563" prot="public" virt="non-virtual"><scope>nw::graph::reverse_path</scope><name>reverse_path</name></member>
+      <member refid="classnw_1_1graph_1_1reverse__path_1a90e4b7de92605f088e851d5620672edf" prot="public" virt="non-virtual"><scope>nw::graph::reverse_path</scope><name>start_</name></member>
+      <member refid="classnw_1_1graph_1_1reverse__path_1a0862452938aeebb16aa45d94bc8f771e" prot="public" virt="non-virtual"><scope>nw::graph::reverse_path</scope><name>stop_</name></member>
+      <member refid="classnw_1_1graph_1_1reverse__path_1aaabd8d405336a2348bf08c26c272de8c" prot="public" virt="non-virtual"><scope>nw::graph::reverse_path</scope><name>update_</name></member>
+      <member refid="classnw_1_1graph_1_1reverse__path_1a9e5b7f8775a225ddfee7eb7e05b913e0" prot="public" virt="non-virtual"><scope>nw::graph::reverse_path</scope><name>vertex_id_type</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

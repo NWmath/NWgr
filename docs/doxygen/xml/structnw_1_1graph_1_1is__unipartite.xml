@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.3" xml:lang="en-US">
+  <compounddef id="structnw_1_1graph_1_1is__unipartite" kind="struct" language="C++" prot="public">
+    <compoundname>nw::graph::is_unipartite</compoundname>
+    <templateparamlist>
+      <param>
+        <type>typename Graph_base</type>
+      </param>
+    </templateparamlist>
+      <sectiondef kind="public-static-attrib">
+      <memberdef kind="variable" id="structnw_1_1graph_1_1is__unipartite_1a592e3cdf6434ddd2f41b4ae696db31b8" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>constexpr const bool</type>
+        <definition>constexpr const bool nw::graph::is_unipartite&lt; Graph_base &gt;::value</definition>
+        <argsstring></argsstring>
+        <name>value</name>
+        <qualifiedname>nw::graph::is_unipartite::value</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/graph_base.hpp" line="85" column="31" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/graph_base.hpp" bodystart="85" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/Users/lums/NWmath/NWgr/include/nwgraph/graph_base.hpp" line="84" column="1" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/graph_base.hpp" bodystart="84" bodyend="86"/>
+    <listofallmembers>
+      <member refid="structnw_1_1graph_1_1is__unipartite_1a592e3cdf6434ddd2f41b4ae696db31b8" prot="public" virt="non-virtual"><scope>nw::graph::is_unipartite</scope><name>value</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

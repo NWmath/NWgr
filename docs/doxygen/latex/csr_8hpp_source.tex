@@ -1,0 +1,34 @@
+\hypertarget{csr_8hpp_source}{}\doxysection{csr.\+hpp}
+\label{csr_8hpp_source}\index{/Users/lums/NWmath/NWgr/include/nwgraph/csr.hpp@{/Users/lums/NWmath/NWgr/include/nwgraph/csr.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// }}
+\DoxyCodeLine{2 \textcolor{comment}{// This file is part of NW Graph (aka GraphPack) }}
+\DoxyCodeLine{3 \textcolor{comment}{// (c) Pacific Northwest National Laboratory 2018-\/2021 }}
+\DoxyCodeLine{4 \textcolor{comment}{// (c) University of Washington 2018-\/2021 }}
+\DoxyCodeLine{5 \textcolor{comment}{// }}
+\DoxyCodeLine{6 \textcolor{comment}{// Licensed under terms of include LICENSE file }}
+\DoxyCodeLine{7 \textcolor{comment}{// }}
+\DoxyCodeLine{8 \textcolor{comment}{// Authors: }}
+\DoxyCodeLine{9 \textcolor{comment}{//     Andrew Lumsdaine }}
+\DoxyCodeLine{10 \textcolor{comment}{//}}
+\DoxyCodeLine{11 }
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#ifndef NW\_GRAPH\_CSR\_HPP}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#define NW\_GRAPH\_CSR\_HPP}}
+\DoxyCodeLine{14 }
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#include "{}nwgraph/adjacency.hpp"{}}}
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17 \textcolor{keyword}{namespace }nw \{}
+\DoxyCodeLine{18   \textcolor{keyword}{namespace }graph \{}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 \textcolor{keyword}{using} csr\_graph = adjacency<0>;}
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 \textcolor{keyword}{template} <\textcolor{keyword}{typename} T = \textcolor{keywordtype}{double}>}
+\DoxyCodeLine{23 \textcolor{keyword}{using} csr\_matrix = adjacency<0, T>;}
+\DoxyCodeLine{24 }
+\DoxyCodeLine{25   \}}
+\DoxyCodeLine{26 \}}
+\DoxyCodeLine{27 }
+\DoxyCodeLine{28 \textcolor{preprocessor}{\#endif }\textcolor{comment}{// NW\_GRAPH\_CSR\_HPP}}
+
+\end{DoxyCode}

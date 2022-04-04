@@ -1,0 +1,90 @@
+\hypertarget{random__range_8hpp_source}{}\doxysection{random\+\_\+range.\+hpp}
+\label{random__range_8hpp_source}\index{/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/random\_range.hpp@{/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/random\_range.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// }}
+\DoxyCodeLine{2 \textcolor{comment}{// This file is part of NW Graph (aka GraphPack) }}
+\DoxyCodeLine{3 \textcolor{comment}{// (c) Pacific Northwest National Laboratory 2018-\/2021 }}
+\DoxyCodeLine{4 \textcolor{comment}{// (c) University of Washington 2018-\/2021 }}
+\DoxyCodeLine{5 \textcolor{comment}{// }}
+\DoxyCodeLine{6 \textcolor{comment}{// Licensed under terms of include LICENSE file }}
+\DoxyCodeLine{7 \textcolor{comment}{// }}
+\DoxyCodeLine{8 \textcolor{comment}{// Authors: }}
+\DoxyCodeLine{9 \textcolor{comment}{//     Andrew Lumsdaine }}
+\DoxyCodeLine{10 \textcolor{comment}{//     Kevin Deweese    }}
+\DoxyCodeLine{11 \textcolor{comment}{//}}
+\DoxyCodeLine{12 }
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#ifndef NW\_GRAPH\_RANDOM\_RANGE\_HPP}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#define NW\_GRAPH\_RANDOM\_RANGE\_HPP}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include "{}nwgraph/graph\_traits.hpp"{}}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include "{}nwgraph/util/util.hpp"{}}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include <cmath>}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include <random>}}
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{21 }
+\DoxyCodeLine{22 \textcolor{keyword}{namespace }nw \{}
+\DoxyCodeLine{23 \textcolor{keyword}{namespace }graph \{}
+\DoxyCodeLine{24 }
+\DoxyCodeLine{25 \textcolor{keyword}{template} <\textcolor{keyword}{typename} Graph>}
+\DoxyCodeLine{26 \textcolor{keyword}{class }\mbox{\hyperlink{classnw_1_1graph_1_1random__range}{random\_range}} \{}
+\DoxyCodeLine{27 \textcolor{keyword}{public}:}
+\DoxyCodeLine{28   \mbox{\hyperlink{classnw_1_1graph_1_1random__range}{random\_range}}(Graph\& g, \textcolor{keywordtype}{size\_t} length = \textcolor{keywordtype}{size\_t}(0xffffffffffffffffULL), vertex\_id\_t<Graph> first = 0, \textcolor{keywordtype}{unsigned} seed = 2049)}
+\DoxyCodeLine{29       : the\_graph\_(g), starting\_vertex(first), length\_(length), distribution(0, 1.0), generator(seed),}
+\DoxyCodeLine{30         dice(std::bind(distribution, generator)) \{\}}
+\DoxyCodeLine{31 }
+\DoxyCodeLine{32   \textcolor{keyword}{class }\mbox{\hyperlink{classnw_1_1graph_1_1random__range_1_1edge__range__iterator}{edge\_range\_iterator}} \{}
+\DoxyCodeLine{33   \textcolor{keyword}{private}:}
+\DoxyCodeLine{34     \textcolor{keyword}{using} vertex\_id\_type = vertex\_id\_t<Graph>;}
+\DoxyCodeLine{35 }
+\DoxyCodeLine{36     \mbox{\hyperlink{classnw_1_1graph_1_1random__range}{random\_range<Graph>}}\&           the\_range\_;}
+\DoxyCodeLine{37     \textcolor{keyword}{typename} Graph::outer\_iterator G;}
+\DoxyCodeLine{38     vertex\_id\_type                 current\_vertex;}
+\DoxyCodeLine{39     \textcolor{keywordtype}{size\_t}                         length\_;}
+\DoxyCodeLine{40 }
+\DoxyCodeLine{41   \textcolor{keyword}{public}:}
+\DoxyCodeLine{42     \mbox{\hyperlink{classnw_1_1graph_1_1random__range_1_1edge__range__iterator}{edge\_range\_iterator}}(\mbox{\hyperlink{classnw_1_1graph_1_1random__range}{random\_range<Graph>}}\& range)}
+\DoxyCodeLine{43         : the\_range\_(range), G(the\_range\_.the\_graph\_.begin()), current\_vertex(the\_range\_.starting\_vertex), length\_(the\_range\_.length\_) \{\}}
+\DoxyCodeLine{44 }
+\DoxyCodeLine{45     \mbox{\hyperlink{classnw_1_1graph_1_1random__range_1_1edge__range__iterator}{edge\_range\_iterator}}\& operator++() \{}
+\DoxyCodeLine{46       -\/-\/length\_;}
+\DoxyCodeLine{47       \textcolor{keyword}{typename} Graph::inner\_iterator u\_begin = G[current\_vertex].begin();}
+\DoxyCodeLine{48       \textcolor{keyword}{typename} Graph::inner\_iterator u\_end   = G[current\_vertex].end();}
+\DoxyCodeLine{49       \textcolor{keywordtype}{size\_t}                         N       = u\_end -\/ u\_begin;}
+\DoxyCodeLine{50       vertex\_id\_type                 pick    = std::floor(N * the\_range\_.dice());}
+\DoxyCodeLine{51 }
+\DoxyCodeLine{52       current\_vertex = std::get<0>(u\_begin[pick]);}
+\DoxyCodeLine{53 }
+\DoxyCodeLine{54       \textcolor{keywordflow}{return} *\textcolor{keyword}{this};}
+\DoxyCodeLine{55     \}}
+\DoxyCodeLine{56 }
+\DoxyCodeLine{57     \textcolor{keyword}{auto} operator*()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} current\_vertex; \}}
+\DoxyCodeLine{58 }
+\DoxyCodeLine{59     \textcolor{keyword}{struct }\mbox{\hyperlink{structnw_1_1graph_1_1random__range_1_1edge__range__iterator_1_1end__sentinel__type}{end\_sentinel\_type}} \{\};}
+\DoxyCodeLine{60 }
+\DoxyCodeLine{61     \textcolor{keyword}{auto} operator==(\textcolor{keyword}{const} \mbox{\hyperlink{structnw_1_1graph_1_1random__range_1_1edge__range__iterator_1_1end__sentinel__type}{end\_sentinel\_type}}\&)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} length\_ == 0; \}}
+\DoxyCodeLine{62     \textcolor{keywordtype}{bool} operator!=(\textcolor{keyword}{const} end\_sentinel\_type\&)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} length\_ != 0; \}}
+\DoxyCodeLine{63   \};}
+\DoxyCodeLine{64 }
+\DoxyCodeLine{65   \textcolor{keyword}{typedef} edge\_range\_iterator iterator;}
+\DoxyCodeLine{66 }
+\DoxyCodeLine{67   \textcolor{keyword}{auto} begin() \{ \textcolor{keywordflow}{return} edge\_range\_iterator(*\textcolor{keyword}{this}); \}}
+\DoxyCodeLine{68   \textcolor{keyword}{auto} end() \{ \textcolor{keywordflow}{return} \textcolor{keyword}{typename} edge\_range\_iterator::end\_sentinel\_type(); \}}
+\DoxyCodeLine{69 }
+\DoxyCodeLine{70 \textcolor{keyword}{private}:}
+\DoxyCodeLine{71   Graph\& the\_graph\_;}
+\DoxyCodeLine{72 }
+\DoxyCodeLine{73   vertex\_id\_t<Graph> starting\_vertex;}
+\DoxyCodeLine{74   \textcolor{keywordtype}{size\_t}             length\_;}
+\DoxyCodeLine{75 }
+\DoxyCodeLine{76   std::uniform\_real\_distribution<double> distribution;}
+\DoxyCodeLine{77   std::default\_random\_engine             generator;}
+\DoxyCodeLine{78 }
+\DoxyCodeLine{79   \textcolor{keyword}{decltype}(std::bind(distribution, generator)) dice;}
+\DoxyCodeLine{80 \};}
+\DoxyCodeLine{81 }
+\DoxyCodeLine{82 \}    \textcolor{comment}{// namespace graph}}
+\DoxyCodeLine{83 \}    \textcolor{comment}{// namespace nw}}
+\DoxyCodeLine{84 \textcolor{preprocessor}{\#endif    }\textcolor{comment}{// NW\_GRAPH\_RANDOM\_RANGE\_HPP}}
+
+\end{DoxyCode}

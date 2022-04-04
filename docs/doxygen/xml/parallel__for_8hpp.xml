@@ -1,0 +1,235 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.3" xml:lang="en-US">
+  <compounddef id="parallel__for_8hpp" kind="file" language="C++">
+    <compoundname>parallel_for.hpp</compoundname>
+    <includes refid="traits_8hpp" local="yes">nwgraph/util/traits.hpp</includes>
+    <includes local="no">tbb/parallel_for.h</includes>
+    <includes local="no">tbb/parallel_reduce.h</includes>
+    <includedby refid="algorithms_2betweenness__centrality_8hpp" local="yes">/Users/lums/NWmath/NWgr/include/nwgraph/algorithms/betweenness_centrality.hpp</includedby>
+    <includedby refid="algorithms_2bfs_8hpp" local="yes">/Users/lums/NWmath/NWgr/include/nwgraph/algorithms/bfs.hpp</includedby>
+    <includedby refid="algorithms_2delta__stepping_8hpp" local="yes">/Users/lums/NWmath/NWgr/include/nwgraph/algorithms/delta_stepping.hpp</includedby>
+    <includedby refid="algorithms_2jaccard_8hpp" local="yes">/Users/lums/NWmath/NWgr/include/nwgraph/algorithms/jaccard.hpp</includedby>
+    <includedby refid="k__truss_8hpp" local="yes">/Users/lums/NWmath/NWgr/include/nwgraph/algorithms/k_truss.hpp</includedby>
+    <includedby refid="algorithms_2page__rank_8hpp" local="yes">/Users/lums/NWmath/NWgr/include/nwgraph/algorithms/page_rank.hpp</includedby>
+    <includedby refid="algorithms_2triangle__count_8hpp" local="yes">/Users/lums/NWmath/NWgr/include/nwgraph/algorithms/triangle_count.hpp</includedby>
+    <includedby refid="experimental_2algorithms_2betweenness__centrality_8hpp" local="yes">/Users/lums/NWmath/NWgr/include/nwgraph/experimental/algorithms/betweenness_centrality.hpp</includedby>
+    <includedby refid="experimental_2algorithms_2bfs_8hpp" local="yes">/Users/lums/NWmath/NWgr/include/nwgraph/experimental/algorithms/bfs.hpp</includedby>
+    <includedby refid="experimental_2algorithms_2delta__stepping_8hpp" local="yes">/Users/lums/NWmath/NWgr/include/nwgraph/experimental/algorithms/delta_stepping.hpp</includedby>
+    <includedby refid="experimental_2algorithms_2jaccard_8hpp" local="yes">/Users/lums/NWmath/NWgr/include/nwgraph/experimental/algorithms/jaccard.hpp</includedby>
+    <includedby refid="experimental_2algorithms_2page__rank_8hpp" local="yes">/Users/lums/NWmath/NWgr/include/nwgraph/experimental/algorithms/page_rank.hpp</includedby>
+    <includedby refid="experimental_2algorithms_2triangle__count_8hpp" local="yes">/Users/lums/NWmath/NWgr/include/nwgraph/experimental/algorithms/triangle_count.hpp</includedby>
+    <incdepgraph>
+      <node id="1">
+        <label>/Users/lums/NWmath/NWgr/include/nwgraph/util/parallel_for.hpp</label>
+        <link refid="parallel__for_8hpp"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>nwgraph/util/traits.hpp</label>
+        <link refid="traits_8hpp_source"/>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+      </node>
+      <node id="3">
+        <label>atomic</label>
+      </node>
+      <node id="4">
+        <label>iterator</label>
+      </node>
+      <node id="5">
+        <label>tbb/blocked_range.h</label>
+      </node>
+      <node id="7">
+        <label>tbb/parallel_for.h</label>
+      </node>
+      <node id="8">
+        <label>tbb/parallel_reduce.h</label>
+      </node>
+      <node id="6">
+        <label>tuple</label>
+      </node>
+    </incdepgraph>
+    <invincdepgraph>
+      <node id="2">
+        <label>/Users/lums/NWmath/NWgr/include/nwgraph/algorithms/betweenness_centrality.hpp</label>
+        <link refid="algorithms_2betweenness__centrality_8hpp_source"/>
+      </node>
+      <node id="3">
+        <label>/Users/lums/NWmath/NWgr/include/nwgraph/algorithms/bfs.hpp</label>
+        <link refid="algorithms_2bfs_8hpp"/>
+      </node>
+      <node id="4">
+        <label>/Users/lums/NWmath/NWgr/include/nwgraph/algorithms/delta_stepping.hpp</label>
+        <link refid="algorithms_2delta__stepping_8hpp_source"/>
+        <childnode refid="5" relation="include">
+        </childnode>
+      </node>
+      <node id="6">
+        <label>/Users/lums/NWmath/NWgr/include/nwgraph/algorithms/jaccard.hpp</label>
+        <link refid="algorithms_2jaccard_8hpp_source"/>
+      </node>
+      <node id="7">
+        <label>/Users/lums/NWmath/NWgr/include/nwgraph/algorithms/k_truss.hpp</label>
+        <link refid="k__truss_8hpp_source"/>
+      </node>
+      <node id="8">
+        <label>/Users/lums/NWmath/NWgr/include/nwgraph/algorithms/page_rank.hpp</label>
+        <link refid="algorithms_2page__rank_8hpp_source"/>
+        <childnode refid="9" relation="include">
+        </childnode>
+      </node>
+      <node id="10">
+        <label>/Users/lums/NWmath/NWgr/include/nwgraph/algorithms/triangle_count.hpp</label>
+        <link refid="algorithms_2triangle__count_8hpp_source"/>
+      </node>
+      <node id="11">
+        <label>/Users/lums/NWmath/NWgr/include/nwgraph/experimental/algorithms/betweenness_centrality.hpp</label>
+        <link refid="experimental_2algorithms_2betweenness__centrality_8hpp_source"/>
+      </node>
+      <node id="12">
+        <label>/Users/lums/NWmath/NWgr/include/nwgraph/experimental/algorithms/bfs.hpp</label>
+        <link refid="experimental_2algorithms_2bfs_8hpp_source"/>
+      </node>
+      <node id="5">
+        <label>/Users/lums/NWmath/NWgr/include/nwgraph/experimental/algorithms/delta_stepping.hpp</label>
+        <link refid="experimental_2algorithms_2delta__stepping_8hpp_source"/>
+      </node>
+      <node id="13">
+        <label>/Users/lums/NWmath/NWgr/include/nwgraph/experimental/algorithms/jaccard.hpp</label>
+        <link refid="experimental_2algorithms_2jaccard_8hpp_source"/>
+      </node>
+      <node id="9">
+        <label>/Users/lums/NWmath/NWgr/include/nwgraph/experimental/algorithms/page_rank.hpp</label>
+        <link refid="experimental_2algorithms_2page__rank_8hpp_source"/>
+      </node>
+      <node id="14">
+        <label>/Users/lums/NWmath/NWgr/include/nwgraph/experimental/algorithms/triangle_count.hpp</label>
+        <link refid="experimental_2algorithms_2triangle__count_8hpp_source"/>
+      </node>
+      <node id="1">
+        <label>/Users/lums/NWmath/NWgr/include/nwgraph/util/parallel_for.hpp</label>
+        <link refid="parallel__for_8hpp"/>
+        <childnode refid="2" relation="include">
+        </childnode>
+        <childnode refid="3" relation="include">
+        </childnode>
+        <childnode refid="4" relation="include">
+        </childnode>
+        <childnode refid="6" relation="include">
+        </childnode>
+        <childnode refid="7" relation="include">
+        </childnode>
+        <childnode refid="8" relation="include">
+        </childnode>
+        <childnode refid="10" relation="include">
+        </childnode>
+        <childnode refid="11" relation="include">
+        </childnode>
+        <childnode refid="12" relation="include">
+        </childnode>
+        <childnode refid="5" relation="include">
+        </childnode>
+        <childnode refid="13" relation="include">
+        </childnode>
+        <childnode refid="9" relation="include">
+        </childnode>
+        <childnode refid="14" relation="include">
+        </childnode>
+      </node>
+    </invincdepgraph>
+    <innernamespace refid="namespacenw">nw</innernamespace>
+    <innernamespace refid="namespacenw_1_1graph">nw::graph</innernamespace>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <programlisting>
+<codeline lineno="1"><highlight class="comment">//<sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="2"><highlight class="normal"></highlight><highlight class="comment">//<sp/>This<sp/>file<sp/>is<sp/>part<sp/>of<sp/>NW<sp/>Graph<sp/>(aka<sp/>GraphPack)<sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="3"><highlight class="normal"></highlight><highlight class="comment">//<sp/>(c)<sp/>Pacific<sp/>Northwest<sp/>National<sp/>Laboratory<sp/>2018-2021<sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="4"><highlight class="normal"></highlight><highlight class="comment">//<sp/>(c)<sp/>University<sp/>of<sp/>Washington<sp/>2018-2021<sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="5"><highlight class="normal"></highlight><highlight class="comment">//<sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="6"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Licensed<sp/>under<sp/>terms<sp/>of<sp/>include<sp/>LICENSE<sp/>file<sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="7"><highlight class="normal"></highlight><highlight class="comment">//<sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="8"><highlight class="normal"></highlight><highlight class="comment">//<sp/>Authors:<sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="9"><highlight class="normal"></highlight><highlight class="comment">//<sp/><sp/><sp/><sp/><sp/>Andrew<sp/>Lumsdaine<sp/></highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="10"><highlight class="normal"></highlight><highlight class="comment">//</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="11"><highlight class="normal"></highlight></codeline>
+<codeline lineno="12"><highlight class="normal"></highlight><highlight class="preprocessor">#ifndef<sp/>NW_GRAPH_PARALLEL_FOR_HPP</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="13"><highlight class="normal"></highlight><highlight class="preprocessor">#define<sp/>NW_GRAPH_PARALLEL_FOR_HPP</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="14"><highlight class="normal"></highlight></codeline>
+<codeline lineno="15"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&quot;nwgraph/util/traits.hpp&quot;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="16"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;tbb/parallel_for.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="17"><highlight class="normal"></highlight><highlight class="preprocessor">#include<sp/>&lt;tbb/parallel_reduce.h&gt;</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="18"><highlight class="normal"></highlight></codeline>
+<codeline lineno="19"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">nw<sp/>{</highlight></codeline>
+<codeline lineno="20"><highlight class="normal"></highlight><highlight class="keyword">namespace<sp/></highlight><highlight class="normal">graph<sp/>{</highlight></codeline>
+<codeline lineno="30"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>Op,<sp/></highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>It&gt;</highlight></codeline>
+<codeline lineno="31"><highlight class="normal"></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>parallel_for_inner(Op&amp;&amp;<sp/>op,<sp/>It&amp;&amp;<sp/>i)<sp/>{</highlight></codeline>
+<codeline lineno="32"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>(is_tuple_v&lt;std::decay_t&lt;It&gt;&gt;)<sp/>{</highlight></codeline>
+<codeline lineno="33"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>std::apply([&amp;](</highlight><highlight class="keyword">auto</highlight><highlight class="normal">&amp;&amp;...<sp/>args)<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>std::forward&lt;Op&gt;(op)(std::forward&lt;decltype(args)&gt;(args)...);<sp/>},<sp/>std::forward&lt;It&gt;(i));</highlight></codeline>
+<codeline lineno="34"><highlight class="normal"><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>(std::is_integral_v&lt;std::decay_t&lt;It&gt;&gt;)<sp/>{</highlight></codeline>
+<codeline lineno="35"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>std::forward&lt;Op&gt;(op)(std::forward&lt;It&gt;(i));</highlight></codeline>
+<codeline lineno="36"><highlight class="normal"><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="37"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/></highlight><highlight class="keyword">constexpr</highlight><highlight class="normal"><sp/>(is_tuple_v&lt;decltype(*std::forward&lt;It&gt;(i))&gt;)<sp/>{</highlight></codeline>
+<codeline lineno="38"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>parallel_for_inner(std::forward&lt;Op&gt;(op),<sp/>*std::forward&lt;It&gt;(i));</highlight></codeline>
+<codeline lineno="39"><highlight class="normal"><sp/><sp/><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="40"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>std::forward&lt;Op&gt;(op)(*std::forward&lt;It&gt;(i));</highlight></codeline>
+<codeline lineno="41"><highlight class="normal"><sp/><sp/><sp/><sp/>}</highlight></codeline>
+<codeline lineno="42"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="43"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="44"><highlight class="normal"></highlight></codeline>
+<codeline lineno="52"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>Range,<sp/></highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>Op&gt;</highlight></codeline>
+<codeline lineno="53"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>parallel_for_sequential(Range&amp;&amp;<sp/>range,<sp/>Op&amp;&amp;<sp/>op)<sp/>{</highlight></codeline>
+<codeline lineno="54"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>&amp;&amp;i<sp/>=<sp/>range.begin(),<sp/>e<sp/>=<sp/>range.end();<sp/>i<sp/>!=<sp/>e;<sp/>++i)<sp/>{</highlight></codeline>
+<codeline lineno="55"><highlight class="normal"><sp/><sp/><sp/><sp/>parallel_for_inner(op,<sp/>i);</highlight></codeline>
+<codeline lineno="56"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="57"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="58"><highlight class="normal"></highlight></codeline>
+<codeline lineno="73"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>Range,<sp/></highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>Op,<sp/></highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>Reduce,<sp/></highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>T&gt;</highlight></codeline>
+<codeline lineno="74"><highlight class="normal"></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>parallel_for_sequential(Range&amp;&amp;<sp/>range,<sp/>Op&amp;&amp;<sp/>op,<sp/>Reduce&amp;&amp;<sp/>reduce,<sp/>T<sp/>init)<sp/>{</highlight></codeline>
+<codeline lineno="75"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">for</highlight><highlight class="normal"><sp/>(</highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>&amp;&amp;i<sp/>=<sp/>range.begin(),<sp/>e<sp/>=<sp/>range.end();<sp/>i<sp/>!=<sp/>e;<sp/>++i)<sp/>{</highlight></codeline>
+<codeline lineno="76"><highlight class="normal"><sp/><sp/><sp/><sp/>init<sp/>=<sp/>reduce(init,<sp/>parallel_for_inner(op,<sp/>i));</highlight></codeline>
+<codeline lineno="77"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="78"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>init;</highlight></codeline>
+<codeline lineno="79"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="80"><highlight class="normal"></highlight></codeline>
+<codeline lineno="93"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>Range,<sp/></highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>Op&gt;</highlight></codeline>
+<codeline lineno="94"><highlight class="normal"></highlight><highlight class="keywordtype">void</highlight><highlight class="normal"><sp/>parallel_for(Range&amp;&amp;<sp/>range,<sp/>Op&amp;&amp;<sp/>op)<sp/>{</highlight></codeline>
+<codeline lineno="95"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(range.is_divisible())<sp/>{</highlight></codeline>
+<codeline lineno="96"><highlight class="normal"><sp/><sp/><sp/><sp/>tbb::parallel_for(std::forward&lt;Range&gt;(range),</highlight></codeline>
+<codeline lineno="97"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>[&amp;](</highlight><highlight class="keyword">auto</highlight><highlight class="normal">&amp;&amp;<sp/>sub)<sp/>{<sp/>parallel_for_sequential(std::forward&lt;</highlight><highlight class="keyword">decltype</highlight><highlight class="normal">(sub)&gt;(sub),<sp/>std::forward&lt;Op&gt;(op));<sp/>});</highlight></codeline>
+<codeline lineno="98"><highlight class="normal"><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="99"><highlight class="normal"><sp/><sp/><sp/><sp/>parallel_for_sequential(std::forward&lt;Range&gt;(range),<sp/>std::forward&lt;Op&gt;(op));</highlight></codeline>
+<codeline lineno="100"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="101"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="102"><highlight class="normal"></highlight></codeline>
+<codeline lineno="121"><highlight class="keyword">template</highlight><highlight class="normal"><sp/>&lt;</highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>Range,<sp/></highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>Op,<sp/></highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>Reduce,<sp/></highlight><highlight class="keyword">class</highlight><highlight class="normal"><sp/>T&gt;</highlight></codeline>
+<codeline lineno="122"><highlight class="normal"></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>parallel_reduce(Range&amp;&amp;<sp/>range,<sp/>Op&amp;&amp;<sp/>op,<sp/>Reduce&amp;&amp;<sp/>reduce,<sp/>T<sp/>init)<sp/>{</highlight></codeline>
+<codeline lineno="123"><highlight class="normal"><sp/><sp/></highlight><highlight class="keywordflow">if</highlight><highlight class="normal"><sp/>(range.is_divisible())<sp/>{</highlight></codeline>
+<codeline lineno="124"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>tbb::parallel_reduce(</highlight></codeline>
+<codeline lineno="125"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>std::forward&lt;Range&gt;(range),<sp/>init,</highlight></codeline>
+<codeline lineno="126"><highlight class="normal"><sp/><sp/><sp/><sp/><sp/><sp/><sp/><sp/>[&amp;](</highlight><highlight class="keyword">auto</highlight><highlight class="normal">&amp;&amp;<sp/>sub,<sp/></highlight><highlight class="keyword">auto</highlight><highlight class="normal"><sp/>partial)<sp/>{<sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>parallel_for_sequential(std::forward&lt;</highlight><highlight class="keyword">decltype</highlight><highlight class="normal">(sub)&gt;(sub),<sp/>op,<sp/>reduce,<sp/>partial);<sp/>},<sp/>reduce);</highlight></codeline>
+<codeline lineno="127"><highlight class="normal"><sp/><sp/>}<sp/></highlight><highlight class="keywordflow">else</highlight><highlight class="normal"><sp/>{</highlight></codeline>
+<codeline lineno="128"><highlight class="normal"><sp/><sp/><sp/><sp/></highlight><highlight class="keywordflow">return</highlight><highlight class="normal"><sp/>parallel_for_sequential(std::forward&lt;Range&gt;(range),<sp/>std::forward&lt;Op&gt;(op),<sp/>std::forward&lt;Reduce&gt;(reduce),<sp/>init);</highlight></codeline>
+<codeline lineno="129"><highlight class="normal"><sp/><sp/>}</highlight></codeline>
+<codeline lineno="130"><highlight class="normal">}</highlight></codeline>
+<codeline lineno="131"><highlight class="normal">}<sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>graph</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="132"><highlight class="normal">}<sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>namespace<sp/>nw</highlight><highlight class="normal"></highlight></codeline>
+<codeline lineno="133"><highlight class="normal"></highlight></codeline>
+<codeline lineno="134"><highlight class="normal"></highlight><highlight class="preprocessor">#endif<sp/><sp/><sp/><sp/></highlight><highlight class="comment">//<sp/>NW_GRAPH_PARALLEL_FOR_HPP</highlight><highlight class="normal"></highlight></codeline>
+    </programlisting>
+    <location file="/Users/lums/NWmath/NWgr/include/nwgraph/util/parallel_for.hpp"/>
+  </compounddef>
+</doxygen>

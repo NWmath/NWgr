@@ -1,0 +1,77 @@
+\hypertarget{provenance_8hpp_source}{}\doxysection{provenance.\+hpp}
+\label{provenance_8hpp_source}\index{/Users/lums/NWmath/NWgr/include/nwgraph/util/provenance.hpp@{/Users/lums/NWmath/NWgr/include/nwgraph/util/provenance.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// }}
+\DoxyCodeLine{2 \textcolor{comment}{// This file is part of NW Graph (aka GraphPack) }}
+\DoxyCodeLine{3 \textcolor{comment}{// (c) Pacific Northwest National Laboratory 2018-\/2021 }}
+\DoxyCodeLine{4 \textcolor{comment}{// (c) University of Washington 2018-\/2021 }}
+\DoxyCodeLine{5 \textcolor{comment}{// }}
+\DoxyCodeLine{6 \textcolor{comment}{// Licensed under terms of include LICENSE file }}
+\DoxyCodeLine{7 \textcolor{comment}{// }}
+\DoxyCodeLine{8 \textcolor{comment}{// Authors: }}
+\DoxyCodeLine{9 \textcolor{comment}{//     Kevin Deweese    }}
+\DoxyCodeLine{10 \textcolor{comment}{//}}
+\DoxyCodeLine{11 }
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#ifndef NW\_GRAPH\_PROVENANCE\_HPP}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#define NW\_GRAPH\_PROVENANCE\_HPP}}
+\DoxyCodeLine{14 }
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#include <fstream>}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include <iostream>}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 \textcolor{keyword}{namespace }nw \{}
+\DoxyCodeLine{21 \textcolor{keyword}{namespace }graph \{}
+\DoxyCodeLine{22 }
+\DoxyCodeLine{23 std::string\& ltrim(std::string\& str, \textcolor{keyword}{const} std::string\& chars = \textcolor{stringliteral}{"{}\(\backslash\)t\(\backslash\)n\(\backslash\)v\(\backslash\)f\(\backslash\)r "{}}) \{}
+\DoxyCodeLine{24   str.erase(0, str.find\_first\_not\_of(chars));}
+\DoxyCodeLine{25   \textcolor{keywordflow}{return} str;}
+\DoxyCodeLine{26 \}}
+\DoxyCodeLine{27 }
+\DoxyCodeLine{28 std::string\& rtrim(std::string\& str, \textcolor{keyword}{const} std::string\& chars = \textcolor{stringliteral}{"{}\(\backslash\)t\(\backslash\)n\(\backslash\)v\(\backslash\)f\(\backslash\)r "{}}) \{}
+\DoxyCodeLine{29   str.erase(str.find\_last\_not\_of(chars) + 1);}
+\DoxyCodeLine{30   \textcolor{keywordflow}{return} str;}
+\DoxyCodeLine{31 \}}
+\DoxyCodeLine{32 }
+\DoxyCodeLine{33 std::string\& trim(std::string\& str, \textcolor{keyword}{const} std::string\& chars = \textcolor{stringliteral}{"{}\(\backslash\)t\(\backslash\)n\(\backslash\)v\(\backslash\)f\(\backslash\)r "{}}) \{ \textcolor{keywordflow}{return} ltrim(rtrim(str, chars), chars); \}}
+\DoxyCodeLine{34 }
+\DoxyCodeLine{35 \textcolor{keyword}{class }\mbox{\hyperlink{classnw_1_1graph_1_1provenance}{provenance}} \{}
+\DoxyCodeLine{36 \textcolor{keyword}{public}:}
+\DoxyCodeLine{37   \mbox{\hyperlink{classnw_1_1graph_1_1provenance}{provenance}}(\textcolor{keyword}{const} \mbox{\hyperlink{classnw_1_1graph_1_1provenance}{provenance}}\&) = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{38   \mbox{\hyperlink{classnw_1_1graph_1_1provenance}{provenance}}()                  = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{39   \mbox{\hyperlink{classnw_1_1graph_1_1provenance}{provenance}}(\textcolor{keywordtype}{size\_t} n) : info(n) \{\}}
+\DoxyCodeLine{40   \textcolor{keywordtype}{void} push\_back(\textcolor{keyword}{const} std::string\& fn, \textcolor{keyword}{const} std::string\& str) \{}
+\DoxyCodeLine{41     std::string f(fn), g(str);}
+\DoxyCodeLine{42     trim(f);}
+\DoxyCodeLine{43     trim(g);}
+\DoxyCodeLine{44     info.push\_back(fn + \textcolor{stringliteral}{"{}: "{}} + str);}
+\DoxyCodeLine{45     trim(info.back());}
+\DoxyCodeLine{46   \}}
+\DoxyCodeLine{47 }
+\DoxyCodeLine{48   \textcolor{keywordtype}{void} push\_back(\textcolor{keyword}{const} std::string\& str) \{}
+\DoxyCodeLine{49     info.push\_back(str);}
+\DoxyCodeLine{50     trim(info.back());}
+\DoxyCodeLine{51   \}}
+\DoxyCodeLine{52 }
+\DoxyCodeLine{53   \textcolor{keywordtype}{void} stream(std::ostream\& os, \textcolor{keyword}{const} std::string\& prefix = \textcolor{stringliteral}{"{}\%"{}})\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{54     \textcolor{keywordflow}{for} (\textcolor{keyword}{auto} s : info) \{}
+\DoxyCodeLine{55       os << prefix + \textcolor{stringliteral}{"{} "{}} << s << std::endl;}
+\DoxyCodeLine{56     \}}
+\DoxyCodeLine{57   \}}
+\DoxyCodeLine{58   \textcolor{keyword}{auto} operator=(\textcolor{keyword}{const} \mbox{\hyperlink{classnw_1_1graph_1_1provenance}{provenance}}\& x) \{}
+\DoxyCodeLine{59     \textcolor{keywordflow}{for} (\textcolor{keyword}{auto}\& j : x.info) \{}
+\DoxyCodeLine{60       info.push\_back(j);}
+\DoxyCodeLine{61     \}}
+\DoxyCodeLine{62   \}}
+\DoxyCodeLine{63 }
+\DoxyCodeLine{64 \textcolor{keyword}{private}:}
+\DoxyCodeLine{65   std::vector<std::string> info;}
+\DoxyCodeLine{66 \};}
+\DoxyCodeLine{67 }
+\DoxyCodeLine{68 \}    \textcolor{comment}{// namespace graph}}
+\DoxyCodeLine{69 \}    \textcolor{comment}{// namespace nw}}
+\DoxyCodeLine{70 }
+\DoxyCodeLine{71 \textcolor{preprocessor}{\#endif    }\textcolor{comment}{// NW\_GRAPH\_PROVENANCE\_HPP}}
+
+\end{DoxyCode}

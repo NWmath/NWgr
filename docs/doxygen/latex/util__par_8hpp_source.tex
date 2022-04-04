@@ -1,0 +1,74 @@
+\hypertarget{util__par_8hpp_source}{}\doxysection{util\+\_\+par.\+hpp}
+\label{util__par_8hpp_source}\index{/Users/lums/NWmath/NWgr/include/nwgraph/util/util\_par.hpp@{/Users/lums/NWmath/NWgr/include/nwgraph/util/util\_par.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// }}
+\DoxyCodeLine{2 \textcolor{comment}{// This file is part of NW Graph (aka GraphPack) }}
+\DoxyCodeLine{3 \textcolor{comment}{// (c) Pacific Northwest National Laboratory 2018-\/2021 }}
+\DoxyCodeLine{4 \textcolor{comment}{// (c) University of Washington 2018-\/2021 }}
+\DoxyCodeLine{5 \textcolor{comment}{// }}
+\DoxyCodeLine{6 \textcolor{comment}{// Licensed under terms of include LICENSE file }}
+\DoxyCodeLine{7 \textcolor{comment}{// }}
+\DoxyCodeLine{8 \textcolor{comment}{// Authors: }}
+\DoxyCodeLine{9 \textcolor{comment}{//     Andrew Lumsdaine }}
+\DoxyCodeLine{10 \textcolor{comment}{//     Kevin Deweese    }}
+\DoxyCodeLine{11 \textcolor{comment}{//}}
+\DoxyCodeLine{12 }
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#ifndef NW\_GRAPH\_UTIL\_PAR\_HPP}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#define NW\_GRAPH\_UTIL\_PAR\_HPP}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include <atomic>}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include <cstddef>}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include <iterator>}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include <mutex>}}
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 \textcolor{keyword}{namespace }nw \{}
+\DoxyCodeLine{22 \textcolor{keyword}{namespace }graph \{}
+\DoxyCodeLine{23 }
+\DoxyCodeLine{24 std::mutex mtx;}
+\DoxyCodeLine{25 }
+\DoxyCodeLine{26 \textcolor{keyword}{class }\mbox{\hyperlink{classnw_1_1graph_1_1par__counting__output__iterator}{par\_counting\_output\_iterator}} : \textcolor{keyword}{public} std::iterator<std::random\_access\_iterator\_tag, size\_t> \{}
+\DoxyCodeLine{27 \textcolor{keyword}{public}:}
+\DoxyCodeLine{28   \mbox{\hyperlink{classnw_1_1graph_1_1par__counting__output__iterator}{par\_counting\_output\_iterator}}(\textcolor{keywordtype}{size\_t}\& count) : count\{count\} \{\}}
+\DoxyCodeLine{29   \textcolor{keywordtype}{void}                          operator++() \{\}}
+\DoxyCodeLine{30   \textcolor{keywordtype}{void}                          operator++(\textcolor{keywordtype}{int}) \{\}}
+\DoxyCodeLine{31   \mbox{\hyperlink{classnw_1_1graph_1_1par__counting__output__iterator}{par\_counting\_output\_iterator}}\& operator*() \{ \textcolor{keywordflow}{return} *\textcolor{keyword}{this}; \}}
+\DoxyCodeLine{32   \mbox{\hyperlink{classnw_1_1graph_1_1par__counting__output__iterator}{par\_counting\_output\_iterator}}\& operator[](\textcolor{keywordtype}{size\_t}) \{ \textcolor{keywordflow}{return} *\textcolor{keyword}{this}; \}}
+\DoxyCodeLine{33 }
+\DoxyCodeLine{34   \textcolor{keyword}{template} <\textcolor{keyword}{typename} T>}
+\DoxyCodeLine{35   \textcolor{keywordtype}{void} operator=(T) \{}
+\DoxyCodeLine{36     std::lock\_guard<std::mutex> lock(mtx);}
+\DoxyCodeLine{37     count++;}
+\DoxyCodeLine{38   \}}
+\DoxyCodeLine{39   \textcolor{keywordtype}{size\_t} get\_count() \{ \textcolor{keywordflow}{return} count; \}}
+\DoxyCodeLine{40 }
+\DoxyCodeLine{41 \textcolor{keyword}{private}:}
+\DoxyCodeLine{42   \textcolor{keywordtype}{size\_t}\& count;}
+\DoxyCodeLine{43 \};}
+\DoxyCodeLine{44 }
+\DoxyCodeLine{45 \textcolor{keyword}{class }\mbox{\hyperlink{classnw_1_1graph_1_1atomic__counting__output__iterator}{atomic\_counting\_output\_iterator}} : \textcolor{keyword}{public} std::iterator<std::random\_access\_iterator\_tag, size\_t> \{}
+\DoxyCodeLine{46 \textcolor{keyword}{public}:}
+\DoxyCodeLine{47   \mbox{\hyperlink{classnw_1_1graph_1_1atomic__counting__output__iterator}{atomic\_counting\_output\_iterator}}(std::atomic<size\_t>\& count) : count\{count\} \{\}}
+\DoxyCodeLine{48   \textcolor{keywordtype}{void}                             operator++() \{\}}
+\DoxyCodeLine{49   \textcolor{keywordtype}{void}                             operator++(\textcolor{keywordtype}{int}) \{\}}
+\DoxyCodeLine{50   \mbox{\hyperlink{classnw_1_1graph_1_1atomic__counting__output__iterator}{atomic\_counting\_output\_iterator}}\& operator*() \{ \textcolor{keywordflow}{return} *\textcolor{keyword}{this}; \}}
+\DoxyCodeLine{51   \mbox{\hyperlink{classnw_1_1graph_1_1atomic__counting__output__iterator}{atomic\_counting\_output\_iterator}}\& operator[](\textcolor{keywordtype}{size\_t}) \{ \textcolor{keywordflow}{return} *\textcolor{keyword}{this}; \}}
+\DoxyCodeLine{52 }
+\DoxyCodeLine{53   \textcolor{keyword}{template} <\textcolor{keyword}{typename} T>}
+\DoxyCodeLine{54   \textcolor{keywordtype}{void} operator=(T) \{}
+\DoxyCodeLine{55     count++;}
+\DoxyCodeLine{56   \}}
+\DoxyCodeLine{57   \textcolor{keywordtype}{size\_t} get\_count() \{ \textcolor{keywordflow}{return} count; \}}
+\DoxyCodeLine{58 }
+\DoxyCodeLine{59 \textcolor{keyword}{private}:}
+\DoxyCodeLine{60   std::atomic<size\_t>\& count;}
+\DoxyCodeLine{61 \};}
+\DoxyCodeLine{62 }
+\DoxyCodeLine{63 \textcolor{keyword}{typedef} \textcolor{keywordtype}{size\_t} vertex\_id\_type;}
+\DoxyCodeLine{64 }
+\DoxyCodeLine{65 \}    \textcolor{comment}{// namespace graph}}
+\DoxyCodeLine{66 \}    \textcolor{comment}{// namespace nw}}
+\DoxyCodeLine{67 }
+\DoxyCodeLine{68 \textcolor{preprocessor}{\#endif    }\textcolor{comment}{// NW\_GRAPH\_UTIL\_PAR\_HPP}}
+
+\end{DoxyCode}

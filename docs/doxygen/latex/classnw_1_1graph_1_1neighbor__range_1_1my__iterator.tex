@@ -1,0 +1,67 @@
+\hypertarget{classnw_1_1graph_1_1neighbor__range_1_1my__iterator}{}\doxysection{nw\+::graph\+::neighbor\+\_\+range\texorpdfstring{$<$}{<} Graph, Is \texorpdfstring{$>$}{>}\+::my\+\_\+iterator\texorpdfstring{$<$}{<} is\+\_\+const \texorpdfstring{$>$}{>} Class Template Reference}
+\label{classnw_1_1graph_1_1neighbor__range_1_1my__iterator}\index{nw::graph::neighbor\_range$<$ Graph, Is $>$::my\_iterator$<$ is\_const $>$@{nw::graph::neighbor\_range$<$ Graph, Is $>$::my\_iterator$<$ is\_const $>$}}
+\doxysubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classnw_1_1graph_1_1neighbor__range_1_1my__iterator_a06ff85fe440871688ac0b1bf7ba15ad0}\label{classnw_1_1graph_1_1neighbor__range_1_1my__iterator_a06ff85fe440871688ac0b1bf7ba15ad0}} 
+using {\bfseries iterator\+\_\+category} = std\+::forward\+\_\+iterator\+\_\+tag
+\item 
+\mbox{\Hypertarget{classnw_1_1graph_1_1neighbor__range_1_1my__iterator_a13fae91b292f9bfbdb0497218b42e07d}\label{classnw_1_1graph_1_1neighbor__range_1_1my__iterator_a13fae91b292f9bfbdb0497218b42e07d}} 
+using {\bfseries value\+\_\+type} = std\+::tuple$<$ vertex\+\_\+id\+\_\+type $>$
+\item 
+\mbox{\Hypertarget{classnw_1_1graph_1_1neighbor__range_1_1my__iterator_a38162c8ad573aeb25b669cd085ba7291}\label{classnw_1_1graph_1_1neighbor__range_1_1my__iterator_a38162c8ad573aeb25b669cd085ba7291}} 
+using {\bfseries difference\+\_\+type} = std\+::size\+\_\+t
+\item 
+\mbox{\Hypertarget{classnw_1_1graph_1_1neighbor__range_1_1my__iterator_a2f7627c27fbd5a2499ab940c3f9074d6}\label{classnw_1_1graph_1_1neighbor__range_1_1my__iterator_a2f7627c27fbd5a2499ab940c3f9074d6}} 
+using {\bfseries reference} = value\+\_\+type \&
+\item 
+\mbox{\Hypertarget{classnw_1_1graph_1_1neighbor__range_1_1my__iterator_a2eb2ac476eed705883264d0823fd04a5}\label{classnw_1_1graph_1_1neighbor__range_1_1my__iterator_a2eb2ac476eed705883264d0823fd04a5}} 
+using {\bfseries pointer} = value\+\_\+type $\ast$
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classnw_1_1graph_1_1neighbor__range_1_1my__iterator_adbf4ac6351d180e2e8f2eaa56aaa3b4e}\label{classnw_1_1graph_1_1neighbor__range_1_1my__iterator_adbf4ac6351d180e2e8f2eaa56aaa3b4e}} 
+{\bfseries my\+\_\+iterator} (graph\+\_\+iterator base, graph\+\_\+iterator begin, graph\+\_\+iterator end)
+\item 
+\mbox{\Hypertarget{classnw_1_1graph_1_1neighbor__range_1_1my__iterator_ae5e7927653be70bccb2b406ef975d5e2}\label{classnw_1_1graph_1_1neighbor__range_1_1my__iterator_ae5e7927653be70bccb2b406ef975d5e2}} 
+{\bfseries my\+\_\+iterator} (const \mbox{\hyperlink{classnw_1_1graph_1_1neighbor__range_1_1my__iterator}{my\+\_\+iterator}} \&)=default
+\item 
+\mbox{\Hypertarget{classnw_1_1graph_1_1neighbor__range_1_1my__iterator_a77bffeef5c0e9d6ec481b312d22202a8}\label{classnw_1_1graph_1_1neighbor__range_1_1my__iterator_a77bffeef5c0e9d6ec481b312d22202a8}} 
+\mbox{\hyperlink{classnw_1_1graph_1_1neighbor__range_1_1my__iterator}{my\+\_\+iterator}} \& {\bfseries operator=} (const \mbox{\hyperlink{classnw_1_1graph_1_1neighbor__range_1_1my__iterator}{my\+\_\+iterator}} \&b)=default
+\item 
+\mbox{\Hypertarget{classnw_1_1graph_1_1neighbor__range_1_1my__iterator_a21cc204f4eee2856aac959c0b3411166}\label{classnw_1_1graph_1_1neighbor__range_1_1my__iterator_a21cc204f4eee2856aac959c0b3411166}} 
+{\footnotesize template$<$bool was\+\_\+const, class  = std\+::enable\+\_\+if\+\_\+t$<$is\+\_\+const \&\& !was\+\_\+const$>$$>$ }\\{\bfseries my\+\_\+iterator} (const \mbox{\hyperlink{classnw_1_1graph_1_1neighbor__range_1_1my__iterator}{my\+\_\+iterator}}$<$ was\+\_\+const $>$ \&rhs)
+\item 
+\mbox{\Hypertarget{classnw_1_1graph_1_1neighbor__range_1_1my__iterator_a34430ff2cedf4547d221c5260d4652fc}\label{classnw_1_1graph_1_1neighbor__range_1_1my__iterator_a34430ff2cedf4547d221c5260d4652fc}} 
+{\footnotesize template$<$bool was\+\_\+const, class  = std\+::enable\+\_\+if\+\_\+t$<$is\+\_\+const \&\& !was\+\_\+const$>$$>$ }\\\mbox{\hyperlink{classnw_1_1graph_1_1neighbor__range_1_1my__iterator}{my\+\_\+iterator}} \& {\bfseries operator=} (const \mbox{\hyperlink{classnw_1_1graph_1_1neighbor__range_1_1my__iterator}{my\+\_\+iterator}}$<$ was\+\_\+const $>$ \&rhs)
+\item 
+\mbox{\Hypertarget{classnw_1_1graph_1_1neighbor__range_1_1my__iterator_a14657e8eedfbbf26834dcba44d2ab150}\label{classnw_1_1graph_1_1neighbor__range_1_1my__iterator_a14657e8eedfbbf26834dcba44d2ab150}} 
+\mbox{\hyperlink{classnw_1_1graph_1_1neighbor__range_1_1my__iterator}{my\+\_\+iterator}} \& {\bfseries operator++} ()
+\item 
+\mbox{\Hypertarget{classnw_1_1graph_1_1neighbor__range_1_1my__iterator_a396735449733af5bb4c7adec83c30f13}\label{classnw_1_1graph_1_1neighbor__range_1_1my__iterator_a396735449733af5bb4c7adec83c30f13}} 
+auto {\bfseries operator$\ast$} ()
+\item 
+\mbox{\Hypertarget{classnw_1_1graph_1_1neighbor__range_1_1my__iterator_a14b33687cfcaa6d6cdf63d92b1c08e2a}\label{classnw_1_1graph_1_1neighbor__range_1_1my__iterator_a14b33687cfcaa6d6cdf63d92b1c08e2a}} 
+auto {\bfseries operator$\ast$} () const
+\item 
+\mbox{\Hypertarget{classnw_1_1graph_1_1neighbor__range_1_1my__iterator_a0f549efe59ca09a804697eee6c6dacf4}\label{classnw_1_1graph_1_1neighbor__range_1_1my__iterator_a0f549efe59ca09a804697eee6c6dacf4}} 
+bool {\bfseries operator==} (const \mbox{\hyperlink{classnw_1_1graph_1_1neighbor__range_1_1my__iterator}{my\+\_\+iterator}} \&b) const
+\item 
+\mbox{\Hypertarget{classnw_1_1graph_1_1neighbor__range_1_1my__iterator_ae6fc3b1c4e83d6b00082b070dc2f11dc}\label{classnw_1_1graph_1_1neighbor__range_1_1my__iterator_ae6fc3b1c4e83d6b00082b070dc2f11dc}} 
+bool {\bfseries operator!=} (const \mbox{\hyperlink{classnw_1_1graph_1_1neighbor__range_1_1my__iterator}{my\+\_\+iterator}} \&b) const
+\item 
+\mbox{\Hypertarget{classnw_1_1graph_1_1neighbor__range_1_1my__iterator_a89cb5b0c205c713ed1cc1009fb7cad38}\label{classnw_1_1graph_1_1neighbor__range_1_1my__iterator_a89cb5b0c205c713ed1cc1009fb7cad38}} 
+bool {\bfseries operator$<$} (const \mbox{\hyperlink{classnw_1_1graph_1_1neighbor__range_1_1my__iterator}{my\+\_\+iterator}} \&b) const
+\item 
+\mbox{\Hypertarget{classnw_1_1graph_1_1neighbor__range_1_1my__iterator_a5de61db9f639cfda78c716ab8d5942e8}\label{classnw_1_1graph_1_1neighbor__range_1_1my__iterator_a5de61db9f639cfda78c716ab8d5942e8}} 
+difference\+\_\+type {\bfseries operator-\/} (const \mbox{\hyperlink{classnw_1_1graph_1_1neighbor__range_1_1my__iterator}{my\+\_\+iterator}} \&b) const
+\item 
+\mbox{\Hypertarget{classnw_1_1graph_1_1neighbor__range_1_1my__iterator_a89a64b1e8f8cbb97af5ba93003618a24}\label{classnw_1_1graph_1_1neighbor__range_1_1my__iterator_a89a64b1e8f8cbb97af5ba93003618a24}} 
+\mbox{\hyperlink{classnw_1_1graph_1_1neighbor__range_1_1my__iterator}{my\+\_\+iterator}} {\bfseries operator+} (difference\+\_\+type step) const
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/lums/\+NWmath/\+NWgr/include/nwgraph/adaptors/neighbor\+\_\+range.\+hpp\end{DoxyCompactItemize}

@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.3" xml:lang="en-US">
+  <compounddef id="structnw_1_1graph_1_1graph__traits" kind="struct" language="C++" prot="public">
+    <compoundname>nw::graph::graph_traits</compoundname>
+    <templateparamlist>
+      <param>
+        <type>typename G</type>
+      </param>
+    </templateparamlist>
+      <sectiondef kind="public-type">
+      <memberdef kind="typedef" id="structnw_1_1graph_1_1graph__traits_1ab3a199af7d03473a34d09155d5b84804" prot="public" static="no">
+        <type>typename G::vertex_id_type</type>
+        <definition>using nw::graph::graph_traits&lt; G &gt;::vertex_id_type =  typename G::vertex_id_type</definition>
+        <argsstring></argsstring>
+        <name>vertex_id_type</name>
+        <qualifiedname>nw::graph::graph_traits::vertex_id_type</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/graph_traits.hpp" line="21" column="3" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/graph_traits.hpp" bodystart="21" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/Users/lums/NWmath/NWgr/include/nwgraph/graph_traits.hpp" line="19" column="1" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/graph_traits.hpp" bodystart="19" bodyend="32"/>
+    <listofallmembers>
+      <member refid="structnw_1_1graph_1_1graph__traits_1ab3a199af7d03473a34d09155d5b84804" prot="public" virt="non-virtual"><scope>nw::graph::graph_traits</scope><name>vertex_id_type</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

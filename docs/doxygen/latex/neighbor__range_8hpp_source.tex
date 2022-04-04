@@ -1,0 +1,135 @@
+\hypertarget{neighbor__range_8hpp_source}{}\doxysection{neighbor\+\_\+range.\+hpp}
+\label{neighbor__range_8hpp_source}\index{/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/neighbor\_range.hpp@{/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/neighbor\_range.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// }}
+\DoxyCodeLine{2 \textcolor{comment}{// This file is part of NW Graph (aka GraphPack) }}
+\DoxyCodeLine{3 \textcolor{comment}{// (c) Pacific Northwest National Laboratory 2018-\/2021 }}
+\DoxyCodeLine{4 \textcolor{comment}{// (c) University of Washington 2018-\/2021 }}
+\DoxyCodeLine{5 \textcolor{comment}{// }}
+\DoxyCodeLine{6 \textcolor{comment}{// Licensed under terms of include LICENSE file }}
+\DoxyCodeLine{7 \textcolor{comment}{// }}
+\DoxyCodeLine{8 \textcolor{comment}{// Authors: }}
+\DoxyCodeLine{9 \textcolor{comment}{//     Andrew Lumsdaine }}
+\DoxyCodeLine{10 \textcolor{comment}{//     Kevin Deweese    }}
+\DoxyCodeLine{11 \textcolor{comment}{//     Xu Tony Liu}}
+\DoxyCodeLine{12 \textcolor{comment}{//}}
+\DoxyCodeLine{13 }
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#ifndef NW\_GRAPH\_NEIGHBOR\_RANGE\_HPP}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#define NW\_GRAPH\_NEIGHBOR\_RANGE\_HPP}}
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include "{}nwgraph/graph\_traits.hpp"{}}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include "{}nwgraph/util/util.hpp"{}}}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 \textcolor{keyword}{namespace }nw \{}
+\DoxyCodeLine{22 \textcolor{keyword}{namespace }graph \{}
+\DoxyCodeLine{23 }
+\DoxyCodeLine{24 \textcolor{keyword}{template} <\textcolor{keyword}{class }Graph, std::size\_t... Is>}
+\DoxyCodeLine{25 \textcolor{keyword}{class }\mbox{\hyperlink{classnw_1_1graph_1_1neighbor__range}{neighbor\_range}} \{}
+\DoxyCodeLine{26   \textcolor{keyword}{static} \textcolor{keyword}{constexpr} \textcolor{keywordtype}{size\_t} cutoff\_ = 16;}
+\DoxyCodeLine{27 }
+\DoxyCodeLine{28   \textcolor{keyword}{using} vertex\_id\_type = vertex\_id\_t<Graph>;}
+\DoxyCodeLine{29 }
+\DoxyCodeLine{30   \textcolor{keyword}{using} graph\_iterator = \textcolor{keyword}{typename} std::conditional<std::is\_const\_v<Graph>, \textcolor{keyword}{typename} Graph::const\_iterator, \textcolor{keyword}{typename} Graph::iterator>::type;}
+\DoxyCodeLine{31 }
+\DoxyCodeLine{32   graph\_iterator outer\_base\_;}
+\DoxyCodeLine{33   graph\_iterator outer\_begin\_;}
+\DoxyCodeLine{34   graph\_iterator outer\_end\_;}
+\DoxyCodeLine{35 }
+\DoxyCodeLine{36 \textcolor{keyword}{public}:}
+\DoxyCodeLine{37   \mbox{\hyperlink{classnw_1_1graph_1_1neighbor__range}{neighbor\_range}}(Graph\& g, std::size\_t offset) : outer\_base\_(g.begin()), outer\_begin\_(g.begin() + offset), outer\_end\_(g.end()) \{\}}
+\DoxyCodeLine{38 }
+\DoxyCodeLine{39   \mbox{\hyperlink{classnw_1_1graph_1_1neighbor__range}{neighbor\_range}}(Graph\& g) : \mbox{\hyperlink{classnw_1_1graph_1_1neighbor__range}{neighbor\_range}}(g, 0) \{\}}
+\DoxyCodeLine{40 }
+\DoxyCodeLine{41   \textcolor{comment}{// Split a range.}}
+\DoxyCodeLine{42   \mbox{\hyperlink{classnw_1_1graph_1_1neighbor__range}{neighbor\_range}}(\mbox{\hyperlink{classnw_1_1graph_1_1neighbor__range}{neighbor\_range}}\& b, tbb::split) : \mbox{\hyperlink{classnw_1_1graph_1_1neighbor__range}{neighbor\_range}}(b) \{}
+\DoxyCodeLine{43     \textcolor{keyword}{auto} i = (outer\_end\_ -\/ outer\_begin\_) / 2;}
+\DoxyCodeLine{44     outer\_begin\_ += i;}
+\DoxyCodeLine{45     b.outer\_end\_ = b.outer\_begin\_ + i;}
+\DoxyCodeLine{46   \}}
+\DoxyCodeLine{47 }
+\DoxyCodeLine{48   \mbox{\hyperlink{classnw_1_1graph_1_1neighbor__range}{neighbor\_range}}(\textcolor{keyword}{const} \mbox{\hyperlink{classnw_1_1graph_1_1neighbor__range}{neighbor\_range}}\&) = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{49   \mbox{\hyperlink{classnw_1_1graph_1_1neighbor__range}{neighbor\_range}}\& operator=(\textcolor{keyword}{const} \mbox{\hyperlink{classnw_1_1graph_1_1neighbor__range}{neighbor\_range}}\&) = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{50 }
+\DoxyCodeLine{51   \textcolor{keyword}{template} <\textcolor{keywordtype}{bool} is\_const = false>}
+\DoxyCodeLine{52   \textcolor{keyword}{class }\mbox{\hyperlink{classnw_1_1graph_1_1neighbor__range_1_1my__iterator}{my\_iterator}} \{}
+\DoxyCodeLine{53   \textcolor{keyword}{public}:}
+\DoxyCodeLine{54     \textcolor{keyword}{using} iterator\_category = std::forward\_iterator\_tag;}
+\DoxyCodeLine{55     \textcolor{keyword}{using} value\_type        = std::tuple<vertex\_id\_type>;}
+\DoxyCodeLine{56     \textcolor{keyword}{using} difference\_type   = std::size\_t;}
+\DoxyCodeLine{57     \textcolor{keyword}{using} reference         = value\_type\&;}
+\DoxyCodeLine{58     \textcolor{keyword}{using} pointer           = value\_type*;}
+\DoxyCodeLine{59 }
+\DoxyCodeLine{60   \textcolor{keyword}{private}:}
+\DoxyCodeLine{61     graph\_iterator base\_;     }
+\DoxyCodeLine{62     graph\_iterator first\_;    }
+\DoxyCodeLine{63     graph\_iterator last\_;     }
+\DoxyCodeLine{64 }
+\DoxyCodeLine{65     \mbox{\hyperlink{classnw_1_1graph_1_1neighbor__range_1_1my__iterator}{my\_iterator}}(\textcolor{keyword}{const} \mbox{\hyperlink{classnw_1_1graph_1_1neighbor__range_1_1my__iterator}{my\_iterator}}\& b, \textcolor{keywordtype}{unsigned} \textcolor{keywordtype}{long} step) : \mbox{\hyperlink{classnw_1_1graph_1_1neighbor__range_1_1my__iterator}{my\_iterator}}(b) \{ first\_ += step; \}}
+\DoxyCodeLine{66 }
+\DoxyCodeLine{67   \textcolor{keyword}{public}:}
+\DoxyCodeLine{68     \mbox{\hyperlink{classnw_1_1graph_1_1neighbor__range_1_1my__iterator}{my\_iterator}}(graph\_iterator base, graph\_iterator begin, graph\_iterator end) : base\_(base), first\_(begin), last\_(end) \{\}}
+\DoxyCodeLine{69 }
+\DoxyCodeLine{70     \mbox{\hyperlink{classnw_1_1graph_1_1neighbor__range_1_1my__iterator}{my\_iterator}}(\textcolor{keyword}{const} \mbox{\hyperlink{classnw_1_1graph_1_1neighbor__range_1_1my__iterator}{my\_iterator}}\&) = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{71     \mbox{\hyperlink{classnw_1_1graph_1_1neighbor__range_1_1my__iterator}{my\_iterator}}\& operator=(\textcolor{keyword}{const} \mbox{\hyperlink{classnw_1_1graph_1_1neighbor__range_1_1my__iterator}{my\_iterator}}\& b) = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{72 }
+\DoxyCodeLine{73     \textcolor{keyword}{template} <\textcolor{keywordtype}{bool} was\_const, \textcolor{keyword}{class} = std::enable\_if\_t<is\_const \&\& !was\_const>>}
+\DoxyCodeLine{74     \mbox{\hyperlink{classnw_1_1graph_1_1neighbor__range_1_1my__iterator}{my\_iterator}}(\textcolor{keyword}{const} \mbox{\hyperlink{classnw_1_1graph_1_1neighbor__range_1_1my__iterator}{my\_iterator<was\_const>}}\& rhs) : base\_(rhs.base\_), first\_(rhs.first\_), last\_(rhs.last\_) \{\}}
+\DoxyCodeLine{75 }
+\DoxyCodeLine{76     \textcolor{keyword}{template} <\textcolor{keywordtype}{bool} was\_const, \textcolor{keyword}{class} = std::enable\_if\_t<is\_const \&\& !was\_const>>}
+\DoxyCodeLine{77     \mbox{\hyperlink{classnw_1_1graph_1_1neighbor__range_1_1my__iterator}{my\_iterator}}\& operator=(\textcolor{keyword}{const} \mbox{\hyperlink{classnw_1_1graph_1_1neighbor__range_1_1my__iterator}{my\_iterator<was\_const>}}\& rhs) \{}
+\DoxyCodeLine{78       base\_  = rhs.base\_;}
+\DoxyCodeLine{79       first\_ = rhs.first\_;}
+\DoxyCodeLine{80       last\_  = rhs.last\_;}
+\DoxyCodeLine{81       \textcolor{keywordflow}{return} *\textcolor{keyword}{this};}
+\DoxyCodeLine{82     \}}
+\DoxyCodeLine{83 }
+\DoxyCodeLine{84     \mbox{\hyperlink{classnw_1_1graph_1_1neighbor__range_1_1my__iterator}{my\_iterator}}\& operator++() \{}
+\DoxyCodeLine{85       ++first\_;}
+\DoxyCodeLine{86       \textcolor{keywordflow}{return} *\textcolor{keyword}{this};}
+\DoxyCodeLine{87     \}}
+\DoxyCodeLine{88 }
+\DoxyCodeLine{89     \textcolor{comment}{//auto operator*() \{ return std::tuple(first\_ -\/ base\_); \}}}
+\DoxyCodeLine{90     \textcolor{comment}{//auto operator*() const \{ return std::tuple(first\_ -\/ base\_); \}}}
+\DoxyCodeLine{91     \textcolor{keyword}{auto} operator*() \{ std::size\_t u = first\_ -\/ base\_; \textcolor{keywordflow}{return} std::tuple(u, base\_[u]); \}}
+\DoxyCodeLine{92     \textcolor{keyword}{auto} operator*()\textcolor{keyword}{ const }\{ std::size\_t u = first\_ -\/ base\_; \textcolor{keywordflow}{return} std::tuple(u, base\_[u]); \}}
+\DoxyCodeLine{93 }
+\DoxyCodeLine{94     \textcolor{keywordtype}{bool} operator==(\textcolor{keyword}{const} \mbox{\hyperlink{classnw_1_1graph_1_1neighbor__range_1_1my__iterator}{my\_iterator}}\& b)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} first\_ == b.first\_; \}}
+\DoxyCodeLine{95     \textcolor{keywordtype}{bool} operator!=(\textcolor{keyword}{const} \mbox{\hyperlink{classnw_1_1graph_1_1neighbor__range_1_1my__iterator}{my\_iterator}}\& b)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} first\_ != b.first\_; \}}
+\DoxyCodeLine{96     \textcolor{keywordtype}{bool} operator<(\textcolor{keyword}{const} \mbox{\hyperlink{classnw_1_1graph_1_1neighbor__range_1_1my__iterator}{my\_iterator}}\& b)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} first\_ < b.first\_; \}}
+\DoxyCodeLine{97 }
+\DoxyCodeLine{98     difference\_type operator-\/(\textcolor{keyword}{const} \mbox{\hyperlink{classnw_1_1graph_1_1neighbor__range_1_1my__iterator}{my\_iterator}}\& b)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} first\_ -\/ b.first\_; \}}
+\DoxyCodeLine{99     \mbox{\hyperlink{classnw_1_1graph_1_1neighbor__range_1_1my__iterator}{my\_iterator}}     operator+(difference\_type step)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \mbox{\hyperlink{classnw_1_1graph_1_1neighbor__range_1_1my__iterator}{my\_iterator}}(*\textcolor{keyword}{this}, step); \}}
+\DoxyCodeLine{100   \};}
+\DoxyCodeLine{101 }
+\DoxyCodeLine{102   \textcolor{keyword}{using} \mbox{\hyperlink{classnw_1_1graph_1_1neighbor__range_1_1my__iterator}{iterator}}       = \mbox{\hyperlink{classnw_1_1graph_1_1neighbor__range_1_1my__iterator}{my\_iterator<false>}};}
+\DoxyCodeLine{103   \textcolor{keyword}{using} \mbox{\hyperlink{classnw_1_1graph_1_1neighbor__range_1_1my__iterator}{const\_iterator}} = \mbox{\hyperlink{classnw_1_1graph_1_1neighbor__range_1_1my__iterator}{my\_iterator<true>}};}
+\DoxyCodeLine{104 }
+\DoxyCodeLine{105   \mbox{\hyperlink{classnw_1_1graph_1_1neighbor__range_1_1my__iterator}{iterator}}       begin() \{ \textcolor{keywordflow}{return} \{outer\_base\_, outer\_begin\_, outer\_end\_\}; \}}
+\DoxyCodeLine{106   const\_iterator begin()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \{outer\_base\_, outer\_begin\_, outer\_end\_\}; \}}
+\DoxyCodeLine{107 }
+\DoxyCodeLine{108   iterator       end() \{ \textcolor{keywordflow}{return} \{outer\_base\_, outer\_end\_, outer\_end\_\}; \}}
+\DoxyCodeLine{109   const\_iterator end()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \{outer\_base\_, outer\_end\_, outer\_end\_\}; \}}
+\DoxyCodeLine{110 }
+\DoxyCodeLine{111   std::size\_t size()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} outer\_end\_ -\/ outer\_begin\_; \}}
+\DoxyCodeLine{112   \textcolor{keywordtype}{bool}        empty()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} begin() == end(); \}}
+\DoxyCodeLine{113   \textcolor{keywordtype}{bool}        is\_divisible()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} size() > cutoff\_; \}}
+\DoxyCodeLine{114 \};}
+\DoxyCodeLine{115 }
+\DoxyCodeLine{116 \textcolor{keyword}{template} <\textcolor{keyword}{class }Graph, std::size\_t... Is>}
+\DoxyCodeLine{117 \textcolor{keyword}{static} \textcolor{keyword}{inline} neighbor\_range<Graph, Is...> make\_neighbor\_range(Graph\& g, std::size\_t offset) \{}
+\DoxyCodeLine{118   \textcolor{keywordflow}{return} \{g, offset\};}
+\DoxyCodeLine{119 \}}
+\DoxyCodeLine{120 }
+\DoxyCodeLine{121 \textcolor{keyword}{template} <\textcolor{keyword}{class }Graph, std::size\_t... Is>}
+\DoxyCodeLine{122 \textcolor{keyword}{static} \textcolor{keyword}{inline} neighbor\_range<Graph, Is...> make\_neighbor\_range(Graph\& g) \{}
+\DoxyCodeLine{123   \textcolor{keywordflow}{return} \{g\};}
+\DoxyCodeLine{124 \}}
+\DoxyCodeLine{125 }
+\DoxyCodeLine{126 \}    \textcolor{comment}{// namespace graph}}
+\DoxyCodeLine{127 \}    \textcolor{comment}{// namespace nw}}
+\DoxyCodeLine{128 }
+\DoxyCodeLine{129 \textcolor{preprocessor}{\#endif    }\textcolor{comment}{// NW\_GRAPH\_NEIGHBOR\_RANGE\_HPP}}
+
+\end{DoxyCode}

@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.3" xml:lang="en-US">
+  <compounddef id="dir_d9fba0350a9f1b40b2ed92fc0ba964d4" kind="dir">
+    <compoundname>/Users/lums/NWmath/NWgr/include/nwgraph/graphs</compoundname>
+    <innerfile refid="imdb-graph_8hpp">imdb-graph.hpp</innerfile>
+    <innerfile refid="karate-graph_8hpp">karate-graph.hpp</innerfile>
+    <innerfile refid="ospf-graph_8hpp">ospf-graph.hpp</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/Users/lums/NWmath/NWgr/include/nwgraph/graphs/"/>
+  </compounddef>
+</doxygen>

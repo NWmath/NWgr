@@ -1,0 +1,95 @@
+\hypertarget{cyclic__range__adapter_8hpp_source}{}\doxysection{cyclic\+\_\+range\+\_\+adapter.\+hpp}
+\label{cyclic__range__adapter_8hpp_source}\index{/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/cyclic\_range\_adapter.hpp@{/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/cyclic\_range\_adapter.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// }}
+\DoxyCodeLine{2 \textcolor{comment}{// This file is part of NW Graph (aka GraphPack) }}
+\DoxyCodeLine{3 \textcolor{comment}{// (c) Pacific Northwest National Laboratory 2018-\/2021 }}
+\DoxyCodeLine{4 \textcolor{comment}{// (c) University of Washington 2018-\/2021 }}
+\DoxyCodeLine{5 \textcolor{comment}{// }}
+\DoxyCodeLine{6 \textcolor{comment}{// Licensed under terms of include LICENSE file }}
+\DoxyCodeLine{7 \textcolor{comment}{// }}
+\DoxyCodeLine{8 \textcolor{comment}{// Authors: }}
+\DoxyCodeLine{9 \textcolor{comment}{//     Andrew Lumsdaine }}
+\DoxyCodeLine{10 \textcolor{comment}{//     Kevin Deweese    }}
+\DoxyCodeLine{11 \textcolor{comment}{//}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#ifndef NW\_GRAPH\_CYCLIC\_RANGE\_ADAPTER\_HPP}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#define NW\_GRAPH\_CYCLIC\_RANGE\_ADAPTER\_HPP}}
+\DoxyCodeLine{14 }
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#include "{}nwgraph/util/util.hpp"{}}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include <iterator>}}
+\DoxyCodeLine{17 }
+\DoxyCodeLine{18 \textcolor{keyword}{namespace }nw \{}
+\DoxyCodeLine{19 \textcolor{keyword}{namespace }graph \{}
+\DoxyCodeLine{26 \textcolor{keyword}{template} <\textcolor{keyword}{class} Iterator>}
+\DoxyCodeLine{27 \textcolor{keyword}{class }\mbox{\hyperlink{classnw_1_1graph_1_1cyclic__range__adapter}{cyclic\_range\_adapter}} \{}
+\DoxyCodeLine{28   \textcolor{keyword}{static\_assert}(std::is\_base\_of\_v<std::random\_access\_iterator\_tag, typename std::iterator\_traits<Iterator>::iterator\_category>);}
+\DoxyCodeLine{29 }
+\DoxyCodeLine{30 \textcolor{keyword}{public}:}
+\DoxyCodeLine{31   \textcolor{keyword}{using} difference\_type = \textcolor{keyword}{typename} std::iterator\_traits<Iterator>::difference\_type;}
+\DoxyCodeLine{32 }
+\DoxyCodeLine{33 \textcolor{keyword}{private}:}
+\DoxyCodeLine{34   Iterator        begin\_;}
+\DoxyCodeLine{35   Iterator        end\_;}
+\DoxyCodeLine{36   difference\_type cutoff\_;}
+\DoxyCodeLine{37   difference\_type cycle\_  = 0;}
+\DoxyCodeLine{38   difference\_type stride\_ = 1;}
+\DoxyCodeLine{39 }
+\DoxyCodeLine{40 \textcolor{keyword}{public}:}
+\DoxyCodeLine{41   \textcolor{keyword}{template} <\textcolor{keyword}{class} Range, \textcolor{keyword}{class} Cutoff>}
+\DoxyCodeLine{42   \mbox{\hyperlink{classnw_1_1graph_1_1cyclic__range__adapter}{cyclic\_range\_adapter}}(Range\&\& range, Cutoff cutoff)}
+\DoxyCodeLine{43       : begin\_(range.begin()), end\_(range.end()), cutoff\_(nw::graph::pow2(nw::graph::ceil\_log2(cutoff))) \{\}}
+\DoxyCodeLine{44 }
+\DoxyCodeLine{45   \mbox{\hyperlink{classnw_1_1graph_1_1cyclic__range__adapter}{cyclic\_range\_adapter}}(\textcolor{keyword}{const} \mbox{\hyperlink{classnw_1_1graph_1_1cyclic__range__adapter}{cyclic\_range\_adapter}}\&) = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{46   \mbox{\hyperlink{classnw_1_1graph_1_1cyclic__range__adapter}{cyclic\_range\_adapter}}(\mbox{\hyperlink{classnw_1_1graph_1_1cyclic__range__adapter}{cyclic\_range\_adapter}}\&\&)      = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{47 }
+\DoxyCodeLine{48   \mbox{\hyperlink{classnw_1_1graph_1_1cyclic__range__adapter}{cyclic\_range\_adapter}}(\mbox{\hyperlink{classnw_1_1graph_1_1cyclic__range__adapter}{cyclic\_range\_adapter}}\& rhs, tbb::split)}
+\DoxyCodeLine{49       : begin\_(rhs.begin\_), end\_(rhs.end\_), cutoff\_(rhs.cutoff\_), cycle\_(rhs.cycle\_ + rhs.stride\_), stride\_(rhs.stride\_ *= 2) \{\}}
+\DoxyCodeLine{50 }
+\DoxyCodeLine{51   \textcolor{keyword}{struct }\mbox{\hyperlink{structnw_1_1graph_1_1cyclic__range__adapter_1_1iterator}{iterator}} \{}
+\DoxyCodeLine{52     Iterator        i\_;}
+\DoxyCodeLine{53     difference\_type stride\_;}
+\DoxyCodeLine{54 }
+\DoxyCodeLine{55     \textcolor{keyword}{decltype}(\textcolor{keyword}{auto}) \textcolor{keyword}{operator}*() \{ \textcolor{keywordflow}{return} *i\_; \}}
+\DoxyCodeLine{56     }
+\DoxyCodeLine{57     \mbox{\hyperlink{structnw_1_1graph_1_1cyclic__range__adapter_1_1iterator}{iterator}}\& operator++() \{}
+\DoxyCodeLine{58       i\_ += stride\_;}
+\DoxyCodeLine{59       \textcolor{keywordflow}{return} *\textcolor{keyword}{this};}
+\DoxyCodeLine{60     \}}
+\DoxyCodeLine{61 }
+\DoxyCodeLine{62     \textcolor{keywordtype}{bool} operator!=(\textcolor{keyword}{const} \mbox{\hyperlink{structnw_1_1graph_1_1cyclic__range__adapter_1_1iterator}{iterator}}\& rhs)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} i\_ != rhs.i\_; \}}
+\DoxyCodeLine{63   \};}
+\DoxyCodeLine{64 }
+\DoxyCodeLine{66   \mbox{\hyperlink{structnw_1_1graph_1_1cyclic__range__adapter_1_1iterator}{iterator}} \mbox{\hyperlink{classnw_1_1graph_1_1cyclic__range__adapter_a1680b3bd1936e90d04ea302837ae854a}{begin}}()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \{begin\_ + cycle\_, stride\_\}; \}}
+\DoxyCodeLine{67 }
+\DoxyCodeLine{74   \mbox{\hyperlink{structnw_1_1graph_1_1cyclic__range__adapter_1_1iterator}{iterator}} \mbox{\hyperlink{classnw_1_1graph_1_1cyclic__range__adapter_af0143fa0610ced32d6b54aba4a8a0b89}{end}}()\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{75     difference\_type n = end\_ -\/ begin\_ -\/ cycle\_;     \textcolor{comment}{// shifted span for cycle}}
+\DoxyCodeLine{76     difference\_type r = n \% stride\_;                \textcolor{comment}{// remainder in last stride}}
+\DoxyCodeLine{77     difference\_type e = (stride\_ -\/ r) \% stride\_;    \textcolor{comment}{// amount past `end\_` we'll go}}
+\DoxyCodeLine{78     \textcolor{keywordflow}{return} \{end\_ + e, stride\_\};}
+\DoxyCodeLine{79   \}}
+\DoxyCodeLine{80 }
+\DoxyCodeLine{81   difference\_type size()\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{82     \textcolor{comment}{// figure out the number of valid elements in our cycle, which depends on}}
+\DoxyCodeLine{83     \textcolor{comment}{// the total number of elements, where our cycle starts, and the stride}}
+\DoxyCodeLine{84     difference\_type n = end\_ -\/ begin\_;}
+\DoxyCodeLine{85     \textcolor{keywordflow}{return} n / stride\_ + ((cycle\_ < n \% stride\_) ? 1 : 0);}
+\DoxyCodeLine{86   \}}
+\DoxyCodeLine{87 }
+\DoxyCodeLine{88   \textcolor{keywordtype}{bool} empty()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} size() == 0; \}}
+\DoxyCodeLine{89 }
+\DoxyCodeLine{94   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classnw_1_1graph_1_1cyclic__range__adapter_ae80d40f27f09a2fd4c727372f028755c}{is\_divisible}}()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} stride\_ <= cutoff\_; \}}
+\DoxyCodeLine{95 \};}
+\DoxyCodeLine{96 }
+\DoxyCodeLine{97 \textcolor{keyword}{template} <\textcolor{keyword}{class} Range, \textcolor{keyword}{class} Cutoff>}
+\DoxyCodeLine{98 cyclic\_range\_adapter(Range\&\& range, Cutoff) -\/> cyclic\_range\_adapter<\textcolor{keyword}{decltype}(range.begin())>;}
+\DoxyCodeLine{99 }
+\DoxyCodeLine{100 \textcolor{keyword}{template} <\textcolor{keyword}{class} Range, \textcolor{keyword}{class} Cutoff>}
+\DoxyCodeLine{101 \textcolor{keyword}{constexpr} \textcolor{keyword}{decltype}(\textcolor{keyword}{auto}) cyclic(Range\&\& range, Cutoff cutoff) \{}
+\DoxyCodeLine{102   \textcolor{keywordflow}{return} cyclic\_range\_adapter\{std::forward<Range>(range), cutoff\};}
+\DoxyCodeLine{103 \}}
+\DoxyCodeLine{104 \}    \textcolor{comment}{// namespace graph}}
+\DoxyCodeLine{105 \}    \textcolor{comment}{// namespace nw}}
+\DoxyCodeLine{106 \textcolor{preprocessor}{\#endif    }\textcolor{comment}{// NW\_GRAPH\_CYCLIC\_RANGE\_ADAPTER\_HPP}}
+
+\end{DoxyCode}

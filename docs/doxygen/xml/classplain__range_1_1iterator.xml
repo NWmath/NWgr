@@ -1,0 +1,138 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.3" xml:lang="en-US">
+  <compounddef id="classplain__range_1_1iterator" kind="class" language="C++" prot="public">
+    <compoundname>plain_range::iterator</compoundname>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classplain__range_1_1iterator_1a01ab09cac62ff363b0036300346bc54a" prot="private" static="no" mutable="no">
+        <type>Graph::iterator</type>
+        <definition>Graph::iterator plain_range&lt; Graph &gt;::iterator::base_</definition>
+        <argsstring></argsstring>
+        <name>base_</name>
+        <qualifiedname>plain_range::iterator::base_</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/scrap.cpp" line="10" column="30" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/scrap.cpp" bodystart="10" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classplain__range_1_1iterator_1ae90e7ec1af51b6706c951b6d64be7530" prot="private" static="no" mutable="no">
+        <type>Graph::iterator</type>
+        <definition>Graph::iterator plain_range&lt; Graph &gt;::iterator::first_</definition>
+        <argsstring></argsstring>
+        <name>first_</name>
+        <qualifiedname>plain_range::iterator::first_</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/scrap.cpp" line="11" column="30" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/scrap.cpp" bodystart="11" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classplain__range_1_1iterator_1aa0c3a31669cbc2d98b68026b8a45a040" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>plain_range&lt; Graph &gt;::iterator::iterator</definition>
+        <argsstring>(typename Graph::iterator base, typename Graph::iterator first)</argsstring>
+        <name>iterator</name>
+        <qualifiedname>plain_range::iterator::iterator</qualifiedname>
+        <param>
+          <type>typename Graph::iterator</type>
+          <declname>base</declname>
+        </param>
+        <param>
+          <type>typename Graph::iterator</type>
+          <declname>first</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/scrap.cpp" line="14" column="5" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/scrap.cpp" bodystart="14" bodyend="14"/>
+      </memberdef>
+      <memberdef kind="function" id="classplain__range_1_1iterator_1a8e83cdd4ef9cec91208a05bb52406f94" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classplain__range_1_1iterator" kindref="compound">iterator</ref> &amp;</type>
+        <definition>iterator &amp; plain_range&lt; Graph &gt;::iterator::operator++</definition>
+        <argsstring>()</argsstring>
+        <name>operator++</name>
+        <qualifiedname>plain_range::iterator::operator++</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/scrap.cpp" line="16" column="14" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/scrap.cpp" bodystart="16" bodyend="19"/>
+      </memberdef>
+      <memberdef kind="function" id="classplain__range_1_1iterator_1a4e50444184cc9662e9125aade1e565b0" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto plain_range&lt; Graph &gt;::iterator::operator*</definition>
+        <argsstring>()</argsstring>
+        <name>operator*</name>
+        <qualifiedname>plain_range::iterator::operator*</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/scrap.cpp" line="21" column="10" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/scrap.cpp" bodystart="21" bodyend="21"/>
+      </memberdef>
+      <memberdef kind="function" id="classplain__range_1_1iterator_1a17cf38b49f6d20cf63d29ad09fd5fc18" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool plain_range&lt; Graph &gt;::iterator::operator==</definition>
+        <argsstring>(const iterator &amp;b) const</argsstring>
+        <name>operator==</name>
+        <qualifiedname>plain_range::iterator::operator==</qualifiedname>
+        <param>
+          <type>const <ref refid="classplain__range_1_1iterator" kindref="compound">iterator</ref> &amp;</type>
+          <declname>b</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/scrap.cpp" line="23" column="10" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/scrap.cpp" bodystart="23" bodyend="23"/>
+      </memberdef>
+      <memberdef kind="function" id="classplain__range_1_1iterator_1a2b7ee45f001454af8e8f6e910db45cd2" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool plain_range&lt; Graph &gt;::iterator::operator!=</definition>
+        <argsstring>(const iterator &amp;b) const</argsstring>
+        <name>operator!=</name>
+        <qualifiedname>plain_range::iterator::operator!=</qualifiedname>
+        <param>
+          <type>const <ref refid="classplain__range_1_1iterator" kindref="compound">iterator</ref> &amp;</type>
+          <declname>b</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/scrap.cpp" line="24" column="10" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/scrap.cpp" bodystart="24" bodyend="24"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/scrap.cpp" line="9" column="3" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/scrap.cpp" bodystart="9" bodyend="25"/>
+    <listofallmembers>
+      <member refid="classplain__range_1_1iterator_1a01ab09cac62ff363b0036300346bc54a" prot="private" virt="non-virtual"><scope>plain_range::iterator</scope><name>base_</name></member>
+      <member refid="classplain__range_1_1iterator_1ae90e7ec1af51b6706c951b6d64be7530" prot="private" virt="non-virtual"><scope>plain_range::iterator</scope><name>first_</name></member>
+      <member refid="classplain__range_1_1iterator_1aa0c3a31669cbc2d98b68026b8a45a040" prot="public" virt="non-virtual"><scope>plain_range::iterator</scope><name>iterator</name></member>
+      <member refid="classplain__range_1_1iterator_1a2b7ee45f001454af8e8f6e910db45cd2" prot="public" virt="non-virtual"><scope>plain_range::iterator</scope><name>operator!=</name></member>
+      <member refid="classplain__range_1_1iterator_1a4e50444184cc9662e9125aade1e565b0" prot="public" virt="non-virtual"><scope>plain_range::iterator</scope><name>operator*</name></member>
+      <member refid="classplain__range_1_1iterator_1a8e83cdd4ef9cec91208a05bb52406f94" prot="public" virt="non-virtual"><scope>plain_range::iterator</scope><name>operator++</name></member>
+      <member refid="classplain__range_1_1iterator_1a17cf38b49f6d20cf63d29ad09fd5fc18" prot="public" virt="non-virtual"><scope>plain_range::iterator</scope><name>operator==</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

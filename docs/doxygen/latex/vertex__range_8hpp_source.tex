@@ -1,0 +1,107 @@
+\hypertarget{vertex__range_8hpp_source}{}\doxysection{vertex\+\_\+range.\+hpp}
+\label{vertex__range_8hpp_source}\index{/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/vertex\_range.hpp@{/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/vertex\_range.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// }}
+\DoxyCodeLine{2 \textcolor{comment}{// This file is part of NW Graph (aka GraphPack) }}
+\DoxyCodeLine{3 \textcolor{comment}{// (c) Pacific Northwest National Laboratory 2018-\/2021 }}
+\DoxyCodeLine{4 \textcolor{comment}{// (c) University of Washington 2018-\/2021 }}
+\DoxyCodeLine{5 \textcolor{comment}{// }}
+\DoxyCodeLine{6 \textcolor{comment}{// Licensed under terms of include LICENSE file }}
+\DoxyCodeLine{7 \textcolor{comment}{// }}
+\DoxyCodeLine{8 \textcolor{comment}{// Authors: }}
+\DoxyCodeLine{9 \textcolor{comment}{//     Xu Tony Liu  }}
+\DoxyCodeLine{10 \textcolor{comment}{//}}
+\DoxyCodeLine{11 }
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#include <oneapi/tbb.h>}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#include "{}nwgraph/graph\_traits.hpp"{}}}
+\DoxyCodeLine{14 }
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#ifndef NW\_GRAPH\_counting\_iterator\_HPP}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#define NW\_GRAPH\_counting\_iterator\_HPP}}
+\DoxyCodeLine{17 }
+\DoxyCodeLine{18 \textcolor{keyword}{namespace }nw \{}
+\DoxyCodeLine{19 \textcolor{keyword}{namespace }graph \{}
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 \textcolor{keyword}{template}<\textcolor{keyword}{class} T>}
+\DoxyCodeLine{22 \textcolor{keyword}{class }\mbox{\hyperlink{classnw_1_1graph_1_1counting__iterator}{counting\_iterator}} \{}
+\DoxyCodeLine{23 \textcolor{keyword}{private}:}
+\DoxyCodeLine{24     T my\_counter\_;}
+\DoxyCodeLine{25 \textcolor{keyword}{public}:}
+\DoxyCodeLine{26     \textcolor{keyword}{using} iterator\_category = std::random\_access\_iterator\_tag;}
+\DoxyCodeLine{27     \textcolor{keyword}{using} value\_type        = T;}
+\DoxyCodeLine{28     \textcolor{keyword}{using} difference\_type   = std::make\_signed<T>::type;}
+\DoxyCodeLine{29     \textcolor{keyword}{using} reference         = value\_type\&;}
+\DoxyCodeLine{30     \textcolor{keyword}{using} pointer           = value\_type*;}
+\DoxyCodeLine{31 }
+\DoxyCodeLine{32     \mbox{\hyperlink{classnw_1_1graph_1_1counting__iterator}{counting\_iterator}}() : my\_counter\_() \{\}}
+\DoxyCodeLine{33     \textcolor{keyword}{explicit} \mbox{\hyperlink{classnw_1_1graph_1_1counting__iterator}{counting\_iterator}}(T init) : my\_counter\_(init) \{\}}
+\DoxyCodeLine{34 }
+\DoxyCodeLine{35     reference operator*() \{ \textcolor{keywordflow}{return} my\_counter\_; \}}
+\DoxyCodeLine{36     value\_type operator[](difference\_type index)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} *(*\textcolor{keyword}{this} + index); \}}
+\DoxyCodeLine{37 }
+\DoxyCodeLine{38     difference\_type operator-\/(\textcolor{keyword}{const} \mbox{\hyperlink{classnw_1_1graph_1_1counting__iterator}{counting\_iterator}}\& it)\textcolor{keyword}{ const }\{\textcolor{keywordflow}{return} my\_counter\_ -\/ it.my\_counter\_; \}}
+\DoxyCodeLine{39 }
+\DoxyCodeLine{40     \mbox{\hyperlink{classnw_1_1graph_1_1counting__iterator}{counting\_iterator}}\& operator+=(difference\_type forward) \{ my\_counter\_ += forward; \textcolor{keywordflow}{return} *\textcolor{keyword}{this}; \}}
+\DoxyCodeLine{41     \mbox{\hyperlink{classnw_1_1graph_1_1counting__iterator}{counting\_iterator}}\& operator-\/=(difference\_type backward) \{ my\_counter\_ -\/= backward; \textcolor{keywordflow}{return} *\textcolor{keyword}{this}; \}}
+\DoxyCodeLine{42     \mbox{\hyperlink{classnw_1_1graph_1_1counting__iterator}{counting\_iterator}}\& operator++() \{ \textcolor{keywordflow}{return} *\textcolor{keyword}{this} += 1; \}}
+\DoxyCodeLine{43     \mbox{\hyperlink{classnw_1_1graph_1_1counting__iterator}{counting\_iterator}}\& operator-\/-\/() \{ \textcolor{keywordflow}{return} *\textcolor{keyword}{this} -\/= 1; \}}
+\DoxyCodeLine{44 }
+\DoxyCodeLine{45     \mbox{\hyperlink{classnw_1_1graph_1_1counting__iterator}{counting\_iterator}} operator++(\textcolor{keywordtype}{int}) \{}
+\DoxyCodeLine{46         \mbox{\hyperlink{classnw_1_1graph_1_1counting__iterator}{counting\_iterator}} it(*\textcolor{keyword}{this});}
+\DoxyCodeLine{47         ++(*this);}
+\DoxyCodeLine{48         \textcolor{keywordflow}{return} it;}
+\DoxyCodeLine{49     \}}
+\DoxyCodeLine{50 }
+\DoxyCodeLine{51     \mbox{\hyperlink{classnw_1_1graph_1_1counting__iterator}{counting\_iterator}} operator-\/-\/(\textcolor{keywordtype}{int}) \{}
+\DoxyCodeLine{52         \mbox{\hyperlink{classnw_1_1graph_1_1counting__iterator}{counting\_iterator}} it(*\textcolor{keyword}{this});}
+\DoxyCodeLine{53         -\/-\/(*this);}
+\DoxyCodeLine{54         \textcolor{keywordflow}{return} it;}
+\DoxyCodeLine{55     \}}
+\DoxyCodeLine{56 }
+\DoxyCodeLine{57     \mbox{\hyperlink{classnw_1_1graph_1_1counting__iterator}{counting\_iterator}} operator+(difference\_type forward)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \mbox{\hyperlink{classnw_1_1graph_1_1counting__iterator}{counting\_iterator}}(my\_counter\_ + forward); \}}
+\DoxyCodeLine{58     \mbox{\hyperlink{classnw_1_1graph_1_1counting__iterator}{counting\_iterator}} operator-\/(difference\_type backward)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \mbox{\hyperlink{classnw_1_1graph_1_1counting__iterator}{counting\_iterator}}(my\_counter\_ -\/ backward); \}}
+\DoxyCodeLine{59     \textcolor{keyword}{friend} \mbox{\hyperlink{classnw_1_1graph_1_1counting__iterator}{counting\_iterator}} operator+(difference\_type forward, \textcolor{keyword}{const} \mbox{\hyperlink{classnw_1_1graph_1_1counting__iterator}{counting\_iterator}} it) \{ \textcolor{keywordflow}{return} it + forward; \}}
+\DoxyCodeLine{60 }
+\DoxyCodeLine{61     \textcolor{keywordtype}{bool} operator==(\textcolor{keyword}{const} \mbox{\hyperlink{classnw_1_1graph_1_1counting__iterator}{counting\_iterator}}\& it)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} 0 == (*\textcolor{keyword}{this} -\/ it); \}}
+\DoxyCodeLine{62     \textcolor{keywordtype}{bool} operator!=(\textcolor{keyword}{const} \mbox{\hyperlink{classnw_1_1graph_1_1counting__iterator}{counting\_iterator}}\& it)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} 0 != (*\textcolor{keyword}{this} -\/ it); \}}
+\DoxyCodeLine{63     \textcolor{keywordtype}{bool} operator<(\textcolor{keyword}{const} \mbox{\hyperlink{classnw_1_1graph_1_1counting__iterator}{counting\_iterator}}\& it)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} 0 > (*\textcolor{keyword}{this} -\/ it); \}}
+\DoxyCodeLine{64     \textcolor{keywordtype}{bool} operator>(\textcolor{keyword}{const} \mbox{\hyperlink{classnw_1_1graph_1_1counting__iterator}{counting\_iterator}}\& it)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} 0 < (*\textcolor{keyword}{this} -\/ it); \}}
+\DoxyCodeLine{65     \textcolor{keywordtype}{bool} operator<=(\textcolor{keyword}{const} \mbox{\hyperlink{classnw_1_1graph_1_1counting__iterator}{counting\_iterator}}\& it)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} 0 >= (*\textcolor{keyword}{this} -\/ it); \}}
+\DoxyCodeLine{66     \textcolor{keywordtype}{bool} operator>=(\textcolor{keyword}{const} \mbox{\hyperlink{classnw_1_1graph_1_1counting__iterator}{counting\_iterator}}\& it)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} 0 <= (*\textcolor{keyword}{this} -\/ it); \}}
+\DoxyCodeLine{67 \}; \textcolor{comment}{// counting\_iterator}}
+\DoxyCodeLine{68 }
+\DoxyCodeLine{71 \textcolor{keyword}{template}<\textcolor{keyword}{class} Graph>}
+\DoxyCodeLine{72 \textcolor{keyword}{class }\mbox{\hyperlink{classnw_1_1graph_1_1vertex__range}{vertex\_range}} \{}
+\DoxyCodeLine{73 \textcolor{keyword}{public}:}
+\DoxyCodeLine{74   \textcolor{keyword}{using} vertex\_id\_type = vertex\_id\_t<Graph>;}
+\DoxyCodeLine{75   \textcolor{keyword}{using} difference\_type = vertex\_id\_type;}
+\DoxyCodeLine{76 }
+\DoxyCodeLine{77 \textcolor{keyword}{private}:}
+\DoxyCodeLine{78   \mbox{\hyperlink{classnw_1_1graph_1_1counting__iterator}{counting\_iterator<vertex\_id\_type>}} begin\_;}
+\DoxyCodeLine{79   \mbox{\hyperlink{classnw_1_1graph_1_1counting__iterator}{counting\_iterator<vertex\_id\_type>}} end\_;}
+\DoxyCodeLine{80 }
+\DoxyCodeLine{81 \textcolor{keyword}{public}:}
+\DoxyCodeLine{82   \mbox{\hyperlink{classnw_1_1graph_1_1vertex__range}{vertex\_range}}(vertex\_id\_type \mbox{\hyperlink{structnw_1_1graph_1_1max}{max}})}
+\DoxyCodeLine{83       : begin\_(\mbox{\hyperlink{classnw_1_1graph_1_1counting__iterator}{counting\_iterator<vertex\_id\_type>}}(0)), end\_(\mbox{\hyperlink{classnw_1_1graph_1_1counting__iterator}{counting\_iterator<vertex\_id\_type>}}(\mbox{\hyperlink{structnw_1_1graph_1_1max}{max}})) \{\}}
+\DoxyCodeLine{84 }
+\DoxyCodeLine{85   \mbox{\hyperlink{classnw_1_1graph_1_1vertex__range}{vertex\_range}}(\textcolor{keyword}{const} \mbox{\hyperlink{classnw_1_1graph_1_1vertex__range}{vertex\_range}}\&) = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{86   \mbox{\hyperlink{classnw_1_1graph_1_1vertex__range}{vertex\_range}}(\mbox{\hyperlink{classnw_1_1graph_1_1vertex__range}{vertex\_range}}\&\&)      = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{87 }
+\DoxyCodeLine{88   \mbox{\hyperlink{classnw_1_1graph_1_1vertex__range}{vertex\_range}}(\mbox{\hyperlink{classnw_1_1graph_1_1vertex__range}{vertex\_range}}\& rhs, tbb::split)}
+\DoxyCodeLine{89       : begin\_(rhs.begin\_), end\_(rhs.end\_) \{\}}
+\DoxyCodeLine{90 }
+\DoxyCodeLine{91   \mbox{\hyperlink{classnw_1_1graph_1_1counting__iterator}{counting\_iterator<vertex\_id\_type>}} begin()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} begin\_; \}}
+\DoxyCodeLine{92   \mbox{\hyperlink{classnw_1_1graph_1_1counting__iterator}{counting\_iterator<vertex\_id\_type>}} end()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} end\_; \}}
+\DoxyCodeLine{93 }
+\DoxyCodeLine{94   difference\_type size()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} end\_ -\/ begin\_; \}}
+\DoxyCodeLine{95   \textcolor{keywordtype}{bool} empty()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} size() == 0; \}}
+\DoxyCodeLine{96 }
+\DoxyCodeLine{98   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classnw_1_1graph_1_1vertex__range_afc8ce796a0d52fe0ba07a064feec5ee8}{is\_divisible}}()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} begin\_ <= end\_; \}}
+\DoxyCodeLine{99 \};  \textcolor{comment}{// vertex\_range}}
+\DoxyCodeLine{100 }
+\DoxyCodeLine{101 \}    \textcolor{comment}{// namespace graph}}
+\DoxyCodeLine{102 \}    \textcolor{comment}{// namespace nw}}
+\DoxyCodeLine{103 }
+\DoxyCodeLine{104 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

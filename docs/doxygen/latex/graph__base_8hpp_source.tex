@@ -1,0 +1,102 @@
+\hypertarget{graph__base_8hpp_source}{}\doxysection{graph\+\_\+base.\+hpp}
+\label{graph__base_8hpp_source}\index{/Users/lums/NWmath/NWgr/include/nwgraph/graph\_base.hpp@{/Users/lums/NWmath/NWgr/include/nwgraph/graph\_base.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// }}
+\DoxyCodeLine{2 \textcolor{comment}{// This file is part of NW Graph (aka GraphPack) }}
+\DoxyCodeLine{3 \textcolor{comment}{// (c) Pacific Northwest National Laboratory 2018-\/2021 }}
+\DoxyCodeLine{4 \textcolor{comment}{// (c) University of Washington 2018-\/2021 }}
+\DoxyCodeLine{5 \textcolor{comment}{// }}
+\DoxyCodeLine{6 \textcolor{comment}{// Licensed under terms of include LICENSE file }}
+\DoxyCodeLine{7 \textcolor{comment}{// }}
+\DoxyCodeLine{8 \textcolor{comment}{// Authors: }}
+\DoxyCodeLine{9 \textcolor{comment}{//     Andrew Lumsdaine }}
+\DoxyCodeLine{10 \textcolor{comment}{//}}
+\DoxyCodeLine{11 }
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#ifndef NW\_GRAPH\_GRAPH\_BASE\_HPP}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#define NW\_GRAPH\_GRAPH\_BASE\_HPP}}
+\DoxyCodeLine{14 }
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#include <array>}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include <cstddef>}}
+\DoxyCodeLine{17 }
+\DoxyCodeLine{18 \textcolor{keyword}{namespace }nw \{}
+\DoxyCodeLine{19 \textcolor{keyword}{namespace }graph \{}
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 \textcolor{keyword}{enum class} succession \{ successor, predecessor \};}
+\DoxyCodeLine{22 \textcolor{keyword}{enum class} directedness \{ undirected, directed \};}
+\DoxyCodeLine{23 }
+\DoxyCodeLine{24 \textcolor{keyword}{template} <succession success>}
+\DoxyCodeLine{25 \textcolor{keyword}{struct }\mbox{\hyperlink{structnw_1_1graph_1_1other__succession}{other\_succession}} \{}
+\DoxyCodeLine{26   \textcolor{keyword}{const} succession cessor;}
+\DoxyCodeLine{27 \};}
+\DoxyCodeLine{28 }
+\DoxyCodeLine{29 \textcolor{keyword}{template} <>}
+\DoxyCodeLine{30 \textcolor{keyword}{struct }\mbox{\hyperlink{structnw_1_1graph_1_1other__succession}{other\_succession}}<succession::successor> \{}
+\DoxyCodeLine{31   \textcolor{keyword}{const} succession cessor = succession::predecessor;}
+\DoxyCodeLine{32 \};}
+\DoxyCodeLine{33 }
+\DoxyCodeLine{34 \textcolor{keyword}{template} <>}
+\DoxyCodeLine{35 \textcolor{keyword}{struct }\mbox{\hyperlink{structnw_1_1graph_1_1other__succession}{other\_succession}}<succession::predecessor> \{}
+\DoxyCodeLine{36   \textcolor{keyword}{const} succession cessor = succession::successor;}
+\DoxyCodeLine{37 \};}
+\DoxyCodeLine{38 }
+\DoxyCodeLine{39 \textcolor{keyword}{template} <directedness dir>}
+\DoxyCodeLine{40 \textcolor{keyword}{struct }\mbox{\hyperlink{structnw_1_1graph_1_1other__direction}{other\_direction}} \{}
+\DoxyCodeLine{41   \textcolor{keyword}{const} directedness direction;}
+\DoxyCodeLine{42 \};}
+\DoxyCodeLine{43 }
+\DoxyCodeLine{44 \textcolor{keyword}{template} <>}
+\DoxyCodeLine{45 \textcolor{keyword}{struct }\mbox{\hyperlink{structnw_1_1graph_1_1other__direction}{other\_direction}}<directedness::undirected> \{}
+\DoxyCodeLine{46   \textcolor{keyword}{const} directedness direction = directedness::directed;}
+\DoxyCodeLine{47 \};}
+\DoxyCodeLine{48 }
+\DoxyCodeLine{49 \textcolor{keyword}{template} <>}
+\DoxyCodeLine{50 \textcolor{keyword}{class }\mbox{\hyperlink{structnw_1_1graph_1_1other__direction}{other\_direction}}<directedness::directed> \{}
+\DoxyCodeLine{51 \textcolor{keyword}{public}:}
+\DoxyCodeLine{52   \textcolor{keyword}{const} directedness direction = directedness::undirected;}
+\DoxyCodeLine{53 \};}
+\DoxyCodeLine{54 }
+\DoxyCodeLine{55 \textcolor{keyword}{class }\mbox{\hyperlink{classnw_1_1graph_1_1unipartite__graph__base}{unipartite\_graph\_base}} \{}
+\DoxyCodeLine{56 \textcolor{keyword}{public}:}
+\DoxyCodeLine{57   \textcolor{keyword}{using} vertex\_cardinality\_t = std::array<size\_t, 1>;}
+\DoxyCodeLine{58 }
+\DoxyCodeLine{59   \mbox{\hyperlink{classnw_1_1graph_1_1unipartite__graph__base}{unipartite\_graph\_base}}(\textcolor{keywordtype}{size\_t} d0 = 0) : vertex\_cardinality\{d0\}, is\_open(\textcolor{keyword}{false}) \{\}}
+\DoxyCodeLine{60 }
+\DoxyCodeLine{61   \textcolor{comment}{// auto num\_edges() \{ return num\_edges\_; \}}}
+\DoxyCodeLine{62 }
+\DoxyCodeLine{63 \textcolor{keyword}{protected}:}
+\DoxyCodeLine{64   vertex\_cardinality\_t vertex\_cardinality;}
+\DoxyCodeLine{65   \textcolor{keywordtype}{bool}                 is\_open;    \textcolor{comment}{// can we mutate graph}}
+\DoxyCodeLine{66 \};}
+\DoxyCodeLine{67 }
+\DoxyCodeLine{68 \textcolor{keyword}{class }\mbox{\hyperlink{classnw_1_1graph_1_1bipartite__graph__base}{bipartite\_graph\_base}} \{}
+\DoxyCodeLine{69 \textcolor{keyword}{public}:}
+\DoxyCodeLine{70   \textcolor{keyword}{using} vertex\_cardinality\_t = std::array<size\_t, 2>;}
+\DoxyCodeLine{71 }
+\DoxyCodeLine{72   \mbox{\hyperlink{classnw_1_1graph_1_1bipartite__graph__base}{bipartite\_graph\_base}}(\textcolor{keywordtype}{size\_t} d0 = 0, \textcolor{keywordtype}{size\_t} d1 = 0) : vertex\_cardinality\{d0, d1\}, is\_open(\textcolor{keyword}{false}) \{\}}
+\DoxyCodeLine{73   \mbox{\hyperlink{classnw_1_1graph_1_1bipartite__graph__base}{bipartite\_graph\_base}}(vertex\_cardinality\_t cardinality) : vertex\_cardinality(cardinality), is\_open(\textcolor{keyword}{false}) \{\}}
+\DoxyCodeLine{74 }
+\DoxyCodeLine{75   \textcolor{comment}{// auto num\_edges() \{ return num\_edges\_; \}}}
+\DoxyCodeLine{76 }
+\DoxyCodeLine{77 \textcolor{keyword}{protected}:}
+\DoxyCodeLine{78   vertex\_cardinality\_t vertex\_cardinality;    \textcolor{comment}{// ordinal limits}}
+\DoxyCodeLine{79   \textcolor{keywordtype}{bool}                 is\_open;               \textcolor{comment}{// can we mutate graph}}
+\DoxyCodeLine{80 \};}
+\DoxyCodeLine{81 }
+\DoxyCodeLine{82 \textcolor{comment}{// In NON-\/unipartite\_graph\_base, is\_unipartite<unipartite\_graph\_base> == false}}
+\DoxyCodeLine{83 \textcolor{keyword}{template} <\textcolor{keyword}{typename} Graph\_base>}
+\DoxyCodeLine{84 \textcolor{keyword}{struct }\mbox{\hyperlink{structnw_1_1graph_1_1is__unipartite}{is\_unipartite}} \{}
+\DoxyCodeLine{85   \textcolor{keyword}{constexpr} \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{bool} value = \textcolor{keyword}{false};}
+\DoxyCodeLine{86 \};}
+\DoxyCodeLine{87 }
+\DoxyCodeLine{88 \textcolor{comment}{// for unipartite\_graph\_base, is\_unipartite<unipartite\_graph\_base> == true}}
+\DoxyCodeLine{89 \textcolor{keyword}{template} <>}
+\DoxyCodeLine{90 \textcolor{keyword}{struct }\mbox{\hyperlink{structnw_1_1graph_1_1is__unipartite}{is\_unipartite}}<\mbox{\hyperlink{classnw_1_1graph_1_1unipartite__graph__base}{unipartite\_graph\_base}}> \{}
+\DoxyCodeLine{91   \textcolor{keyword}{constexpr} \textcolor{keyword}{static} \textcolor{keyword}{const} \textcolor{keywordtype}{bool} value = \textcolor{keyword}{true};}
+\DoxyCodeLine{92 \};}
+\DoxyCodeLine{93 }
+\DoxyCodeLine{94 \}    \textcolor{comment}{// namespace graph}}
+\DoxyCodeLine{95 \}    \textcolor{comment}{// namespace nw}}
+\DoxyCodeLine{96 \textcolor{preprocessor}{\#endif    }\textcolor{comment}{// NW\_GRAPH\_GRAPH\_BASE\_HPP}}
+
+\end{DoxyCode}

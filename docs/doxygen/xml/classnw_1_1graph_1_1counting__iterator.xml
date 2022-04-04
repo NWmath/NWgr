@@ -1,0 +1,482 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.3" xml:lang="en-US">
+  <compounddef id="classnw_1_1graph_1_1counting__iterator" kind="class" language="C++" prot="public">
+    <compoundname>nw::graph::counting_iterator</compoundname>
+    <templateparamlist>
+      <param>
+        <type>class T</type>
+      </param>
+    </templateparamlist>
+      <sectiondef kind="public-type">
+      <memberdef kind="typedef" id="classnw_1_1graph_1_1counting__iterator_1adb85c136fac243b33872eb8f916b85d5" prot="public" static="no">
+        <type>std::random_access_iterator_tag</type>
+        <definition>using nw::graph::counting_iterator&lt; T &gt;::iterator_category =  std::random_access_iterator_tag</definition>
+        <argsstring></argsstring>
+        <name>iterator_category</name>
+        <qualifiedname>nw::graph::counting_iterator::iterator_category</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/vertex_range.hpp" line="26" column="5" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/vertex_range.hpp" bodystart="26" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="classnw_1_1graph_1_1counting__iterator_1a66350b2b622bb48cc2a50e30741fbc1e" prot="public" static="no">
+        <type>T</type>
+        <definition>using nw::graph::counting_iterator&lt; T &gt;::value_type =  T</definition>
+        <argsstring></argsstring>
+        <name>value_type</name>
+        <qualifiedname>nw::graph::counting_iterator::value_type</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/vertex_range.hpp" line="27" column="5" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/vertex_range.hpp" bodystart="27" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="classnw_1_1graph_1_1counting__iterator_1a07b6d1f9847515e6299a7064759fcac2" prot="public" static="no">
+        <type>std::make_signed&lt; T &gt;::type</type>
+        <definition>using nw::graph::counting_iterator&lt; T &gt;::difference_type =  std::make_signed&lt;T&gt;::type</definition>
+        <argsstring></argsstring>
+        <name>difference_type</name>
+        <qualifiedname>nw::graph::counting_iterator::difference_type</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/vertex_range.hpp" line="28" column="5" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/vertex_range.hpp" bodystart="28" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="classnw_1_1graph_1_1counting__iterator_1a0861d1cdb54519feb895f2ba5ac5ae11" prot="public" static="no">
+        <type>value_type &amp;</type>
+        <definition>using nw::graph::counting_iterator&lt; T &gt;::reference =  value_type&amp;</definition>
+        <argsstring></argsstring>
+        <name>reference</name>
+        <qualifiedname>nw::graph::counting_iterator::reference</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/vertex_range.hpp" line="29" column="5" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/vertex_range.hpp" bodystart="29" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="classnw_1_1graph_1_1counting__iterator_1a7792122343d8d555a5faf56b87ff7c96" prot="public" static="no">
+        <type>value_type *</type>
+        <definition>using nw::graph::counting_iterator&lt; T &gt;::pointer =  value_type*</definition>
+        <argsstring></argsstring>
+        <name>pointer</name>
+        <qualifiedname>nw::graph::counting_iterator::pointer</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/vertex_range.hpp" line="30" column="5" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/vertex_range.hpp" bodystart="30" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classnw_1_1graph_1_1counting__iterator_1ae81ab6e21996a6707c3d27ae48b84ce5" prot="private" static="no" mutable="no">
+        <type>T</type>
+        <definition>T nw::graph::counting_iterator&lt; T &gt;::my_counter_</definition>
+        <argsstring></argsstring>
+        <name>my_counter_</name>
+        <qualifiedname>nw::graph::counting_iterator::my_counter_</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/vertex_range.hpp" line="24" column="7" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/vertex_range.hpp" bodystart="24" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classnw_1_1graph_1_1counting__iterator_1a976d7277233afdad29be5e33ee8f86c9" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>nw::graph::counting_iterator&lt; T &gt;::counting_iterator</definition>
+        <argsstring>()</argsstring>
+        <name>counting_iterator</name>
+        <qualifiedname>nw::graph::counting_iterator::counting_iterator</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/vertex_range.hpp" line="32" column="5" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/vertex_range.hpp" bodystart="32" bodyend="32"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1counting__iterator_1a5deb3c7aed260f7677151d4adefe16a8" prot="public" static="no" const="no" explicit="yes" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>nw::graph::counting_iterator&lt; T &gt;::counting_iterator</definition>
+        <argsstring>(T init)</argsstring>
+        <name>counting_iterator</name>
+        <qualifiedname>nw::graph::counting_iterator::counting_iterator</qualifiedname>
+        <param>
+          <type>T</type>
+          <declname>init</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/vertex_range.hpp" line="33" column="14" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/vertex_range.hpp" bodystart="33" bodyend="33"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1counting__iterator_1aa5f411dc024072b90c0098365f3e54e8" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>reference</type>
+        <definition>reference nw::graph::counting_iterator&lt; T &gt;::operator*</definition>
+        <argsstring>()</argsstring>
+        <name>operator*</name>
+        <qualifiedname>nw::graph::counting_iterator::operator*</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/vertex_range.hpp" line="35" column="15" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/vertex_range.hpp" bodystart="35" bodyend="35"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1counting__iterator_1ab66b1e81571ec53d05a0f10ff32189f2" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>value_type</type>
+        <definition>value_type nw::graph::counting_iterator&lt; T &gt;::operator[]</definition>
+        <argsstring>(difference_type index) const</argsstring>
+        <name>operator[]</name>
+        <qualifiedname>nw::graph::counting_iterator::operator[]</qualifiedname>
+        <param>
+          <type>difference_type</type>
+          <declname>index</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/vertex_range.hpp" line="36" column="16" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/vertex_range.hpp" bodystart="36" bodyend="36"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1counting__iterator_1a8f18e82ee3403428f0a583fde7d0bc54" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>difference_type</type>
+        <definition>difference_type nw::graph::counting_iterator&lt; T &gt;::operator-</definition>
+        <argsstring>(const counting_iterator &amp;it) const</argsstring>
+        <name>operator-</name>
+        <qualifiedname>nw::graph::counting_iterator::operator-</qualifiedname>
+        <param>
+          <type>const <ref refid="classnw_1_1graph_1_1counting__iterator" kindref="compound">counting_iterator</ref> &amp;</type>
+          <declname>it</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/vertex_range.hpp" line="38" column="21" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/vertex_range.hpp" bodystart="38" bodyend="38"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1counting__iterator_1a343c267d81ae5d598b22af21277d03fc" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classnw_1_1graph_1_1counting__iterator" kindref="compound">counting_iterator</ref> &amp;</type>
+        <definition>counting_iterator &amp; nw::graph::counting_iterator&lt; T &gt;::operator+=</definition>
+        <argsstring>(difference_type forward)</argsstring>
+        <name>operator+=</name>
+        <qualifiedname>nw::graph::counting_iterator::operator+=</qualifiedname>
+        <param>
+          <type>difference_type</type>
+          <declname>forward</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/vertex_range.hpp" line="40" column="23" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/vertex_range.hpp" bodystart="40" bodyend="40"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1counting__iterator_1a325cd7ac101a52bba878773f266c334f" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classnw_1_1graph_1_1counting__iterator" kindref="compound">counting_iterator</ref> &amp;</type>
+        <definition>counting_iterator &amp; nw::graph::counting_iterator&lt; T &gt;::operator-=</definition>
+        <argsstring>(difference_type backward)</argsstring>
+        <name>operator-=</name>
+        <qualifiedname>nw::graph::counting_iterator::operator-=</qualifiedname>
+        <param>
+          <type>difference_type</type>
+          <declname>backward</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/vertex_range.hpp" line="41" column="23" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/vertex_range.hpp" bodystart="41" bodyend="41"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1counting__iterator_1a1f7a245088001a3bd982f5efbb3d009d" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classnw_1_1graph_1_1counting__iterator" kindref="compound">counting_iterator</ref> &amp;</type>
+        <definition>counting_iterator &amp; nw::graph::counting_iterator&lt; T &gt;::operator++</definition>
+        <argsstring>()</argsstring>
+        <name>operator++</name>
+        <qualifiedname>nw::graph::counting_iterator::operator++</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/vertex_range.hpp" line="42" column="23" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/vertex_range.hpp" bodystart="42" bodyend="42"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1counting__iterator_1a9ed4147477c79a28f22a834458fa982d" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classnw_1_1graph_1_1counting__iterator" kindref="compound">counting_iterator</ref> &amp;</type>
+        <definition>counting_iterator &amp; nw::graph::counting_iterator&lt; T &gt;::operator--</definition>
+        <argsstring>()</argsstring>
+        <name>operator--</name>
+        <qualifiedname>nw::graph::counting_iterator::operator--</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/vertex_range.hpp" line="43" column="23" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/vertex_range.hpp" bodystart="43" bodyend="43"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1counting__iterator_1a54c5d033cf821e73e82fb30c4818c304" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classnw_1_1graph_1_1counting__iterator" kindref="compound">counting_iterator</ref></type>
+        <definition>counting_iterator nw::graph::counting_iterator&lt; T &gt;::operator++</definition>
+        <argsstring>(int)</argsstring>
+        <name>operator++</name>
+        <qualifiedname>nw::graph::counting_iterator::operator++</qualifiedname>
+        <param>
+          <type>int</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/vertex_range.hpp" line="45" column="23" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/vertex_range.hpp" bodystart="45" bodyend="49"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1counting__iterator_1af3433eadd96e8539fdc173e50ba598f2" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classnw_1_1graph_1_1counting__iterator" kindref="compound">counting_iterator</ref></type>
+        <definition>counting_iterator nw::graph::counting_iterator&lt; T &gt;::operator--</definition>
+        <argsstring>(int)</argsstring>
+        <name>operator--</name>
+        <qualifiedname>nw::graph::counting_iterator::operator--</qualifiedname>
+        <param>
+          <type>int</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/vertex_range.hpp" line="51" column="23" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/vertex_range.hpp" bodystart="51" bodyend="55"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1counting__iterator_1aec0a69dbc7b83c00bed1e5799517ee4b" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classnw_1_1graph_1_1counting__iterator" kindref="compound">counting_iterator</ref></type>
+        <definition>counting_iterator nw::graph::counting_iterator&lt; T &gt;::operator+</definition>
+        <argsstring>(difference_type forward) const</argsstring>
+        <name>operator+</name>
+        <qualifiedname>nw::graph::counting_iterator::operator+</qualifiedname>
+        <param>
+          <type>difference_type</type>
+          <declname>forward</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/vertex_range.hpp" line="57" column="23" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/vertex_range.hpp" bodystart="57" bodyend="57"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1counting__iterator_1a330278b435586b72b040da0a313aeec2" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classnw_1_1graph_1_1counting__iterator" kindref="compound">counting_iterator</ref></type>
+        <definition>counting_iterator nw::graph::counting_iterator&lt; T &gt;::operator-</definition>
+        <argsstring>(difference_type backward) const</argsstring>
+        <name>operator-</name>
+        <qualifiedname>nw::graph::counting_iterator::operator-</qualifiedname>
+        <param>
+          <type>difference_type</type>
+          <declname>backward</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/vertex_range.hpp" line="58" column="23" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/vertex_range.hpp" bodystart="58" bodyend="58"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1counting__iterator_1aebc824bea55e5dfa7217d3033755c5a1" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool nw::graph::counting_iterator&lt; T &gt;::operator==</definition>
+        <argsstring>(const counting_iterator &amp;it) const</argsstring>
+        <name>operator==</name>
+        <qualifiedname>nw::graph::counting_iterator::operator==</qualifiedname>
+        <param>
+          <type>const <ref refid="classnw_1_1graph_1_1counting__iterator" kindref="compound">counting_iterator</ref> &amp;</type>
+          <declname>it</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/vertex_range.hpp" line="61" column="10" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/vertex_range.hpp" bodystart="61" bodyend="61"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1counting__iterator_1a4e03d1a111a397e34f279ca333e3fb30" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool nw::graph::counting_iterator&lt; T &gt;::operator!=</definition>
+        <argsstring>(const counting_iterator &amp;it) const</argsstring>
+        <name>operator!=</name>
+        <qualifiedname>nw::graph::counting_iterator::operator!=</qualifiedname>
+        <param>
+          <type>const <ref refid="classnw_1_1graph_1_1counting__iterator" kindref="compound">counting_iterator</ref> &amp;</type>
+          <declname>it</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/vertex_range.hpp" line="62" column="10" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/vertex_range.hpp" bodystart="62" bodyend="62"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1counting__iterator_1a2934483f6512b7c2c5c4c0ad5631b3a4" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool nw::graph::counting_iterator&lt; T &gt;::operator&lt;</definition>
+        <argsstring>(const counting_iterator &amp;it) const</argsstring>
+        <name>operator&lt;</name>
+        <qualifiedname>nw::graph::counting_iterator::operator&lt;</qualifiedname>
+        <param>
+          <type>const <ref refid="classnw_1_1graph_1_1counting__iterator" kindref="compound">counting_iterator</ref> &amp;</type>
+          <declname>it</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/vertex_range.hpp" line="63" column="5" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/vertex_range.hpp" bodystart="63" bodyend="63"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1counting__iterator_1a7169e8bb91aae7c3717f094bcb8b025b" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool nw::graph::counting_iterator&lt; T &gt;::operator&gt;</definition>
+        <argsstring>(const counting_iterator &amp;it) const</argsstring>
+        <name>operator&gt;</name>
+        <qualifiedname>nw::graph::counting_iterator::operator&gt;</qualifiedname>
+        <param>
+          <type>const <ref refid="classnw_1_1graph_1_1counting__iterator" kindref="compound">counting_iterator</ref> &amp;</type>
+          <declname>it</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/vertex_range.hpp" line="64" column="10" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/vertex_range.hpp" bodystart="64" bodyend="64"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1counting__iterator_1a84b56faa98401eef664203b7c7da9c66" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool nw::graph::counting_iterator&lt; T &gt;::operator&lt;=</definition>
+        <argsstring>(const counting_iterator &amp;it) const</argsstring>
+        <name>operator&lt;=</name>
+        <qualifiedname>nw::graph::counting_iterator::operator&lt;=</qualifiedname>
+        <param>
+          <type>const <ref refid="classnw_1_1graph_1_1counting__iterator" kindref="compound">counting_iterator</ref> &amp;</type>
+          <declname>it</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/vertex_range.hpp" line="65" column="5" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/vertex_range.hpp" bodystart="65" bodyend="65"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1counting__iterator_1a49c637b463b283be22de0debccce5021" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool nw::graph::counting_iterator&lt; T &gt;::operator&gt;=</definition>
+        <argsstring>(const counting_iterator &amp;it) const</argsstring>
+        <name>operator&gt;=</name>
+        <qualifiedname>nw::graph::counting_iterator::operator&gt;=</qualifiedname>
+        <param>
+          <type>const <ref refid="classnw_1_1graph_1_1counting__iterator" kindref="compound">counting_iterator</ref> &amp;</type>
+          <declname>it</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/vertex_range.hpp" line="66" column="10" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/vertex_range.hpp" bodystart="66" bodyend="66"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="friend">
+      <memberdef kind="friend" id="classnw_1_1graph_1_1counting__iterator_1a035e6de3b1c97893e674c4f0b8cc4837" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classnw_1_1graph_1_1counting__iterator" kindref="compound">counting_iterator</ref></type>
+        <definition>counting_iterator operator+</definition>
+        <argsstring>(difference_type forward, const counting_iterator it)</argsstring>
+        <name>operator+</name>
+        <qualifiedname>nw::graph::counting_iterator::operator+</qualifiedname>
+        <param>
+          <type>difference_type</type>
+          <declname>forward</declname>
+        </param>
+        <param>
+          <type>const <ref refid="classnw_1_1graph_1_1counting__iterator" kindref="compound">counting_iterator</ref></type>
+          <declname>it</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/vertex_range.hpp" line="59" column="30" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/vertex_range.hpp" bodystart="59" bodyend="59"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/vertex_range.hpp" line="22" column="1" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/vertex_range.hpp" bodystart="22" bodyend="67"/>
+    <listofallmembers>
+      <member refid="classnw_1_1graph_1_1counting__iterator_1a976d7277233afdad29be5e33ee8f86c9" prot="public" virt="non-virtual"><scope>nw::graph::counting_iterator</scope><name>counting_iterator</name></member>
+      <member refid="classnw_1_1graph_1_1counting__iterator_1a5deb3c7aed260f7677151d4adefe16a8" prot="public" virt="non-virtual"><scope>nw::graph::counting_iterator</scope><name>counting_iterator</name></member>
+      <member refid="classnw_1_1graph_1_1counting__iterator_1a07b6d1f9847515e6299a7064759fcac2" prot="public" virt="non-virtual"><scope>nw::graph::counting_iterator</scope><name>difference_type</name></member>
+      <member refid="classnw_1_1graph_1_1counting__iterator_1adb85c136fac243b33872eb8f916b85d5" prot="public" virt="non-virtual"><scope>nw::graph::counting_iterator</scope><name>iterator_category</name></member>
+      <member refid="classnw_1_1graph_1_1counting__iterator_1ae81ab6e21996a6707c3d27ae48b84ce5" prot="private" virt="non-virtual"><scope>nw::graph::counting_iterator</scope><name>my_counter_</name></member>
+      <member refid="classnw_1_1graph_1_1counting__iterator_1a4e03d1a111a397e34f279ca333e3fb30" prot="public" virt="non-virtual"><scope>nw::graph::counting_iterator</scope><name>operator!=</name></member>
+      <member refid="classnw_1_1graph_1_1counting__iterator_1aa5f411dc024072b90c0098365f3e54e8" prot="public" virt="non-virtual"><scope>nw::graph::counting_iterator</scope><name>operator*</name></member>
+      <member refid="classnw_1_1graph_1_1counting__iterator_1aec0a69dbc7b83c00bed1e5799517ee4b" prot="public" virt="non-virtual"><scope>nw::graph::counting_iterator</scope><name>operator+</name></member>
+      <member refid="classnw_1_1graph_1_1counting__iterator_1a035e6de3b1c97893e674c4f0b8cc4837" prot="public" virt="non-virtual"><scope>nw::graph::counting_iterator</scope><name>operator+</name></member>
+      <member refid="classnw_1_1graph_1_1counting__iterator_1a1f7a245088001a3bd982f5efbb3d009d" prot="public" virt="non-virtual"><scope>nw::graph::counting_iterator</scope><name>operator++</name></member>
+      <member refid="classnw_1_1graph_1_1counting__iterator_1a54c5d033cf821e73e82fb30c4818c304" prot="public" virt="non-virtual"><scope>nw::graph::counting_iterator</scope><name>operator++</name></member>
+      <member refid="classnw_1_1graph_1_1counting__iterator_1a343c267d81ae5d598b22af21277d03fc" prot="public" virt="non-virtual"><scope>nw::graph::counting_iterator</scope><name>operator+=</name></member>
+      <member refid="classnw_1_1graph_1_1counting__iterator_1a8f18e82ee3403428f0a583fde7d0bc54" prot="public" virt="non-virtual"><scope>nw::graph::counting_iterator</scope><name>operator-</name></member>
+      <member refid="classnw_1_1graph_1_1counting__iterator_1a330278b435586b72b040da0a313aeec2" prot="public" virt="non-virtual"><scope>nw::graph::counting_iterator</scope><name>operator-</name></member>
+      <member refid="classnw_1_1graph_1_1counting__iterator_1a9ed4147477c79a28f22a834458fa982d" prot="public" virt="non-virtual"><scope>nw::graph::counting_iterator</scope><name>operator--</name></member>
+      <member refid="classnw_1_1graph_1_1counting__iterator_1af3433eadd96e8539fdc173e50ba598f2" prot="public" virt="non-virtual"><scope>nw::graph::counting_iterator</scope><name>operator--</name></member>
+      <member refid="classnw_1_1graph_1_1counting__iterator_1a325cd7ac101a52bba878773f266c334f" prot="public" virt="non-virtual"><scope>nw::graph::counting_iterator</scope><name>operator-=</name></member>
+      <member refid="classnw_1_1graph_1_1counting__iterator_1a2934483f6512b7c2c5c4c0ad5631b3a4" prot="public" virt="non-virtual"><scope>nw::graph::counting_iterator</scope><name>operator&lt;</name></member>
+      <member refid="classnw_1_1graph_1_1counting__iterator_1a84b56faa98401eef664203b7c7da9c66" prot="public" virt="non-virtual"><scope>nw::graph::counting_iterator</scope><name>operator&lt;=</name></member>
+      <member refid="classnw_1_1graph_1_1counting__iterator_1aebc824bea55e5dfa7217d3033755c5a1" prot="public" virt="non-virtual"><scope>nw::graph::counting_iterator</scope><name>operator==</name></member>
+      <member refid="classnw_1_1graph_1_1counting__iterator_1a7169e8bb91aae7c3717f094bcb8b025b" prot="public" virt="non-virtual"><scope>nw::graph::counting_iterator</scope><name>operator&gt;</name></member>
+      <member refid="classnw_1_1graph_1_1counting__iterator_1a49c637b463b283be22de0debccce5021" prot="public" virt="non-virtual"><scope>nw::graph::counting_iterator</scope><name>operator&gt;=</name></member>
+      <member refid="classnw_1_1graph_1_1counting__iterator_1ab66b1e81571ec53d05a0f10ff32189f2" prot="public" virt="non-virtual"><scope>nw::graph::counting_iterator</scope><name>operator[]</name></member>
+      <member refid="classnw_1_1graph_1_1counting__iterator_1a7792122343d8d555a5faf56b87ff7c96" prot="public" virt="non-virtual"><scope>nw::graph::counting_iterator</scope><name>pointer</name></member>
+      <member refid="classnw_1_1graph_1_1counting__iterator_1a0861d1cdb54519feb895f2ba5ac5ae11" prot="public" virt="non-virtual"><scope>nw::graph::counting_iterator</scope><name>reference</name></member>
+      <member refid="classnw_1_1graph_1_1counting__iterator_1a66350b2b622bb48cc2a50e30741fbc1e" prot="public" virt="non-virtual"><scope>nw::graph::counting_iterator</scope><name>value_type</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

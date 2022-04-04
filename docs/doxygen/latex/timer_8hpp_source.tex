@@ -1,0 +1,107 @@
+\hypertarget{timer_8hpp_source}{}\doxysection{timer.\+hpp}
+\label{timer_8hpp_source}\index{/Users/lums/NWmath/NWgr/include/nwgraph/util/timer.hpp@{/Users/lums/NWmath/NWgr/include/nwgraph/util/timer.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{//}}
+\DoxyCodeLine{2 \textcolor{comment}{// This file is part of NWutils, a project of NWmath, Pacific Northwest National Laboratory and University of Washington}}
+\DoxyCodeLine{3 \textcolor{comment}{//}}
+\DoxyCodeLine{4 \textcolor{comment}{// Licensed under Creative Commons Attribution-\/NonCommercial-\/ShareAlike 4.0 International License}}
+\DoxyCodeLine{5 \textcolor{comment}{// https://creativecommons.org/licenses/by-\/nc-\/sa/4.0/}}
+\DoxyCodeLine{6 \textcolor{comment}{//}}
+\DoxyCodeLine{7 \textcolor{comment}{// Author: Andrew Lumsdaine}}
+\DoxyCodeLine{8 \textcolor{comment}{//}}
+\DoxyCodeLine{9 }
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#ifndef NW\_UTIL\_TIMER\_HPP}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#define NW\_UTIL\_TIMER\_HPP}}
+\DoxyCodeLine{12 }
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#include <chrono>}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#include <iostream>}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 \textcolor{keyword}{namespace }nw \{}
+\DoxyCodeLine{17 \textcolor{keyword}{namespace }util \{}
+\DoxyCodeLine{18 }
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 \textcolor{keyword}{template} <\textcolor{keyword}{class} D = std::chrono::microseconds>}
+\DoxyCodeLine{21 \textcolor{keyword}{class }\mbox{\hyperlink{classnw_1_1util_1_1timer}{timer}} \{}
+\DoxyCodeLine{22 \textcolor{keyword}{private}:}
+\DoxyCodeLine{23   \textcolor{keyword}{typedef} std::chrono::time\_point<std::chrono::system\_clock> time\_t;}
+\DoxyCodeLine{24 }
+\DoxyCodeLine{25 \textcolor{keyword}{public}:}
+\DoxyCodeLine{26   \textcolor{keyword}{explicit} \mbox{\hyperlink{classnw_1_1util_1_1timer}{timer}}(\textcolor{keyword}{const} std::string\& msg = \textcolor{stringliteral}{"{}"{}}) : start\_time(std::chrono::system\_clock::now()), stop\_time(start\_time), msg\_(msg) \{ \}}
+\DoxyCodeLine{27 }
+\DoxyCodeLine{28   time\_t start()         \{ \textcolor{keywordflow}{return} (start\_time = std::chrono::system\_clock::now()); \}}
+\DoxyCodeLine{29   time\_t stop()          \{ \textcolor{keywordflow}{return} (stop\_time  = std::chrono::system\_clock::now()); \}}
+\DoxyCodeLine{30   \textcolor{keywordtype}{double} elapsed()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} std::chrono::duration\_cast<D>(stop\_time -\/ start\_time).count(); \}}
+\DoxyCodeLine{31   \textcolor{keywordtype}{double} lap()           \{ stop(); \textcolor{keywordflow}{return} std::chrono::duration\_cast<D>(stop\_time -\/ start\_time).count(); \}}
+\DoxyCodeLine{32 }
+\DoxyCodeLine{33 }
+\DoxyCodeLine{34   std::string name()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} msg\_; \}}
+\DoxyCodeLine{35 }
+\DoxyCodeLine{36 \textcolor{keyword}{private}:}
+\DoxyCodeLine{37   time\_t start\_time, stop\_time;}
+\DoxyCodeLine{38 }
+\DoxyCodeLine{39 \textcolor{keyword}{protected}:}
+\DoxyCodeLine{40   std::string msg\_;}
+\DoxyCodeLine{41 \};}
+\DoxyCodeLine{42 }
+\DoxyCodeLine{43 }
+\DoxyCodeLine{44 \textcolor{keyword}{using} \mbox{\hyperlink{classnw_1_1util_1_1timer}{seconds\_timer}} = \mbox{\hyperlink{classnw_1_1util_1_1timer}{timer<std::chrono::seconds>}};}
+\DoxyCodeLine{45 \textcolor{keyword}{using} \mbox{\hyperlink{classnw_1_1util_1_1timer}{ms\_timer}} = \mbox{\hyperlink{classnw_1_1util_1_1timer}{timer<std::chrono::milliseconds>}};}
+\DoxyCodeLine{46 \textcolor{keyword}{using} \mbox{\hyperlink{classnw_1_1util_1_1timer}{us\_timer}} = \mbox{\hyperlink{classnw_1_1util_1_1timer}{timer<std::chrono::microseconds>}};}
+\DoxyCodeLine{47 }
+\DoxyCodeLine{48 \textcolor{keyword}{class }\mbox{\hyperlink{classnw_1_1util_1_1empty__timer}{empty\_timer}} \{}
+\DoxyCodeLine{49 \textcolor{keyword}{public}:}
+\DoxyCodeLine{50   \mbox{\hyperlink{classnw_1_1util_1_1empty__timer}{empty\_timer}}(\textcolor{keyword}{const} std::string\& msg = \textcolor{stringliteral}{"{}"{}}) \{\}}
+\DoxyCodeLine{51   \mbox{\hyperlink{classnw_1_1util_1_1empty__timer}{\string~empty\_timer}}() \{\}}
+\DoxyCodeLine{52 \};}
+\DoxyCodeLine{53 }
+\DoxyCodeLine{54 \textcolor{keyword}{class }\mbox{\hyperlink{classnw_1_1util_1_1life__timer}{life\_timer}} :  \textcolor{keyword}{public} \mbox{\hyperlink{classnw_1_1util_1_1empty__timer}{empty\_timer}}, \textcolor{keyword}{public} \mbox{\hyperlink{classnw_1_1util_1_1timer}{ms\_timer}} \{}
+\DoxyCodeLine{55 }
+\DoxyCodeLine{56 \textcolor{keyword}{public}:}
+\DoxyCodeLine{57   \textcolor{keyword}{explicit} \mbox{\hyperlink{classnw_1_1util_1_1life__timer}{life\_timer}}(\textcolor{keyword}{const} std::string\& msg = \textcolor{stringliteral}{"{}"{}}) : \mbox{\hyperlink{classnw_1_1util_1_1timer}{ms\_timer}}(msg) \{\}}
+\DoxyCodeLine{58 }
+\DoxyCodeLine{59   \mbox{\hyperlink{classnw_1_1util_1_1life__timer}{\string~life\_timer}}() \{}
+\DoxyCodeLine{60     stop();}
+\DoxyCodeLine{61     \textcolor{keywordflow}{if} (ms\_timer::msg\_ != \textcolor{stringliteral}{"{}"{}}) \{}
+\DoxyCodeLine{62       std::cout << \textcolor{stringliteral}{"{}\# [ "{}} + msg\_ + \textcolor{stringliteral}{"{} ]: "{}};}
+\DoxyCodeLine{63       std::cout << elapsed() << \textcolor{stringliteral}{"{} ms"{}} << std::endl;}
+\DoxyCodeLine{64     \}}
+\DoxyCodeLine{65   \}}
+\DoxyCodeLine{66 \};}
+\DoxyCodeLine{67 }
+\DoxyCodeLine{68 std::ostream\& operator<<(std::ostream\& os, \textcolor{keyword}{const} \mbox{\hyperlink{classnw_1_1util_1_1timer}{seconds\_timer}}\& t) \{}
+\DoxyCodeLine{69   std::string name = t.name();}
+\DoxyCodeLine{70   \textcolor{keywordflow}{if} (t.name() != \textcolor{stringliteral}{"{}"{}}) \{}
+\DoxyCodeLine{71     os << \textcolor{stringliteral}{"{}("{}} << t.name() << \textcolor{stringliteral}{"{}) "{}};}
+\DoxyCodeLine{72   \}}
+\DoxyCodeLine{73   os << t.elapsed() << \textcolor{stringliteral}{"{} sec"{}};}
+\DoxyCodeLine{74   \textcolor{keywordflow}{return} os;}
+\DoxyCodeLine{75 \}}
+\DoxyCodeLine{76 }
+\DoxyCodeLine{77 std::ostream\& operator<<(std::ostream\& os, \textcolor{keyword}{const} ms\_timer\& t) \{}
+\DoxyCodeLine{78   std::string name = t.name();}
+\DoxyCodeLine{79   \textcolor{keywordflow}{if} (t.name() != \textcolor{stringliteral}{"{}"{}}) \{}
+\DoxyCodeLine{80     os << \textcolor{stringliteral}{"{}("{}} << t.name() << \textcolor{stringliteral}{"{}) "{}};}
+\DoxyCodeLine{81   \}}
+\DoxyCodeLine{82 }
+\DoxyCodeLine{83   os << t.elapsed() << \textcolor{stringliteral}{"{} ms"{}};}
+\DoxyCodeLine{84   \textcolor{keywordflow}{return} os;}
+\DoxyCodeLine{85 \}}
+\DoxyCodeLine{86 }
+\DoxyCodeLine{87 std::ostream\& operator<<(std::ostream\& os, \textcolor{keyword}{const} us\_timer\& t) \{}
+\DoxyCodeLine{88   std::string name = t.name();}
+\DoxyCodeLine{89   \textcolor{keywordflow}{if} (t.name() != \textcolor{stringliteral}{"{}"{}}) \{}
+\DoxyCodeLine{90     os << \textcolor{stringliteral}{"{}("{}} << t.name() << \textcolor{stringliteral}{"{}) "{}};}
+\DoxyCodeLine{91   \}}
+\DoxyCodeLine{92   os << t.elapsed() << \textcolor{stringliteral}{"{} us"{}};}
+\DoxyCodeLine{93   \textcolor{keywordflow}{return} os;}
+\DoxyCodeLine{94 \}}
+\DoxyCodeLine{95 }
+\DoxyCodeLine{96 \}         \textcolor{comment}{// namespace util}}
+\DoxyCodeLine{97 \}         \textcolor{comment}{// namespace nw}}
+\DoxyCodeLine{98 }
+\DoxyCodeLine{99 }
+\DoxyCodeLine{100 }
+\DoxyCodeLine{101 \textcolor{preprocessor}{\#endif    }\textcolor{comment}{// NW\_UTIL\_TIMER\_HPP}}
+
+\end{DoxyCode}

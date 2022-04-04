@@ -1,0 +1,210 @@
+\hypertarget{dfs__range_8hpp_source}{}\doxysection{dfs\+\_\+range.\+hpp}
+\label{dfs__range_8hpp_source}\index{/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/dfs\_range.hpp@{/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/dfs\_range.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// }}
+\DoxyCodeLine{2 \textcolor{comment}{// This file is part of NW Graph (aka GraphPack) }}
+\DoxyCodeLine{3 \textcolor{comment}{// (c) Pacific Northwest National Laboratory 2018-\/2021 }}
+\DoxyCodeLine{4 \textcolor{comment}{// (c) University of Washington 2018-\/2021 }}
+\DoxyCodeLine{5 \textcolor{comment}{// }}
+\DoxyCodeLine{6 \textcolor{comment}{// Licensed under terms of include LICENSE file }}
+\DoxyCodeLine{7 \textcolor{comment}{// }}
+\DoxyCodeLine{8 \textcolor{comment}{// Authors: }}
+\DoxyCodeLine{9 \textcolor{comment}{//     Andrew Lumsdaine }}
+\DoxyCodeLine{10 \textcolor{comment}{//     Kevin Deweese    }}
+\DoxyCodeLine{11 \textcolor{comment}{//}}
+\DoxyCodeLine{12 }
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#ifndef NW\_GRAPH\_DFS\_RANGE\_HPP}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#define NW\_GRAPH\_DFS\_RANGE\_HPP}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include <cassert>}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include <stack>}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#include "{}nwgraph/graph\_traits.hpp"{}}}
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#include "{}nwgraph/util/util.hpp"{}}}
+\DoxyCodeLine{22 }
+\DoxyCodeLine{23 \textcolor{keyword}{namespace }nw \{}
+\DoxyCodeLine{24 \textcolor{keyword}{namespace }graph \{}
+\DoxyCodeLine{25 }
+\DoxyCodeLine{26 \textcolor{keyword}{enum} three\_colors \{ black, white, grey \};}
+\DoxyCodeLine{27 }
+\DoxyCodeLine{28 \textcolor{keyword}{template} <\textcolor{keyword}{typename} Graph, \textcolor{keyword}{typename} Stack = std::stack<vertex\_\textcolor{keywordtype}{id}\_type>>}
+\DoxyCodeLine{29 \textcolor{keyword}{class }\mbox{\hyperlink{classnw_1_1graph_1_1dfs__range}{dfs\_range}} \{}
+\DoxyCodeLine{30 }
+\DoxyCodeLine{31 \textcolor{keyword}{public}:}
+\DoxyCodeLine{32   \mbox{\hyperlink{classnw_1_1graph_1_1dfs__range}{dfs\_range}}(Graph\& graph, vertex\_id\_type seed = 0) : the\_graph\_(graph), colors\_(graph.end() -\/ graph.begin(), white) \{}
+\DoxyCodeLine{33     Q\_.push(seed);}
+\DoxyCodeLine{34     colors\_[seed] = grey;}
+\DoxyCodeLine{35 }
+\DoxyCodeLine{36     dfs\_visit(the\_graph\_.begin(), Q\_, colors\_, seed);}
+\DoxyCodeLine{37   \}}
+\DoxyCodeLine{38 }
+\DoxyCodeLine{39   \mbox{\hyperlink{classnw_1_1graph_1_1dfs__range}{dfs\_range}}(\textcolor{keyword}{const} \mbox{\hyperlink{classnw_1_1graph_1_1dfs__range}{dfs\_range}}\&)  = \textcolor{keyword}{delete};}
+\DoxyCodeLine{40   \mbox{\hyperlink{classnw_1_1graph_1_1dfs__range}{dfs\_range}}(\textcolor{keyword}{const} \mbox{\hyperlink{classnw_1_1graph_1_1dfs__range}{dfs\_range}}\&\&) = \textcolor{keyword}{delete};}
+\DoxyCodeLine{41 }
+\DoxyCodeLine{42   \textcolor{keywordtype}{bool} empty() \{ \textcolor{keywordflow}{return} Q\_.empty(); \}}
+\DoxyCodeLine{43 }
+\DoxyCodeLine{44 \textcolor{keyword}{private}:}
+\DoxyCodeLine{45   \textcolor{keyword}{template} <\textcolor{keyword}{typename} GraphRange>}
+\DoxyCodeLine{46   \textcolor{keyword}{static} \textcolor{keywordtype}{void} dfs\_visit(\textcolor{keyword}{const} GraphRange\& G, Stack\& Q, std::vector<three\_colors>\& colors, vertex\_id\_type v) \{}
+\DoxyCodeLine{47     \textcolor{keyword}{auto} u     = G[v].begin();}
+\DoxyCodeLine{48     \textcolor{keyword}{auto} u\_end = G[v].end();}
+\DoxyCodeLine{49 }
+\DoxyCodeLine{50     \textcolor{keywordflow}{while} (u != u\_end) \{}
+\DoxyCodeLine{51       \textcolor{keywordflow}{if} (colors[std::get<0>(*u)] == white) \{}
+\DoxyCodeLine{52         Q.push(v);}
+\DoxyCodeLine{53         colors[v] = grey;}
+\DoxyCodeLine{54 }
+\DoxyCodeLine{55         v     = std::get<0>(*u);}
+\DoxyCodeLine{56         u     = G[v].begin();}
+\DoxyCodeLine{57         u\_end = G[v].end();}
+\DoxyCodeLine{58       \} \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{59         ++u;}
+\DoxyCodeLine{60       \}}
+\DoxyCodeLine{61       Q.push(v);}
+\DoxyCodeLine{62       colors[v] = black;}
+\DoxyCodeLine{63     \}}
+\DoxyCodeLine{64   \}}
+\DoxyCodeLine{65 }
+\DoxyCodeLine{66 \textcolor{keyword}{public}:}
+\DoxyCodeLine{67   \textcolor{keyword}{class }\mbox{\hyperlink{classnw_1_1graph_1_1dfs__range_1_1dfs__range__iterator}{dfs\_range\_iterator}} \{}
+\DoxyCodeLine{68   \textcolor{keyword}{public}:}
+\DoxyCodeLine{69     \mbox{\hyperlink{classnw_1_1graph_1_1dfs__range_1_1dfs__range__iterator}{dfs\_range\_iterator}}(\mbox{\hyperlink{classnw_1_1graph_1_1dfs__range}{dfs\_range<Graph>}}\& range) : the\_range\_(range), cursor\_(0) \{\}}
+\DoxyCodeLine{70 }
+\DoxyCodeLine{71     \mbox{\hyperlink{classnw_1_1graph_1_1dfs__range_1_1dfs__range__iterator}{dfs\_range\_iterator}}\& operator++() \{}
+\DoxyCodeLine{72       \textcolor{keyword}{auto}  G      = the\_range\_.the\_graph\_.begin();}
+\DoxyCodeLine{73       \textcolor{keyword}{auto}\& Q      = the\_range\_.Q\_;}
+\DoxyCodeLine{74       \textcolor{keyword}{auto}\& colors = the\_range\_.colors\_;}
+\DoxyCodeLine{75 }
+\DoxyCodeLine{76       \textcolor{keywordflow}{while} (!Q.empty() \&\& colors[Q.top()] == black)}
+\DoxyCodeLine{77         Q.pop();}
+\DoxyCodeLine{78 }
+\DoxyCodeLine{79       \textcolor{keywordflow}{if} (!Q.empty()) \{}
+\DoxyCodeLine{80         dfs\_visit(G, Q, colors, Q.top());}
+\DoxyCodeLine{81       \} \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{82         \textcolor{keywordflow}{while} (colors[++cursor\_] != white \&\& cursor\_ != the\_range\_.the\_graph\_.size())}
+\DoxyCodeLine{83           ;}
+\DoxyCodeLine{84         \textcolor{keywordflow}{if} (cursor\_ != the\_range\_.the\_graph\_.size()) \{}
+\DoxyCodeLine{85           Q.push(cursor\_);}
+\DoxyCodeLine{86           colors[cursor\_] = grey;}
+\DoxyCodeLine{87           dfs\_visit(G, Q, colors, cursor\_);}
+\DoxyCodeLine{88         \}}
+\DoxyCodeLine{89       \}}
+\DoxyCodeLine{90 }
+\DoxyCodeLine{91       \textcolor{keywordflow}{return} *\textcolor{keyword}{this};}
+\DoxyCodeLine{92     \}}
+\DoxyCodeLine{93 }
+\DoxyCodeLine{94     \textcolor{keyword}{auto} operator*() \{ \textcolor{keywordflow}{return} the\_range\_.Q\_.top(); \}}
+\DoxyCodeLine{95     \textcolor{comment}{// auto operator*() \{ return active\_; \}}}
+\DoxyCodeLine{96 }
+\DoxyCodeLine{97     \textcolor{keyword}{class }\mbox{\hyperlink{classnw_1_1graph_1_1dfs__range_1_1dfs__range__iterator_1_1end__sentinel__type}{end\_sentinel\_type}} \{}
+\DoxyCodeLine{98     \textcolor{keyword}{public}:}
+\DoxyCodeLine{99       \mbox{\hyperlink{classnw_1_1graph_1_1dfs__range_1_1dfs__range__iterator_1_1end__sentinel__type}{end\_sentinel\_type}}() \{\}}
+\DoxyCodeLine{100     \};}
+\DoxyCodeLine{101 }
+\DoxyCodeLine{102     \textcolor{keyword}{auto} operator==(\textcolor{keyword}{const} \mbox{\hyperlink{classnw_1_1graph_1_1dfs__range_1_1dfs__range__iterator_1_1end__sentinel__type}{end\_sentinel\_type}}\&)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} the\_range\_.empty(); \}}
+\DoxyCodeLine{103     \textcolor{keywordtype}{bool} operator!=(\textcolor{keyword}{const} end\_sentinel\_type\&)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} !the\_range\_.empty(); \}}
+\DoxyCodeLine{104 }
+\DoxyCodeLine{105   \textcolor{keyword}{private}:}
+\DoxyCodeLine{106     \mbox{\hyperlink{classnw_1_1graph_1_1dfs__range}{dfs\_range<Graph>}}\& the\_range\_;}
+\DoxyCodeLine{107     vertex\_id\_type    cursor\_;}
+\DoxyCodeLine{108   \};}
+\DoxyCodeLine{109 }
+\DoxyCodeLine{110   \textcolor{keyword}{typedef} dfs\_range\_iterator iterator;}
+\DoxyCodeLine{111 }
+\DoxyCodeLine{112   \textcolor{keyword}{auto} begin() \{ \textcolor{keywordflow}{return} dfs\_range\_iterator(*\textcolor{keyword}{this}); \}}
+\DoxyCodeLine{113   \textcolor{keyword}{auto} end() \{ \textcolor{keywordflow}{return} \textcolor{keyword}{typename} dfs\_range\_iterator::end\_sentinel\_type(); \}}
+\DoxyCodeLine{114 }
+\DoxyCodeLine{115 \textcolor{keyword}{private}:}
+\DoxyCodeLine{116   Graph\&                    the\_graph\_;}
+\DoxyCodeLine{117   Stack                     Q\_;}
+\DoxyCodeLine{118   std::vector<three\_colors> colors\_;}
+\DoxyCodeLine{119 \};}
+\DoxyCodeLine{120 }
+\DoxyCodeLine{121 \textcolor{keyword}{template} <\textcolor{keyword}{typename} Graph, \textcolor{keyword}{typename} Stack = std::stack<vertex\_\textcolor{keywordtype}{id}\_type>>}
+\DoxyCodeLine{122 \textcolor{keyword}{class }\mbox{\hyperlink{classnw_1_1graph_1_1dfs__edge__range}{dfs\_edge\_range}} \{}
+\DoxyCodeLine{123 }
+\DoxyCodeLine{124 \textcolor{keyword}{public}:}
+\DoxyCodeLine{125   \mbox{\hyperlink{classnw_1_1graph_1_1dfs__edge__range}{dfs\_edge\_range}}(Graph\& graph, vertex\_id\_type seed = 0) : the\_graph\_(graph), colors\_(graph.end() -\/ graph.begin(), white) \{}
+\DoxyCodeLine{126     Q\_.push(seed);}
+\DoxyCodeLine{127     colors\_[seed] = grey;}
+\DoxyCodeLine{128   \}}
+\DoxyCodeLine{129 }
+\DoxyCodeLine{130   \mbox{\hyperlink{classnw_1_1graph_1_1dfs__edge__range}{dfs\_edge\_range}}(\textcolor{keyword}{const} \mbox{\hyperlink{classnw_1_1graph_1_1dfs__edge__range}{dfs\_edge\_range}}\&)  = \textcolor{keyword}{delete};}
+\DoxyCodeLine{131   \mbox{\hyperlink{classnw_1_1graph_1_1dfs__edge__range}{dfs\_edge\_range}}(\textcolor{keyword}{const} \mbox{\hyperlink{classnw_1_1graph_1_1dfs__edge__range}{dfs\_edge\_range}}\&\&) = \textcolor{keyword}{delete};}
+\DoxyCodeLine{132 }
+\DoxyCodeLine{133   \textcolor{keywordtype}{bool} empty() \{ \textcolor{keywordflow}{return} Q\_.empty(); \}}
+\DoxyCodeLine{134 }
+\DoxyCodeLine{135   \textcolor{keyword}{class }\mbox{\hyperlink{classnw_1_1graph_1_1dfs__edge__range_1_1dfs__edge__range__iterator}{dfs\_edge\_range\_iterator}} \{}
+\DoxyCodeLine{136   \textcolor{keyword}{private}:}
+\DoxyCodeLine{137     \mbox{\hyperlink{classnw_1_1graph_1_1dfs__edge__range}{dfs\_edge\_range<Graph, Stack>}}\&  the\_range\_;}
+\DoxyCodeLine{138     \textcolor{keyword}{typename} Graph::outer\_iterator G;}
+\DoxyCodeLine{139     vertex\_id\_type                 v\_;}
+\DoxyCodeLine{140     \textcolor{keyword}{typename} Graph::inner\_iterator u\_begin, u\_end;}
+\DoxyCodeLine{141 }
+\DoxyCodeLine{142   \textcolor{keyword}{public}:}
+\DoxyCodeLine{143     \mbox{\hyperlink{classnw_1_1graph_1_1dfs__edge__range_1_1dfs__edge__range__iterator}{dfs\_edge\_range\_iterator}}(\mbox{\hyperlink{classnw_1_1graph_1_1dfs__edge__range}{dfs\_edge\_range<Graph, Stack>}}\& range)}
+\DoxyCodeLine{144         : the\_range\_(range), G(the\_range\_.the\_graph\_.begin()), v\_(the\_range\_.Q\_.top()), u\_begin(G[v\_].begin()), u\_end(G[v\_].end()) \{\}}
+\DoxyCodeLine{145 }
+\DoxyCodeLine{146     \mbox{\hyperlink{classnw_1_1graph_1_1dfs__edge__range_1_1dfs__edge__range__iterator}{dfs\_edge\_range\_iterator}}\& operator++() \{}
+\DoxyCodeLine{147       \textcolor{keyword}{auto}\& Q      = the\_range\_.Q\_;}
+\DoxyCodeLine{148       \textcolor{keyword}{auto}\& colors = the\_range\_.colors\_;}
+\DoxyCodeLine{149 }
+\DoxyCodeLine{150       Q.push(v\_);}
+\DoxyCodeLine{151       colors[v\_] = grey;}
+\DoxyCodeLine{152 }
+\DoxyCodeLine{153       v\_      = std::get<0>(*u\_begin);}
+\DoxyCodeLine{154       u\_begin = G[v\_].begin();}
+\DoxyCodeLine{155       u\_end   = G[v\_].end();}
+\DoxyCodeLine{156 }
+\DoxyCodeLine{157       \textcolor{comment}{// ++u\_begin;}}
+\DoxyCodeLine{158       \textcolor{keywordflow}{while} (u\_begin != u\_end \&\& colors[std::get<0>(*u\_begin)] != white) \{}
+\DoxyCodeLine{159         ++u\_begin;}
+\DoxyCodeLine{160       \}}
+\DoxyCodeLine{161 }
+\DoxyCodeLine{162       \textcolor{keywordflow}{while} (u\_begin == u\_end) \{}
+\DoxyCodeLine{163         colors[v\_] = black;}
+\DoxyCodeLine{164         v\_         = Q.top();}
+\DoxyCodeLine{165         Q.pop();}
+\DoxyCodeLine{166         \textcolor{keywordflow}{if} (Q.empty()) \textcolor{keywordflow}{break};}
+\DoxyCodeLine{167 }
+\DoxyCodeLine{168         assert(colors[v\_] == grey);}
+\DoxyCodeLine{169         u\_begin = G[v\_].begin();}
+\DoxyCodeLine{170         u\_end   = G[v\_].end();}
+\DoxyCodeLine{171 }
+\DoxyCodeLine{172         \textcolor{keywordflow}{while} (u\_begin != u\_end \&\& colors[std::get<0>(*u\_begin)] != white) \{}
+\DoxyCodeLine{173           ++u\_begin;}
+\DoxyCodeLine{174         \}}
+\DoxyCodeLine{175       \}}
+\DoxyCodeLine{176 }
+\DoxyCodeLine{177       \textcolor{keywordflow}{return} *\textcolor{keyword}{this};}
+\DoxyCodeLine{178     \}}
+\DoxyCodeLine{179 }
+\DoxyCodeLine{180     \textcolor{keyword}{auto} operator*() \{ \textcolor{keywordflow}{return} std::tuple\_cat(std::make\_tuple(v\_), *u\_begin); \}}
+\DoxyCodeLine{181 }
+\DoxyCodeLine{182     \textcolor{keyword}{class }\mbox{\hyperlink{classnw_1_1graph_1_1dfs__edge__range_1_1dfs__edge__range__iterator_1_1end__sentinel__type}{end\_sentinel\_type}} \{}
+\DoxyCodeLine{183     \textcolor{keyword}{public}:}
+\DoxyCodeLine{184       \mbox{\hyperlink{classnw_1_1graph_1_1dfs__edge__range_1_1dfs__edge__range__iterator_1_1end__sentinel__type}{end\_sentinel\_type}}() \{\}}
+\DoxyCodeLine{185     \};}
+\DoxyCodeLine{186 }
+\DoxyCodeLine{187     \textcolor{keyword}{auto} operator==(\textcolor{keyword}{const} \mbox{\hyperlink{classnw_1_1graph_1_1dfs__edge__range_1_1dfs__edge__range__iterator_1_1end__sentinel__type}{end\_sentinel\_type}}\&)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} the\_range\_.empty(); \}}
+\DoxyCodeLine{188     \textcolor{keywordtype}{bool} operator!=(\textcolor{keyword}{const} end\_sentinel\_type\&)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} !the\_range\_.empty(); \}}
+\DoxyCodeLine{189   \};}
+\DoxyCodeLine{190 }
+\DoxyCodeLine{191   \textcolor{keyword}{typedef} dfs\_edge\_range\_iterator iterator;}
+\DoxyCodeLine{192 }
+\DoxyCodeLine{193   \textcolor{keyword}{auto} begin() \{ \textcolor{keywordflow}{return} dfs\_edge\_range\_iterator(*\textcolor{keyword}{this}); \}}
+\DoxyCodeLine{194   \textcolor{keyword}{auto} end() \{ \textcolor{keywordflow}{return} \textcolor{keyword}{typename} dfs\_edge\_range\_iterator::end\_sentinel\_type(); \}}
+\DoxyCodeLine{195 }
+\DoxyCodeLine{196 \textcolor{keyword}{private}:}
+\DoxyCodeLine{197   Graph\&                    the\_graph\_;}
+\DoxyCodeLine{198   Stack                     Q\_;}
+\DoxyCodeLine{199   std::vector<three\_colors> colors\_;}
+\DoxyCodeLine{200 \};}
+\DoxyCodeLine{201 }
+\DoxyCodeLine{202 \}    \textcolor{comment}{// namespace graph}}
+\DoxyCodeLine{203 \}    \textcolor{comment}{// namespace nw}}
+\DoxyCodeLine{204 \textcolor{preprocessor}{\#endif    }\textcolor{comment}{//  NW\_GRAPH\_DFS\_RANGE\_HPP}}
+
+\end{DoxyCode}

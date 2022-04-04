@@ -1,0 +1,1273 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.3" xml:lang="en-US">
+  <compounddef id="classnw_1_1graph_1_1indexed__struct__of__arrays" kind="class" language="C++" prot="public">
+    <compoundname>nw::graph::indexed_struct_of_arrays</compoundname>
+    <innerclass refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1_1my__outer__iterator" prot="public">nw::graph::indexed_struct_of_arrays::my_outer_iterator</innerclass>
+    <templateparamlist>
+      <param>
+        <type>typename index_t</type>
+      </param>
+      <param>
+        <type>typename...</type>
+        <declname>Attributes</declname>
+        <defname>Attributes</defname>
+      </param>
+    </templateparamlist>
+      <sectiondef kind="public-type">
+      <memberdef kind="typedef" id="classnw_1_1graph_1_1indexed__struct__of__arrays_1af0aba3f2cceafc5acc2ef0f56be2066d" prot="public" static="no">
+        <type>typename <ref refid="structnw_1_1graph_1_1struct__of__arrays" kindref="compound">struct_of_arrays</ref>&lt; Attributes... &gt;::iterator</type>
+        <definition>using nw::graph::indexed_struct_of_arrays&lt; index_t, Attributes &gt;::inner_iterator =  typename struct_of_arrays&lt;Attributes...&gt;::iterator</definition>
+        <argsstring></argsstring>
+        <name>inner_iterator</name>
+        <qualifiedname>nw::graph::indexed_struct_of_arrays::inner_iterator</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" line="68" column="3" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" bodystart="68" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="classnw_1_1graph_1_1indexed__struct__of__arrays_1adde4bc5a1eb6ccb94c748a9028e35409" prot="public" static="no">
+        <type>typename <ref refid="structnw_1_1graph_1_1struct__of__arrays" kindref="compound">struct_of_arrays</ref>&lt; Attributes... &gt;::const_iterator</type>
+        <definition>using nw::graph::indexed_struct_of_arrays&lt; index_t, Attributes &gt;::const_inner_iterator =  typename struct_of_arrays&lt;Attributes...&gt;::const_iterator</definition>
+        <argsstring></argsstring>
+        <name>const_inner_iterator</name>
+        <qualifiedname>nw::graph::indexed_struct_of_arrays::const_inner_iterator</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" line="69" column="3" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" bodystart="69" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="classnw_1_1graph_1_1indexed__struct__of__arrays_1a3af0986c76aee0fbb6069f2351067027" prot="public" static="no">
+        <type><ref refid="classnw_1_1graph_1_1splittable__range__adapter" kindref="compound">nw::graph::splittable_range_adapter</ref>&lt; inner_iterator &gt;</type>
+        <definition>using nw::graph::indexed_struct_of_arrays&lt; index_t, Attributes &gt;::sub_view =  nw::graph::splittable_range_adapter&lt;inner_iterator&gt;</definition>
+        <argsstring></argsstring>
+        <name>sub_view</name>
+        <qualifiedname>nw::graph::indexed_struct_of_arrays::sub_view</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" line="70" column="3" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" bodystart="70" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="classnw_1_1graph_1_1indexed__struct__of__arrays_1a6807ce9b6ee8efd3c5656f57d0ba5938" prot="public" static="no">
+        <type><ref refid="classnw_1_1graph_1_1splittable__range__adapter" kindref="compound">nw::graph::splittable_range_adapter</ref>&lt; const_inner_iterator &gt;</type>
+        <definition>using nw::graph::indexed_struct_of_arrays&lt; index_t, Attributes &gt;::const_sub_view =  nw::graph::splittable_range_adapter&lt;const_inner_iterator&gt;</definition>
+        <argsstring></argsstring>
+        <name>const_sub_view</name>
+        <qualifiedname>nw::graph::indexed_struct_of_arrays::const_sub_view</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" line="71" column="3" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" bodystart="71" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="classnw_1_1graph_1_1indexed__struct__of__arrays_1adf74bbbbe039d67744636496fd1af6e8" prot="public" static="no">
+        <type><ref refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1_1my__outer__iterator" kindref="compound">my_outer_iterator</ref>&lt; true &gt;</type>
+        <definition>using nw::graph::indexed_struct_of_arrays&lt; index_t, Attributes &gt;::const_outer_iterator =  my_outer_iterator&lt;true&gt;</definition>
+        <argsstring></argsstring>
+        <name>const_outer_iterator</name>
+        <qualifiedname>nw::graph::indexed_struct_of_arrays::const_outer_iterator</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" line="186" column="3" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" bodystart="186" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="classnw_1_1graph_1_1indexed__struct__of__arrays_1aabfeaef56eae60006fa6622dd5e59a55" prot="public" static="no">
+        <type><ref refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1_1my__outer__iterator" kindref="compound">my_outer_iterator</ref>&lt; false &gt;</type>
+        <definition>using nw::graph::indexed_struct_of_arrays&lt; index_t, Attributes &gt;::outer_iterator =  my_outer_iterator&lt;false&gt;</definition>
+        <argsstring></argsstring>
+        <name>outer_iterator</name>
+        <qualifiedname>nw::graph::indexed_struct_of_arrays::outer_iterator</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" line="187" column="3" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" bodystart="187" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="classnw_1_1graph_1_1indexed__struct__of__arrays_1a33ef0f8be6517493badf98363dbcf4ae" prot="public" static="no">
+        <type><ref refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1_1my__outer__iterator" kindref="compound">my_outer_iterator</ref>&lt; false &gt;</type>
+        <definition>using nw::graph::indexed_struct_of_arrays&lt; index_t, Attributes &gt;::iterator =  my_outer_iterator&lt;false&gt;</definition>
+        <argsstring></argsstring>
+        <name>iterator</name>
+        <qualifiedname>nw::graph::indexed_struct_of_arrays::iterator</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" line="189" column="3" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" bodystart="189" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="classnw_1_1graph_1_1indexed__struct__of__arrays_1a4493fc456bf6b92bffa2680f4d7efbb4" prot="public" static="no">
+        <type>typename iterator::value_type</type>
+        <definition>using nw::graph::indexed_struct_of_arrays&lt; index_t, Attributes &gt;::value_type =  typename iterator::value_type</definition>
+        <argsstring></argsstring>
+        <name>value_type</name>
+        <qualifiedname>nw::graph::indexed_struct_of_arrays::value_type</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" line="191" column="3" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" bodystart="191" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="classnw_1_1graph_1_1indexed__struct__of__arrays_1a81a12b5a9d17e16994feee9d0e1d8fcb" prot="public" static="no">
+        <type>typename iterator::reference</type>
+        <definition>using nw::graph::indexed_struct_of_arrays&lt; index_t, Attributes &gt;::reference =  typename iterator::reference</definition>
+        <argsstring></argsstring>
+        <name>reference</name>
+        <qualifiedname>nw::graph::indexed_struct_of_arrays::reference</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" line="192" column="3" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" bodystart="192" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="classnw_1_1graph_1_1indexed__struct__of__arrays_1adc0b5be397d3022fa9da18413b2b91cb" prot="public" static="no">
+        <type>std::size_t</type>
+        <definition>using nw::graph::indexed_struct_of_arrays&lt; index_t, Attributes &gt;::size_type =  std::size_t</definition>
+        <argsstring></argsstring>
+        <name>size_type</name>
+        <qualifiedname>nw::graph::indexed_struct_of_arrays::size_type</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" line="193" column="3" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" bodystart="193" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="classnw_1_1graph_1_1indexed__struct__of__arrays_1ab402d92a2e266a6f9afbb914fe95ff2b" prot="public" static="no">
+        <type>typename iterator::difference_type</type>
+        <definition>using nw::graph::indexed_struct_of_arrays&lt; index_t, Attributes &gt;::difference_type =  typename iterator::difference_type</definition>
+        <argsstring></argsstring>
+        <name>difference_type</name>
+        <qualifiedname>nw::graph::indexed_struct_of_arrays::difference_type</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" line="194" column="3" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" bodystart="194" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="classnw_1_1graph_1_1indexed__struct__of__arrays_1a404617480c001af5123c795ff2d3f02d" prot="public" static="no">
+        <type>typename <ref refid="structnw_1_1graph_1_1arrow__proxy" kindref="compound">iterator::pointer</ref></type>
+        <definition>using nw::graph::indexed_struct_of_arrays&lt; index_t, Attributes &gt;::pointer =  typename iterator::pointer</definition>
+        <argsstring></argsstring>
+        <name>pointer</name>
+        <qualifiedname>nw::graph::indexed_struct_of_arrays::pointer</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" line="195" column="3" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" bodystart="195" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="classnw_1_1graph_1_1indexed__struct__of__arrays_1a7e48054d92f665b906d665b500b38e3a" prot="public" static="no">
+        <type><ref refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1_1my__outer__iterator" kindref="compound">const_outer_iterator</ref></type>
+        <definition>using nw::graph::indexed_struct_of_arrays&lt; index_t, Attributes &gt;::const_iterator =  const_outer_iterator</definition>
+        <argsstring></argsstring>
+        <name>const_iterator</name>
+        <qualifiedname>nw::graph::indexed_struct_of_arrays::const_iterator</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" line="197" column="3" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" bodystart="197" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="classnw_1_1graph_1_1indexed__struct__of__arrays_1ab5440c4c0ff0bfdff056f88ea3e3c44c" prot="public" static="no">
+        <type>typename const_iterator::reference</type>
+        <definition>using nw::graph::indexed_struct_of_arrays&lt; index_t, Attributes &gt;::const_reference =  typename const_iterator::reference</definition>
+        <argsstring></argsstring>
+        <name>const_reference</name>
+        <qualifiedname>nw::graph::indexed_struct_of_arrays::const_reference</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" line="198" column="3" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" bodystart="198" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="classnw_1_1graph_1_1indexed__struct__of__arrays_1a1d038ec3c856416f043664e4fb8aa08f" prot="public" static="no">
+        <type>typename <ref refid="structnw_1_1graph_1_1arrow__proxy" kindref="compound">const_iterator::pointer</ref></type>
+        <definition>using nw::graph::indexed_struct_of_arrays&lt; index_t, Attributes &gt;::const_pointer =  typename const_iterator::pointer</definition>
+        <argsstring></argsstring>
+        <name>const_pointer</name>
+        <qualifiedname>nw::graph::indexed_struct_of_arrays::const_pointer</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" line="199" column="3" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" bodystart="199" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="classnw_1_1graph_1_1indexed__struct__of__arrays_1a59c84cdeb51e193ab1f9e7d9ea00bcf0" prot="public" static="no">
+        <type>std::reverse_iterator&lt; <ref refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1_1my__outer__iterator" kindref="compound">iterator</ref> &gt;</type>
+        <definition>using nw::graph::indexed_struct_of_arrays&lt; index_t, Attributes &gt;::reverse_iterator =  std::reverse_iterator&lt;iterator&gt;</definition>
+        <argsstring></argsstring>
+        <name>reverse_iterator</name>
+        <qualifiedname>nw::graph::indexed_struct_of_arrays::reverse_iterator</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" line="201" column="3" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" bodystart="201" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="classnw_1_1graph_1_1indexed__struct__of__arrays_1a673b9b7599e37928c9b1b7cf3ad5cdf4" prot="public" static="no">
+        <type>std::reverse_iterator&lt; <ref refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1_1my__outer__iterator" kindref="compound">const_iterator</ref> &gt;</type>
+        <definition>using nw::graph::indexed_struct_of_arrays&lt; index_t, Attributes &gt;::const_reverse_iterator =  std::reverse_iterator&lt;const_iterator&gt;</definition>
+        <argsstring></argsstring>
+        <name>const_reverse_iterator</name>
+        <qualifiedname>nw::graph::indexed_struct_of_arrays::const_reverse_iterator</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" line="202" column="3" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" bodystart="202" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-static-attrib">
+      <memberdef kind="variable" id="classnw_1_1graph_1_1indexed__struct__of__arrays_1a82d00dd32135c10b51698190036ce127" prot="private" static="yes" constexpr="yes" mutable="no">
+        <type>constexpr const char</type>
+        <definition>constexpr const char nw::graph::indexed_struct_of_arrays&lt; index_t, Attributes &gt;::magic_[34]</definition>
+        <argsstring>[34]</argsstring>
+        <name>magic_</name>
+        <qualifiedname>nw::graph::indexed_struct_of_arrays::magic_</qualifiedname>
+        <initializer>= &quot;NW GRAPH <ref refid="classnw_1_1graph_1_1indexed__struct__of__arrays" kindref="compound">indexed_struct_of_arrays</ref>&quot;</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" line="59" column="31" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" bodystart="59" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classnw_1_1graph_1_1indexed__struct__of__arrays_1a7a2b08c97cabc581536fd9258711bb5f" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool nw::graph::indexed_struct_of_arrays&lt; index_t, Attributes &gt;::is_open_</definition>
+        <argsstring></argsstring>
+        <name>is_open_</name>
+        <qualifiedname>nw::graph::indexed_struct_of_arrays::is_open_</qualifiedname>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" line="61" column="11" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" bodystart="61" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classnw_1_1graph_1_1indexed__struct__of__arrays_1a33b952371e866d7fa6fc7b532d9ac943" prot="private" static="no" mutable="no">
+        <type>index_t</type>
+        <definition>index_t nw::graph::indexed_struct_of_arrays&lt; index_t, Attributes &gt;::N_</definition>
+        <argsstring></argsstring>
+        <name>N_</name>
+        <qualifiedname>nw::graph::indexed_struct_of_arrays::N_</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" line="62" column="11" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" bodystart="62" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="classnw_1_1graph_1_1indexed__struct__of__arrays_1a3d7005e0efb03836f3673c4dcf3c8a3a" prot="public" static="no" mutable="no">
+        <type>std::vector&lt; index_t &gt;</type>
+        <definition>std::vector&lt;index_t&gt; nw::graph::indexed_struct_of_arrays&lt; index_t, Attributes &gt;::indices_</definition>
+        <argsstring></argsstring>
+        <name>indices_</name>
+        <qualifiedname>nw::graph::indexed_struct_of_arrays::indices_</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" line="65" column="26" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" bodystart="65" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classnw_1_1graph_1_1indexed__struct__of__arrays_1aa027a0178e68e3754a4af6893943e74d" prot="public" static="no" mutable="no">
+        <type><ref refid="structnw_1_1graph_1_1struct__of__arrays" kindref="compound">struct_of_arrays</ref>&lt; Attributes... &gt;</type>
+        <definition>struct_of_arrays&lt;Attributes...&gt; nw::graph::indexed_struct_of_arrays&lt; index_t, Attributes &gt;::to_be_indexed_</definition>
+        <argsstring></argsstring>
+        <name>to_be_indexed_</name>
+        <qualifiedname>nw::graph::indexed_struct_of_arrays::to_be_indexed_</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" line="66" column="20" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" bodystart="66" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="classnw_1_1graph_1_1indexed__struct__of__arrays_1a961c58f2009ccf42e058123ee40350e3" prot="public" static="yes" constexpr="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>constexpr std::size_t</type>
+        <definition>static constexpr std::size_t nw::graph::indexed_struct_of_arrays&lt; index_t, Attributes &gt;::getNAttr</definition>
+        <argsstring>()</argsstring>
+        <name>getNAttr</name>
+        <qualifiedname>nw::graph::indexed_struct_of_arrays::getNAttr</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" line="73" column="32" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" bodystart="73" bodyend="73"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classnw_1_1graph_1_1indexed__struct__of__arrays_1ab1e76e32850ff34669317c85232aa7cb" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>nw::graph::indexed_struct_of_arrays&lt; index_t, Attributes &gt;::indexed_struct_of_arrays</definition>
+        <argsstring>(size_t N)</argsstring>
+        <name>indexed_struct_of_arrays</name>
+        <qualifiedname>nw::graph::indexed_struct_of_arrays::indexed_struct_of_arrays</qualifiedname>
+        <param>
+          <type>size_t</type>
+          <declname>N</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" line="75" column="3" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" bodystart="75" bodyend="75"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1indexed__struct__of__arrays_1a7fb21bd9e2ed0c03f36e583d3ac93a5f" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>nw::graph::indexed_struct_of_arrays&lt; index_t, Attributes &gt;::indexed_struct_of_arrays</definition>
+        <argsstring>(size_t N, size_t M)</argsstring>
+        <name>indexed_struct_of_arrays</name>
+        <qualifiedname>nw::graph::indexed_struct_of_arrays::indexed_struct_of_arrays</qualifiedname>
+        <param>
+          <type>size_t</type>
+          <declname>N</declname>
+        </param>
+        <param>
+          <type>size_t</type>
+          <declname>M</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" line="76" column="3" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" bodystart="76" bodyend="76"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1indexed__struct__of__arrays_1a83ae6c782bd9b2a771e769544b4737db" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>nw::graph::indexed_struct_of_arrays&lt; index_t, Attributes &gt;::indexed_struct_of_arrays</definition>
+        <argsstring>(std::vector&lt; index_t &gt; &amp;&amp;indices, std::vector&lt; Attributes &gt; &amp;&amp;... to_be_indexed)</argsstring>
+        <name>indexed_struct_of_arrays</name>
+        <qualifiedname>nw::graph::indexed_struct_of_arrays::indexed_struct_of_arrays</qualifiedname>
+        <param>
+          <type>std::vector&lt; index_t &gt; &amp;&amp;</type>
+          <declname>indices</declname>
+        </param>
+        <param>
+          <type>std::vector&lt; Attributes &gt; &amp;&amp;...</type>
+          <declname>to_be_indexed</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" line="78" column="3" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" bodystart="78" bodyend="79"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1indexed__struct__of__arrays_1ac06bd586736510bb611955dd281a28b6" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>nw::graph::indexed_struct_of_arrays&lt; index_t, Attributes &gt;::indexed_struct_of_arrays</definition>
+        <argsstring>(std::vector&lt; index_t &gt; &amp;&amp;indices, std::tuple&lt; std::vector&lt; Attributes &gt;... &gt; &amp;&amp;to_be_indexed)</argsstring>
+        <name>indexed_struct_of_arrays</name>
+        <qualifiedname>nw::graph::indexed_struct_of_arrays::indexed_struct_of_arrays</qualifiedname>
+        <param>
+          <type>std::vector&lt; index_t &gt; &amp;&amp;</type>
+          <declname>indices</declname>
+        </param>
+        <param>
+          <type>std::tuple&lt; std::vector&lt; Attributes &gt;... &gt; &amp;&amp;</type>
+          <declname>to_be_indexed</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" line="80" column="3" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" bodystart="80" bodyend="81"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1indexed__struct__of__arrays_1a1ca2c2f03fa5bd02155daefe64a3fd75" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>nw::graph::indexed_struct_of_arrays&lt; index_t, Attributes &gt;::indexed_struct_of_arrays</definition>
+        <argsstring>(const std::vector&lt; index_t &gt; &amp;indices, const std::vector&lt; Attributes &gt; &amp;... to_be_indexed)</argsstring>
+        <name>indexed_struct_of_arrays</name>
+        <qualifiedname>nw::graph::indexed_struct_of_arrays::indexed_struct_of_arrays</qualifiedname>
+        <param>
+          <type>const std::vector&lt; index_t &gt; &amp;</type>
+          <declname>indices</declname>
+        </param>
+        <param>
+          <type>const std::vector&lt; Attributes &gt; &amp;...</type>
+          <declname>to_be_indexed</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" line="83" column="3" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" bodystart="83" bodyend="84"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1indexed__struct__of__arrays_1a95d41b3cbef7cfc827b5350ab94dec7f" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>nw::graph::indexed_struct_of_arrays&lt; index_t, Attributes &gt;::indexed_struct_of_arrays</definition>
+        <argsstring>(const std::vector&lt; index_t &gt; &amp;indices, const std::tuple&lt; std::vector&lt; Attributes &gt;... &gt; &amp;to_be_indexed)</argsstring>
+        <name>indexed_struct_of_arrays</name>
+        <qualifiedname>nw::graph::indexed_struct_of_arrays::indexed_struct_of_arrays</qualifiedname>
+        <param>
+          <type>const std::vector&lt; index_t &gt; &amp;</type>
+          <declname>indices</declname>
+        </param>
+        <param>
+          <type>const std::tuple&lt; std::vector&lt; Attributes &gt;... &gt; &amp;</type>
+          <declname>to_be_indexed</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" line="85" column="3" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" bodystart="85" bodyend="86"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1indexed__struct__of__arrays_1a5734f5d85fcfb19066246c505718385b" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1_1my__outer__iterator" kindref="compound">iterator</ref></type>
+        <definition>iterator nw::graph::indexed_struct_of_arrays&lt; index_t, Attributes &gt;::begin</definition>
+        <argsstring>()</argsstring>
+        <name>begin</name>
+        <qualifiedname>nw::graph::indexed_struct_of_arrays::begin</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" line="204" column="18" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" bodystart="204" bodyend="204"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1indexed__struct__of__arrays_1ab05d7bacea13007150834414e43e00dc" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1_1my__outer__iterator" kindref="compound">const_iterator</ref></type>
+        <definition>const_iterator nw::graph::indexed_struct_of_arrays&lt; index_t, Attributes &gt;::begin</definition>
+        <argsstring>() const</argsstring>
+        <name>begin</name>
+        <qualifiedname>nw::graph::indexed_struct_of_arrays::begin</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" line="205" column="18" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" bodystart="205" bodyend="205"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1indexed__struct__of__arrays_1afb497828f3b378082f7b20ae15ec6932" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1_1my__outer__iterator" kindref="compound">const_iterator</ref></type>
+        <definition>const_iterator nw::graph::indexed_struct_of_arrays&lt; index_t, Attributes &gt;::cbegin</definition>
+        <argsstring>() const</argsstring>
+        <name>cbegin</name>
+        <qualifiedname>nw::graph::indexed_struct_of_arrays::cbegin</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" line="206" column="18" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" bodystart="206" bodyend="206"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1indexed__struct__of__arrays_1afdda9ccdc1933dd12747b101d85faf3e" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1_1my__outer__iterator" kindref="compound">iterator</ref></type>
+        <definition>iterator nw::graph::indexed_struct_of_arrays&lt; index_t, Attributes &gt;::end</definition>
+        <argsstring>()</argsstring>
+        <name>end</name>
+        <qualifiedname>nw::graph::indexed_struct_of_arrays::end</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" line="207" column="18" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" bodystart="207" bodyend="207"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1indexed__struct__of__arrays_1a0ea4c4c2679dc6c185aa55be8b8feaaa" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1_1my__outer__iterator" kindref="compound">const_iterator</ref></type>
+        <definition>const_iterator nw::graph::indexed_struct_of_arrays&lt; index_t, Attributes &gt;::end</definition>
+        <argsstring>() const</argsstring>
+        <name>end</name>
+        <qualifiedname>nw::graph::indexed_struct_of_arrays::end</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" line="208" column="18" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" bodystart="208" bodyend="208"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1indexed__struct__of__arrays_1a2b3eddfb126db3d82b4aa475b4c2b925" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1_1my__outer__iterator" kindref="compound">const_iterator</ref></type>
+        <definition>const_iterator nw::graph::indexed_struct_of_arrays&lt; index_t, Attributes &gt;::cend</definition>
+        <argsstring>() const</argsstring>
+        <name>cend</name>
+        <qualifiedname>nw::graph::indexed_struct_of_arrays::cend</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" line="209" column="18" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" bodystart="209" bodyend="209"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1indexed__struct__of__arrays_1a219f207dc38507b092c9ef19486cca8b" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classnw_1_1graph_1_1splittable__range__adapter" kindref="compound">sub_view</ref></type>
+        <definition>sub_view nw::graph::indexed_struct_of_arrays&lt; index_t, Attributes &gt;::operator[]</definition>
+        <argsstring>(index_t i)</argsstring>
+        <name>operator[]</name>
+        <qualifiedname>nw::graph::indexed_struct_of_arrays::operator[]</qualifiedname>
+        <param>
+          <type>index_t</type>
+          <declname>i</declname>
+        </param>
+        <briefdescription>
+<para>Random access to the outer range. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" line="212" column="18" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" bodystart="212" bodyend="212"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1indexed__struct__of__arrays_1aef7b43ec2e6f5fed1af4dc1f2597c829" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classnw_1_1graph_1_1splittable__range__adapter" kindref="compound">const_sub_view</ref></type>
+        <definition>const_sub_view nw::graph::indexed_struct_of_arrays&lt; index_t, Attributes &gt;::operator[]</definition>
+        <argsstring>(index_t i) const</argsstring>
+        <name>operator[]</name>
+        <qualifiedname>nw::graph::indexed_struct_of_arrays::operator[]</qualifiedname>
+        <param>
+          <type>index_t</type>
+          <declname>i</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" line="213" column="18" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" bodystart="213" bodyend="213"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1indexed__struct__of__arrays_1a7b05de1658947af9906c85281f9b32f7" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>index_t</type>
+        <definition>index_t nw::graph::indexed_struct_of_arrays&lt; index_t, Attributes &gt;::size</definition>
+        <argsstring>() const</argsstring>
+        <name>size</name>
+        <qualifiedname>nw::graph::indexed_struct_of_arrays::size</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" line="215" column="11" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" bodystart="215" bodyend="215"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1indexed__struct__of__arrays_1ae5fb333323537dcece677199e3e6216c" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>index_t</type>
+        <definition>index_t nw::graph::indexed_struct_of_arrays&lt; index_t, Attributes &gt;::max</definition>
+        <argsstring>() const</argsstring>
+        <name>max</name>
+        <qualifiedname>nw::graph::indexed_struct_of_arrays::max</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" line="216" column="11" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" bodystart="216" bodyend="216"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1indexed__struct__of__arrays_1ad343e83d970bfd528899a6729e866f32" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto nw::graph::indexed_struct_of_arrays&lt; index_t, Attributes &gt;::get_indices</definition>
+        <argsstring>() const</argsstring>
+        <name>get_indices</name>
+        <qualifiedname>nw::graph::indexed_struct_of_arrays::get_indices</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" line="217" column="8" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" bodystart="217" bodyend="217"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1indexed__struct__of__arrays_1a23f3a11a1d9b78fc1d70fe4b99af337b" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto nw::graph::indexed_struct_of_arrays&lt; index_t, Attributes &gt;::get_to_be_indexed</definition>
+        <argsstring>() const</argsstring>
+        <name>get_to_be_indexed</name>
+        <qualifiedname>nw::graph::indexed_struct_of_arrays::get_to_be_indexed</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" line="218" column="8" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" bodystart="218" bodyend="218"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1indexed__struct__of__arrays_1a8b9216f5cc66cb1c86f24c47f53eb8d1" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>index_t</type>
+        <definition>index_t nw::graph::indexed_struct_of_arrays&lt; index_t, Attributes &gt;::source</definition>
+        <argsstring>(difference_type edge) const</argsstring>
+        <name>source</name>
+        <qualifiedname>nw::graph::indexed_struct_of_arrays::source</qualifiedname>
+        <param>
+          <type>difference_type</type>
+          <declname>edge</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" line="220" column="11" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" bodystart="220" bodyend="223"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1indexed__struct__of__arrays_1a80c11c75e6c90b643ea7ac94b0fac630" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>index_t</type>
+        <definition>index_t nw::graph::indexed_struct_of_arrays&lt; index_t, Attributes &gt;::source</definition>
+        <argsstring>(difference_type edge)</argsstring>
+        <name>source</name>
+        <qualifiedname>nw::graph::indexed_struct_of_arrays::source</qualifiedname>
+        <param>
+          <type>difference_type</type>
+          <declname>edge</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" line="225" column="11" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" bodystart="225" bodyend="228"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1indexed__struct__of__arrays_1a59bfaabc2a498cbb6a5f76c3659d6533" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void nw::graph::indexed_struct_of_arrays&lt; index_t, Attributes &gt;::open_for_push_back</definition>
+        <argsstring>()</argsstring>
+        <name>open_for_push_back</name>
+        <qualifiedname>nw::graph::indexed_struct_of_arrays::open_for_push_back</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" line="230" column="8" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" bodystart="230" bodyend="238"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1indexed__struct__of__arrays_1ae6aaba6e53eb325d54f060e4952f0dfd" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void nw::graph::indexed_struct_of_arrays&lt; index_t, Attributes &gt;::close_for_push_back</definition>
+        <argsstring>()</argsstring>
+        <name>close_for_push_back</name>
+        <qualifiedname>nw::graph::indexed_struct_of_arrays::close_for_push_back</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" line="240" column="8" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" bodystart="240" bodyend="247"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1indexed__struct__of__arrays_1a57f3b852e76015d52510b69d3f264915" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void nw::graph::indexed_struct_of_arrays&lt; index_t, Attributes &gt;::move</definition>
+        <argsstring>(std::vector&lt; index_t &gt; &amp;&amp;indices, std::vector&lt; Attributes &gt; &amp;&amp;... to_be_indexed)</argsstring>
+        <name>move</name>
+        <qualifiedname>nw::graph::indexed_struct_of_arrays::move</qualifiedname>
+        <param>
+          <type>std::vector&lt; index_t &gt; &amp;&amp;</type>
+          <declname>indices</declname>
+        </param>
+        <param>
+          <type>std::vector&lt; Attributes &gt; &amp;&amp;...</type>
+          <declname>to_be_indexed</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" line="249" column="8" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" bodystart="249" bodyend="254"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1indexed__struct__of__arrays_1a87df94c2968e9614ea938f3731c44289" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void nw::graph::indexed_struct_of_arrays&lt; index_t, Attributes &gt;::move</definition>
+        <argsstring>(std::vector&lt; index_t &gt; &amp;&amp;indices, std::tuple&lt; std::vector&lt; Attributes &gt;... &gt; &amp;&amp;to_be_indexed)</argsstring>
+        <name>move</name>
+        <qualifiedname>nw::graph::indexed_struct_of_arrays::move</qualifiedname>
+        <param>
+          <type>std::vector&lt; index_t &gt; &amp;&amp;</type>
+          <declname>indices</declname>
+        </param>
+        <param>
+          <type>std::tuple&lt; std::vector&lt; Attributes &gt;... &gt; &amp;&amp;</type>
+          <declname>to_be_indexed</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" line="255" column="8" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" bodystart="255" bodyend="260"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1indexed__struct__of__arrays_1a38d0a943d1516fcff4a8f1a925f6bcc7" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void nw::graph::indexed_struct_of_arrays&lt; index_t, Attributes &gt;::copy</definition>
+        <argsstring>(const std::vector&lt; index_t &gt; &amp;indices, const std::vector&lt; Attributes &gt; &amp;... to_be_indexed)</argsstring>
+        <name>copy</name>
+        <qualifiedname>nw::graph::indexed_struct_of_arrays::copy</qualifiedname>
+        <param>
+          <type>const std::vector&lt; index_t &gt; &amp;</type>
+          <declname>indices</declname>
+        </param>
+        <param>
+          <type>const std::vector&lt; Attributes &gt; &amp;...</type>
+          <declname>to_be_indexed</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" line="261" column="8" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" bodystart="261" bodyend="265"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1indexed__struct__of__arrays_1a4227ea72de9977b2e3713bd01c294788" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void nw::graph::indexed_struct_of_arrays&lt; index_t, Attributes &gt;::copy</definition>
+        <argsstring>(const std::vector&lt; index_t &gt; &amp;indices, const std::tuple&lt; std::vector&lt; Attributes &gt;... &gt; &amp;to_be_indexed)</argsstring>
+        <name>copy</name>
+        <qualifiedname>nw::graph::indexed_struct_of_arrays::copy</qualifiedname>
+        <param>
+          <type>const std::vector&lt; index_t &gt; &amp;</type>
+          <declname>indices</declname>
+        </param>
+        <param>
+          <type>const std::tuple&lt; std::vector&lt; Attributes &gt;... &gt; &amp;</type>
+          <declname>to_be_indexed</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" line="266" column="8" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" bodystart="266" bodyend="270"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1indexed__struct__of__arrays_1a5197388d76435c260bd96b04a1317b4b" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void nw::graph::indexed_struct_of_arrays&lt; index_t, Attributes &gt;::push_back</definition>
+        <argsstring>(index_t i, const Attributes &amp;... attrs)</argsstring>
+        <name>push_back</name>
+        <qualifiedname>nw::graph::indexed_struct_of_arrays::push_back</qualifiedname>
+        <param>
+          <type>index_t</type>
+          <declname>i</declname>
+        </param>
+        <param>
+          <type>const Attributes &amp;...</type>
+          <declname>attrs</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" line="272" column="8" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" bodystart="272" bodyend="281"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1indexed__struct__of__arrays_1aaa5773db03c05fcb9a96627a9e9fec7e" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void nw::graph::indexed_struct_of_arrays&lt; index_t, Attributes &gt;::push_at</definition>
+        <argsstring>(index_t i, const Attributes &amp;... attrs)</argsstring>
+        <name>push_at</name>
+        <qualifiedname>nw::graph::indexed_struct_of_arrays::push_at</qualifiedname>
+        <param>
+          <type>index_t</type>
+          <declname>i</declname>
+        </param>
+        <param>
+          <type>const Attributes &amp;...</type>
+          <declname>attrs</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" line="283" column="8" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" bodystart="283" bodyend="286"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1indexed__struct__of__arrays_1a6b7a95f4bc459380004747eba72487fd" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void nw::graph::indexed_struct_of_arrays&lt; index_t, Attributes &gt;::stream</definition>
+        <argsstring>(const std::string &amp;msg=&quot;&quot;)</argsstring>
+        <name>stream</name>
+        <qualifiedname>nw::graph::indexed_struct_of_arrays::stream</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>msg</declname>
+          <defval>&quot;&quot;</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" line="288" column="8" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" bodystart="288" bodyend="298"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1indexed__struct__of__arrays_1a73a0f0e2a9d3c29c05402b5a901fa70d" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void nw::graph::indexed_struct_of_arrays&lt; index_t, Attributes &gt;::serialize</definition>
+        <argsstring>(std::ostream &amp;outfile)</argsstring>
+        <name>serialize</name>
+        <qualifiedname>nw::graph::indexed_struct_of_arrays::serialize</qualifiedname>
+        <param>
+          <type>std::ostream &amp;</type>
+          <declname>outfile</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" line="300" column="8" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" bodystart="300" bodyend="311"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1indexed__struct__of__arrays_1a1798bb5ceb6eed7728efec3795d5534b" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void nw::graph::indexed_struct_of_arrays&lt; index_t, Attributes &gt;::serialize</definition>
+        <argsstring>(const std::string &amp;outfile_name)</argsstring>
+        <name>serialize</name>
+        <qualifiedname>nw::graph::indexed_struct_of_arrays::serialize</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>outfile_name</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" line="313" column="8" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" bodystart="313" bodyend="316"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1indexed__struct__of__arrays_1a36ee7d461261510a5c2c9f323e9c4a76" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void nw::graph::indexed_struct_of_arrays&lt; index_t, Attributes &gt;::deserialize</definition>
+        <argsstring>(std::istream &amp;infile)</argsstring>
+        <name>deserialize</name>
+        <qualifiedname>nw::graph::indexed_struct_of_arrays::deserialize</qualifiedname>
+        <param>
+          <type>std::istream &amp;</type>
+          <declname>infile</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" line="318" column="8" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" bodystart="318" bodyend="331"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1indexed__struct__of__arrays_1a26dba8df793ebb8d61d7c1b5f7af1c55" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void nw::graph::indexed_struct_of_arrays&lt; index_t, Attributes &gt;::deserialize</definition>
+        <argsstring>(const std::string &amp;infile_name)</argsstring>
+        <name>deserialize</name>
+        <qualifiedname>nw::graph::indexed_struct_of_arrays::deserialize</qualifiedname>
+        <param>
+          <type>const std::string &amp;</type>
+          <declname>infile_name</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" line="333" column="8" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" bodystart="333" bodyend="336"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1indexed__struct__of__arrays_1a8fb4b342dd9fd73375f1cdd0ec41d340" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename Comparator</type>
+            <defval>decltype(std::less&lt;index_t&gt;{})</defval>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void nw::graph::indexed_struct_of_arrays&lt; index_t, Attributes &gt;::triangularize_</definition>
+        <argsstring>(Comparator comp=std::less&lt; index_t &gt;{})</argsstring>
+        <name>triangularize_</name>
+        <qualifiedname>nw::graph::indexed_struct_of_arrays::triangularize_</qualifiedname>
+        <param>
+          <type>Comparator</type>
+          <declname>comp</declname>
+          <defval>std::less&lt; index_t &gt;{}</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" line="339" column="8" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" bodystart="339" bodyend="360"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1indexed__struct__of__arrays_1a0444f0c5a5069b490ebcf6f8580cb697" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>succession</type>
+            <declname>cessor</declname>
+            <defname>cessor</defname>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void nw::graph::indexed_struct_of_arrays&lt; index_t, Attributes &gt;::triangularize</definition>
+        <argsstring>()</argsstring>
+        <name>triangularize</name>
+        <qualifiedname>nw::graph::indexed_struct_of_arrays::triangularize</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" line="363" column="8" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" bodystart="363" bodyend="373"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1indexed__struct__of__arrays_1a342cbc7c9499b0fcc0f33b7272afa8a5" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>std::vector&lt; index_t &gt;</type>
+        <definition>std::vector&lt; index_t &gt; nw::graph::indexed_struct_of_arrays&lt; index_t, Attributes &gt;::degrees</definition>
+        <argsstring>() const</argsstring>
+        <name>degrees</name>
+        <qualifiedname>nw::graph::indexed_struct_of_arrays::degrees</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" line="381" column="15" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" bodystart="381" bodyend="391"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1indexed__struct__of__arrays_1a738c8bbf6c87ffcceb9d0a056ef4f3b0" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class ExecutionPolicy</type>
+            <defval>std::execution::parallel_unsequenced_policy</defval>
+          </param>
+        </templateparamlist>
+        <type>std::vector&lt; index_t &gt;</type>
+        <definition>std::vector&lt; index_t &gt; nw::graph::indexed_struct_of_arrays&lt; index_t, Attributes &gt;::degrees</definition>
+        <argsstring>(ExecutionPolicy &amp;&amp;ex_policy={}) const</argsstring>
+        <name>degrees</name>
+        <qualifiedname>nw::graph::indexed_struct_of_arrays::degrees</qualifiedname>
+        <param>
+          <type>ExecutionPolicy &amp;&amp;</type>
+          <declname>ex_policy</declname>
+          <defval>{}</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" line="397" column="15" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" bodystart="397" bodyend="409"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1indexed__struct__of__arrays_1a588fc45ea00ac79888a1c8243a79a4d1" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class ExecutionPolicy</type>
+            <defval>std::execution::parallel_unsequenced_policy</defval>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void nw::graph::indexed_struct_of_arrays&lt; index_t, Attributes &gt;::sort_to_be_indexed</definition>
+        <argsstring>(ExecutionPolicy &amp;&amp;ex_policy={})</argsstring>
+        <name>sort_to_be_indexed</name>
+        <qualifiedname>nw::graph::indexed_struct_of_arrays::sort_to_be_indexed</qualifiedname>
+        <param>
+          <type>ExecutionPolicy &amp;&amp;</type>
+          <declname>ex_policy</declname>
+          <defval>{}</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" line="415" column="8" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" bodystart="415" bodyend="425"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1indexed__struct__of__arrays_1a7d3b5315450cab74f4dc6eb0d2826af9" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class ExecutionPolicy</type>
+            <defval>std::execution::parallel_unsequenced_policy</defval>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void nw::graph::indexed_struct_of_arrays&lt; index_t, Attributes &gt;::relabel_to_be_indexed</definition>
+        <argsstring>(const std::vector&lt; index_t &gt; &amp;new_id_perm, ExecutionPolicy &amp;&amp;ex_policy={})</argsstring>
+        <name>relabel_to_be_indexed</name>
+        <qualifiedname>nw::graph::indexed_struct_of_arrays::relabel_to_be_indexed</qualifiedname>
+        <param>
+          <type>const std::vector&lt; index_t &gt; &amp;</type>
+          <declname>new_id_perm</declname>
+        </param>
+        <param>
+          <type>ExecutionPolicy &amp;&amp;</type>
+          <declname>ex_policy</declname>
+          <defval>{}</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" line="432" column="8" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" bodystart="432" bodyend="440"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1indexed__struct__of__arrays_1a3035e4594737b8723a75f7af56d8caf1" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class ExecutionPolicy</type>
+            <defval>std::execution::parallel_unsequenced_policy</defval>
+          </param>
+        </templateparamlist>
+        <type>std::vector&lt; index_t &gt;</type>
+        <definition>std::vector&lt; index_t &gt; nw::graph::indexed_struct_of_arrays&lt; index_t, Attributes &gt;::permute_by_degree</definition>
+        <argsstring>(std::string direction=&quot;descending&quot;, ExecutionPolicy &amp;&amp;ex_policy={})</argsstring>
+        <name>permute_by_degree</name>
+        <qualifiedname>nw::graph::indexed_struct_of_arrays::permute_by_degree</qualifiedname>
+        <param>
+          <type>std::string</type>
+          <declname>direction</declname>
+          <defval>&quot;descending&quot;</defval>
+        </param>
+        <param>
+          <type>ExecutionPolicy &amp;&amp;</type>
+          <declname>ex_policy</declname>
+          <defval>{}</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" line="447" column="15" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" bodystart="447" bodyend="506"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1indexed__struct__of__arrays_1a49a7b4908520c7e75c81701ef651ec61" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class ExecutionPolicy</type>
+            <defval>std::execution::parallel_unsequenced_policy</defval>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void nw::graph::indexed_struct_of_arrays&lt; index_t, Attributes &gt;::sort_by_degree</definition>
+        <argsstring>(std::string direction=&quot;descending&quot;, ExecutionPolicy &amp;&amp;ex_policy={})</argsstring>
+        <name>sort_by_degree</name>
+        <qualifiedname>nw::graph::indexed_struct_of_arrays::sort_by_degree</qualifiedname>
+        <param>
+          <type>std::string</type>
+          <declname>direction</declname>
+          <defval>&quot;descending&quot;</defval>
+        </param>
+        <param>
+          <type>ExecutionPolicy &amp;&amp;</type>
+          <declname>ex_policy</declname>
+          <defval>{}</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" line="518" column="8" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" bodystart="518" bodyend="521"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1indexed__struct__of__arrays_1a1215d47aa99a65002c25d3f02c0e3daf" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void nw::graph::indexed_struct_of_arrays&lt; index_t, Attributes &gt;::stream_indices</definition>
+        <argsstring>(std::ostream &amp;out=std::cout)</argsstring>
+        <name>stream_indices</name>
+        <qualifiedname>nw::graph::indexed_struct_of_arrays::stream_indices</qualifiedname>
+        <param>
+          <type>std::ostream &amp;</type>
+          <declname>out</declname>
+          <defval>std::cout</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" line="523" column="8" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" bodystart="523" bodyend="536"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1indexed__struct__of__arrays_1a7ad406cbf1c5d60b167098c561a01931" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void nw::graph::indexed_struct_of_arrays&lt; index_t, Attributes &gt;::stream_stats</definition>
+        <argsstring>(std::ostream &amp;os=std::cout) const</argsstring>
+        <name>stream_stats</name>
+        <qualifiedname>nw::graph::indexed_struct_of_arrays::stream_stats</qualifiedname>
+        <param>
+          <type>std::ostream &amp;</type>
+          <declname>os</declname>
+          <defval>std::cout</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" line="538" column="8" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" bodystart="538" bodyend="545"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <collaborationgraph>
+      <node id="1">
+        <label>nw::graph::indexed_struct_of_arrays&lt; index_t, Attributes &gt;</label>
+        <link refid="classnw_1_1graph_1_1indexed__struct__of__arrays"/>
+        <childnode refid="2" relation="usage">
+          <edgelabel>to_be_indexed_</edgelabel>
+        </childnode>
+      </node>
+      <node id="3">
+        <label>std::tuple&lt; std::vector&lt; Attributes &gt;... &gt;</label>
+      </node>
+      <node id="2">
+        <label>nw::graph::struct_of_arrays&lt; Attributes... &gt;</label>
+        <link refid="structnw_1_1graph_1_1struct__of__arrays"/>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" line="58" column="1" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/containers/compressed.hpp" bodystart="58" bodyend="546"/>
+    <listofallmembers>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1a5734f5d85fcfb19066246c505718385b" prot="public" virt="non-virtual"><scope>nw::graph::indexed_struct_of_arrays</scope><name>begin</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1ab05d7bacea13007150834414e43e00dc" prot="public" virt="non-virtual"><scope>nw::graph::indexed_struct_of_arrays</scope><name>begin</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1afb497828f3b378082f7b20ae15ec6932" prot="public" virt="non-virtual"><scope>nw::graph::indexed_struct_of_arrays</scope><name>cbegin</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1a2b3eddfb126db3d82b4aa475b4c2b925" prot="public" virt="non-virtual"><scope>nw::graph::indexed_struct_of_arrays</scope><name>cend</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1ae6aaba6e53eb325d54f060e4952f0dfd" prot="public" virt="non-virtual"><scope>nw::graph::indexed_struct_of_arrays</scope><name>close_for_push_back</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1adde4bc5a1eb6ccb94c748a9028e35409" prot="public" virt="non-virtual"><scope>nw::graph::indexed_struct_of_arrays</scope><name>const_inner_iterator</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1a7e48054d92f665b906d665b500b38e3a" prot="public" virt="non-virtual"><scope>nw::graph::indexed_struct_of_arrays</scope><name>const_iterator</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1adf74bbbbe039d67744636496fd1af6e8" prot="public" virt="non-virtual"><scope>nw::graph::indexed_struct_of_arrays</scope><name>const_outer_iterator</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1a1d038ec3c856416f043664e4fb8aa08f" prot="public" virt="non-virtual"><scope>nw::graph::indexed_struct_of_arrays</scope><name>const_pointer</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1ab5440c4c0ff0bfdff056f88ea3e3c44c" prot="public" virt="non-virtual"><scope>nw::graph::indexed_struct_of_arrays</scope><name>const_reference</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1a673b9b7599e37928c9b1b7cf3ad5cdf4" prot="public" virt="non-virtual"><scope>nw::graph::indexed_struct_of_arrays</scope><name>const_reverse_iterator</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1a6807ce9b6ee8efd3c5656f57d0ba5938" prot="public" virt="non-virtual"><scope>nw::graph::indexed_struct_of_arrays</scope><name>const_sub_view</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1a38d0a943d1516fcff4a8f1a925f6bcc7" prot="public" virt="non-virtual"><scope>nw::graph::indexed_struct_of_arrays</scope><name>copy</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1a4227ea72de9977b2e3713bd01c294788" prot="public" virt="non-virtual"><scope>nw::graph::indexed_struct_of_arrays</scope><name>copy</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1a342cbc7c9499b0fcc0f33b7272afa8a5" prot="public" virt="non-virtual"><scope>nw::graph::indexed_struct_of_arrays</scope><name>degrees</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1a738c8bbf6c87ffcceb9d0a056ef4f3b0" prot="public" virt="non-virtual"><scope>nw::graph::indexed_struct_of_arrays</scope><name>degrees</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1a36ee7d461261510a5c2c9f323e9c4a76" prot="public" virt="non-virtual"><scope>nw::graph::indexed_struct_of_arrays</scope><name>deserialize</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1a26dba8df793ebb8d61d7c1b5f7af1c55" prot="public" virt="non-virtual"><scope>nw::graph::indexed_struct_of_arrays</scope><name>deserialize</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1ab402d92a2e266a6f9afbb914fe95ff2b" prot="public" virt="non-virtual"><scope>nw::graph::indexed_struct_of_arrays</scope><name>difference_type</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1afdda9ccdc1933dd12747b101d85faf3e" prot="public" virt="non-virtual"><scope>nw::graph::indexed_struct_of_arrays</scope><name>end</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1a0ea4c4c2679dc6c185aa55be8b8feaaa" prot="public" virt="non-virtual"><scope>nw::graph::indexed_struct_of_arrays</scope><name>end</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1ad343e83d970bfd528899a6729e866f32" prot="public" virt="non-virtual"><scope>nw::graph::indexed_struct_of_arrays</scope><name>get_indices</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1a23f3a11a1d9b78fc1d70fe4b99af337b" prot="public" virt="non-virtual"><scope>nw::graph::indexed_struct_of_arrays</scope><name>get_to_be_indexed</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1a961c58f2009ccf42e058123ee40350e3" prot="public" virt="non-virtual"><scope>nw::graph::indexed_struct_of_arrays</scope><name>getNAttr</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1ab1e76e32850ff34669317c85232aa7cb" prot="public" virt="non-virtual"><scope>nw::graph::indexed_struct_of_arrays</scope><name>indexed_struct_of_arrays</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1a7fb21bd9e2ed0c03f36e583d3ac93a5f" prot="public" virt="non-virtual"><scope>nw::graph::indexed_struct_of_arrays</scope><name>indexed_struct_of_arrays</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1a83ae6c782bd9b2a771e769544b4737db" prot="public" virt="non-virtual"><scope>nw::graph::indexed_struct_of_arrays</scope><name>indexed_struct_of_arrays</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1ac06bd586736510bb611955dd281a28b6" prot="public" virt="non-virtual"><scope>nw::graph::indexed_struct_of_arrays</scope><name>indexed_struct_of_arrays</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1a1ca2c2f03fa5bd02155daefe64a3fd75" prot="public" virt="non-virtual"><scope>nw::graph::indexed_struct_of_arrays</scope><name>indexed_struct_of_arrays</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1a95d41b3cbef7cfc827b5350ab94dec7f" prot="public" virt="non-virtual"><scope>nw::graph::indexed_struct_of_arrays</scope><name>indexed_struct_of_arrays</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1a3d7005e0efb03836f3673c4dcf3c8a3a" prot="public" virt="non-virtual"><scope>nw::graph::indexed_struct_of_arrays</scope><name>indices_</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1af0aba3f2cceafc5acc2ef0f56be2066d" prot="public" virt="non-virtual"><scope>nw::graph::indexed_struct_of_arrays</scope><name>inner_iterator</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1a7a2b08c97cabc581536fd9258711bb5f" prot="private" virt="non-virtual"><scope>nw::graph::indexed_struct_of_arrays</scope><name>is_open_</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1a33ef0f8be6517493badf98363dbcf4ae" prot="public" virt="non-virtual"><scope>nw::graph::indexed_struct_of_arrays</scope><name>iterator</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1a82d00dd32135c10b51698190036ce127" prot="private" virt="non-virtual"><scope>nw::graph::indexed_struct_of_arrays</scope><name>magic_</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1ae5fb333323537dcece677199e3e6216c" prot="public" virt="non-virtual"><scope>nw::graph::indexed_struct_of_arrays</scope><name>max</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1a57f3b852e76015d52510b69d3f264915" prot="public" virt="non-virtual"><scope>nw::graph::indexed_struct_of_arrays</scope><name>move</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1a87df94c2968e9614ea938f3731c44289" prot="public" virt="non-virtual"><scope>nw::graph::indexed_struct_of_arrays</scope><name>move</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1a33b952371e866d7fa6fc7b532d9ac943" prot="private" virt="non-virtual"><scope>nw::graph::indexed_struct_of_arrays</scope><name>N_</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1a59bfaabc2a498cbb6a5f76c3659d6533" prot="public" virt="non-virtual"><scope>nw::graph::indexed_struct_of_arrays</scope><name>open_for_push_back</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1a219f207dc38507b092c9ef19486cca8b" prot="public" virt="non-virtual"><scope>nw::graph::indexed_struct_of_arrays</scope><name>operator[]</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1aef7b43ec2e6f5fed1af4dc1f2597c829" prot="public" virt="non-virtual"><scope>nw::graph::indexed_struct_of_arrays</scope><name>operator[]</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1aabfeaef56eae60006fa6622dd5e59a55" prot="public" virt="non-virtual"><scope>nw::graph::indexed_struct_of_arrays</scope><name>outer_iterator</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1a3035e4594737b8723a75f7af56d8caf1" prot="public" virt="non-virtual"><scope>nw::graph::indexed_struct_of_arrays</scope><name>permute_by_degree</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1a404617480c001af5123c795ff2d3f02d" prot="public" virt="non-virtual"><scope>nw::graph::indexed_struct_of_arrays</scope><name>pointer</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1aaa5773db03c05fcb9a96627a9e9fec7e" prot="public" virt="non-virtual"><scope>nw::graph::indexed_struct_of_arrays</scope><name>push_at</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1a5197388d76435c260bd96b04a1317b4b" prot="public" virt="non-virtual"><scope>nw::graph::indexed_struct_of_arrays</scope><name>push_back</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1a81a12b5a9d17e16994feee9d0e1d8fcb" prot="public" virt="non-virtual"><scope>nw::graph::indexed_struct_of_arrays</scope><name>reference</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1a7d3b5315450cab74f4dc6eb0d2826af9" prot="public" virt="non-virtual"><scope>nw::graph::indexed_struct_of_arrays</scope><name>relabel_to_be_indexed</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1a59c84cdeb51e193ab1f9e7d9ea00bcf0" prot="public" virt="non-virtual"><scope>nw::graph::indexed_struct_of_arrays</scope><name>reverse_iterator</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1a73a0f0e2a9d3c29c05402b5a901fa70d" prot="public" virt="non-virtual"><scope>nw::graph::indexed_struct_of_arrays</scope><name>serialize</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1a1798bb5ceb6eed7728efec3795d5534b" prot="public" virt="non-virtual"><scope>nw::graph::indexed_struct_of_arrays</scope><name>serialize</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1a7b05de1658947af9906c85281f9b32f7" prot="public" virt="non-virtual"><scope>nw::graph::indexed_struct_of_arrays</scope><name>size</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1adc0b5be397d3022fa9da18413b2b91cb" prot="public" virt="non-virtual"><scope>nw::graph::indexed_struct_of_arrays</scope><name>size_type</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1a49a7b4908520c7e75c81701ef651ec61" prot="public" virt="non-virtual"><scope>nw::graph::indexed_struct_of_arrays</scope><name>sort_by_degree</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1a588fc45ea00ac79888a1c8243a79a4d1" prot="public" virt="non-virtual"><scope>nw::graph::indexed_struct_of_arrays</scope><name>sort_to_be_indexed</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1a8b9216f5cc66cb1c86f24c47f53eb8d1" prot="public" virt="non-virtual"><scope>nw::graph::indexed_struct_of_arrays</scope><name>source</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1a80c11c75e6c90b643ea7ac94b0fac630" prot="public" virt="non-virtual"><scope>nw::graph::indexed_struct_of_arrays</scope><name>source</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1a6b7a95f4bc459380004747eba72487fd" prot="public" virt="non-virtual"><scope>nw::graph::indexed_struct_of_arrays</scope><name>stream</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1a1215d47aa99a65002c25d3f02c0e3daf" prot="public" virt="non-virtual"><scope>nw::graph::indexed_struct_of_arrays</scope><name>stream_indices</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1a7ad406cbf1c5d60b167098c561a01931" prot="public" virt="non-virtual"><scope>nw::graph::indexed_struct_of_arrays</scope><name>stream_stats</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1a3af0986c76aee0fbb6069f2351067027" prot="public" virt="non-virtual"><scope>nw::graph::indexed_struct_of_arrays</scope><name>sub_view</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1aa027a0178e68e3754a4af6893943e74d" prot="public" virt="non-virtual"><scope>nw::graph::indexed_struct_of_arrays</scope><name>to_be_indexed_</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1a0444f0c5a5069b490ebcf6f8580cb697" prot="public" virt="non-virtual"><scope>nw::graph::indexed_struct_of_arrays</scope><name>triangularize</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1a8fb4b342dd9fd73375f1cdd0ec41d340" prot="public" virt="non-virtual"><scope>nw::graph::indexed_struct_of_arrays</scope><name>triangularize_</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1a4493fc456bf6b92bffa2680f4d7efbb4" prot="public" virt="non-virtual"><scope>nw::graph::indexed_struct_of_arrays</scope><name>value_type</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

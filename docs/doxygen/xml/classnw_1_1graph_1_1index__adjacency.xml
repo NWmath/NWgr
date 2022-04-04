@@ -1,0 +1,593 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.3" xml:lang="en-US">
+  <compounddef id="classnw_1_1graph_1_1index__adjacency" kind="class" language="C++" prot="public">
+    <compoundname>nw::graph::index_adjacency</compoundname>
+    <basecompoundref refid="classnw_1_1graph_1_1unipartite__graph__base" prot="public" virt="non-virtual">nw::graph::unipartite_graph_base</basecompoundref>
+    <basecompoundref refid="classnw_1_1graph_1_1indexed__struct__of__arrays" prot="public" virt="non-virtual">nw::graph::indexed_struct_of_arrays&lt; index_type, vertex_id, Attributes... &gt;</basecompoundref>
+    <templateparamlist>
+      <param>
+        <type>int</type>
+        <declname>idx</declname>
+        <defname>idx</defname>
+      </param>
+      <param>
+        <type>std::unsigned_integral</type>
+        <declname>index_type</declname>
+        <defname>index_type</defname>
+      </param>
+      <param>
+        <type>std::unsigned_integral</type>
+        <declname>vertex_id</declname>
+        <defname>vertex_id</defname>
+      </param>
+      <param>
+        <type>typename...</type>
+        <declname>Attributes</declname>
+        <defname>Attributes</defname>
+      </param>
+    </templateparamlist>
+      <sectiondef kind="private-type">
+      <memberdef kind="typedef" id="classnw_1_1graph_1_1index__adjacency_1a91c1db09e11e59f2d406697626fe1539" prot="private" static="no">
+        <type><ref refid="classnw_1_1graph_1_1indexed__struct__of__arrays" kindref="compound">indexed_struct_of_arrays</ref>&lt; index_type, vertex_id, Attributes... &gt;</type>
+        <definition>using nw::graph::index_adjacency&lt; idx, index_type, vertex_id, Attributes &gt;::base =  indexed_struct_of_arrays&lt;index_type, vertex_id, Attributes...&gt;</definition>
+        <argsstring></argsstring>
+        <name>base</name>
+        <qualifiedname>nw::graph::index_adjacency::base</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adjacency.hpp" line="55" column="3" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adjacency.hpp" bodystart="55" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-type">
+      <memberdef kind="typedef" id="classnw_1_1graph_1_1index__adjacency_1a0ed025f4870fcd69aa22169d25ada4c2" prot="public" static="no">
+        <type>index_type</type>
+        <definition>using nw::graph::index_adjacency&lt; idx, index_type, vertex_id, Attributes &gt;::index_t =  index_type</definition>
+        <argsstring></argsstring>
+        <name>index_t</name>
+        <qualifiedname>nw::graph::index_adjacency::index_t</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adjacency.hpp" line="58" column="3" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adjacency.hpp" bodystart="58" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="classnw_1_1graph_1_1index__adjacency_1a6e8f0a55eeb5d7c8aa305e51a37c764b" prot="public" static="no">
+        <type>vertex_id</type>
+        <definition>using nw::graph::index_adjacency&lt; idx, index_type, vertex_id, Attributes &gt;::vertex_id_type =  vertex_id</definition>
+        <argsstring></argsstring>
+        <name>vertex_id_type</name>
+        <qualifiedname>nw::graph::index_adjacency::vertex_id_type</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adjacency.hpp" line="59" column="3" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adjacency.hpp" bodystart="59" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="classnw_1_1graph_1_1index__adjacency_1a002363685318d3f2862968bb6d6be0c9" prot="public" static="no">
+        <type>std::array&lt; vertex_id_type, 1 &gt;</type>
+        <definition>using nw::graph::index_adjacency&lt; idx, index_type, vertex_id, Attributes &gt;::num_vertices_type =  std::array&lt;vertex_id_type, 1&gt;</definition>
+        <argsstring></argsstring>
+        <name>num_vertices_type</name>
+        <qualifiedname>nw::graph::index_adjacency::num_vertices_type</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adjacency.hpp" line="60" column="3" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adjacency.hpp" bodystart="60" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="classnw_1_1graph_1_1index__adjacency_1a0dfecfeee00f042c96a1e42d37df5a1e" prot="public" static="no">
+        <type>index_t</type>
+        <definition>using nw::graph::index_adjacency&lt; idx, index_type, vertex_id, Attributes &gt;::num_edges_type =  index_t</definition>
+        <argsstring></argsstring>
+        <name>num_edges_type</name>
+        <qualifiedname>nw::graph::index_adjacency::num_edges_type</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adjacency.hpp" line="61" column="3" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adjacency.hpp" bodystart="61" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="classnw_1_1graph_1_1index__adjacency_1a6f25373a5e1ca923309046b840ee0c9b" prot="public" static="no">
+        <type>std::tuple&lt; Attributes... &gt;</type>
+        <definition>using nw::graph::index_adjacency&lt; idx, index_type, vertex_id, Attributes &gt;::attributes_t =  std::tuple&lt;Attributes...&gt;</definition>
+        <argsstring></argsstring>
+        <name>attributes_t</name>
+        <qualifiedname>nw::graph::index_adjacency::attributes_t</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adjacency.hpp" line="64" column="3" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adjacency.hpp" bodystart="64" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="classnw_1_1graph_1_1index__adjacency_1acc0175b4d116c054243c93bd8765fd15" prot="public" static="yes" constexpr="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>constexpr std::size_t</type>
+        <definition>static constexpr std::size_t nw::graph::index_adjacency&lt; idx, index_type, vertex_id, Attributes &gt;::getNAttr</definition>
+        <argsstring>()</argsstring>
+        <name>getNAttr</name>
+        <qualifiedname>nw::graph::index_adjacency::getNAttr</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adjacency.hpp" line="65" column="32" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adjacency.hpp" bodystart="65" bodyend="65"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classnw_1_1graph_1_1index__adjacency_1acfda25456bbe91d582c9ddc07fec38ad" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>nw::graph::index_adjacency&lt; idx, index_type, vertex_id, Attributes &gt;::index_adjacency</definition>
+        <argsstring>(size_t N=0, size_t M=0)</argsstring>
+        <name>index_adjacency</name>
+        <qualifiedname>nw::graph::index_adjacency::index_adjacency</qualifiedname>
+        <param>
+          <type>size_t</type>
+          <declname>N</declname>
+          <defval>0</defval>
+        </param>
+        <param>
+          <type>size_t</type>
+          <declname>M</declname>
+          <defval>0</defval>
+        </param>
+    <requiresclause>(std::is_same&lt;unipartite_graph_base, unipartite_graph_base&gt;::value)    </requiresclause>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adjacency.hpp" line="67" column="3" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adjacency.hpp" bodystart="67" bodyend="67"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1index__adjacency_1a882940c431ea7b93e5f2410f8e972842" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>nw::graph::index_adjacency&lt; idx, index_type, vertex_id, Attributes &gt;::index_adjacency</definition>
+        <argsstring>(std::array&lt; size_t, 1 &gt; N, size_t M=0)</argsstring>
+        <name>index_adjacency</name>
+        <qualifiedname>nw::graph::index_adjacency::index_adjacency</qualifiedname>
+        <param>
+          <type>std::array&lt; size_t, 1 &gt;</type>
+          <declname>N</declname>
+        </param>
+        <param>
+          <type>size_t</type>
+          <declname>M</declname>
+          <defval>0</defval>
+        </param>
+    <requiresclause>(std::is_same&lt;unipartite_graph_base, unipartite_graph_base&gt;::value)    </requiresclause>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adjacency.hpp" line="68" column="3" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adjacency.hpp" bodystart="68" bodyend="68"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1index__adjacency_1a9fe7693c91f95859b380a6aa247ab3f6" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class ExecutionPolicy</type>
+            <defval>std::execution::parallel_unsequenced_policy</defval>
+          </param>
+        </templateparamlist>
+        <type></type>
+        <definition>nw::graph::index_adjacency&lt; idx, index_type, vertex_id, Attributes &gt;::index_adjacency</definition>
+        <argsstring>(index_edge_list&lt; vertex_id_type, unipartite_graph_base, directedness::directed, Attributes... &gt; &amp;A, bool sort_adjacency=false, ExecutionPolicy &amp;&amp;policy={})</argsstring>
+        <name>index_adjacency</name>
+        <qualifiedname>nw::graph::index_adjacency::index_adjacency</qualifiedname>
+        <param>
+          <type><ref refid="classnw_1_1graph_1_1index__edge__list" kindref="compound">index_edge_list</ref>&lt; vertex_id_type, <ref refid="classnw_1_1graph_1_1unipartite__graph__base" kindref="compound">unipartite_graph_base</ref>, directedness::directed, Attributes... &gt; &amp;</type>
+          <declname>A</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>sort_adjacency</declname>
+          <defval>false</defval>
+        </param>
+        <param>
+          <type>ExecutionPolicy &amp;&amp;</type>
+          <declname>policy</declname>
+          <defval>{}</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adjacency.hpp" line="71" column="3" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adjacency.hpp" bodystart="71" bodyend="76"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1index__adjacency_1aa28c9a44167563e36a523277309a2ac6" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class ExecutionPolicy</type>
+            <defval>std::execution::parallel_unsequenced_policy</defval>
+          </param>
+        </templateparamlist>
+        <type></type>
+        <definition>nw::graph::index_adjacency&lt; idx, index_type, vertex_id, Attributes &gt;::index_adjacency</definition>
+        <argsstring>(index_edge_list&lt; vertex_id_type, unipartite_graph_base, directedness::undirected, Attributes... &gt; &amp;A, bool sort_adjacency=false, ExecutionPolicy &amp;&amp;policy={})</argsstring>
+        <name>index_adjacency</name>
+        <qualifiedname>nw::graph::index_adjacency::index_adjacency</qualifiedname>
+        <param>
+          <type><ref refid="classnw_1_1graph_1_1index__edge__list" kindref="compound">index_edge_list</ref>&lt; vertex_id_type, <ref refid="classnw_1_1graph_1_1unipartite__graph__base" kindref="compound">unipartite_graph_base</ref>, directedness::undirected, Attributes... &gt; &amp;</type>
+          <declname>A</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>sort_adjacency</declname>
+          <defval>false</defval>
+        </param>
+        <param>
+          <type>ExecutionPolicy &amp;&amp;</type>
+          <declname>policy</declname>
+          <defval>{}</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adjacency.hpp" line="79" column="3" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adjacency.hpp" bodystart="79" bodyend="84"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1index__adjacency_1a1a44f97da63e097bbd5a4b865d9a2a0d" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class ExecutionPolicy</type>
+            <defval>std::execution::parallel_unsequenced_policy</defval>
+          </param>
+        </templateparamlist>
+        <type></type>
+        <definition>nw::graph::index_adjacency&lt; idx, index_type, vertex_id, Attributes &gt;::index_adjacency</definition>
+        <argsstring>(size_t N, index_edge_list&lt; vertex_id_type, unipartite_graph_base, directedness::directed, Attributes... &gt; &amp;A, bool sort_adjacency=false, ExecutionPolicy &amp;&amp;policy={})</argsstring>
+        <name>index_adjacency</name>
+        <qualifiedname>nw::graph::index_adjacency::index_adjacency</qualifiedname>
+        <param>
+          <type>size_t</type>
+          <declname>N</declname>
+        </param>
+        <param>
+          <type><ref refid="classnw_1_1graph_1_1index__edge__list" kindref="compound">index_edge_list</ref>&lt; vertex_id_type, <ref refid="classnw_1_1graph_1_1unipartite__graph__base" kindref="compound">unipartite_graph_base</ref>, directedness::directed, Attributes... &gt; &amp;</type>
+          <declname>A</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>sort_adjacency</declname>
+          <defval>false</defval>
+        </param>
+        <param>
+          <type>ExecutionPolicy &amp;&amp;</type>
+          <declname>policy</declname>
+          <defval>{}</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adjacency.hpp" line="87" column="3" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adjacency.hpp" bodystart="87" bodyend="94"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1index__adjacency_1a264cb0dd5b47dc487b72064fa377bd9f" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class ExecutionPolicy</type>
+            <defval>std::execution::parallel_unsequenced_policy</defval>
+          </param>
+        </templateparamlist>
+        <type></type>
+        <definition>nw::graph::index_adjacency&lt; idx, index_type, vertex_id, Attributes &gt;::index_adjacency</definition>
+        <argsstring>(size_t N, index_edge_list&lt; vertex_id_type, unipartite_graph_base, directedness::undirected, Attributes... &gt; &amp;A, bool sort_adjacency=false, ExecutionPolicy &amp;&amp;policy={})</argsstring>
+        <name>index_adjacency</name>
+        <qualifiedname>nw::graph::index_adjacency::index_adjacency</qualifiedname>
+        <param>
+          <type>size_t</type>
+          <declname>N</declname>
+        </param>
+        <param>
+          <type><ref refid="classnw_1_1graph_1_1index__edge__list" kindref="compound">index_edge_list</ref>&lt; vertex_id_type, <ref refid="classnw_1_1graph_1_1unipartite__graph__base" kindref="compound">unipartite_graph_base</ref>, directedness::undirected, Attributes... &gt; &amp;</type>
+          <declname>A</declname>
+        </param>
+        <param>
+          <type>bool</type>
+          <declname>sort_adjacency</declname>
+          <defval>false</defval>
+        </param>
+        <param>
+          <type>ExecutionPolicy &amp;&amp;</type>
+          <declname>policy</declname>
+          <defval>{}</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adjacency.hpp" line="96" column="3" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adjacency.hpp" bodystart="96" bodyend="103"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1index__adjacency_1a6fb21d89557a8453b65ed2489b1c5b56" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>nw::graph::index_adjacency&lt; idx, index_type, vertex_id, Attributes &gt;::index_adjacency</definition>
+        <argsstring>(std::vector&lt; vertex_id &gt; &amp;&amp;indices, std::vector&lt; vertex_id &gt; &amp;&amp;first_to_be, std::vector&lt; Attributes &gt; &amp;&amp;... rest_to_be)</argsstring>
+        <name>index_adjacency</name>
+        <qualifiedname>nw::graph::index_adjacency::index_adjacency</qualifiedname>
+        <param>
+          <type>std::vector&lt; vertex_id &gt; &amp;&amp;</type>
+          <declname>indices</declname>
+        </param>
+        <param>
+          <type>std::vector&lt; vertex_id &gt; &amp;&amp;</type>
+          <declname>first_to_be</declname>
+        </param>
+        <param>
+          <type>std::vector&lt; Attributes &gt; &amp;&amp;...</type>
+          <declname>rest_to_be</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adjacency.hpp" line="105" column="3" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adjacency.hpp" bodystart="105" bodyend="108"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1index__adjacency_1aa49a070262369dde92b6872c5ddac668" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>nw::graph::index_adjacency&lt; idx, index_type, vertex_id, Attributes &gt;::index_adjacency</definition>
+        <argsstring>(std::vector&lt; vertex_id &gt; &amp;&amp;indices, std::tuple&lt; std::vector&lt; vertex_id &gt;, std::vector&lt; Attributes &gt;... &gt; &amp;&amp;to_be_indexed)</argsstring>
+        <name>index_adjacency</name>
+        <qualifiedname>nw::graph::index_adjacency::index_adjacency</qualifiedname>
+        <param>
+          <type>std::vector&lt; vertex_id &gt; &amp;&amp;</type>
+          <declname>indices</declname>
+        </param>
+        <param>
+          <type>std::tuple&lt; std::vector&lt; vertex_id &gt;, std::vector&lt; Attributes &gt;... &gt; &amp;&amp;</type>
+          <declname>to_be_indexed</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adjacency.hpp" line="109" column="3" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adjacency.hpp" bodystart="109" bodyend="112"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1index__adjacency_1a6c916e100339c6a97149861f1617aedc" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>nw::graph::index_adjacency&lt; idx, index_type, vertex_id, Attributes &gt;::index_adjacency</definition>
+        <argsstring>(const std::vector&lt; vertex_id &gt; &amp;indices, const std::vector&lt; vertex_id &gt; &amp;first_to_be, const std::vector&lt; Attributes &gt; &amp;... rest_to_be)</argsstring>
+        <name>index_adjacency</name>
+        <qualifiedname>nw::graph::index_adjacency::index_adjacency</qualifiedname>
+        <param>
+          <type>const std::vector&lt; vertex_id &gt; &amp;</type>
+          <declname>indices</declname>
+        </param>
+        <param>
+          <type>const std::vector&lt; vertex_id &gt; &amp;</type>
+          <declname>first_to_be</declname>
+        </param>
+        <param>
+          <type>const std::vector&lt; Attributes &gt; &amp;...</type>
+          <declname>rest_to_be</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adjacency.hpp" line="114" column="3" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adjacency.hpp" bodystart="114" bodyend="117"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1index__adjacency_1a22453e359f2869247241b39077a836c5" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>nw::graph::index_adjacency&lt; idx, index_type, vertex_id, Attributes &gt;::index_adjacency</definition>
+        <argsstring>(const std::vector&lt; vertex_id &gt; &amp;indices, const std::tuple&lt; std::vector&lt; vertex_id &gt;, std::vector&lt; Attributes &gt;... &gt; &amp;to_be_indexed)</argsstring>
+        <name>index_adjacency</name>
+        <qualifiedname>nw::graph::index_adjacency::index_adjacency</qualifiedname>
+        <param>
+          <type>const std::vector&lt; vertex_id &gt; &amp;</type>
+          <declname>indices</declname>
+        </param>
+        <param>
+          <type>const std::tuple&lt; std::vector&lt; vertex_id &gt;, std::vector&lt; Attributes &gt;... &gt; &amp;</type>
+          <declname>to_be_indexed</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adjacency.hpp" line="118" column="3" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adjacency.hpp" bodystart="118" bodyend="121"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1index__adjacency_1a908da4b32d300a391944f702c3db725b" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>num_vertices_type</type>
+        <definition>num_vertices_type nw::graph::index_adjacency&lt; idx, index_type, vertex_id, Attributes &gt;::num_vertices</definition>
+        <argsstring>() const</argsstring>
+        <name>num_vertices</name>
+        <qualifiedname>nw::graph::index_adjacency::num_vertices</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adjacency.hpp" line="123" column="21" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adjacency.hpp" bodystart="123" bodyend="123"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1index__adjacency_1abd067c7efae546595a249d12a6921b7f" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>num_edges_type</type>
+        <definition>num_edges_type nw::graph::index_adjacency&lt; idx, index_type, vertex_id, Attributes &gt;::num_edges</definition>
+        <argsstring>() const</argsstring>
+        <name>num_edges</name>
+        <qualifiedname>nw::graph::index_adjacency::num_edges</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adjacency.hpp" line="124" column="21" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adjacency.hpp" bodystart="124" bodyend="124"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="3">
+        <label>nw::graph::indexed_struct_of_arrays&lt; index_type, vertex_id, Attributes... &gt;</label>
+        <link refid="classnw_1_1graph_1_1indexed__struct__of__arrays"/>
+      </node>
+      <node id="1">
+        <label>nw::graph::index_adjacency&lt; idx, index_type, vertex_id, Attributes &gt;</label>
+        <link refid="classnw_1_1graph_1_1index__adjacency"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>nw::graph::unipartite_graph_base</label>
+        <link refid="classnw_1_1graph_1_1unipartite__graph__base"/>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="3">
+        <label>nw::graph::indexed_struct_of_arrays&lt; index_type, vertex_id, Attributes... &gt;</label>
+        <link refid="classnw_1_1graph_1_1indexed__struct__of__arrays"/>
+        <childnode refid="4" relation="usage">
+          <edgelabel>to_be_indexed_</edgelabel>
+        </childnode>
+      </node>
+      <node id="1">
+        <label>nw::graph::index_adjacency&lt; idx, index_type, vertex_id, Attributes &gt;</label>
+        <link refid="classnw_1_1graph_1_1index__adjacency"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+        <childnode refid="3" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>nw::graph::unipartite_graph_base</label>
+        <link refid="classnw_1_1graph_1_1unipartite__graph__base"/>
+      </node>
+      <node id="5">
+        <label>std::tuple&lt; std::vector&lt; Attributes &gt;... &gt;</label>
+      </node>
+      <node id="4">
+        <label>nw::graph::struct_of_arrays&lt; Attributes... &gt;</label>
+        <link refid="structnw_1_1graph_1_1struct__of__arrays"/>
+        <childnode refid="5" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adjacency.hpp" line="54" column="1" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adjacency.hpp" bodystart="54" bodyend="125"/>
+    <listofallmembers>
+      <member refid="classnw_1_1graph_1_1index__adjacency_1a6f25373a5e1ca923309046b840ee0c9b" prot="public" virt="non-virtual"><scope>nw::graph::index_adjacency</scope><name>attributes_t</name></member>
+      <member refid="classnw_1_1graph_1_1index__adjacency_1a91c1db09e11e59f2d406697626fe1539" prot="private" virt="non-virtual"><scope>nw::graph::index_adjacency</scope><name>base</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1a5734f5d85fcfb19066246c505718385b" prot="public" virt="non-virtual"><scope>nw::graph::index_adjacency</scope><name>begin</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1ab05d7bacea13007150834414e43e00dc" prot="public" virt="non-virtual"><scope>nw::graph::index_adjacency</scope><name>begin</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1afb497828f3b378082f7b20ae15ec6932" prot="public" virt="non-virtual"><scope>nw::graph::index_adjacency</scope><name>cbegin</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1a2b3eddfb126db3d82b4aa475b4c2b925" prot="public" virt="non-virtual"><scope>nw::graph::index_adjacency</scope><name>cend</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1ae6aaba6e53eb325d54f060e4952f0dfd" prot="public" virt="non-virtual"><scope>nw::graph::index_adjacency</scope><name>close_for_push_back</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1adde4bc5a1eb6ccb94c748a9028e35409" prot="public" virt="non-virtual"><scope>nw::graph::index_adjacency</scope><name>const_inner_iterator</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1a7e48054d92f665b906d665b500b38e3a" prot="public" virt="non-virtual"><scope>nw::graph::index_adjacency</scope><name>const_iterator</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1adf74bbbbe039d67744636496fd1af6e8" prot="public" virt="non-virtual"><scope>nw::graph::index_adjacency</scope><name>const_outer_iterator</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1a1d038ec3c856416f043664e4fb8aa08f" prot="public" virt="non-virtual"><scope>nw::graph::index_adjacency</scope><name>const_pointer</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1ab5440c4c0ff0bfdff056f88ea3e3c44c" prot="public" virt="non-virtual"><scope>nw::graph::index_adjacency</scope><name>const_reference</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1a673b9b7599e37928c9b1b7cf3ad5cdf4" prot="public" virt="non-virtual"><scope>nw::graph::index_adjacency</scope><name>const_reverse_iterator</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1a6807ce9b6ee8efd3c5656f57d0ba5938" prot="public" virt="non-virtual"><scope>nw::graph::index_adjacency</scope><name>const_sub_view</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1a38d0a943d1516fcff4a8f1a925f6bcc7" prot="public" virt="non-virtual"><scope>nw::graph::index_adjacency</scope><name>copy</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1a4227ea72de9977b2e3713bd01c294788" prot="public" virt="non-virtual"><scope>nw::graph::index_adjacency</scope><name>copy</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1a342cbc7c9499b0fcc0f33b7272afa8a5" prot="public" virt="non-virtual"><scope>nw::graph::index_adjacency</scope><name>degrees</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1a738c8bbf6c87ffcceb9d0a056ef4f3b0" prot="public" virt="non-virtual"><scope>nw::graph::index_adjacency</scope><name>degrees</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1a36ee7d461261510a5c2c9f323e9c4a76" prot="public" virt="non-virtual"><scope>nw::graph::index_adjacency</scope><name>deserialize</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1a26dba8df793ebb8d61d7c1b5f7af1c55" prot="public" virt="non-virtual"><scope>nw::graph::index_adjacency</scope><name>deserialize</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1ab402d92a2e266a6f9afbb914fe95ff2b" prot="public" virt="non-virtual"><scope>nw::graph::index_adjacency</scope><name>difference_type</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1afdda9ccdc1933dd12747b101d85faf3e" prot="public" virt="non-virtual"><scope>nw::graph::index_adjacency</scope><name>end</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1a0ea4c4c2679dc6c185aa55be8b8feaaa" prot="public" virt="non-virtual"><scope>nw::graph::index_adjacency</scope><name>end</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1ad343e83d970bfd528899a6729e866f32" prot="public" virt="non-virtual"><scope>nw::graph::index_adjacency</scope><name>get_indices</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1a23f3a11a1d9b78fc1d70fe4b99af337b" prot="public" virt="non-virtual"><scope>nw::graph::index_adjacency</scope><name>get_to_be_indexed</name></member>
+      <member refid="classnw_1_1graph_1_1index__adjacency_1acc0175b4d116c054243c93bd8765fd15" prot="public" virt="non-virtual"><scope>nw::graph::index_adjacency</scope><name>getNAttr</name></member>
+      <member refid="classnw_1_1graph_1_1index__adjacency_1acfda25456bbe91d582c9ddc07fec38ad" prot="public" virt="non-virtual"><scope>nw::graph::index_adjacency</scope><name>index_adjacency</name></member>
+      <member refid="classnw_1_1graph_1_1index__adjacency_1a882940c431ea7b93e5f2410f8e972842" prot="public" virt="non-virtual"><scope>nw::graph::index_adjacency</scope><name>index_adjacency</name></member>
+      <member refid="classnw_1_1graph_1_1index__adjacency_1a9fe7693c91f95859b380a6aa247ab3f6" prot="public" virt="non-virtual"><scope>nw::graph::index_adjacency</scope><name>index_adjacency</name></member>
+      <member refid="classnw_1_1graph_1_1index__adjacency_1aa28c9a44167563e36a523277309a2ac6" prot="public" virt="non-virtual"><scope>nw::graph::index_adjacency</scope><name>index_adjacency</name></member>
+      <member refid="classnw_1_1graph_1_1index__adjacency_1a1a44f97da63e097bbd5a4b865d9a2a0d" prot="public" virt="non-virtual"><scope>nw::graph::index_adjacency</scope><name>index_adjacency</name></member>
+      <member refid="classnw_1_1graph_1_1index__adjacency_1a264cb0dd5b47dc487b72064fa377bd9f" prot="public" virt="non-virtual"><scope>nw::graph::index_adjacency</scope><name>index_adjacency</name></member>
+      <member refid="classnw_1_1graph_1_1index__adjacency_1a6fb21d89557a8453b65ed2489b1c5b56" prot="public" virt="non-virtual"><scope>nw::graph::index_adjacency</scope><name>index_adjacency</name></member>
+      <member refid="classnw_1_1graph_1_1index__adjacency_1aa49a070262369dde92b6872c5ddac668" prot="public" virt="non-virtual"><scope>nw::graph::index_adjacency</scope><name>index_adjacency</name></member>
+      <member refid="classnw_1_1graph_1_1index__adjacency_1a6c916e100339c6a97149861f1617aedc" prot="public" virt="non-virtual"><scope>nw::graph::index_adjacency</scope><name>index_adjacency</name></member>
+      <member refid="classnw_1_1graph_1_1index__adjacency_1a22453e359f2869247241b39077a836c5" prot="public" virt="non-virtual"><scope>nw::graph::index_adjacency</scope><name>index_adjacency</name></member>
+      <member refid="classnw_1_1graph_1_1index__adjacency_1a0ed025f4870fcd69aa22169d25ada4c2" prot="public" virt="non-virtual"><scope>nw::graph::index_adjacency</scope><name>index_t</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1ab1e76e32850ff34669317c85232aa7cb" prot="public" virt="non-virtual"><scope>nw::graph::index_adjacency</scope><name>indexed_struct_of_arrays</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1a7fb21bd9e2ed0c03f36e583d3ac93a5f" prot="public" virt="non-virtual"><scope>nw::graph::index_adjacency</scope><name>indexed_struct_of_arrays</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1a83ae6c782bd9b2a771e769544b4737db" prot="public" virt="non-virtual"><scope>nw::graph::index_adjacency</scope><name>indexed_struct_of_arrays</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1ac06bd586736510bb611955dd281a28b6" prot="public" virt="non-virtual"><scope>nw::graph::index_adjacency</scope><name>indexed_struct_of_arrays</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1a1ca2c2f03fa5bd02155daefe64a3fd75" prot="public" virt="non-virtual"><scope>nw::graph::index_adjacency</scope><name>indexed_struct_of_arrays</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1a95d41b3cbef7cfc827b5350ab94dec7f" prot="public" virt="non-virtual"><scope>nw::graph::index_adjacency</scope><name>indexed_struct_of_arrays</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1a3d7005e0efb03836f3673c4dcf3c8a3a" prot="public" virt="non-virtual"><scope>nw::graph::index_adjacency</scope><name>indices_</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1af0aba3f2cceafc5acc2ef0f56be2066d" prot="public" virt="non-virtual"><scope>nw::graph::index_adjacency</scope><name>inner_iterator</name></member>
+      <member refid="classnw_1_1graph_1_1unipartite__graph__base_1a01d35258468a3f1f5f4f2a78ae28800f" prot="protected" virt="non-virtual"><scope>nw::graph::index_adjacency</scope><name>is_open</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1a33ef0f8be6517493badf98363dbcf4ae" prot="public" virt="non-virtual"><scope>nw::graph::index_adjacency</scope><name>iterator</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1ae5fb333323537dcece677199e3e6216c" prot="public" virt="non-virtual"><scope>nw::graph::index_adjacency</scope><name>max</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1a57f3b852e76015d52510b69d3f264915" prot="public" virt="non-virtual"><scope>nw::graph::index_adjacency</scope><name>move</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1a87df94c2968e9614ea938f3731c44289" prot="public" virt="non-virtual"><scope>nw::graph::index_adjacency</scope><name>move</name></member>
+      <member refid="classnw_1_1graph_1_1index__adjacency_1abd067c7efae546595a249d12a6921b7f" prot="public" virt="non-virtual"><scope>nw::graph::index_adjacency</scope><name>num_edges</name></member>
+      <member refid="classnw_1_1graph_1_1index__adjacency_1a0dfecfeee00f042c96a1e42d37df5a1e" prot="public" virt="non-virtual"><scope>nw::graph::index_adjacency</scope><name>num_edges_type</name></member>
+      <member refid="classnw_1_1graph_1_1index__adjacency_1a908da4b32d300a391944f702c3db725b" prot="public" virt="non-virtual"><scope>nw::graph::index_adjacency</scope><name>num_vertices</name></member>
+      <member refid="classnw_1_1graph_1_1index__adjacency_1a002363685318d3f2862968bb6d6be0c9" prot="public" virt="non-virtual"><scope>nw::graph::index_adjacency</scope><name>num_vertices_type</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1a59bfaabc2a498cbb6a5f76c3659d6533" prot="public" virt="non-virtual"><scope>nw::graph::index_adjacency</scope><name>open_for_push_back</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1a219f207dc38507b092c9ef19486cca8b" prot="public" virt="non-virtual"><scope>nw::graph::index_adjacency</scope><name>operator[]</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1aef7b43ec2e6f5fed1af4dc1f2597c829" prot="public" virt="non-virtual"><scope>nw::graph::index_adjacency</scope><name>operator[]</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1aabfeaef56eae60006fa6622dd5e59a55" prot="public" virt="non-virtual"><scope>nw::graph::index_adjacency</scope><name>outer_iterator</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1a3035e4594737b8723a75f7af56d8caf1" prot="public" virt="non-virtual"><scope>nw::graph::index_adjacency</scope><name>permute_by_degree</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1a404617480c001af5123c795ff2d3f02d" prot="public" virt="non-virtual"><scope>nw::graph::index_adjacency</scope><name>pointer</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1aaa5773db03c05fcb9a96627a9e9fec7e" prot="public" virt="non-virtual"><scope>nw::graph::index_adjacency</scope><name>push_at</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1a5197388d76435c260bd96b04a1317b4b" prot="public" virt="non-virtual"><scope>nw::graph::index_adjacency</scope><name>push_back</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1a81a12b5a9d17e16994feee9d0e1d8fcb" prot="public" virt="non-virtual"><scope>nw::graph::index_adjacency</scope><name>reference</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1a7d3b5315450cab74f4dc6eb0d2826af9" prot="public" virt="non-virtual"><scope>nw::graph::index_adjacency</scope><name>relabel_to_be_indexed</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1a59c84cdeb51e193ab1f9e7d9ea00bcf0" prot="public" virt="non-virtual"><scope>nw::graph::index_adjacency</scope><name>reverse_iterator</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1a73a0f0e2a9d3c29c05402b5a901fa70d" prot="public" virt="non-virtual"><scope>nw::graph::index_adjacency</scope><name>serialize</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1a1798bb5ceb6eed7728efec3795d5534b" prot="public" virt="non-virtual"><scope>nw::graph::index_adjacency</scope><name>serialize</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1a7b05de1658947af9906c85281f9b32f7" prot="public" virt="non-virtual"><scope>nw::graph::index_adjacency</scope><name>size</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1adc0b5be397d3022fa9da18413b2b91cb" prot="public" virt="non-virtual"><scope>nw::graph::index_adjacency</scope><name>size_type</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1a49a7b4908520c7e75c81701ef651ec61" prot="public" virt="non-virtual"><scope>nw::graph::index_adjacency</scope><name>sort_by_degree</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1a588fc45ea00ac79888a1c8243a79a4d1" prot="public" virt="non-virtual"><scope>nw::graph::index_adjacency</scope><name>sort_to_be_indexed</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1a8b9216f5cc66cb1c86f24c47f53eb8d1" prot="public" virt="non-virtual"><scope>nw::graph::index_adjacency</scope><name>source</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1a80c11c75e6c90b643ea7ac94b0fac630" prot="public" virt="non-virtual"><scope>nw::graph::index_adjacency</scope><name>source</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1a6b7a95f4bc459380004747eba72487fd" prot="public" virt="non-virtual"><scope>nw::graph::index_adjacency</scope><name>stream</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1a1215d47aa99a65002c25d3f02c0e3daf" prot="public" virt="non-virtual"><scope>nw::graph::index_adjacency</scope><name>stream_indices</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1a7ad406cbf1c5d60b167098c561a01931" prot="public" virt="non-virtual"><scope>nw::graph::index_adjacency</scope><name>stream_stats</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1a3af0986c76aee0fbb6069f2351067027" prot="public" virt="non-virtual"><scope>nw::graph::index_adjacency</scope><name>sub_view</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1aa027a0178e68e3754a4af6893943e74d" prot="public" virt="non-virtual"><scope>nw::graph::index_adjacency</scope><name>to_be_indexed_</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1a0444f0c5a5069b490ebcf6f8580cb697" prot="public" virt="non-virtual"><scope>nw::graph::index_adjacency</scope><name>triangularize</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1a8fb4b342dd9fd73375f1cdd0ec41d340" prot="public" virt="non-virtual"><scope>nw::graph::index_adjacency</scope><name>triangularize_</name></member>
+      <member refid="classnw_1_1graph_1_1unipartite__graph__base_1a3eb3b1e155e7bbe6148a4df68f81af30" prot="public" virt="non-virtual"><scope>nw::graph::index_adjacency</scope><name>unipartite_graph_base</name></member>
+      <member refid="classnw_1_1graph_1_1indexed__struct__of__arrays_1a4493fc456bf6b92bffa2680f4d7efbb4" prot="public" virt="non-virtual"><scope>nw::graph::index_adjacency</scope><name>value_type</name></member>
+      <member refid="classnw_1_1graph_1_1unipartite__graph__base_1a2bc6476c111e0f60f44e1b4520e49cf5" prot="protected" virt="non-virtual"><scope>nw::graph::index_adjacency</scope><name>vertex_cardinality</name></member>
+      <member refid="classnw_1_1graph_1_1unipartite__graph__base_1a0cb3de2b7da60c0f6c0300a4c0e94f52" prot="public" virt="non-virtual"><scope>nw::graph::index_adjacency</scope><name>vertex_cardinality_t</name></member>
+      <member refid="classnw_1_1graph_1_1index__adjacency_1a6e8f0a55eeb5d7c8aa305e51a37c764b" prot="public" virt="non-virtual"><scope>nw::graph::index_adjacency</scope><name>vertex_id_type</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

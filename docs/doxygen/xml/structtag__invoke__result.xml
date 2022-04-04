@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.3" xml:lang="en-US">
+  <compounddef id="structtag__invoke__result" kind="struct" language="C++" prot="public">
+    <compoundname>tag_invoke_result</compoundname>
+    <basecompoundref prot="public" virt="non-virtual">std::conditional_t&lt; is_tag_invocable_v&lt; CPO, Args... &gt;, _tag_invoke::defer&lt; tag_invoke_result_t, CPO, Args... &gt;, _tag_invoke::empty &gt;</basecompoundref>
+    <templateparamlist>
+      <param>
+        <type>typename CPO</type>
+      </param>
+      <param>
+        <type>typename...</type>
+        <declname>Args</declname>
+        <defname>Args</defname>
+      </param>
+    </templateparamlist>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>std::conditional_t&lt; is_tag_invocable_v&lt; CPO, Args... &gt;, _tag_invoke::defer&lt; tag_invoke_result_t, CPO, Args... &gt;, _tag_invoke::empty &gt;</label>
+      </node>
+      <node id="1">
+        <label>tag_invoke_result&lt; CPO, Args &gt;</label>
+        <link refid="structtag__invoke__result"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>std::conditional_t&lt; is_tag_invocable_v&lt; CPO, Args... &gt;, _tag_invoke::defer&lt; tag_invoke_result_t, CPO, Args... &gt;, _tag_invoke::empty &gt;</label>
+      </node>
+      <node id="1">
+        <label>tag_invoke_result&lt; CPO, Args &gt;</label>
+        <link refid="structtag__invoke__result"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </collaborationgraph>
+    <location file="/Users/lums/NWmath/NWgr/include/nwgraph/util/tag_invoke.hpp" line="64" column="1" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/util/tag_invoke.hpp" bodystart="65" bodyend="65"/>
+    <listofallmembers>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

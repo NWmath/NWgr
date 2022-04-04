@@ -1,0 +1,94 @@
+\hypertarget{tag__invoke_8hpp_source}{}\doxysection{tag\+\_\+invoke.\+hpp}
+\label{tag__invoke_8hpp_source}\index{/Users/lums/NWmath/NWgr/include/nwgraph/util/tag\_invoke.hpp@{/Users/lums/NWmath/NWgr/include/nwgraph/util/tag\_invoke.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// }}
+\DoxyCodeLine{2 \textcolor{comment}{// This file is part of NW Graph (aka GraphPack) }}
+\DoxyCodeLine{3 \textcolor{comment}{// (c) Pacific Northwest National Laboratory 2018-\/2021 }}
+\DoxyCodeLine{4 \textcolor{comment}{// (c) University of Washington 2018-\/2021 }}
+\DoxyCodeLine{5 \textcolor{comment}{// }}
+\DoxyCodeLine{6 \textcolor{comment}{// Licensed under terms of include LICENSE file }}
+\DoxyCodeLine{7 \textcolor{comment}{// }}
+\DoxyCodeLine{8 \textcolor{comment}{// Authors: }}
+\DoxyCodeLine{9 \textcolor{comment}{//     Andrew Lumsdaine }}
+\DoxyCodeLine{10 \textcolor{comment}{//}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#ifndef NW\_GRAPH\_TAG\_INVOKE\_HPP}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#define NW\_GRAPH\_TAG\_INVOKE\_HPP}}
+\DoxyCodeLine{13 }
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#include <type\_traits>}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#include <utility>}}
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17 \textcolor{keyword}{namespace }\_tag\_invoke \{}
+\DoxyCodeLine{18 \textcolor{keywordtype}{void} tag\_invoke();}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 \textcolor{keyword}{struct }\mbox{\hyperlink{struct__tag__invoke_1_1__fn}{\_fn}} \{}
+\DoxyCodeLine{21   \textcolor{keyword}{template} <\textcolor{keyword}{typename} CPO, \textcolor{keyword}{typename}... Args>}
+\DoxyCodeLine{22   \textcolor{keyword}{constexpr} \textcolor{keyword}{auto} operator()(CPO cpo, Args\&\&... args) \textcolor{keyword}{const} \textcolor{keyword}{noexcept}(\textcolor{keyword}{noexcept}(tag\_invoke((CPO \&\&) cpo, (Args \&\&) args...)))}
+\DoxyCodeLine{23       -\/> \textcolor{keyword}{decltype}(tag\_invoke((CPO \&\&) cpo, (Args \&\&) args...)) \{}
+\DoxyCodeLine{24     \textcolor{keywordflow}{return} tag\_invoke((CPO \&\&) cpo, (Args \&\&) args...);}
+\DoxyCodeLine{25   \}}
+\DoxyCodeLine{26 \};}
+\DoxyCodeLine{27 }
+\DoxyCodeLine{28 \textcolor{keyword}{template} <\textcolor{keyword}{typename} CPO, \textcolor{keyword}{typename}... Args>}
+\DoxyCodeLine{29 \textcolor{keyword}{using} tag\_invoke\_result\_t = \textcolor{keyword}{decltype}(tag\_invoke(std::declval<CPO>(), std::declval<Args>()...));}
+\DoxyCodeLine{30 }
+\DoxyCodeLine{31 \textcolor{keyword}{using} yes\_type = char;}
+\DoxyCodeLine{32 \textcolor{keyword}{using} no\_type  = char (\&)[2];}
+\DoxyCodeLine{33 }
+\DoxyCodeLine{34 \textcolor{keyword}{template} <\textcolor{keyword}{typename} CPO, \textcolor{keyword}{typename}... Args>}
+\DoxyCodeLine{35 \textcolor{keyword}{auto} try\_tag\_invoke(\textcolor{keywordtype}{int})    \textcolor{comment}{//}}
+\DoxyCodeLine{36     \textcolor{keyword}{noexcept}(\textcolor{keyword}{noexcept}(tag\_invoke(std::declval<CPO>(), std::declval<Args>()...)))}
+\DoxyCodeLine{37         -\/> \textcolor{keyword}{decltype}(\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{void}\textcolor{keyword}{>}(tag\_invoke(std::declval<CPO>(), std::declval<Args>()...)), yes\_type\{\});}
+\DoxyCodeLine{38 }
+\DoxyCodeLine{39 \textcolor{keyword}{template} <\textcolor{keyword}{typename} CPO, \textcolor{keyword}{typename}... Args>}
+\DoxyCodeLine{40 no\_type try\_tag\_invoke(...) noexcept(false);}
+\DoxyCodeLine{41 }
+\DoxyCodeLine{42 template <template <typename...> class T, typename... Args>}
+\DoxyCodeLine{43 struct \mbox{\hyperlink{struct__tag__invoke_1_1defer}{defer}} \{}
+\DoxyCodeLine{44   \textcolor{keyword}{using} type = T<Args...>;}
+\DoxyCodeLine{45 \};}
+\DoxyCodeLine{46 }
+\DoxyCodeLine{47 \textcolor{keyword}{struct }\mbox{\hyperlink{struct__tag__invoke_1_1empty}{empty}} \{\};}
+\DoxyCodeLine{48 \}    \textcolor{comment}{// namespace \_tag\_invoke}}
+\DoxyCodeLine{49 }
+\DoxyCodeLine{50 \textcolor{keyword}{namespace }\_tag\_invoke\_cpo \{}
+\DoxyCodeLine{51 \textcolor{keyword}{inline} \textcolor{keyword}{constexpr} \mbox{\hyperlink{struct__tag__invoke_1_1__fn}{\_tag\_invoke::\_fn}} tag\_invoke\{\};}
+\DoxyCodeLine{52 \}}
+\DoxyCodeLine{53 \textcolor{keyword}{using namespace }\_tag\_invoke\_cpo;}
+\DoxyCodeLine{54 }
+\DoxyCodeLine{55 \textcolor{keyword}{template} <auto\& CPO>}
+\DoxyCodeLine{56 \textcolor{keyword}{using} tag\_t = std::remove\_cvref\_t<\textcolor{keyword}{decltype}(CPO)>;}
+\DoxyCodeLine{57 }
+\DoxyCodeLine{58 \textcolor{keyword}{using} \_tag\_invoke::tag\_invoke\_result\_t;}
+\DoxyCodeLine{59 }
+\DoxyCodeLine{60 \textcolor{keyword}{template} <\textcolor{keyword}{typename} CPO, \textcolor{keyword}{typename}... Args>}
+\DoxyCodeLine{61 \textcolor{keyword}{inline} \textcolor{keyword}{constexpr} \textcolor{keywordtype}{bool} is\_tag\_invocable\_v = (\textcolor{keyword}{sizeof}(\_tag\_invoke::try\_tag\_invoke<CPO, Args...>(0)) == \textcolor{keyword}{sizeof}(\_tag\_invoke::yes\_type));}
+\DoxyCodeLine{62 }
+\DoxyCodeLine{63 \textcolor{keyword}{template} <\textcolor{keyword}{typename} CPO, \textcolor{keyword}{typename}... Args>}
+\DoxyCodeLine{64 \textcolor{keyword}{struct }\mbox{\hyperlink{structtag__invoke__result}{tag\_invoke\_result}}}
+\DoxyCodeLine{65     : std::conditional\_t<is\_tag\_invocable\_v<CPO, Args...>, \_tag\_invoke::defer<tag\_invoke\_result\_t, CPO, Args...>, \_tag\_invoke::empty> \{\};}
+\DoxyCodeLine{66 }
+\DoxyCodeLine{67 \textcolor{keyword}{template} <\textcolor{keyword}{typename} CPO, \textcolor{keyword}{typename}... Args>}
+\DoxyCodeLine{68 \textcolor{keyword}{using} is\_tag\_invocable = std::bool\_constant<is\_tag\_invocable\_v<CPO, Args...>>;}
+\DoxyCodeLine{69 }
+\DoxyCodeLine{70 \textcolor{keyword}{template} <\textcolor{keyword}{typename} CPO, \textcolor{keyword}{typename}... Args>}
+\DoxyCodeLine{71 \textcolor{keyword}{inline} \textcolor{keyword}{constexpr} \textcolor{keywordtype}{bool} is\_nothrow\_tag\_invocable\_v = \textcolor{keyword}{noexcept}(\_tag\_invoke::try\_tag\_invoke<CPO, Args...>(0));}
+\DoxyCodeLine{72 }
+\DoxyCodeLine{73 \textcolor{keyword}{template} <\textcolor{keyword}{typename} CPO, \textcolor{keyword}{typename}... Args>}
+\DoxyCodeLine{74 \textcolor{keyword}{using} is\_nothrow\_tag\_invocable = std::bool\_constant<is\_nothrow\_tag\_invocable\_v<CPO, Args...>>;}
+\DoxyCodeLine{75 }
+\DoxyCodeLine{76 \textcolor{keyword}{template} <\textcolor{keyword}{typename} CPO, \textcolor{keyword}{typename}... Args>}
+\DoxyCodeLine{77 \textcolor{keyword}{concept }tag\_invocable = (\textcolor{keyword}{sizeof}(\_tag\_invoke::try\_tag\_invoke<CPO, Args...>(0)) == \textcolor{keyword}{sizeof}(\_tag\_invoke::yes\_type));}
+\DoxyCodeLine{78 }
+\DoxyCodeLine{79 \textcolor{preprocessor}{\#define DECL\_TAG\_INVOKE(str)                                                                                                  \(\backslash\)}}
+\DoxyCodeLine{80 \textcolor{preprocessor}{  struct str\#\#\_tag final \{                                                                                                    \(\backslash\)}}
+\DoxyCodeLine{81 \textcolor{preprocessor}{    inline constexpr auto operator()(auto\&\&... args) const noexcept(is\_nothrow\_tag\_invocable\_v<str\#\#\_tag, decltype(args)...>) \(\backslash\)}}
+\DoxyCodeLine{82 \textcolor{preprocessor}{        -\/> tag\_invoke\_result\_t<str\#\#\_tag, decltype(args)...> \{                                                                \(\backslash\)}}
+\DoxyCodeLine{83 \textcolor{preprocessor}{      return tag\_invoke(*this, std::forward<decltype(args)>(args)...);                                                        \(\backslash\)}}
+\DoxyCodeLine{84 \textcolor{preprocessor}{    \}                                                                                                                         \(\backslash\)}}
+\DoxyCodeLine{85 \textcolor{preprocessor}{  \};                                                                                                                          \(\backslash\)}}
+\DoxyCodeLine{86 \textcolor{preprocessor}{  static inline constexpr str\#\#\_tag str \{\}}}
+\DoxyCodeLine{87 }
+\DoxyCodeLine{88 \textcolor{preprocessor}{\#endif    }\textcolor{comment}{// NW\_GRAPH\_TAG\_INVOKE\_HPP}}
+
+\end{DoxyCode}

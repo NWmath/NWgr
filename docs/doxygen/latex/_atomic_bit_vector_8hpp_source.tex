@@ -1,0 +1,185 @@
+\hypertarget{_atomic_bit_vector_8hpp_source}{}\doxysection{Atomic\+Bit\+Vector.\+hpp}
+\label{_atomic_bit_vector_8hpp_source}\index{/Users/lums/NWmath/NWgr/include/nwgraph/util/AtomicBitVector.hpp@{/Users/lums/NWmath/NWgr/include/nwgraph/util/AtomicBitVector.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// }}
+\DoxyCodeLine{2 \textcolor{comment}{// This file is part of NW Graph (aka GraphPack) }}
+\DoxyCodeLine{3 \textcolor{comment}{// (c) Pacific Northwest National Laboratory 2018-\/2021 }}
+\DoxyCodeLine{4 \textcolor{comment}{// (c) University of Washington 2018-\/2021 }}
+\DoxyCodeLine{5 \textcolor{comment}{// }}
+\DoxyCodeLine{6 \textcolor{comment}{// Licensed under terms of include LICENSE file }}
+\DoxyCodeLine{7 \textcolor{comment}{// }}
+\DoxyCodeLine{8 \textcolor{comment}{// Authors: }}
+\DoxyCodeLine{9 \textcolor{comment}{//     Andrew Lumsdaine }}
+\DoxyCodeLine{10 \textcolor{comment}{//     Eric Silk    }}
+\DoxyCodeLine{11 \textcolor{comment}{//}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#ifndef NW\_GRAPH\_ATOMIC\_BIT\_VECTOR\_HPP}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#define NW\_GRAPH\_ATOMIC\_BIT\_VECTOR\_HPP}}
+\DoxyCodeLine{14 }
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#include "{}nwgraph/util/atomic.hpp"{}}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#if defined(CL\_SYCL\_LANGUAGE\_VERSION)}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include <dpstd/algorithm>}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include <dpstd/execution>}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#include <algorithm>}}
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#include <execution>}}
+\DoxyCodeLine{22 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{23 \textcolor{preprocessor}{\#include <cstddef>}}
+\DoxyCodeLine{24 \textcolor{preprocessor}{\#include <cstdint>}}
+\DoxyCodeLine{25 \textcolor{preprocessor}{\#include <memory>}}
+\DoxyCodeLine{26 \textcolor{preprocessor}{\#include <tuple>}}
+\DoxyCodeLine{27 }
+\DoxyCodeLine{28 \textcolor{keyword}{namespace }nw \{}
+\DoxyCodeLine{29 \textcolor{keyword}{namespace }graph \{}
+\DoxyCodeLine{40 \textcolor{keyword}{template} <\textcolor{keyword}{class} Word = std::u\textcolor{keywordtype}{int}64\_t>}
+\DoxyCodeLine{41 \textcolor{keyword}{class }\mbox{\hyperlink{classnw_1_1graph_1_1_atomic_bit_vector}{AtomicBitVector}} \{}
+\DoxyCodeLine{42   \textcolor{keyword}{static} \textcolor{keyword}{constexpr} \textcolor{keywordtype}{int} BITS = \textcolor{keyword}{sizeof}(Word) * 8;}
+\DoxyCodeLine{43 }
+\DoxyCodeLine{44   std::size\_t bits\_;}
+\DoxyCodeLine{45   Word*       data\_;}
+\DoxyCodeLine{46 }
+\DoxyCodeLine{47 \textcolor{keyword}{public}:}
+\DoxyCodeLine{56   \mbox{\hyperlink{classnw_1_1graph_1_1_atomic_bit_vector_ac00d79ade20bf2e720aa4b1ac5f66b99}{AtomicBitVector}}(std::size\_t bits, \textcolor{keywordtype}{bool} init = \textcolor{keyword}{true}) : bits\_(bits), data\_(new Word[words(bits)]) \{}
+\DoxyCodeLine{57     \textcolor{keywordflow}{if} (init) \mbox{\hyperlink{classnw_1_1graph_1_1_atomic_bit_vector_ae6f2f9f688910e6ec842382398b67163}{clear}}();}
+\DoxyCodeLine{58   \}}
+\DoxyCodeLine{59 }
+\DoxyCodeLine{61   \mbox{\hyperlink{classnw_1_1graph_1_1_atomic_bit_vector_a6b078731ae92a19ec7389b4b08839aa0}{\string~AtomicBitVector}}() \{ \textcolor{keyword}{delete}[] data\_; \}}
+\DoxyCodeLine{62 }
+\DoxyCodeLine{64   \mbox{\hyperlink{classnw_1_1graph_1_1_atomic_bit_vector_afdfbf00b7d121f7d462c161f71e2f69d}{AtomicBitVector}}(\mbox{\hyperlink{classnw_1_1graph_1_1_atomic_bit_vector}{AtomicBitVector}}\&\& rhs) : bits\_(std::exchange(rhs.bits\_, 0)), data\_(std::exchange(rhs.data\_, nullptr)) \{\}}
+\DoxyCodeLine{65 }
+\DoxyCodeLine{67   \mbox{\hyperlink{classnw_1_1graph_1_1_atomic_bit_vector}{AtomicBitVector}}\& \mbox{\hyperlink{classnw_1_1graph_1_1_atomic_bit_vector_af178276b4a0b8c3581853caaa3a357be}{operator=}}(\mbox{\hyperlink{classnw_1_1graph_1_1_atomic_bit_vector}{AtomicBitVector}}\&\& rhs) \{}
+\DoxyCodeLine{68     bits\_ = std::exchange(rhs.bits\_, 0);}
+\DoxyCodeLine{69     data\_ = std::exchange(rhs.data\_, \textcolor{keyword}{nullptr});}
+\DoxyCodeLine{70     \textcolor{keywordflow}{return} *\textcolor{keyword}{this};}
+\DoxyCodeLine{71   \}}
+\DoxyCodeLine{72 }
+\DoxyCodeLine{74   \textcolor{keywordtype}{void} \mbox{\hyperlink{classnw_1_1graph_1_1_atomic_bit_vector_ae6f2f9f688910e6ec842382398b67163}{clear}}() \{ std::fill(std::execution::par\_unseq, data\_, data\_ + words(bits\_), Word(0)); \}}
+\DoxyCodeLine{75 }
+\DoxyCodeLine{93   \textcolor{keyword}{template} <std::memory\_order order = std::memory\_order\_relaxed>}
+\DoxyCodeLine{94   Word \mbox{\hyperlink{classnw_1_1graph_1_1_atomic_bit_vector_a23bc0b796e66d42abbab4aa60dad5a2d}{get}}(std::size\_t i)\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{95     \textcolor{keyword}{auto}\&\& [word, mask] = split(i);}
+\DoxyCodeLine{96     \textcolor{keywordflow}{return} nw::graph::load<order>(data\_[word]) \& mask;}
+\DoxyCodeLine{97   \}}
+\DoxyCodeLine{98 }
+\DoxyCodeLine{117   \textcolor{keyword}{template} <std::memory\_order order = std::memory\_order\_relaxed>}
+\DoxyCodeLine{118   Word \mbox{\hyperlink{classnw_1_1graph_1_1_atomic_bit_vector_a59e4df43dca8844ca3c6969f294ce24d}{set}}(std::size\_t i) \{}
+\DoxyCodeLine{119     \textcolor{keyword}{auto}\&\& [word, mask] = split(i);}
+\DoxyCodeLine{120     \textcolor{keywordflow}{return} nw::graph::fetch\_or<order>(data\_[word], mask) \& mask;}
+\DoxyCodeLine{121   \}}
+\DoxyCodeLine{122 }
+\DoxyCodeLine{131   Word \mbox{\hyperlink{classnw_1_1graph_1_1_atomic_bit_vector_adaf44e7fbc7185570e495d8d34d28248}{atomic\_get}}(std::size\_t i)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} get<std::memory\_order\_acquire>(i); \}}
+\DoxyCodeLine{132 }
+\DoxyCodeLine{142   Word \mbox{\hyperlink{classnw_1_1graph_1_1_atomic_bit_vector_acfc0f928fbf09c9a33ec3bf472e19e72}{atomic\_set}}(std::size\_t i) \{ \textcolor{keywordflow}{return} set<std::memory\_order\_acq\_rel>(i); \}}
+\DoxyCodeLine{143 }
+\DoxyCodeLine{144   \textcolor{keyword}{class }\mbox{\hyperlink{classnw_1_1graph_1_1_atomic_bit_vector_1_1non__zero__iterator}{non\_zero\_iterator}} \{}
+\DoxyCodeLine{145     Word*       data\_;       }
+\DoxyCodeLine{146     std::size\_t n\_;          }
+\DoxyCodeLine{147     std::size\_t word\_;       }
+\DoxyCodeLine{148     std::size\_t bit\_ = 0;    }
+\DoxyCodeLine{149 }
+\DoxyCodeLine{150   \textcolor{keyword}{public}:}
+\DoxyCodeLine{151     \textcolor{keyword}{using} value\_type        = std::size\_t;}
+\DoxyCodeLine{152     \textcolor{keyword}{using} difference\_type   = std::ptrdiff\_t;}
+\DoxyCodeLine{153     \textcolor{keyword}{using} reference         = \textcolor{keyword}{const} std::size\_t;    \textcolor{comment}{// need something better}}
+\DoxyCodeLine{154     \textcolor{keyword}{using} pointer           = void;}
+\DoxyCodeLine{155     \textcolor{keyword}{using} iterator\_category = std::input\_iterator\_tag;}
+\DoxyCodeLine{156 }
+\DoxyCodeLine{157     \mbox{\hyperlink{classnw_1_1graph_1_1_atomic_bit_vector_1_1non__zero__iterator}{non\_zero\_iterator}}(Word* data, std::size\_t n, std::size\_t word) : data\_(data), n\_(n), word\_(word) \{ search\_next(); \}}
+\DoxyCodeLine{158 }
+\DoxyCodeLine{159     reference operator*() \{ \textcolor{keywordflow}{return} word\_ * BITS + bit\_; \}}
+\DoxyCodeLine{160 }
+\DoxyCodeLine{161     \textcolor{comment}{// auto operator-\/>() \{}}
+\DoxyCodeLine{162     \textcolor{comment}{//   // what should this do?}}
+\DoxyCodeLine{163     \textcolor{comment}{// \}}}
+\DoxyCodeLine{164 }
+\DoxyCodeLine{165     \mbox{\hyperlink{classnw_1_1graph_1_1_atomic_bit_vector_1_1non__zero__iterator}{non\_zero\_iterator}}\& operator++() \{}
+\DoxyCodeLine{166       \textcolor{comment}{// if there is possibly another non-\/zero in the current word then use it}}
+\DoxyCodeLine{167       \textcolor{keywordflow}{if} (word\_ < n\_ \&\& ++bit\_ < BITS) \{}
+\DoxyCodeLine{168         \textcolor{keywordflow}{if} (Word w = data\_[word\_] >> bit\_) \{}
+\DoxyCodeLine{169           bit\_ += \_\_builtin\_ctzl(w);}
+\DoxyCodeLine{170           \textcolor{keywordflow}{return} *\textcolor{keyword}{this};}
+\DoxyCodeLine{171         \}}
+\DoxyCodeLine{172       \}}
+\DoxyCodeLine{173 }
+\DoxyCodeLine{174       \textcolor{comment}{// otherwise we're on a slow path because we have to search for the next}}
+\DoxyCodeLine{175       \textcolor{comment}{// non-\/zero word}}
+\DoxyCodeLine{176       ++word\_;}
+\DoxyCodeLine{177       \textcolor{keywordflow}{return} search\_next();}
+\DoxyCodeLine{178     \}}
+\DoxyCodeLine{179 }
+\DoxyCodeLine{180     \mbox{\hyperlink{classnw_1_1graph_1_1_atomic_bit_vector_1_1non__zero__iterator}{non\_zero\_iterator}} operator++(\textcolor{keywordtype}{int}) \{}
+\DoxyCodeLine{181       \mbox{\hyperlink{classnw_1_1graph_1_1_atomic_bit_vector_1_1non__zero__iterator}{non\_zero\_iterator}} i(*\textcolor{keyword}{this});}
+\DoxyCodeLine{182       ++(*this);}
+\DoxyCodeLine{183       \textcolor{keywordflow}{return} i;}
+\DoxyCodeLine{184     \}}
+\DoxyCodeLine{185 }
+\DoxyCodeLine{186     \textcolor{keywordtype}{bool} operator!=(\textcolor{keyword}{const} \mbox{\hyperlink{classnw_1_1graph_1_1_atomic_bit_vector_1_1non__zero__iterator}{non\_zero\_iterator}}\& b)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} (word\_ != b.word\_ || bit\_ != b.bit\_ || data\_ != b.data\_); \}}
+\DoxyCodeLine{187 }
+\DoxyCodeLine{188     \textcolor{keywordtype}{bool} operator==(\textcolor{keyword}{const} \mbox{\hyperlink{classnw_1_1graph_1_1_atomic_bit_vector_1_1non__zero__iterator}{non\_zero\_iterator}}\& b)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} !operator!=(b); \}}
+\DoxyCodeLine{189 }
+\DoxyCodeLine{190   \textcolor{keyword}{private}:}
+\DoxyCodeLine{191     \mbox{\hyperlink{classnw_1_1graph_1_1_atomic_bit_vector_1_1non__zero__iterator}{non\_zero\_iterator}}\& search\_next() \{}
+\DoxyCodeLine{192       \textcolor{comment}{// search for the next non-\/zero word, starting with word\_}}
+\DoxyCodeLine{193       \textcolor{keywordflow}{for} (; word\_ < n\_; ++word\_) \{}
+\DoxyCodeLine{194         \textcolor{keywordflow}{if} (Word w = data\_[word\_]) \{}
+\DoxyCodeLine{195           bit\_ = \_\_builtin\_ctzl(w);}
+\DoxyCodeLine{196           \textcolor{keywordflow}{return} *\textcolor{keyword}{this};}
+\DoxyCodeLine{197         \}}
+\DoxyCodeLine{198       \}}
+\DoxyCodeLine{199 }
+\DoxyCodeLine{200       \textcolor{comment}{// saturate for comparisons with end()}}
+\DoxyCodeLine{201       bit\_  = 0;}
+\DoxyCodeLine{202       word\_ = n\_;}
+\DoxyCodeLine{203       \textcolor{keywordflow}{return} *\textcolor{keyword}{this};}
+\DoxyCodeLine{204     \}}
+\DoxyCodeLine{205   \};}
+\DoxyCodeLine{206 }
+\DoxyCodeLine{207   \mbox{\hyperlink{classnw_1_1graph_1_1_atomic_bit_vector_1_1non__zero__iterator}{non\_zero\_iterator}} begin() \{ \textcolor{keywordflow}{return} \{data\_, words(bits\_), 0\}; \}}
+\DoxyCodeLine{208   non\_zero\_iterator end() \{ \textcolor{keywordflow}{return} \{data\_, words(bits\_), words(bits\_)\}; \}}
+\DoxyCodeLine{209 }
+\DoxyCodeLine{210   \textcolor{comment}{// Our non\_zero\_iterators are basically input iterators and thus can't be}}
+\DoxyCodeLine{211   \textcolor{comment}{// split using the splittable range adapter, which only handles random-\/access}}
+\DoxyCodeLine{212   \textcolor{comment}{// ranges at the moment. This custom range can be split on word boundaries.}}
+\DoxyCodeLine{213   \textcolor{keyword}{class }\mbox{\hyperlink{classnw_1_1graph_1_1_atomic_bit_vector_1_1non__zero__range}{non\_zero\_range}} \{}
+\DoxyCodeLine{214     Word*       data\_;}
+\DoxyCodeLine{215     std::size\_t n\_;}
+\DoxyCodeLine{216     std::size\_t begin\_;}
+\DoxyCodeLine{217     std::size\_t end\_;}
+\DoxyCodeLine{218     std::size\_t cutoff\_;}
+\DoxyCodeLine{219 }
+\DoxyCodeLine{220   \textcolor{keyword}{public}:}
+\DoxyCodeLine{221     \mbox{\hyperlink{classnw_1_1graph_1_1_atomic_bit_vector_1_1non__zero__range}{non\_zero\_range}}(Word* data, std::size\_t n, std::size\_t begin, std::size\_t end, std::size\_t cutoff)}
+\DoxyCodeLine{222         : data\_(data), n\_(n), begin\_(begin), end\_(end), cutoff\_(cutoff) \{\}}
+\DoxyCodeLine{223 }
+\DoxyCodeLine{224     \mbox{\hyperlink{classnw_1_1graph_1_1_atomic_bit_vector_1_1non__zero__range}{non\_zero\_range}}(\textcolor{keyword}{const} \mbox{\hyperlink{classnw_1_1graph_1_1_atomic_bit_vector_1_1non__zero__range}{non\_zero\_range}}\&) = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{225     \mbox{\hyperlink{classnw_1_1graph_1_1_atomic_bit_vector_1_1non__zero__range}{non\_zero\_range}}(\mbox{\hyperlink{classnw_1_1graph_1_1_atomic_bit_vector_1_1non__zero__range}{non\_zero\_range}}\&\&)      = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{226 }
+\DoxyCodeLine{227     \mbox{\hyperlink{classnw_1_1graph_1_1_atomic_bit_vector_1_1non__zero__range}{non\_zero\_range}}(\mbox{\hyperlink{classnw_1_1graph_1_1_atomic_bit_vector_1_1non__zero__range}{non\_zero\_range}}\& a, tbb::split)}
+\DoxyCodeLine{228         : data\_(a.data\_), n\_(a.n\_), begin\_(a.begin\_), end\_(a.begin\_ += a.size() / 2), cutoff\_(a.cutoff\_) \{\}}
+\DoxyCodeLine{229 }
+\DoxyCodeLine{230     \mbox{\hyperlink{classnw_1_1graph_1_1_atomic_bit_vector_1_1non__zero__iterator}{non\_zero\_iterator}} begin() \{ \textcolor{keywordflow}{return} \{data\_, n\_, begin\_\}; \}}
+\DoxyCodeLine{231     \mbox{\hyperlink{classnw_1_1graph_1_1_atomic_bit_vector_1_1non__zero__iterator}{non\_zero\_iterator}} end() \{ \textcolor{keywordflow}{return} \{data\_, n\_, end\_\}; \}}
+\DoxyCodeLine{232 }
+\DoxyCodeLine{233     std::size\_t size()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} end\_ -\/ begin\_; \}}
+\DoxyCodeLine{234     \textcolor{keywordtype}{bool}        empty()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} size() == 0; \}}
+\DoxyCodeLine{235     \textcolor{keywordtype}{bool}        is\_divisible()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} size() > cutoff\_; \}}
+\DoxyCodeLine{236   \};}
+\DoxyCodeLine{237 }
+\DoxyCodeLine{238   \mbox{\hyperlink{classnw_1_1graph_1_1_atomic_bit_vector_1_1non__zero__range}{non\_zero\_range}} non\_zeros(std::size\_t cutoff) \{ \textcolor{keywordflow}{return} \{data\_, words(bits\_), 0, words(bits\_), cutoff\}; \}}
+\DoxyCodeLine{239 }
+\DoxyCodeLine{240 \textcolor{keyword}{private}:}
+\DoxyCodeLine{241   \textcolor{keyword}{static} \textcolor{keyword}{constexpr} std::tuple<std::size\_t, Word> split(std::size\_t i) \{}
+\DoxyCodeLine{242     std::size\_t word   = i / BITS;}
+\DoxyCodeLine{243     std::size\_t offset = i \% BITS;}
+\DoxyCodeLine{244     Word        mask   = Word(1) << offset;}
+\DoxyCodeLine{245     \textcolor{keywordflow}{return} \{word, mask\};}
+\DoxyCodeLine{246   \}}
+\DoxyCodeLine{247 }
+\DoxyCodeLine{248   \textcolor{keyword}{static} \textcolor{keyword}{constexpr} std::size\_t words(std::size\_t n) \{ \textcolor{keywordflow}{return} n / BITS + ((n \% BITS) ? 1 : 0); \}}
+\DoxyCodeLine{249 \};}
+\DoxyCodeLine{250 \}    \textcolor{comment}{// namespace graph}}
+\DoxyCodeLine{251 \}    \textcolor{comment}{// namespace nw}}
+\DoxyCodeLine{252 }
+\DoxyCodeLine{253 \textcolor{preprocessor}{\#endif    }\textcolor{comment}{// NW\_GRAPH\_ATOMIC\_BIT\_VECTOR\_HPP}}
+
+\end{DoxyCode}

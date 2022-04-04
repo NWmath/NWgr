@@ -1,0 +1,385 @@
+\hypertarget{classnw_1_1graph_1_1disjoint__set}{}\doxysection{nw\+::graph\+::disjoint\+\_\+set\texorpdfstring{$<$}{<} T \texorpdfstring{$>$}{>} Class Template Reference}
+\label{classnw_1_1graph_1_1disjoint__set}\index{nw::graph::disjoint\_set$<$ T $>$@{nw::graph::disjoint\_set$<$ T $>$}}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classnw_1_1graph_1_1disjoint__set_a96520a36845f3275b33c8595c0a41217}{disjoint\+\_\+set}} (T max\+\_\+element)
+\item 
+\mbox{\hyperlink{classnw_1_1graph_1_1disjoint__set_aa372a0e70dd53e70d65fcbb3eec41280}{disjoint\+\_\+set}} (const \mbox{\hyperlink{classnw_1_1graph_1_1disjoint__set}{disjoint\+\_\+set}}$<$ T $>$ \&other)
+\item 
+void \mbox{\hyperlink{classnw_1_1graph_1_1disjoint__set_ae3e5eca8e06b9a836bb2fdfd437ec354}{reset}} ()
+\item 
+void \mbox{\hyperlink{classnw_1_1graph_1_1disjoint__set_aacbbd3ec3ebdb22e65316493675cbe4e}{reset}} (const T index)
+\item 
+{\footnotesize template$<$class Execution\+Policy  = std\+::execution\+::parallel\+\_\+unsequenced\+\_\+policy$>$ }\\void \mbox{\hyperlink{classnw_1_1graph_1_1disjoint__set_a4bb47c8fa742b5fd82567ff18d40bb17}{all\+To\+Singletons}} (Execution\+Policy \&\&policy=\{\})
+\item 
+virtual T \mbox{\hyperlink{classnw_1_1graph_1_1disjoint__set_a3b80f8dd1e1cd5e8c4830a5eca4c5b1d}{find\+\_\+with\+\_\+pathcompression}} (T index)
+\item 
+virtual T \mbox{\hyperlink{classnw_1_1graph_1_1disjoint__set_af306ad0e3e6f9a7508d44fe13c55e3a5}{find}} (T index) const
+\item 
+virtual T \mbox{\hyperlink{classnw_1_1graph_1_1disjoint__set_aca15e8e1dc1ed118fd97941471d2c3b3}{direct\+Find}} (const T index) const
+\item 
+virtual bool \mbox{\hyperlink{classnw_1_1graph_1_1disjoint__set_a3486799caa0880665810fed4d12cec36}{join}} (T const \&u, T const \&v)
+\item 
+virtual bool \mbox{\hyperlink{classnw_1_1graph_1_1disjoint__set_a927fa97e6125d0c6682b41537db34a13}{direct\+Join}} (T const \&u, T const \&v)
+\item 
+virtual void \mbox{\hyperlink{classnw_1_1graph_1_1disjoint__set_a8e918d130954f8430b42fd7e40815986}{union\+By\+Size}} (T const \&u, T const \&v)
+\item 
+\mbox{\Hypertarget{classnw_1_1graph_1_1disjoint__set_ac58f65e9c4e0c4d03da8e0e4e632c0bb}\label{classnw_1_1graph_1_1disjoint__set_ac58f65e9c4e0c4d03da8e0e4e632c0bb}} 
+virtual void {\bfseries union\+By\+Height} (T const \&u, T const \&v)
+\item 
+void \mbox{\hyperlink{classnw_1_1graph_1_1disjoint__set_af49a079a84612551ce66479721902042}{combine\+By\+Size}} (T const \&u, T const \&v)
+\item 
+\mbox{\Hypertarget{classnw_1_1graph_1_1disjoint__set_ae5c6d3b0f7bb057c9857df513137d9ee}\label{classnw_1_1graph_1_1disjoint__set_ae5c6d3b0f7bb057c9857df513137d9ee}} 
+void {\bfseries union\+By\+Size\+Atomic} (T u, T v)
+\item 
+void \mbox{\hyperlink{classnw_1_1graph_1_1disjoint__set_a63ff23b599f3a696ff3e3dcddfe144ff}{combine\+By\+Height}} (T const \&v, T const \&u)
+\item 
+\mbox{\Hypertarget{classnw_1_1graph_1_1disjoint__set_a7fa468efde2ffc5ef3600d9a5492b63c}\label{classnw_1_1graph_1_1disjoint__set_a7fa468efde2ffc5ef3600d9a5492b63c}} 
+void {\bfseries Union\+By\+Splicing} (T v, T u)
+\item 
+\mbox{\Hypertarget{classnw_1_1graph_1_1disjoint__set_a598e1cb4a46b572908d71542af653840}\label{classnw_1_1graph_1_1disjoint__set_a598e1cb4a46b572908d71542af653840}} 
+std\+::vector$<$ T $>$ {\bfseries get\+Raw\+Subsets} () const
+\item 
+std\+::vector$<$ std\+::set$<$ T $>$ $>$ \mbox{\hyperlink{classnw_1_1graph_1_1disjoint__set_aff9ebb950bc3fd3deede308d3f8821da}{get\+Subsets}} () const
+\item 
+std\+::vector$<$ T $>$ \mbox{\hyperlink{classnw_1_1graph_1_1disjoint__set_a0f7c385f12661c2a1aedf3b719705103}{get\+Compact\+Disj\+Sets}} (size\+\_\+t \&nsets) const
+\item 
+\mbox{\Hypertarget{classnw_1_1graph_1_1disjoint__set_a053128cd40563c3a45657c3f4d7e9d52}\label{classnw_1_1graph_1_1disjoint__set_a053128cd40563c3a45657c3f4d7e9d52}} 
+std\+::vector$<$ T $>$ {\bfseries get\+Compact\+Disj\+Sets} () const
+\item 
+size\+\_\+t \mbox{\hyperlink{classnw_1_1graph_1_1disjoint__set_a3eeb8516f438597b568f255360644ade}{get\+Set\+Number}} () const
+\item 
+size\+\_\+t \mbox{\hyperlink{classnw_1_1graph_1_1disjoint__set_a4afbc76f621adbcf606fcbf5c0da25d0}{get\+Set\+Size}} (const T u) const
+\item 
+void \mbox{\hyperlink{classnw_1_1graph_1_1disjoint__set_ad68830538db5c029c45984848717b6d0}{print\+Disj\+Sets}} (std\+::ostream \&os) const
+\item 
+T \mbox{\hyperlink{classnw_1_1graph_1_1disjoint__set_a09ad6ecd3e3b8cd6d9598fa1512b1624}{get\+Max\+Id}} () const
+\item 
+\mbox{\Hypertarget{classnw_1_1graph_1_1disjoint__set_a31de4780459c39f276a22203a3ab307a}\label{classnw_1_1graph_1_1disjoint__set_a31de4780459c39f276a22203a3ab307a}} 
+{\footnotesize template$<$typename L $>$ }\\void {\bfseries for\+Each} (L handle) const
+\item 
+\mbox{\Hypertarget{classnw_1_1graph_1_1disjoint__set_a115810de99c2ca65d4af0d17a8058f8d}\label{classnw_1_1graph_1_1disjoint__set_a115810de99c2ca65d4af0d17a8058f8d}} 
+{\footnotesize template$<$typename L $>$ }\\void {\bfseries for\+Each\+Element} (L handle) const
+\item 
+\mbox{\Hypertarget{classnw_1_1graph_1_1disjoint__set_aa6b236355ca4dfd910816e3239a5c8f0}\label{classnw_1_1graph_1_1disjoint__set_aa6b236355ca4dfd910816e3239a5c8f0}} 
+{\footnotesize template$<$typename L $>$ }\\void {\bfseries for\+Each\+Root} (L handle) const
+\item 
+\mbox{\Hypertarget{classnw_1_1graph_1_1disjoint__set_a7a82ea4339ada2f6cf6dcb7cd7e52fb9}\label{classnw_1_1graph_1_1disjoint__set_a7a82ea4339ada2f6cf6dcb7cd7e52fb9}} 
+{\footnotesize template$<$typename L $>$ }\\void {\bfseries for\+Each\+Root\+Index} (L handle) const
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classnw_1_1graph_1_1disjoint__set_abde1326e4612df032f80f07f13305c32}\label{classnw_1_1graph_1_1disjoint__set_abde1326e4612df032f80f07f13305c32}} 
+{\footnotesize template$<$typename L $>$ }\\static void {\bfseries all\+To\+Singletons} (L $\ast$arr, const size\+\_\+t size)
+\item 
+\mbox{\Hypertarget{classnw_1_1graph_1_1disjoint__set_a9fbe29d132fa6cb223952fa0a82f6003}\label{classnw_1_1graph_1_1disjoint__set_a9fbe29d132fa6cb223952fa0a82f6003}} 
+{\footnotesize template$<$typename L $>$ }\\static void {\bfseries all\+To\+Singletons} (std\+::vector$<$ L $>$ \&arr, const size\+\_\+t size)
+\item 
+\mbox{\Hypertarget{classnw_1_1graph_1_1disjoint__set_a646a9a63c120c243fe7084f2314a3ccf}\label{classnw_1_1graph_1_1disjoint__set_a646a9a63c120c243fe7084f2314a3ccf}} 
+static T {\bfseries find\+\_\+with\+\_\+pathcompression} (\mbox{\hyperlink{classnw_1_1graph_1_1disjoint__set}{disjoint\+\_\+set}}$<$ T $>$ \&s, T index)
+\item 
+static T \mbox{\hyperlink{classnw_1_1graph_1_1disjoint__set_aaf75c7579562ea1f881bbf318c5dc0a6}{find}} (\mbox{\hyperlink{classnw_1_1graph_1_1disjoint__set}{disjoint\+\_\+set}}$<$ T $>$ \&s, T index)
+\item 
+\mbox{\Hypertarget{classnw_1_1graph_1_1disjoint__set_a7d809bacdf14fbb4ee72356470b6eaae}\label{classnw_1_1graph_1_1disjoint__set_a7d809bacdf14fbb4ee72356470b6eaae}} 
+static void {\bfseries union\+By\+Size} (\mbox{\hyperlink{classnw_1_1graph_1_1disjoint__set}{disjoint\+\_\+set}}$<$ T $>$ \&s, T const \&u, T const \&v)
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+size\+\_\+t \mbox{\hyperlink{classnw_1_1graph_1_1disjoint__set_a003da270e650bfb2b0d83fbb6daca749}{nsets\+\_\+}}
+\item 
+T \mbox{\hyperlink{classnw_1_1graph_1_1disjoint__set_a7620864bd912d4214accf47f31bc198e}{maxid\+\_\+}}
+\item 
+\mbox{\Hypertarget{classnw_1_1graph_1_1disjoint__set_a7b5eaca51b6fd1f09c43a363f2f41f22}\label{classnw_1_1graph_1_1disjoint__set_a7b5eaca51b6fd1f09c43a363f2f41f22}} 
+T $\ast$ {\bfseries sets\+\_\+}
+\end{DoxyCompactItemize}
+\doxysubsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+std\+::ostream \& \mbox{\hyperlink{classnw_1_1graph_1_1disjoint__set_aec14eac365197e5187fcd7587407fa9a}{operator$<$$<$}} (std\+::ostream \&os, \mbox{\hyperlink{classnw_1_1graph_1_1disjoint__set}{disjoint\+\_\+set}}$<$ T $>$ const \&s)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classnw_1_1graph_1_1disjoint__set_a96520a36845f3275b33c8595c0a41217}\label{classnw_1_1graph_1_1disjoint__set_a96520a36845f3275b33c8595c0a41217}} 
+\index{nw::graph::disjoint\_set$<$ T $>$@{nw::graph::disjoint\_set$<$ T $>$}!disjoint\_set@{disjoint\_set}}
+\index{disjoint\_set@{disjoint\_set}!nw::graph::disjoint\_set$<$ T $>$@{nw::graph::disjoint\_set$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{disjoint\_set()}{disjoint\_set()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+\mbox{\hyperlink{classnw_1_1graph_1_1disjoint__set}{nw\+::graph\+::disjoint\+\_\+set}}$<$ T $>$\+::disjoint\+\_\+set (\begin{DoxyParamCaption}\item[{T}]{max\+\_\+element }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [explicit]}}
+
+Create a new set representation with not more the @max\+\_\+element elements. Initially every element is in its own set (-\/1). 
+\begin{DoxyParams}{Parameters}
+{\em max\+\_\+element} & maximum number of elements \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classnw_1_1graph_1_1disjoint__set_aa372a0e70dd53e70d65fcbb3eec41280}\label{classnw_1_1graph_1_1disjoint__set_aa372a0e70dd53e70d65fcbb3eec41280}} 
+\index{nw::graph::disjoint\_set$<$ T $>$@{nw::graph::disjoint\_set$<$ T $>$}!disjoint\_set@{disjoint\_set}}
+\index{disjoint\_set@{disjoint\_set}!nw::graph::disjoint\_set$<$ T $>$@{nw::graph::disjoint\_set$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{disjoint\_set()}{disjoint\_set()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+\mbox{\hyperlink{classnw_1_1graph_1_1disjoint__set}{nw\+::graph\+::disjoint\+\_\+set}}$<$ T $>$\+::disjoint\+\_\+set (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classnw_1_1graph_1_1disjoint__set}{disjoint\+\_\+set}}$<$ T $>$ \&}]{other }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [explicit]}}
+
+Copy constructor. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em other,the} & other set \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classnw_1_1graph_1_1disjoint__set_a4bb47c8fa742b5fd82567ff18d40bb17}\label{classnw_1_1graph_1_1disjoint__set_a4bb47c8fa742b5fd82567ff18d40bb17}} 
+\index{nw::graph::disjoint\_set$<$ T $>$@{nw::graph::disjoint\_set$<$ T $>$}!allToSingletons@{allToSingletons}}
+\index{allToSingletons@{allToSingletons}!nw::graph::disjoint\_set$<$ T $>$@{nw::graph::disjoint\_set$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{allToSingletons()}{allToSingletons()}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+template$<$class Execution\+Policy  = std\+::execution\+::parallel\+\_\+unsequenced\+\_\+policy$>$ \\
+void \mbox{\hyperlink{classnw_1_1graph_1_1disjoint__set}{nw\+::graph\+::disjoint\+\_\+set}}$<$ T $>$\+::all\+To\+Singletons (\begin{DoxyParamCaption}\item[{Execution\+Policy \&\&}]{policy = {\ttfamily \{\}} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Set id is equal to element id. \mbox{\Hypertarget{classnw_1_1graph_1_1disjoint__set_a63ff23b599f3a696ff3e3dcddfe144ff}\label{classnw_1_1graph_1_1disjoint__set_a63ff23b599f3a696ff3e3dcddfe144ff}} 
+\index{nw::graph::disjoint\_set$<$ T $>$@{nw::graph::disjoint\_set$<$ T $>$}!combineByHeight@{combineByHeight}}
+\index{combineByHeight@{combineByHeight}!nw::graph::disjoint\_set$<$ T $>$@{nw::graph::disjoint\_set$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{combineByHeight()}{combineByHeight()}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+void \mbox{\hyperlink{classnw_1_1graph_1_1disjoint__set}{nw\+::graph\+::disjoint\+\_\+set}}$<$ T $>$\+::combine\+By\+Height (\begin{DoxyParamCaption}\item[{T const \&}]{v,  }\item[{T const \&}]{u }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Union the two disjoint sets by height @u and @v. 
+\begin{DoxyParams}{Parameters}
+{\em u} & element u \\
+\hline
+{\em v} & element v \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classnw_1_1graph_1_1disjoint__set_af49a079a84612551ce66479721902042}\label{classnw_1_1graph_1_1disjoint__set_af49a079a84612551ce66479721902042}} 
+\index{nw::graph::disjoint\_set$<$ T $>$@{nw::graph::disjoint\_set$<$ T $>$}!combineBySize@{combineBySize}}
+\index{combineBySize@{combineBySize}!nw::graph::disjoint\_set$<$ T $>$@{nw::graph::disjoint\_set$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{combineBySize()}{combineBySize()}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+void \mbox{\hyperlink{classnw_1_1graph_1_1disjoint__set}{nw\+::graph\+::disjoint\+\_\+set}}$<$ T $>$\+::combine\+By\+Size (\begin{DoxyParamCaption}\item[{T const \&}]{u,  }\item[{T const \&}]{v }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Union the two disjoint sets by size @u and @v, the set with smaller size will be included in the set with larger size. If two sets have the same size, the latter will join the former. 
+\begin{DoxyParams}{Parameters}
+{\em u} & element u \\
+\hline
+{\em v} & element v \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classnw_1_1graph_1_1disjoint__set_aca15e8e1dc1ed118fd97941471d2c3b3}\label{classnw_1_1graph_1_1disjoint__set_aca15e8e1dc1ed118fd97941471d2c3b3}} 
+\index{nw::graph::disjoint\_set$<$ T $>$@{nw::graph::disjoint\_set$<$ T $>$}!directFind@{directFind}}
+\index{directFind@{directFind}!nw::graph::disjoint\_set$<$ T $>$@{nw::graph::disjoint\_set$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{directFind()}{directFind()}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+virtual T \mbox{\hyperlink{classnw_1_1graph_1_1disjoint__set}{nw\+::graph\+::disjoint\+\_\+set}}$<$ T $>$\+::direct\+Find (\begin{DoxyParamCaption}\item[{const T}]{index }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+direct\+Find is a direct find for element at \textquotesingle{}index\textquotesingle{}. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em index} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the element at index 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classnw_1_1graph_1_1disjoint__set_a927fa97e6125d0c6682b41537db34a13}\label{classnw_1_1graph_1_1disjoint__set_a927fa97e6125d0c6682b41537db34a13}} 
+\index{nw::graph::disjoint\_set$<$ T $>$@{nw::graph::disjoint\_set$<$ T $>$}!directJoin@{directJoin}}
+\index{directJoin@{directJoin}!nw::graph::disjoint\_set$<$ T $>$@{nw::graph::disjoint\_set$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{directJoin()}{directJoin()}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+virtual bool \mbox{\hyperlink{classnw_1_1graph_1_1disjoint__set}{nw\+::graph\+::disjoint\+\_\+set}}$<$ T $>$\+::direct\+Join (\begin{DoxyParamCaption}\item[{T const \&}]{u,  }\item[{T const \&}]{v }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+Element v changes its value to u, set\mbox{[}v\mbox{]} = u. 
+\begin{DoxyParams}{Parameters}
+{\em u} & element u \\
+\hline
+{\em v} & element v \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classnw_1_1graph_1_1disjoint__set_aaf75c7579562ea1f881bbf318c5dc0a6}\label{classnw_1_1graph_1_1disjoint__set_aaf75c7579562ea1f881bbf318c5dc0a6}} 
+\index{nw::graph::disjoint\_set$<$ T $>$@{nw::graph::disjoint\_set$<$ T $>$}!find@{find}}
+\index{find@{find}!nw::graph::disjoint\_set$<$ T $>$@{nw::graph::disjoint\_set$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{find()}{find()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+static T \mbox{\hyperlink{classnw_1_1graph_1_1disjoint__set}{nw\+::graph\+::disjoint\+\_\+set}}$<$ T $>$\+::find (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classnw_1_1graph_1_1disjoint__set}{disjoint\+\_\+set}}$<$ T $>$ \&}]{s,  }\item[{T}]{index }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+Static wrapper for find. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em s,\mbox{\hyperlink{classnw_1_1graph_1_1disjoint__set}{disjoint\+\_\+set}}} & \\
+\hline
+\mbox{\texttt{ in}}  & {\em index} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+representative of set containing @u 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classnw_1_1graph_1_1disjoint__set_af306ad0e3e6f9a7508d44fe13c55e3a5}\label{classnw_1_1graph_1_1disjoint__set_af306ad0e3e6f9a7508d44fe13c55e3a5}} 
+\index{nw::graph::disjoint\_set$<$ T $>$@{nw::graph::disjoint\_set$<$ T $>$}!find@{find}}
+\index{find@{find}!nw::graph::disjoint\_set$<$ T $>$@{nw::graph::disjoint\_set$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{find()}{find()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+virtual T \mbox{\hyperlink{classnw_1_1graph_1_1disjoint__set}{nw\+::graph\+::disjoint\+\_\+set}}$<$ T $>$\+::find (\begin{DoxyParamCaption}\item[{T}]{index }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+find is a simple find for @u. 
+\begin{DoxyParams}[1]{Parameters}
+\mbox{\texttt{ in}}  & {\em index} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+representative of set containing @u 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classnw_1_1graph_1_1disjoint__set_a3b80f8dd1e1cd5e8c4830a5eca4c5b1d}\label{classnw_1_1graph_1_1disjoint__set_a3b80f8dd1e1cd5e8c4830a5eca4c5b1d}} 
+\index{nw::graph::disjoint\_set$<$ T $>$@{nw::graph::disjoint\_set$<$ T $>$}!find\_with\_pathcompression@{find\_with\_pathcompression}}
+\index{find\_with\_pathcompression@{find\_with\_pathcompression}!nw::graph::disjoint\_set$<$ T $>$@{nw::graph::disjoint\_set$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{find\_with\_pathcompression()}{find\_with\_pathcompression()}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+virtual T \mbox{\hyperlink{classnw_1_1graph_1_1disjoint__set}{nw\+::graph\+::disjoint\+\_\+set}}$<$ T $>$\+::find\+\_\+with\+\_\+pathcompression (\begin{DoxyParamCaption}\item[{T}]{index }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+find\+\_\+with\+\_\+pathcompression is find with path compression. 
+\begin{DoxyParams}{Parameters}
+{\em u} & element \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+representative of set containing @u 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classnw_1_1graph_1_1disjoint__set_a0f7c385f12661c2a1aedf3b719705103}\label{classnw_1_1graph_1_1disjoint__set_a0f7c385f12661c2a1aedf3b719705103}} 
+\index{nw::graph::disjoint\_set$<$ T $>$@{nw::graph::disjoint\_set$<$ T $>$}!getCompactDisjSets@{getCompactDisjSets}}
+\index{getCompactDisjSets@{getCompactDisjSets}!nw::graph::disjoint\_set$<$ T $>$@{nw::graph::disjoint\_set$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{getCompactDisjSets()}{getCompactDisjSets()}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+std\+::vector$<$ T $>$ \mbox{\hyperlink{classnw_1_1graph_1_1disjoint__set}{nw\+::graph\+::disjoint\+\_\+set}}$<$ T $>$\+::get\+Compact\+Disj\+Sets (\begin{DoxyParamCaption}\item[{size\+\_\+t \&}]{nsets }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+Get the compact version of communities in vector form for verification. This version is for disjoint sets communities. \begin{DoxyReturn}{Returns}
+a vector of elements labeled under different set label. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classnw_1_1graph_1_1disjoint__set_a09ad6ecd3e3b8cd6d9598fa1512b1624}\label{classnw_1_1graph_1_1disjoint__set_a09ad6ecd3e3b8cd6d9598fa1512b1624}} 
+\index{nw::graph::disjoint\_set$<$ T $>$@{nw::graph::disjoint\_set$<$ T $>$}!getMaxId@{getMaxId}}
+\index{getMaxId@{getMaxId}!nw::graph::disjoint\_set$<$ T $>$@{nw::graph::disjoint\_set$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{getMaxId()}{getMaxId()}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+T \mbox{\hyperlink{classnw_1_1graph_1_1disjoint__set}{nw\+::graph\+::disjoint\+\_\+set}}$<$ T $>$\+::get\+Max\+Id (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+Get the max id in this disjoint sets. \begin{DoxyReturn}{Returns}
+max id 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classnw_1_1graph_1_1disjoint__set_a3eeb8516f438597b568f255360644ade}\label{classnw_1_1graph_1_1disjoint__set_a3eeb8516f438597b568f255360644ade}} 
+\index{nw::graph::disjoint\_set$<$ T $>$@{nw::graph::disjoint\_set$<$ T $>$}!getSetNumber@{getSetNumber}}
+\index{getSetNumber@{getSetNumber}!nw::graph::disjoint\_set$<$ T $>$@{nw::graph::disjoint\_set$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{getSetNumber()}{getSetNumber()}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+size\+\_\+t \mbox{\hyperlink{classnw_1_1graph_1_1disjoint__set}{nw\+::graph\+::disjoint\+\_\+set}}$<$ T $>$\+::get\+Set\+Number (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+Get the number of disjoint sets. \begin{DoxyReturn}{Returns}
+the number of disjoint sets. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classnw_1_1graph_1_1disjoint__set_a4afbc76f621adbcf606fcbf5c0da25d0}\label{classnw_1_1graph_1_1disjoint__set_a4afbc76f621adbcf606fcbf5c0da25d0}} 
+\index{nw::graph::disjoint\_set$<$ T $>$@{nw::graph::disjoint\_set$<$ T $>$}!getSetSize@{getSetSize}}
+\index{getSetSize@{getSetSize}!nw::graph::disjoint\_set$<$ T $>$@{nw::graph::disjoint\_set$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{getSetSize()}{getSetSize()}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+size\+\_\+t \mbox{\hyperlink{classnw_1_1graph_1_1disjoint__set}{nw\+::graph\+::disjoint\+\_\+set}}$<$ T $>$\+::get\+Set\+Size (\begin{DoxyParamCaption}\item[{const T}]{u }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+Given an element in a set, get the size of disjoint set containing this element. @ param\mbox{[}in\mbox{]} u, an element of the set to query \begin{DoxyReturn}{Returns}
+the size of disjoint set. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classnw_1_1graph_1_1disjoint__set_aff9ebb950bc3fd3deede308d3f8821da}\label{classnw_1_1graph_1_1disjoint__set_aff9ebb950bc3fd3deede308d3f8821da}} 
+\index{nw::graph::disjoint\_set$<$ T $>$@{nw::graph::disjoint\_set$<$ T $>$}!getSubsets@{getSubsets}}
+\index{getSubsets@{getSubsets}!nw::graph::disjoint\_set$<$ T $>$@{nw::graph::disjoint\_set$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{getSubsets()}{getSubsets()}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+std\+::vector$<$ std\+::set$<$ T $>$ $>$ \mbox{\hyperlink{classnw_1_1graph_1_1disjoint__set}{nw\+::graph\+::disjoint\+\_\+set}}$<$ T $>$\+::get\+Subsets (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+Get the subsets. \begin{DoxyReturn}{Returns}
+subsets in \mbox{\hyperlink{classnw_1_1graph_1_1disjoint__set}{disjoint\+\_\+set}}. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classnw_1_1graph_1_1disjoint__set_a3486799caa0880665810fed4d12cec36}\label{classnw_1_1graph_1_1disjoint__set_a3486799caa0880665810fed4d12cec36}} 
+\index{nw::graph::disjoint\_set$<$ T $>$@{nw::graph::disjoint\_set$<$ T $>$}!join@{join}}
+\index{join@{join}!nw::graph::disjoint\_set$<$ T $>$@{nw::graph::disjoint\_set$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{join()}{join()}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+virtual bool \mbox{\hyperlink{classnw_1_1graph_1_1disjoint__set}{nw\+::graph\+::disjoint\+\_\+set}}$<$ T $>$\+::join (\begin{DoxyParamCaption}\item[{T const \&}]{u,  }\item[{T const \&}]{v }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+Element v changes its membership to the set of element u, v-\/\texorpdfstring{$>$}{>}set\+Of(u). 
+\begin{DoxyParams}{Parameters}
+{\em u} & element u \\
+\hline
+{\em v} & element v \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classnw_1_1graph_1_1disjoint__set_ad68830538db5c029c45984848717b6d0}\label{classnw_1_1graph_1_1disjoint__set_ad68830538db5c029c45984848717b6d0}} 
+\index{nw::graph::disjoint\_set$<$ T $>$@{nw::graph::disjoint\_set$<$ T $>$}!printDisjSets@{printDisjSets}}
+\index{printDisjSets@{printDisjSets}!nw::graph::disjoint\_set$<$ T $>$@{nw::graph::disjoint\_set$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{printDisjSets()}{printDisjSets()}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+void \mbox{\hyperlink{classnw_1_1graph_1_1disjoint__set}{nw\+::graph\+::disjoint\+\_\+set}}$<$ T $>$\+::print\+Disj\+Sets (\begin{DoxyParamCaption}\item[{std\+::ostream \&}]{os }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+Print the whole disjoint sets. \mbox{\Hypertarget{classnw_1_1graph_1_1disjoint__set_ae3e5eca8e06b9a836bb2fdfd437ec354}\label{classnw_1_1graph_1_1disjoint__set_ae3e5eca8e06b9a836bb2fdfd437ec354}} 
+\index{nw::graph::disjoint\_set$<$ T $>$@{nw::graph::disjoint\_set$<$ T $>$}!reset@{reset}}
+\index{reset@{reset}!nw::graph::disjoint\_set$<$ T $>$@{nw::graph::disjoint\_set$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{reset()}{reset()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+void \mbox{\hyperlink{classnw_1_1graph_1_1disjoint__set}{nw\+::graph\+::disjoint\+\_\+set}}$<$ T $>$\+::reset (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Assigns every element to -\/1. Set id is equal to element id. \mbox{\Hypertarget{classnw_1_1graph_1_1disjoint__set_aacbbd3ec3ebdb22e65316493675cbe4e}\label{classnw_1_1graph_1_1disjoint__set_aacbbd3ec3ebdb22e65316493675cbe4e}} 
+\index{nw::graph::disjoint\_set$<$ T $>$@{nw::graph::disjoint\_set$<$ T $>$}!reset@{reset}}
+\index{reset@{reset}!nw::graph::disjoint\_set$<$ T $>$@{nw::graph::disjoint\_set$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{reset()}{reset()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+void \mbox{\hyperlink{classnw_1_1graph_1_1disjoint__set}{nw\+::graph\+::disjoint\+\_\+set}}$<$ T $>$\+::reset (\begin{DoxyParamCaption}\item[{const T}]{index }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Assigns every element to -\/1. Set id to element id. \mbox{\Hypertarget{classnw_1_1graph_1_1disjoint__set_a8e918d130954f8430b42fd7e40815986}\label{classnw_1_1graph_1_1disjoint__set_a8e918d130954f8430b42fd7e40815986}} 
+\index{nw::graph::disjoint\_set$<$ T $>$@{nw::graph::disjoint\_set$<$ T $>$}!unionBySize@{unionBySize}}
+\index{unionBySize@{unionBySize}!nw::graph::disjoint\_set$<$ T $>$@{nw::graph::disjoint\_set$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{unionBySize()}{unionBySize()}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+virtual void \mbox{\hyperlink{classnw_1_1graph_1_1disjoint__set}{nw\+::graph\+::disjoint\+\_\+set}}$<$ T $>$\+::union\+By\+Size (\begin{DoxyParamCaption}\item[{T const \&}]{u,  }\item[{T const \&}]{v }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+Union the two disjoint sets @u and @v by the size of them. Depends how you want to join, you can have the combination of Union\+Byheight, Union\+By\+Size with find, find\+\_\+with\+\_\+pathcompression. Path compression is perfectly compatible with union-\/by-\/size. Path compression is not entirely compatible with union-\/by-\/height, because path compression can change the heights of the trees. Currently, the smaller set will join the larger set. If the size of two sets are equal, the latter will join the former one. 
+\begin{DoxyParams}{Parameters}
+{\em u} & element u \\
+\hline
+{\em v} & element v \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Friends And Related Function Documentation}
+\mbox{\Hypertarget{classnw_1_1graph_1_1disjoint__set_aec14eac365197e5187fcd7587407fa9a}\label{classnw_1_1graph_1_1disjoint__set_aec14eac365197e5187fcd7587407fa9a}} 
+\index{nw::graph::disjoint\_set$<$ T $>$@{nw::graph::disjoint\_set$<$ T $>$}!operator$<$$<$@{operator$<$$<$}}
+\index{operator$<$$<$@{operator$<$$<$}!nw::graph::disjoint\_set$<$ T $>$@{nw::graph::disjoint\_set$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{operator$<$$<$}{operator<<}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+std\+::ostream \& operator$<$$<$ (\begin{DoxyParamCaption}\item[{std\+::ostream \&}]{os,  }\item[{\mbox{\hyperlink{classnw_1_1graph_1_1disjoint__set}{disjoint\+\_\+set}}$<$ T $>$ const \&}]{s }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [friend]}}
+
+Overload operator\texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<} for format output. 
+\begin{DoxyParams}{Parameters}
+{\em os,outstream} & pointer \\
+\hline
+{\em e,the} & edge to print \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+os, outstream pointer 
+\end{DoxyReturn}
+
+
+\doxysubsection{Member Data Documentation}
+\mbox{\Hypertarget{classnw_1_1graph_1_1disjoint__set_a7620864bd912d4214accf47f31bc198e}\label{classnw_1_1graph_1_1disjoint__set_a7620864bd912d4214accf47f31bc198e}} 
+\index{nw::graph::disjoint\_set$<$ T $>$@{nw::graph::disjoint\_set$<$ T $>$}!maxid\_@{maxid\_}}
+\index{maxid\_@{maxid\_}!nw::graph::disjoint\_set$<$ T $>$@{nw::graph::disjoint\_set$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{maxid\_}{maxid\_}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+T \mbox{\hyperlink{classnw_1_1graph_1_1disjoint__set}{nw\+::graph\+::disjoint\+\_\+set}}$<$ T $>$\+::maxid\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+Max element appears in the set. \mbox{\Hypertarget{classnw_1_1graph_1_1disjoint__set_a003da270e650bfb2b0d83fbb6daca749}\label{classnw_1_1graph_1_1disjoint__set_a003da270e650bfb2b0d83fbb6daca749}} 
+\index{nw::graph::disjoint\_set$<$ T $>$@{nw::graph::disjoint\_set$<$ T $>$}!nsets\_@{nsets\_}}
+\index{nsets\_@{nsets\_}!nw::graph::disjoint\_set$<$ T $>$@{nw::graph::disjoint\_set$<$ T $>$}}
+\doxysubsubsection{\texorpdfstring{nsets\_}{nsets\_}}
+{\footnotesize\ttfamily template$<$class T $>$ \\
+size\+\_\+t \mbox{\hyperlink{classnw_1_1graph_1_1disjoint__set}{nw\+::graph\+::disjoint\+\_\+set}}$<$ T $>$\+::nsets\+\_\+\hspace{0.3cm}{\ttfamily [protected]}}
+
+Number of disjoint sets. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/lums/\+NWmath/\+NWgr/include/nwgraph/util/disjoint\+\_\+set.\+hpp\end{DoxyCompactItemize}

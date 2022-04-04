@@ -1,0 +1,143 @@
+\hypertarget{compat_8hpp_source}{}\doxysection{compat.\+hpp}
+\label{compat_8hpp_source}\index{/Users/lums/NWmath/NWgr/include/nwgraph/compat.hpp@{/Users/lums/NWmath/NWgr/include/nwgraph/compat.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// }}
+\DoxyCodeLine{2 \textcolor{comment}{// This file is part of NW Graph (aka GraphPack) }}
+\DoxyCodeLine{3 \textcolor{comment}{// (c) Pacific Northwest National Laboratory 2018-\/2021 }}
+\DoxyCodeLine{4 \textcolor{comment}{// (c) University of Washington 2018-\/2021 }}
+\DoxyCodeLine{5 \textcolor{comment}{// }}
+\DoxyCodeLine{6 \textcolor{comment}{// Licensed under terms of include LICENSE file }}
+\DoxyCodeLine{7 \textcolor{comment}{// }}
+\DoxyCodeLine{8 \textcolor{comment}{// Authors: }}
+\DoxyCodeLine{9 \textcolor{comment}{//     Andrew Lumsdaine }}
+\DoxyCodeLine{10 \textcolor{comment}{//}}
+\DoxyCodeLine{11 }
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#ifndef NWGRAPH\_COMPAT\_HPP}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#define NWGRAPH\_COMPAT\_HPP}}
+\DoxyCodeLine{14 }
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#warning "{}compat.hpp is deprecated"{}}}
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#if 0}}
+\DoxyCodeLine{18 }
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include <forward\_list>}}
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#include <list>}}
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#include <tuple>}}
+\DoxyCodeLine{22 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{23 }
+\DoxyCodeLine{24 \textcolor{preprocessor}{\#include "{}nwgraph/graph\_traits.hpp"{}}}
+\DoxyCodeLine{25 }
+\DoxyCodeLine{26 }
+\DoxyCodeLine{27 }
+\DoxyCodeLine{28 \textcolor{keyword}{namespace }nw \{}
+\DoxyCodeLine{29   \textcolor{keyword}{namespace }graph \{}
+\DoxyCodeLine{30 }
+\DoxyCodeLine{31 }
+\DoxyCodeLine{32 \textcolor{keyword}{template} <\textcolor{keyword}{typename}... Attributes>}
+\DoxyCodeLine{33 \textcolor{keyword}{struct }graph\_traits<std::forward\_list<std::tuple<Attributes...>>> \{}
+\DoxyCodeLine{34   \textcolor{keyword}{using} tuple\_type = std::tuple<Attributes...>;}
+\DoxyCodeLine{35 }
+\DoxyCodeLine{36   \textcolor{keyword}{using} vertex\_id\_type = \textcolor{keyword}{typename} std::tuple\_element<0, tuple\_type>::type;}
+\DoxyCodeLine{37 \};}
+\DoxyCodeLine{38 }
+\DoxyCodeLine{39 }
+\DoxyCodeLine{40 \textcolor{keyword}{template} <\textcolor{keyword}{typename}... Attributes>}
+\DoxyCodeLine{41 \textcolor{keyword}{struct }graph\_traits<std::list<std::tuple<Attributes...>>> \{}
+\DoxyCodeLine{42   \textcolor{keyword}{using} tuple\_type = std::tuple<Attributes...>;}
+\DoxyCodeLine{43   \textcolor{keyword}{using} outer\_type = std::list<tuple\_type>;}
+\DoxyCodeLine{44 }
+\DoxyCodeLine{45   \textcolor{keyword}{using} vertex\_id\_type = \textcolor{keyword}{typename} std::tuple\_element<0, tuple\_type>::type;}
+\DoxyCodeLine{46   \textcolor{keyword}{using} vertex\_size\_type  = \textcolor{keyword}{typename} outer\_type::size\_type;}
+\DoxyCodeLine{47   \textcolor{keyword}{using} num\_vertices\_type = std::array<vertex\_size\_type, 1>;}
+\DoxyCodeLine{48 \};}
+\DoxyCodeLine{49 }
+\DoxyCodeLine{50 }
+\DoxyCodeLine{51 }
+\DoxyCodeLine{52 \textcolor{keyword}{template} <\textcolor{keyword}{typename}... Attributes>}
+\DoxyCodeLine{53 \textcolor{keyword}{auto} tag\_invoke(\textcolor{keyword}{const} num\_edges\_tag, \textcolor{keyword}{const} std::list<std::tuple<Attributes...>>\& b) \{}
+\DoxyCodeLine{54   \textcolor{keywordflow}{return} b.size();}
+\DoxyCodeLine{55 \}}
+\DoxyCodeLine{56 }
+\DoxyCodeLine{57 }
+\DoxyCodeLine{58 \textcolor{keyword}{template} <\textcolor{keyword}{typename}... Attributes>}
+\DoxyCodeLine{59 \textcolor{keyword}{struct }graph\_traits<std::vector<std::tuple<Attributes...>>> \{}
+\DoxyCodeLine{60   \textcolor{keyword}{using} tuple\_type = std::tuple<Attributes...>;}
+\DoxyCodeLine{61   \textcolor{keyword}{using} outer\_type = std::vector<tuple\_type>;}
+\DoxyCodeLine{62 }
+\DoxyCodeLine{63   \textcolor{keyword}{using} vertex\_id\_type = \textcolor{keyword}{typename} std::tuple\_element<0, tuple\_type>::type;}
+\DoxyCodeLine{64   \textcolor{keyword}{using} vertex\_size\_type  = \textcolor{keyword}{typename} outer\_type::size\_type;}
+\DoxyCodeLine{65   \textcolor{keyword}{using} num\_vertices\_type = std::array<vertex\_size\_type, 1>;}
+\DoxyCodeLine{66 \};}
+\DoxyCodeLine{67 }
+\DoxyCodeLine{68 }
+\DoxyCodeLine{69 \textcolor{keyword}{template} <\textcolor{keyword}{typename}... Attributes>}
+\DoxyCodeLine{70 \textcolor{keyword}{auto} tag\_invoke(\textcolor{keyword}{const} num\_edges\_tag, \textcolor{keyword}{const} std::vector<std::tuple<Attributes...>>\& b) \{}
+\DoxyCodeLine{71   \textcolor{keywordflow}{return} b.size();}
+\DoxyCodeLine{72 \}}
+\DoxyCodeLine{73 }
+\DoxyCodeLine{74 }
+\DoxyCodeLine{75 }
+\DoxyCodeLine{76 \textcolor{comment}{// std::vector<forward\_list>}}
+\DoxyCodeLine{77 \textcolor{keyword}{template} <\textcolor{keyword}{typename}... Attributes>}
+\DoxyCodeLine{78 \textcolor{keyword}{struct }graph\_traits<std::vector<std::forward\_list<std::tuple<Attributes...>>>> \{}
+\DoxyCodeLine{79   \textcolor{keyword}{using} tuple\_type = std::tuple<Attributes...>;}
+\DoxyCodeLine{80   \textcolor{keyword}{using} inner\_type = std::forward\_list<tuple\_type>;}
+\DoxyCodeLine{81   \textcolor{keyword}{using} outer\_type = std::vector<inner\_type>;}
+\DoxyCodeLine{82 }
+\DoxyCodeLine{83   \textcolor{keyword}{using} outer\_iterator = \textcolor{keyword}{typename} outer\_type::iterator;}
+\DoxyCodeLine{84   \textcolor{keyword}{using} inner\_iterator = \textcolor{keyword}{typename} inner\_type::iterator;}
+\DoxyCodeLine{85 }
+\DoxyCodeLine{86   \textcolor{keyword}{using} \mbox{\hyperlink{classconst__outer__iterator}{const\_outer\_iterator}} = \textcolor{keyword}{typename} outer\_type::const\_iterator;}
+\DoxyCodeLine{87   \textcolor{keyword}{using} const\_inner\_iterator = \textcolor{keyword}{typename} inner\_type::const\_iterator;}
+\DoxyCodeLine{88 }
+\DoxyCodeLine{89   \textcolor{keyword}{using} vertex\_id\_type    = \textcolor{keyword}{typename} std::tuple\_element<0, tuple\_type>::type;}
+\DoxyCodeLine{90   \textcolor{keyword}{using} vertex\_size\_type  = \textcolor{keyword}{typename} outer\_type::size\_type;}
+\DoxyCodeLine{91   \textcolor{keyword}{using} num\_vertices\_type = std::array<vertex\_size\_type, 1>;}
+\DoxyCodeLine{92 \};}
+\DoxyCodeLine{93 }
+\DoxyCodeLine{94 }
+\DoxyCodeLine{95 \textcolor{comment}{// std::vector<list>}}
+\DoxyCodeLine{96 \textcolor{keyword}{template} <\textcolor{keyword}{typename}... Attributes>}
+\DoxyCodeLine{97 \textcolor{keyword}{struct }graph\_traits<std::vector<std::list<std::tuple<Attributes...>>>> \{}
+\DoxyCodeLine{98   \textcolor{keyword}{using} tuple\_type = std::tuple<Attributes...>;}
+\DoxyCodeLine{99   \textcolor{keyword}{using} inner\_type = std::list<tuple\_type>;}
+\DoxyCodeLine{100   \textcolor{keyword}{using} outer\_type = std::vector<inner\_type>;}
+\DoxyCodeLine{101 }
+\DoxyCodeLine{102   \textcolor{keyword}{using} outer\_iterator = \textcolor{keyword}{typename} outer\_type::iterator;}
+\DoxyCodeLine{103   \textcolor{keyword}{using} inner\_iterator = \textcolor{keyword}{typename} inner\_type::iterator;}
+\DoxyCodeLine{104 }
+\DoxyCodeLine{105   \textcolor{keyword}{using} \mbox{\hyperlink{classconst__outer__iterator}{const\_outer\_iterator}} = \textcolor{keyword}{typename} outer\_type::const\_iterator;}
+\DoxyCodeLine{106   \textcolor{keyword}{using} const\_inner\_iterator = \textcolor{keyword}{typename} inner\_type::const\_iterator;}
+\DoxyCodeLine{107 }
+\DoxyCodeLine{108   \textcolor{keyword}{using} vertex\_id\_type    = \textcolor{keyword}{typename} std::tuple\_element<0, tuple\_type>::type;}
+\DoxyCodeLine{109   \textcolor{keyword}{using} vertex\_size\_type  = \textcolor{keyword}{typename} outer\_type::size\_type;}
+\DoxyCodeLine{110   \textcolor{keyword}{using} num\_vertices\_type = std::array<vertex\_size\_type, 1>;}
+\DoxyCodeLine{111 \};}
+\DoxyCodeLine{112 }
+\DoxyCodeLine{113 \textcolor{comment}{// std::vector<vector>}}
+\DoxyCodeLine{114 \textcolor{keyword}{template} <\textcolor{keyword}{typename}... Attributes>}
+\DoxyCodeLine{115 \textcolor{keyword}{struct }graph\_traits<std::vector<std::vector<std::tuple<Attributes...>>>> \{}
+\DoxyCodeLine{116   \textcolor{keyword}{using} tuple\_type = std::tuple<Attributes...>;}
+\DoxyCodeLine{117   \textcolor{keyword}{using} inner\_type = std::vector<tuple\_type>;}
+\DoxyCodeLine{118   \textcolor{keyword}{using} outer\_type = std::vector<inner\_type>;}
+\DoxyCodeLine{119 }
+\DoxyCodeLine{120   \textcolor{keyword}{using} outer\_iterator = \textcolor{keyword}{typename} outer\_type::iterator;}
+\DoxyCodeLine{121   \textcolor{keyword}{using} inner\_iterator = \textcolor{keyword}{typename} inner\_type::iterator;}
+\DoxyCodeLine{122 }
+\DoxyCodeLine{123   \textcolor{keyword}{using} \mbox{\hyperlink{classconst__outer__iterator}{const\_outer\_iterator}} = \textcolor{keyword}{typename} outer\_type::const\_iterator;}
+\DoxyCodeLine{124   \textcolor{keyword}{using} const\_inner\_iterator = \textcolor{keyword}{typename} inner\_type::const\_iterator;}
+\DoxyCodeLine{125 }
+\DoxyCodeLine{126   \textcolor{keyword}{using} vertex\_id\_type    = \textcolor{keyword}{typename} std::tuple\_element<0, tuple\_type>::type;}
+\DoxyCodeLine{127   \textcolor{keyword}{using} vertex\_size\_type  = \textcolor{keyword}{typename} outer\_type::size\_type;}
+\DoxyCodeLine{128   \textcolor{keyword}{using} num\_vertices\_type = std::array<vertex\_size\_type, 1>;}
+\DoxyCodeLine{129 \};}
+\DoxyCodeLine{130 }
+\DoxyCodeLine{131 }
+\DoxyCodeLine{132 }
+\DoxyCodeLine{133 }
+\DoxyCodeLine{134   \}}
+\DoxyCodeLine{135 \}}
+\DoxyCodeLine{136 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{137 \textcolor{preprocessor}{\#endif }\textcolor{comment}{// NWGRAPH\_COMPAT\_HPP}}
+
+\end{DoxyCode}

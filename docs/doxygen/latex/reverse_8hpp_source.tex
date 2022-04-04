@@ -1,0 +1,76 @@
+\hypertarget{reverse_8hpp_source}{}\doxysection{reverse.\+hpp}
+\label{reverse_8hpp_source}\index{/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/reverse.hpp@{/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/reverse.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// }}
+\DoxyCodeLine{2 \textcolor{comment}{// This file is part of NW Graph (aka GraphPack) }}
+\DoxyCodeLine{3 \textcolor{comment}{// (c) Pacific Northwest National Laboratory 2018-\/2021 }}
+\DoxyCodeLine{4 \textcolor{comment}{// (c) University of Washington 2018-\/2021 }}
+\DoxyCodeLine{5 \textcolor{comment}{// }}
+\DoxyCodeLine{6 \textcolor{comment}{// Licensed under terms of include LICENSE file }}
+\DoxyCodeLine{7 \textcolor{comment}{// }}
+\DoxyCodeLine{8 \textcolor{comment}{// Authors: }}
+\DoxyCodeLine{9 \textcolor{comment}{//     Andrew Lumsdaine }}
+\DoxyCodeLine{10 \textcolor{comment}{//     Kevin Deweese    }}
+\DoxyCodeLine{11 \textcolor{comment}{//}}
+\DoxyCodeLine{12 }
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#ifndef NW\_GRAPH\_REVERSE\_HPP}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#define NW\_GRAPH\_REVERSE\_HPP}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include "{}nwgraph/util/util.hpp"{}}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include <concepts>}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 \textcolor{keyword}{namespace }nw \{}
+\DoxyCodeLine{21 \textcolor{keyword}{namespace }graph \{}
+\DoxyCodeLine{22 }
+\DoxyCodeLine{23 \textcolor{keyword}{template} <\textcolor{keyword}{typename} path\_edge, std::\textcolor{keywordtype}{int}egral vertex\_\textcolor{keywordtype}{id}>}
+\DoxyCodeLine{24 \textcolor{keyword}{class }\mbox{\hyperlink{classnw_1_1graph_1_1reverse__path}{reverse\_path}} \{}
+\DoxyCodeLine{25 \textcolor{keyword}{public}:}
+\DoxyCodeLine{26   \mbox{\hyperlink{classnw_1_1graph_1_1reverse__path}{reverse\_path}}(std::vector<path\_edge>\& path, vertex\_id start, vertex\_id stop) : path\_(path), start\_(start), stop\_(stop) \{\}}
+\DoxyCodeLine{27 }
+\DoxyCodeLine{28   \textcolor{keyword}{using} vertex\_id\_type = vertex\_id;}
+\DoxyCodeLine{29   std::vector<path\_edge> path\_;}
+\DoxyCodeLine{30   \textcolor{keywordtype}{double}                 update\_;}
+\DoxyCodeLine{31   vertex\_id\_type         start\_, stop\_;}
+\DoxyCodeLine{32   \textcolor{keywordtype}{bool}                   done = \textcolor{keyword}{false};}
+\DoxyCodeLine{33 }
+\DoxyCodeLine{34   \textcolor{keywordtype}{bool} found(vertex\_id\_type current) \{ \textcolor{keywordflow}{return} current == stop\_; \}}
+\DoxyCodeLine{35 }
+\DoxyCodeLine{36   \textcolor{keyword}{class }\mbox{\hyperlink{classnw_1_1graph_1_1reverse__path_1_1reverse__iterator}{reverse\_iterator}} \{}
+\DoxyCodeLine{37   \textcolor{keyword}{private}:}
+\DoxyCodeLine{38     \mbox{\hyperlink{classnw_1_1graph_1_1reverse__path}{reverse\_path}}\&  rev\_;}
+\DoxyCodeLine{39     vertex\_id\_type curr\_;}
+\DoxyCodeLine{40 }
+\DoxyCodeLine{41   \textcolor{keyword}{public}:}
+\DoxyCodeLine{42     \mbox{\hyperlink{classnw_1_1graph_1_1reverse__path_1_1reverse__iterator}{reverse\_iterator}}(\mbox{\hyperlink{classnw_1_1graph_1_1reverse__path}{reverse\_path}}\& rev) : rev\_(rev), curr\_(rev.start\_) \{\}}
+\DoxyCodeLine{43 }
+\DoxyCodeLine{44     \mbox{\hyperlink{classnw_1_1graph_1_1reverse__path_1_1reverse__iterator}{reverse\_iterator}}\& operator++() \{}
+\DoxyCodeLine{45       curr\_ = rev\_.path\_[curr\_].predecessor;}
+\DoxyCodeLine{46       \textcolor{keywordflow}{if} (rev\_.found(curr\_)) \{}
+\DoxyCodeLine{47         rev\_.done = \textcolor{keyword}{true};}
+\DoxyCodeLine{48       \}}
+\DoxyCodeLine{49 }
+\DoxyCodeLine{50       \textcolor{keywordflow}{return} *\textcolor{keyword}{this};}
+\DoxyCodeLine{51     \}}
+\DoxyCodeLine{52 }
+\DoxyCodeLine{53     \textcolor{keyword}{auto} operator*() \{ \textcolor{keywordflow}{return} std::tuple<vertex\_id\_type>(curr\_); \}}
+\DoxyCodeLine{54 }
+\DoxyCodeLine{55     \textcolor{keyword}{class }\mbox{\hyperlink{classnw_1_1graph_1_1reverse__path_1_1reverse__iterator_1_1end__sentinel__type}{end\_sentinel\_type}} \{}
+\DoxyCodeLine{56     \textcolor{keyword}{public}:}
+\DoxyCodeLine{57       \mbox{\hyperlink{classnw_1_1graph_1_1reverse__path_1_1reverse__iterator_1_1end__sentinel__type}{end\_sentinel\_type}}() \{\}}
+\DoxyCodeLine{58     \};}
+\DoxyCodeLine{59 }
+\DoxyCodeLine{60     \textcolor{keyword}{auto} operator==(\textcolor{keyword}{const} \mbox{\hyperlink{classnw_1_1graph_1_1reverse__path_1_1reverse__iterator_1_1end__sentinel__type}{end\_sentinel\_type}}\&)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} rev\_.done; \}}
+\DoxyCodeLine{61     \textcolor{keywordtype}{bool} operator!=(\textcolor{keyword}{const} end\_sentinel\_type\&)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} !rev\_.done; \}}
+\DoxyCodeLine{62   \};}
+\DoxyCodeLine{63 }
+\DoxyCodeLine{64   \textcolor{keyword}{auto} begin() \{ \textcolor{keywordflow}{return} reverse\_iterator(*\textcolor{keyword}{this}); \}}
+\DoxyCodeLine{65   \textcolor{keyword}{auto} end() \{ \textcolor{keywordflow}{return} \textcolor{keyword}{typename} reverse\_iterator::end\_sentinel\_type(); \}}
+\DoxyCodeLine{66 \};}
+\DoxyCodeLine{67 }
+\DoxyCodeLine{68 \}    \textcolor{comment}{// namespace graph}}
+\DoxyCodeLine{69 \}    \textcolor{comment}{// namespace nw}}
+\DoxyCodeLine{70 \textcolor{preprocessor}{\#endif    }\textcolor{comment}{// NW\_GRAPH\_REVERSE\_HPP}}
+
+\end{DoxyCode}

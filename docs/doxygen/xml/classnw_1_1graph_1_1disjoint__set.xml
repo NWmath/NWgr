@@ -1,0 +1,1138 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.3" xml:lang="en-US">
+  <compounddef id="classnw_1_1graph_1_1disjoint__set" kind="class" language="C++" prot="public">
+    <compoundname>nw::graph::disjoint_set</compoundname>
+    <templateparamlist>
+      <param>
+        <type>class T</type>
+      </param>
+    </templateparamlist>
+      <sectiondef kind="protected-attrib">
+      <memberdef kind="variable" id="classnw_1_1graph_1_1disjoint__set_1a003da270e650bfb2b0d83fbb6daca749" prot="protected" static="no" mutable="no">
+        <type>size_t</type>
+        <definition>size_t nw::graph::disjoint_set&lt; T &gt;::nsets_</definition>
+        <argsstring></argsstring>
+        <name>nsets_</name>
+        <qualifiedname>nw::graph::disjoint_set::nsets_</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Number of disjoint sets. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/util/disjoint_set.hpp" line="619" column="10" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/util/disjoint_set.hpp" bodystart="619" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classnw_1_1graph_1_1disjoint__set_1a7620864bd912d4214accf47f31bc198e" prot="protected" static="no" mutable="no">
+        <type>T</type>
+        <definition>T nw::graph::disjoint_set&lt; T &gt;::maxid_</definition>
+        <argsstring></argsstring>
+        <name>maxid_</name>
+        <qualifiedname>nw::graph::disjoint_set::maxid_</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Max element appears in the set. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/util/disjoint_set.hpp" line="623" column="6" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/util/disjoint_set.hpp" bodystart="623" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classnw_1_1graph_1_1disjoint__set_1a7b5eaca51b6fd1f09c43a363f2f41f22" prot="protected" static="no" mutable="no">
+        <type>T *</type>
+        <definition>T* nw::graph::disjoint_set&lt; T &gt;::sets_</definition>
+        <argsstring></argsstring>
+        <name>sets_</name>
+        <qualifiedname>nw::graph::disjoint_set::sets_</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/util/disjoint_set.hpp" line="624" column="5" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/util/disjoint_set.hpp" bodystart="624" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classnw_1_1graph_1_1disjoint__set_1a9635e9c4b588f619ac149f663cba087d" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>nw::graph::disjoint_set&lt; T &gt;::disjoint_set</definition>
+        <argsstring>()</argsstring>
+        <name>disjoint_set</name>
+        <qualifiedname>nw::graph::disjoint_set::disjoint_set</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/util/disjoint_set.hpp" line="102" column="3" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/util/disjoint_set.hpp" bodystart="102" bodyend="107"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1disjoint__set_1a96520a36845f3275b33c8595c0a41217" prot="public" static="no" const="no" explicit="yes" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>nw::graph::disjoint_set&lt; T &gt;::disjoint_set</definition>
+        <argsstring>(T max_element)</argsstring>
+        <name>disjoint_set</name>
+        <qualifiedname>nw::graph::disjoint_set::disjoint_set</qualifiedname>
+        <param>
+          <type>T</type>
+          <declname>max_element</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Create a new set representation with not more the @max_element elements. Initially every element is in its own set (-1). <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>max_element</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>maximum number of elements </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/util/disjoint_set.hpp" line="113" column="12" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/util/disjoint_set.hpp" bodystart="113" bodyend="120"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1disjoint__set_1aa372a0e70dd53e70d65fcbb3eec41280" prot="public" static="no" const="no" explicit="yes" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>nw::graph::disjoint_set&lt; T &gt;::disjoint_set</definition>
+        <argsstring>(const disjoint_set&lt; T &gt; &amp;other)</argsstring>
+        <name>disjoint_set</name>
+        <qualifiedname>nw::graph::disjoint_set::disjoint_set</qualifiedname>
+        <param>
+          <type>const <ref refid="classnw_1_1graph_1_1disjoint__set" kindref="compound">disjoint_set</ref>&lt; T &gt; &amp;</type>
+          <declname>other</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Copy constructor. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">other</parametername>
+<parametername direction="in">the</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>other set </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/util/disjoint_set.hpp" line="125" column="12" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/util/disjoint_set.hpp" bodystart="125" bodyend="133"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1disjoint__set_1a0b09051eb9b81660f2ecf9e462869836" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>nw::graph::disjoint_set&lt; T &gt;::~disjoint_set</definition>
+        <argsstring>()</argsstring>
+        <name>~disjoint_set</name>
+        <qualifiedname>nw::graph::disjoint_set::~disjoint_set</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/util/disjoint_set.hpp" line="135" column="3" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/util/disjoint_set.hpp" bodystart="135" bodyend="135"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1disjoint__set_1ae3e5eca8e06b9a836bb2fdfd437ec354" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void nw::graph::disjoint_set&lt; T &gt;::reset</definition>
+        <argsstring>()</argsstring>
+        <name>reset</name>
+        <qualifiedname>nw::graph::disjoint_set::reset</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Assigns every element to -1. Set id is equal to element id. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/util/disjoint_set.hpp" line="141" column="8" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/util/disjoint_set.hpp" bodystart="141" bodyend="141"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1disjoint__set_1aacbbd3ec3ebdb22e65316493675cbe4e" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void nw::graph::disjoint_set&lt; T &gt;::reset</definition>
+        <argsstring>(const T index)</argsstring>
+        <name>reset</name>
+        <qualifiedname>nw::graph::disjoint_set::reset</qualifiedname>
+        <param>
+          <type>const T</type>
+          <declname>index</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Assigns every element to -1. Set id to element id. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/util/disjoint_set.hpp" line="146" column="8" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/util/disjoint_set.hpp" bodystart="146" bodyend="152"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1disjoint__set_1a4bb47c8fa742b5fd82567ff18d40bb17" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class ExecutionPolicy</type>
+            <defval>std::execution::parallel_unsequenced_policy</defval>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void nw::graph::disjoint_set&lt; T &gt;::allToSingletons</definition>
+        <argsstring>(ExecutionPolicy &amp;&amp;policy={})</argsstring>
+        <name>allToSingletons</name>
+        <qualifiedname>nw::graph::disjoint_set::allToSingletons</qualifiedname>
+        <param>
+          <type>ExecutionPolicy &amp;&amp;</type>
+          <declname>policy</declname>
+          <defval>{}</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Set id is equal to element id. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/util/disjoint_set.hpp" line="157" column="8" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/util/disjoint_set.hpp" bodystart="157" bodyend="163"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1disjoint__set_1a3b80f8dd1e1cd5e8c4830a5eca4c5b1d" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>T</type>
+        <definition>virtual T nw::graph::disjoint_set&lt; T &gt;::find_with_pathcompression</definition>
+        <argsstring>(T index)</argsstring>
+        <name>find_with_pathcompression</name>
+        <qualifiedname>nw::graph::disjoint_set::find_with_pathcompression</qualifiedname>
+        <param>
+          <type>T</type>
+          <declname>index</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>find_with_pathcompression is find with path compression. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>u</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>element </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>representative of set containing @u </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/util/disjoint_set.hpp" line="179" column="13" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/util/disjoint_set.hpp" bodystart="179" bodyend="207"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1disjoint__set_1af306ad0e3e6f9a7508d44fe13c55e3a5" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>T</type>
+        <definition>virtual T nw::graph::disjoint_set&lt; T &gt;::find</definition>
+        <argsstring>(T index) const</argsstring>
+        <name>find</name>
+        <qualifiedname>nw::graph::disjoint_set::find</qualifiedname>
+        <param>
+          <type>T</type>
+          <declname>index</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>find is a simple find for @u. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">index</parametername>
+</parameternamelist>
+<parameterdescription>
+<para></para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>representative of set containing @u </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/util/disjoint_set.hpp" line="214" column="13" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/util/disjoint_set.hpp" bodystart="214" bodyend="230"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1disjoint__set_1aca15e8e1dc1ed118fd97941471d2c3b3" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="virtual">
+        <type>T</type>
+        <definition>virtual T nw::graph::disjoint_set&lt; T &gt;::directFind</definition>
+        <argsstring>(const T index) const</argsstring>
+        <name>directFind</name>
+        <qualifiedname>nw::graph::disjoint_set::directFind</qualifiedname>
+        <param>
+          <type>const T</type>
+          <declname>index</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>directFind is a direct find for element at &apos;index&apos;. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">index</parametername>
+</parameternamelist>
+<parameterdescription>
+<para></para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>the element at index </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/util/disjoint_set.hpp" line="243" column="13" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/util/disjoint_set.hpp" bodystart="243" bodyend="251"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1disjoint__set_1a3486799caa0880665810fed4d12cec36" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>bool</type>
+        <definition>virtual bool nw::graph::disjoint_set&lt; T &gt;::join</definition>
+        <argsstring>(T const &amp;u, T const &amp;v)</argsstring>
+        <name>join</name>
+        <qualifiedname>nw::graph::disjoint_set::join</qualifiedname>
+        <param>
+          <type>T const &amp;</type>
+          <declname>u</declname>
+        </param>
+        <param>
+          <type>T const &amp;</type>
+          <declname>v</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Element v changes its membership to the set of element u, v-&gt;setOf(u). <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>u</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>element u </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>v</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>element v </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/util/disjoint_set.hpp" line="258" column="16" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/util/disjoint_set.hpp" bodystart="258" bodyend="294"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1disjoint__set_1a927fa97e6125d0c6682b41537db34a13" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>bool</type>
+        <definition>virtual bool nw::graph::disjoint_set&lt; T &gt;::directJoin</definition>
+        <argsstring>(T const &amp;u, T const &amp;v)</argsstring>
+        <name>directJoin</name>
+        <qualifiedname>nw::graph::disjoint_set::directJoin</qualifiedname>
+        <param>
+          <type>T const &amp;</type>
+          <declname>u</declname>
+        </param>
+        <param>
+          <type>T const &amp;</type>
+          <declname>v</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Element v changes its value to u, set[v] = u. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>u</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>element u </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>v</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>element v </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/util/disjoint_set.hpp" line="300" column="16" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/util/disjoint_set.hpp" bodystart="300" bodyend="307"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1disjoint__set_1a8e918d130954f8430b42fd7e40815986" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>virtual void nw::graph::disjoint_set&lt; T &gt;::unionBySize</definition>
+        <argsstring>(T const &amp;u, T const &amp;v)</argsstring>
+        <name>unionBySize</name>
+        <qualifiedname>nw::graph::disjoint_set::unionBySize</qualifiedname>
+        <param>
+          <type>T const &amp;</type>
+          <declname>u</declname>
+        </param>
+        <param>
+          <type>T const &amp;</type>
+          <declname>v</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Union the two disjoint sets @u and @v by the size of them. Depends how you want to join, you can have the combination of UnionByheight, UnionBySize with find, find_with_pathcompression. Path compression is perfectly compatible with union-by-size. Path compression is not entirely compatible with union-by-height, because path compression can change the heights of the trees. Currently, the smaller set will join the larger set. If the size of two sets are equal, the latter will join the former one. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>u</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>element u </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>v</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>element v </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/util/disjoint_set.hpp" line="320" column="16" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/util/disjoint_set.hpp" bodystart="320" bodyend="328"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1disjoint__set_1ac58f65e9c4e0c4d03da8e0e4e632c0bb" prot="public" static="no" const="no" explicit="no" inline="yes" virt="virtual">
+        <type>void</type>
+        <definition>virtual void nw::graph::disjoint_set&lt; T &gt;::unionByHeight</definition>
+        <argsstring>(T const &amp;u, T const &amp;v)</argsstring>
+        <name>unionByHeight</name>
+        <qualifiedname>nw::graph::disjoint_set::unionByHeight</qualifiedname>
+        <param>
+          <type>T const &amp;</type>
+          <declname>u</declname>
+        </param>
+        <param>
+          <type>T const &amp;</type>
+          <declname>v</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/util/disjoint_set.hpp" line="330" column="16" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/util/disjoint_set.hpp" bodystart="330" bodyend="338"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1disjoint__set_1af49a079a84612551ce66479721902042" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void nw::graph::disjoint_set&lt; T &gt;::combineBySize</definition>
+        <argsstring>(T const &amp;u, T const &amp;v)</argsstring>
+        <name>combineBySize</name>
+        <qualifiedname>nw::graph::disjoint_set::combineBySize</qualifiedname>
+        <param>
+          <type>T const &amp;</type>
+          <declname>u</declname>
+        </param>
+        <param>
+          <type>T const &amp;</type>
+          <declname>v</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Union the two disjoint sets by size @u and @v, the set with smaller size will be included in the set with larger size. If two sets have the same size, the latter will join the former. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>u</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>element u </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>v</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>element v </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/util/disjoint_set.hpp" line="347" column="8" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/util/disjoint_set.hpp" bodystart="347" bodyend="366"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1disjoint__set_1ae5c6d3b0f7bb057c9857df513137d9ee" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void nw::graph::disjoint_set&lt; T &gt;::unionBySizeAtomic</definition>
+        <argsstring>(T u, T v)</argsstring>
+        <name>unionBySizeAtomic</name>
+        <qualifiedname>nw::graph::disjoint_set::unionBySizeAtomic</qualifiedname>
+        <param>
+          <type>T</type>
+          <declname>u</declname>
+        </param>
+        <param>
+          <type>T</type>
+          <declname>v</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/util/disjoint_set.hpp" line="369" column="8" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/util/disjoint_set.hpp" bodystart="369" bodyend="407"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1disjoint__set_1a63ff23b599f3a696ff3e3dcddfe144ff" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void nw::graph::disjoint_set&lt; T &gt;::combineByHeight</definition>
+        <argsstring>(T const &amp;v, T const &amp;u)</argsstring>
+        <name>combineByHeight</name>
+        <qualifiedname>nw::graph::disjoint_set::combineByHeight</qualifiedname>
+        <param>
+          <type>T const &amp;</type>
+          <declname>v</declname>
+        </param>
+        <param>
+          <type>T const &amp;</type>
+          <declname>u</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Union the two disjoint sets by height @u and @v. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>u</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>element u </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>v</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>element v </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/util/disjoint_set.hpp" line="414" column="8" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/util/disjoint_set.hpp" bodystart="414" bodyend="426"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1disjoint__set_1a7fa468efde2ffc5ef3600d9a5492b63c" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void nw::graph::disjoint_set&lt; T &gt;::UnionBySplicing</definition>
+        <argsstring>(T v, T u)</argsstring>
+        <name>UnionBySplicing</name>
+        <qualifiedname>nw::graph::disjoint_set::UnionBySplicing</qualifiedname>
+        <param>
+          <type>T</type>
+          <declname>v</declname>
+        </param>
+        <param>
+          <type>T</type>
+          <declname>u</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/util/disjoint_set.hpp" line="427" column="8" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/util/disjoint_set.hpp" bodystart="427" bodyend="452"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1disjoint__set_1a598e1cb4a46b572908d71542af653840" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>std::vector&lt; T &gt;</type>
+        <definition>std::vector&lt; T &gt; nw::graph::disjoint_set&lt; T &gt;::getRawSubsets</definition>
+        <argsstring>() const</argsstring>
+        <name>getRawSubsets</name>
+        <qualifiedname>nw::graph::disjoint_set::getRawSubsets</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/util/disjoint_set.hpp" line="454" column="15" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/util/disjoint_set.hpp" bodystart="454" bodyend="461"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1disjoint__set_1aff9ebb950bc3fd3deede308d3f8821da" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>std::vector&lt; std::set&lt; T &gt; &gt;</type>
+        <definition>std::vector&lt; std::set&lt; T &gt; &gt; nw::graph::disjoint_set&lt; T &gt;::getSubsets</definition>
+        <argsstring>() const</argsstring>
+        <name>getSubsets</name>
+        <qualifiedname>nw::graph::disjoint_set::getSubsets</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Get the subsets. <simplesect kind="return"><para>subsets in <ref refid="classnw_1_1graph_1_1disjoint__set" kindref="compound">disjoint_set</ref>. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/util/disjoint_set.hpp" line="466" column="15" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/util/disjoint_set.hpp" bodystart="466" bodyend="479"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1disjoint__set_1a0f7c385f12661c2a1aedf3b719705103" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>std::vector&lt; T &gt;</type>
+        <definition>std::vector&lt; T &gt; nw::graph::disjoint_set&lt; T &gt;::getCompactDisjSets</definition>
+        <argsstring>(size_t &amp;nsets) const</argsstring>
+        <name>getCompactDisjSets</name>
+        <qualifiedname>nw::graph::disjoint_set::getCompactDisjSets</qualifiedname>
+        <param>
+          <type>size_t &amp;</type>
+          <declname>nsets</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Get the compact version of communities in vector form for verification. This version is for disjoint sets communities. <simplesect kind="return"><para>a vector of elements labeled under different set label. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/util/disjoint_set.hpp" line="485" column="15" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/util/disjoint_set.hpp" bodystart="485" bodyend="503"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1disjoint__set_1a053128cd40563c3a45657c3f4d7e9d52" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>std::vector&lt; T &gt;</type>
+        <definition>std::vector&lt; T &gt; nw::graph::disjoint_set&lt; T &gt;::getCompactDisjSets</definition>
+        <argsstring>() const</argsstring>
+        <name>getCompactDisjSets</name>
+        <qualifiedname>nw::graph::disjoint_set::getCompactDisjSets</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/util/disjoint_set.hpp" line="505" column="15" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/util/disjoint_set.hpp" bodystart="505" bodyend="520"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1disjoint__set_1a3eeb8516f438597b568f255360644ade" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>size_t</type>
+        <definition>size_t nw::graph::disjoint_set&lt; T &gt;::getSetNumber</definition>
+        <argsstring>() const</argsstring>
+        <name>getSetNumber</name>
+        <qualifiedname>nw::graph::disjoint_set::getSetNumber</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Get the number of disjoint sets. <simplesect kind="return"><para>the number of disjoint sets. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/util/disjoint_set.hpp" line="525" column="10" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/util/disjoint_set.hpp" bodystart="525" bodyend="525"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1disjoint__set_1a4afbc76f621adbcf606fcbf5c0da25d0" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>size_t</type>
+        <definition>size_t nw::graph::disjoint_set&lt; T &gt;::getSetSize</definition>
+        <argsstring>(const T u) const</argsstring>
+        <name>getSetSize</name>
+        <qualifiedname>nw::graph::disjoint_set::getSetSize</qualifiedname>
+        <param>
+          <type>const T</type>
+          <declname>u</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Given an element in a set, get the size of disjoint set containing this element. @ param[in] u, an element of the set to query <simplesect kind="return"><para>the size of disjoint set. </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/util/disjoint_set.hpp" line="531" column="10" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/util/disjoint_set.hpp" bodystart="531" bodyend="531"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1disjoint__set_1ad68830538db5c029c45984848717b6d0" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void nw::graph::disjoint_set&lt; T &gt;::printDisjSets</definition>
+        <argsstring>(std::ostream &amp;os) const</argsstring>
+        <name>printDisjSets</name>
+        <qualifiedname>nw::graph::disjoint_set::printDisjSets</qualifiedname>
+        <param>
+          <type>std::ostream &amp;</type>
+          <declname>os</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Print the whole disjoint sets. </para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/util/disjoint_set.hpp" line="545" column="8" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/util/disjoint_set.hpp" bodystart="545" bodyend="554"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1disjoint__set_1a09ad6ecd3e3b8cd6d9598fa1512b1624" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>T</type>
+        <definition>T nw::graph::disjoint_set&lt; T &gt;::getMaxId</definition>
+        <argsstring>() const</argsstring>
+        <name>getMaxId</name>
+        <qualifiedname>nw::graph::disjoint_set::getMaxId</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Get the max id in this disjoint sets. <simplesect kind="return"><para>max id </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/util/disjoint_set.hpp" line="559" column="5" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/util/disjoint_set.hpp" bodystart="559" bodyend="559"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1disjoint__set_1a31de4780459c39f276a22203a3ab307a" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename L</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void nw::graph::disjoint_set&lt; T &gt;::forEach</definition>
+        <argsstring>(L handle) const</argsstring>
+        <name>forEach</name>
+        <qualifiedname>nw::graph::disjoint_set::forEach</qualifiedname>
+        <param>
+          <type>L</type>
+          <declname>handle</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/util/disjoint_set.hpp" line="593" column="15" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/util/disjoint_set.hpp" bodystart="593" bodyend="596"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1disjoint__set_1a115810de99c2ca65d4af0d17a8058f8d" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename L</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void nw::graph::disjoint_set&lt; T &gt;::forEachElement</definition>
+        <argsstring>(L handle) const</argsstring>
+        <name>forEachElement</name>
+        <qualifiedname>nw::graph::disjoint_set::forEachElement</qualifiedname>
+        <param>
+          <type>L</type>
+          <declname>handle</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/util/disjoint_set.hpp" line="598" column="15" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/util/disjoint_set.hpp" bodystart="598" bodyend="601"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1disjoint__set_1aa6b236355ca4dfd910816e3239a5c8f0" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename L</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void nw::graph::disjoint_set&lt; T &gt;::forEachRoot</definition>
+        <argsstring>(L handle) const</argsstring>
+        <name>forEachRoot</name>
+        <qualifiedname>nw::graph::disjoint_set::forEachRoot</qualifiedname>
+        <param>
+          <type>L</type>
+          <declname>handle</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/util/disjoint_set.hpp" line="603" column="15" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/util/disjoint_set.hpp" bodystart="603" bodyend="607"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1disjoint__set_1a7a82ea4339ada2f6cf6dcb7cd7e52fb9" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename L</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void nw::graph::disjoint_set&lt; T &gt;::forEachRootIndex</definition>
+        <argsstring>(L handle) const</argsstring>
+        <name>forEachRootIndex</name>
+        <qualifiedname>nw::graph::disjoint_set::forEachRootIndex</qualifiedname>
+        <param>
+          <type>L</type>
+          <declname>handle</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/util/disjoint_set.hpp" line="609" column="15" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/util/disjoint_set.hpp" bodystart="609" bodyend="613"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-static-func">
+      <memberdef kind="function" id="classnw_1_1graph_1_1disjoint__set_1abde1326e4612df032f80f07f13305c32" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename L</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>static void nw::graph::disjoint_set&lt; T &gt;::allToSingletons</definition>
+        <argsstring>(L *arr, const size_t size)</argsstring>
+        <name>allToSingletons</name>
+        <qualifiedname>nw::graph::disjoint_set::allToSingletons</qualifiedname>
+        <param>
+          <type>L *</type>
+          <declname>arr</declname>
+        </param>
+        <param>
+          <type>const size_t</type>
+          <declname>size</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/util/disjoint_set.hpp" line="165" column="15" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/util/disjoint_set.hpp" bodystart="165" bodyend="168"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1disjoint__set_1a9fbe29d132fa6cb223952fa0a82f6003" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename L</type>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>static void nw::graph::disjoint_set&lt; T &gt;::allToSingletons</definition>
+        <argsstring>(std::vector&lt; L &gt; &amp;arr, const size_t size)</argsstring>
+        <name>allToSingletons</name>
+        <qualifiedname>nw::graph::disjoint_set::allToSingletons</qualifiedname>
+        <param>
+          <type>std::vector&lt; L &gt; &amp;</type>
+          <declname>arr</declname>
+        </param>
+        <param>
+          <type>const size_t</type>
+          <declname>size</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/util/disjoint_set.hpp" line="170" column="15" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/util/disjoint_set.hpp" bodystart="170" bodyend="173"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1disjoint__set_1a646a9a63c120c243fe7084f2314a3ccf" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>T</type>
+        <definition>static T nw::graph::disjoint_set&lt; T &gt;::find_with_pathcompression</definition>
+        <argsstring>(disjoint_set&lt; T &gt; &amp;s, T index)</argsstring>
+        <name>find_with_pathcompression</name>
+        <qualifiedname>nw::graph::disjoint_set::find_with_pathcompression</qualifiedname>
+        <param>
+          <type><ref refid="classnw_1_1graph_1_1disjoint__set" kindref="compound">disjoint_set</ref>&lt; T &gt; &amp;</type>
+          <declname>s</declname>
+        </param>
+        <param>
+          <type>T</type>
+          <declname>index</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/util/disjoint_set.hpp" line="208" column="12" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/util/disjoint_set.hpp" bodystart="208" bodyend="208"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1disjoint__set_1aaf75c7579562ea1f881bbf318c5dc0a6" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>T</type>
+        <definition>static T nw::graph::disjoint_set&lt; T &gt;::find</definition>
+        <argsstring>(disjoint_set&lt; T &gt; &amp;s, T index)</argsstring>
+        <name>find</name>
+        <qualifiedname>nw::graph::disjoint_set::find</qualifiedname>
+        <param>
+          <type><ref refid="classnw_1_1graph_1_1disjoint__set" kindref="compound">disjoint_set</ref>&lt; T &gt; &amp;</type>
+          <declname>s</declname>
+        </param>
+        <param>
+          <type>T</type>
+          <declname>index</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Static wrapper for find. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername direction="in">s</parametername>
+<parametername direction="in"><ref refid="classnw_1_1graph_1_1disjoint__set" kindref="compound">disjoint_set</ref></parametername>
+</parameternamelist>
+<parameterdescription>
+<para></para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername direction="in">index</parametername>
+</parameternamelist>
+<parameterdescription>
+<para></para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>representative of set containing @u </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/util/disjoint_set.hpp" line="237" column="12" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/util/disjoint_set.hpp" bodystart="237" bodyend="237"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1disjoint__set_1a7d809bacdf14fbb4ee72356470b6eaae" prot="public" static="yes" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>static void nw::graph::disjoint_set&lt; T &gt;::unionBySize</definition>
+        <argsstring>(disjoint_set&lt; T &gt; &amp;s, T const &amp;u, T const &amp;v)</argsstring>
+        <name>unionBySize</name>
+        <qualifiedname>nw::graph::disjoint_set::unionBySize</qualifiedname>
+        <param>
+          <type><ref refid="classnw_1_1graph_1_1disjoint__set" kindref="compound">disjoint_set</ref>&lt; T &gt; &amp;</type>
+          <declname>s</declname>
+        </param>
+        <param>
+          <type>T const &amp;</type>
+          <declname>u</declname>
+        </param>
+        <param>
+          <type>T const &amp;</type>
+          <declname>v</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/util/disjoint_set.hpp" line="329" column="16" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/util/disjoint_set.hpp" bodystart="329" bodyend="329"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="friend">
+      <memberdef kind="friend" id="classnw_1_1graph_1_1disjoint__set_1aec14eac365197e5187fcd7587407fa9a" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>std::ostream &amp;</type>
+        <definition>std::ostream &amp; operator&lt;&lt;</definition>
+        <argsstring>(std::ostream &amp;os, disjoint_set&lt; T &gt; const &amp;s)</argsstring>
+        <name>operator&lt;&lt;</name>
+        <qualifiedname>nw::graph::disjoint_set::operator&lt;&lt;</qualifiedname>
+        <param>
+          <type>std::ostream &amp;</type>
+          <declname>os</declname>
+        </param>
+        <param>
+          <type><ref refid="classnw_1_1graph_1_1disjoint__set" kindref="compound">disjoint_set</ref>&lt; T &gt; const &amp;</type>
+          <declname>s</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+<para>Overload operator&lt;&lt; for format output. <parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>os</parametername>
+<parametername>outstream</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>pointer </para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>e</parametername>
+<parametername>the</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>edge to print </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>os, outstream pointer </para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/util/disjoint_set.hpp" line="538" column="17" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/util/disjoint_set.hpp" bodystart="538" bodyend="541"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-func">
+      <memberdef kind="function" id="classnw_1_1graph_1_1disjoint__set_1a856d200aa97696b4a4d2d126ef025200" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool nw::graph::disjoint_set&lt; T &gt;::compare_and_swap</definition>
+        <argsstring>(T &amp;x, T old_val, T new_val)</argsstring>
+        <name>compare_and_swap</name>
+        <qualifiedname>nw::graph::disjoint_set::compare_and_swap</qualifiedname>
+        <param>
+          <type>T &amp;</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>T</type>
+          <declname>old_val</declname>
+        </param>
+        <param>
+          <type>T</type>
+          <declname>new_val</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/util/disjoint_set.hpp" line="562" column="15" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/util/disjoint_set.hpp" bodystart="562" bodyend="562"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1disjoint__set_1a12d9b02581bb8dfe5af705fd319ea077" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool nw::graph::disjoint_set&lt; T &gt;::writeMin</definition>
+        <argsstring>(T &amp;a, T b)</argsstring>
+        <name>writeMin</name>
+        <qualifiedname>nw::graph::disjoint_set::writeMin</qualifiedname>
+        <param>
+          <type>T &amp;</type>
+          <declname>a</declname>
+        </param>
+        <param>
+          <type>T</type>
+          <declname>b</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/util/disjoint_set.hpp" line="564" column="15" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/util/disjoint_set.hpp" bodystart="564" bodyend="571"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1disjoint__set_1a6301bd90481dff0a51f0c111eb05ab34" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>typename F</type>
+          </param>
+        </templateparamlist>
+        <type>bool</type>
+        <definition>bool nw::graph::disjoint_set&lt; T &gt;::writeMin</definition>
+        <argsstring>(T &amp;addr, T new_val, F less)</argsstring>
+        <name>writeMin</name>
+        <qualifiedname>nw::graph::disjoint_set::writeMin</qualifiedname>
+        <param>
+          <type>T &amp;</type>
+          <declname>addr</declname>
+        </param>
+        <param>
+          <type>T</type>
+          <declname>new_val</declname>
+        </param>
+        <param>
+          <type>F</type>
+          <declname>less</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/util/disjoint_set.hpp" line="574" column="15" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/util/disjoint_set.hpp" bodystart="574" bodyend="581"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1disjoint__set_1a426b04ecb59367a2e2dd4a66d20b8a1f" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void nw::graph::disjoint_set&lt; T &gt;::writeAdd</definition>
+        <argsstring>(T &amp;a, T b)</argsstring>
+        <name>writeAdd</name>
+        <qualifiedname>nw::graph::disjoint_set::writeAdd</qualifiedname>
+        <param>
+          <type>T &amp;</type>
+          <declname>a</declname>
+        </param>
+        <param>
+          <type>T</type>
+          <declname>b</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/util/disjoint_set.hpp" line="583" column="15" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/util/disjoint_set.hpp" bodystart="583" bodyend="589"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/Users/lums/NWmath/NWgr/include/nwgraph/util/disjoint_set.hpp" line="100" column="1" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/util/disjoint_set.hpp" bodystart="100" bodyend="625"/>
+    <listofallmembers>
+      <member refid="classnw_1_1graph_1_1disjoint__set_1a4bb47c8fa742b5fd82567ff18d40bb17" prot="public" virt="non-virtual"><scope>nw::graph::disjoint_set</scope><name>allToSingletons</name></member>
+      <member refid="classnw_1_1graph_1_1disjoint__set_1abde1326e4612df032f80f07f13305c32" prot="public" virt="non-virtual"><scope>nw::graph::disjoint_set</scope><name>allToSingletons</name></member>
+      <member refid="classnw_1_1graph_1_1disjoint__set_1a9fbe29d132fa6cb223952fa0a82f6003" prot="public" virt="non-virtual"><scope>nw::graph::disjoint_set</scope><name>allToSingletons</name></member>
+      <member refid="classnw_1_1graph_1_1disjoint__set_1a63ff23b599f3a696ff3e3dcddfe144ff" prot="public" virt="non-virtual"><scope>nw::graph::disjoint_set</scope><name>combineByHeight</name></member>
+      <member refid="classnw_1_1graph_1_1disjoint__set_1af49a079a84612551ce66479721902042" prot="public" virt="non-virtual"><scope>nw::graph::disjoint_set</scope><name>combineBySize</name></member>
+      <member refid="classnw_1_1graph_1_1disjoint__set_1a856d200aa97696b4a4d2d126ef025200" prot="private" virt="non-virtual"><scope>nw::graph::disjoint_set</scope><name>compare_and_swap</name></member>
+      <member refid="classnw_1_1graph_1_1disjoint__set_1aca15e8e1dc1ed118fd97941471d2c3b3" prot="public" virt="virtual"><scope>nw::graph::disjoint_set</scope><name>directFind</name></member>
+      <member refid="classnw_1_1graph_1_1disjoint__set_1a927fa97e6125d0c6682b41537db34a13" prot="public" virt="virtual"><scope>nw::graph::disjoint_set</scope><name>directJoin</name></member>
+      <member refid="classnw_1_1graph_1_1disjoint__set_1a9635e9c4b588f619ac149f663cba087d" prot="public" virt="non-virtual"><scope>nw::graph::disjoint_set</scope><name>disjoint_set</name></member>
+      <member refid="classnw_1_1graph_1_1disjoint__set_1a96520a36845f3275b33c8595c0a41217" prot="public" virt="non-virtual"><scope>nw::graph::disjoint_set</scope><name>disjoint_set</name></member>
+      <member refid="classnw_1_1graph_1_1disjoint__set_1aa372a0e70dd53e70d65fcbb3eec41280" prot="public" virt="non-virtual"><scope>nw::graph::disjoint_set</scope><name>disjoint_set</name></member>
+      <member refid="classnw_1_1graph_1_1disjoint__set_1af306ad0e3e6f9a7508d44fe13c55e3a5" prot="public" virt="virtual"><scope>nw::graph::disjoint_set</scope><name>find</name></member>
+      <member refid="classnw_1_1graph_1_1disjoint__set_1aaf75c7579562ea1f881bbf318c5dc0a6" prot="public" virt="non-virtual"><scope>nw::graph::disjoint_set</scope><name>find</name></member>
+      <member refid="classnw_1_1graph_1_1disjoint__set_1a3b80f8dd1e1cd5e8c4830a5eca4c5b1d" prot="public" virt="virtual"><scope>nw::graph::disjoint_set</scope><name>find_with_pathcompression</name></member>
+      <member refid="classnw_1_1graph_1_1disjoint__set_1a646a9a63c120c243fe7084f2314a3ccf" prot="public" virt="non-virtual"><scope>nw::graph::disjoint_set</scope><name>find_with_pathcompression</name></member>
+      <member refid="classnw_1_1graph_1_1disjoint__set_1a31de4780459c39f276a22203a3ab307a" prot="public" virt="non-virtual"><scope>nw::graph::disjoint_set</scope><name>forEach</name></member>
+      <member refid="classnw_1_1graph_1_1disjoint__set_1a115810de99c2ca65d4af0d17a8058f8d" prot="public" virt="non-virtual"><scope>nw::graph::disjoint_set</scope><name>forEachElement</name></member>
+      <member refid="classnw_1_1graph_1_1disjoint__set_1aa6b236355ca4dfd910816e3239a5c8f0" prot="public" virt="non-virtual"><scope>nw::graph::disjoint_set</scope><name>forEachRoot</name></member>
+      <member refid="classnw_1_1graph_1_1disjoint__set_1a7a82ea4339ada2f6cf6dcb7cd7e52fb9" prot="public" virt="non-virtual"><scope>nw::graph::disjoint_set</scope><name>forEachRootIndex</name></member>
+      <member refid="classnw_1_1graph_1_1disjoint__set_1a0f7c385f12661c2a1aedf3b719705103" prot="public" virt="non-virtual"><scope>nw::graph::disjoint_set</scope><name>getCompactDisjSets</name></member>
+      <member refid="classnw_1_1graph_1_1disjoint__set_1a053128cd40563c3a45657c3f4d7e9d52" prot="public" virt="non-virtual"><scope>nw::graph::disjoint_set</scope><name>getCompactDisjSets</name></member>
+      <member refid="classnw_1_1graph_1_1disjoint__set_1a09ad6ecd3e3b8cd6d9598fa1512b1624" prot="public" virt="non-virtual"><scope>nw::graph::disjoint_set</scope><name>getMaxId</name></member>
+      <member refid="classnw_1_1graph_1_1disjoint__set_1a598e1cb4a46b572908d71542af653840" prot="public" virt="non-virtual"><scope>nw::graph::disjoint_set</scope><name>getRawSubsets</name></member>
+      <member refid="classnw_1_1graph_1_1disjoint__set_1a3eeb8516f438597b568f255360644ade" prot="public" virt="non-virtual"><scope>nw::graph::disjoint_set</scope><name>getSetNumber</name></member>
+      <member refid="classnw_1_1graph_1_1disjoint__set_1a4afbc76f621adbcf606fcbf5c0da25d0" prot="public" virt="non-virtual"><scope>nw::graph::disjoint_set</scope><name>getSetSize</name></member>
+      <member refid="classnw_1_1graph_1_1disjoint__set_1aff9ebb950bc3fd3deede308d3f8821da" prot="public" virt="non-virtual"><scope>nw::graph::disjoint_set</scope><name>getSubsets</name></member>
+      <member refid="classnw_1_1graph_1_1disjoint__set_1a3486799caa0880665810fed4d12cec36" prot="public" virt="virtual"><scope>nw::graph::disjoint_set</scope><name>join</name></member>
+      <member refid="classnw_1_1graph_1_1disjoint__set_1a7620864bd912d4214accf47f31bc198e" prot="protected" virt="non-virtual"><scope>nw::graph::disjoint_set</scope><name>maxid_</name></member>
+      <member refid="classnw_1_1graph_1_1disjoint__set_1a003da270e650bfb2b0d83fbb6daca749" prot="protected" virt="non-virtual"><scope>nw::graph::disjoint_set</scope><name>nsets_</name></member>
+      <member refid="classnw_1_1graph_1_1disjoint__set_1aec14eac365197e5187fcd7587407fa9a" prot="public" virt="non-virtual"><scope>nw::graph::disjoint_set</scope><name>operator&lt;&lt;</name></member>
+      <member refid="classnw_1_1graph_1_1disjoint__set_1ad68830538db5c029c45984848717b6d0" prot="public" virt="non-virtual"><scope>nw::graph::disjoint_set</scope><name>printDisjSets</name></member>
+      <member refid="classnw_1_1graph_1_1disjoint__set_1ae3e5eca8e06b9a836bb2fdfd437ec354" prot="public" virt="non-virtual"><scope>nw::graph::disjoint_set</scope><name>reset</name></member>
+      <member refid="classnw_1_1graph_1_1disjoint__set_1aacbbd3ec3ebdb22e65316493675cbe4e" prot="public" virt="non-virtual"><scope>nw::graph::disjoint_set</scope><name>reset</name></member>
+      <member refid="classnw_1_1graph_1_1disjoint__set_1a7b5eaca51b6fd1f09c43a363f2f41f22" prot="protected" virt="non-virtual"><scope>nw::graph::disjoint_set</scope><name>sets_</name></member>
+      <member refid="classnw_1_1graph_1_1disjoint__set_1ac58f65e9c4e0c4d03da8e0e4e632c0bb" prot="public" virt="virtual"><scope>nw::graph::disjoint_set</scope><name>unionByHeight</name></member>
+      <member refid="classnw_1_1graph_1_1disjoint__set_1a8e918d130954f8430b42fd7e40815986" prot="public" virt="virtual"><scope>nw::graph::disjoint_set</scope><name>unionBySize</name></member>
+      <member refid="classnw_1_1graph_1_1disjoint__set_1a7d809bacdf14fbb4ee72356470b6eaae" prot="public" virt="non-virtual"><scope>nw::graph::disjoint_set</scope><name>unionBySize</name></member>
+      <member refid="classnw_1_1graph_1_1disjoint__set_1ae5c6d3b0f7bb057c9857df513137d9ee" prot="public" virt="non-virtual"><scope>nw::graph::disjoint_set</scope><name>unionBySizeAtomic</name></member>
+      <member refid="classnw_1_1graph_1_1disjoint__set_1a7fa468efde2ffc5ef3600d9a5492b63c" prot="public" virt="non-virtual"><scope>nw::graph::disjoint_set</scope><name>UnionBySplicing</name></member>
+      <member refid="classnw_1_1graph_1_1disjoint__set_1a426b04ecb59367a2e2dd4a66d20b8a1f" prot="private" virt="non-virtual"><scope>nw::graph::disjoint_set</scope><name>writeAdd</name></member>
+      <member refid="classnw_1_1graph_1_1disjoint__set_1a12d9b02581bb8dfe5af705fd319ea077" prot="private" virt="non-virtual"><scope>nw::graph::disjoint_set</scope><name>writeMin</name></member>
+      <member refid="classnw_1_1graph_1_1disjoint__set_1a6301bd90481dff0a51f0c111eb05ab34" prot="private" virt="non-virtual"><scope>nw::graph::disjoint_set</scope><name>writeMin</name></member>
+      <member refid="classnw_1_1graph_1_1disjoint__set_1a0b09051eb9b81660f2ecf9e462869836" prot="public" virt="non-virtual"><scope>nw::graph::disjoint_set</scope><name>~disjoint_set</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

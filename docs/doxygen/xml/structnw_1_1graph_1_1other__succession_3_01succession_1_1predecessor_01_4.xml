@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.3" xml:lang="en-US">
+  <compounddef id="structnw_1_1graph_1_1other__succession_3_01succession_1_1predecessor_01_4" kind="struct" language="C++" prot="public">
+    <compoundname>nw::graph::other_succession&lt; succession::predecessor &gt;</compoundname>
+    <templateparamlist>
+    </templateparamlist>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="structnw_1_1graph_1_1other__succession_3_01succession_1_1predecessor_01_4_1ad00de77a53d2e7add8af92f1fdc9d0c2" prot="public" static="no" mutable="no">
+        <type>const succession</type>
+        <definition>const succession nw::graph::other_succession&lt; succession::predecessor &gt;::cessor</definition>
+        <argsstring></argsstring>
+        <name>cessor</name>
+        <qualifiedname>nw::graph::other_succession&lt; succession::predecessor &gt;::cessor</qualifiedname>
+        <initializer>= succession::successor</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/graph_base.hpp" line="36" column="20" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/graph_base.hpp" bodystart="36" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/Users/lums/NWmath/NWgr/include/nwgraph/graph_base.hpp" line="35" column="1" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/graph_base.hpp" bodystart="35" bodyend="37"/>
+    <listofallmembers>
+      <member refid="structnw_1_1graph_1_1other__succession_3_01succession_1_1predecessor_01_4_1ad00de77a53d2e7add8af92f1fdc9d0c2" prot="public" virt="non-virtual"><scope>nw::graph::other_succession&lt; succession::predecessor &gt;</scope><name>cessor</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

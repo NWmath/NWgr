@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.3" xml:lang="en-US">
+  <compounddef id="dir_989b3131455be3af2d1818cca21fcc77" kind="dir">
+    <compoundname>/Users/lums/NWmath/NWgr/include/nwgraph/algorithms</compoundname>
+    <innerfile refid="algorithms_2betweenness__centrality_8hpp">betweenness_centrality.hpp</innerfile>
+    <innerfile refid="algorithms_2bfs_8hpp">bfs.hpp</innerfile>
+    <innerfile refid="boykov__kolmogorov_8hpp">boykov_kolmogorov.hpp</innerfile>
+    <innerfile refid="algorithms_2connected__components_8hpp">connected_components.hpp</innerfile>
+    <innerfile refid="dag__based__mis_8hpp">dag_based_mis.hpp</innerfile>
+    <innerfile refid="algorithms_2delta__stepping_8hpp">delta_stepping.hpp</innerfile>
+    <innerfile refid="dijkstra_8hpp">dijkstra.hpp</innerfile>
+    <innerfile refid="algorithms_2jaccard_8hpp">jaccard.hpp</innerfile>
+    <innerfile refid="jones__plassmann__coloring_8hpp">jones_plassmann_coloring.hpp</innerfile>
+    <innerfile refid="k__core_8hpp">k_core.hpp</innerfile>
+    <innerfile refid="k__truss_8hpp">k_truss.hpp</innerfile>
+    <innerfile refid="kruskal_8hpp">kruskal.hpp</innerfile>
+    <innerfile refid="max__flow_8hpp">max_flow.hpp</innerfile>
+    <innerfile refid="mis_8hpp">mis.hpp</innerfile>
+    <innerfile refid="algorithms_2page__rank_8hpp">page_rank.hpp</innerfile>
+    <innerfile refid="prim_8hpp">prim.hpp</innerfile>
+    <innerfile refid="sp_matsp_mat_8hpp">spMatspMat.hpp</innerfile>
+    <innerfile refid="algorithms_2triangle__count_8hpp">triangle_count.hpp</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/Users/lums/NWmath/NWgr/include/nwgraph/algorithms/"/>
+  </compounddef>
+</doxygen>

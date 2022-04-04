@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.3" xml:lang="en-US">
+  <compounddef id="structnw_1_1graph_1_1random__range_1_1edge__range__iterator_1_1end__sentinel__type" kind="struct" language="C++" prot="public">
+    <compoundname>nw::graph::random_range::edge_range_iterator::end_sentinel_type</compoundname>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/random_range.hpp" line="59" column="5" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/random_range.hpp" bodystart="59" bodyend="59"/>
+    <listofallmembers>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

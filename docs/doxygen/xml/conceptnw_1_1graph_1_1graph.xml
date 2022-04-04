@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.3" xml:lang="en-US">
+  <compounddef id="conceptnw_1_1graph_1_1graph" kind="concept">
+    <compoundname>nw::graph::graph</compoundname>
+    <templateparamlist>
+      <param>
+        <type>typename G</type>
+      </param>
+    </templateparamlist>
+    <initializer>template&lt;typename G&gt;
+concept nw::graph::graph =  std::copyable&lt;G&gt; &amp;&amp; requires(G g) {
+  typename vertex_id_t&lt;G&gt;;
+  { num_vertices(g) } -&gt; std::convertible_to&lt;std::ranges::range_difference_t&lt;G&gt;&gt;;
+}    </initializer>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/Users/lums/NWmath/NWgr/include/nwgraph/graph_concepts.hpp" line="36" column="1"/>
+  </compounddef>
+</doxygen>

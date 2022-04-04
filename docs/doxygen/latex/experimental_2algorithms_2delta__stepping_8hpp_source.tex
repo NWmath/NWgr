@@ -1,0 +1,338 @@
+\hypertarget{experimental_2algorithms_2delta__stepping_8hpp_source}{}\doxysection{delta\+\_\+stepping.\+hpp}
+\label{experimental_2algorithms_2delta__stepping_8hpp_source}\index{/Users/lums/NWmath/NWgr/include/nwgraph/experimental/algorithms/delta\_stepping.hpp@{/Users/lums/NWmath/NWgr/include/nwgraph/experimental/algorithms/delta\_stepping.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// }}
+\DoxyCodeLine{2 \textcolor{comment}{// This file is part of NW Graph (aka GraphPack) }}
+\DoxyCodeLine{3 \textcolor{comment}{// (c) Pacific Northwest National Laboratory 2018-\/2021 }}
+\DoxyCodeLine{4 \textcolor{comment}{// (c) University of Washington 2018-\/2021 }}
+\DoxyCodeLine{5 \textcolor{comment}{// }}
+\DoxyCodeLine{6 \textcolor{comment}{// Licensed under terms of include LICENSE file }}
+\DoxyCodeLine{7 \textcolor{comment}{// }}
+\DoxyCodeLine{8 \textcolor{comment}{// Authors: }}
+\DoxyCodeLine{9 \textcolor{comment}{//     Andrew Lumsdaine }}
+\DoxyCodeLine{10 \textcolor{comment}{//     Kevin Deweese    }}
+\DoxyCodeLine{11 \textcolor{comment}{//}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#ifndef DELTA\_STEPPING\_EXPERIMENTAL\_HPP}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#define DELTA\_STEPPING\_EXPERIMENTAL\_HPP}}
+\DoxyCodeLine{14 }
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#include <algorithm>}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include <iostream>}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include <queue>}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include <string>}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include <tuple>}}
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#include <type\_traits>}}
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{22 }
+\DoxyCodeLine{23 \textcolor{preprocessor}{\#include "{}nwgraph/algorithms/delta\_stepping.hpp"{}}}
+\DoxyCodeLine{24 \textcolor{preprocessor}{\#include "{}nwgraph/containers/compressed.hpp"{}}}
+\DoxyCodeLine{25 \textcolor{preprocessor}{\#include "{}nwgraph/edge\_list.hpp"{}}}
+\DoxyCodeLine{26 \textcolor{preprocessor}{\#include "{}nwgraph/util/atomic.hpp"{}}}
+\DoxyCodeLine{27 }
+\DoxyCodeLine{28 \textcolor{preprocessor}{\#include "{}nwgraph/util/parallel\_for.hpp"{}}}
+\DoxyCodeLine{29 \textcolor{preprocessor}{\#include "{}nwgraph/util/timer.hpp"{}}}
+\DoxyCodeLine{30 \textcolor{preprocessor}{\#include "{}nwgraph/util/util.hpp"{}}}
+\DoxyCodeLine{31 }
+\DoxyCodeLine{32 \textcolor{preprocessor}{\#include "{}tbb/concurrent\_vector.h"{}}}
+\DoxyCodeLine{33 \textcolor{preprocessor}{\#include "{}tbb/parallel\_for\_each.h"{}}}
+\DoxyCodeLine{34 \textcolor{preprocessor}{\#include "{}tbb/queuing\_mutex.h"{}}}
+\DoxyCodeLine{35 }
+\DoxyCodeLine{36 \textcolor{keyword}{namespace }nw \{}
+\DoxyCodeLine{37 \textcolor{keyword}{namespace }graph \{}
+\DoxyCodeLine{38 }
+\DoxyCodeLine{39 }
+\DoxyCodeLine{40 \textcolor{comment}{// Inspired by gapbs implementation}}
+\DoxyCodeLine{41 \textcolor{keyword}{template} <\textcolor{keyword}{class} distance\_t, adjacency\_list\_graph Graph, \textcolor{keyword}{class} Id, \textcolor{keyword}{class} T>}
+\DoxyCodeLine{42 \textcolor{keyword}{auto} delta\_stepping\_v6(\textcolor{keyword}{const} Graph\& graph, Id source, T delta) \{}
+\DoxyCodeLine{43   tbb::concurrent\_vector<tbb::concurrent\_vector<Id>> bins(1);}
+\DoxyCodeLine{44   std::size\_t                                        top\_bin = 0;}
+\DoxyCodeLine{45 }
+\DoxyCodeLine{46   std::vector<distance\_t> tdist(num\_vertices(graph));}
+\DoxyCodeLine{47   tbb::parallel\_for\_each(tdist, [\&](\textcolor{keyword}{auto}\&\& d) \{ d = std::numeric\_limits<distance\_t>::max(); \});}
+\DoxyCodeLine{48 }
+\DoxyCodeLine{49   bins[top\_bin].push\_back(source);}
+\DoxyCodeLine{50   tdist[source] = 0;}
+\DoxyCodeLine{51 }
+\DoxyCodeLine{52   \textcolor{keyword}{auto} relax = [\&](Id i, Id j, \textcolor{keyword}{auto} wt) \{}
+\DoxyCodeLine{53     \textcolor{keyword}{auto} new\_distance = tdist[i] + wt;}
+\DoxyCodeLine{54     \textcolor{keywordflow}{if} (new\_distance < tdist[j]) \{}
+\DoxyCodeLine{55       tdist[j]        = new\_distance;}
+\DoxyCodeLine{56       \textcolor{keywordtype}{size\_t} dest\_bin = new\_distance / delta;}
+\DoxyCodeLine{57       \textcolor{keywordflow}{if} (dest\_bin >= bins.size()) \{}
+\DoxyCodeLine{58         bins.resize(dest\_bin + 1);}
+\DoxyCodeLine{59       \}}
+\DoxyCodeLine{60       bins[dest\_bin].push\_back(j);}
+\DoxyCodeLine{61     \}}
+\DoxyCodeLine{62   \};}
+\DoxyCodeLine{63 }
+\DoxyCodeLine{64   tbb::concurrent\_vector<Id> frontier;}
+\DoxyCodeLine{65 }
+\DoxyCodeLine{66   \textcolor{keywordflow}{while} (top\_bin < bins.size()) \{}
+\DoxyCodeLine{67     frontier.resize(0);}
+\DoxyCodeLine{68     std::swap(frontier, bins[top\_bin]);}
+\DoxyCodeLine{69     tbb::parallel\_for\_each(frontier, [\&](Id i) \{}
+\DoxyCodeLine{70       \textcolor{keywordflow}{if} (tdist[i] >= delta * top\_bin) \{}
+\DoxyCodeLine{71         std::for\_each(graph[i].begin(), graph[i].end(), [\&](\textcolor{keyword}{auto}\&\& elt) \{ std::apply([\&](Id j, \textcolor{keyword}{auto} wt) \{ relax(i, j, wt); \}, std::move(elt)); \});}
+\DoxyCodeLine{72       \}}
+\DoxyCodeLine{73     \});}
+\DoxyCodeLine{74 }
+\DoxyCodeLine{75     \textcolor{keywordflow}{while} (top\_bin < bins.size() \&\& bins[top\_bin].size() == 0) \{}
+\DoxyCodeLine{76       ++top\_bin;}
+\DoxyCodeLine{77     \}}
+\DoxyCodeLine{78   \}}
+\DoxyCodeLine{79 }
+\DoxyCodeLine{80   \textcolor{keywordflow}{return} tdist;}
+\DoxyCodeLine{81 \}}
+\DoxyCodeLine{82 }
+\DoxyCodeLine{83 \textcolor{comment}{// Inspired by gapbs implementation}}
+\DoxyCodeLine{84 \textcolor{keyword}{template} <\textcolor{keyword}{class} distance\_t, adjacency\_list\_graph Graph, \textcolor{keyword}{class} Id, \textcolor{keyword}{class} T, \textcolor{keyword}{class} Weight>}
+\DoxyCodeLine{85 \textcolor{keyword}{auto} delta\_stepping\_v8(\textcolor{keyword}{const} Graph\& graph, Id source, T delta,}
+\DoxyCodeLine{86     Weight weight = [](\textcolor{keyword}{auto}\& e) -\/> \textcolor{keyword}{auto}\& \{ \textcolor{keywordflow}{return} std::get<1>(e); \}) \{}
+\DoxyCodeLine{87   Id                                                 N = num\_vertices(graph);}
+\DoxyCodeLine{88   std::vector<std::atomic<distance\_t>>               tdist(N);}
+\DoxyCodeLine{89   tbb::concurrent\_vector<tbb::concurrent\_vector<Id>> bins(1);}
+\DoxyCodeLine{90   std::size\_t                                        top\_bin = 0;}
+\DoxyCodeLine{91   \textcolor{keywordflow}{for} (\textcolor{keyword}{auto}\&\& d : tdist) \{}
+\DoxyCodeLine{92     d = std::numeric\_limits<distance\_t>::max();}
+\DoxyCodeLine{93   \}}
+\DoxyCodeLine{94 }
+\DoxyCodeLine{95   bins[top\_bin].push\_back(source);}
+\DoxyCodeLine{96   tdist[source] = 0;}
+\DoxyCodeLine{97 }
+\DoxyCodeLine{98   \textcolor{keyword}{auto} relax = [\&](Id i, Id j, \textcolor{keyword}{auto} wt) \{}
+\DoxyCodeLine{99     distance\_t new\_distance = tdist[i] + wt;}
+\DoxyCodeLine{100     distance\_t old\_distance = tdist[j];}
+\DoxyCodeLine{101     \textcolor{keywordflow}{if} (new\_distance < old\_distance) \{}
+\DoxyCodeLine{102       \textcolor{keywordtype}{bool} changed\_dist = \textcolor{keyword}{true};}
+\DoxyCodeLine{103       \textcolor{keywordflow}{while} (!tdist[j].compare\_exchange\_strong(old\_distance, new\_distance)) \{}
+\DoxyCodeLine{104         \textcolor{keywordflow}{if} (old\_distance <= new\_distance) \{}
+\DoxyCodeLine{105           changed\_dist = \textcolor{keyword}{false};}
+\DoxyCodeLine{106           \textcolor{keywordflow}{break};}
+\DoxyCodeLine{107         \}}
+\DoxyCodeLine{108       \}}
+\DoxyCodeLine{109       \textcolor{keywordflow}{if} (changed\_dist) \{}
+\DoxyCodeLine{110         std::size\_t dest\_bin = new\_distance / delta;}
+\DoxyCodeLine{111         \textcolor{comment}{// if (dest\_bin >= bins.size()) \{}}
+\DoxyCodeLine{112         bins.grow\_to\_at\_least(dest\_bin + 1);}
+\DoxyCodeLine{113         \textcolor{comment}{// \}}}
+\DoxyCodeLine{114         bins[dest\_bin].push\_back(j);}
+\DoxyCodeLine{115       \}}
+\DoxyCodeLine{116     \}}
+\DoxyCodeLine{117   \};}
+\DoxyCodeLine{118 }
+\DoxyCodeLine{119   tbb::concurrent\_vector<Id> frontier;}
+\DoxyCodeLine{120 }
+\DoxyCodeLine{121   \textcolor{keywordflow}{while} (top\_bin < bins.size()) \{}
+\DoxyCodeLine{122 }
+\DoxyCodeLine{123     frontier.resize(0);}
+\DoxyCodeLine{124     std::swap(frontier, bins[top\_bin]);}
+\DoxyCodeLine{125 }
+\DoxyCodeLine{126     std::for\_each(std::execution::par\_unseq, frontier.begin(), frontier.end(), [\&](Id i) \{}
+\DoxyCodeLine{127       if (tdist[i] >= delta * top\_bin) \{}
+\DoxyCodeLine{128         std::for\_each(std::execution::par\_unseq, graph[i].begin(), graph[i].end(), [\&](auto\&\& elt) \{}
+\DoxyCodeLine{129           auto j = target(graph, elt);}
+\DoxyCodeLine{130           auto wt = weight(elt);}
+\DoxyCodeLine{131           \textcolor{comment}{//auto\&\& [j, wt] = elt;    // i == v}}
+\DoxyCodeLine{132           relax(i, j, wt);}
+\DoxyCodeLine{133         \});}
+\DoxyCodeLine{134       \}}
+\DoxyCodeLine{135     \});}
+\DoxyCodeLine{136 }
+\DoxyCodeLine{137     \textcolor{keywordflow}{while} (top\_bin < bins.size() \&\& bins[top\_bin].size() == 0) \{}
+\DoxyCodeLine{138       ++top\_bin;}
+\DoxyCodeLine{139     \}}
+\DoxyCodeLine{140   \}}
+\DoxyCodeLine{141 }
+\DoxyCodeLine{142   \textcolor{keywordflow}{return} tdist;}
+\DoxyCodeLine{143 \}}
+\DoxyCodeLine{144 }
+\DoxyCodeLine{145 \textcolor{keyword}{template} <\textcolor{keyword}{class} distance\_t, adjacency\_list\_graph Graph, \textcolor{keyword}{class} Id, \textcolor{keyword}{class} T, \textcolor{keyword}{class} Weight>}
+\DoxyCodeLine{146 \textcolor{keyword}{auto} delta\_stepping\_v9(\textcolor{keyword}{const} Graph\& graph, Id source, T delta,}
+\DoxyCodeLine{147   Weight weight = [](\textcolor{keyword}{auto}\& e) -\/> \textcolor{keyword}{auto}\& \{ \textcolor{keywordflow}{return} std::get<1>(e); \}) \{}
+\DoxyCodeLine{148   tbb::queuing\_mutex                                 lock;}
+\DoxyCodeLine{149   std::atomic<std::size\_t>                           size = 1;}
+\DoxyCodeLine{150   tbb::concurrent\_vector<tbb::concurrent\_vector<Id>> bins(size);}
+\DoxyCodeLine{151   std::size\_t                                        top\_bin = 0;}
+\DoxyCodeLine{152 }
+\DoxyCodeLine{153   std::vector<std::atomic<distance\_t>> tdist(num\_vertices(graph));}
+\DoxyCodeLine{154   tbb::parallel\_for\_each(tdist, [](\textcolor{keyword}{auto}\&\& d) \{ d = std::numeric\_limits<distance\_t>::max(); \});}
+\DoxyCodeLine{155 }
+\DoxyCodeLine{156   bins[top\_bin].push\_back(source);}
+\DoxyCodeLine{157   tdist[source] = 0;}
+\DoxyCodeLine{158 }
+\DoxyCodeLine{159   \textcolor{keyword}{auto} relax = [\&](Id i, Id j, \textcolor{keyword}{auto} wt) \{}
+\DoxyCodeLine{160     distance\_t next = nw::graph::acquire(tdist[i]) + wt;}
+\DoxyCodeLine{161     distance\_t prev = nw::graph::acquire(tdist[j]);}
+\DoxyCodeLine{162     \textcolor{keywordtype}{bool}       success;}
+\DoxyCodeLine{163     \textcolor{keywordflow}{while} (next < prev \&\& !(success = nw::graph::cas(tdist[j], prev, next))) \{}
+\DoxyCodeLine{164     \}}
+\DoxyCodeLine{165     \textcolor{keywordflow}{if} (!success) \textcolor{keywordflow}{return};}
+\DoxyCodeLine{166 }
+\DoxyCodeLine{167     \textcolor{comment}{// inject this into the right bin (double-\/checked locking to serialize}}
+\DoxyCodeLine{168     \textcolor{comment}{// resizing because tbb::concurrent\_vector resizing is not thread safe}}
+\DoxyCodeLine{169     \textcolor{comment}{// https://www.threadingbuildingblocks.org/docs/help/hh\_goto.htm?index.htm\#tbb\_userguide/Advanced\_Idiom\_Waiting\_on\_an\_Element.html)}}
+\DoxyCodeLine{170     std::size\_t bin = next / delta;}
+\DoxyCodeLine{171     \textcolor{keywordflow}{if} (nw::graph::acquire(size) < bin + 1) \{}
+\DoxyCodeLine{172       tbb::queuing\_mutex::scoped\_lock \_(lock);}
+\DoxyCodeLine{173       \textcolor{keywordflow}{if} (nw::graph::acquire(size) < bin + 1) \{}
+\DoxyCodeLine{174         bins.grow\_to\_at\_least(bin + 1);}
+\DoxyCodeLine{175         nw::graph::release(size, bin + 1);}
+\DoxyCodeLine{176       \}}
+\DoxyCodeLine{177     \}}
+\DoxyCodeLine{178     bins[bin].push\_back(j);}
+\DoxyCodeLine{179   \};}
+\DoxyCodeLine{180 }
+\DoxyCodeLine{181   tbb::concurrent\_vector<Id> frontier;}
+\DoxyCodeLine{182 }
+\DoxyCodeLine{183   \textcolor{keywordflow}{while} (top\_bin < bins.size()) \{}
+\DoxyCodeLine{184     frontier.resize(0);}
+\DoxyCodeLine{185     std::swap(frontier, bins[top\_bin]);}
+\DoxyCodeLine{186     tbb::parallel\_for\_each(frontier, [\&](\textcolor{keyword}{auto}\&\& i) \{}
+\DoxyCodeLine{187       \textcolor{keywordflow}{if} (tdist[i] >= delta * top\_bin) \{}
+\DoxyCodeLine{188         \textcolor{keywordflow}{for} (\textcolor{keyword}{auto}\&\& elt : graph[i]) \{}
+\DoxyCodeLine{189           \textcolor{keyword}{auto} j = target(graph, elt);}
+\DoxyCodeLine{190           \textcolor{keyword}{auto} wt = weight(elt);}
+\DoxyCodeLine{191           \textcolor{comment}{//auto\&\& [j, wt] = elt;    // i == v}}
+\DoxyCodeLine{192           relax(i, j, wt);}
+\DoxyCodeLine{193         \}}
+\DoxyCodeLine{194       \}}
+\DoxyCodeLine{195     \});}
+\DoxyCodeLine{196 }
+\DoxyCodeLine{197     \textcolor{keywordflow}{while} (top\_bin < bins.size() \&\& bins[top\_bin].size() == 0) \{}
+\DoxyCodeLine{198       bins[top\_bin++].shrink\_to\_fit();}
+\DoxyCodeLine{199     \}}
+\DoxyCodeLine{200   \}}
+\DoxyCodeLine{201   \textcolor{keywordflow}{return} tdist;}
+\DoxyCodeLine{202 \}}
+\DoxyCodeLine{203 }
+\DoxyCodeLine{204 \textcolor{keyword}{template} <\textcolor{keyword}{class} distance\_t, adjacency\_list\_graph Graph, \textcolor{keyword}{class} Id, \textcolor{keyword}{class} T, \textcolor{keyword}{class} Weight>}
+\DoxyCodeLine{205 \textcolor{keyword}{auto} delta\_stepping\_v10(\textcolor{keyword}{const} Graph\& graph, Id source, T delta,}
+\DoxyCodeLine{206   Weight weight = [](\textcolor{keyword}{auto}\& e) -\/> \textcolor{keyword}{auto}\& \{ \textcolor{keywordflow}{return} std::get<1>(e); \}) \{}
+\DoxyCodeLine{207   tbb::queuing\_mutex                                 lock;}
+\DoxyCodeLine{208   std::atomic<std::size\_t>                           size = 1;}
+\DoxyCodeLine{209   tbb::concurrent\_vector<tbb::concurrent\_vector<Id>> bins(size);}
+\DoxyCodeLine{210   std::size\_t                                        top\_bin = 0;}
+\DoxyCodeLine{211 }
+\DoxyCodeLine{212   std::vector<std::atomic<distance\_t>> tdist(num\_vertices(graph));}
+\DoxyCodeLine{213   tbb::parallel\_for\_each(tdist, [](\textcolor{keyword}{auto}\&\& d) \{ d = std::numeric\_limits<distance\_t>::max(); \});}
+\DoxyCodeLine{214 }
+\DoxyCodeLine{215   bins[top\_bin].push\_back(source);}
+\DoxyCodeLine{216   tdist[source] = 0;}
+\DoxyCodeLine{217 }
+\DoxyCodeLine{218   \textcolor{keyword}{auto} relax = [\&](Id i, Id j, \textcolor{keyword}{auto} wt) \{}
+\DoxyCodeLine{219     distance\_t next = nw::graph::acquire(tdist[i]) + wt;}
+\DoxyCodeLine{220     distance\_t prev = nw::graph::acquire(tdist[j]);}
+\DoxyCodeLine{221     \textcolor{keywordtype}{bool}       success;}
+\DoxyCodeLine{222     \textcolor{keywordflow}{while} (next < prev \&\& !(success = nw::graph::cas(tdist[j], prev, next))) \{}
+\DoxyCodeLine{223     \}}
+\DoxyCodeLine{224     \textcolor{keywordflow}{if} (!success) \textcolor{keywordflow}{return};}
+\DoxyCodeLine{225 }
+\DoxyCodeLine{226     \textcolor{comment}{// inject this into the right bin (double-\/checked locking to serialize}}
+\DoxyCodeLine{227     \textcolor{comment}{// resizing because tbb::concurrent\_vector resizing is not thread safe}}
+\DoxyCodeLine{228     \textcolor{comment}{// https://www.threadingbuildingblocks.org/docs/help/hh\_goto.htm?index.htm\#tbb\_userguide/Advanced\_Idiom\_Waiting\_on\_an\_Element.html)}}
+\DoxyCodeLine{229     std::size\_t bin = next / delta;}
+\DoxyCodeLine{230     \textcolor{keywordflow}{if} (nw::graph::acquire(size) < bin + 1) \{}
+\DoxyCodeLine{231       tbb::queuing\_mutex::scoped\_lock \_(lock);}
+\DoxyCodeLine{232       \textcolor{keywordflow}{if} (nw::graph::acquire(size) < bin + 1) \{}
+\DoxyCodeLine{233         bins.grow\_to\_at\_least(bin + 1);}
+\DoxyCodeLine{234         nw::graph::release(size, bin + 1);}
+\DoxyCodeLine{235       \}}
+\DoxyCodeLine{236     \}}
+\DoxyCodeLine{237     bins[bin].push\_back(j);}
+\DoxyCodeLine{238   \};}
+\DoxyCodeLine{239 }
+\DoxyCodeLine{240   tbb::concurrent\_vector<Id> frontier;}
+\DoxyCodeLine{241 }
+\DoxyCodeLine{242   \textcolor{keywordflow}{while} (top\_bin < bins.size()) \{}
+\DoxyCodeLine{243     frontier.resize(0);}
+\DoxyCodeLine{244     std::swap(frontier, bins[top\_bin]);}
+\DoxyCodeLine{245     tbb::parallel\_for(tbb::blocked\_range(0ul, frontier.size()), [\&](\textcolor{keyword}{auto}\&\& range) \{}
+\DoxyCodeLine{246       for (auto id = range.begin(), e = range.end(); id < e; ++id) \{}
+\DoxyCodeLine{247         auto i = frontier[id];}
+\DoxyCodeLine{248         if (tdist[i] >= delta * top\_bin) \{}
+\DoxyCodeLine{249           for (auto\&\& elt : graph[i]) \{}
+\DoxyCodeLine{250             auto j = target(graph, elt);}
+\DoxyCodeLine{251             auto wt = weight(elt);}
+\DoxyCodeLine{252             \textcolor{comment}{//auto\&\& [j, wt] = elt;    // i == v}}
+\DoxyCodeLine{253             relax(i, j, wt);}
+\DoxyCodeLine{254           \}}
+\DoxyCodeLine{255         \}}
+\DoxyCodeLine{256       \}}
+\DoxyCodeLine{257     \});}
+\DoxyCodeLine{258 }
+\DoxyCodeLine{259     \textcolor{keywordflow}{while} (top\_bin < bins.size() \&\& bins[top\_bin].size() == 0) \{}
+\DoxyCodeLine{260       bins[top\_bin++].shrink\_to\_fit();}
+\DoxyCodeLine{261     \}}
+\DoxyCodeLine{262   \}}
+\DoxyCodeLine{263   \textcolor{keywordflow}{return} tdist;}
+\DoxyCodeLine{264 \}}
+\DoxyCodeLine{265 }
+\DoxyCodeLine{266 \textcolor{keyword}{template} <\textcolor{keyword}{class} distance\_t, adjacency\_list\_graph Graph, \textcolor{keyword}{class} Id, \textcolor{keyword}{class} T, \textcolor{keyword}{class} Weight>}
+\DoxyCodeLine{267 \textcolor{keyword}{auto} delta\_stepping\_v11(\textcolor{keyword}{const} Graph\& graph, Id source, T delta,}
+\DoxyCodeLine{268   Weight weight = [](\textcolor{keyword}{auto}\& e) -\/> \textcolor{keyword}{auto}\& \{ \textcolor{keywordflow}{return} std::get<1>(e); \}) \{}
+\DoxyCodeLine{269   tbb::queuing\_mutex                                 lock;}
+\DoxyCodeLine{270   std::atomic<std::size\_t>                           size = 1;}
+\DoxyCodeLine{271   tbb::concurrent\_vector<tbb::concurrent\_vector<Id>> bins(size);}
+\DoxyCodeLine{272   std::size\_t                                        top\_bin = 0;}
+\DoxyCodeLine{273 }
+\DoxyCodeLine{274   std::vector<std::atomic<distance\_t>> tdist(num\_vertices(graph));}
+\DoxyCodeLine{275   tbb::parallel\_for\_each(tdist, [](\textcolor{keyword}{auto}\&\& d) \{ d = std::numeric\_limits<distance\_t>::max(); \});}
+\DoxyCodeLine{276 }
+\DoxyCodeLine{277   bins[top\_bin].push\_back(source);}
+\DoxyCodeLine{278   tdist[source] = 0;}
+\DoxyCodeLine{279 }
+\DoxyCodeLine{280   \textcolor{keyword}{auto} relax = [\&](Id i, Id j, \textcolor{keyword}{auto} wt) \{}
+\DoxyCodeLine{281     distance\_t next = nw::graph::acquire(tdist[i]) + wt;}
+\DoxyCodeLine{282     distance\_t prev = nw::graph::acquire(tdist[j]);}
+\DoxyCodeLine{283     \textcolor{keywordtype}{bool}       success;}
+\DoxyCodeLine{284     \textcolor{keywordflow}{while} (next < prev \&\& !(success = nw::graph::cas(tdist[j], prev, next))) \{}
+\DoxyCodeLine{285     \}}
+\DoxyCodeLine{286     \textcolor{keywordflow}{if} (!success) \textcolor{keywordflow}{return};}
+\DoxyCodeLine{287 }
+\DoxyCodeLine{288     \textcolor{comment}{// inject this into the right bin (double-\/checked locking to serialize}}
+\DoxyCodeLine{289     \textcolor{comment}{// resizing because tbb::concurrent\_vector resizing is not thread safe}}
+\DoxyCodeLine{290     \textcolor{comment}{// https://www.threadingbuildingblocks.org/docs/help/hh\_goto.htm?index.htm\#tbb\_userguide/Advanced\_Idiom\_Waiting\_on\_an\_Element.html)}}
+\DoxyCodeLine{291     std::size\_t bin = next / delta;}
+\DoxyCodeLine{292     \textcolor{keywordflow}{if} (nw::graph::acquire(size) < bin + 1) \{}
+\DoxyCodeLine{293       tbb::queuing\_mutex::scoped\_lock \_(lock);}
+\DoxyCodeLine{294       \textcolor{keywordflow}{if} (nw::graph::acquire(size) < bin + 1) \{}
+\DoxyCodeLine{295         bins.grow\_to\_at\_least(bin + 1);}
+\DoxyCodeLine{296         nw::graph::release(size, bin + 1);}
+\DoxyCodeLine{297       \}}
+\DoxyCodeLine{298     \}}
+\DoxyCodeLine{299     bins[bin].push\_back(j);}
+\DoxyCodeLine{300   \};}
+\DoxyCodeLine{301 }
+\DoxyCodeLine{302   tbb::concurrent\_vector<Id> frontier;}
+\DoxyCodeLine{303 }
+\DoxyCodeLine{304   \textcolor{keywordflow}{while} (top\_bin < bins.size()) \{}
+\DoxyCodeLine{305     frontier.resize(0);}
+\DoxyCodeLine{306     std::swap(frontier, bins[top\_bin]);}
+\DoxyCodeLine{307     tbb::parallel\_for(tbb::blocked\_range(0ul, frontier.size()), [\&](\textcolor{keyword}{auto}\&\& range) \{}
+\DoxyCodeLine{308       for (auto id = range.begin(), e = range.end(); id < e; ++id) \{}
+\DoxyCodeLine{309         auto i = frontier[id];}
+\DoxyCodeLine{310         if (tdist[i] >= delta * top\_bin) \{}
+\DoxyCodeLine{311           tbb::parallel\_for(graph[i], [\&](auto\&\& range) \{}
+\DoxyCodeLine{312             for (auto\&\& elt : range) \{}
+\DoxyCodeLine{313               auto j = target(graph, elt);}
+\DoxyCodeLine{314               auto wt = weight(elt);}
+\DoxyCodeLine{315               \textcolor{comment}{//auto\&\& [j, wt] = elt;    // i == v}}
+\DoxyCodeLine{316               relax(i, j, wt);}
+\DoxyCodeLine{317             \}}
+\DoxyCodeLine{318           \});}
+\DoxyCodeLine{319         \}}
+\DoxyCodeLine{320       \}}
+\DoxyCodeLine{321     \});}
+\DoxyCodeLine{322 }
+\DoxyCodeLine{323     \textcolor{keywordflow}{while} (top\_bin < bins.size() \&\& bins[top\_bin].size() == 0) \{}
+\DoxyCodeLine{324       bins[top\_bin++].shrink\_to\_fit();}
+\DoxyCodeLine{325     \}}
+\DoxyCodeLine{326   \}}
+\DoxyCodeLine{327   \textcolor{keywordflow}{return} tdist;}
+\DoxyCodeLine{328 \}}
+\DoxyCodeLine{329 }
+\DoxyCodeLine{330 \}    \textcolor{comment}{// namespace graph}}
+\DoxyCodeLine{331 \}    \textcolor{comment}{// namespace nw}}
+\DoxyCodeLine{332 \textcolor{preprocessor}{\#endif    }\textcolor{comment}{// DELTA\_STEPPING\_EXPERIMENTAL\_HPP}}
+
+\end{DoxyCode}

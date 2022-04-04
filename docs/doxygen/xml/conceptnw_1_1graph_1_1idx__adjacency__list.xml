@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.3" xml:lang="en-US">
+  <compounddef id="conceptnw_1_1graph_1_1idx__adjacency__list" kind="concept">
+    <compoundname>nw::graph::idx_adjacency_list</compoundname>
+    <templateparamlist>
+      <param>
+        <type>typename G</type>
+      </param>
+    </templateparamlist>
+    <initializer>template&lt;typename G&gt;
+concept nw::graph::idx_adjacency_list =  
+     std::ranges::random_access_range&lt;G&gt;
+  &amp;&amp; edge_list_c&lt;inner_range_t&lt;G&gt;&gt;
+  &amp;&amp; std::is_convertible_v&lt;std::tuple_element_t&lt;0, inner_value_t&lt;G&gt;&gt;, std::ranges::range_difference_t&lt;G&gt;&gt;
+  &amp;&amp; requires(G g, std::tuple_element_t&lt;0, inner_value_t&lt;G&gt;&gt; u) {
+  { g[u] } -&gt; std::convertible_to&lt;inner_range_t&lt;G&gt;&gt;;
+}    </initializer>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/Users/lums/NWmath/NWgr/include/nwgraph/graph_concepts.hpp" line="150" column="1"/>
+  </compounddef>
+</doxygen>

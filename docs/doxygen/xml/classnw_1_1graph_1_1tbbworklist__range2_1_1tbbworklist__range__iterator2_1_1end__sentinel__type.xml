@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.3" xml:lang="en-US">
+  <compounddef id="classnw_1_1graph_1_1tbbworklist__range2_1_1tbbworklist__range__iterator2_1_1end__sentinel__type" kind="class" language="C++" prot="public">
+    <compoundname>nw::graph::tbbworklist_range2::tbbworklist_range_iterator2::end_sentinel_type</compoundname>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classnw_1_1graph_1_1tbbworklist__range2_1_1tbbworklist__range__iterator2_1_1end__sentinel__type_1a95eef6b9b8bcb9c499638e6b310adefa" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>nw::graph::tbbworklist_range2&lt; Graph, Workitem, Queue &gt;::tbbworklist_range_iterator2::end_sentinel_type::end_sentinel_type</definition>
+        <argsstring>()</argsstring>
+        <name>end_sentinel_type</name>
+        <qualifiedname>nw::graph::tbbworklist_range2::tbbworklist_range_iterator2::end_sentinel_type::end_sentinel_type</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/worklist.hpp" line="213" column="7" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/worklist.hpp" bodystart="213" bodyend="213"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/worklist.hpp" line="211" column="5" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/worklist.hpp" bodystart="211" bodyend="214"/>
+    <listofallmembers>
+      <member refid="classnw_1_1graph_1_1tbbworklist__range2_1_1tbbworklist__range__iterator2_1_1end__sentinel__type_1a95eef6b9b8bcb9c499638e6b310adefa" prot="public" virt="non-virtual"><scope>nw::graph::tbbworklist_range2::tbbworklist_range_iterator2::end_sentinel_type</scope><name>end_sentinel_type</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

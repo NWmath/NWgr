@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.3" xml:lang="en-US">
+  <compounddef id="structnw_1_1graph_1_1is__swappable_3_01std_1_1tuple_3_01_ts_8_8_8_01_4_01_4" kind="struct" language="C++" prot="public">
+    <compoundname>nw::graph::is_swappable&lt; std::tuple&lt; Ts... &gt; &gt;</compoundname>
+    <basecompoundref prot="public" virt="non-virtual">std::conjunction&lt; is_swappable&lt; Ts &gt;... &gt;</basecompoundref>
+    <templateparamlist>
+      <param>
+        <type>class...</type>
+        <declname>Ts</declname>
+        <defname>Ts</defname>
+      </param>
+    </templateparamlist>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="1">
+        <label>nw::graph::is_swappable&lt; std::tuple&lt; Ts... &gt; &gt;</label>
+        <link refid="structnw_1_1graph_1_1is__swappable_3_01std_1_1tuple_3_01_ts_8_8_8_01_4_01_4"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>std::conjunction&lt; is_swappable&lt; Ts &gt;... &gt;</label>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="1">
+        <label>nw::graph::is_swappable&lt; std::tuple&lt; Ts... &gt; &gt;</label>
+        <link refid="structnw_1_1graph_1_1is__swappable_3_01std_1_1tuple_3_01_ts_8_8_8_01_4_01_4"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+      <node id="2">
+        <label>std::conjunction&lt; is_swappable&lt; Ts &gt;... &gt;</label>
+      </node>
+    </collaborationgraph>
+    <location file="/Users/lums/NWmath/NWgr/include/nwgraph/util/tuple_hack.hpp" line="30" column="1" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/util/tuple_hack.hpp" bodystart="30" bodyend="30"/>
+    <listofallmembers>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

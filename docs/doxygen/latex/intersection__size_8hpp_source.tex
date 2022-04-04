@@ -1,0 +1,95 @@
+\hypertarget{intersection__size_8hpp_source}{}\doxysection{intersection\+\_\+size.\+hpp}
+\label{intersection__size_8hpp_source}\index{/Users/lums/NWmath/NWgr/include/nwgraph/util/intersection\_size.hpp@{/Users/lums/NWmath/NWgr/include/nwgraph/util/intersection\_size.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// }}
+\DoxyCodeLine{2 \textcolor{comment}{// This file is part of NW Graph (aka GraphPack) }}
+\DoxyCodeLine{3 \textcolor{comment}{// (c) Pacific Northwest National Laboratory 2018-\/2021 }}
+\DoxyCodeLine{4 \textcolor{comment}{// (c) University of Washington 2018-\/2021 }}
+\DoxyCodeLine{5 \textcolor{comment}{// }}
+\DoxyCodeLine{6 \textcolor{comment}{// Licensed under terms of include LICENSE file }}
+\DoxyCodeLine{7 \textcolor{comment}{// }}
+\DoxyCodeLine{8 \textcolor{comment}{// Authors: }}
+\DoxyCodeLine{9 \textcolor{comment}{//     Andrew Lumsdaine }}
+\DoxyCodeLine{10 \textcolor{comment}{//}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#ifndef NW\_GRAPH\_INTERSECTION\_SIZE\_HPP}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#define NW\_GRAPH\_INTERSECTION\_SIZE\_HPP}}
+\DoxyCodeLine{13 }
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#if defined(CL\_SYCL\_LANGUAGE\_VERSION)}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#include <dpstd/algorithm>}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include <dpstd/execution>}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include <dpstd/numeric>}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include <algorithm>}}
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#include <execution>}}
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#include <numeric>}}
+\DoxyCodeLine{22 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{23 \textcolor{preprocessor}{\#include <type\_traits>}}
+\DoxyCodeLine{24 }
+\DoxyCodeLine{25 \textcolor{keyword}{namespace }nw \{}
+\DoxyCodeLine{26 \textcolor{keyword}{namespace }graph \{}
+\DoxyCodeLine{46 \textcolor{keyword}{template} <\textcolor{keyword}{class} A, \textcolor{keyword}{class} B, \textcolor{keyword}{class} C, \textcolor{keyword}{class} D, \textcolor{keyword}{class} ExecutionPolicy>}
+\DoxyCodeLine{47 std::size\_t intersection\_size(A i, B\&\& ie, C j, D\&\& je, ExecutionPolicy\&\& ep) \{}
+\DoxyCodeLine{48   \textcolor{comment}{// Custom comparator because we know our iterator operator* produces tuples}}
+\DoxyCodeLine{49   \textcolor{comment}{// and we only care about the first value.}}
+\DoxyCodeLine{50   \textcolor{keyword}{static} \textcolor{keyword}{constexpr} \textcolor{keyword}{auto} lt = [](\textcolor{keyword}{auto}\&\& x, \textcolor{keyword}{auto}\&\& y) \{ \textcolor{keywordflow}{return} std::get<0>(x) < std::get<0>(y); \};}
+\DoxyCodeLine{51 }
+\DoxyCodeLine{52   \textcolor{comment}{// Use our own trivial loop for the intersection size when the execution}}
+\DoxyCodeLine{53   \textcolor{comment}{// policy is sequential, otherwise rely on std::set\_intersection.}}
+\DoxyCodeLine{54   \textcolor{comment}{//}}
+\DoxyCodeLine{55   \textcolor{comment}{// @todo We really don't need set intersection. You'd hope that it would be}}
+\DoxyCodeLine{56   \textcolor{comment}{//       efficient with the output counter, but it just isn't. Parallelizing}}
+\DoxyCodeLine{57   \textcolor{comment}{//       the intersection size seems non-\/trivial though.}}
+\DoxyCodeLine{58   \textcolor{keywordflow}{if} \textcolor{keyword}{constexpr} (std::is\_same\_v<std::decay\_t<ExecutionPolicy>, std::execution::sequenced\_policy>) \{}
+\DoxyCodeLine{59     std::size\_t n = 0;}
+\DoxyCodeLine{60     \textcolor{keywordflow}{while} (i != ie \&\& j != je) \{}
+\DoxyCodeLine{61       \textcolor{keywordflow}{if} (lt(*i, *j)) \{}
+\DoxyCodeLine{62         ++i;}
+\DoxyCodeLine{63       \} \textcolor{keywordflow}{else} \textcolor{keywordflow}{if} (lt(*j, *i)) \{}
+\DoxyCodeLine{64         ++j;}
+\DoxyCodeLine{65       \} \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{66         ++n;}
+\DoxyCodeLine{67         ++i;}
+\DoxyCodeLine{68         ++j;}
+\DoxyCodeLine{69       \}}
+\DoxyCodeLine{70     \}}
+\DoxyCodeLine{71     \textcolor{keywordflow}{return} n;}
+\DoxyCodeLine{72     (void)ep;}
+\DoxyCodeLine{73   \} \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{74     \textcolor{keywordflow}{return} std::set\_intersection(std::forward<ExecutionPolicy>(ep), std::forward<A>(i), std::forward<B>(ie), std::forward<C>(j),}
+\DoxyCodeLine{75                                  std::forward<D>(je), \mbox{\hyperlink{structnw_1_1graph_1_1counter}{nw::graph::counter}}\{\}, lt);}
+\DoxyCodeLine{76   \}}
+\DoxyCodeLine{77 \}}
+\DoxyCodeLine{78 }
+\DoxyCodeLine{94 \textcolor{keyword}{template} <\textcolor{keyword}{class }R, \textcolor{keyword}{class }S, \textcolor{keyword}{class }ExecutionPolicy,}
+\DoxyCodeLine{95           std::enable\_if\_t<std::is\_execution\_policy\_v<std::decay\_t<ExecutionPolicy>>, \textcolor{keywordtype}{void}**> = \textcolor{keyword}{nullptr}>}
+\DoxyCodeLine{96 std::size\_t intersection\_size(R\&\& i, S\&\& j, ExecutionPolicy\&\& ep) \{}
+\DoxyCodeLine{97   \textcolor{keywordflow}{return} intersection\_size(i.begin(), i.end(), j.begin(), j.end(), std::forward<ExecutionPolicy>(ep));}
+\DoxyCodeLine{98 \}}
+\DoxyCodeLine{99 }
+\DoxyCodeLine{117 \textcolor{keyword}{template} <\textcolor{keyword}{class }A, \textcolor{keyword}{class }B, \textcolor{keyword}{class }Range, \textcolor{keyword}{class }ExecutionPolicy,}
+\DoxyCodeLine{118           std::enable\_if\_t<std::is\_execution\_policy\_v<std::decay\_t<ExecutionPolicy>>, \textcolor{keywordtype}{void}**> = \textcolor{keyword}{nullptr}>}
+\DoxyCodeLine{119 std::size\_t intersection\_size(A\&\& i, B\&\& ie, Range\&\& j, ExecutionPolicy\&\& ep) \{}
+\DoxyCodeLine{120   \textcolor{keywordflow}{return} intersection\_size(std::forward<A>(i), std::forward<B>(ie), j.begin(), j.end(), std::forward<ExecutionPolicy>(ep));}
+\DoxyCodeLine{121 \}}
+\DoxyCodeLine{122 }
+\DoxyCodeLine{140 \textcolor{keyword}{template} <\textcolor{keyword}{class} A, \textcolor{keyword}{class} B, \textcolor{keyword}{class} C, \textcolor{keyword}{class} D, std::enable\_if\_t<!std::is\_execution\_policy\_v<std::decay\_t<D>>, \textcolor{keywordtype}{void}**> = \textcolor{keywordtype}{nullptr}>}
+\DoxyCodeLine{141 std::size\_t intersection\_size(A\&\& i, B\&\& ie, C\&\& j, D\&\& je) \{}
+\DoxyCodeLine{142   \textcolor{keywordflow}{return} intersection\_size(std::forward<A>(i), std::forward<B>(ie), std::forward<C>(j), std::forward<D>(je), std::execution::seq);}
+\DoxyCodeLine{143 \}}
+\DoxyCodeLine{144 }
+\DoxyCodeLine{157 \textcolor{keyword}{template} <\textcolor{keyword}{class} R, \textcolor{keyword}{class} S>}
+\DoxyCodeLine{158 std::size\_t intersection\_size(R\&\& i, S\&\& j) \{}
+\DoxyCodeLine{159   \textcolor{keywordflow}{return} intersection\_size(i.begin(), i.end(), j.begin(), j.end(), std::execution::seq);}
+\DoxyCodeLine{160 \}}
+\DoxyCodeLine{161 }
+\DoxyCodeLine{178 \textcolor{keyword}{template} <\textcolor{keyword}{class} A, \textcolor{keyword}{class} B, \textcolor{keyword}{class} Range, std::enable\_if\_t<!std::is\_execution\_policy\_v<std::decay\_t<Range>>, \textcolor{keywordtype}{void}**> = \textcolor{keywordtype}{nullptr}>}
+\DoxyCodeLine{179 std::size\_t intersection\_size(A\&\& i, B\&\& ie, Range\&\& j) \{}
+\DoxyCodeLine{180   \textcolor{keywordflow}{return} intersection\_size(std::forward<A>(i), std::forward<B>(ie), j.begin(), j.end(), std::execution::seq);}
+\DoxyCodeLine{181 \}}
+\DoxyCodeLine{182 \}    \textcolor{comment}{// namespace graph}}
+\DoxyCodeLine{183 \}    \textcolor{comment}{// namespace nw}}
+\DoxyCodeLine{184 }
+\DoxyCodeLine{185 \textcolor{preprocessor}{\#endif    }\textcolor{comment}{// NW\_GRAPH\_INTERSECTION\_SIZE\_HPP}}
+
+\end{DoxyCode}

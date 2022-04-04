@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.3" xml:lang="en-US">
+  <compounddef id="namespacestd" kind="namespace" language="C++">
+    <compoundname>std</compoundname>
+    <innerclass refid="classstd_1_1tuple__size_3_01nw_1_1graph_1_1struct__of__arrays_3_01_attributes_8_8_8_01_4_01_4" prot="public">std::tuple_size&lt; nw::graph::struct_of_arrays&lt; Attributes... &gt; &gt;</innerclass>
+    <innerclass refid="classstd_1_1tuple__size_3_01nw_1_1graph_1_1zipped_3_01_attributes_8_8_8_01_4_01_4" prot="public">std::tuple_size&lt; nw::graph::zipped&lt; Attributes... &gt; &gt;</innerclass>
+    <innernamespace refid="namespacestd_1_1ranges">std::ranges</innernamespace>
+      <sectiondef kind="func">
+      <memberdef kind="function" id="tuple__hack_8hpp_1aeafccf9f5bf5c6fc7d8def89bcc88614" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <templateparamlist>
+          <param>
+            <type>class...</type>
+            <declname>Ts</declname>
+            <defname>Ts</defname>
+          </param>
+        </templateparamlist>
+        <type>void</type>
+        <definition>void std::swap</definition>
+        <argsstring>(std::tuple&lt; Ts... &gt; &amp;&amp;x, std::tuple&lt; Ts... &gt; &amp;&amp;y)</argsstring>
+        <name>swap</name>
+        <qualifiedname>std::swap</qualifiedname>
+        <param>
+          <type>std::tuple&lt; Ts... &gt; &amp;&amp;</type>
+          <declname>x</declname>
+        </param>
+        <param>
+          <type>std::tuple&lt; Ts... &gt; &amp;&amp;</type>
+          <declname>y</declname>
+        </param>
+    <requiresclause>(<ref refid="structnw_1_1graph_1_1is__swappable" kindref="compound">nw::graph::is_swappable</ref>&lt;Ts&gt;::value &amp;&amp; ...)    </requiresclause>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/util/tuple_hack.hpp" line="38" column="6" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/util/tuple_hack.hpp" bodystart="38" bodyend="45"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/Users/lums/NWmath/NWgr/include/nwgraph/containers/soa.hpp" line="275" column="1"/>
+  </compounddef>
+</doxygen>

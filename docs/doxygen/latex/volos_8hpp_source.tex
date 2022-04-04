@@ -1,0 +1,133 @@
+\hypertarget{volos_8hpp_source}{}\doxysection{volos.\+hpp}
+\label{volos_8hpp_source}\index{/Users/lums/NWmath/NWgr/include/nwgraph/volos.hpp@{/Users/lums/NWmath/NWgr/include/nwgraph/volos.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// }}
+\DoxyCodeLine{2 \textcolor{comment}{// This file is part of NW Graph (aka GraphPack) }}
+\DoxyCodeLine{3 \textcolor{comment}{// (c) Pacific Northwest National Laboratory 2018-\/2021 }}
+\DoxyCodeLine{4 \textcolor{comment}{// (c) University of Washington 2018-\/2021 }}
+\DoxyCodeLine{5 \textcolor{comment}{// }}
+\DoxyCodeLine{6 \textcolor{comment}{// Licensed under terms of include LICENSE file }}
+\DoxyCodeLine{7 \textcolor{comment}{// }}
+\DoxyCodeLine{8 \textcolor{comment}{// Authors: }}
+\DoxyCodeLine{9 \textcolor{comment}{//     Andrew Lumsdaine }}
+\DoxyCodeLine{10 \textcolor{comment}{//}}
+\DoxyCodeLine{11 }
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#ifndef NW\_GRAPH\_VOLOS\_HPP}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#define NW\_GRAPH\_VOLOS\_HPP}}
+\DoxyCodeLine{14 }
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#include <cassert>}}
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include <list>}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include <tuple>}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#include "{}nwgraph/build.hpp"{}}}
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#include "{}edge\_list.hpp"{}}}
+\DoxyCodeLine{22 \textcolor{preprocessor}{\#include "{}nwgraph/graph\_base.hpp"{}}}
+\DoxyCodeLine{23 \textcolor{preprocessor}{\#include "{}nwgraph/graph\_traits.hpp"{}}}
+\DoxyCodeLine{24 }
+\DoxyCodeLine{25 \textcolor{keyword}{namespace }nw \{}
+\DoxyCodeLine{26 \textcolor{keyword}{namespace }graph \{}
+\DoxyCodeLine{27 }
+\DoxyCodeLine{28 \textcolor{keyword}{template} <\textcolor{keyword}{typename}... Attributes>}
+\DoxyCodeLine{29 \textcolor{keyword}{class }\mbox{\hyperlink{classnw_1_1graph_1_1vector__of__list__of__structs}{vector\_of\_list\_of\_structs}} : \textcolor{keyword}{public} std::vector<std::list<std::tuple<Attributes...>>> \{}
+\DoxyCodeLine{30 }
+\DoxyCodeLine{31 \textcolor{keyword}{public}:}
+\DoxyCodeLine{32   \textcolor{keyword}{using} base  = std::vector<std::list<std::tuple<Attributes...>>>;}
+\DoxyCodeLine{33   \textcolor{keyword}{using} inner = std::list<std::tuple<Attributes...>>;}
+\DoxyCodeLine{34 }
+\DoxyCodeLine{35   \textcolor{keyword}{using} inner\_container\_ref  = inner\&;}
+\DoxyCodeLine{36   \textcolor{keyword}{using} outer\_iterator       = \textcolor{keyword}{typename} base::iterator;}
+\DoxyCodeLine{37   \textcolor{keyword}{using} \mbox{\hyperlink{classconst__outer__iterator}{const\_outer\_iterator}} = \textcolor{keyword}{typename} base::const\_iterator;}
+\DoxyCodeLine{38   \textcolor{keyword}{using} inner\_iterator       = \textcolor{keyword}{typename} inner::iterator;}
+\DoxyCodeLine{39   \textcolor{keyword}{using} const\_inner\_iterator = \textcolor{keyword}{typename} inner::const\_iterator;}
+\DoxyCodeLine{40 }
+\DoxyCodeLine{41   \mbox{\hyperlink{classnw_1_1graph_1_1vector__of__list__of__structs}{vector\_of\_list\_of\_structs}}(\textcolor{keywordtype}{size\_t} N) : base(N) \{\}}
+\DoxyCodeLine{42 \};}
+\DoxyCodeLine{43 }
+\DoxyCodeLine{44 \textcolor{keyword}{template} <\textcolor{keywordtype}{int} idx, std::unsigned\_integral vertex\_id, \textcolor{keyword}{typename}... Attributes>}
+\DoxyCodeLine{45 \textcolor{keyword}{class }\mbox{\hyperlink{classnw_1_1graph_1_1index__adj__list}{index\_adj\_list}} : \textcolor{keyword}{public} \mbox{\hyperlink{classnw_1_1graph_1_1unipartite__graph__base}{unipartite\_graph\_base}}, \textcolor{keyword}{public} \mbox{\hyperlink{classnw_1_1graph_1_1vector__of__list__of__structs}{vector\_of\_list\_of\_structs}}<vertex\_id, Attributes...> \{}
+\DoxyCodeLine{46 \textcolor{keyword}{public}:}
+\DoxyCodeLine{47   \textcolor{keyword}{using} vertex\_id\_type    = vertex\_id;}
+\DoxyCodeLine{48   \textcolor{keyword}{using} \mbox{\hyperlink{classnw_1_1graph_1_1vector__of__list__of__structs}{base}}              = \mbox{\hyperlink{classnw_1_1graph_1_1vector__of__list__of__structs}{vector\_of\_list\_of\_structs}}<vertex\_id\_type, Attributes...>;}
+\DoxyCodeLine{49   \textcolor{keyword}{using} \mbox{\hyperlink{classnw_1_1graph_1_1unipartite__graph__base}{graph\_base}}        = \mbox{\hyperlink{classnw_1_1graph_1_1unipartite__graph__base}{unipartite\_graph\_base}};}
+\DoxyCodeLine{50   \textcolor{keyword}{using} num\_vertices\_type = std::array<typename base::size\_type, 1>;}
+\DoxyCodeLine{51   \textcolor{keyword}{using} num\_edges\_type    = \textcolor{keyword}{typename} base::size\_type;}
+\DoxyCodeLine{52 }
+\DoxyCodeLine{53   \mbox{\hyperlink{classnw_1_1graph_1_1index__adj__list}{index\_adj\_list}}(\textcolor{keywordtype}{size\_t} N = 0) : \mbox{\hyperlink{classnw_1_1graph_1_1vector__of__list__of__structs}{base}}(N) \{\}}
+\DoxyCodeLine{54 }
+\DoxyCodeLine{55   \mbox{\hyperlink{classnw_1_1graph_1_1index__adj__list}{index\_adj\_list}}(\mbox{\hyperlink{classnw_1_1graph_1_1index__edge__list}{edge\_list<directedness::directed, Attributes...>}}\& A) : \mbox{\hyperlink{classnw_1_1graph_1_1vector__of__list__of__structs}{base}}(A.num\_vertices()[0]) \{ num\_edges\_ = fill\_adj\_list(A, *\textcolor{keyword}{this}); \}}
+\DoxyCodeLine{56 }
+\DoxyCodeLine{57   \mbox{\hyperlink{classnw_1_1graph_1_1index__adj__list}{index\_adj\_list}}(\mbox{\hyperlink{classnw_1_1graph_1_1index__edge__list}{edge\_list<directedness::undirected, Attributes...>}}\& A) : \mbox{\hyperlink{classnw_1_1graph_1_1vector__of__list__of__structs}{base}}(A.num\_vertices()[0]) \{ num\_edges\_ = fill\_adj\_list(A, *\textcolor{keyword}{this}); \}}
+\DoxyCodeLine{58 }
+\DoxyCodeLine{59   \textcolor{keyword}{using} iterator = \textcolor{keyword}{typename} base::outer\_iterator;}
+\DoxyCodeLine{60 }
+\DoxyCodeLine{61   \textcolor{keyword}{using} outer\_iterator       = \textcolor{keyword}{typename} base::outer\_iterator;}
+\DoxyCodeLine{62   \textcolor{keyword}{using} inner\_iterator       = \textcolor{keyword}{typename} base::inner\_iterator;}
+\DoxyCodeLine{63   \textcolor{keyword}{using} \mbox{\hyperlink{classconst__outer__iterator}{const\_outer\_iterator}} = \textcolor{keyword}{typename} base::const\_outer\_iterator;}
+\DoxyCodeLine{64   \textcolor{keyword}{using} const\_inner\_iterator = \textcolor{keyword}{typename} base::const\_inner\_iterator;}
+\DoxyCodeLine{65 }
+\DoxyCodeLine{66   \textcolor{keyword}{using} attributes\_t = std::tuple<Attributes...>;}
+\DoxyCodeLine{67   \textcolor{keyword}{static} \textcolor{keyword}{constexpr} std::size\_t getNAttr() \{ \textcolor{keywordflow}{return} \textcolor{keyword}{sizeof}...(Attributes); \}}
+\DoxyCodeLine{68 }
+\DoxyCodeLine{69   \textcolor{keywordtype}{void} open\_for\_push\_back() \{ graph\_base::is\_open = \textcolor{keyword}{true}; \}}
+\DoxyCodeLine{70   \textcolor{keywordtype}{void} close\_for\_push\_back() \{ graph\_base::is\_open = \textcolor{keyword}{false}; \}}
+\DoxyCodeLine{71   \textcolor{keywordtype}{void} push\_back(\textcolor{keywordtype}{size\_t} i, \textcolor{keywordtype}{size\_t} j, Attributes... attrs) \{}
+\DoxyCodeLine{72     \textcolor{keywordflow}{if} (i >= base::size()) \{}
+\DoxyCodeLine{73       \textcolor{keywordflow}{for} (\textcolor{keywordtype}{size\_t} k = base::size(); k <= i; ++k) \{}
+\DoxyCodeLine{74         base::emplace\_back();}
+\DoxyCodeLine{75       \}}
+\DoxyCodeLine{76     \}}
+\DoxyCodeLine{77     base::operator[](i).emplace\_back(j, attrs...);}
+\DoxyCodeLine{78   \}}
+\DoxyCodeLine{79 }
+\DoxyCodeLine{80   num\_vertices\_type num\_vertices()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \{base::size()\}; \};}
+\DoxyCodeLine{81   num\_edges\_type    num\_edges()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} num\_edges\_; \}}
+\DoxyCodeLine{82 }
+\DoxyCodeLine{83 \textcolor{keyword}{private}:}
+\DoxyCodeLine{84   num\_edges\_type num\_edges\_;}
+\DoxyCodeLine{85 \};}
+\DoxyCodeLine{86 }
+\DoxyCodeLine{87 \textcolor{keyword}{template} <\textcolor{keywordtype}{int} idx, \textcolor{keyword}{typename}... Attributes>}
+\DoxyCodeLine{88 \textcolor{keyword}{using} \mbox{\hyperlink{classnw_1_1graph_1_1index__adj__list}{adj\_list}} = \mbox{\hyperlink{classnw_1_1graph_1_1index__adj__list}{index\_adj\_list}}<idx, default\_vertex\_id\_type, Attributes...>;}
+\DoxyCodeLine{89 }
+\DoxyCodeLine{90 \textcolor{keyword}{template} <\textcolor{keywordtype}{int} idx, std::unsigned\_integral vertex\_id, \textcolor{keyword}{typename}... Attributes>}
+\DoxyCodeLine{91 \textcolor{keyword}{struct }\mbox{\hyperlink{structnw_1_1graph_1_1graph__traits}{graph\_traits}}<\mbox{\hyperlink{classnw_1_1graph_1_1index__adj__list}{index\_adj\_list}}<idx, vertex\_id, Attributes...>> \{}
+\DoxyCodeLine{92 }
+\DoxyCodeLine{93   \textcolor{keyword}{using} \mbox{\hyperlink{classnw_1_1graph_1_1index__adj__list}{my\_type}} = \mbox{\hyperlink{classnw_1_1graph_1_1index__adj__list}{index\_adj\_list}}<idx, vertex\_id, Attributes...>;}
+\DoxyCodeLine{94 }
+\DoxyCodeLine{95   \textcolor{keyword}{using} tuple\_type = std::tuple<Attributes...>;}
+\DoxyCodeLine{96   \textcolor{keyword}{using} inner\_type = std::list<tuple\_type>;}
+\DoxyCodeLine{97   \textcolor{keyword}{using} outer\_type = std::vector<inner\_type>;}
+\DoxyCodeLine{98 }
+\DoxyCodeLine{99   \textcolor{keyword}{using} outer\_iterator = \textcolor{keyword}{typename} outer\_type::iterator;}
+\DoxyCodeLine{100   \textcolor{keyword}{using} inner\_iterator = \textcolor{keyword}{typename} inner\_type::iterator;}
+\DoxyCodeLine{101 }
+\DoxyCodeLine{102   \textcolor{keyword}{using} \mbox{\hyperlink{classconst__outer__iterator}{const\_outer\_iterator}} = \textcolor{keyword}{typename} outer\_type::const\_iterator;}
+\DoxyCodeLine{103   \textcolor{keyword}{using} const\_inner\_iterator = \textcolor{keyword}{typename} inner\_type::const\_iterator;}
+\DoxyCodeLine{104 }
+\DoxyCodeLine{105   \textcolor{keyword}{using} vertex\_id\_type    = \textcolor{keyword}{typename} my\_type::vertex\_id\_type;}
+\DoxyCodeLine{106   \textcolor{keyword}{using} vertex\_size\_type  = \textcolor{keyword}{typename} outer\_type::size\_type;}
+\DoxyCodeLine{107   \textcolor{keyword}{using} num\_vertices\_type = std::array<vertex\_size\_type, 1>;}
+\DoxyCodeLine{108 \};}
+\DoxyCodeLine{109 }
+\DoxyCodeLine{110 \textcolor{keyword}{template} <\textcolor{keywordtype}{int} idx, std::unsigned\_integral vertex\_id, \textcolor{keyword}{typename}... Attributes>}
+\DoxyCodeLine{111 \textcolor{keyword}{auto} tag\_invoke(\textcolor{keyword}{const} num\_vertices\_tag, \mbox{\hyperlink{classnw_1_1graph_1_1index__adj__list}{index\_adj\_list<idx, vertex\_id, Attributes...>}}\& b) \{}
+\DoxyCodeLine{112   \textcolor{keywordflow}{return} b.num\_vertices()[0];}
+\DoxyCodeLine{113 \}}
+\DoxyCodeLine{114 }
+\DoxyCodeLine{115 \textcolor{preprocessor}{\#if 0}}
+\DoxyCodeLine{116 }
+\DoxyCodeLine{117 \textcolor{keyword}{template} <\textcolor{keyword}{typename}... Attributes>}
+\DoxyCodeLine{118 graph\_traits<std::vector<std::list<std::tuple<Attributes...>>>>::num\_vertices\_type}
+\DoxyCodeLine{119 num\_vertices(\textcolor{keyword}{const} \textcolor{keyword}{typename} std::vector<std::list<std::tuple<Attributes...>>>\& g) \{}
+\DoxyCodeLine{120   \textcolor{keywordflow}{return} \{ g.size() \};}
+\DoxyCodeLine{121 \}}
+\DoxyCodeLine{122 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{123 }
+\DoxyCodeLine{124 \}    \textcolor{comment}{// namespace graph}}
+\DoxyCodeLine{125 \}    \textcolor{comment}{// namespace nw}}
+\DoxyCodeLine{126 }
+\DoxyCodeLine{127 \textcolor{preprocessor}{\#endif    }\textcolor{comment}{// NW\_GRAPH\_VOLOS\_HPP}}
+
+\end{DoxyCode}

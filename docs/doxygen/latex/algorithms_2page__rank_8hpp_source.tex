@@ -1,0 +1,133 @@
+\hypertarget{algorithms_2page__rank_8hpp_source}{}\doxysection{page\+\_\+rank.\+hpp}
+\label{algorithms_2page__rank_8hpp_source}\index{/Users/lums/NWmath/NWgr/include/nwgraph/algorithms/page\_rank.hpp@{/Users/lums/NWmath/NWgr/include/nwgraph/algorithms/page\_rank.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// }}
+\DoxyCodeLine{2 \textcolor{comment}{// This file is part of NW Graph (aka GraphPack) }}
+\DoxyCodeLine{3 \textcolor{comment}{// (c) Pacific Northwest National Laboratory 2018-\/2021 }}
+\DoxyCodeLine{4 \textcolor{comment}{// (c) University of Washington 2018-\/2021 }}
+\DoxyCodeLine{5 \textcolor{comment}{// }}
+\DoxyCodeLine{6 \textcolor{comment}{// Licensed under terms of include LICENSE file }}
+\DoxyCodeLine{7 \textcolor{comment}{// }}
+\DoxyCodeLine{8 \textcolor{comment}{// Authors: }}
+\DoxyCodeLine{9 \textcolor{comment}{//     Andrew Lumsdaine }}
+\DoxyCodeLine{10 \textcolor{comment}{//     Kevin Deweese    }}
+\DoxyCodeLine{11 \textcolor{comment}{//}}
+\DoxyCodeLine{12 }
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#ifndef NW\_GRAPH\_PAGE\_RANK\_HPP}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#define NW\_GRAPH\_PAGE\_RANK\_HPP}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#include <cmath>}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include <future>}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#include <iomanip>}}
+\DoxyCodeLine{19 \textcolor{preprocessor}{\#include <iostream>}}
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#include <memory>}}
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#include <tuple>}}
+\DoxyCodeLine{22 \textcolor{preprocessor}{\#include <vector>}}
+\DoxyCodeLine{23 }
+\DoxyCodeLine{24 \textcolor{preprocessor}{\#include "{}nwgraph/graph\_concepts.hpp"{}}}
+\DoxyCodeLine{25 \textcolor{preprocessor}{\#include "{}nwgraph/adaptors/edge\_range.hpp"{}}}
+\DoxyCodeLine{26 \textcolor{preprocessor}{\#include "{}nwgraph/containers/compressed.hpp"{}}}
+\DoxyCodeLine{27 \textcolor{preprocessor}{\#include "{}nwgraph/edge\_list.hpp"{}}}
+\DoxyCodeLine{28 \textcolor{preprocessor}{\#include "{}nwgraph/util/parallel\_for.hpp"{}}}
+\DoxyCodeLine{29 \textcolor{preprocessor}{\#include "{}nwgraph/adaptors/vertex\_range.hpp"{}}}
+\DoxyCodeLine{30 }
+\DoxyCodeLine{31 \textcolor{keyword}{namespace }nw \{}
+\DoxyCodeLine{32 \textcolor{keyword}{namespace }graph \{}
+\DoxyCodeLine{33 }
+\DoxyCodeLine{34 \textcolor{keyword}{namespace }page\_rank \{}
+\DoxyCodeLine{36 \textcolor{keyword}{constexpr} \textcolor{keyword}{auto} trace = [](\textcolor{keyword}{auto} iter, \textcolor{keyword}{auto} error, \textcolor{keyword}{auto} time, \textcolor{keyword}{auto} max) \{}
+\DoxyCodeLine{37   \textcolor{keyword}{auto} p = std::cout.precision(10);}
+\DoxyCodeLine{38   \textcolor{keyword}{auto} f = std::cout.setf(std::ios::fixed, std::ios::floatfield);}
+\DoxyCodeLine{39   std::cout << std::setw(5) << std::left << iter;}
+\DoxyCodeLine{40   std::cout << std::setw(20) << std::left << error;}
+\DoxyCodeLine{41   std::cout << std::setw(20) << std::left << time;}
+\DoxyCodeLine{42   std::cout << std::setw(20) << std::left << max;}
+\DoxyCodeLine{43   std::cout << \textcolor{stringliteral}{"{}\(\backslash\)n"{}};}
+\DoxyCodeLine{44   std::cout.precision(p);}
+\DoxyCodeLine{45   std::cout.setf(f, std::ios::floatfield);}
+\DoxyCodeLine{46 \};}
+\DoxyCodeLine{47 }
+\DoxyCodeLine{49 \textcolor{keyword}{template} <\textcolor{keyword}{class} Op>}
+\DoxyCodeLine{50 \textcolor{keyword}{auto} time\_op(Op\&\& op) \{}
+\DoxyCodeLine{51   \textcolor{keywordflow}{if} \textcolor{keyword}{constexpr} (std::is\_void\_v<\textcolor{keyword}{decltype}(op())>) \{}
+\DoxyCodeLine{52     \textcolor{keyword}{auto} start = std::chrono::high\_resolution\_clock::now();}
+\DoxyCodeLine{53     op();}
+\DoxyCodeLine{54     std::chrono::duration<double> end = std::chrono::high\_resolution\_clock::now() -\/ start;}
+\DoxyCodeLine{55     \textcolor{keywordflow}{return} std::tuple\{end.count()\};}
+\DoxyCodeLine{56   \} \textcolor{keywordflow}{else} \{}
+\DoxyCodeLine{57     \textcolor{keyword}{auto}                          start = std::chrono::high\_resolution\_clock::now();}
+\DoxyCodeLine{58     \textcolor{keyword}{auto}                          e     = op();}
+\DoxyCodeLine{59     std::chrono::duration<double> end   = std::chrono::high\_resolution\_clock::now() -\/ start;}
+\DoxyCodeLine{60     \textcolor{keywordflow}{return} std::tuple\{end.count(), e\};}
+\DoxyCodeLine{61   \}}
+\DoxyCodeLine{62 \}}
+\DoxyCodeLine{63 \}    \textcolor{comment}{// namespace page\_rank}}
+\DoxyCodeLine{64 }
+\DoxyCodeLine{65 }
+\DoxyCodeLine{66 \textcolor{keyword}{template} <adjacency\_list\_graph Graph, \textcolor{keyword}{typename} Real>}
+\DoxyCodeLine{67 [[gnu::noinline]] \textcolor{keywordtype}{void} page\_rank\_v11(\textcolor{keyword}{const} Graph\& graph, \textcolor{keyword}{const} std::vector<typename Graph::vertex\_id\_type>\& degrees,}
+\DoxyCodeLine{68                                      std::vector<Real>\& page\_rank, Real damping\_factor, Real threshold, \textcolor{keywordtype}{size\_t} max\_iters, \textcolor{keywordtype}{size\_t} num\_threads) \{}
+\DoxyCodeLine{69   std::size\_t N          = graph.size();}
+\DoxyCodeLine{70   Real        init\_score = 1.0 / N;}
+\DoxyCodeLine{71   Real        base\_score = (1.0 -\/ damping\_factor) / N;}
+\DoxyCodeLine{72 }
+\DoxyCodeLine{73   \{}
+\DoxyCodeLine{74     \mbox{\hyperlink{classnw_1_1util_1_1life__timer}{nw::util::life\_timer}} \_(\textcolor{stringliteral}{"{}init page rank"{}});}
+\DoxyCodeLine{75 }
+\DoxyCodeLine{76     \textcolor{comment}{// Initialize the page rank.}}
+\DoxyCodeLine{77     tbb::parallel\_for(tbb::blocked\_range(0ul, N), [\&](\textcolor{keyword}{auto}\&\& r) \{}
+\DoxyCodeLine{78       \textcolor{keywordflow}{for} (\textcolor{keyword}{auto} i = r.begin(), e = r.end(); i != e; ++i) \{}
+\DoxyCodeLine{79         page\_rank[i] = init\_score;}
+\DoxyCodeLine{80       \}}
+\DoxyCodeLine{81     \});}
+\DoxyCodeLine{82   \}}
+\DoxyCodeLine{83 }
+\DoxyCodeLine{84   std::unique\_ptr<Real[]> outgoing\_contrib(\textcolor{keyword}{new} Real[N]);}
+\DoxyCodeLine{85 }
+\DoxyCodeLine{86   page\_rank::trace(\textcolor{stringliteral}{"{}iter"{}}, \textcolor{stringliteral}{"{}error"{}}, \textcolor{stringliteral}{"{}time"{}}, \textcolor{stringliteral}{"{}outgoing"{}});}
+\DoxyCodeLine{87 }
+\DoxyCodeLine{88   \{}
+\DoxyCodeLine{89     \mbox{\hyperlink{classnw_1_1util_1_1life__timer}{nw::util::life\_timer}} \_(\textcolor{stringliteral}{"{}init contrib"{}});}
+\DoxyCodeLine{90 }
+\DoxyCodeLine{91     tbb::parallel\_for(tbb::blocked\_range(0ul, N), [\&](\textcolor{keyword}{auto}\&\& r) \{}
+\DoxyCodeLine{92       \textcolor{keywordflow}{for} (\textcolor{keyword}{auto} i = r.begin(), e = r.end(); i != e; ++i) \{}
+\DoxyCodeLine{93         outgoing\_contrib[i] = page\_rank[i] / degrees[i];}
+\DoxyCodeLine{94       \}}
+\DoxyCodeLine{95     \});}
+\DoxyCodeLine{96   \}}
+\DoxyCodeLine{97 }
+\DoxyCodeLine{98   \textcolor{keywordflow}{for} (\textcolor{keywordtype}{size\_t} iter = 0; iter < max\_iters; ++iter) \{}
+\DoxyCodeLine{99 }
+\DoxyCodeLine{100     \textcolor{keyword}{auto}\&\& [time, error] = page\_rank::time\_op([\&] \{}
+\DoxyCodeLine{101       \textcolor{keywordflow}{return} tbb::parallel\_reduce(}
+\DoxyCodeLine{102           tbb::blocked\_range(0ul, N), 0.0,}
+\DoxyCodeLine{103           [\&](\textcolor{keyword}{auto}\&\& r, \textcolor{keyword}{auto} partial\_sum) \{}
+\DoxyCodeLine{104             \textcolor{keywordflow}{for} (\textcolor{keywordtype}{size\_t} i = r.begin(), e = r.end(); i != e; ++i) \{}
+\DoxyCodeLine{105               Real z = 0.0;}
+\DoxyCodeLine{106               for (auto\&\& j : graph[i]) \{}
+\DoxyCodeLine{107                 z += outgoing\_contrib[std::get<0>(j)];}
+\DoxyCodeLine{108               \}}
+\DoxyCodeLine{109               \textcolor{keyword}{auto} old\_rank = page\_rank[i];}
+\DoxyCodeLine{110               page\_rank[i]  = base\_score + damping\_factor * z;}
+\DoxyCodeLine{111               partial\_sum += fabs(page\_rank[i] -\/ old\_rank);}
+\DoxyCodeLine{112               outgoing\_contrib[i] = page\_rank[i] / (Real)degrees[i];}
+\DoxyCodeLine{113             \}}
+\DoxyCodeLine{114             \textcolor{keywordflow}{return} partial\_sum;}
+\DoxyCodeLine{115           \},}
+\DoxyCodeLine{116           std::plus\{\});}
+\DoxyCodeLine{117     \});}
+\DoxyCodeLine{118 }
+\DoxyCodeLine{119     page\_rank::trace(iter, error, time, 0);}
+\DoxyCodeLine{120 }
+\DoxyCodeLine{121     \textcolor{keywordflow}{if} (error < threshold) \{}
+\DoxyCodeLine{122       \textcolor{keywordflow}{return};}
+\DoxyCodeLine{123     \}}
+\DoxyCodeLine{124   \}}
+\DoxyCodeLine{125 \}}
+\DoxyCodeLine{126 }
+\DoxyCodeLine{127 \}    \textcolor{comment}{// namespace graph}}
+\DoxyCodeLine{128 \}    \textcolor{comment}{// namespace nw}}
+\DoxyCodeLine{129 \textcolor{preprocessor}{\#endif    }\textcolor{comment}{//  NW\_GRAPH\_PAGE\_RANK\_HPP}}
+
+\end{DoxyCode}

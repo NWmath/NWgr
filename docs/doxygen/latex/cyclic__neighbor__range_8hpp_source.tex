@@ -1,0 +1,90 @@
+\hypertarget{cyclic__neighbor__range_8hpp_source}{}\doxysection{cyclic\+\_\+neighbor\+\_\+range.\+hpp}
+\label{cyclic__neighbor__range_8hpp_source}\index{/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/cyclic\_neighbor\_range.hpp@{/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/cyclic\_neighbor\_range.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{// }}
+\DoxyCodeLine{2 \textcolor{comment}{// This file is part of NW Graph (aka GraphPack) }}
+\DoxyCodeLine{3 \textcolor{comment}{// (c) Pacific Northwest National Laboratory 2018-\/2021 }}
+\DoxyCodeLine{4 \textcolor{comment}{// (c) University of Washington 2018-\/2021 }}
+\DoxyCodeLine{5 \textcolor{comment}{// }}
+\DoxyCodeLine{6 \textcolor{comment}{// Licensed under terms of include LICENSE file }}
+\DoxyCodeLine{7 \textcolor{comment}{// }}
+\DoxyCodeLine{8 \textcolor{comment}{// Authors: }}
+\DoxyCodeLine{9 \textcolor{comment}{//     Xu Tony Liu}}
+\DoxyCodeLine{10 \textcolor{comment}{//}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#ifndef NW\_GRAPH\_CYCLIC\_NEIGHBOR\_RANGE\_HPP}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#define NW\_GRAPH\_CYCLIC\_NEIGHBOR\_RANGE\_HPP}}
+\DoxyCodeLine{13 }
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#include "{}nwgraph/util/util.hpp"{}}}
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#include <iterator>}}
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17 \textcolor{keyword}{namespace }nw \{}
+\DoxyCodeLine{18 \textcolor{keyword}{namespace }graph \{}
+\DoxyCodeLine{37 \textcolor{keyword}{template} <\textcolor{keyword}{class} Iterator>}
+\DoxyCodeLine{38 \textcolor{keyword}{class }\mbox{\hyperlink{classnw_1_1graph_1_1cyclic__neighbor__range}{cyclic\_neighbor\_range}} \{}
+\DoxyCodeLine{39   \textcolor{keyword}{static\_assert}(std::is\_base\_of\_v<std::random\_access\_iterator\_tag, typename std::iterator\_traits<Iterator>::iterator\_category>);}
+\DoxyCodeLine{40 }
+\DoxyCodeLine{41 \textcolor{keyword}{public}:}
+\DoxyCodeLine{42   \textcolor{keyword}{using} difference\_type = \textcolor{keyword}{typename} std::iterator\_traits<Iterator>::difference\_type;}
+\DoxyCodeLine{43 }
+\DoxyCodeLine{44 \textcolor{keyword}{private}:}
+\DoxyCodeLine{45   Iterator        begin\_;}
+\DoxyCodeLine{46   Iterator        end\_;}
+\DoxyCodeLine{47   difference\_type cutoff\_;}
+\DoxyCodeLine{48   difference\_type cycle\_  = 0;}
+\DoxyCodeLine{49   difference\_type stride\_ = 1;}
+\DoxyCodeLine{50 }
+\DoxyCodeLine{51 \textcolor{keyword}{public}:}
+\DoxyCodeLine{52   \textcolor{keyword}{template} <\textcolor{keyword}{class} Range, \textcolor{keyword}{class} Cutoff>}
+\DoxyCodeLine{53   \mbox{\hyperlink{classnw_1_1graph_1_1cyclic__neighbor__range}{cyclic\_neighbor\_range}}(Range\&\& range, Cutoff cutoff)}
+\DoxyCodeLine{54       : begin\_(range.begin()), end\_(range.end()), cutoff\_(nw::graph::pow2(nw::graph::ceil\_log2(cutoff))) \{\}}
+\DoxyCodeLine{55 }
+\DoxyCodeLine{56   \mbox{\hyperlink{classnw_1_1graph_1_1cyclic__neighbor__range}{cyclic\_neighbor\_range}}(\textcolor{keyword}{const} \mbox{\hyperlink{classnw_1_1graph_1_1cyclic__neighbor__range}{cyclic\_neighbor\_range}}\&) = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{57   \mbox{\hyperlink{classnw_1_1graph_1_1cyclic__neighbor__range}{cyclic\_neighbor\_range}}(\mbox{\hyperlink{classnw_1_1graph_1_1cyclic__neighbor__range}{cyclic\_neighbor\_range}}\&\&)      = \textcolor{keywordflow}{default};}
+\DoxyCodeLine{58 }
+\DoxyCodeLine{59   \mbox{\hyperlink{classnw_1_1graph_1_1cyclic__neighbor__range}{cyclic\_neighbor\_range}}(\mbox{\hyperlink{classnw_1_1graph_1_1cyclic__neighbor__range}{cyclic\_neighbor\_range}}\& rhs, tbb::split)}
+\DoxyCodeLine{60       : begin\_(rhs.begin\_), end\_(rhs.end\_), cutoff\_(rhs.cutoff\_), cycle\_(rhs.cycle\_ + rhs.stride\_), stride\_(rhs.stride\_ *= 2) \{\}}
+\DoxyCodeLine{61 }
+\DoxyCodeLine{62   \textcolor{keyword}{struct }\mbox{\hyperlink{structnw_1_1graph_1_1cyclic__neighbor__range_1_1iterator}{iterator}} \{}
+\DoxyCodeLine{63     Iterator        begin\_;}
+\DoxyCodeLine{64     Iterator        i\_;}
+\DoxyCodeLine{65     difference\_type stride\_;}
+\DoxyCodeLine{66 }
+\DoxyCodeLine{67     \textcolor{keyword}{decltype}(\textcolor{keyword}{auto}) \textcolor{keyword}{operator}*() \{ \textcolor{keywordflow}{return} std::make\_tuple(\textcolor{keyword}{static\_cast<}std::size\_t\textcolor{keyword}{>}(i\_ -\/ begin\_), *i\_); \}}
+\DoxyCodeLine{68     }
+\DoxyCodeLine{69     \mbox{\hyperlink{structnw_1_1graph_1_1cyclic__neighbor__range_1_1iterator}{iterator}}\& operator++() \{}
+\DoxyCodeLine{70       i\_ += stride\_;}
+\DoxyCodeLine{71       \textcolor{keywordflow}{return} *\textcolor{keyword}{this};}
+\DoxyCodeLine{72     \}}
+\DoxyCodeLine{73 }
+\DoxyCodeLine{74     \textcolor{keywordtype}{bool} operator!=(\textcolor{keyword}{const} \mbox{\hyperlink{structnw_1_1graph_1_1cyclic__neighbor__range_1_1iterator}{iterator}}\& rhs)\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} i\_ != rhs.i\_; \}}
+\DoxyCodeLine{75   \};}
+\DoxyCodeLine{76 }
+\DoxyCodeLine{78   \mbox{\hyperlink{structnw_1_1graph_1_1cyclic__neighbor__range_1_1iterator}{iterator}} \mbox{\hyperlink{classnw_1_1graph_1_1cyclic__neighbor__range_a902dd876fb3cae70d4dc48a594369829}{begin}}()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} \{begin\_, begin\_ + cycle\_, stride\_\}; \}}
+\DoxyCodeLine{79 }
+\DoxyCodeLine{86   \mbox{\hyperlink{structnw_1_1graph_1_1cyclic__neighbor__range_1_1iterator}{iterator}} \mbox{\hyperlink{classnw_1_1graph_1_1cyclic__neighbor__range_ab31a22b3935e533a2bb1251974047055}{end}}()\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{87     difference\_type n = end\_ -\/ begin\_ -\/ cycle\_;     \textcolor{comment}{// shifted span for cycle}}
+\DoxyCodeLine{88     difference\_type r = n \% stride\_;                \textcolor{comment}{// remainder in last stride}}
+\DoxyCodeLine{89     difference\_type e = (stride\_ -\/ r) \% stride\_;    \textcolor{comment}{// amount past `end\_` we'll go}}
+\DoxyCodeLine{90     \textcolor{keywordflow}{return} \{begin\_, end\_ + e, stride\_\};}
+\DoxyCodeLine{91   \}}
+\DoxyCodeLine{92 }
+\DoxyCodeLine{93   difference\_type size()\textcolor{keyword}{ const }\{}
+\DoxyCodeLine{94     \textcolor{comment}{// figure out the number of valid elements in our cycle, which depends on}}
+\DoxyCodeLine{95     \textcolor{comment}{// the total number of elements, where our cycle starts, and the stride}}
+\DoxyCodeLine{96     difference\_type n = end\_ -\/ begin\_;}
+\DoxyCodeLine{97     \textcolor{keywordflow}{return} n / stride\_ + ((cycle\_ < n \% stride\_) ? 1 : 0);}
+\DoxyCodeLine{98   \}}
+\DoxyCodeLine{99 }
+\DoxyCodeLine{100   \textcolor{keywordtype}{bool} empty()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} size() == 0; \}}
+\DoxyCodeLine{101 }
+\DoxyCodeLine{106   \textcolor{keywordtype}{bool} \mbox{\hyperlink{classnw_1_1graph_1_1cyclic__neighbor__range_a355f5f6323c4515f330e38790ebd23b3}{is\_divisible}}()\textcolor{keyword}{ const }\{ \textcolor{keywordflow}{return} stride\_ <= cutoff\_; \}}
+\DoxyCodeLine{107 \};}
+\DoxyCodeLine{108 }
+\DoxyCodeLine{109 \textcolor{keyword}{template} <\textcolor{keyword}{class} Range, \textcolor{keyword}{class} Cutoff>}
+\DoxyCodeLine{110 cyclic\_neighbor\_range(Range range, Cutoff) -\/> cyclic\_neighbor\_range<\textcolor{keyword}{decltype}(range.begin())>;}
+\DoxyCodeLine{111 \}    \textcolor{comment}{// namespace graph}}
+\DoxyCodeLine{112 \}    \textcolor{comment}{// namespace nw}}
+\DoxyCodeLine{113 \textcolor{preprocessor}{\#endif }\textcolor{comment}{// NW\_GRAPH\_CYCLIC\_NEIGHBOR\_RANGE\_HPP}}
+
+\end{DoxyCode}

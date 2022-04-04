@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.3" xml:lang="en-US">
+  <compounddef id="structnw_1_1graph_1_1null__vertex__s" kind="struct" language="C++" prot="public">
+    <compoundname>nw::graph::null_vertex_s</compoundname>
+    <templateparamlist>
+      <param>
+        <type>typename vertex_id_type</type>
+      </param>
+    </templateparamlist>
+      <sectiondef kind="public-static-attrib">
+      <memberdef kind="variable" id="structnw_1_1graph_1_1null__vertex__s_1ad0b6a17ee54c3e3267b0a46763d5bad2" prot="public" static="yes" constexpr="yes" mutable="no">
+        <type>constexpr vertex_id_type</type>
+        <definition>constexpr vertex_id_type nw::graph::null_vertex_s&lt; vertex_id_type &gt;::value</definition>
+        <argsstring></argsstring>
+        <name>value</name>
+        <qualifiedname>nw::graph::null_vertex_s::value</qualifiedname>
+        <initializer>= std::numeric_limits&lt;vertex_id_type&gt;::max()</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/util/util.hpp" line="124" column="35" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/util/util.hpp" bodystart="124" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/Users/lums/NWmath/NWgr/include/nwgraph/util/util.hpp" line="123" column="1" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/util/util.hpp" bodystart="123" bodyend="125"/>
+    <listofallmembers>
+      <member refid="structnw_1_1graph_1_1null__vertex__s_1ad0b6a17ee54c3e3267b0a46763d5bad2" prot="public" virt="non-virtual"><scope>nw::graph::null_vertex_s</scope><name>value</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

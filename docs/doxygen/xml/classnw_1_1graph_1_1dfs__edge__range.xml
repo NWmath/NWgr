@@ -1,0 +1,314 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.3" xml:lang="en-US">
+  <compounddef id="classnw_1_1graph_1_1dfs__edge__range" kind="class" language="C++" prot="public">
+    <compoundname>nw::graph::dfs_edge_range</compoundname>
+    <innerclass refid="classnw_1_1graph_1_1dfs__edge__range_1_1dfs__edge__range__iterator" prot="public">nw::graph::dfs_edge_range::dfs_edge_range_iterator</innerclass>
+    <templateparamlist>
+      <param>
+        <type>typename Graph</type>
+      </param>
+      <param>
+        <type>typename Stack</type>
+        <defval>std::stack&lt;vertex_id_type&gt;</defval>
+      </param>
+    </templateparamlist>
+      <sectiondef kind="public-type">
+      <memberdef kind="typedef" id="classnw_1_1graph_1_1dfs__edge__range_1acf324684ead2cff7c2124233bae0845d" prot="public" static="no">
+        <type><ref refid="classnw_1_1graph_1_1dfs__edge__range_1_1dfs__edge__range__iterator" kindref="compound">dfs_edge_range_iterator</ref></type>
+        <definition>typedef dfs_edge_range_iterator nw::graph::dfs_edge_range&lt; Graph, Stack &gt;::iterator</definition>
+        <argsstring></argsstring>
+        <name>iterator</name>
+        <qualifiedname>nw::graph::dfs_edge_range::iterator</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/dfs_range.hpp" line="191" column="35" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/dfs_range.hpp" bodystart="191" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="classnw_1_1graph_1_1dfs__edge__range_1acf324684ead2cff7c2124233bae0845d" prot="public" static="no">
+        <type><ref refid="classnw_1_1graph_1_1dfs__edge__range_1_1dfs__edge__range__iterator" kindref="compound">dfs_edge_range_iterator</ref></type>
+        <definition>typedef dfs_edge_range_iterator nw::graph::dfs_edge_range&lt; Graph, Stack &gt;::iterator</definition>
+        <argsstring></argsstring>
+        <name>iterator</name>
+        <qualifiedname>nw::graph::dfs_edge_range::iterator</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/new_dfs_range.hpp" line="239" column="35" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/new_dfs_range.hpp" bodystart="239" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classnw_1_1graph_1_1dfs__edge__range_1ab56199a32ab3e2c052efd4cd99f9eac4" prot="private" static="no" mutable="no">
+        <type>Graph &amp;</type>
+        <definition>Graph &amp; nw::graph::dfs_edge_range&lt; Graph, Stack &gt;::the_graph_</definition>
+        <argsstring></argsstring>
+        <name>the_graph_</name>
+        <qualifiedname>nw::graph::dfs_edge_range::the_graph_</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/dfs_range.hpp" line="197" column="28" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/dfs_range.hpp" bodystart="197" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classnw_1_1graph_1_1dfs__edge__range_1a014cd0b7819d1384e9f86b815cf6b8fb" prot="private" static="no" mutable="no">
+        <type>Stack</type>
+        <definition>Stack nw::graph::dfs_edge_range&lt; Graph, Stack &gt;::Q_</definition>
+        <argsstring></argsstring>
+        <name>Q_</name>
+        <qualifiedname>nw::graph::dfs_edge_range::Q_</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/dfs_range.hpp" line="198" column="29" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/dfs_range.hpp" bodystart="198" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classnw_1_1graph_1_1dfs__edge__range_1a5b01d397f12e62183255d5e7a95725ca" prot="private" static="no" mutable="no">
+        <type>std::vector&lt; three_colors &gt;</type>
+        <definition>std::vector&lt; three_colors &gt; nw::graph::dfs_edge_range&lt; Graph, Stack &gt;::colors_</definition>
+        <argsstring></argsstring>
+        <name>colors_</name>
+        <qualifiedname>nw::graph::dfs_edge_range::colors_</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/dfs_range.hpp" line="199" column="15" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/dfs_range.hpp" bodystart="199" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classnw_1_1graph_1_1dfs__edge__range_1a00e97bebe434a760d0978b047bef97dc" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>nw::graph::dfs_edge_range&lt; Graph, Stack &gt;::dfs_edge_range</definition>
+        <argsstring>(Graph &amp;graph, vertex_id_type seed=0)</argsstring>
+        <name>dfs_edge_range</name>
+        <qualifiedname>nw::graph::dfs_edge_range::dfs_edge_range</qualifiedname>
+        <param>
+          <type>Graph &amp;</type>
+          <declname>graph</declname>
+        </param>
+        <param>
+          <type>vertex_id_type</type>
+          <declname>seed</declname>
+          <defval>0</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/dfs_range.hpp" line="125" column="3" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/dfs_range.hpp" bodystart="125" bodyend="128"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1dfs__edge__range_1a7495391961af181c3b89152686eca63f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>nw::graph::dfs_edge_range&lt; Graph, Stack &gt;::dfs_edge_range</definition>
+        <argsstring>(const dfs_edge_range &amp;)=delete</argsstring>
+        <name>dfs_edge_range</name>
+        <qualifiedname>nw::graph::dfs_edge_range::dfs_edge_range</qualifiedname>
+        <param>
+          <type>const <ref refid="classnw_1_1graph_1_1dfs__edge__range" kindref="compound">dfs_edge_range</ref> &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/dfs_range.hpp" line="130" column="3"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1dfs__edge__range_1a561e35c39a51c9b36c1e23c93be4d240" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>nw::graph::dfs_edge_range&lt; Graph, Stack &gt;::dfs_edge_range</definition>
+        <argsstring>(const dfs_edge_range &amp;&amp;)=delete</argsstring>
+        <name>dfs_edge_range</name>
+        <qualifiedname>nw::graph::dfs_edge_range::dfs_edge_range</qualifiedname>
+        <param>
+          <type>const <ref refid="classnw_1_1graph_1_1dfs__edge__range" kindref="compound">dfs_edge_range</ref> &amp;&amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/dfs_range.hpp" line="131" column="3"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1dfs__edge__range_1a99193acb59609febf6558857b92232fb" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool nw::graph::dfs_edge_range&lt; Graph, Stack &gt;::empty</definition>
+        <argsstring>()</argsstring>
+        <name>empty</name>
+        <qualifiedname>nw::graph::dfs_edge_range::empty</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/dfs_range.hpp" line="133" column="8" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/dfs_range.hpp" bodystart="133" bodyend="133"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1dfs__edge__range_1ae3f8b5190647414c62e7c5368bef120e" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto nw::graph::dfs_edge_range&lt; Graph, Stack &gt;::begin</definition>
+        <argsstring>()</argsstring>
+        <name>begin</name>
+        <qualifiedname>nw::graph::dfs_edge_range::begin</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/dfs_range.hpp" line="193" column="8" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/dfs_range.hpp" bodystart="193" bodyend="193"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1dfs__edge__range_1ae9a9df59f761020c32ffcc6d79dff186" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto nw::graph::dfs_edge_range&lt; Graph, Stack &gt;::end</definition>
+        <argsstring>()</argsstring>
+        <name>end</name>
+        <qualifiedname>nw::graph::dfs_edge_range::end</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/dfs_range.hpp" line="194" column="8" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/dfs_range.hpp" bodystart="194" bodyend="194"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1dfs__edge__range_1ade0d97e1d510d6273e0c72591abfa120" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>nw::graph::dfs_edge_range&lt; Graph, Stack &gt;::dfs_edge_range</definition>
+        <argsstring>(Graph &amp;graph, vertex_id_t&lt; Graph &gt; seed=0)</argsstring>
+        <name>dfs_edge_range</name>
+        <qualifiedname>nw::graph::dfs_edge_range::dfs_edge_range</qualifiedname>
+        <param>
+          <type>Graph &amp;</type>
+          <declname>graph</declname>
+        </param>
+        <param>
+          <type>vertex_id_t&lt; Graph &gt;</type>
+          <declname>seed</declname>
+          <defval>0</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/new_dfs_range.hpp" line="124" column="3" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/new_dfs_range.hpp" bodystart="124" bodyend="127"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1dfs__edge__range_1a7495391961af181c3b89152686eca63f" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>nw::graph::dfs_edge_range&lt; Graph, Stack &gt;::dfs_edge_range</definition>
+        <argsstring>(const dfs_edge_range &amp;)=delete</argsstring>
+        <name>dfs_edge_range</name>
+        <qualifiedname>nw::graph::dfs_edge_range::dfs_edge_range</qualifiedname>
+        <param>
+          <type>const <ref refid="classnw_1_1graph_1_1dfs__edge__range" kindref="compound">dfs_edge_range</ref> &amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/new_dfs_range.hpp" line="129" column="3"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1dfs__edge__range_1a561e35c39a51c9b36c1e23c93be4d240" prot="public" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type></type>
+        <definition>nw::graph::dfs_edge_range&lt; Graph, Stack &gt;::dfs_edge_range</definition>
+        <argsstring>(const dfs_edge_range &amp;&amp;)=delete</argsstring>
+        <name>dfs_edge_range</name>
+        <qualifiedname>nw::graph::dfs_edge_range::dfs_edge_range</qualifiedname>
+        <param>
+          <type>const <ref refid="classnw_1_1graph_1_1dfs__edge__range" kindref="compound">dfs_edge_range</ref> &amp;&amp;</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/new_dfs_range.hpp" line="130" column="3"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1dfs__edge__range_1a99193acb59609febf6558857b92232fb" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool nw::graph::dfs_edge_range&lt; Graph, Stack &gt;::empty</definition>
+        <argsstring>()</argsstring>
+        <name>empty</name>
+        <qualifiedname>nw::graph::dfs_edge_range::empty</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/new_dfs_range.hpp" line="132" column="8" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/new_dfs_range.hpp" bodystart="132" bodyend="132"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1dfs__edge__range_1ae3f8b5190647414c62e7c5368bef120e" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto nw::graph::dfs_edge_range&lt; Graph, Stack &gt;::begin</definition>
+        <argsstring>()</argsstring>
+        <name>begin</name>
+        <qualifiedname>nw::graph::dfs_edge_range::begin</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/new_dfs_range.hpp" line="241" column="8" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/new_dfs_range.hpp" bodystart="241" bodyend="241"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1dfs__edge__range_1ae9a9df59f761020c32ffcc6d79dff186" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto nw::graph::dfs_edge_range&lt; Graph, Stack &gt;::end</definition>
+        <argsstring>()</argsstring>
+        <name>end</name>
+        <qualifiedname>nw::graph::dfs_edge_range::end</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/new_dfs_range.hpp" line="242" column="8" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/new_dfs_range.hpp" bodystart="242" bodyend="242"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/dfs_range.hpp" line="122" column="1" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/dfs_range.hpp" bodystart="122" bodyend="200"/>
+    <listofallmembers>
+      <member refid="classnw_1_1graph_1_1dfs__edge__range_1ae3f8b5190647414c62e7c5368bef120e" prot="public" virt="non-virtual"><scope>nw::graph::dfs_edge_range</scope><name>begin</name></member>
+      <member refid="classnw_1_1graph_1_1dfs__edge__range_1ae3f8b5190647414c62e7c5368bef120e" prot="public" virt="non-virtual"><scope>nw::graph::dfs_edge_range</scope><name>begin</name></member>
+      <member refid="classnw_1_1graph_1_1dfs__edge__range_1a5b01d397f12e62183255d5e7a95725ca" prot="private" virt="non-virtual"><scope>nw::graph::dfs_edge_range</scope><name>colors_</name></member>
+      <member refid="classnw_1_1graph_1_1dfs__edge__range_1a00e97bebe434a760d0978b047bef97dc" prot="public" virt="non-virtual"><scope>nw::graph::dfs_edge_range</scope><name>dfs_edge_range</name></member>
+      <member refid="classnw_1_1graph_1_1dfs__edge__range_1a7495391961af181c3b89152686eca63f" prot="public" virt="non-virtual"><scope>nw::graph::dfs_edge_range</scope><name>dfs_edge_range</name></member>
+      <member refid="classnw_1_1graph_1_1dfs__edge__range_1a561e35c39a51c9b36c1e23c93be4d240" prot="public" virt="non-virtual"><scope>nw::graph::dfs_edge_range</scope><name>dfs_edge_range</name></member>
+      <member refid="classnw_1_1graph_1_1dfs__edge__range_1ade0d97e1d510d6273e0c72591abfa120" prot="public" virt="non-virtual"><scope>nw::graph::dfs_edge_range</scope><name>dfs_edge_range</name></member>
+      <member refid="classnw_1_1graph_1_1dfs__edge__range_1a7495391961af181c3b89152686eca63f" prot="public" virt="non-virtual"><scope>nw::graph::dfs_edge_range</scope><name>dfs_edge_range</name></member>
+      <member refid="classnw_1_1graph_1_1dfs__edge__range_1a561e35c39a51c9b36c1e23c93be4d240" prot="public" virt="non-virtual"><scope>nw::graph::dfs_edge_range</scope><name>dfs_edge_range</name></member>
+      <member refid="classnw_1_1graph_1_1dfs__edge__range_1a99193acb59609febf6558857b92232fb" prot="public" virt="non-virtual"><scope>nw::graph::dfs_edge_range</scope><name>empty</name></member>
+      <member refid="classnw_1_1graph_1_1dfs__edge__range_1a99193acb59609febf6558857b92232fb" prot="public" virt="non-virtual"><scope>nw::graph::dfs_edge_range</scope><name>empty</name></member>
+      <member refid="classnw_1_1graph_1_1dfs__edge__range_1ae9a9df59f761020c32ffcc6d79dff186" prot="public" virt="non-virtual"><scope>nw::graph::dfs_edge_range</scope><name>end</name></member>
+      <member refid="classnw_1_1graph_1_1dfs__edge__range_1ae9a9df59f761020c32ffcc6d79dff186" prot="public" virt="non-virtual"><scope>nw::graph::dfs_edge_range</scope><name>end</name></member>
+      <member refid="classnw_1_1graph_1_1dfs__edge__range_1acf324684ead2cff7c2124233bae0845d" prot="public" virt="non-virtual"><scope>nw::graph::dfs_edge_range</scope><name>iterator</name></member>
+      <member refid="classnw_1_1graph_1_1dfs__edge__range_1acf324684ead2cff7c2124233bae0845d" prot="public" virt="non-virtual"><scope>nw::graph::dfs_edge_range</scope><name>iterator</name></member>
+      <member refid="classnw_1_1graph_1_1dfs__edge__range_1a014cd0b7819d1384e9f86b815cf6b8fb" prot="private" virt="non-virtual"><scope>nw::graph::dfs_edge_range</scope><name>Q_</name></member>
+      <member refid="classnw_1_1graph_1_1dfs__edge__range_1ab56199a32ab3e2c052efd4cd99f9eac4" prot="private" virt="non-virtual"><scope>nw::graph::dfs_edge_range</scope><name>the_graph_</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

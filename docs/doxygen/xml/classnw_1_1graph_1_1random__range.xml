@@ -1,0 +1,194 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.3" xml:lang="en-US">
+  <compounddef id="classnw_1_1graph_1_1random__range" kind="class" language="C++" prot="public">
+    <compoundname>nw::graph::random_range</compoundname>
+    <innerclass refid="classnw_1_1graph_1_1random__range_1_1edge__range__iterator" prot="public">nw::graph::random_range::edge_range_iterator</innerclass>
+    <templateparamlist>
+      <param>
+        <type>typename Graph</type>
+      </param>
+    </templateparamlist>
+      <sectiondef kind="public-type">
+      <memberdef kind="typedef" id="classnw_1_1graph_1_1random__range_1a7d333d615c53aacbe5591eac6ebbcc08" prot="public" static="no">
+        <type><ref refid="classnw_1_1graph_1_1random__range_1_1edge__range__iterator" kindref="compound">edge_range_iterator</ref></type>
+        <definition>typedef edge_range_iterator nw::graph::random_range&lt; Graph &gt;::iterator</definition>
+        <argsstring></argsstring>
+        <name>iterator</name>
+        <qualifiedname>nw::graph::random_range::iterator</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/random_range.hpp" line="65" column="31" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/random_range.hpp" bodystart="65" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classnw_1_1graph_1_1random__range_1a8fad13696a15f182b48f90decdb00744" prot="private" static="no" mutable="no">
+        <type>Graph &amp;</type>
+        <definition>Graph&amp; nw::graph::random_range&lt; Graph &gt;::the_graph_</definition>
+        <argsstring></argsstring>
+        <name>the_graph_</name>
+        <qualifiedname>nw::graph::random_range::the_graph_</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/random_range.hpp" line="71" column="9" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/random_range.hpp" bodystart="71" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classnw_1_1graph_1_1random__range_1a4f435615e1f69115651c6e3f5c01360e" prot="private" static="no" mutable="no">
+        <type>vertex_id_t&lt; Graph &gt;</type>
+        <definition>vertex_id_t&lt;Graph&gt; nw::graph::random_range&lt; Graph &gt;::starting_vertex</definition>
+        <argsstring></argsstring>
+        <name>starting_vertex</name>
+        <qualifiedname>nw::graph::random_range::starting_vertex</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/random_range.hpp" line="73" column="15" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/random_range.hpp" bodystart="73" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classnw_1_1graph_1_1random__range_1aabb24657f4870ca5da426d6462a8cee3" prot="private" static="no" mutable="no">
+        <type>size_t</type>
+        <definition>size_t nw::graph::random_range&lt; Graph &gt;::length_</definition>
+        <argsstring></argsstring>
+        <name>length_</name>
+        <qualifiedname>nw::graph::random_range::length_</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/random_range.hpp" line="74" column="22" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/random_range.hpp" bodystart="74" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classnw_1_1graph_1_1random__range_1aef3fb3be623dd6beb6be4ab68f2bdcdf" prot="private" static="no" mutable="no">
+        <type>std::uniform_real_distribution&lt; double &gt;</type>
+        <definition>std::uniform_real_distribution&lt;double&gt; nw::graph::random_range&lt; Graph &gt;::distribution</definition>
+        <argsstring></argsstring>
+        <name>distribution</name>
+        <qualifiedname>nw::graph::random_range::distribution</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/random_range.hpp" line="76" column="34" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/random_range.hpp" bodystart="76" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classnw_1_1graph_1_1random__range_1a4d515799702c64086ae33acfc97d50ec" prot="private" static="no" mutable="no">
+        <type>std::default_random_engine</type>
+        <definition>std::default_random_engine nw::graph::random_range&lt; Graph &gt;::generator</definition>
+        <argsstring></argsstring>
+        <name>generator</name>
+        <qualifiedname>nw::graph::random_range::generator</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/random_range.hpp" line="77" column="42" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/random_range.hpp" bodystart="77" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classnw_1_1graph_1_1random__range_1aa621d94c6f1ab99eb7d3603a0fd10d5a" prot="private" static="no" mutable="no">
+        <type>decltype(std::bind(distribution, generator))</type>
+        <definition>decltype(std::bind(distribution, generator)) nw::graph::random_range&lt; Graph &gt;::dice</definition>
+        <argsstring></argsstring>
+        <name>dice</name>
+        <qualifiedname>nw::graph::random_range::dice</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/random_range.hpp" line="79" column="12" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/random_range.hpp" bodystart="79" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classnw_1_1graph_1_1random__range_1a7a8d9a96d95421393922665d53ef3596" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>nw::graph::random_range&lt; Graph &gt;::random_range</definition>
+        <argsstring>(Graph &amp;g, size_t length=size_t(0xffffffffffffffffULL), vertex_id_t&lt; Graph &gt; first=0, unsigned seed=2049)</argsstring>
+        <name>random_range</name>
+        <qualifiedname>nw::graph::random_range::random_range</qualifiedname>
+        <param>
+          <type>Graph &amp;</type>
+          <declname>g</declname>
+        </param>
+        <param>
+          <type>size_t</type>
+          <declname>length</declname>
+          <defval>size_t(0xffffffffffffffffULL)</defval>
+        </param>
+        <param>
+          <type>vertex_id_t&lt; Graph &gt;</type>
+          <declname>first</declname>
+          <defval>0</defval>
+        </param>
+        <param>
+          <type>unsigned</type>
+          <declname>seed</declname>
+          <defval>2049</defval>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/random_range.hpp" line="28" column="3" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/random_range.hpp" bodystart="28" bodyend="30"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1random__range_1af6a08c3362d7496a341a379cbfdb2697" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto nw::graph::random_range&lt; Graph &gt;::begin</definition>
+        <argsstring>()</argsstring>
+        <name>begin</name>
+        <qualifiedname>nw::graph::random_range::begin</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/random_range.hpp" line="67" column="8" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/random_range.hpp" bodystart="67" bodyend="67"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1random__range_1a66fd49947ee80f25ef419db7b109862d" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>auto</type>
+        <definition>auto nw::graph::random_range&lt; Graph &gt;::end</definition>
+        <argsstring>()</argsstring>
+        <name>end</name>
+        <qualifiedname>nw::graph::random_range::end</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/random_range.hpp" line="68" column="8" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/random_range.hpp" bodystart="68" bodyend="68"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/random_range.hpp" line="26" column="1" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/random_range.hpp" bodystart="26" bodyend="80"/>
+    <listofallmembers>
+      <member refid="classnw_1_1graph_1_1random__range_1af6a08c3362d7496a341a379cbfdb2697" prot="public" virt="non-virtual"><scope>nw::graph::random_range</scope><name>begin</name></member>
+      <member refid="classnw_1_1graph_1_1random__range_1aa621d94c6f1ab99eb7d3603a0fd10d5a" prot="private" virt="non-virtual"><scope>nw::graph::random_range</scope><name>dice</name></member>
+      <member refid="classnw_1_1graph_1_1random__range_1aef3fb3be623dd6beb6be4ab68f2bdcdf" prot="private" virt="non-virtual"><scope>nw::graph::random_range</scope><name>distribution</name></member>
+      <member refid="classnw_1_1graph_1_1random__range_1a66fd49947ee80f25ef419db7b109862d" prot="public" virt="non-virtual"><scope>nw::graph::random_range</scope><name>end</name></member>
+      <member refid="classnw_1_1graph_1_1random__range_1a4d515799702c64086ae33acfc97d50ec" prot="private" virt="non-virtual"><scope>nw::graph::random_range</scope><name>generator</name></member>
+      <member refid="classnw_1_1graph_1_1random__range_1a7d333d615c53aacbe5591eac6ebbcc08" prot="public" virt="non-virtual"><scope>nw::graph::random_range</scope><name>iterator</name></member>
+      <member refid="classnw_1_1graph_1_1random__range_1aabb24657f4870ca5da426d6462a8cee3" prot="private" virt="non-virtual"><scope>nw::graph::random_range</scope><name>length_</name></member>
+      <member refid="classnw_1_1graph_1_1random__range_1a7a8d9a96d95421393922665d53ef3596" prot="public" virt="non-virtual"><scope>nw::graph::random_range</scope><name>random_range</name></member>
+      <member refid="classnw_1_1graph_1_1random__range_1a4f435615e1f69115651c6e3f5c01360e" prot="private" virt="non-virtual"><scope>nw::graph::random_range</scope><name>starting_vertex</name></member>
+      <member refid="classnw_1_1graph_1_1random__range_1a8fad13696a15f182b48f90decdb00744" prot="private" virt="non-virtual"><scope>nw::graph::random_range</scope><name>the_graph_</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

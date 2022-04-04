@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.3" xml:lang="en-US">
+  <compounddef id="classnw_1_1graph_1_1filtered__bfs_1_1filtered__bfs__edge__range_1_1filtered__bfs__edge__range__iterator_1_1end__sentinel__type" kind="class" language="C++" prot="public">
+    <compoundname>nw::graph::filtered_bfs::filtered_bfs_edge_range::filtered_bfs_edge_range_iterator::end_sentinel_type</compoundname>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classnw_1_1graph_1_1filtered__bfs_1_1filtered__bfs__edge__range_1_1filtered__bfs__edge__range__iterator_1_1end__sentinel__type_1a2943851ec84a5022b2602caaa009fff8" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>nw::graph::filtered_bfs::filtered_bfs_edge_range&lt; Graph, Queue, Filter &gt;::filtered_bfs_edge_range_iterator::end_sentinel_type::end_sentinel_type</definition>
+        <argsstring>()</argsstring>
+        <name>end_sentinel_type</name>
+        <qualifiedname>nw::graph::filtered_bfs::filtered_bfs_edge_range::filtered_bfs_edge_range_iterator::end_sentinel_type::end_sentinel_type</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/filtered_bfs_range.hpp" line="115" column="7" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/filtered_bfs_range.hpp" bodystart="115" bodyend="115"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/filtered_bfs_range.hpp" line="113" column="5" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/adaptors/filtered_bfs_range.hpp" bodystart="113" bodyend="116"/>
+    <listofallmembers>
+      <member refid="classnw_1_1graph_1_1filtered__bfs_1_1filtered__bfs__edge__range_1_1filtered__bfs__edge__range__iterator_1_1end__sentinel__type_1a2943851ec84a5022b2602caaa009fff8" prot="public" virt="non-virtual"><scope>nw::graph::filtered_bfs::filtered_bfs_edge_range::filtered_bfs_edge_range_iterator::end_sentinel_type</scope><name>end_sentinel_type</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>

@@ -1,0 +1,289 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.3" xml:lang="en-US">
+  <compounddef id="classnw_1_1graph_1_1_atomic_bit_vector_1_1non__zero__iterator" kind="class" language="C++" prot="public">
+    <compoundname>nw::graph::AtomicBitVector::non_zero_iterator</compoundname>
+      <sectiondef kind="public-type">
+      <memberdef kind="typedef" id="classnw_1_1graph_1_1_atomic_bit_vector_1_1non__zero__iterator_1ab9a2bce88966308861165c1236783ace" prot="public" static="no">
+        <type>std::size_t</type>
+        <definition>using nw::graph::AtomicBitVector&lt; Word &gt;::non_zero_iterator::value_type =  std::size_t</definition>
+        <argsstring></argsstring>
+        <name>value_type</name>
+        <qualifiedname>nw::graph::AtomicBitVector::non_zero_iterator::value_type</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/util/AtomicBitVector.hpp" line="151" column="5" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/util/AtomicBitVector.hpp" bodystart="151" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="classnw_1_1graph_1_1_atomic_bit_vector_1_1non__zero__iterator_1a576c053a6eeee28d27a878a4646a803c" prot="public" static="no">
+        <type>std::ptrdiff_t</type>
+        <definition>using nw::graph::AtomicBitVector&lt; Word &gt;::non_zero_iterator::difference_type =  std::ptrdiff_t</definition>
+        <argsstring></argsstring>
+        <name>difference_type</name>
+        <qualifiedname>nw::graph::AtomicBitVector::non_zero_iterator::difference_type</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/util/AtomicBitVector.hpp" line="152" column="5" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/util/AtomicBitVector.hpp" bodystart="152" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="classnw_1_1graph_1_1_atomic_bit_vector_1_1non__zero__iterator_1aa68829b0b67de5e4df42e0e226aa6430" prot="public" static="no">
+        <type>const std::size_t</type>
+        <definition>using nw::graph::AtomicBitVector&lt; Word &gt;::non_zero_iterator::reference =  const std::size_t</definition>
+        <argsstring></argsstring>
+        <name>reference</name>
+        <qualifiedname>nw::graph::AtomicBitVector::non_zero_iterator::reference</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/util/AtomicBitVector.hpp" line="153" column="5" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/util/AtomicBitVector.hpp" bodystart="153" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="classnw_1_1graph_1_1_atomic_bit_vector_1_1non__zero__iterator_1af977199f20e0338e4c8729b4086d7693" prot="public" static="no">
+        <type>void</type>
+        <definition>using nw::graph::AtomicBitVector&lt; Word &gt;::non_zero_iterator::pointer =  void</definition>
+        <argsstring></argsstring>
+        <name>pointer</name>
+        <qualifiedname>nw::graph::AtomicBitVector::non_zero_iterator::pointer</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/util/AtomicBitVector.hpp" line="154" column="5" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/util/AtomicBitVector.hpp" bodystart="154" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="typedef" id="classnw_1_1graph_1_1_atomic_bit_vector_1_1non__zero__iterator_1a9f9004eefaa49b100c94b4d8ff8b2dd5" prot="public" static="no">
+        <type>std::input_iterator_tag</type>
+        <definition>using nw::graph::AtomicBitVector&lt; Word &gt;::non_zero_iterator::iterator_category =  std::input_iterator_tag</definition>
+        <argsstring></argsstring>
+        <name>iterator_category</name>
+        <qualifiedname>nw::graph::AtomicBitVector::non_zero_iterator::iterator_category</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/util/AtomicBitVector.hpp" line="155" column="5" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/util/AtomicBitVector.hpp" bodystart="155" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="classnw_1_1graph_1_1_atomic_bit_vector_1_1non__zero__iterator_1a8c88998d8d78786275cc72702325a3c0" prot="private" static="no" mutable="no">
+        <type>Word *</type>
+        <definition>Word* nw::graph::AtomicBitVector&lt; Word &gt;::non_zero_iterator::data_</definition>
+        <argsstring></argsstring>
+        <name>data_</name>
+        <qualifiedname>nw::graph::AtomicBitVector::non_zero_iterator::data_</qualifiedname>
+        <briefdescription>
+<para>Base data array. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/util/AtomicBitVector.hpp" line="145" column="16" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/util/AtomicBitVector.hpp" bodystart="145" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classnw_1_1graph_1_1_atomic_bit_vector_1_1non__zero__iterator_1a2de0503ab2409fbdf48798a1ded410cd" prot="private" static="no" mutable="no">
+        <type>std::size_t</type>
+        <definition>std::size_t nw::graph::AtomicBitVector&lt; Word &gt;::non_zero_iterator::n_</definition>
+        <argsstring></argsstring>
+        <name>n_</name>
+        <qualifiedname>nw::graph::AtomicBitVector::non_zero_iterator::n_</qualifiedname>
+        <briefdescription>
+<para>Size of the data array. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/util/AtomicBitVector.hpp" line="146" column="17" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/util/AtomicBitVector.hpp" bodystart="146" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classnw_1_1graph_1_1_atomic_bit_vector_1_1non__zero__iterator_1a4f2cbb73a6573e0e94abd6961c57f168" prot="private" static="no" mutable="no">
+        <type>std::size_t</type>
+        <definition>std::size_t nw::graph::AtomicBitVector&lt; Word &gt;::non_zero_iterator::word_</definition>
+        <argsstring></argsstring>
+        <name>word_</name>
+        <qualifiedname>nw::graph::AtomicBitVector::non_zero_iterator::word_</qualifiedname>
+        <briefdescription>
+<para>The current word. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/util/AtomicBitVector.hpp" line="147" column="17" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/util/AtomicBitVector.hpp" bodystart="147" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="classnw_1_1graph_1_1_atomic_bit_vector_1_1non__zero__iterator_1afbd9ceb69308c21301e06212beb52e00" prot="private" static="no" mutable="no">
+        <type>std::size_t</type>
+        <definition>std::size_t nw::graph::AtomicBitVector&lt; Word &gt;::non_zero_iterator::bit_</definition>
+        <argsstring></argsstring>
+        <name>bit_</name>
+        <qualifiedname>nw::graph::AtomicBitVector::non_zero_iterator::bit_</qualifiedname>
+        <initializer>= 0</initializer>
+        <briefdescription>
+<para>The current bit in the word. </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/util/AtomicBitVector.hpp" line="148" column="17" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/util/AtomicBitVector.hpp" bodystart="148" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="classnw_1_1graph_1_1_atomic_bit_vector_1_1non__zero__iterator_1a96003c7bad5afe0963010cff868c680c" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>nw::graph::AtomicBitVector&lt; Word &gt;::non_zero_iterator::non_zero_iterator</definition>
+        <argsstring>(Word *data, std::size_t n, std::size_t word)</argsstring>
+        <name>non_zero_iterator</name>
+        <qualifiedname>nw::graph::AtomicBitVector::non_zero_iterator::non_zero_iterator</qualifiedname>
+        <param>
+          <type>Word *</type>
+          <declname>data</declname>
+        </param>
+        <param>
+          <type>std::size_t</type>
+          <declname>n</declname>
+        </param>
+        <param>
+          <type>std::size_t</type>
+          <declname>word</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/util/AtomicBitVector.hpp" line="157" column="5" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/util/AtomicBitVector.hpp" bodystart="157" bodyend="157"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1_atomic_bit_vector_1_1non__zero__iterator_1a64fecba8822b57a653776f1feef4a53e" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>reference</type>
+        <definition>reference nw::graph::AtomicBitVector&lt; Word &gt;::non_zero_iterator::operator*</definition>
+        <argsstring>()</argsstring>
+        <name>operator*</name>
+        <qualifiedname>nw::graph::AtomicBitVector::non_zero_iterator::operator*</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/util/AtomicBitVector.hpp" line="159" column="15" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/util/AtomicBitVector.hpp" bodystart="159" bodyend="159"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1_atomic_bit_vector_1_1non__zero__iterator_1af42ef5cd1ddbb2f220a546eb6a125fb3" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classnw_1_1graph_1_1_atomic_bit_vector_1_1non__zero__iterator" kindref="compound">non_zero_iterator</ref> &amp;</type>
+        <definition>non_zero_iterator &amp; nw::graph::AtomicBitVector&lt; Word &gt;::non_zero_iterator::operator++</definition>
+        <argsstring>()</argsstring>
+        <name>operator++</name>
+        <qualifiedname>nw::graph::AtomicBitVector::non_zero_iterator::operator++</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/util/AtomicBitVector.hpp" line="165" column="23" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/util/AtomicBitVector.hpp" bodystart="165" bodyend="178"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1_atomic_bit_vector_1_1non__zero__iterator_1a8bb6ec5e5076e07f0d81af40e7fd7ad4" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classnw_1_1graph_1_1_atomic_bit_vector_1_1non__zero__iterator" kindref="compound">non_zero_iterator</ref></type>
+        <definition>non_zero_iterator nw::graph::AtomicBitVector&lt; Word &gt;::non_zero_iterator::operator++</definition>
+        <argsstring>(int)</argsstring>
+        <name>operator++</name>
+        <qualifiedname>nw::graph::AtomicBitVector::non_zero_iterator::operator++</qualifiedname>
+        <param>
+          <type>int</type>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/util/AtomicBitVector.hpp" line="180" column="23" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/util/AtomicBitVector.hpp" bodystart="180" bodyend="184"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1_atomic_bit_vector_1_1non__zero__iterator_1a621ce91250ac5af646f9f78de13ac1e6" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool nw::graph::AtomicBitVector&lt; Word &gt;::non_zero_iterator::operator!=</definition>
+        <argsstring>(const non_zero_iterator &amp;b) const</argsstring>
+        <name>operator!=</name>
+        <qualifiedname>nw::graph::AtomicBitVector::non_zero_iterator::operator!=</qualifiedname>
+        <param>
+          <type>const <ref refid="classnw_1_1graph_1_1_atomic_bit_vector_1_1non__zero__iterator" kindref="compound">non_zero_iterator</ref> &amp;</type>
+          <declname>b</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/util/AtomicBitVector.hpp" line="186" column="10" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/util/AtomicBitVector.hpp" bodystart="186" bodyend="186"/>
+      </memberdef>
+      <memberdef kind="function" id="classnw_1_1graph_1_1_atomic_bit_vector_1_1non__zero__iterator_1aeb7a84ade9bc786e32486a73cf8df951" prot="public" static="no" const="yes" explicit="no" inline="yes" virt="non-virtual">
+        <type>bool</type>
+        <definition>bool nw::graph::AtomicBitVector&lt; Word &gt;::non_zero_iterator::operator==</definition>
+        <argsstring>(const non_zero_iterator &amp;b) const</argsstring>
+        <name>operator==</name>
+        <qualifiedname>nw::graph::AtomicBitVector::non_zero_iterator::operator==</qualifiedname>
+        <param>
+          <type>const <ref refid="classnw_1_1graph_1_1_atomic_bit_vector_1_1non__zero__iterator" kindref="compound">non_zero_iterator</ref> &amp;</type>
+          <declname>b</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/util/AtomicBitVector.hpp" line="188" column="10" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/util/AtomicBitVector.hpp" bodystart="188" bodyend="188"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-func">
+      <memberdef kind="function" id="classnw_1_1graph_1_1_atomic_bit_vector_1_1non__zero__iterator_1a503b64d451a37bc494751fe8617f6f7e" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type><ref refid="classnw_1_1graph_1_1_atomic_bit_vector_1_1non__zero__iterator" kindref="compound">non_zero_iterator</ref> &amp;</type>
+        <definition>non_zero_iterator &amp; nw::graph::AtomicBitVector&lt; Word &gt;::non_zero_iterator::search_next</definition>
+        <argsstring>()</argsstring>
+        <name>search_next</name>
+        <qualifiedname>nw::graph::AtomicBitVector::non_zero_iterator::search_next</qualifiedname>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="/Users/lums/NWmath/NWgr/include/nwgraph/util/AtomicBitVector.hpp" line="191" column="23" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/util/AtomicBitVector.hpp" bodystart="191" bodyend="204"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="/Users/lums/NWmath/NWgr/include/nwgraph/util/AtomicBitVector.hpp" line="144" column="3" bodyfile="/Users/lums/NWmath/NWgr/include/nwgraph/util/AtomicBitVector.hpp" bodystart="144" bodyend="205"/>
+    <listofallmembers>
+      <member refid="classnw_1_1graph_1_1_atomic_bit_vector_1_1non__zero__iterator_1afbd9ceb69308c21301e06212beb52e00" prot="private" virt="non-virtual"><scope>nw::graph::AtomicBitVector::non_zero_iterator</scope><name>bit_</name></member>
+      <member refid="classnw_1_1graph_1_1_atomic_bit_vector_1_1non__zero__iterator_1a8c88998d8d78786275cc72702325a3c0" prot="private" virt="non-virtual"><scope>nw::graph::AtomicBitVector::non_zero_iterator</scope><name>data_</name></member>
+      <member refid="classnw_1_1graph_1_1_atomic_bit_vector_1_1non__zero__iterator_1a576c053a6eeee28d27a878a4646a803c" prot="public" virt="non-virtual"><scope>nw::graph::AtomicBitVector::non_zero_iterator</scope><name>difference_type</name></member>
+      <member refid="classnw_1_1graph_1_1_atomic_bit_vector_1_1non__zero__iterator_1a9f9004eefaa49b100c94b4d8ff8b2dd5" prot="public" virt="non-virtual"><scope>nw::graph::AtomicBitVector::non_zero_iterator</scope><name>iterator_category</name></member>
+      <member refid="classnw_1_1graph_1_1_atomic_bit_vector_1_1non__zero__iterator_1a2de0503ab2409fbdf48798a1ded410cd" prot="private" virt="non-virtual"><scope>nw::graph::AtomicBitVector::non_zero_iterator</scope><name>n_</name></member>
+      <member refid="classnw_1_1graph_1_1_atomic_bit_vector_1_1non__zero__iterator_1a96003c7bad5afe0963010cff868c680c" prot="public" virt="non-virtual"><scope>nw::graph::AtomicBitVector::non_zero_iterator</scope><name>non_zero_iterator</name></member>
+      <member refid="classnw_1_1graph_1_1_atomic_bit_vector_1_1non__zero__iterator_1a621ce91250ac5af646f9f78de13ac1e6" prot="public" virt="non-virtual"><scope>nw::graph::AtomicBitVector::non_zero_iterator</scope><name>operator!=</name></member>
+      <member refid="classnw_1_1graph_1_1_atomic_bit_vector_1_1non__zero__iterator_1a64fecba8822b57a653776f1feef4a53e" prot="public" virt="non-virtual"><scope>nw::graph::AtomicBitVector::non_zero_iterator</scope><name>operator*</name></member>
+      <member refid="classnw_1_1graph_1_1_atomic_bit_vector_1_1non__zero__iterator_1af42ef5cd1ddbb2f220a546eb6a125fb3" prot="public" virt="non-virtual"><scope>nw::graph::AtomicBitVector::non_zero_iterator</scope><name>operator++</name></member>
+      <member refid="classnw_1_1graph_1_1_atomic_bit_vector_1_1non__zero__iterator_1a8bb6ec5e5076e07f0d81af40e7fd7ad4" prot="public" virt="non-virtual"><scope>nw::graph::AtomicBitVector::non_zero_iterator</scope><name>operator++</name></member>
+      <member refid="classnw_1_1graph_1_1_atomic_bit_vector_1_1non__zero__iterator_1aeb7a84ade9bc786e32486a73cf8df951" prot="public" virt="non-virtual"><scope>nw::graph::AtomicBitVector::non_zero_iterator</scope><name>operator==</name></member>
+      <member refid="classnw_1_1graph_1_1_atomic_bit_vector_1_1non__zero__iterator_1af977199f20e0338e4c8729b4086d7693" prot="public" virt="non-virtual"><scope>nw::graph::AtomicBitVector::non_zero_iterator</scope><name>pointer</name></member>
+      <member refid="classnw_1_1graph_1_1_atomic_bit_vector_1_1non__zero__iterator_1aa68829b0b67de5e4df42e0e226aa6430" prot="public" virt="non-virtual"><scope>nw::graph::AtomicBitVector::non_zero_iterator</scope><name>reference</name></member>
+      <member refid="classnw_1_1graph_1_1_atomic_bit_vector_1_1non__zero__iterator_1a503b64d451a37bc494751fe8617f6f7e" prot="private" virt="non-virtual"><scope>nw::graph::AtomicBitVector::non_zero_iterator</scope><name>search_next</name></member>
+      <member refid="classnw_1_1graph_1_1_atomic_bit_vector_1_1non__zero__iterator_1ab9a2bce88966308861165c1236783ace" prot="public" virt="non-virtual"><scope>nw::graph::AtomicBitVector::non_zero_iterator</scope><name>value_type</name></member>
+      <member refid="classnw_1_1graph_1_1_atomic_bit_vector_1_1non__zero__iterator_1a4f2cbb73a6573e0e94abd6961c57f168" prot="private" virt="non-virtual"><scope>nw::graph::AtomicBitVector::non_zero_iterator</scope><name>word_</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>
