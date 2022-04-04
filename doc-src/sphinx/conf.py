@@ -107,5 +107,5 @@ cpp_index_common_prefix = ['nw::', 'nw::graph::']
 # -- Options for Breathe -----------------------------------------------------
 
 sys.path.append('_breathe')
-breathe_projects = { "NWgraph": "../../build/docs/doxygen/xml"}
+breathe_projects = { "NWgraph": "../../docs/doxygen/xml"}
 breathe_default_project = "NWgraph"

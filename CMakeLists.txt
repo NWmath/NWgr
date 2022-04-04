@@ -86,7 +86,7 @@ if (NW_GRAPH_BUILD_BENCH)
 endif()
 
 if (NW_GRAPH_BUILD_DOCS)
-  add_subdirectory(docs)
+  add_subdirectory(doc-src)
 endif()
 
 if (NW_GRAPH_BUILD_EXAMPLES)
