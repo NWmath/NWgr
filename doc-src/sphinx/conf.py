@@ -34,7 +34,8 @@ sys.path.append(os.path.abspath('_extensions'))
 # ones.
 extensions = [
     'sphinx.ext.mathjax', 'sphinx.ext.intersphinx', 'sphinx.ext.viewcode', 'sphinx.ext.graphviz',
-    'breathe',
+    'sphinx_rtd_theme',
+    'breathe', 'exhale'
 ]
 
 source_suffix = {
@@ -84,7 +85,8 @@ mathjax_config = {
 # a list of builtin themes.
 #
 html_theme_path = [ "_themes" ]
-html_theme = 'sphinx13'
+# html_theme = 'sphinx13'
+html_theme = 'sphinx_rtd_theme'
 
 
 # Add any paths that contain custom static files (such as style sheets) here,
@@ -109,3 +111,27 @@ cpp_index_common_prefix = ['nw::', 'nw::graph::']
 sys.path.append('_breathe')
 breathe_projects = { "NWgraph": "../../docs/doxygen/xml"}
 breathe_default_project = "NWgraph"
+
+# -- Options for Exhale ------------------------------------------------------
+
+# Setup the exhale extension
+exhale_args = {
+    # These arguments are required
+    "containmentFolder":     "./api",
+    "rootFileName":          "library_root.rst",
+    "doxygenStripFromPath":  "..",
+    # Heavily encouraged optional argument (see docs)
+    "rootFileTitle":         "Library API",
+    # Suggested optional arguments
+    "createTreeView":        True,
+    # TIP: if using the sphinx-bootstrap-theme, you need
+    # "treeViewIsBootstrap": True,
+    "exhaleExecutesDoxygen": True,
+    "exhaleDoxygenStdin":    "INPUT = ../../include"
+}
+
+# Tell sphinx what the primary language being documented is.
+primary_domain = 'cpp'
+
+# Tell sphinx what the pygments highlight language should be.
+highlight_language = 'cpp'

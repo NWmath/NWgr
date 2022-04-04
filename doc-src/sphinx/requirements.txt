@@ -3,3 +3,6 @@ jinja2-highlight
 myst_parser
 sphinx_copybutton
 breathe
+exhale
+sphinx-book-theme
+sphinx-rtd-theme
