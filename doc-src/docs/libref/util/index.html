@@ -1,0 +1,493 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>util &#8212; NW Graph 0.10.15 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx13.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/css/hyde_light.css" />
+    <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
+
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="&lt;no title&gt;" href="proxysort.hpp/f_proxysort.html" />
+    <link rel="prev" title="&lt;no title&gt;" href="timer.hpp/f_operator3C3C.html" />
+    <link rel="canonical" href="http://www.sphinx-doc.org/en/master/libref/util/index.html" />
+
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300,400,700'
+          rel='stylesheet' type='text/css' />
+ 
+    <style type="text/css">
+      table.right { float: right; margin-left: 20px; }
+      table.right td { border: 1px solid #ccc; }
+      
+    </style>
+    <script type="text/javascript">
+      // intelligent scrolling of the sidebar content
+      $(window).scroll(function() {
+        var sb = $('.sphinxsidebarwrapper');
+        var win = $(window);
+        var sbh = sb.height();
+        var offset = $('.sphinxsidebar').position()['top'];
+        var wintop = win.scrollTop();
+        var winbot = wintop + win.innerHeight();
+        var curtop = sb.position()['top'];
+        var curbot = curtop + sbh;
+        // does sidebar fit in window?
+        if (sbh < win.innerHeight()) {
+          // yes: easy case -- always keep at the top
+          sb.css('top', $u.min([$u.max([0, wintop - offset - 10]),
+                                $(document).height() - sbh - 200]));
+        } else {
+          // no: only scroll if top/bottom edge of sidebar is at
+          // top/bottom edge of window
+          if (curtop > wintop && curbot > winbot) {
+            sb.css('top', $u.max([wintop - offset - 10, 0]));
+          } else if (curtop < wintop && curbot < winbot) {
+            sb.css('top', $u.min([winbot - sbh - offset - 20,
+                                  $(document).height() - sbh - 200]));
+          }
+        }
+      });
+    </script>
+
+  </head><body>
+<div class="pageheader">
+  <ul>
+    <li><a href="../../index.html">Home</a></li>
+    <li><a href="../../usage/installation.html">Get it</a></li>
+    <li><a href="../../contents.html">Docs</a></li>
+    <li><a href="../../develop.html">Extend/Develop</a></li>
+  </ul>
+  <div>
+    <a href="../../index.html">
+      <img src="../../_static/nwgraph.png" alt="NW Graph" height="96px"/>
+    </a>
+  </div>
+</div>
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="proxysort.hpp/f_proxysort.html" title="&lt;no title&gt;"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="timer.hpp/f_operator3C3C.html" title="&lt;no title&gt;"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../../index.html">NW Graph home</a>&#160;|</li>
+        <li><a href="../../contents.html">Documentation</a> &#187;</li>
+
+          <li class="nav-item nav-item-1"><a href="../libref.html" accesskey="U">&lt;no title&gt;</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">util</a></li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="timer.hpp/f_operator3C3C.html"
+                        title="previous chapter">&lt;no title&gt;</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="proxysort.hpp/f_proxysort.html"
+                        title="next chapter">&lt;no title&gt;</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/libref/util/index.md.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+
+<div class="documentwrapper">
+  <div class="bodywrapper">
+    
+    <div id="hyde-content">
+      <div class="post">
+	<header class="post-header">
+	  <h1>util</h1>
+	</header>
+	<article class="post-content">
+	  
+
+	   
+	  <div class="post-brief">
+	    Utilities 
+	  </div>
+	  
+	  
+	  
+	  
+	  <span class="target" id="index-0"></span>
+	  
+	  
+
+
+
+	  
+
+
+
+ 
+	  
+	  
+
+
+
+
+      
+	  
+	  
+
+
+
+    
+	  
+	  
+
+
+
+
+
+
+
+
+<div id="hyde-content">
+<h3>Sources</h3>
+<table class='associated-table'>
+  
+    
+    <tr>
+        <td class='name'>
+          
+          <div><a href="arrow_proxy.hpp/index.html"><code>util/arrow_proxy.hpp</code></a></div>
+        </td>
+        <td class='brief'>
+            
+                __MISSING__
+            
+            
+        </td>
+    </tr>
+  
+    
+    <tr>
+        <td class='name'>
+          
+          <div><a href="atomic.hpp/index.html"><code>util/atomic.hpp</code></a></div>
+        </td>
+        <td class='brief'>
+            
+                __MISSING__
+            
+            
+        </td>
+    </tr>
+  
+    
+    <tr>
+        <td class='name'>
+          
+          <div><a href="AtomicBitVector.hpp/index.html"><code>util/AtomicBitVector.hpp</code></a></div>
+        </td>
+        <td class='brief'>
+            
+                __MISSING__
+            
+            
+        </td>
+    </tr>
+  
+    
+    <tr>
+        <td class='name'>
+          
+          <div><a href="defaults.hpp/index.html"><code>util/defaults.hpp</code></a></div>
+        </td>
+        <td class='brief'>
+            
+                __MISSING__
+            
+            
+        </td>
+    </tr>
+  
+    
+    <tr>
+        <td class='name'>
+          
+          <div><a href="demangle.hpp/index.html"><code>util/demangle.hpp</code></a></div>
+        </td>
+        <td class='brief'>
+            
+                __MISSING__
+            
+            
+        </td>
+    </tr>
+  
+    
+    <tr>
+        <td class='name'>
+          
+          <div><a href="disjoint_set.hpp/index.html"><code>util/disjoint_set.hpp</code></a></div>
+        </td>
+        <td class='brief'>
+            
+                Disjoint-set (union-find) data structures
+            
+            
+        </td>
+    </tr>
+  
+    
+    <tr>
+        <td class='name'>
+          
+          <div><a href="make_priority_queue.hpp/index.html"><code>util/make_priority_queue.hpp</code></a></div>
+        </td>
+        <td class='brief'>
+            
+                __MISSING__
+            
+            
+        </td>
+    </tr>
+  
+    
+    <tr>
+        <td class='name'>
+          
+          <div><a href="parallel_for.hpp/index.html"><code>util/parallel_for.hpp</code></a></div>
+        </td>
+        <td class='brief'>
+            
+                __MISSING__
+            
+            
+        </td>
+    </tr>
+  
+    
+    <tr>
+        <td class='name'>
+          
+          <div><a href="permutation_iterator.hpp/index.html"><code>util/permutation_iterator.hpp</code></a></div>
+        </td>
+        <td class='brief'>
+            
+                __MISSING__
+            
+            
+        </td>
+    </tr>
+  
+    
+    <tr>
+        <td class='name'>
+          
+          <div><a href="print_types.hpp/index.html"><code>util/print_types.hpp</code></a></div>
+        </td>
+        <td class='brief'>
+            
+                __MISSING__
+            
+            
+        </td>
+    </tr>
+  
+    
+    <tr>
+        <td class='name'>
+          
+          <div><a href="provenance.hpp/index.html"><code>util/provenance.hpp</code></a></div>
+        </td>
+        <td class='brief'>
+            
+                __MISSING__
+            
+            
+        </td>
+    </tr>
+  
+    
+    <tr>
+        <td class='name'>
+          
+          <div><a href="proxysort.hpp/index.html"><code>util/proxysort.hpp</code></a></div>
+        </td>
+        <td class='brief'>
+            
+                __MISSING__
+            
+            
+        </td>
+    </tr>
+  
+    
+    <tr>
+        <td class='name'>
+          
+          <div><a href="tag_invoke.hpp/index.html"><code>util/tag_invoke.hpp</code></a></div>
+        </td>
+        <td class='brief'>
+            
+                __MISSING__
+            
+            
+        </td>
+    </tr>
+  
+    
+    <tr>
+        <td class='name'>
+          
+          <div><a href="timer.hpp/index.html"><code>util/timer.hpp</code></a></div>
+        </td>
+        <td class='brief'>
+            
+                __MISSING__
+            
+            
+        </td>
+    </tr>
+  
+    
+    <tr>
+        <td class='name'>
+          
+          <div><a href="traits.hpp/index.html"><code>util/traits.hpp</code></a></div>
+        </td>
+        <td class='brief'>
+            
+                __MISSING__
+            
+            
+        </td>
+    </tr>
+  
+    
+    <tr>
+        <td class='name'>
+          
+          <div><a href="tuple_hack.hpp/index.html"><code>util/tuple_hack.hpp</code></a></div>
+        </td>
+        <td class='brief'>
+            
+                __MISSING__
+            
+            
+        </td>
+    </tr>
+  
+    
+    <tr>
+        <td class='name'>
+          
+          <div><a href="types.hpp/index.html"><code>util/types.hpp</code></a></div>
+        </td>
+        <td class='brief'>
+            
+                __MISSING__
+            
+            
+        </td>
+    </tr>
+  
+    
+    <tr>
+        <td class='name'>
+          
+          <div><a href="util.hpp/index.html"><code>util/util.hpp</code></a></div>
+        </td>
+        <td class='brief'>
+            
+                __MISSING__
+            
+            
+        </td>
+    </tr>
+  
+    
+    <tr>
+        <td class='name'>
+          
+          <div><a href="util_par.hpp/index.html"><code>util/util_par.hpp</code></a></div>
+        </td>
+        <td class='brief'>
+            
+                __MISSING__
+            
+            
+        </td>
+    </tr>
+  
+</table>
+<div id=hyde-content>
+
+
+
+
+
+
+
+	  
+	</article>
+      </div>
+    </div>
+  </div>
+</div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="proxysort.hpp/f_proxysort.html" title="&lt;no title&gt;"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="timer.hpp/f_operator3C3C.html" title="&lt;no title&gt;"
+             >previous</a> |</li>
+        <li><a href="../../index.html">NW Graph home</a>&#160;|</li>
+        <li><a href="../../contents.html">Documentation</a> &#187;</li>
+
+          <li class="nav-item nav-item-1"><a href="../libref.html" >&lt;no title&gt;</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">util</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, PNNL, UW.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.3.0.
+    </div>
+  </body>
+</html>

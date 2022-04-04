@@ -1,0 +1,247 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Introduction &#8212; NW Graph 0.10.15 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx13.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="canonical" href="http://www.sphinx-doc.org/en/master/userguide/introduction.html" />
+
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300,400,700'
+          rel='stylesheet' type='text/css' />
+ 
+    <style type="text/css">
+      table.right { float: right; margin-left: 20px; }
+      table.right td { border: 1px solid #ccc; }
+      
+    </style>
+    <script type="text/javascript">
+      // intelligent scrolling of the sidebar content
+      $(window).scroll(function() {
+        var sb = $('.sphinxsidebarwrapper');
+        var win = $(window);
+        var sbh = sb.height();
+        var offset = $('.sphinxsidebar').position()['top'];
+        var wintop = win.scrollTop();
+        var winbot = wintop + win.innerHeight();
+        var curtop = sb.position()['top'];
+        var curbot = curtop + sbh;
+        // does sidebar fit in window?
+        if (sbh < win.innerHeight()) {
+          // yes: easy case -- always keep at the top
+          sb.css('top', $u.min([$u.max([0, wintop - offset - 10]),
+                                $(document).height() - sbh - 200]));
+        } else {
+          // no: only scroll if top/bottom edge of sidebar is at
+          // top/bottom edge of window
+          if (curtop > wintop && curbot > winbot) {
+            sb.css('top', $u.max([wintop - offset - 10, 0]));
+          } else if (curtop < wintop && curbot < winbot) {
+            sb.css('top', $u.min([winbot - sbh - offset - 20,
+                                  $(document).height() - sbh - 200]));
+          }
+        }
+      });
+    </script>
+
+  </head><body>
+<div class="pageheader">
+  <ul>
+    <li><a href="../index.html">Home</a></li>
+    <li><a href="../usage/installation.html">Get it</a></li>
+    <li><a href="../contents.html">Docs</a></li>
+    <li><a href="../develop.html">Extend/Develop</a></li>
+  </ul>
+  <div>
+    <a href="../index.html">
+      <img src="../_static/nwgraph.png" alt="NW Graph" height="96px"/>
+    </a>
+  </div>
+</div>
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li><a href="../index.html">NW Graph home</a>&#160;|</li>
+        <li><a href="../contents.html">Documentation</a> &#187;</li>
+
+        <li class="nav-item nav-item-this"><a href="">Introduction</a></li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/userguide/introduction.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="introduction">
+<h1>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h1>
+<p>Graphs are powerful mathematical tools for reasoning about the
+relationships between given entities, focusing on the <em>structure and
+characteristics of the relationships</em>, independent of what the entities
+and the relationships actually are. Consequently, results from graph
+theory can be applied to any actual sets of data for which relationships
+between elements can be established. Internet packet routing, molecular
+biology, electronic design automation, social network analysis, and
+search engines are just some of the problem areas where graph theory is
+regularly applied. The general applicability we find in graph theory –
+the <em>genericity</em>, if you will – is a goal for software libraries as well
+as mathematical theories; graph algorithms and data structures
+(collectively, “graphs”) would seem to be ideally suited for software
+reuse.</p>
+<p>Realizing a truly generic library for graphs has significant challenges
+in practice. Graphs in theory are useful because they are abstract, but,
+in practice, they have to be made concrete when used to solve an actual
+problem. That is, graphs in practice do not manifest themselves in the
+abstract form to which theory and abstract algorithms are applied.
+Rather, they are often encoded in some domain-specific form or latent in
+problem-related data. And even if a domain programmer constructs a graph
+from their data, the domain-specific graph data structure might not be
+compatible with the API of a given graph library.</p>
+<p>The celebrated Standard Template Library <a href="#id1"><span class="problematic" id="id2">:raw-latex:`\citep{STL}`</span></a> (now
+part of the C++ standard library) addressed this problem for fundamental
+algorithms and abstract containers of data elements. With the STL,
+<em>generic programming</em> emerged as a software-development sub-discipline
+that focused on creating frameworks of reusable and composable
+libraries. Fundamental to the philosophy of generic programming is that
+algorithms should be able to be composed with arbitrary types, notably
+types that may have been developed completely independently of the
+library. To achieve this goal, generic algorithms are specified and
+written in terms of abstract properties of types; a generic algorithm
+can be composed with any type meeting the properties that it depends on.
+Philosophically, generic programming goes hand-in-glove with the
+abstraction process inherent in graph theory. Graphs are abstract models
+of entities in relationship – a graph algorithm should be able to
+operate directly on the entities and relationship in a programmer’s
+data.</p>
+<p>It is not just the philosophy of generic programming from the STL that
+can be leveraged to develop a generic graph library. In fact, an
+important principle upon which our work is based is that <strong>the standard
+library already contains sufficient capability to support graph
+algorithms and data structures.</strong> The type requirements for generic
+graph algorithms can be expressed using existing type requirement
+machinery for standard library algorithms and useful and efficient graph
+algorithms can be implemented based on these requirements.</p>
+<p>A second principle underlying our approach is that <strong>graphs are for
+representing relationships among data, in order to admit specific
+analyses—graphs are not for storing data</strong>. Data are not naturally in
+graph form (certainly not in, say, adjacency list form). Rather, within
+the context of certain sets of data, a user asserts that some of the
+data implies relationships between other of the data. Think of actors
+and movies. The data that are represented in the Internet Movie Database
+are actors, movies, and the actors associated with each movie—all stored
+as tables. The co-star network among actors can be represented as a
+graph, but that graph extracts and explicitly represents certain
+inferred relationships that are useful in the context of a given query.
+(We sometimes whimsically refer to this principle as: “There is no
+graph.”)</p>
+<p>We apply these principles to develop NWGraph, a generic library of
+algorithms for graph computation that are independent of any particular
+data structure (in particular, independent of any particular <code class="docutils literal notranslate"><span class="pre">Graph</span></code>
+data structure). Following current generic library practice, NWGraph
+algorithms are organized around a minimal set of common requirements for
+their input types (these requirements are formalized in the form of
+C++20 <em>concepts</em>).</p>
+<p>The foundation of the paper is a requirements analysis from which we
+derive a uniform set of type requirements for graph algorithms, which we
+subsequently reify as C++ concepts. Based on this foundation, we
+construct the primary components of NWGraph: <strong>algorithms</strong>, defined and
+and implemented using our concepts; <strong>adaptors</strong>, for converting one
+representation of a graph into another and for enabling structured
+traversals, and <strong>data structures</strong> that model our foundational
+requirements.</p>
+<p>NWGraph contains the following innovations:</p>
+<ul class="simple">
+<li><p>A concept taxonomy (expressed using C++20 concepts) for specifying
+graph algorithm requirements;</p></li>
+<li><p>Characterization of graphs using standard library concepts (as a
+random access range of forward ranges);</p></li>
+<li><p>A rich set of range adaptors for accessing and traversing graphs;</p></li>
+<li><p>An API designed to fully support modern idiomatic C++;</p></li>
+<li><p>An efficient and fully parallelized (using C++ execution policies)
+implementation; and</p></li>
+<li><p>Maximum compatibility with third-party data structures and
+algorithms.</p></li>
+</ul>
+<p>In the following sections we first provide some basic background and
+terminology we will be using to discuss graph algorithms
+(§<a class="reference external" href="#sec:graph-background">[sec:graph-background]</a>), as well as a
+bit more detail on generic programming
+(§<a class="reference external" href="#sec:generic-programming-background">[sec:generic-programming-background]</a>).
+Next, we analyze the domain of graph algorithms with respect to common
+requirements and present the fundamental concepts in NWGraph
+(§<a class="reference external" href="#sec:concepts">[sec:concepts]</a>). We then present an overview of
+the primary components of NWGraph in addition to its concepts: its
+algorithms (§<a class="reference external" href="#sec:algorithms">[sec:algorithms]</a>), adaptors
+(§<a class="reference external" href="#sec:graph_range_adaptors">[sec:graph_range_adaptors]</a>), and
+containers (§<a class="reference external" href="#sec:data_structures">[sec:data_structures]</a>). We
+present some examples of its use and composability and include
+performance results from abstraction penalty experiments
+(§<a class="reference external" href="#sec:abp_results">[sec:abp_results]</a>). Finally, we provide a
+high-level feature comparison of NWGraph with other extant graph
+libraries (§<a class="reference external" href="#sec:performance">[sec:performance]</a>) and conclude
+with some observations based on our experiences in developing NWGraph
+(§<a class="reference external" href="#sec:conclusion">[sec:conclusion]</a>).</p>
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li><a href="../index.html">NW Graph home</a>&#160;|</li>
+        <li><a href="../contents.html">Documentation</a> &#187;</li>
+
+        <li class="nav-item nav-item-this"><a href="">Introduction</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, PNNL, UW.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.3.0.
+    </div>
+  </body>
+</html>

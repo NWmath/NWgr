@@ -1,0 +1,537 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>neighbor_range &#8212; NW Graph 0.10.15 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/sphinx13.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/css/hyde_light.css" />
+    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/jquery.js"></script>
+    <script src="../../../../_static/underscore.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/clipboard.min.js"></script>
+    <script src="../../../../_static/copybutton.js"></script>
+
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="canonical" href="http://www.sphinx-doc.org/en/master/libref/adaptors/neighbor_range.hpp/neighbor_range3CGraph2C20Is3E/index.html" />
+
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300,400,700'
+          rel='stylesheet' type='text/css' />
+ 
+    <style type="text/css">
+      table.right { float: right; margin-left: 20px; }
+      table.right td { border: 1px solid #ccc; }
+      
+    </style>
+    <script type="text/javascript">
+      // intelligent scrolling of the sidebar content
+      $(window).scroll(function() {
+        var sb = $('.sphinxsidebarwrapper');
+        var win = $(window);
+        var sbh = sb.height();
+        var offset = $('.sphinxsidebar').position()['top'];
+        var wintop = win.scrollTop();
+        var winbot = wintop + win.innerHeight();
+        var curtop = sb.position()['top'];
+        var curbot = curtop + sbh;
+        // does sidebar fit in window?
+        if (sbh < win.innerHeight()) {
+          // yes: easy case -- always keep at the top
+          sb.css('top', $u.min([$u.max([0, wintop - offset - 10]),
+                                $(document).height() - sbh - 200]));
+        } else {
+          // no: only scroll if top/bottom edge of sidebar is at
+          // top/bottom edge of window
+          if (curtop > wintop && curbot > winbot) {
+            sb.css('top', $u.max([wintop - offset - 10, 0]));
+          } else if (curtop < wintop && curbot < winbot) {
+            sb.css('top', $u.min([winbot - sbh - offset - 20,
+                                  $(document).height() - sbh - 200]));
+          }
+        }
+      });
+    </script>
+
+  </head><body>
+<div class="pageheader">
+  <ul>
+    <li><a href="../../../../index.html">Home</a></li>
+    <li><a href="../../../../usage/installation.html">Get it</a></li>
+    <li><a href="../../../../contents.html">Docs</a></li>
+    <li><a href="../../../../develop.html">Extend/Develop</a></li>
+  </ul>
+  <div>
+    <a href="../../../../index.html">
+      <img src="../../../../_static/nwgraph.png" alt="NW Graph" height="96px"/>
+    </a>
+  </div>
+</div>
+
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li><a href="../../../../index.html">NW Graph home</a>&#160;|</li>
+        <li><a href="../../../../contents.html">Documentation</a> &#187;</li>
+
+        <li class="nav-item nav-item-this"><a href="">neighbor_range<Graph, Is></a></li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../../../_sources/libref/adaptors/neighbor_range.hpp/neighbor_range3CGraph2C20Is3E/index.md.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+
+<div class="documentwrapper">
+  <div class="bodywrapper">
+    
+    <div id="hyde-content">
+      <div class="post">
+	<header class="post-header">
+	  <h1 class='code'>neighbor_range&lt;Graph, Is&gt;</h1>
+	</header>
+	<article class="post-content">
+	  
+<div id="hyde-content">Defined in <code>&lt;adaptors/neighbor_range.hpp&gt;</code></div>
+
+	  
+	  <div class="post-brief">
+	  __MISSING__
+	  </div>
+
+	  
+	  <div class="highlight"><pre><span></span><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">class</span> <span class="nc">Graph</span><span class="p">,</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span><span class="p">...</span><span class="w"> </span><span class="n">Is</span><span class="o">&gt;</span><span class="w"></span>
+<span class="k">class</span> <span class="nc">nw</span><span class="o">::</span><span class="n">graph</span><span class="o">::</span><span class="n">neighbor_range</span><span class="p">;</span><span class="w"></span>
+</pre></div>
+
+	  
+
+	  <br/>
+	  
+	  
+	  
+	  
+
+
+
+
+	  
+	  
+<div id="hyde-content">
+  <h3>Types</h3>
+  <table class='definition-table'>
+    <tr class='headers'>
+      <th>Type</th>
+      <th>Definition</th>
+      <th>Notes</th>
+    </tr>
+    
+    
+      <tr>
+        <td class='type'><div class="highlight"><pre><span></span><span class="n">const_iterator</span><span class="w"></span>
+</pre></div>
+</td>
+        <td class='decl'>my_iterator&lt;true&gt;</td>
+        
+          <td class='defn'>
+            __MISSING__
+            
+          </td>
+        
+      </tr>
+    
+      <tr>
+        <td class='type'><div class="highlight"><pre><span></span><span class="n">graph_iterator</span><span class="w"></span>
+</pre></div>
+</td>
+        <td class='decl'>typename std::conditional&lt;std::is_const_v&lt;Graph&gt;, typename Graph::const_iterator, typename Graph::iterator&gt;::type</td>
+        
+          <td class='defn'>
+            __MISSING__
+            
+              <span class='annotation'>(private)</span>
+            
+          </td>
+        
+      </tr>
+    
+      <tr>
+        <td class='type'><div class="highlight"><pre><span></span><span class="n">iterator</span><span class="w"></span>
+</pre></div>
+</td>
+        <td class='decl'>my_iterator&lt;false&gt;</td>
+        
+          <td class='defn'>
+            __MISSING__
+            
+          </td>
+        
+      </tr>
+    
+      <tr>
+        <td class='type'><div class="highlight"><pre><span></span><span class="n">vertex_id_type</span><span class="w"></span>
+</pre></div>
+</td>
+        <td class='decl'>vertex_id_t&lt;Graph&gt;</td>
+        
+          <td class='defn'>
+            __MISSING__
+            
+              <span class='annotation'>(private)</span>
+            
+          </td>
+        
+      </tr>
+    
+  </table>
+</div>
+
+
+
+	  
+	  
+
+
+<div id="hyde-content">
+  <h3>Member Fields</h3>
+  <table class='definition-table'>
+    <tr class='headers'>
+      <th>Field</th>
+      <th>Type</th>
+      <th>Notes</th>
+    </tr>
+
+    
+      <tr>
+        <td class='field'>cutoff_</td>
+        <td class='decl'>const size_t</td>
+        
+          <td class='defn'>
+            __MISSING__
+            
+              <span class='annotation'>(private)</span>
+            
+          </td>
+        
+      </tr>
+    
+      <tr>
+        <td class='field'>outer_base_</td>
+        <td class='decl'>nw::graph::neighbor_range::graph_iterator</td>
+        
+          <td class='defn'>
+            __MISSING__
+            
+              <span class='annotation'>(private)</span>
+            
+          </td>
+        
+      </tr>
+    
+      <tr>
+        <td class='field'>outer_begin_</td>
+        <td class='decl'>nw::graph::neighbor_range::graph_iterator</td>
+        
+          <td class='defn'>
+            __MISSING__
+            
+              <span class='annotation'>(private)</span>
+            
+          </td>
+        
+      </tr>
+    
+      <tr>
+        <td class='field'>outer_end_</td>
+        <td class='decl'>nw::graph::neighbor_range::graph_iterator</td>
+        
+          <td class='defn'>
+            __MISSING__
+            
+              <span class='annotation'>(private)</span>
+            
+          </td>
+        
+      </tr>
+    
+  </table>
+</div>
+
+	  
+	  
+
+
+
+<div id="hyde-content">
+
+
+
+
+<h3>Member Functions</h3>
+
+
+
+<table class='definition-table'>
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+  
+    <tr>
+        <td class='decl' colspan='2'><a href='m_neighbor_range3CGraph2C20Is3E.html'>(constructor)</a></td>
+    </tr>
+  
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+
+
+  
+  
+
+  <tr>
+    <td class='decl'>
+      
+
+      <div><a href="m_begin.html">begin</a></div>
+    </td>
+    <td class='defn'>
+      
+        __MISSING__
+      
+      
+    </td>
+  </tr>
+  
+
+  
+  
+
+  <tr>
+    <td class='decl'>
+      
+
+      <div><a href="m_size.html">size</a></div>
+    </td>
+    <td class='defn'>
+      
+        __MISSING__
+      
+      
+    </td>
+  </tr>
+  
+
+  
+  
+
+  <tr>
+    <td class='decl'>
+      
+
+      <div><a href="m_empty.html">empty</a></div>
+    </td>
+    <td class='defn'>
+      
+        __MISSING__
+      
+      
+    </td>
+  </tr>
+  
+
+  
+  
+
+  <tr>
+    <td class='decl'>
+      
+
+      <div><a href="m_operator3D.html">operator=</a></div>
+    </td>
+    <td class='defn'>
+      
+        __MISSING__
+      
+      
+    </td>
+  </tr>
+  
+
+  
+  
+
+  <tr>
+    <td class='decl'>
+      
+
+      <div><a href="m_end.html">end</a></div>
+    </td>
+    <td class='defn'>
+      
+        __MISSING__
+      
+      
+    </td>
+  </tr>
+  
+
+  
+  
+
+  <tr>
+    <td class='decl'>
+      
+
+      <div><a href="m_is_divisible.html">is_divisible</a></div>
+    </td>
+    <td class='defn'>
+      
+        __MISSING__
+      
+      
+    </td>
+  </tr>
+  
+
+  
+  
+    <!-- continue -->
+  
+
+</table>
+<div id=hyde-content>
+
+
+
+	  
+	  
+
+
+
+
+	  
+	  
+
+
+
+
+<div id="hyde-content">
+  <h3>Classes</h3>
+  <table class='associated-table'>
+  
+    
+      <tr>
+        <td class='name'>
+          
+          <div><a href="my_iterator3Cis_const3E/index.html">my_iterator&lt;is_const&gt;</a></div>
+        </td>
+        <td class='brief'>
+          
+            __MISSING__
+          
+          
+        </td>
+      </tr>
+    
+  </table>
+</div>
+
+
+	  
+	  
+	  
+	  
+	</article>	  
+      </div>
+    </div>
+  </div>
+</div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li><a href="../../../../index.html">NW Graph home</a>&#160;|</li>
+        <li><a href="../../../../contents.html">Documentation</a> &#187;</li>
+
+        <li class="nav-item nav-item-this"><a href="">neighbor_range<Graph, Is></a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, PNNL, UW.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 4.3.0.
+    </div>
+  </body>
+</html>
