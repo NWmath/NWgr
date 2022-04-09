@@ -9,8 +9,8 @@
 //     Andrew Lumsdaine	
 //     Kevin Deweese	
 //
-#ifndef NW_GRAPH_CYCLIC_RANGE_ADAPTER_HPP
-#define NW_GRAPH_CYCLIC_RANGE_ADAPTER_HPP
+#ifndef NW_GRAPH_CYCLIC_RANGE_ADAPTOR_HPP
+#define NW_GRAPH_CYCLIC_RANGE_ADAPTOR_HPP
 
 #include "nwgraph/util/util.hpp"
 #include <iterator>
@@ -24,7 +24,7 @@ namespace graph {
 /// @tparam    Iterator The type of the underlying range iterator (must be at
 ///                     least random access).
 template <class Iterator>
-class cyclic_range_adapter {
+class cyclic_range_adaptor {
   static_assert(std::is_base_of_v<std::random_access_iterator_tag, typename std::iterator_traits<Iterator>::iterator_category>);
 
 public:
@@ -39,13 +39,13 @@ private:
 
 public:
   template <class Range, class Cutoff>
-  cyclic_range_adapter(Range&& range, Cutoff cutoff)
+  cyclic_range_adaptor(Range&& range, Cutoff cutoff)
       : begin_(range.begin()), end_(range.end()), cutoff_(nw::graph::pow2(nw::graph::ceil_log2(cutoff))) {}
 
-  cyclic_range_adapter(const cyclic_range_adapter&) = default;
-  cyclic_range_adapter(cyclic_range_adapter&&)      = default;
+  cyclic_range_adaptor(const cyclic_range_adaptor&) = default;
+  cyclic_range_adaptor(cyclic_range_adaptor&&)      = default;
 
-  cyclic_range_adapter(cyclic_range_adapter& rhs, tbb::split)
+  cyclic_range_adaptor(cyclic_range_adaptor& rhs, tbb::split)
       : begin_(rhs.begin_), end_(rhs.end_), cutoff_(rhs.cutoff_), cycle_(rhs.cycle_ + rhs.stride_), stride_(rhs.stride_ *= 2) {}
 
   struct iterator {
@@ -95,12 +95,12 @@ public:
 };
 
 template <class Range, class Cutoff>
-cyclic_range_adapter(Range&& range, Cutoff) -> cyclic_range_adapter<decltype(range.begin())>;
+cyclic_range_adaptor(Range&& range, Cutoff) -> cyclic_range_adaptor<decltype(range.begin())>;
 
 template <class Range, class Cutoff>
 constexpr decltype(auto) cyclic(Range&& range, Cutoff cutoff) {
-  return cyclic_range_adapter{std::forward<Range>(range), cutoff};
+  return cyclic_range_adaptor{std::forward<Range>(range), cutoff};
 }
 }    // namespace graph
 }    // namespace nw
-#endif    // NW_GRAPH_CYCLIC_RANGE_ADAPTER_HPP
+#endif    // NW_GRAPH_CYCLIC_RANGE_ADAPTOR_HPP
