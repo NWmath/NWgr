@@ -20,7 +20,7 @@ sys.path.insert(0, os.path.abspath('.'))
 # -- Project information -----------------------------------------------------
 
 project = 'NW Graph'
-copyright = '2020, PNNL, UW'
+copyright = '2020-2022, PNNL, UW'
 author = 'Andrew Lumsdaine'
 
 # The full version, including alpha/beta/rc tags
@@ -37,7 +37,8 @@ sys.path.append(os.path.abspath('_extensions'))
 extensions = [
     'sphinx.ext.mathjax', 'sphinx.ext.intersphinx', 'sphinx.ext.viewcode', 'sphinx.ext.graphviz',
     'sphinx_rtd_theme',
-    'breathe', 'exhale'
+    'breathe', 
+#    'exhale'
 ]
 
 source_suffix = {
@@ -111,8 +112,21 @@ cpp_index_common_prefix = ['nw::', 'nw::graph::']
 # -- Options for Breathe -----------------------------------------------------
 
 sys.path.append('_breathe')
-breathe_projects = { "NWgraph": "../../docs/doxygen/xml"}
+breathe_projects = { "NWgraph": "./_doxygen/xml"}
 breathe_default_project = "NWgraph"
+#breathe_projects_source = {
+#    "NWgraph" : "../../include"
+#}
+
+# Tell sphinx what the primary language being documented is.
+primary_domain = 'cpp'
+
+# Tell sphinx what the pygments highlight language should be.
+highlight_language = 'cpp'
+
+pygments_style = 'friendly'
+
+todo_include_todos = False
 
 # -- Options for Exhale ------------------------------------------------------
 
@@ -121,7 +135,7 @@ exhale_args = {
     # These arguments are required
     "containmentFolder":     "./api",
     "rootFileName":          "library_root.rst",
-    "doxygenStripFromPath":  "..",
+    "doxygenStripFromPath":  "../..",
     # Heavily encouraged optional argument (see docs)
     "rootFileTitle":         "NWGraph Library API",
     # Suggested optional arguments
@@ -130,15 +144,14 @@ exhale_args = {
     # "treeViewIsBootstrap": True,
     "exhaleExecutesDoxygen": True,
     "exhaleDoxygenStdin":  textwrap.dedent('''
-        "INPUT = ../../include"
-        "CLANG_ASSISTED_PARSING = YES"
-        "BUILTIN_STL_SUPPORT = YES"
-        "EXTRACT_ALL = NO"
-    ''')
+    INPUT = ../../include
+    CLANG_ASSISTED_PARSING = YES
+    BUILTIN_STL_SUPPORT = YES
+    EXTRACT_ALL = NO
+    GENERATE_HTML = YES
+    HIDE_UNDOC_CLASSES = YES
+    HIDE_UNDOC_MEMBERS = YES
+    '''),
+    "verboseBuild": True
 }
 
-# Tell sphinx what the primary language being documented is.
-primary_domain = 'cpp'
-
-# Tell sphinx what the pygments highlight language should be.
-highlight_language = 'cpp'

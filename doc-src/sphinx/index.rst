@@ -41,8 +41,12 @@ Reference Manual
 .. toctree::
    :maxdepth: 2
 
-   api/library_root
+   nwgraph_api.rst
+
+..   api/library_root
 ..   doxyref/index.rst
+
+
 
 
 =====
