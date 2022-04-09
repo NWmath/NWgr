@@ -43,7 +43,7 @@ Reference Manual
 
    nwgraph_api.rst
 
-..   api/library_root
+   api/library_root
 ..   doxyref/index.rst
 
 
