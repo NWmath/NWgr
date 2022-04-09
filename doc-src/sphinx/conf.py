@@ -12,6 +12,8 @@
 #
 import os
 import sys
+import textwrap
+
 sys.path.insert(0, os.path.abspath('.'))
 
 
@@ -85,7 +87,7 @@ mathjax_config = {
 # a list of builtin themes.
 #
 html_theme_path = [ "_themes" ]
-# html_theme = 'sphinx13'
+#html_theme = 'sphinx13'
 html_theme = 'sphinx_rtd_theme'
 
 
@@ -121,13 +123,18 @@ exhale_args = {
     "rootFileName":          "library_root.rst",
     "doxygenStripFromPath":  "..",
     # Heavily encouraged optional argument (see docs)
-    "rootFileTitle":         "Library API",
+    "rootFileTitle":         "NWGraph Library API",
     # Suggested optional arguments
     "createTreeView":        True,
     # TIP: if using the sphinx-bootstrap-theme, you need
     # "treeViewIsBootstrap": True,
     "exhaleExecutesDoxygen": True,
-    "exhaleDoxygenStdin":    "INPUT = ../../include"
+    "exhaleDoxygenStdin":  textwrap.dedent('''
+        "INPUT = ../../include"
+        "CLANG_ASSISTED_PARSING = YES"
+        "BUILTIN_STL_SUPPORT = YES"
+        "EXTRACT_ALL = NO"
+    ''')
 }
 
 # Tell sphinx what the primary language being documented is.
