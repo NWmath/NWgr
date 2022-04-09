@@ -12,8 +12,8 @@
 //
 
 
-#ifndef NW_GRAPH_SPLITTABLE_RANGE_ADAPTER_HPP
-#define NW_GRAPH_SPLITTABLE_RANGE_ADAPTER_HPP
+#ifndef NW_GRAPH_SPLITTABLE_RANGE_ADAPTOR_HPP
+#define NW_GRAPH_SPLITTABLE_RANGE_ADAPTOR_HPP
 
 #include <cstddef>
 #include <oneapi/tbb.h>
@@ -23,7 +23,7 @@
 namespace nw {
 namespace graph {
 template <class Iterator>
-class splittable_range_adapter : public std::ranges::view_base {
+class splittable_range_adaptor : public std::ranges::view_base {
   Iterator    begin_;
   Iterator    end_;
   std::size_t cutoff_ = 16384;
@@ -33,29 +33,29 @@ public:
   using value_type = typename iterator::value_type;
 
   template <class Range>
-  explicit splittable_range_adapter(Range&& range) : splittable_range_adapter(range.begin(), range.end()) {}
+  explicit splittable_range_adaptor(Range&& range) : splittable_range_adaptor(range.begin(), range.end()) {}
 
   template <class Range>
-  splittable_range_adapter(Range&& range, std::size_t cutoff) : splittable_range_adapter(range.begin(), range.end(), cutoff) {}
+  splittable_range_adaptor(Range&& range, std::size_t cutoff) : splittable_range_adaptor(range.begin(), range.end(), cutoff) {}
 
-  splittable_range_adapter(Iterator begin, Iterator end) : begin_(begin > end ? end : begin), end_(end) {}
+  splittable_range_adaptor(Iterator begin, Iterator end) : begin_(begin > end ? end : begin), end_(end) {}
 
-  splittable_range_adapter(Iterator begin, Iterator end, std::size_t cutoff) : begin_(begin > end ? end : begin), end_(end), cutoff_(cutoff) {}
+  splittable_range_adaptor(Iterator begin, Iterator end, std::size_t cutoff) : begin_(begin > end ? end : begin), end_(end), cutoff_(cutoff) {}
 
-  splittable_range_adapter(splittable_range_adapter& rhs, tbb::split)
+  splittable_range_adaptor(splittable_range_adaptor& rhs, tbb::split)
       : begin_(rhs.begin_), end_(rhs.begin_ += rhs.size() / 2), cutoff_(rhs.cutoff_) {}
 
   // We need the weird ref version to disambiguate the explicit range
   // initializer, which would otherwise get called incorrectly during a tbb
   // split event.
-  splittable_range_adapter(splittable_range_adapter&)       = default;
-  splittable_range_adapter(const splittable_range_adapter&) = default;
-  splittable_range_adapter(splittable_range_adapter&&)      = default;
+  splittable_range_adaptor(splittable_range_adaptor&)       = default;
+  splittable_range_adaptor(const splittable_range_adaptor&) = default;
+  splittable_range_adaptor(splittable_range_adaptor&&)      = default;
 
-  splittable_range_adapter& operator=(const splittable_range_adapter&) = default;
-  splittable_range_adapter& operator=(splittable_range_adapter&&)      = default;
+  splittable_range_adaptor& operator=(const splittable_range_adaptor&) = default;
+  splittable_range_adaptor& operator=(splittable_range_adaptor&&)      = default;
 
-  splittable_range_adapter() = default;
+  splittable_range_adaptor() = default;
 
   decltype(auto) begin() const { return begin_; }
   decltype(auto) end() const { return end_; }
@@ -71,12 +71,12 @@ public:
 };
 
 template <class Range>
-splittable_range_adapter(Range&& range) -> splittable_range_adapter<decltype(range.begin())>;
+splittable_range_adaptor(Range&& range) -> splittable_range_adaptor<decltype(range.begin())>;
 
 template <class Range>
-splittable_range_adapter(Range&& range, std::size_t) -> splittable_range_adapter<decltype(range.begin())>;
+splittable_range_adaptor(Range&& range, std::size_t) -> splittable_range_adaptor<decltype(range.begin())>;
 
 }    // namespace graph
 }    // namespace nw
 
-#endif    // NW_GRAPH_SPLITTABLE_RANGE_ADAPTER_HPP
+#endif    // NW_GRAPH_SPLITTABLE_RANGE_ADAPTOR_HPP
