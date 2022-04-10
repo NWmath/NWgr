@@ -9,7 +9,6 @@ jobs:
     name: build
     container:
       image: amath583/pages
-
     steps:
       - name: 'step one'
         shell: bash
@@ -30,7 +29,6 @@ jobs:
     name: cpu-info
     container:
       image: amath583/cpu-info
-
     steps:
       - name: 'step one'
         shell: bash
