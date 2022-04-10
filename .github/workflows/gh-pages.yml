@@ -8,6 +8,13 @@ jobs:
     container:
       image: amath583/cpuinfo
 
+    steps:
+      - name step-one
+        shell: bash
+	run: |
+	  echo "Hello World"
+	  /bin/ls
+	  
 # jobs:
 #   my_job:
 #     container:
