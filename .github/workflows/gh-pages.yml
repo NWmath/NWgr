@@ -1,0 +1,21 @@
+name: gh-pages
+on:
+  push:
+  pull_request:
+
+jobs:
+  build:
+    container:
+      image: amath583/cpuinfo
+
+# jobs:
+#   my_job:
+#     container:
+#       image: node:14.16
+#       env:
+#         NODE_ENV: development
+#       ports:
+#         - 80
+#       volumes:
+#         - my_docker_volume:/volume_mount
+#       options: --cpus 1
