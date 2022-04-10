@@ -7,9 +7,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
     name: build
-    container: amath583/pages
+    container: amath583/gh-pages
     steps:
-      - run: |
+      - name: 'step one'
+        run: |
           echo "Hello World"
           /bin/ls -la /usr/local/bin
           /bin/pwd
@@ -20,25 +21,32 @@ jobs:
           echo "uname -r:" $(uname -r)
           echo "uname -s: " $(uname -s)
           echo "uname -v: " $(uname -v)
-        name: 'step one'
+      - name: 'step two'
+        uses: actions/checkout@master
+        with:
+          fetch-depth: 0 #
+      - name: 'check'
+        run: |
+          /bin/pwd
+          /bin/ls -la
 
-  cpuinfo:
-    runs-on: ubuntu-latest
-    name: cpuinfo
-    container: amath583/cpuinfo
-    steps:
-      - run: |
-          echo "Hello World"
-          /bin/ls -la /usr/local/bin
-          /bin/pwd
-          /bin/hostname
-          echo "'uname -s' is:"
-          echo "uname: " $(uname)
-          echo "uname -m: " $(uname -m)
-          echo "uname -r:" $(uname -r)
-          echo "uname -s: " $(uname -s)
-          echo "uname -v: " $(uname -v)
-        name: 'step one'
+# cpuinfo:
+#   runs-on: ubuntu-latest
+#   name: cpuinfo
+#   container: amath583/cpuinfo
+#   steps:
+#     - run: |
+#         echo "Hello World"
+#         /bin/ls -la /usr/local/bin
+#         /bin/pwd
+#         /bin/hostname
+#         echo "'uname -s' is:"
+#         echo "uname: " $(uname)
+#         echo "uname -m: " $(uname -m)
+#         echo "uname -r:" $(uname -r)
+#         echo "uname -s: " $(uname -s)
+#         echo "uname -v: " $(uname -v)
+#       name: 'step one'
 
 
 # jobs:
