@@ -22,10 +22,10 @@ jobs:
           echo "uname -v: " $(uname -v)
         name: 'step one'
 
-  cpu-info:
+  cpuinfo:
     runs-on: ubuntu-latest
-    name: cpu-info
-    container: amath583/cpu-info
+    name: cpuinfo
+    container: amath583/cpuinfo
     steps:
       - run: |
           echo "Hello World"
