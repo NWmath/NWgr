@@ -11,9 +11,9 @@ jobs:
       image: amath583/cpuinfo
 
     steps:
-      - name 'step one'
-        shell:bash
-        run:|
+      - name: 'step one'
+        shell: bash
+        run: |
           echo "Hello World"
           /bin/ls	
 
