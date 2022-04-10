@@ -1,4 +1,5 @@
 name: gh-pages-too
+
 on:
   push:
   pull_request:
