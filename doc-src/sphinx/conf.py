@@ -38,7 +38,7 @@ extensions = [
     'sphinx.ext.mathjax', 'sphinx.ext.intersphinx', 'sphinx.ext.viewcode', 'sphinx.ext.graphviz',
     'sphinx_rtd_theme',
     'breathe', 
-#    'exhale'
+    'exhale'
 ]
 
 source_suffix = {

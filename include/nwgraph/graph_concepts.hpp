@@ -8,6 +8,8 @@
 // Authors: 
 //     Andrew Lumsdaine	
 //
+// @file graph_concepts.hpp
+// 
 
 #ifndef NW_GRAPH_GRAPH_CONCEPTS_HPP
 #define NW_GRAPH_GRAPH_CONCEPTS_HPP
@@ -32,6 +34,24 @@ DECL_TAG_INVOKE(degree);
 DECL_TAG_INVOKE(source);
 DECL_TAG_INVOKE(target);
 
+/**
+ * @concept graph
+ *
+ * @brief Base concept for types fulfilling requirements of a graph.  
+ * 
+ * The `graph` concept requires the following:
+ * - The type `G` must be `copyable` 
+ * - `vertex_id_t<G>` must be a valid typename
+ * - If `g` is of type `G`, the expression `num_vertices(g)` is a *customization point object*
+ *   returning a type convertible `std::ranges::range_difference_t<G>`
+ *
+ * To enable standard library types to meet the requirements of the `graph` concept, appropriate
+ * definitions of `vertex_id_t` and `num_vertices` have been made in the `graph_concepts.hpp`
+ * header file.
+ *
+ * @headerfile nwgraph/graph_concepts.hpp
+ *
+ */
 template <typename G>
 concept graph = std::copyable<G> && requires(G g) {
   typename vertex_id_t<G>;
@@ -77,6 +97,43 @@ template <typename G>
 using attributes_t = decltype(nth_cdr<1>(inner_value_t<G>{}));
 
 
+/**
+ * @concept adjacency_list_graph
+ *
+ * @headerfile nwgraph/graph_concepts.hpp
+ *
+ * @brief Concept for types fulfilling requirements of a graph in adjacency format.
+ * 
+ * The `adjacency_list_graph` concept requires the following:
+ * - The type `G` must meet the requirements of `graph`
+ * - The type `G` must meet the requirements of `std::ranges::random_access_range`
+ * - The *inner range* of `G`, i.e., the type given by `std::ranges::range_value_t<G>` 
+ *   must meet the requirements of `std::ranges::forward_range`
+ * - The type `vertex_id_t<G>` must be convertible to `std::ranges::range_difference_t` of the
+ *   inner range.
+ * - If `g` is of type 'G' and `u` is an element of type `vertex_id_t<G>`, then `g[u]` is 
+ *   a valid expression returning a type convertible to the inner range of `G`.
+ * - If `g` is of `graph` type `G` and `e` is of the value type of the inner range, then
+ *   the *customization point object* `target(g, e)` returns a type convertible to 
+ *   `vertex_id_t<G>`
+ *
+ * To enable standard library types to meet the requirements of the `adjacency_list_graph` concept, 
+ * appropriate definitions of `target` have been made in the `graph_concepts.hpp` header file.
+ *
+ * **Example:** Standard library components meeting the requirements of `adjacency_list_graph`
+ *
+ *     #include <forward_list>
+ *     #include <list>
+ *     #include <tuple>
+ *     #include <vector>
+ *
+ *     int main() {
+ *       static_assert(nw::graph::adjacency_list_graph<std::vector<std::forward_list<std::tuple<int, int, double>>>);
+ *       static_assert(nw::graph::adjacency_list_graph<std::vector<std::list<std::tuple<int, int, double>>>);
+ *       static_assert(nw::graph::adjacency_list_graph<std::vector<std::vector<std::tuple<int, int, double>>>);
+ *     }
+ *
+ */
 template <typename G>
 concept adjacency_list_graph = graph<G>
   && std::ranges::random_access_range<G>
