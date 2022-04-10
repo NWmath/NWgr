@@ -1,0 +1,20 @@
+from ubuntu:latest
+
+RUN DEBIAN_FRONTEND=noninteractive \
+    apt-get -y update    \
+               &&        \
+    apt-get -y install   \
+               apt-utils 
+
+RUN DEBIAN_FRONTEND=noninteractive \
+    apt-get -y install   \
+    doxygen    		 \
+    graphviz		 \
+    python3
+
+RUN pip3 install -U sphinx
+RUN pip3 install -U 'sphinxcontrib-bibtex<2.0.0'
+# COPY ../doc-src/sphinx/requirements.txt /tmp
+RUN pip3 install -r /tmp/requirements.txt
+
+
