@@ -8,14 +8,37 @@ jobs:
     runs-on: ubuntu-latest
     name: build
     container:
-      image: amath583/cpuinfo
+      image: amath583/pages
 
     steps:
       - name: 'step one'
         shell: bash
-        run: |
+      - run: |
           echo "Hello World"
           /bin/ls
+          /bin/pwd
+          /bin/hostname
+          echo "'uname -s' is:"
+          echo "uname: " $(uname)
+          echo "uname -m: " $(uname -m)
+          echo "uname -r:" $(uname -r)
+          echo "uname -s: " $(uname -s)
+          echo "uname -v: " $(uname -v)
+
+  cpu-info
+    runs-on: ubuntu-latest
+    name: cpu-info
+    container:
+      image: amath583/cpu-info
+
+    steps:
+      - name: 'step one'
+        shell: bash
+      - run: |
+          echo "Hello World"
+          /bin/ls
+          /bin/pwd
+          /bin/hostname
           echo "'uname -s' is:"
           echo "uname: " $(uname)
           echo "uname -m: " $(uname -m)
