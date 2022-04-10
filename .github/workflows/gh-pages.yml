@@ -7,11 +7,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     name: build
-    container:
-      image: amath583/pages
+    container: amath583/pages
     steps:
-      - name: 'step one'
-        shell: bash
       - run: |
           echo "Hello World"
           /bin/ls
@@ -23,15 +20,13 @@ jobs:
           echo "uname -r:" $(uname -r)
           echo "uname -s: " $(uname -s)
           echo "uname -v: " $(uname -v)
+        name: 'step one'
 
   cpu-info:
     runs-on: ubuntu-latest
     name: cpu-info
-    container:
-      image: amath583/cpu-info
+    container: amath583/cpu-info
     steps:
-      - name: 'step one'
-        shell: bash
       - run: |
           echo "Hello World"
           /bin/ls
@@ -43,6 +38,8 @@ jobs:
           echo "uname -r:" $(uname -r)
           echo "uname -s: " $(uname -s)
           echo "uname -v: " $(uname -v)
+        name: 'step one'
+
 
 # jobs:
 #   my_job:
