@@ -155,4 +155,3 @@ exhale_args = {
     "verboseBuild": True
 }
 
-print(numfig)
