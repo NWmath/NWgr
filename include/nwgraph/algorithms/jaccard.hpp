@@ -20,7 +20,7 @@
 
 #include "nwgraph/graph_concepts.hpp"
 
-#include "nwgraph/adaptors/cyclic_range_adapter.hpp"
+#include "nwgraph/adaptors/cyclic_range_adaptor.hpp"
 #include "nwgraph/adaptors/edge_range.hpp"
 #include "nwgraph/util/intersection_size.hpp"
 #include "nwgraph/util/parallel_for.hpp"

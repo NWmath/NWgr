@@ -14,7 +14,7 @@
 #define NW_GRAPH_TRIANGLE_COUNT_EXPERIMENTAL_HPP
 
 #include "nwgraph/graph_concepts.hpp"
-#include "nwgraph/adaptors/cyclic_range_adapter.hpp"
+#include "nwgraph/adaptors/cyclic_range_adaptor.hpp"
 #include "nwgraph/adaptors/neighbor_range.hpp"
 #include "nwgraph/adaptors/edge_range.hpp"
 #include "nwgraph/util/intersection_size.hpp"

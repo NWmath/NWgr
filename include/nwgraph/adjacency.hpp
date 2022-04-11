@@ -256,7 +256,7 @@ auto tag_invoke(const degree_tag, const index_biadjacency<idx, index_type, verte
 }
 //degree CPO
 template <class Iterator>
-auto tag_invoke(const degree_tag, const splittable_range_adapter<Iterator>& n) {
+auto tag_invoke(const degree_tag, const splittable_range_adaptor<Iterator>& n) {
   return n.size();
 }
 

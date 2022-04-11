@@ -1,10 +1,24 @@
-// 
-// This file is part of NW Graph (aka GraphPack) 
-// (c) Pacific Northwest National Laboratory 2018-2021 
-// (c) University of Washington 2018-2021 
-// 
-// Licensed under terms of include LICENSE file 
-// 
+// This material was prepared as an account of work sponsored by an agency of the 
+// United States Government.  Neither the United States Government nor the United States 
+// Department of Energy, nor Battelle, nor any of their employees, nor any jurisdiction or 
+// organization that has cooperated in the development of these materials, makes any 
+// warranty, express or implied, or assumes any legal liability or responsibility for the 
+// accuracy, completeness, or usefulness or any information, apparatus, product, software, 
+// or process disclosed, or represents that its use would not infringe privately owned rights.
+//
+// Reference herein to any specific commercial product, process, or service by trade name, 
+// trademark, manufacturer, or otherwise does not necessarily constitute or imply its 
+// endorsement, recommendation, or favoring by the United States Government or any 
+// agency thereof, or Battelle Memorial Institute. The views and opinions of authors 
+// expressed herein do not necessarily state or reflect those of the United States Government 
+// or any agency thereof.
+//                        PACIFIC NORTHWEST NATIONAL LABORATORY
+//                                     operated by
+//                                     BATTELLE
+//                                     for the
+//                          UNITED STATES DEPARTMENT OF ENERGY
+//                          under Contract DE-AC05-76RL01830
+//
 // Authors: 
 //     Andrew Lumsdaine	
 //     Kevin Deweese	
@@ -33,12 +47,23 @@
 namespace nw {
 namespace graph {
 
-// Verifies CC result by performing a BFS from a vertex in each component
-// - Asserts search does not reach a vertex with a different component label
-// - If the graph is directed, it performs the search as if it was undirected
-// - Asserts every vertex is visited (degree-0 vertex should have own label)
-template <adjacency_list_graph Graph, class Transpose, class Vector>
-static bool CCVerifier(const Graph& graph, Transpose&& xpose, Vector&& comp) {
+/**
+ * @brief Verifies CC result by performing a BFS from a vertex in each component
+ * Asserts search does not reach a vertex with a different component label
+ * If the graph is directed, it performs the search as if it was undirected
+ * Asserts every vertex is visited (degree-0 vertex should have own label)
+ * 
+ * @tparam Graph adjacency_list graph type
+ * @tparam Transpose 
+ * @tparam Vector 
+ * @param graph 
+ * @param xpose 
+ * @param comp 
+ * @return true 
+ * @return false 
+ */
+template <adjacency_list_graph Graph, adjacency_list_graph Transpose, class Vector>
+static bool CCVerifier(const Graph& graph, const Transpose& xpose, Vector&& comp) {
   using NodeID = typename nw::graph::vertex_id_t<std::decay_t<Graph>>;
   std::unordered_map<NodeID, NodeID> label_to_source;
   for (auto&& [n] : plain_range(graph)) {

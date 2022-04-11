@@ -15,7 +15,7 @@
 #ifndef NW_GRAPH_COMPRESSED_HPP
 #define NW_GRAPH_COMPRESSED_HPP
 
-#include "nwgraph/adaptors/splittable_range_adapter.hpp"
+#include "nwgraph/adaptors/splittable_range_adaptor.hpp"
 #include "nwgraph/containers/soa.hpp"
 #include "nwgraph/graph_base.hpp"
 #include "nwgraph/util/defaults.hpp"
@@ -67,8 +67,8 @@ public:    // fixme
 
   using inner_iterator       = typename struct_of_arrays<Attributes...>::iterator;
   using const_inner_iterator = typename struct_of_arrays<Attributes...>::const_iterator;
-  using sub_view             = nw::graph::splittable_range_adapter<inner_iterator>;
-  using const_sub_view       = nw::graph::splittable_range_adapter<const_inner_iterator>;
+  using sub_view             = nw::graph::splittable_range_adaptor<inner_iterator>;
+  using const_sub_view       = nw::graph::splittable_range_adaptor<const_inner_iterator>;
 
   static constexpr std::size_t getNAttr() { return sizeof...(Attributes); }
 

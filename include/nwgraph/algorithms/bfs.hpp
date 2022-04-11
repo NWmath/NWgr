@@ -21,7 +21,7 @@
 #include "nwgraph/util/atomic.hpp"
 #include "nwgraph/util/parallel_for.hpp"
 #include "nwgraph/adaptors/neighbor_range.hpp"
-#include "nwgraph/adaptors/cyclic_range_adapter.hpp"
+#include "nwgraph/adaptors/cyclic_range_adaptor.hpp"
 #include "nwgraph/adaptors/vertex_range.hpp"
 #include <queue>
 
