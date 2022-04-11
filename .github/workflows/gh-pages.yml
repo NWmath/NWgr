@@ -27,8 +27,8 @@ jobs:
           fetch-depth: 0 #
       - name: 'Build compile_commeands.json'
         run: |
-	  mkdir -p build
-	  cd build ; cmake .. -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+          mkdir -p build
+          cd build ; cmake .. -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
       - name: 'Build documentation'
         run: |
           /bin/pwd
