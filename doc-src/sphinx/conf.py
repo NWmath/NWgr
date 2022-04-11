@@ -38,7 +38,7 @@ extensions = [
     'sphinx.ext.mathjax', 'sphinx.ext.intersphinx', 'sphinx.ext.viewcode', 'sphinx.ext.graphviz',
     'sphinx_rtd_theme',
     'breathe', 
-    'exhale'
+    'nw_exhale'
 ]
 
 source_suffix = {
@@ -128,7 +128,7 @@ todo_include_todos = False
 # Setup the exhale extension
 exhale_args = {
     # These arguments are required
-    "containmentFolder":     "./api",
+    "containmentFolder":     "./_api",
     "rootFileName":          "library_root.rst",
     "doxygenStripFromPath":  "../..",
     # Heavily encouraged optional argument (see docs)
@@ -141,11 +141,13 @@ exhale_args = {
     "exhaleDoxygenStdin":  textwrap.dedent('''
     INPUT = ../../include
     CLANG_ASSISTED_PARSING = YES
-    BUILTIN_STL_SUPPORT = YES
-    EXTRACT_ALL = NO
-    GENERATE_HTML = YES
-    HIDE_UNDOC_CLASSES = YES
-    HIDE_UNDOC_MEMBERS = YES
+    CLANG_OPTIONS          = -std=c++20
+    CLANG_DATABASE_PATH    = ../../build/
+    BUILTIN_STL_SUPPORT    = YES
+    EXTRACT_ALL            = NO
+    GENERATE_HTML          = YES
+    HIDE_UNDOC_CLASSES     = YES
+    HIDE_UNDOC_MEMBERS     = YES
     '''),
     "verboseBuild": True
 }
