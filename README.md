@@ -7,7 +7,7 @@
 NWGraph is a high-performance header-only generic C++ graph library, based on C++20 `concept` and `range` language feature. It consists of multiple graph algorithms for well-known graph kernels and supporting data structures. Both sequential and parallel algorithms are available.
 
 
-## Organization
+## Project Organization
 
 
 The organization of our library is shown as follow:
@@ -36,7 +36,7 @@ $NWGraph_HOME/
 ```
 The genericity of different algorithms available in the NWGraph library stems from a taxonomy of graph concepts. The definition of these concepts can be found in the `include/nwgraph/graph_concepts.hpp` file. The header files containing various sequential and parallel graph algorithms for well-known graph kernels can be found under the `$NWGraph_HOME/include/nwgraph/algorithms/` directory (some of the experimental algorithms are located in the`$NWGraph_HOME/include/nwgraph/experimental/algorithms/` subdirectory). The header files for the range adaptors are under `$NWGraph_HOME/include/nwgraph/adaptors/` directory. The code for the applications is located in the `$NWGraph_HOME/bench/` diretory. The abstraction penalty benchmark for benchmarking different containers and a variety of different ways to iterate through a graph (including the use of graphadaptors) are under the `$NWGraph_HOME/apb/` directory. Various examples of how to use NWGraph can be found in the `$NWGraph_HOME/example/imdb/` directory.
 
-## How to compile
+## How to Compile
 
 NWGraph uses [Intel OneTBB](https://github.com/oneapi-src/oneTBB) as the parallel backend.   
 
