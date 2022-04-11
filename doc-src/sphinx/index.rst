@@ -16,11 +16,24 @@ User Guide
    :maxdepth: 2
 
    userguide/getting_started.rst
-   userguide/theory.rst
-   userguide/bridge.rst
-   userguide/programming.rst
+   userguide/introduction.rst
+   userguide/graph-background-ii.rst
+   userguide/generic-programming.rst
+   userguide/graph-concepts.rst
+   userguide/algorithms.rst
+   userguide/adaptors.rst
+   userguide/data-structures.rst
    userguide/performance.rst
-   userguide/primer.rst
+   userguide/related.rst
+..   userguide/conclusion.rst
+..   userguide/footnote.rst
+   userguide/references.rst
+
+..   userguide/theory.rst
+..   userguide/bridge.rst
+..   userguide/programming.rst
+..   userguide/performance.rst
+..   userguide/primer.rst
 
 
 ========
@@ -42,6 +55,8 @@ Reference Manual
    :maxdepth: 2
 
    nwgraph_api.rst
+
+
 
    api/library_root
 ..   doxyref/index.rst

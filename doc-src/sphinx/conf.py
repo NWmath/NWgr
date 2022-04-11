@@ -37,8 +37,8 @@ sys.path.append(os.path.abspath('_extensions'))
 extensions = [
     'sphinx.ext.mathjax', 'sphinx.ext.intersphinx', 'sphinx.ext.viewcode', 'sphinx.ext.graphviz',
     'sphinx_rtd_theme',
-    'breathe', 
-    'nw_exhale'
+#    'breathe', 
+#    'nw_exhale'
 ]
 
 source_suffix = {
@@ -53,19 +53,22 @@ templates_path = [ '_templates', '_layouts', '_includes']
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path.
 exclude_patterns = [
-    '_build', 'Thumbs.db', '.DS_Store', 'attic', '_hyde', '_tests', 'libref/attic',
+    '_build', 'Thumbs.db', '.DS_Store', 'attic', '_hyde', '_tests', 'libref/attic', '_api',
 ]
 
 
 highlight_language = 'c++'
 pygments_style = 'emacs'
 
+# Enable numref
+numfig = True
+
 
 # -- Options for MathJax -----------------------------------------------------
 
 mathjax_options = {
 }
-mathjax_config = {
+mathjax3_config = {
     'TeX': {
     'Macros': {
       'RR': "{\\mathbb R}",
@@ -152,3 +155,4 @@ exhale_args = {
     "verboseBuild": True
 }
 
+print(numfig)
