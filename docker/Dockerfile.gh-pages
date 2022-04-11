@@ -8,7 +8,10 @@ RUN DEBIAN_FRONTEND=noninteractive \
 
 RUN DEBIAN_FRONTEND=noninteractive \
     apt-get -y install   	   \
-    git
+    git	       			   \
+    wget			   \
+    rsync			   \
+    software-properties-common
 
 RUN DEBIAN_FRONTEND=noninteractive \
     apt-get -y install   	   \
@@ -22,7 +25,6 @@ RUN DEBIAN_FRONTEND=noninteractive \
 
 RUN DEBIAN_FRONTEND=noninteractive		     \
     apt-get install -y locate			     \
-    git	    	       				     \
     cmake	       				     \
     flex	       				     \
     bison	       				     \
@@ -30,6 +32,16 @@ RUN DEBIAN_FRONTEND=noninteractive		     \
     libclang-dev       				     \
     g++						     \
     clang
+
+RUN wget https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB \
+    && apt-key add GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB                                  \
+    && rm GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB                                           \
+    && add-apt-repository "deb https://apt.repos.intel.com/oneapi all main"           \
+    && apt-get update
+
+RUN DEBIAN_FRONTEND=noninteractive \
+    apt-get -y install    	   \
+    intel-oneapi-tbb-devel
 
 RUN git clone https://github.com/doxygen/doxygen.git \
     && cd doxygen 				     \
@@ -45,3 +57,5 @@ RUN pip3 install -U breathe
 
 # We use a customized exhale, but install for dependencies
 RUN pip3 install -U exhale 
+
+RUN apt-get clean
