@@ -45,7 +45,7 @@ jobs:
           force: true
           # We have to push from the folder where files were generated.
           # Same were the new repo was initialized in the previous step
-          directory: ./doc-src/_build/html
+          directory: ./doc-src/sphinx/_build/html
 
 # cpuinfo:
 #   runs-on: ubuntu-latest
