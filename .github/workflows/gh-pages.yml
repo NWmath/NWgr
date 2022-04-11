@@ -30,6 +30,11 @@ jobs:
           /bin/pwd
           /bin/ls -la
           cd doc-src/sphinx ; make html
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: gh-pages
 
 # cpuinfo:
 #   runs-on: ubuntu-latest
