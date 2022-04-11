@@ -9,7 +9,7 @@ jobs:
     name: build
     container: amath583/gh-pages
     steps:
-      - name: 'step one'
+      - name: 'Some testing of environment'
         run: |
           echo "Hello World"
           /bin/ls -la /usr/local/bin
@@ -21,21 +21,27 @@ jobs:
           echo "uname -r:" $(uname -r)
           echo "uname -s: " $(uname -s)
           echo "uname -v: " $(uname -v)
-      - name: 'step two'
+      - name: 'Checkout NWgraph'
         uses: actions/checkout@master
         with:
           fetch-depth: 0 #
-      - name: 'check'
+      - name: 'Build documentation'
         run: |
           /bin/pwd
           /bin/ls -la
           cd doc-src/sphinx ; make html
-      - name: Push changes
-        uses: ad-m/github-push-action@master
+      - name: Force push to destination branch
+        uses: ad-m/github-push-action@v0.5.0
         with:
+          # Token for the repo
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          # Destination branch to push changes
           branch: gh-pages
-
+          # Use force push to fully overwrite the destination branch
+          force: true
+          # We have to push from the folder where files were generated.
+          # Same were the new repo was initialized in the previous step
+          directory: ./doc-src/_build/html
 
 # cpuinfo:
 #   runs-on: ubuntu-latest
