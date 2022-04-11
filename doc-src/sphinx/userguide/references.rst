@@ -4,4 +4,4 @@
 References Cited
 ================
 
-.. bibliography::
+.. bibliography:: refs.bib

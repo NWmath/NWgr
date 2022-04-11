@@ -36,9 +36,10 @@ sys.path.append(os.path.abspath('_extensions'))
 # ones.
 extensions = [
     'sphinx.ext.mathjax', 'sphinx.ext.intersphinx', 'sphinx.ext.viewcode', 'sphinx.ext.graphviz',
+    'sphinxcontrib.bibtex',
     'sphinx_rtd_theme',
-#    'breathe', 
-#    'nw_exhale'
+    'breathe', 
+    'nw_exhale'
 ]
 
 source_suffix = {
@@ -84,7 +85,6 @@ mathjax3_config = {
 }
 
 
-
 # -- Options for HTML output -------------------------------------------------
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
@@ -109,15 +109,19 @@ html_css_files = [
 # html_copy_source = True
 # html_show_source_link = True
 
+
 # -- Options for the C++ Domain ----------------------------------------------
 
 cpp_index_common_prefix = ['nw::', 'nw::graph::']
 
+
 # -- Options for Breathe -----------------------------------------------------
 
-sys.path.append('_breathe')
+#sys.path.append('_breathe')
+
 breathe_projects = { "NWgraph": "./_doxygen/xml"}
 breathe_default_project = "NWgraph"
+
 #breathe_projects_source = {
 #    "NWgraph" : "../../include"
 #}
@@ -126,6 +130,7 @@ breathe_default_project = "NWgraph"
 primary_domain = 'cpp'
 
 todo_include_todos = False
+
 
 # -- Options for Exhale ------------------------------------------------------
 
@@ -155,4 +160,9 @@ exhale_args = {
     '''),
     "verboseBuild": True
 }
+
+
+# -- Options for bibtex -- ---------------------------------------------------
+
+bibtex_bibfiles = ['userguide/refs.bib']
 

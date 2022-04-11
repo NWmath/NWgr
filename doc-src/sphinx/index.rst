@@ -25,9 +25,11 @@ User Guide
    userguide/data-structures.rst
    userguide/performance.rst
    userguide/related.rst
+   userguide/references.rst
+
 ..   userguide/conclusion.rst
 ..   userguide/footnote.rst
-   userguide/references.rst
+
 
 ..   userguide/theory.rst
 ..   userguide/bridge.rst
