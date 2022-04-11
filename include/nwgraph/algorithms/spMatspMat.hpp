@@ -1,10 +1,24 @@
-// 
-// This file is part of NW Graph (aka GraphPack) 
-// (c) Pacific Northwest National Laboratory 2018-2021 
-// (c) University of Washington 2018-2021 
-// 
-// Licensed under terms of include LICENSE file 
-// 
+// This material was prepared as an account of work sponsored by an agency of the 
+// United States Government.  Neither the United States Government nor the United States 
+// Department of Energy, nor Battelle, nor any of their employees, nor any jurisdiction or 
+// organization that has cooperated in the development of these materials, makes any 
+// warranty, express or implied, or assumes any legal liability or responsibility for the 
+// accuracy, completeness, or usefulness or any information, apparatus, product, software, 
+// or process disclosed, or represents that its use would not infringe privately owned rights.
+//
+// Reference herein to any specific commercial product, process, or service by trade name, 
+// trademark, manufacturer, or otherwise does not necessarily constitute or imply its 
+// endorsement, recommendation, or favoring by the United States Government or any 
+// agency thereof, or Battelle Memorial Institute. The views and opinions of authors 
+// expressed herein do not necessarily state or reflect those of the United States Government 
+// or any agency thereof.
+//                        PACIFIC NORTHWEST NATIONAL LABORATORY
+//                                     operated by
+//                                     BATTELLE
+//                                     for the
+//                          UNITED STATES DEPARTMENT OF ENERGY
+//                          under Contract DE-AC05-76RL01830
+//
 // Authors: 
 //     Andrew Lumsdaine
 //     Scott McMillan
@@ -32,6 +46,19 @@ namespace graph {
 //****************************************************************************
 /// @todo cannot currently pass "const &" for A or B
 /// @todo Need to discuss interface options
+
+/**
+ * @brief SpGEMM for C = A * B.
+ * 
+ * @tparam ScalarT scalar type
+ * @tparam LGraphT adjacency_list_graph type
+ * @tparam RGraphT adjacency_list_graph type
+ * @tparam MapOpT map operation type
+ * @tparam ReduceOpT reduce operation type
+ * @param A Input matrix A
+ * @param B Input matrix B
+ * @return edge_list<directedness::directed, ScalarT> a weighted edge list 
+ */
 template <typename ScalarT, adjacency_list_graph LGraphT, adjacency_list_graph RGraphT, 
 	  typename MapOpT = std::multiplies<ScalarT>, typename ReduceOpT = std::plus<ScalarT>>
 edge_list<directedness::directed, ScalarT> spMatspMat(const LGraphT& A, const RGraphT& B) {
@@ -66,17 +93,25 @@ edge_list<directedness::directed, ScalarT> spMatspMat(const LGraphT& A, const RG
   }
 
   edges.close_for_push_back();
-
-  // sort_by<0>(edges);  // They should be already sorted
   return edges;
 }
 
-//****************************************************************************
-// A * B'
-//****************************************************************************
-
-//****************************************************************************
-// map
+/**
+ * @brief Set the ewise intersection object
+ * 
+ * @tparam InputIt1 input iterator type 1
+ * @tparam InputIt2 input iterator type 2
+ * @tparam Output output container type
+ * @tparam Compare compare op type
+ * @tparam Map map operation type
+ * @param first1 begin iterator of the input 1
+ * @param last1 end iterator of the input 1
+ * @param first2 begin iterator of the input 2
+ * @param last2 end iterator of the input 2
+ * @param container output container
+ * @param comp compare op
+ * @param map map operation
+ */
 template <class InputIt1, class InputIt2, class Output, class Compare, class Map>
 void set_ewise_intersection(InputIt1 first1, InputIt1 last1, InputIt2 first2, InputIt2 last2, Output& container, Compare comp, Map map) {
   while (first1 != last1 && first2 != last2) {
@@ -95,6 +130,18 @@ void set_ewise_intersection(InputIt1 first1, InputIt1 last1, InputIt2 first2, In
 
 //****************************************************************************
 /// @todo cannot currently pass "const &" for A or BT
+/**
+ * @brief SpGEMM for C = A * BT.
+ * 
+ * @tparam ScalarT scalar type
+ * @tparam LGraphT adjacency_list_graph type
+ * @tparam RGraphT adjacency_list_graph type
+ * @tparam MapOpT map operation type
+ * @tparam ReduceOpT reduce operation type
+ * @param A Input matrix A
+ * @param BT Input matrix B transpose
+ * @return edge_list<directedness::directed, ScalarT> 
+ */
 template <typename ScalarT, adjacency_list_graph LGraphT, adjacency_list_graph RGraphT, typename MapOpT = std::multiplies<ScalarT>,
           typename ReduceOpT = std::plus<ScalarT>>
 edge_list<directedness::directed, ScalarT> spMatspMatT(LGraphT& A, RGraphT& BT) {
@@ -128,7 +175,6 @@ edge_list<directedness::directed, ScalarT> spMatspMatT(LGraphT& A, RGraphT& BT) 
   }
 
   edges.close_for_push_back();
-  // edges.template sort_by<0>();  // not necessary
   return edges;
 }
 }    // namespace graph

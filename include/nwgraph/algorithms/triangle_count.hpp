@@ -1,13 +1,27 @@
-// 
-// This file is part of NW Graph (aka GraphPack) 
-// (c) Pacific Northwest National Laboratory 2018-2021 
-// (c) University of Washington 2018-2021 
-// 
-// Licensed under terms of include LICENSE file 
-// 
-// Authors: 
-//     Andrew Lumsdaine	
-//     Kevin Deweese	
+// This material was prepared as an account of work sponsored by an agency of the 
+// United States Government.  Neither the United States Government nor the United States 
+// Department of Energy, nor Battelle, nor any of their employees, nor any jurisdiction or 
+// organization that has cooperated in the development of these materials, makes any 
+// warranty, express or implied, or assumes any legal liability or responsibility for the 
+// accuracy, completeness, or usefulness or any information, apparatus, product, software, 
+// or process disclosed, or represents that its use would not infringe privately owned rights.
+//
+// Reference herein to any specific commercial product, process, or service by trade name, 
+// trademark, manufacturer, or otherwise does not necessarily constitute or imply its 
+// endorsement, recommendation, or favoring by the United States Government or any 
+// agency thereof, or Battelle Memorial Institute. The views and opinions of authors 
+// expressed herein do not necessarily state or reflect those of the United States Government 
+// or any agency thereof.
+//                        PACIFIC NORTHWEST NATIONAL LABORATORY
+//                                     operated by
+//                                     BATTELLE
+//                                     for the
+//                          UNITED STATES DEPARTMENT OF ENERGY
+//                          under Contract DE-AC05-76RL01830
+//
+// Authors:
+//     Andrew Lumsdaine
+//     Kevin Deweese
 //
 
 #ifndef NW_GRAPH_TRIANGLE_COUNT_HPP
@@ -31,6 +45,13 @@
 namespace nw {
 namespace graph {
 
+/**
+ * @brief Sequential 2D triangle counting algorithm set intersection the neighbor lists of each pair of vertices.
+ * 
+ * @tparam GraphT adjacency_list_graph
+ * @param A graph
+ * @return size_t the number of triangles
+ */
 template <adjacency_list_graph GraphT>
 size_t triangle_count_v0(const GraphT& A) {
   size_t triangles = 0;
@@ -100,6 +121,14 @@ template <typename RandomAccessIterator>
   });
 }
 
+/**
+ * @brief Two-dimensional triangle counting.
+ * 
+ * @tparam Graph adjacency_list_graph
+ * @param G graph
+ * @param threads number of threads
+ * @return std::size_t number of triangles
+ */
 template <adjacency_list_graph Graph>
 [[gnu::noinline]] std::size_t triangle_count_v4a(const Graph& G, std::size_t threads = 1) {
   auto first = G.begin();
