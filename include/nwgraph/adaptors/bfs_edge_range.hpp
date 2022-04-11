@@ -123,6 +123,7 @@ private:
 
 public:
   bfs_edge_range(Graph& graph, vertex_id_type seed = 0) : the_graph_(graph), visited_(graph.size(), false) {
+    visited_[seed] = true;
     Q_.push(seed);
   }
 
@@ -157,7 +158,7 @@ public:
       Q.push(std::get<0>(*u_begin));
 
       ++u_begin;
-      while (u_begin != u_end && visited[std::get<0>(*u_begin)] != false) {
+      while (u_begin != u_end && visited[std::get<0>(*u_begin)] == true) {
         ++u_begin;
       }
 
@@ -166,10 +167,11 @@ public:
         if (Q.empty()) break;
 
         v_ = Q.front();
+        assert(visited[v_] == true);
         u_begin = G[v_].begin();
         u_end   = G[v_].end();
 
-        while (u_begin != u_end && visited[std::get<0>(*u_begin)] != false) {
+        while (u_begin != u_end && visited[std::get<0>(*u_begin)] == true) {
           ++u_begin;
         }
       }
@@ -177,6 +179,7 @@ public:
       return *this;
     }
 
+    // Better to store v_ as a tuple?
     auto operator*() { return std::tuple_cat(std::make_tuple(v_), *u_begin); }
 
     class end_sentinel_type {
