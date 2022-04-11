@@ -142,11 +142,13 @@ exhale_args = {
     INPUT = ../../include
     CLANG_ASSISTED_PARSING = YES
     CLANG_OPTIONS          = -std=c++20
+    CLANG_DATABASE_PATH    = ../../build/
     BUILTIN_STL_SUPPORT    = YES
     EXTRACT_ALL            = NO
     GENERATE_HTML          = YES
     HIDE_UNDOC_CLASSES     = YES
     HIDE_UNDOC_MEMBERS     = YES
+
     '''),
     "verboseBuild": True
 }
