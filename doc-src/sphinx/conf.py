@@ -148,6 +148,7 @@ exhale_args = {
     GENERATE_HTML          = YES
     HIDE_UNDOC_CLASSES     = YES
     HIDE_UNDOC_MEMBERS     = YES
+
     '''),
     "verboseBuild": True
 }
