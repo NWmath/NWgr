@@ -55,34 +55,44 @@ shown below:
    template <adjacency_list Graph, class IndexEdgeList>
    Graph make_graph(const IndexEdgeList& edge_list);
 
-.. container::
+.. list-table:: Dataset for performance evaluation
    :name: table:graphs_dataset
+   :widths: 15 25 15 15 15
+   :header-rows: 1
 
-   .. table:: Dataset for performance evaluation
-
-      +---------+----------+----------+----------+----------+----------+
-      | Name    | Des      | #        | #Edges   | Degree   | Re       |
-      |         | cription | Vertices | (M)      | Dist     | ferences |
-      |         |          | (M)      |          | ribution |          |
-      +=========+==========+==========+==========+==========+==========+
-      | Road    | USA road | 23.9     | 57.7     | bounded  | :r       |
-      |         | network  |          |          |          | aw-latex |
-      |         |          |          |          |          | :`\cite` |
-      +---------+----------+----------+----------+----------+----------+
-      | Twitter | Twitter  | 61.6     | 1,468.4  | power    | :r       |
-      |         | follower |          |          |          | aw-latex |
-      |         | Links    |          |          |          | :`\cite` |
-      +---------+----------+----------+----------+----------+----------+
-      | Web     | Web      | 50.6     | 1,930.3  | power    | :r       |
-      |         | Crawl of |          |          |          | aw-latex |
-      |         | .sk      |          |          |          | :`\cite` |
-      |         | Domain   |          |          |          |          |
-      +---------+----------+----------+----------+----------+----------+
-      | Kron    | S        | 134.2    | 2,111.6  | power    | :r       |
-      |         | ynthetic |          |          |          | aw-latex |
-      |         | Graph    |          |          |          | :`\cite` |
-      +---------+----------+----------+----------+----------+----------+
-      | Urand   | Uniform  | 134.2    | 2,147.5  | normal   | :r       |
-      |         | Random   |          |          |          | aw-latex |
-      |         | Graph    |          |          |          | :`\cite` |
-      +---------+----------+----------+----------+----------+----------+
+   * - Name
+     - Description
+     - :math:`|V|` (M)
+     - :math:`|E|` (M)
+     - Degree Distribution
+     - Reference
+   * - Road
+     - USA road network
+     - 23.9
+     - 57.7
+     - Bounded
+     - :cite:`dimacs9th`
+   * - Twitter 
+     - Twitter follower Links 
+     - 61.6 
+     - 1,468.4 
+     - Power law
+     - :cite:`Twitter`
+   * - Web 
+     - Web Crawl of .sk Domain 
+     - 50.6 
+     - 1,930.3 
+     - Power law
+     - :cite:`LAW1`
+   * - Kron 
+     - Synthetic Graph 
+     - 134.2 
+     - 2,111.6 
+     - Power law
+     - :cite:`Graph500`
+   * - Urand 
+     - Uniform Random Graph 
+     - 134.2 
+     - 2,147.5 
+     - Normal 
+     - :cite:`Erdos`

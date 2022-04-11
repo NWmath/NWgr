@@ -25,7 +25,7 @@ well-defined concrete algorithms to lift.
 The Boost Graph Library provided extensibility to BFS through its
 *Visitor* mechanism, which was essentially a large structure with
 callbacks used at multiple select points in the BFS
-execution :raw-latex:`\cite{Siek_Lee_Lumsdaine_2002}`. The BFS Visitor
+execution :cite:`Siek_Lee_Lumsdaine_2002`. The BFS Visitor
 has nine different possible callbacks, making actual extension of its
 BFS a complicated proposition.
 

@@ -12,8 +12,8 @@ of BGL) aimed to fill the role of an STL graph library, they all
 contribute to a greater understanding of graph library design.
 
 **Generic C++ Graph Libraries.** The Boost Graph Library
-(BGL) :raw-latex:`\cite{Siek_Lee_Lumsdaine_2002}` and LEMON graph
-library :raw-latex:`\cite{dezsHo2011lemon}` both contributed to the
+(BGL) :cite:`Siek_Lee_Lumsdaine_2002` and LEMON graph
+library :cite:`dezsHo2011lemon` both contributed to the
 development of generic graph algorithms in C++. BGL proposed algorithm
 templates that could be used on a variety of graph types (which could be
 generated using BGL’s graph type generator), e.g., vector of vectors,
@@ -47,14 +47,14 @@ execution policies, etc.
 **HPC Graph Frameworks** There are several graph frameworks designed to
 maximize performance in distributed memory or shared memory, such graph
 frameworks include Parallel Boost Graph Library
-(PBGL) :raw-latex:`\cite{Lifting_douglas_2005}`,
-Galois :raw-latex:`\cite{kulkarni2007}`,
-Ligra :raw-latex:`\cite{shunppopp13}`,
-Giraph :raw-latex:`\cite{shaposhnik_practical_2015}`,
-Gunrock :raw-latex:`\cite{wang2016gunrock}`,
-GraphIt :raw-latex:`\cite{og2020}`, etc. The contributions of these
+(PBGL) :cite:`Lifting_douglas_2005`,
+Galois :cite:`kulkarni2007`,
+Ligra :cite:`shunppopp13`,
+Giraph :cite:`shaposhnik_practical_2015`,
+Gunrock :cite:`wang2016gunrock`,
+GraphIt :cite:`og2020`, etc. The contributions of these
 frameworks are typically a computational model for parallel processing
 of graphs, with less emphasis on the usability or extensibility of graph
 algorithms or containers. A thorough evaluation of several well-known
 parallel graph frameworks can be found
-in :raw-latex:`\cite{azad2020evaluation}`.
+in :cite:`azad2020evaluation`.

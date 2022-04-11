@@ -9,9 +9,9 @@ the abstraction penalty for different ways of iterating over a graph as
 a range of ranges. Next we evaluate the abstraction penalty for
 representing a graph with different data structures. Finally, we compare
 the performance of our NWGraph library with 3 other well-known graph
-frameworks: GAP graph benchmark suite :raw-latex:`\cite{GAP}`, Galois
-:raw-latex:`\cite{kulkarni2007}` graph library and GraphIt
- :raw-latex:`\cite{graphit:2018}` domain-specific language for graphs.
+frameworks: GAP graph benchmark suite :cite:`GAP`, Galois
+:cite:`kulkarni2007` graph library and GraphIt
+ :cite:`graphit:2018` domain-specific language for graphs.
 
 Experimental Setup
 ------------------
@@ -164,13 +164,13 @@ In addition to being generic, NWGraph is intended to be a
 high-performance library and includes parallel implementations of a
 number of its algorithms. Parallelization is effected using C++ standard
 library execution policies and with Intel’s Threading Building Blocks
-(TBB) (:raw-latex:`\cite{tbbrepo}`).
+(TBB) (:cite:`tbbrepo`).
 
 To demonstrate NWGraph’s performance on large-scale graphs, we evaluate
 and compare the performance of NWGraph with three well-known graph
-frameworks: GAP :raw-latex:`\cite{GAP}`,
-Galois :raw-latex:`\cite{10.1145/2517349.2522739}` and
-GraphIt :raw-latex:`\cite{graphit:2018}`. The evaluation is intended to
+frameworks: GAP :cite:`GAP`,
+Galois :cite:`10.1145/2517349.2522739` and
+GraphIt :cite:`graphit:2018`. The evaluation is intended to
 assess the performance of various parallel graph algorithms available in
 NWGraph in the context of other HPC graph frameworks. Since BGL is
 single-threaded, we did not include it for comparison. Overall, NWGraph
@@ -183,7 +183,7 @@ execution policy (``std::execution::par``,
 conducted on 32 physical cores.
 
 For our experiments, we chose five representative datasets according to
-the GAP benchmark suite (:raw-latex:`\cite{GAP}`). These datasets ()
+the GAP benchmark suite (:cite:`GAP`). These datasets ()
 have diverse structural properties and have been collected from various
 application domains. We select six different graph algorithms
 (Betweenness Centrality, Breadth-first Search, Connected Components,
@@ -231,5 +231,5 @@ summarize our observations as follows:
    NWGraph performs better or comparable to other graph frameworks.
 
 -  For connected component (CC), all frameworks except GraphIt implement
-   Afforest algorithm :raw-latex:`\cite{afforest_2018}`. Hence GraphIt
+   Afforest algorithm :cite:`sutton2018optimizing`. Hence GraphIt
    performs worse with all inputs for CC.

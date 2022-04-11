@@ -18,7 +18,6 @@ each of these graph problems implemented in NWGraph are tabulated below.
    :widths: 35 65
    :class: tight-table
 
-
    +------------------------------+--------------------------------------+
    | Algorithm                    | Definition                           |
    +==============================+======================================+
@@ -26,8 +25,8 @@ each of these graph problems implemented in NWGraph are tabulated below.
    |                              | search order from a given source.    |
    |                              | Implementation includes: top-down,   |
    |                              | bottom-up and                        |
-   |                              | di                                   |
-   |                              | rection-optimized :raw-latex:`\cite` |
+   |                              | direction-optimized                  |
+   |                              | :cite:`Beamer-DOBFS`                 |
    |                              | algorithms.                          |
    +------------------------------+--------------------------------------+
    | Depth-first search           | Traverses a graph in depth-first     |
@@ -37,31 +36,37 @@ each of these graph problems implemented in NWGraph are tabulated below.
    |                              | from a given source to all other     |
    |                              | vertices in a graph.                 |
    |                              | :math:`\Delta`-stepping              |
-   |                              | algorithm :raw-latex:`\cite` is      |
+   |                              | algorithm:cite:`MEYER2003114` is     |
    |                              | implemented.                         |
    +------------------------------+--------------------------------------+
    | Connected component          | Finds connected components in a      |
    |                              | graph. Implementations include       |
-   |                              | Afforest :raw-latex:`\cite`,         |
-   |                              | Shiloach-Vishkin :raw-latex:`\cite`, |
-   |                              | BFS-based :raw-latex:`\cite` and     |
+   |                              | Afforest:cite:`sutton2018optimizing`,|
+   |                              | Shiloach-Vishkin                     |
+   |                              | :cite:`shiloach1980log`,             |
+   |                              | BFS-based :cite:`shun_simple_2014`   |
+   |                              | and                                  |
    |                              | minimal label                        |
-   |                              | propagation :raw-latex:`\cite`       |
+   |                              | propagation                          |
+   |                              | :cite:`orzan_distributed_2004`       |
+   |                              | :cite:`yan_pregel_2014`              |
    |                              | algorithms.                          |
    +------------------------------+--------------------------------------+
    | PageRank                     | Compute the importance of each       |
    |                              | vertex in a graph. Implements the    |
    |                              | Gauss-Seidel                         |
-   |                              | algorithm :raw-latex:`\cite`.        |
+   |                              | algorithm                            |
+   |                              | :cite:`arasu2002pagerank`            |
    +------------------------------+--------------------------------------+
    | Triangle counting            | Counts the number of triangles in a  |
    |                              | graph. Implements algorithms         |
-   |                              | discussed in  :raw-latex:`\cite`.    |
+   |                              | discussed in                         |
+   |                              | :cite:`triangle_lumsdaine_2020`      |
    +------------------------------+--------------------------------------+
    | Betweenness centrality       | Measures how many times each vertex  |
    |                              | lies on the shortest paths to other  |
    |                              | vertices. Brandes                    |
-   |                              | Algorithm :raw-latex:`\cite` has     |
+   |                              | Algorithm :cite:`brandes_bc` has     |
    |                              | been implemented.                    |
    +------------------------------+--------------------------------------+
    | Maximum flow                 | Given a source and a sink, find      |
@@ -82,7 +87,8 @@ each of these graph problems implemented in NWGraph are tabulated below.
    |                              | graph so that no two neighboring     |
    |                              | vertices have the same color.        |
    |                              | Implements Jones-Plassmann           |
-   |                              | algorithm :raw-latex:`\cite`.        |
+   |                              | algorithm                            |
+   |                              | :cite:`jones1993parallel`            |
    +------------------------------+--------------------------------------+
    | Maximal independent set      | Graph coloring with two colors.      |
    +------------------------------+--------------------------------------+
@@ -181,8 +187,8 @@ concurrent containers (hashmap, vector, and queue) that are implemented
 based on fine-grained locking and lock-free techniques. For example, in
 NWGraph, TBB’s concurrent vector is used to maintain the frontier list
 of active vertices in each step of the :math:`\Delta`-stepping
-algorithm :raw-latex:`\cite{MEYER2003114}` for computing the
-single-source shortest paths ().
+algorithm :cite:`MEYER2003114` for computing the
+single-source shortest paths.
 
 One of the determinants of performant parallel graph algorithms is the
 balanced workload distribution among threads. In particular, input

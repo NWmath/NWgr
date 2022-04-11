@@ -38,7 +38,7 @@ Requirements for Concrete Algorithms
 A prototypical algorithm in this class is the breadth-first search (BFS)
 algorithm. The pseudocode for this algorithm, along with its C++
 implementation is shown in Fig. `[fig:bfs] <#fig:bfs>`__. The algorithm
-is abbreviated from :raw-latex:`\cite{cormen2009introduction}`. Modulo
+is abbreviated from:cite:`cormen2009introduction`. Modulo
 some type declarations that would be necessary for real code to compile,
 but which can be omitted from pseudocode, the C++ code, using out of the
 box language mechanisms and library components, has essentially a
@@ -299,7 +299,7 @@ Note that these overloads are each specific to a single graph type. In
 practice we can define generalized overloads for entire classes of
 containers. In NWGraph we opted to realize ``target`` as a CPO,
 implemented using the ``tag_invoke``
-mechanism :raw-latex:`\cite{_tag_invoke}`.
+mechanism:cite:`_tag_invoke`.
 
 
 Graph Concepts: Encapsulating Lifted Requirements
@@ -445,7 +445,7 @@ potential graph algorithms. In fact, ``adjacency_list`` concept is
 surprisingly broad in its applicability; only a few supplemental
 concepts are required to cover all of the algorithms implemented in
 NWGraph and, based on our analysis of the comprehensive Boost Graph
-Library :raw-latex:`\cite{Siek_Lee_Lumsdaine_2002}`, probably all of the
+Library:cite:`Siek_Lee_Lumsdaine_2002`, probably all of the
 algorithms that are likely to be implemented in NWGraph in the future.
 This is perhaps not so surprising since the adjacency list
 :math:`Adj(G)` is also the primary theoretical construct upon which the
@@ -458,11 +458,11 @@ requirement that there be a valid expession ``degree``, necessary in
 some algorithms. The latter is basically a container of objects for
 which ``source`` and ``target`` are valid expressions. Algorithms such
 as Bellman-Ford and Kruskal’s MST use an edge list rather and adjacency
-list :raw-latex:`\cite{Cormen_2009}`.
+list:cite:`Cormen_2009`.
 
 Our confidence that these concepts are sufficient is based on an
 extensive study of the concepts in the Boost Graph
-Library :raw-latex:`\cite{Siek_Lee_Lumsdaine_2002}`. The Boost Graph
+Library:cite:`Siek_Lee_Lumsdaine_2002`. The Boost Graph
 Library (BGL) has five essential concepts that cover all of its
 algorithms: ``VertexListGraph``, ``EdgeListGraph``, ``AdjacencyGraph``,
 ``IncidenceGraph``, and ``BiIncidenceGraph``. Of these, the design

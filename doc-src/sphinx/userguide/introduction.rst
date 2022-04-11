@@ -25,7 +25,7 @@ problem-related data. And even if a domain programmer constructs a graph
 from their data, the domain-specific graph data structure might not be
 compatible with the API of a given graph library.
 
-The celebrated Standard Template Library :raw-latex:`\cite{STL}` (now
+The celebrated Standard Template Library :cite:`STL` (now
 part of the C++ standard library) addressed this problem for fundamental
 algorithms and abstract containers of data elements. With the STL,
 *generic programming* emerged as a software-development sub-discipline

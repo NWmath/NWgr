@@ -10,7 +10,7 @@ Generic Programming
 
 Generic programming is a software development paradigm inspired by the
 organizational principles of
-mathematics :raw-latex:`\cite{stepanov2014mathematics}`. That is, a
+mathematics :cite:`stepanov2014mathematics`. That is, a
 generic library comprises a framework of algorithms in a problem domain,
 based on a systematic organization of common type requirements for those
 algorithms. The type requirements themselves, specified as *concepts*
@@ -18,7 +18,7 @@ are part of the library as well, and provide the interface that enables
 composition of library components with other, independently-developed,
 components. The ``iterator`` concept taxonomy, for example, was the
 foundation upon which the STL was
-organized :raw-latex:`\cite{STL,Musser89}`.
+organized :cite:`STL,Musser89`.
 
 .. code:: cpp
 
@@ -76,7 +76,7 @@ linked list) can store the values.
 The authors of the STL realized the commonality of traversal and element
 access across most basic computer science algorithms. The requirements
 for traversal and access were generalized and unified into a hierarchy
-of type requirements known as iterators :raw-latex:`\cite{STL}`.
+of type requirements known as iterators :cite:`STL`.
 
 An iterator-based algorithm for accumulating elements in a container is
 shown in Fig. `[fig:accum] <#fig:accum>`__. Note that this single
@@ -182,7 +182,7 @@ are four types of requirements:
 Ranges in C++20 
 ----------------
 
-The new C++20 Ranges library :raw-latex:`\cite{niebler2018one}`
+The new C++20 Ranges library :cite:`niebler2018one`
 generalizes iterators and containers in C++. Ranges provide a way to
 make STL algorithms *composable* and improve the readability and
 writability of C++ code. Ranges consist of a pair of begin and end
