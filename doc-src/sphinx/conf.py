@@ -38,7 +38,7 @@ extensions = [
     'sphinx.ext.mathjax', 'sphinx.ext.intersphinx', 'sphinx.ext.viewcode', 'sphinx.ext.graphviz',
     'sphinx_rtd_theme',
     'breathe', 
-    'exhale'
+    'nw_exhale'
 ]
 
 source_suffix = {
@@ -141,11 +141,12 @@ exhale_args = {
     "exhaleDoxygenStdin":  textwrap.dedent('''
     INPUT = ../../include
     CLANG_ASSISTED_PARSING = YES
-    BUILTIN_STL_SUPPORT = YES
-    EXTRACT_ALL = NO
-    GENERATE_HTML = YES
-    HIDE_UNDOC_CLASSES = YES
-    HIDE_UNDOC_MEMBERS = YES
+    CLANG_OPTIONS          = -std=c++20
+    BUILTIN_STL_SUPPORT    = YES
+    EXTRACT_ALL            = NO
+    GENERATE_HTML          = YES
+    HIDE_UNDOC_CLASSES     = YES
+    HIDE_UNDOC_MEMBERS     = YES
     '''),
     "verboseBuild": True
 }
