@@ -34,7 +34,7 @@ DECL_TAG_INVOKE(degree);
 DECL_TAG_INVOKE(source);
 DECL_TAG_INVOKE(target);
 
-/**
+/** @file
  * @concept graph
  *
  * @brief Base concept for types fulfilling requirements of a graph.  
