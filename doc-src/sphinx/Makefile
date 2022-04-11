@@ -20,4 +20,4 @@ help:
 	@$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
 
 pages: html
-	@rsync -avub _build/html/ ../docs/
+	@rsync -avub _build/html/ ../../docs/
