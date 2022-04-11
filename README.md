@@ -11,7 +11,7 @@ NWGraph is a high-performance header-only generic C++ graph library, based on C+
 
 
 The organization of our library is shown as follow:
-```
+```text
 $NWGraph_HOME/
 ├── README.md
 ├── CMakeLists.txt
@@ -40,51 +40,74 @@ The genericity of different algorithms available in the NWGraph library stems fr
 
 NWGraph uses [Intel OneTBB](https://github.com/oneapi-src/oneTBB) as the parallel backend.   
 
-
-
 ### Requirements
 
 * CMake &gt;= 3.20
 * g++ &gt;= 11 with support for OneTBB as parallel backend
 * oneTBB &gt;= 2021
  
+You should be able to install cmake and g++ with your system's package manager (e.g., apt or homebrew).
+oneTBB appears to be available on homebrew for MacOS 11.6 and later (and perhaps earlier).
+
+Instructions for installing oneTBB with various Linux package managers can be found here:
+
+```
+https://www.intel.com/content/www/us/en/developer/articles/tool/oneapi-standalone-components.html
+```
+
+
+Installation packages for oneAPI for Linux are available on intel.com:
+
+```
+https://www.intel.com/content/www/us/en/developer/articles/tool/oneapi-standalone-components.html#onetbb
+```
+
+
+
 
 ### Compilation
 
-```
+```bash
 $ mkdir build; cd build
 $ cmake ..
 $ make -j4
 ```
+
 Once compiled, the drivers of the graph benchmarks can be found under the `$NWGraph_HOME/build/bench/` folder. The binary files of the abstraction penalty benchmarks are under the `$NWGraph_HOME/build/abp/` folder. The binaries of the IMDB examples are under the `$NWGraph_HOME/build/examples/` folder. The binary files of the examples to show case the features of NWGraph library are under the `$NWGraph_HOME/build/test/` folder.
 
 ### Useful things to know 
 To specify compiler:
-```
+```bash
 $ cmake .. -DCMAKE_CXX_COMPILER=g++-11
 ```
 To specify build type as Release or Debug, default is Release:
-```
+```bash
 $ cmake .. -DCMAKE_BUILD_TYPE=Release (or Debug)
 ```
 To enable test cases and examples under build/test directory:
-```
+```bash
 $ cmake .. -DNW_GRAPH_BUILD_TESTS=ON (or OFF)
 ```
 To generate applications under build/bench/ directory:
-```
+```bash
 $ cmake .. -DNW_GRAPH_BUILD_BENCH=ON (or OFF)
 ```
 To generate abstraction penalty under build/abp/ directory:
-```
+```bash
 $ cmake .. -DNW_GRAPH_BUILD_APBS=OFF (or ON)
 ```
 To generate tools under build/example/ directory:
-```
+```bash
 $ cmake .. -DNW_GRAPH_BUILD_EXAMPLES=OFF (or ON)
 ```
-To see verbose information during compilation:
+ 
+If cmake is not able to find TBB in its expected places, you may get an error during the cmake step.  In this case, you need to set the `TBBROOT` environment variable to the location where oneTBB was installed.  For example:
+```bash
+$ TBBROOT=/opt/intel/oneapi/tbb/2021.5.1 cmake .. 
 ```
+
+To see verbose information during compilation:
+```bash
 $ make VERBOSE=1
 ```
 
@@ -92,8 +115,8 @@ $ make VERBOSE=1
 
 NWGraph uses command-line interface description language [DOCOPT](http://docopt.org/) to define the interface of our command-line applications and abstraction penalty experiments.
 
-A typical interface of the binary looks like this:
-```
+A typical interface of a benchmark driver looks like this:
+```bash
 bfs.exe: breadth first search benchmark driver.
   Usage:
       bfs.exe (-h | --help)
@@ -174,23 +197,23 @@ Relabel vertex by degree (also known as column/row permutation in matrix-matrix 
 ```
 $ bench/cc.exe -f karate.mtx --relabel --direction ascending
 ```
-#### Upper Triangular Order
+### Upper Triangular Order
 In triangle counting, it allows to relabel the graph in upper/lower triangular order. This will greatly improve the performance of the algorithm. To enable relabel-by-degree and relabel the degree of vertices in upper triangular order:
-```
+```bash
 $ bench/tc.exe -f karate.mtx --relabel --upper
 ```
-#### Verifier
+### Verifier
 We implement a verifier in each benchmark to verify the correctness of the algorithms. To enable the verification of the algorithm:
-```
+```bash
 $ bench/cc.exe -f karate.mtx -v
 ```
 or
-```
+```bash
 $ bench/cc.exe -f karate.mtx --verify
 ```
-#### Multi-threading
+### Multi-threading
 Each algorithm/benchmark has both sequential version and parallel version. When a parallel algorithm is selected, multi-threading is enable by default. The number of threads is set to be the maximum available core on the machine. To enable multi-threading with different thread number, such as 128 threads:
-```
+```bash
 $ bench/cc.exe -f karate.mtx 128
 ```
 
@@ -217,11 +240,11 @@ We also evaluated the abstraction penalty incurred for storing a graph in differ
 
 For example let us consider the sparse matrix-dense vector multiplication (SpMV) kernel used in page rank, which multiplies the adjacency matrix representation of a graph by a dense vector x and stores the result in another vector y.
 To experimentally evaluate the abstraction penalty of different ways to iterate through a graph:
-```
+```bash
 $ apb/spmv.exe -f karate.mtx
 ```
 
 To experimentally evaluate the abstraction penalty of different containers for storing a graph:
-```
+```bash
 $ apb/containers -f karate.mtx --format CSR --format VOV --format VOL --format VOF
 ```
