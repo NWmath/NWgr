@@ -13,6 +13,12 @@ counting (triangle counting, betweenness centrality), network flow
 (maximum flow) etc. The problem definitions and graph algorithms for
 each of these graph problems implemented in NWGraph are tabulated below.
 
+.. table::
+   :width: 100%
+   :widths: 35 65
+   :class: tight-table
+
+
    +------------------------------+--------------------------------------+
    | Algorithm                    | Definition                           |
    +==============================+======================================+
