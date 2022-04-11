@@ -1,15 +1,15 @@
 |Build with gcc-11| |image1| |image2| |Codacy Badge|
 
-NWGraph: Northwest Graph Library
-================================
+Quickstart
+==========
 
 NWGraph is a high-performance header-only generic C++ graph library,
 based on C++20 ``concept`` and ``range`` language feature. It consists
 of multiple graph algorithms for well-known graph kernels and supporting
 data structures. Both sequential and parallel algorithms are available.
 
-Organization
-------------
+Project Organization
+--------------------
 
 The organization of our library is shown as follow:
 
@@ -54,7 +54,7 @@ use of graphadaptors) are under the ``$NWGraph_HOME/apb/`` directory.
 Various examples of how to use NWGraph can be found in the
 ``$NWGraph_HOME/example/imdb/`` directory.
 
-How to compile
+How to Compile
 --------------
 
 NWGraph uses `Intel OneTBB <https://github.com/oneapi-src/oneTBB>`__ as
