@@ -54,13 +54,13 @@ namespace graph {
  * Asserts every vertex is visited (degree-0 vertex should have own label)
  * 
  * @tparam Graph adjacency_list graph type
- * @tparam Transpose 
- * @tparam Vector 
- * @param graph 
- * @param xpose 
- * @param comp 
- * @return true 
- * @return false 
+ * @tparam Transpose adjacency_list graph type for transpose
+ * @tparam Vector container type for CC labelings
+ * @param graph the adjacency_list_graph
+ * @param xpose transpose of the adjacency_list_graph
+ * @param comp CC labelings
+ * @return true if the CC labelings are all correct
+ * @return false if the CC labelings are wrong
  */
 template <adjacency_list_graph Graph, adjacency_list_graph Transpose, class Vector>
 static bool CCVerifier(const Graph& graph, const Transpose& xpose, Vector&& comp) {
@@ -116,6 +116,17 @@ static bool CCVerifier(const Graph& graph, const Transpose& xpose, Vector&& comp
   return true;
 }
 
+/**
+ * @brief link the labels of the root parents of two vertices.
+ * The vertex having smaller label will become the parent of vertex having the larger label.
+ * This operation is also known as hook operation.
+ * 
+ * @tparam Vector CC labeling container type
+ * @tparam T CC labeling type
+ * @param u vertex u
+ * @param v vertex v
+ * @param comp CC labelings
+ */
 template <typename Vector, typename T>
 static void link(T u, T v, Vector& comp) {
   T p1 = nw::graph::acquire(comp[u]);
@@ -131,8 +142,19 @@ static void link(T u, T v, Vector& comp) {
   }
 }
 
+/**
+ * @brief path compression.
+ * The idea is to flatten the tree of each component.
+ * Every leaf will be hooked to the root of the tree.
+ * The tree of each component becomes a star at the end of the CC algorithm.
+ * 
+ * @tparam Execution execution policy type
+ * @tparam Vector CC labeling container type
+ * @param exec execution policy
+ * @param comp CC labelings
+ */
 template <typename Execution, typename Vector>
-static void compress(Execution exec, Vector& comp) {
+static void compress(Execution& exec, Vector& comp) {
   std::for_each(exec, counting_iterator(0ul), counting_iterator(comp.size()), [&](auto n) {
     while (comp[n] != comp[comp[n]]) {
       auto foo = nw::graph::acquire(comp[n]);
@@ -142,6 +164,16 @@ static void compress(Execution exec, Vector& comp) {
   });
 }
 
+/**
+ * @brief Subgraph sampling to find the most commonly appeared labeling 
+ * within the sampled subgraph.
+ * 
+ * @tparam Vector CC labeling container type
+ * @tparam T type of the CC labeling
+ * @param comp CC labelings
+ * @param num_samples the number of vertices in the sampled subgraph
+ * @return T the potential largest intermediate component ID
+ */
 template <typename Vector, typename T>
 static T sample_frequent_element(const Vector& comp, size_t num_samples = 1024) {
   std::unordered_map<T, int>       counts(32);
@@ -159,8 +191,21 @@ static T sample_frequent_element(const Vector& comp, size_t num_samples = 1024) 
   return num;
 }
 
+/**
+ * @brief Afforest algorithm based SV algorithm + subgraph sampling to
+ * skip the largest intermediate component to save work.
+ * 
+ * @tparam Execution execution policy type
+ * @tparam Graph1 adjacency_list_graph type
+ * @tparam Graph2 adjacency_list_graph type for the transpose
+ * @param exec execution policy
+ * @param graph input graph
+ * @param t_graph transpose input graph
+ * @param neighbor_rounds the number of rounds to do neighborhood subgraph sampling
+ * @return auto CC labelings
+ */
 template <typename Execution, adjacency_list_graph Graph1, adjacency_list_graph Graph2>
-static auto afforest(Execution& exec, Graph1& graph, Graph2& t_graph, const size_t neighbor_rounds = 2) {
+static auto afforest(Execution& exec, const Graph1& graph, const Graph2& t_graph, const size_t neighbor_rounds = 2) {
   using vertex_id_type = vertex_id_t<Graph1>;
   std::vector<std::atomic<vertex_id_type>> comp(graph.size() + 1);
   std::for_each(exec, counting_iterator(0ul), counting_iterator(comp.size()), [&](vertex_id_type n) { comp[n] = n; });
