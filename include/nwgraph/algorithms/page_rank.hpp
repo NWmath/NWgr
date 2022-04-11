@@ -1,10 +1,24 @@
-// 
-// This file is part of NW Graph (aka GraphPack) 
-// (c) Pacific Northwest National Laboratory 2018-2021 
-// (c) University of Washington 2018-2021 
-// 
-// Licensed under terms of include LICENSE file 
-// 
+// This material was prepared as an account of work sponsored by an agency of the 
+// United States Government.  Neither the United States Government nor the United States 
+// Department of Energy, nor Battelle, nor any of their employees, nor any jurisdiction or 
+// organization that has cooperated in the development of these materials, makes any 
+// warranty, express or implied, or assumes any legal liability or responsibility for the 
+// accuracy, completeness, or usefulness or any information, apparatus, product, software, 
+// or process disclosed, or represents that its use would not infringe privately owned rights.
+//
+// Reference herein to any specific commercial product, process, or service by trade name, 
+// trademark, manufacturer, or otherwise does not necessarily constitute or imply its 
+// endorsement, recommendation, or favoring by the United States Government or any 
+// agency thereof, or Battelle Memorial Institute. The views and opinions of authors 
+// expressed herein do not necessarily state or reflect those of the United States Government 
+// or any agency thereof.
+//                        PACIFIC NORTHWEST NATIONAL LABORATORY
+//                                     operated by
+//                                     BATTELLE
+//                                     for the
+//                          UNITED STATES DEPARTMENT OF ENERGY
+//                          under Contract DE-AC05-76RL01830
+//
 // Authors: 
 //     Andrew Lumsdaine	
 //     Kevin Deweese	
@@ -32,7 +46,10 @@ namespace nw {
 namespace graph {
 
 namespace page_rank {
-/// Helper to trace some timing.
+/**
+ * @brief Helper to trace some timing.
+ * 
+ */
 constexpr auto trace = [](auto iter, auto error, auto time, auto max) {
   auto p = std::cout.precision(10);
   auto f = std::cout.setf(std::ios::fixed, std::ios::floatfield);
@@ -44,8 +61,13 @@ constexpr auto trace = [](auto iter, auto error, auto time, auto max) {
   std::cout.precision(p);
   std::cout.setf(f, std::ios::floatfield);
 };
-
-/// Helper to time an operation.
+/**
+ * @brief Helper to time an operation.
+ * 
+ * @tparam Op the type of operation
+ * @param op operation to time
+ * @return auto a tuple of time duration and the result of the op (optional)
+ */
 template <class Op>
 auto time_op(Op&& op) {
   if constexpr (std::is_void_v<decltype(op())>) {
@@ -62,7 +84,19 @@ auto time_op(Op&& op) {
 }
 }    // namespace page_rank
 
-
+/**
+ * @brief Parallel page rank.
+ * 
+ * @tparam Graph adjacency_list_graph graph type
+ * @tparam Real page rank score type
+ * @param graph input graph
+ * @param degrees degree distribution of all vertices
+ * @param page_rank container for page rank scores
+ * @param damping_factor the probability that an imaginary surfer stops clicking
+ * @param threshold error threshold to control converge rate
+ * @param max_iters maximum number of iterations to converge
+ * @param num_threads number of threads
+ */
 template <adjacency_list_graph Graph, typename Real>
 [[gnu::noinline]] void page_rank_v11(const Graph& graph, const std::vector<typename Graph::vertex_id_type>& degrees,
                                      std::vector<Real>& page_rank, Real damping_factor, Real threshold, size_t max_iters, size_t num_threads) {
