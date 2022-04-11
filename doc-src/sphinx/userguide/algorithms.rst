@@ -2,8 +2,8 @@
 
 .. _`sec:algorithms`:
 
-Algorithms
-==========
+NWGraph Algorithms
+==================
 
 Algorithms in NWGraph constitute the core of our library. NWGraph
 includes a broad classes of algorithms (sequential and parallel) for
@@ -11,7 +11,77 @@ different graph problems, including graph traversal (BFS, SSSP),
 analytics (PageRank, Jaccard similarity, connected components), motif
 counting (triangle counting, betweenness centrality), network flow
 (maximum flow) etc. The problem definitions and graph algorithms for
-each of these graph problems implemented in NWGraph are tabulated in .
+each of these graph problems implemented in NWGraph are tabulated below.
+
+   +------------------------------+--------------------------------------+
+   | Algorithm                    | Definition                           |
+   +==============================+======================================+
+   | Breadth-first search         | Traverses a graph in breadth-fist    |
+   |                              | search order from a given source.    |
+   |                              | Implementation includes: top-down,   |
+   |                              | bottom-up and                        |
+   |                              | di                                   |
+   |                              | rection-optimized :raw-latex:`\cite` |
+   |                              | algorithms.                          |
+   +------------------------------+--------------------------------------+
+   | Depth-first search           | Traverses a graph in depth-first     |
+   |                              | search order from a given source.    |
+   +------------------------------+--------------------------------------+
+   | Single-source shortest paths | Finds the shortest distance paths    |
+   |                              | from a given source to all other     |
+   |                              | vertices in a graph.                 |
+   |                              | :math:`\Delta`-stepping              |
+   |                              | algorithm :raw-latex:`\cite` is      |
+   |                              | implemented.                         |
+   +------------------------------+--------------------------------------+
+   | Connected component          | Finds connected components in a      |
+   |                              | graph. Implementations include       |
+   |                              | Afforest :raw-latex:`\cite`,         |
+   |                              | Shiloach-Vishkin :raw-latex:`\cite`, |
+   |                              | BFS-based :raw-latex:`\cite` and     |
+   |                              | minimal label                        |
+   |                              | propagation :raw-latex:`\cite`       |
+   |                              | algorithms.                          |
+   +------------------------------+--------------------------------------+
+   | PageRank                     | Compute the importance of each       |
+   |                              | vertex in a graph. Implements the    |
+   |                              | Gauss-Seidel                         |
+   |                              | algorithm :raw-latex:`\cite`.        |
+   +------------------------------+--------------------------------------+
+   | Triangle counting            | Counts the number of triangles in a  |
+   |                              | graph. Implements algorithms         |
+   |                              | discussed in  :raw-latex:`\cite`.    |
+   +------------------------------+--------------------------------------+
+   | Betweenness centrality       | Measures how many times each vertex  |
+   |                              | lies on the shortest paths to other  |
+   |                              | vertices. Brandes                    |
+   |                              | Algorithm :raw-latex:`\cite` has     |
+   |                              | been implemented.                    |
+   +------------------------------+--------------------------------------+
+   | Maximum flow                 | Given a source and a sink, find      |
+   |                              | paths with available capacity and    |
+   |                              | push flow through them until there   |
+   |                              | are no more paths available.         |
+   |                              | Implements Edmonds-Karp algorithm.   |
+   +------------------------------+--------------------------------------+
+   | K-core                       | Finds the subgraph induced by        |
+   |                              | removing all vertices with degree    |
+   |                              | less than k.                         |
+   +------------------------------+--------------------------------------+
+   | Jaccard similarity           | Computes the Jaccard similarity      |
+   |                              | coefficient of each pair of vertices |
+   |                              | in a graph.                          |
+   +------------------------------+--------------------------------------+
+   | Graph coloring               | Assign a color to each vertex in the |
+   |                              | graph so that no two neighboring     |
+   |                              | vertices have the same color.        |
+   |                              | Implements Jones-Plassmann           |
+   |                              | algorithm :raw-latex:`\cite`.        |
+   +------------------------------+--------------------------------------+
+   | Maximal independent set      | Graph coloring with two colors.      |
+   +------------------------------+--------------------------------------+
+
+
 
 
 Parallelization
