@@ -54,10 +54,10 @@ struct zipped : std::tuple<Ranges&...> {
   using storage_type = std::tuple<Ranges&...>;
   using base         = std::tuple<Ranges&...>;
 
-  using attributes_t = std::tuple<typename std::iterator_traits<typename Ranges::iterator>::value_type...>;
-  using const_attributes_t = std::tuple<typename std::iterator_traits<typename Ranges::const_iterator>::value_type...>;
-  using attributes_r = std::tuple<typename std::iterator_traits<typename Ranges::iterator>::reference...>;
-  using const_attributes_r = std::tuple<typename std::iterator_traits<typename Ranges::const_iterator>::reference...>;
+  using attributes_t = std::tuple<std::ranges::range_value_t<Ranges>...>;
+  using const_attributes_t = std::tuple<const std::ranges::range_value_t<Ranges>...>;
+  using attributes_r = std::tuple<std::ranges::range_reference_t<Ranges>...>;
+  using const_attributes_r = std::tuple<const std::ranges::range_reference_t<Ranges>...>;
 
 
   template <bool is_const = false>
@@ -273,6 +273,12 @@ template <std::ranges::random_access_range... Ranges>
 zipped<Ranges...> make_zipped(Ranges&... rs) {
   return { rs... };
 }
+
+template <std::ranges::random_access_range... Ranges>
+zipped<Ranges...> make_zipped(Ranges&&... rs) {
+  return { rs... };
+}
+
 
 
 

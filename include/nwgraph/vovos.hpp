@@ -25,6 +25,7 @@
 namespace nw {
 namespace graph {
 
+
 template <typename... Attributes>
 class vector_of_vector_of_structs : public std::vector<std::vector<std::tuple<Attributes...>>> {
 
@@ -33,11 +34,11 @@ public:
 
   vector_of_vector_of_structs(size_t N) : base(N) {}
 
-  using inner_iterator       = typename std::vector<std::tuple<Attributes...>>::iterator;
-  using const_inner_iterator = typename std::vector<std::tuple<Attributes...>>::const_iterator;
-  using inner_container_ref  = typename std::vector<std::tuple<Attributes...>>&;
-  using outer_iterator       = typename std::vector<std::vector<std::tuple<Attributes...>>>::iterator;
-  using const_outer_iterator = typename std::vector<std::vector<std::tuple<Attributes...>>>::const_iterator;
+  // using inner_iterator       = typename std::vector<std::tuple<Attributes...>>::iterator;
+  // using const_inner_iterator = typename std::vector<std::tuple<Attributes...>>::const_iterator;
+  // using inner_container_ref  = typename std::vector<std::tuple<Attributes...>>&;
+  // using outer_iterator       = typename std::vector<std::vector<std::tuple<Attributes...>>>::iterator;
+  // using const_outer_iterator = typename std::vector<std::vector<std::tuple<Attributes...>>>::const_iterator;
 
   void open_for_push_back() {}
   void close_for_push_back() {}
@@ -53,6 +54,7 @@ public:
   auto size() const { return base::size(); }
 };
 
+
 template <int idx, std::unsigned_integral vertex_id, typename... Attributes>
 class index_vov : public unipartite_graph_base, public vector_of_vector_of_structs<vertex_id, Attributes...> {
   using base = vector_of_vector_of_structs<vertex_id, Attributes...>;
@@ -67,7 +69,7 @@ public:
 
   static constexpr std::size_t getNAttr() { return sizeof...(Attributes); }
 
-  index_vov(size_t N) : base(N) {}
+  index_vov(size_t N = 0) : base(N) {}
 
   index_vov(edge_list<directedness::directed, Attributes...>& A) : base(num_vertices(A)) { num_edges_ = fill_adj_list(A, *this); }
 
@@ -79,7 +81,6 @@ private:
 
 template <int idx, typename... Attributes>
 using vov = index_vov<idx, default_vertex_id_type, Attributes...>;
-
 
 }    // namespace graph
 }    // namespace nw

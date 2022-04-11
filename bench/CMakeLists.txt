@@ -10,6 +10,7 @@ include(Date)
 # -----------------------------------------------------------------------------
 get_filename_component(NW_GRAPH_CXX_COMPILER ${CMAKE_CXX_COMPILER} NAME)
 configure_file(config.h.in config.h)
+include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 # -----------------------------------------------------------------------------
 # Create an interface library for the benchmarks to depend on.
@@ -18,7 +19,8 @@ add_library(bench INTERFACE)
 target_sources(bench INTERFACE
   common.hpp
   Log.hpp
-  config.h)
+  #config.h
+  )
 target_include_directories(bench INTERFACE ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR})
 target_link_libraries(bench INTERFACE nw_graph docopt date::date nlohmann_json::nlohmann_json) 
 
@@ -46,6 +48,8 @@ target_link_libraries(process_edge_list nw_graph docopt )
 # -----------------------------------------------------------------------------
 # NW_GRAPH driver to verify that we're correctly generating source lists.
 # -----------------------------------------------------------------------------
+#set policy to suppress warnings
+cmake_policy(SET CMP0115 NEW)
 add_executable(sources SourceVerifier.cpp)
 target_link_libraries(sources bench)
 

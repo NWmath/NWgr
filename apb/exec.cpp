@@ -83,9 +83,8 @@ auto apb_adj(Adjacency& graph, size_t ntrial, Exec1 exec1 = std::execution::seq,
     std::fill(y.begin(), y.end(), 0);
     t4.start();
 
-    auto g = graph.begin();
     std::for_each(exec1, counting_iterator<size_t>(0), counting_iterator<size_t>(N), [&](size_t i) {
-      y[i] += std::transform_reduce(exec2, g[i].begin(), g[i].end(), 0.0, std::plus<float>(),
+      y[i] += std::transform_reduce(exec2, graph[i].begin(), graph[i].end(), 0.0, std::plus<float>(),
                                     [&](auto&& j) { return x[std::get<0>(j)] * std::get<1>(j); });
     });
 

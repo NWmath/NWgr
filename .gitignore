@@ -46,9 +46,12 @@ build.docker
 __pycache__
 _build
 _hyde
+_doxygen
+_api
 *.mtx
 *.tsv
 *.csv
 dblp.json
 oracle.json
 
+checks.json

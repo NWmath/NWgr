@@ -88,8 +88,8 @@ public:
 
     //auto operator*() { return std::tuple(first_ - base_); }
     //auto operator*() const { return std::tuple(first_ - base_); }
-    auto operator*() { auto u = first_ - base_; return std::tuple(u, base_[u]); }
-    auto operator*() const { auto u = first_ - base_; return std::tuple(u, base_[u]); }
+    auto operator*() { std::size_t u = first_ - base_; return std::tuple(u, base_[u]); }
+    auto operator*() const { std::size_t u = first_ - base_; return std::tuple(u, base_[u]); }
 
     bool operator==(const my_iterator& b) const { return first_ == b.first_; }
     bool operator!=(const my_iterator& b) const { return first_ != b.first_; }

@@ -1,14 +1,28 @@
-// 
-// This file is part of NW Graph (aka GraphPack) 
-// (c) Pacific Northwest National Laboratory 2018-2021 
-// (c) University of Washington 2018-2021 
-// 
-// Licensed under terms of include LICENSE file 
-// 
+// This material was prepared as an account of work sponsored by an agency of the 
+// United States Government.  Neither the United States Government nor the United States 
+// Department of Energy, nor Battelle, nor any of their employees, nor any jurisdiction or 
+// organization that has cooperated in the development of these materials, makes any 
+// warranty, express or implied, or assumes any legal liability or responsibility for the 
+// accuracy, completeness, or usefulness or any information, apparatus, product, software, 
+// or process disclosed, or represents that its use would not infringe privately owned rights.
+//
+// Reference herein to any specific commercial product, process, or service by trade name, 
+// trademark, manufacturer, or otherwise does not necessarily constitute or imply its 
+// endorsement, recommendation, or favoring by the United States Government or any 
+// agency thereof, or Battelle Memorial Institute. The views and opinions of authors 
+// expressed herein do not necessarily state or reflect those of the United States Government 
+// or any agency thereof.
+//                        PACIFIC NORTHWEST NATIONAL LABORATORY
+//                                     operated by
+//                                     BATTELLE
+//                                     for the
+//                          UNITED STATES DEPARTMENT OF ENERGY
+//                          under Contract DE-AC05-76RL01830
+//
 // Authors: 
 //     Andrew Lumsdaine	
 //     Kevin Deweese	
-//     liux238	
+//     Xu Tony Liu	
 //
 
 #ifndef CONNECTED_COMPONENT_HPP
@@ -17,7 +31,7 @@
 #include "nwgraph/adaptors/bfs_edge_range.hpp"
 #include "nwgraph/adaptors/edge_range.hpp"
 #include "nwgraph/adaptors/vertex_range.hpp"
-#include <atomic>
+#include "nwgraph/util/atomic.hpp"
 #include <iostream>
 #include <random>
 #include <unordered_map>
@@ -33,422 +47,197 @@
 namespace nw {
 namespace graph {
 
-template <typename T>
-inline bool compare_and_swap(T& x, T old_val, T new_val) {
-  return __sync_bool_compare_and_swap(&x, *(&old_val), *(&new_val));
-}
-template <typename T>
-struct atomwrapper {
-  std::atomic<T> _a;
-
-  atomwrapper() : _a() {}
-
-  atomwrapper(const std::atomic<T>& a) : _a(a.load()) {}
-
-  atomwrapper(const atomwrapper& other) : _a(other._a.load()) {}
-
-  atomwrapper& operator=(const atomwrapper& other) {
-    _a.store(other._a.load());
-    return *this;
+/**
+ * @brief Verifies CC result by performing a BFS from a vertex in each component
+ * Asserts search does not reach a vertex with a different component label
+ * If the graph is directed, it performs the search as if it was undirected
+ * Asserts every vertex is visited (degree-0 vertex should have own label)
+ * 
+ * @tparam Graph adjacency_list graph type
+ * @tparam Transpose adjacency_list graph type for transpose
+ * @tparam Vector container type for CC labelings
+ * @param graph the adjacency_list_graph
+ * @param xpose transpose of the adjacency_list_graph
+ * @param comp CC labelings
+ * @return true if the CC labelings are all correct
+ * @return false if the CC labelings are wrong
+ */
+template <adjacency_list_graph Graph, adjacency_list_graph Transpose, class Vector>
+static bool CCVerifier(const Graph& graph, const Transpose& xpose, Vector&& comp) {
+  using NodeID = typename nw::graph::vertex_id_t<std::decay_t<Graph>>;
+  std::unordered_map<NodeID, NodeID> label_to_source;
+  for (auto&& [n] : plain_range(graph)) {
+    label_to_source[comp[n]] = n;
   }
-};
-
-// BFS-based connected component algorithm
-template <typename Graph, typename T>
-void compute_connected_components(Graph A, std::vector<T>& component_ids) {
-  size_t         N                        = A.size();
-  std::atomic<T> global_component_counter = -1;
-  std::for_each(std::execution::par_unseq, counting_iterator<T>(0), counting_iterator<T>(N), [&](auto vtx) {
-    if (std::numeric_limits<T>::max() == component_ids[vtx]) {
-      global_component_counter++;
-      component_ids[vtx] = global_component_counter.load();
-      //      std::cout << "--------vertex--------------" << vtx << "
-      //      component_ids[vtx]: " << component_ids[vtx] << std::endl;
-      bfs_edge_range3 ranges(A, vtx);
-      for (auto ite = ranges.begin(); ite != ranges.end(); ++ite) {
-        // auto u = std::get<0>(*ite);
-        auto v           = std::get<1>(*ite);
-        component_ids[v] = global_component_counter.load();
+  std::vector<bool>   visited(graph.size() + 1);
+  std::vector<NodeID> frontier;
+  frontier.reserve(graph.size() + 1);
+  for (auto&& [curr_label, source] : label_to_source) {
+    frontier.clear();
+    frontier.push_back(source);
+    visited[source] = true;
+    for (auto it = frontier.begin(); it != frontier.end(); it++) {
+      NodeID u = *it;
+      for (auto&& elt : graph[u]) {
+        auto v = target(graph, elt);
+        if (comp[v] != curr_label) {
+          return false;
+        }
+        if (!visited[v]) {
+          visited[v] = true;
+          frontier.push_back(v);
+        }
+      }
+      if (u < xpose.size()) {
+        for (auto&& elt : xpose[u]) {
+          auto v = target(xpose, elt);
+          if (comp[v] != curr_label) {
+            return false;
+          }
+          if (!visited[v]) {
+            visited[v] = true;
+            frontier.push_back(v);
+          }
+        }
       }
     }
-  });
+  }
+  NodeID i = 0;
+  for (auto&& visited : visited) {
+    if (!visited) {
+      //return false;
+      ++i;
+    }
+  }
+  if (0 < i) {
+    std::cout << "unvisited " << i << " " << graph.size() + 1 << " ";
+    return false;
+  }
+  return true;
 }
 
-template <typename T>
-void hook(T u, T v, std::vector<T>& comp) {
-  T p1 = comp[u];
+/**
+ * @brief link the labels of the root parents of two vertices.
+ * The vertex having smaller label will become the parent of vertex having the larger label.
+ * This operation is also known as hook operation.
+ * 
+ * @tparam Vector CC labeling container type
+ * @tparam T CC labeling type
+ * @param u vertex u
+ * @param v vertex v
+ * @param comp CC labelings
+ */
+template <typename Vector, typename T>
+static void link(T u, T v, Vector& comp) {
+  T p1 = nw::graph::acquire(comp[u]);
   T p2 = comp[v];
-  T high, low;
   while (p1 != p2) {
-    high              = std::max(p1, p2);
-    low               = p1 + p2 - high;
-    volatile T p_high = comp[high];
-    if (p_high == low || compare_and_swap(comp[high], high, low)) break;
-    p1 = comp[comp[high]];
+    T high   = std::max(p1, p2);
+    T low    = p1 + (p2 - high);
+    T p_high = comp[high];
+
+    if ((p_high == low) || (p_high == high && comp[high].compare_exchange_strong(high, low))) break;
+    p1 = comp[p_high];
     p2 = comp[low];
-  }    // while
+  }
 }
 
-template <typename T>
-void compress(std::vector<T>& comp) {
-  std::for_each(std::execution::par_unseq, counting_iterator<T>(0), counting_iterator<T>(comp.size()), [&](auto n) {
-    while (comp[n] != comp[comp[n]])
-      comp[n] = comp[comp[n]];
+/**
+ * @brief path compression.
+ * The idea is to flatten the tree of each component.
+ * Every leaf will be hooked to the root of the tree.
+ * The tree of each component becomes a star at the end of the CC algorithm.
+ * 
+ * @tparam Execution execution policy type
+ * @tparam Vector CC labeling container type
+ * @param exec execution policy
+ * @param comp CC labelings
+ */
+template <typename Execution, typename Vector>
+static void compress(Execution& exec, Vector& comp) {
+  std::for_each(exec, counting_iterator(0ul), counting_iterator(comp.size()), [&](auto n) {
+    while (comp[n] != comp[comp[n]]) {
+      auto foo = nw::graph::acquire(comp[n]);
+      auto bar = nw::graph::acquire(comp[foo]);
+      nw::graph::release(comp[n], bar);
+    }
   });
 }
 
-template <typename T>
-T findDominantComponentID(const std::vector<T>& comp, size_t nsamples = 1024) {
-  if (0 == comp.size()) return 0;
-  std::unordered_map<T, size_t>                              sample_counts(32);
-  typedef typename std::unordered_map<T, size_t>::value_type kvp_type;
-  std::mt19937                                               gen;
-  std::uniform_int_distribution<T>                           distribution(0, comp.size() - 1);
-  for (size_t i = 0; i < nsamples; i++) {
+/**
+ * @brief Subgraph sampling to find the most commonly appeared labeling 
+ * within the sampled subgraph.
+ * 
+ * @tparam Vector CC labeling container type
+ * @tparam T type of the CC labeling
+ * @param comp CC labelings
+ * @param num_samples the number of vertices in the sampled subgraph
+ * @return T the potential largest intermediate component ID
+ */
+template <typename Vector, typename T>
+static T sample_frequent_element(const Vector& comp, size_t num_samples = 1024) {
+  std::unordered_map<T, int>       counts(32);
+  std::mt19937                                  gen;
+  std::uniform_int_distribution<T> distribution(0, comp.size() - 1);
+
+  for (size_t i = 0; i < num_samples; ++i) {
     T n = distribution(gen);
-    ++sample_counts[comp[n]];
+    counts[comp[n]]++;
   }
-  auto dominant =
-      std::max_element(sample_counts.begin(), sample_counts.end(), [](const kvp_type& a, const kvp_type& b) { return a.second < b.second; });
-  /*
-    float frac_of_graph = static_cast<float>(dominant->second) / nsamples;
-    std::cout
-      << "Skipping largest intermediate component (ID: " << dominant->first
-      << ", approx. " << static_cast<int>(frac_of_graph * 100)
-      << "% of the graph)" << std::endl;
-  */
-  return dominant->first;
+
+  auto&& [num, count] = *std::max_element(counts.begin(), counts.end(), [](auto&& a, auto&& b) { return std::get<1>(a) < std::get<1>(b); });
+  float frac_of_graph = static_cast<float>(count) / num_samples;
+  std::cout << "Skipping largest intermediate component (ID: " << num << ", approx. " << int(frac_of_graph * 100) << "% of the graph)\n";
+  return num;
 }
 
-template <typename Graph, typename T>
-void push(const Graph& g, const T u, std::vector<T>& comp) {
-  for (auto j = g.begin()[u].begin(); j != g.begin()[u].end(); ++j) {
-    auto v = std::get<0>(*j);
-    hook(u, v, comp);
-  }
-}
-
-template <typename Graph, typename T>
-void link(const Graph& g, const T u, std::vector<T>& comp, const size_t neighbor_bound) {
-  size_t i = 0;
-  for (auto j = g.begin()[u].begin(); j != g.begin()[u].end() && i < neighbor_bound; ++j, ++i) {
-    auto v = std::get<0>(*j);
-    hook(u, v, comp);
-  }
-}
-
-// fetch the smallest comp_id among u's neighbors
-template <typename Graph, typename T>
-bool pull(const Graph& g, const T u, std::vector<T>& comp) {
-  T min_compid = comp[u];
-  T v;
-  for (auto j = g.begin()[u].begin(); j != g.begin()[u].end(); ++j) {
-    v          = std::get<0>(*j);
-    min_compid = std::min(min_compid, comp[v]);
-  }
-  bool change = false;
-  T    p1     = comp[u];
-  T    p2     = min_compid;
-  T    high = comp[u], low = min_compid;
-  while (p1 != p2) {
-    high              = std::max(p1, p2);
-    low               = p1 + p2 - high;
-    volatile T p_high = comp[high];
-    if (p_high == low || compare_and_swap(comp[high], high, low)) {
-      change = true;
-      break;
-    }
-    p1 = comp[comp[high]];
-    p2 = comp[low];
-  }    // while
-  return change;
-}
-
-template <typename Graph, typename T = vertex_id_t<Graph>>
-std::vector<T> compute_connected_components_v1(const Graph& g) {
-  size_t N = g.size();
-  // std::vector<atomwrapper<T>> comp(N,
-  // atomwrapper<T>(-1));
-  std::vector<atomwrapper<T>> comp(N);
-
-  std::for_each(std::execution::par_unseq, counting_iterator<T>(0), counting_iterator<T>(N), [&](auto n) { comp[n]._a.store(n); });
-
-  bool change = true;
-  for (size_t num_iter = 0; num_iter < 2; ++num_iter) {
-    if (false == change) {
-      std::cout << "Shiloach-Vishkin took " << num_iter << " iterations" << std::endl;
-      break;
-    }
-    change = false;
-    /*
-     * TODO bfs edge based parallel iterating over graph
-      bfs_edge_range3 range(g, 0);
-      auto first = range.begin();
-      auto last = range.end();
-      std::for_each(
-    std::execution::par_unseq,
-      first, last, [&](auto&& ite) {
-        auto u = std::get<0>(*ite);
-        auto v = std::get<1>(*ite);
-
-          if (v != comp[v]._a.load()) return;
-          auto p1 = comp[u]._a.load();
-          auto p2 = comp[v]._a.load();
-          while (p1 != p2) {
-            auto high = std::max(p1, p2);
-            auto low = p1 + p2 - high;
-            auto p_high = comp[high]._a.load();
-            if (p_high == low || comp[high]._a.compare_exchange_weak(p_high,
-    comp[low]._a)) { change = true; break;
-            }
-            high = comp[high]._a.load();
-            p1 = comp[high]._a.load();
-            p2 = comp[low]._a.load();
-          }
-        });
-    */
-    std::for_each(std::execution::par_unseq, counting_iterator<T>(0), counting_iterator<T>(N), [&](auto u) {
-      T v;
-      for (auto j = g.begin()[u].begin(); j != g.begin()[u].end(); ++j) {
-        v = std::get<0>(*j);
-        //      if (v != comp[v]._a.load()) continue;
-        auto p1 = comp[u]._a.load();
-        auto p2 = comp[v]._a.load();
-        while (p1 != p2) {
-          auto high   = std::max(p1, p2);
-          auto low    = p1 + p2 - high;
-          auto p_high = comp[high]._a.load();
-          if (p_high == low || comp[high]._a.compare_exchange_weak(p_high, comp[low]._a)) {
-            change = true;
-            break;
-          }
-          high = comp[high]._a.load();
-          p1   = comp[high]._a.load();
-          p2   = comp[low]._a.load();
-        }    // while
+/**
+ * @brief Afforest algorithm based SV algorithm + subgraph sampling to
+ * skip the largest intermediate component to save work.
+ * 
+ * @tparam Execution execution policy type
+ * @tparam Graph1 adjacency_list_graph type
+ * @tparam Graph2 adjacency_list_graph type for the transpose
+ * @param exec execution policy
+ * @param graph input graph
+ * @param t_graph transpose input graph
+ * @param neighbor_rounds the number of rounds to do neighborhood subgraph sampling
+ * @return auto CC labelings
+ */
+template <typename Execution, adjacency_list_graph Graph1, adjacency_list_graph Graph2>
+static auto afforest(Execution& exec, const Graph1& graph, const Graph2& t_graph, const size_t neighbor_rounds = 2) {
+  using vertex_id_type = vertex_id_t<Graph1>;
+  std::vector<std::atomic<vertex_id_type>> comp(graph.size() + 1);
+  std::for_each(exec, counting_iterator(0ul), counting_iterator(comp.size()), [&](vertex_id_type n) { comp[n] = n; });
+  for (size_t r = 0; r < neighbor_rounds; ++r) {
+    std::for_each(exec, counting_iterator(0ul), counting_iterator(comp.size()), [&](vertex_id_type u) {
+      if (r < graph[u].size()) {
+        link(u, std::get<0>(graph[u].begin()[r]), comp);
       }
     });
+    compress(exec, comp);
   }
-  std::vector<T> res(N);
-  std::for_each(std::execution::par_unseq, counting_iterator<T>(0), counting_iterator<T>(N), [&](auto n) {
-    auto m = n;
-    //    while (comp[m]._a.load() != m)  m = comp[m]._a.load();
-    while (comp[m]._a.load() != comp[comp[m]._a.load()]._a.load()) {
-      comp[m]._a.store(comp[comp[m]._a.load()]._a.load());
-      m = comp[m]._a.load();
+
+  vertex_id_type c = sample_frequent_element<std::vector<std::atomic<vertex_id_type>>, vertex_id_type>(comp);
+
+  std::for_each(exec, counting_iterator(0ul), counting_iterator(comp.size()), [&](vertex_id_type u) {
+    if (comp[u] == c) return;
+
+    if (neighbor_rounds < graph[u].size()) {
+      for (auto v = graph[u].begin() + neighbor_rounds; v != graph[u].end(); ++v) {
+        link(u, std::get<0>(*v), comp);
+      }
     }
-    res[n] = comp[n]._a.load();
-    // std::cout << n <<":" <<  res[n] << std::endl;
-    /*
-          atomwrapper<T> m(std::atomic<T>(n));
-          while ( comp[m._a.load()] != comp[comp[m._a.load()]._a.load()]) {
-            m._a.store(comp[m._a.load()]);
-          }
-          res[n] = comp[m._a.load()].a_.load();
-        */
-  });
-  // compress(comp);
-  return res;
-}    // compute_connected_components_v1
 
-template <typename Graph, typename T = vertex_id_t<Graph>>
-std::vector<T> compute_connected_components_v2(const Graph& g) {
-  size_t         N = g.size();
-  std::vector<T> comp(g.size());
-  std::for_each(std::execution::par_unseq, counting_iterator<T>(0), counting_iterator<T>(g.size()), [&](auto n) { comp[n] = n; });
-
-  bool change = true;
-
-  for (size_t num_iter = 0; num_iter < 1; ++num_iter) {
-    if (false == change) {
-      std::cout << "PULL-cc took " << num_iter << " iterations" << std::endl;
-      break;
-    }
-    change = false;
-
-    std::for_each(std::execution::par_unseq, counting_iterator<T>(0), counting_iterator<T>(N), [&](auto u) { change = pull(g, u, comp); });
-    std::for_each(std::execution::par_unseq, counting_iterator<T>(0), counting_iterator<T>(N), [&](auto u) { push(g, u, comp); });
-
-    compress(comp);
-  }
-  return comp;
-}    // compute_connected_components_v2
-
-template <typename Graph, typename T>
-std::vector<T> ccv1(const Graph& g) {
-  std::vector<T> comp(g.size());
-  std::for_each(std::execution::par_unseq, counting_iterator<T>(0), counting_iterator<T>(g.size()), [&](auto n) { comp[n] = n; });
-
-  std::for_each(std::execution::par_unseq, counting_iterator<T>(0), counting_iterator<T>(g.size()), [&](auto u) { push(g, u, comp); });
-  compress(comp);
-  return comp;
-}
-
-template <typename Graph, typename Graph2, typename T = vertex_id_t<Graph>>
-std::vector<T> Afforest(const Graph& g, Graph2& t_graph, size_t neighbor_bound = 2) {
-  std::vector<T> comp(g.size());
-  // set component id of vertex v to v
-  std::for_each(std::execution::par_unseq, counting_iterator<T>(0), counting_iterator<T>(g.size()), [&](auto n) { comp[n] = n; });
-  // approximate the dominant component by linking certain neighbors of each
-  // vertex v (a sparse subgraph)
-  std::for_each(std::execution::par_unseq, counting_iterator<T>(0), counting_iterator<T>(g.size()),
-                [&](auto u) { link(g, u, comp, neighbor_bound); });
-  compress(comp);
-  // Sample certain vertices to find dominant component id
-  T dominant_c = findDominantComponentID(comp);
-  // link the rest vertices outside of dominant component
-  std::for_each(std::execution::par_unseq, counting_iterator<T>(0), counting_iterator<T>(g.size()), [&](auto u) {
-    if (dominant_c != comp[u]) {
-      push(g, u, comp);
-      if (t_graph.size() != 0) {
-        push(t_graph, u, comp);
+    if (t_graph.size() != 0) {
+      for (auto&& elt : t_graph[u]) {
+        auto v = target(t_graph, elt);
+        link(u, v, comp);
       }
     }
   });
-  compress(comp);
 
-  return comp;
-}
-
-template <typename Graph, typename T = vertex_id_t<Graph>>
-std::vector<T> ccv5(const Graph& g) {
-  size_t         N = g.size();
-  std::vector<T> comp(g.size());
-  std::for_each(std::execution::par_unseq, counting_iterator<T>(0), counting_iterator<T>(g.size()), [&](auto n) { comp[n] = n; });
-
-  std::for_each(std::execution::par_unseq, counting_iterator<T>(0), counting_iterator<T>(N), [&](auto u) { pull(g, u, comp); });
-  T dominant_c = findDominantComponentID(comp);
-  std::for_each(std::execution::par_unseq, counting_iterator<T>(0), counting_iterator<T>(N), [&](auto u) {
-    if (dominant_c != comp[u]) push(g, u, comp);
-  });
-
-  compress(comp);
-  return comp;
-}
-
-template <typename Graph, typename T= vertex_id_t<Graph>>
-auto sv_v6(const Graph& g) {
-  std::vector<T> comp(g.size());
-
-  std::for_each(std::execution::par_unseq, counting_iterator<T>(0), counting_iterator<T>(g.size()), [&](auto n) { comp[n] = n; });
-
-  bool change = true;
-
-  auto G = g.begin();
-
-  for (size_t num_iter = 0; num_iter < g.size(); ++num_iter) {
-    if (false == change) {
-      // std::cout << "Shiloach-Vishkin took " << num_iter << " iterations" <<
-      // std::endl;
-      break;
-    }
-    change = false;
-
-    std::for_each(std::execution::par_unseq, counting_iterator<T>(0), counting_iterator<T>(g.size()), [&](auto u) {
-      for (auto&& [v] : G[u]) {
-        T comp_u = comp[u];
-        T comp_v = comp[v];
-        if (comp_u == comp_v) continue;
-        T high_comp = comp_u > comp_v ? comp_u : comp_v;
-        T low_comp  = comp_u + (comp_v - high_comp);
-        if (high_comp == comp[high_comp]) {
-          change          = true;
-          comp[high_comp] = low_comp;
-        }
-      }
-    });
-
-    for (T n = 0; n < g.size(); n++) {
-      while (comp[n] != comp[comp[n]]) {
-        comp[n] = comp[comp[n]];
-      }
-    }
-  }
-
-  return comp;
-}
-
-template <typename Graph, typename T = vertex_id_t<Graph>>
-auto sv_v8(Graph& g) {
-  std::vector<T> comp(g.size());
-
-  std::for_each(std::execution::par_unseq, counting_iterator<T>(0), counting_iterator<T>(g.size()), [&](auto n) { comp[n] = n; });
-
-  bool change = true;
-
-  auto G = g.begin();
-
-  for (size_t num_iter = 0; num_iter < g.size(); ++num_iter) {
-    if (false == change) {
-      std::cout << "Shiloach-Vishkin took " << num_iter << " iterations" << std::endl;
-      break;
-    }
-    change = false;
-
-    std::for_each(std::execution::par_unseq, counting_iterator<T>(0), counting_iterator<T>(g.size()), [&](auto u) {
-      auto Gu = G[u];
-      // tbb::parallel_for(G[u], [&] (auto& Gu) {
-      for (auto&& [v] : Gu) {
-        T comp_u = comp[u];
-        T comp_v = comp[v];
-        if (comp_u == comp_v) continue;
-        T high_comp = std::max(comp_u, comp_v);
-
-        T low_comp = comp_u + (comp_v - high_comp);
-        if (high_comp == comp[high_comp]) {
-          change          = true;
-          comp[high_comp] = low_comp;
-        }
-      }
-      // });
-    });
-
-    for (T n = 0; n < g.size(); n++) {
-      while (comp[n] != comp[comp[n]]) {
-        comp[n] = comp[comp[n]];
-      }
-    }
-  }
-
-  return comp;
-}
-
-template <typename Graph, typename T = vertex_id_t<Graph>>
-auto sv_v9(Graph& g) {
-  std::vector<T> comp(g.size());
-
-  std::for_each(std::execution::par_unseq, counting_iterator<T>(0), counting_iterator<T>(g.size()), [&](auto n) { comp[n] = n; });
-
-  bool change = true;
-
-  for (size_t num_iter = 0; num_iter < g.size(); ++num_iter) {
-    if (false == change) {
-      std::cout << "Shiloach-Vishkin took " << num_iter << " iterations" << std::endl;
-      break;
-    }
-    change = false;
-
-    tbb::parallel_for(edge_range(g), [&](auto&& sub) {
-      for (auto&& [u, v] : sub) {
-        T comp_u = comp[u];
-        T comp_v = comp[v];
-        if (comp_u == comp_v) continue;
-        T high_comp = std::max(comp_u, comp_v);
-
-        T low_comp = comp_u + (comp_v - high_comp);
-        if (high_comp == comp[high_comp]) {
-          change          = true;
-          comp[high_comp] = low_comp;
-        }
-      }
-    });
-
-    for (T n = 0; n < g.size(); n++) {
-      while (comp[n] != comp[comp[n]]) {
-        comp[n] = comp[comp[n]];
-      }
-    }
-  }
+  compress(exec, comp);
 
   return comp;
 }

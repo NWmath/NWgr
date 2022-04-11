@@ -66,6 +66,8 @@ int main() {
   
   auto e = nw::graph::make_zipped(a, b, c, d);
 
+  static_assert(std::ranges::random_access_range<decltype(e)>);
+
   auto i = nw::graph::make_zipped(c, a, b);
 
   std::iota(a.begin(), a.end(), -1);

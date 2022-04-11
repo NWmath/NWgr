@@ -1,10 +1,7 @@
 
 
 include(Catch2)
-
-
 # message("Supported features = ${CMAKE_CXX_COMPILE_FEATURES}")
-
 
 macro (nw_graph_add_exe EXENAME)
   add_executable(${EXENAME}.exe ${EXENAME}.cpp)
@@ -24,7 +21,6 @@ add_library(catch_main STATIC catch_main.cpp)
 target_link_libraries(catch_main Catch2::Catch2)
 
 # Add Catch2 tests
-nw_graph_add_test(adjacency_test)
 nw_graph_add_test(aos_test)
 nw_graph_add_test(back_edge_test)
 nw_graph_add_test(bfs_test_0)
@@ -40,6 +36,7 @@ nw_graph_add_test(page_rank_test)
 nw_graph_add_test(size_test)
 nw_graph_add_test(soa_test)
 nw_graph_add_test(spanning_tree_test)
+nw_graph_add_test(spMatspMat_test)
 nw_graph_add_test(tc_test)
 nw_graph_add_test(volos_test)
 nw_graph_add_test(vov_test)
@@ -52,10 +49,11 @@ nw_graph_add_test(vov_test)
 
 
 # expected failures for now
-#set_tests_properties(mis_test jp_coloring_test page_rank_test
+# set_tests_properties(jp_coloring_test
 #  PROPERTIES WILL_FAIL TRUE)
 
 # Example programs (not catch2)
+nw_graph_add_exe(adjacency_eg)
 nw_graph_add_exe(compat_eg)
 nw_graph_add_exe(concepts_eg)
 nw_graph_add_exe(containers_eg)
@@ -68,12 +66,14 @@ nw_graph_add_exe(graph_traits_eg)
 nw_graph_add_exe(index_soa_eg)
 nw_graph_add_exe(indexing_eg)
 nw_graph_add_exe(init_eg)
+nw_graph_add_exe(jaccard_eg)
 nw_graph_add_exe(neighbor_range_eg)
 nw_graph_add_exe(plain_range_eg)
 nw_graph_add_exe(proxysort_eg)
 nw_graph_add_exe(random_eg)
 nw_graph_add_exe(spmm_eg)
 nw_graph_add_exe(stream_eg)
+nw_graph_add_exe(std_containers_eg)
 nw_graph_add_exe(tag_invoke_eg)
 nw_graph_add_exe(tbb_eg)
 nw_graph_add_exe(triangular_eg)

@@ -152,12 +152,11 @@ auto bfs(const Graph_t& graph, vertex_id_type<Graph_t> root) requires Graph<Grap
   level[root]   = lvl++;
   parents[root] = root;
 
-  auto g = graph.begin();
 
   while (!q1.empty()) {
 
     std::for_each(q1.begin(), q1.end(), [&](vertex_id_type<Graph_t> u) {
-      std::for_each(g[u].begin(), g[u].end(), [&](auto&& x) {
+      std::for_each(graph[u].begin(), graph[u].end(), [&](auto&& x) {
         vertex_id_type<Graph_t> v = std::get<0>(x);
         if (level[v] == std::numeric_limits<vertex_id_type<Graph_t>>::max()) {
           q2.push_back(v);

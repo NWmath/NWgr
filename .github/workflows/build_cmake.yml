@@ -1,12 +1,12 @@
 # Workflow to configure with cmake and build with gcc-10
 
-name: Build with gcc-10
+name: Build with gcc-11
 
 on:
-  push: 
-    branches: [ master, pre_release ]
+  push:
+    branches: [ master, sc_release ]
   workflow_dispatch: 
-    branches: [ master, pre_release ]
+
 
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
@@ -33,8 +33,20 @@ jobs:
 
     - name: prep
       run: |
-        sudo apt-get install -y libtbb2 libtbb-dev
-        sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-10 90 --slave /usr/bin/g++ g++ /usr/bin/g++-10
+        wget https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB      \
+             && sudo apt-key add GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB                             \
+             && rm GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB                                           \
+             && sudo add-apt-repository "deb https://apt.repos.intel.com/oneapi all main"      \
+             && sudo apt-get update
+        DEBIAN_FRONTEND=noninteractive \
+            sudo apt-get -y install    \
+            intel-oneapi-tbb-devel
+        sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
+        DEBIAN_FRONTEND=noninteractive   \
+            sudo apt-get -y install      \
+            gcc-11                       \
+            g++-11
+        sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-11 90 --slave /usr/bin/g++ g++ /usr/bin/g++-11
         sudo update-alternatives --install /usr/bin/cc  cc /usr/bin/gcc 30
         sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/g++ 30
 
@@ -43,10 +55,15 @@ jobs:
         cd NWgr
         mkdir build
         cd build
-        cmake .. -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_CXX_COMPILER=g++-10
+        export TBBROOT=/opt/intel/oneapi/tbb/latest
+        cmake .. -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_CXX_COMPILER=g++-11 -DNW_GRAPH_BUILD_DOCS=OFF -DNW_GRAPH_BUILD_TESTS=ON
 
     - name: make
       run: |
         cd NWgr/build
-        make -k
+        make -j -k
 
+    - name: run_test
+      run: |
+        cd NWgr/build
+        make test

@@ -37,7 +37,7 @@ TEST_CASE("back edge", "[back edge]") {
   auto G = back.begin();
   for (auto outer = back.begin(); outer != back.end(); ++outer) {
     for (auto inner = G[outer - G].begin(); inner != G[outer - G].end(); ++inner) {
-      REQUIRE(outer - back.begin() == std::get<0>(back.get_back_edge(outer - back.begin(), inner)));
+      REQUIRE(static_cast<size_t>(outer - back.begin()) == std::get<0>(back.get_back_edge(outer - back.begin(), inner)));
     }
   }
 }

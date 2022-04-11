@@ -68,12 +68,17 @@ TEST_CASE("BFS traversal", "[bfs]") {
   
   SECTION("default seed") {
     vertex_id_t<directed_csr_graph_t> seed = 0;
+    std::fill(distance.begin(), distance.end(), std::numeric_limits<size_t>::max());
+    std::iota(predecessor.begin(), predecessor.end(), 0);
     distance[seed]      = 0;
+    predecessor[seed]   = 0;
     bfs_edge_range ranges(A, seed);
     auto           ite = ranges.begin();
     for (; ite != ranges.end(); ++ite) {
       auto v         = std::get<0>(*ite);
       auto u         = std::get<1>(*ite);
+      if (u == seed) distance[u] = 0;
+      else
       distance[u]    = distance[v] + 1;
       predecessor[u] = v;
     }
@@ -83,12 +88,16 @@ TEST_CASE("BFS traversal", "[bfs]") {
 
   SECTION("another seed") {
     vertex_id_t<directed_csr_graph_t> seed = 1;
+    std::fill(distance.begin(), distance.end(), std::numeric_limits<size_t>::max());
+    std::iota(predecessor.begin(), predecessor.end(), 0);
     distance[seed]                         = 0;
     bfs_edge_range ranges(A, seed);
     auto           ite = ranges.begin();
     for (; ite != ranges.end(); ++ite) {
       auto v      = std::get<0>(*ite);
       auto u      = std::get<1>(*ite);
+      if (u == seed) distance[u] = 0;
+      else
       distance[u] = distance[v] + 1;
       predecessor[u] = v;
     }
@@ -131,7 +140,6 @@ TEST_CASE("BFS traversal", "[bfs]") {
     vertex_id_t<directed_csr_graph_t> seed = 0;
     distance[seed]      = 0;
     bottomup_bfs_range ranges(A, seed);
-    std::cout << N << ": " << std::endl;
     auto      ite = ranges.begin();
     for (; ite != ranges.end(); ++ite) {
       auto v         = std::get<0>(*ite);

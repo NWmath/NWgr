@@ -22,7 +22,7 @@ static constexpr const char USAGE[] =
       -r NODE                 start from node r (default is random)
       -s, --sources FILE      sources file
       --seed NUM              random seed [default: 27491095]
-      --version ID            algorithm version to run [default: 0]
+      --version ID            algorithm version to run [default: 5]
       --log FILE              log times to a file
       --log-header            add a header to the log file
       -d, --debug             run in debug mode
@@ -35,6 +35,7 @@ static constexpr const char USAGE[] =
 
 #include "Log.hpp"
 #include "nwgraph/algorithms/betweenness_centrality.hpp"
+#include "nwgraph/experimental/algorithms/betweenness_centrality.hpp"
 #include "common.hpp"
 #include <docopt.h>
 
@@ -51,77 +52,6 @@ void print_n_ranks(const Vector& centrality, size_t n) {
   for (size_t i = 0; i < 10; ++i) {
     std::cout << std::to_string(perm[i]) + ": " << std::to_string(centrality[perm[i]]) << std::endl;
   }
-}
-
-template <class score_t, class accum_t, class Graph>
-bool BCVerifier(const Graph& g, std::vector<typename graph_traits<Graph>::vertex_id_type>& trial_sources,
-                std::vector<score_t>& scores_to_test) {
-  using vertex_id_type = typename graph_traits<Graph>::vertex_id_type;
-
-  std::vector<score_t> scores(num_vertices(g), 0);
-  for (auto& source : trial_sources) {
-    std::vector<int> depths(num_vertices(g), -1);
-    depths[source] = 0;
-    std::vector<accum_t> path_counts(num_vertices(g) + 1, 0);
-    path_counts[source] = 1;
-    std::vector<vertex_id_type> to_visit;
-    to_visit.reserve(num_vertices(g));
-    to_visit.push_back(source);
-    auto out_neigh = g.begin();
-    for (auto it = to_visit.begin(); it != to_visit.end(); it++) {
-      vertex_id_type u = *it;
-      for (auto edge : out_neigh[u]) {
-        vertex_id_type v = std::get<0>(edge);
-        if (depths[v] == -1) {
-          depths[v] = depths[u] + 1;
-          to_visit.push_back(v);
-        }
-        if (depths[v] == depths[u] + 1) {
-          path_counts[v] += path_counts[u];
-        }
-      }
-    }
-
-    std::vector<std::vector<vertex_id_type>> verts_at_depth;
-    for (size_t i = 0; i < num_vertices(g); ++i) {
-      if (depths[i] != -1) {
-        if (depths[i] >= static_cast<int>(verts_at_depth.size())) {
-          verts_at_depth.resize(depths[i] + 1);
-        }
-        verts_at_depth[depths[i]].push_back(i);
-      }
-    }
-
-    std::vector<score_t> deltas(num_vertices(g), 0);
-    for (int depth = verts_at_depth.size() - 1; depth >= 0; depth--) {
-      for (vertex_id_type u : verts_at_depth[depth]) {
-        for (auto edge : out_neigh[u]) {
-          vertex_id_type v = std::get<0>(edge);
-          if (depths[v] == depths[u] + 1) {
-            deltas[u] += static_cast<double>(path_counts[u]) / static_cast<double>(path_counts[v]) * (1 + deltas[v]);
-          }
-        }
-        scores[u] += deltas[u];
-      }
-    }
-  }
-
-  score_t biggest_score = *std::max_element(scores.begin(), scores.end());
-  for (size_t i = 0; i < num_vertices(g); ++i) {
-    scores[i] = scores[i] / biggest_score;
-  }
-
-  bool all_ok = true;
-
-  for (size_t i = 0; i < scores.size(); ++i) {
-    accum_t delta = abs(scores_to_test[i] - scores[i]);
-    if (delta > 1e-6) {
-      std::cout << i << ": " << scores[i] << " != " << scores_to_test[i] << " " << scores[i] - scores_to_test[i] << std::endl;
-      all_ok = false;
-    }
-  }
-
-  return all_ok;
 }
 
 int main(int argc, char* argv[]) {
@@ -199,6 +129,10 @@ int main(int argc, char* argv[]) {
               return bc2_v4<score_t, accum_t>(graph, trial_sources, thread);
             case 5:
               return bc2_v5<score_t, accum_t>(graph, trial_sources, thread);
+            case 6:
+              return betweenness_brandes(graph);
+            case 7:
+              return approx_betweenness_brandes(graph, trial_sources);
             default:
               std::cerr << "Invalid BC version " << id << "\n";
               return {};

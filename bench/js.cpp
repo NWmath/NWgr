@@ -22,7 +22,7 @@ static constexpr const char USAGE[] =
 
   Options:
       -h, --help            show this screen
-      --version ID          algorithm version to run [default: 4]
+      --version ID          algorithm version to run [default: 0]
       -f FILE               input file path
       -n NUM                number of trials [default: 1]
       --lower               lower triangular order [default: false]
@@ -44,6 +44,7 @@ static constexpr const char USAGE[] =
 
 #include "common.hpp"
 #include "nwgraph/algorithms/jaccard.hpp"
+#include "nwgraph/experimental/algorithms/jaccard.hpp"
 #include <docopt.h>
 #include <tuple>
 
@@ -114,10 +115,9 @@ static std::size_t TCVerifier(Graph& graph) {
   std::size_t                             total = 0;
   std::vector<std::tuple<vertex_id_type>> intersection;
   intersection.reserve(graph.size());
-  auto g = graph.begin();
   for (auto&& [u, v] : edge_range(graph)) {
-    auto u_out = g[u];
-    auto v_out = g[v];
+    auto u_out = graph[u];
+    auto v_out = graph[v];
     auto end   = std::set_intersection(u_out.begin(), u_out.end(), v_out.begin(), v_out.end(), intersection.begin());
     intersection.resize(end - intersection.begin());
     total += intersection.size();

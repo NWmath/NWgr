@@ -76,4 +76,13 @@ using is_nothrow_tag_invocable = std::bool_constant<is_nothrow_tag_invocable_v<C
 template <typename CPO, typename... Args>
 concept tag_invocable = (sizeof(_tag_invoke::try_tag_invoke<CPO, Args...>(0)) == sizeof(_tag_invoke::yes_type));
 
+#define DECL_TAG_INVOKE(str)                                                                                                  \
+  struct str##_tag final {                                                                                                    \
+    inline constexpr auto operator()(auto&&... args) const noexcept(is_nothrow_tag_invocable_v<str##_tag, decltype(args)...>) \
+        -> tag_invoke_result_t<str##_tag, decltype(args)...> {                                                                \
+      return tag_invoke(*this, std::forward<decltype(args)>(args)...);                                                        \
+    }                                                                                                                         \
+  };                                                                                                                          \
+  static inline constexpr str##_tag str {}
+
 #endif    // NW_GRAPH_TAG_INVOKE_HPP
