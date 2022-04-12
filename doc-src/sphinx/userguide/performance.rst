@@ -27,12 +27,12 @@ each server is 384 GB DDR4 running at 2.6 GHz. We used GCC 10 with
 
 .. container:: figure*
 
-   .. figure:: plots/apb/abp-spmv-intel.eps
+   .. figure:: imgs/abp-spmv-intel.pdf
       :alt: Different data access abstractions (``iterator``\ s,
-      ``range``\ s, ``std::for_each`` and ``neighbor_range`` adaptor)
-      with their abstraction penalties measured relative to a raw for
-      loop implementation. There is no significant performance penalty
-      relative to the raw loop implementation.
+        ``range``\ s, ``std::for_each`` and ``neighbor_range`` adaptor)
+        with their abstraction penalties measured relative to a raw for
+        loop implementation. There is no significant performance penalty
+        relative to the raw loop implementation.
       :name: fig:abp_spmv
 
       Different data access abstractions (``iterator``\ s, ``range``\ s,
@@ -41,12 +41,12 @@ each server is 384 GB DDR4 running at 2.6 GHz. We used GCC 10 with
       implementation. There is no significant performance penalty
       relative to the raw loop implementation.
 
-   .. figure:: plots/apb/abp-containers-intel.eps
+   .. figure:: imgs/abp-containers-intel.pdf
       :alt: Measured abstraction penalty for the SpMV benchmark with
-      graphs represented by different containers using ``iterator``
-      based ``for`` loop. The execution time has been normalized w.r.t
-      to the execution time of SpMV with graphs represented as
-      ``struct_of_array`` (lower is better).
+        graphs represented by different containers using ``iterator``
+        based ``for`` loop. The execution time has been normalized w.r.t
+        to the execution time of SpMV with graphs represented as
+        ``struct_of_array`` (lower is better).
       :name: fig:abp_containers
 
       Measured abstraction penalty for the SpMV benchmark with graphs
@@ -192,23 +192,20 @@ common across these graph frameworks.
 
 .. container:: figure*
 
-   |image|
+   .. figure:: imgs/BC_perf.pdf
 
-   |image1|
+   .. figure:: imgs/BFS_perf.pdf
 
-   | 
+   .. figure:: imgs/CC_perf.pdf	       
 
-   |image2|
+   .. figure:: imgs/PR_perf.pdf	       
 
-   |image3|
+   .. figure:: imgs/SSSP_perf.pdf	       
 
-   | 
+   .. figure:: imgs/TC_perf.pdf	       
 
-   |image4|
 
-   |image5|
-
-The performance of different graph frameworks is shown in  . We
+The performance of different graph frameworks is shown above . We
 summarize our observations as follows:
 
 -  With Web and kron datasets, which have skewed degree distribution,
