@@ -68,7 +68,7 @@ endif (NW_GRAPH_SANITIZE)
 
 option(NW_GRAPH_BUILD_APBS "Determines whether to build abstraction penalty benchmarks." OFF)
 option(NW_GRAPH_BUILD_BENCH "Determines whether to build performance benchmarks." OFF)
-option(NW_GRAPH_BUILD_DOCS "Determines whether to build documentation." OFF)
+# option(NW_GRAPH_BUILD_DOCS "Determines whether to build documentation." OFF)
 option(NW_GRAPH_BUILD_EXAMPLES "Determines whether to build examples." OFF)
 option(NW_GRAPH_BUILD_TESTS "Determines whether to build tests." ON)
 option(NW_GRAPH_USE_TBBMALLOC "Link to tbbmalloc" OFF)
@@ -85,9 +85,10 @@ if (NW_GRAPH_BUILD_BENCH)
   add_subdirectory(bench)
 endif()
 
-if (NW_GRAPH_BUILD_DOCS)
-  add_subdirectory(doc-src)
-endif()
+# Documentation is built specially in CI for now
+# if (NW_GRAPH_BUILD_DOCS)
+#   add_subdirectory(doc-src)
+# endif()
 
 if (NW_GRAPH_BUILD_EXAMPLES)
   add_subdirectory(examples/imdb)

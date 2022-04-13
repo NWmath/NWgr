@@ -20,6 +20,8 @@
 using namespace nw::graph;
 using namespace nw::util;
 
+// #define PRINT_OUT
+
 //****************************************************************************
 template <typename EdgeListT>
 bool validate(EdgeListT& aos, size_t seed, std::vector<size_t> const& distance, std::vector<size_t> const& predecessor) {
@@ -134,7 +136,7 @@ TEST_CASE("BFS traversal", "[bfs]") {
 
     REQUIRE(validate(aos_a, seed, distance, predecessor));
   }
-#endif
+
 
   SECTION("Bottom-up BFS default seed using bottomup_bfs_range") {
     vertex_id_t<directed_csr_graph_t> seed = 0;
@@ -168,5 +170,6 @@ TEST_CASE("BFS traversal", "[bfs]") {
     }
     REQUIRE(validate(aos_a, seed, distance, predecessor));
   }
-
+#endif
 }
+
