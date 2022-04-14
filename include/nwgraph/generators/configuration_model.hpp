@@ -21,7 +21,7 @@
 #include <math.h>
 
 namespace nw {
-namespace hypergraph {
+namespace graph {
 
 /* 
 * dist_min - Minimum value of distribution.  
@@ -125,7 +125,7 @@ configuration_model(std::vector<T>& deg_seqa, std::vector<T>& deg_seqb, bool con
     return el;
 }
 
-}//namespace hypergraph
+}//namespace graph
 }//namespace nw
 
 #endif // NW_GRAPH_CONFIGURATION_MODEL_HPP
