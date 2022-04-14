@@ -1,3 +1,10 @@
+<!--
+SPDX-FileCopyrightText: 2022 Batelle Memorial Institute
+SPDX-FileCopyrightText: 2022 University of Washington
+
+SPDX-License-Identifier: BSD-3-Clause
+-->
+
 ## Experimental Setup
 
 Abstraction penalty benchmarks were run on 2019 MacBook Pro with 2.4 GHz 8-Core Intel® Core i9 processor with 64 GB DDR4 memory running at 2.6GHz.  We used GCC 10 with ``-Ofast'' and TBB 2020.3 to compile.

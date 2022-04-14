@@ -1,3 +1,16 @@
+/**
+ * @file compat_eg.cpp
+ *
+ * @copyright SPDX-FileCopyrightText: 2022 Batelle Memorial Institute
+ * @copyright SPDX-FileCopyrightText: 2022 University of Washington
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
+ *
+ * @authors
+ *   Andrew Lumsdaine
+ *
+ */
+
 //
 // This file is part of BGL17 (aka NWGraph aka GraphPack aka the Graph Standard Library)
 // (c) Pacific Northwest National Laboratory 2018

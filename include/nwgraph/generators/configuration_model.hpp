@@ -1,3 +1,16 @@
+/**
+ * @file configuration_model.hpp
+ *
+ * @copyright SPDX-FileCopyrightText: 2022 Batelle Memorial Institute
+ * @copyright SPDX-FileCopyrightText: 2022 University of Washington
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
+ *
+ * @authors
+ *   Tony Liu
+ *
+ */
+
 //
 // This file is part of NWHypergraph
 // (c) Pacific Northwest National Laboratory 2021-2021

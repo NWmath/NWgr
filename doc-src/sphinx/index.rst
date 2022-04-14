@@ -1,3 +1,8 @@
+.. SPDX-FileCopyrightText: 2022 Batelle Memorial Institute
+.. SPDX-FileCopyrightText: 2022 University of Washington
+..
+.. SPDX-License-Identifier: BSD-3-Clause
+
 .. NW Graph documentation master file, created by
    sphinx-quickstart on Wed Oct 14 18:35:52 2020.
    You can adapt this file completely to your liking, but it should at least
