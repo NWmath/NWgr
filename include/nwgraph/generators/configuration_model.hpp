@@ -1,14 +1,19 @@
-//
-// This file is part of NWHypergraph
-// (c) Pacific Northwest National Laboratory 2021-2021
-//
-// Licensed under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License
-// https://creativecommons.org/licenses/by-nc-sa/4.0/
-//
-// Author: Xu Tony Liu
-//
+/**
+ * @file configuration_model.hpp
+ *
+ * @copyright SPDX-FileCopyrightText: 2022 Batelle Memorial Institute
+ * @copyright SPDX-FileCopyrightText: 2022 University of Washington
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
+ *
+ * @authors
+ *   Tony Liu
+ *
+ */
 
-#pragma once
+#ifndef NW_GRAPH_CONFIGURATION_MODEL_HPP
+#define NW_GRAPH_CONFIGURATION_MODEL_HPP
+
 #include <edge_list.hpp>
 #include <execution>
 #include <vector>
@@ -122,3 +127,5 @@ configuration_model(std::vector<T>& deg_seqa, std::vector<T>& deg_seqb, bool con
 
 }//namespace hypergraph
 }//namespace nw
+
+#endif // NW_GRAPH_CONFIGURATION_MODEL_HPP

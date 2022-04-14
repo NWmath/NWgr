@@ -1,3 +1,10 @@
+<!--
+SPDX-FileCopyrightText: 2022 Batelle Memorial Institute
+SPDX-FileCopyrightText: 2022 University of Washington
+
+SPDX-License-Identifier: BSD-3-Clause
+-->
+
 ![Build with gcc-11](https://github.com/NWmath/NWgr/workflows/Build%20with%20gcc-11/badge.svg)
 ![Build with gcc-11](https://github.com/NWmath/NWgr/workflows/Build%20with%20gcc-11/badge.svg?branch=sc_release)
 ![Build with gcc-11](https://github.com/NWmath/NWgr/workflows/Build%20with%20gcc-11%20(Mac)/badge.svg?branch=sc_release)

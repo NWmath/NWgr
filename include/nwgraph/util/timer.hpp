@@ -1,11 +1,15 @@
-//
-// This file is part of NWutils, a project of NWmath, Pacific Northwest National Laboratory and University of Washington
-//
-// Licensed under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License
-// https://creativecommons.org/licenses/by-nc-sa/4.0/
-//
-// Author: Andrew Lumsdaine
-//
+/**
+ * @file timer.hpp
+ *
+ * @copyright SPDX-FileCopyrightText: 2022 Batelle Memorial Institute
+ * @copyright SPDX-FileCopyrightText: 2022 University of Washington
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
+ *
+ * @authors
+ *   Andrew Lumsdaine
+ *
+ */
 
 #ifndef NW_UTIL_TIMER_HPP
 #define NW_UTIL_TIMER_HPP

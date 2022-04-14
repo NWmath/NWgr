@@ -1,19 +1,19 @@
-//****************************************************************************
-// Copyright 2014, Software Engineering Institute, Carnegie Mellon University
-//
-// File: [filename]
-//
-// Description:
-//****************************************************************************
-//
-// This file is part of BGL17 (aka NWGraph aka GraphPack aka the Graph Standard Library)
-// (c) Pacific Northwest National Laboratory 2020-2021
-//
-// Licensed under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License
-// https://creativecommons.org/licenses/by-nc-sa/4.0/
-//
-// Author: Kevin Deweese, Andrew Lumsdaine
-//
+/**
+ * @file tc.cpp
+ *
+ * @copyright Copyright 2014, Software Engineering Institute, Carnegie Mellon University
+ * @copyright SPDX-FileCopyrightText: 2022 Batelle Memorial Institute
+ * @copyright SPDX-FileCopyrightText: 2022 University of Washington
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
+ *
+ * @authors
+ *   Andrew Lumsdaine
+ *   Tony Liu
+ *   liux238
+ *
+ */
+
 static constexpr const char USAGE[] =
     R"(tc.exe: BGL17 triangle counting benchmark driver.
   Usage:

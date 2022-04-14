@@ -1,12 +1,15 @@
-//
-// This file is part of BGL17 (aka NWGraph aka GraphPack aka the Graph Standard Library)
-// (c) Pacific Northwest National Laboratory 2018
-//
-// Licensed under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License
-// https://creativecommons.org/licenses/by-nc-sa/4.0/
-//
-// Author: Andrew Lumsdaine
-//
+/**
+ * @file ch3_toposort.cpp
+ *
+ * @copyright SPDX-FileCopyrightText: 2022 Batelle Memorial Institute
+ * @copyright SPDX-FileCopyrightText: 2022 University of Washington
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
+ *
+ * @authors
+ *   Andrew Lumsdaine
+ *
+ */
 
 #include "compressed.hpp"
 #include "dfs_range.hpp"

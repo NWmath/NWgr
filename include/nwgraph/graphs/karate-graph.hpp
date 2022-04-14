@@ -1,3 +1,16 @@
+/**
+ * @file karate-graph.hpp
+ *
+ * @copyright SPDX-FileCopyrightText: 2022 Batelle Memorial Institute
+ * @copyright SPDX-FileCopyrightText: 2022 University of Washington
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
+ *
+ * @authors
+ *   Andrew Lumsdaine
+ *
+ */
+
 #include <vector>
 #include <tuple>
 std::vector<std::tuple<size_t, size_t>> karate_index_edge_list {

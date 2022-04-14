@@ -1,3 +1,8 @@
+# SPDX-FileCopyrightText: 2022 Batelle Memorial Institute
+# SPDX-FileCopyrightText: 2022 University of Washington
+#
+# SPDX-License-Identifier: BSD-3-Clause
+
 # Configuration file for the Sphinx documentation builder.
 #
 # This file only contains a selection of the most common options. For a full

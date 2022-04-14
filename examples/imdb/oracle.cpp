@@ -1,13 +1,17 @@
-//
-// This file is part of NWGraph
-// Pacific Northwest National Laboratory and University of Washington
-// 2018, 2019, 202
-//
-// Licensed under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License
-// https://creativecommons.org/licenses/by-nc-sa/4.0/
-//
-// Author: Andrew Lumsdaine
-//
+/**
+ * @file oracle.cpp
+ *
+ * @copyright SPDX-FileCopyrightText: 2022 Batelle Memorial Institute
+ * @copyright SPDX-FileCopyrightText: 2022 University of Washington
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
+ *
+ * @authors
+ *   Andrew Lumsdaine
+ *   Kevin Deweese
+ *   liux238
+ *
+ */
 
 #include <cassert>
 #include <deque>
