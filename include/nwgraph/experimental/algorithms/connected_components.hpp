@@ -57,7 +57,7 @@ struct atomwrapper {
 
   atomwrapper() : _a() {}
 
-  atomwrapper(const std::atomic<T>& a) : _a(a.load()) {}
+  explicit atomwrapper(const std::atomic<T>& a) : _a(a.load()) {}
 
   atomwrapper(const atomwrapper& other) : _a(other._a.load()) {}
 
@@ -166,7 +166,8 @@ bool pull(const Graph& g, const T u, std::vector<T>& comp) {
   bool change = false;
   T    p1     = comp[u];
   T    p2     = min_compid;
-  T    high = comp[u], low = min_compid;
+  // T    high = comp[u];
+  T    low = min_compid;
   while (p1 != p2) {
     high              = std::max(p1, p2);
     low               = p1 + p2 - high;

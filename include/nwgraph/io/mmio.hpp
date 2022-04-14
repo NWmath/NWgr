@@ -337,7 +337,7 @@ auto read_mm_vector(const std::string& filename) {
   return v;
 }
 
-bool is_mm(const std::string filename) {
+bool is_mm(const std::string& filename) {
   std::ifstream            input_stream(filename);
   std::vector<std::string> header(5);
 
@@ -351,7 +351,7 @@ bool is_mm(const std::string filename) {
   return header[0] == "%%MatrixMarket";
 }
 
-directedness get_mm_symmetry(const std::string filename) {
+directedness get_mm_symmetry(const std::string& filename) {
   std::ifstream            inputStream(filename);
   std::string              string_input;
   std::vector<std::string> header(5);

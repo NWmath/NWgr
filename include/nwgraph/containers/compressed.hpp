@@ -75,7 +75,7 @@ public:    // fixme
 
   static constexpr std::size_t getNAttr() { return sizeof...(Attributes); }
 
-  indexed_struct_of_arrays(size_t N) : N_(N), indices_(N + 1) {}
+  explicit indexed_struct_of_arrays(size_t N) : N_(N), indices_(N + 1) {}
   indexed_struct_of_arrays(size_t N, size_t M) : N_(N), indices_(N + 1), to_be_indexed_(M) {}
   //move constructor, assume indices_[N_] == to_be_indexed_.size()
   indexed_struct_of_arrays(std::vector<index_t>&& indices, std::vector<Attributes>&&... to_be_indexed)
@@ -447,7 +447,7 @@ public:    // fixme
   * but does NOT relabel the ids in the to_be_indexed.
   * */
   template <class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
-  std::vector<index_t> permute_by_degree(std::string direction = "descending", ExecutionPolicy&& ex_policy = {}) {
+  std::vector<index_t> permute_by_degree(const std::string& direction = "descending", ExecutionPolicy&& ex_policy = {}) {
     //1. get the degrees of all the vertices
     size_t                   n = indices_.size() - 1;
     std::vector              degs = degrees<ExecutionPolicy>(ex_policy);
@@ -518,7 +518,7 @@ public:    // fixme
   * then call relabel_to_be_indexed on adjacency<(idx + 1) % 2>.
   */
   template <class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
-  void sort_by_degree(std::string direction = "descending", ExecutionPolicy&& ex_policy = {}) {
+  void sort_by_degree(const std::string& direction = "descending", ExecutionPolicy&& ex_policy = {}) {
     auto&& perm = permute_by_degree(direction, ex_policy);
     relabel_to_be_indexed(perm, ex_policy);
   }
@@ -550,7 +550,7 @@ public:    // fixme
 
 template <typename index_t, typename... Attributes>
 auto operator+(typename std::iter_difference_t<typename indexed_struct_of_arrays<index_t, Attributes...>::outer_iterator> n,
-               const typename indexed_struct_of_arrays<index_t, Attributes...>::outer_iterator                            i) {
+               const typename indexed_struct_of_arrays<index_t, Attributes...>::outer_iterator&                           i) {
   return i + n;
 }
 

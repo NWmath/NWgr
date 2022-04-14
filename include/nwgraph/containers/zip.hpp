@@ -81,7 +81,7 @@ struct zipped : std::tuple<Ranges&...> {
 
     soa_iterator() = default;
 
-    soa_iterator(soa_t* soa, std::size_t i = 0) : i_(i), soa_(soa) {}
+    explicit soa_iterator(soa_t* soa, std::size_t i = 0) : i_(i), soa_(soa) {}
 
     soa_iterator(soa_iterator&&) = default;
     soa_iterator(const soa_iterator&) = default;
@@ -165,7 +165,7 @@ struct zipped : std::tuple<Ranges&...> {
   // }
 
 
-  zipped(Ranges&... rs) : base(std::forward_as_tuple(rs...)) { }
+  explicit zipped(Ranges&... rs) : base(std::forward_as_tuple(rs...)) { }
 
   iterator       begin() { return {this}; }
   const_iterator begin() const { return {this}; }

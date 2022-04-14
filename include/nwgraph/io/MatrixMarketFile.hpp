@@ -53,7 +53,7 @@ class MatrixMarketFile final {
   MM_typecode type_;
 
 public:
-  MatrixMarketFile(std::filesystem::path path) : fd_(open(path.c_str(), O_RDONLY)) {
+  explicit MatrixMarketFile(std::filesystem::path path) : fd_(open(path.c_str(), O_RDONLY)) {
     if (fd_ < 0) {
       fprintf(stderr, "open failed, %d: %s\n", errno, strerror(errno));
       std::terminate();

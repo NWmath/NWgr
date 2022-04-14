@@ -569,7 +569,7 @@ template <adjacency_list_graph Graph, typename Real>
   using vertex_id_type = typename Graph::vertex_id_type;
 
   std::size_t N          = graph.size();
-  Real        init_score = 1.0 / N;
+  // Real        init_score = 1.0 / N;
   Real        base_score = (1.0 - damping_factor) / N;
 
   std::vector<Real> delta(N);

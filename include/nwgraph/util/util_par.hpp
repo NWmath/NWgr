@@ -47,7 +47,7 @@ private:
 
 class atomic_counting_output_iterator : public std::iterator<std::random_access_iterator_tag, size_t> {
 public:
-  atomic_counting_output_iterator(std::atomic<size_t>& count) : count{count} {}
+  explicit atomic_counting_output_iterator(std::atomic<size_t>& count) : count{count} {}
   void                             operator++() {}
   void                             operator++(int) {}
   atomic_counting_output_iterator& operator*() { return *this; }

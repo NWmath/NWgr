@@ -39,7 +39,7 @@ class provenance {
 public:
   provenance(const provenance&) = default;
   provenance()                  = default;
-  provenance(size_t n) : info(n) {}
+  explicit provenance(size_t n) : info(n) {}
   void push_back(const std::string& fn, const std::string& str) {
     std::string f(fn), g(str);
     trim(f);

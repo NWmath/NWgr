@@ -81,7 +81,7 @@ struct struct_of_arrays : std::tuple<std::vector<Attributes>...> {
 
     soa_iterator() = default;
 
-    soa_iterator(soa_t* soa, std::size_t i = 0) : i_(i), soa_(soa) {}
+    explicit soa_iterator(soa_t* soa, std::size_t i = 0) : i_(i), soa_(soa) {}
 
     soa_iterator(const soa_iterator&) = default;
     soa_iterator(const soa_iterator<false>& b) requires(is_const) : i_(b.i_), soa_(b.soa_) {}
@@ -156,8 +156,8 @@ struct struct_of_arrays : std::tuple<std::vector<Attributes>...> {
 
   struct_of_arrays() = default;
   struct_of_arrays(size_t M) : base(std::vector<Attributes>(M)...) {}
-  struct_of_arrays(std::vector<Attributes>&&... l) : base(std::move(l)...) {}
-  struct_of_arrays(const std::vector<Attributes>&... l) : base(l...) {}
+  explicit struct_of_arrays(std::vector<Attributes>&&... l) : base(std::move(l)...) {}
+  explicit struct_of_arrays(const std::vector<Attributes>&... l) : base(l...) {}
   struct_of_arrays(std::tuple<std::vector<Attributes>...>&& l) : base(std::move(l)) {}
   struct_of_arrays(const std::tuple<std::vector<Attributes>...>& l) : base(l) {}
   struct_of_arrays(std::initializer_list<value_type> l) {
