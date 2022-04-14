@@ -13,17 +13,6 @@
  *
  */
 
-//
-// This file is part of NWGraph
-// Pacific Northwest National Laboratory and University of Washington
-// 2018, 2019, 202
-//
-// Licensed under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License
-// https://creativecommons.org/licenses/by-nc-sa/4.0/
-//
-// Author: Andrew Lumsdaine
-//
-
 #include <cassert>
 #include <deque>
 #include <fstream>
