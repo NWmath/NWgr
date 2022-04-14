@@ -11,13 +11,6 @@
  *
  */
 
-//
-//  Authors
-//  Copyright
-//  License
-//  No Warranty Disclaimer
-//
-
 #include <vector>
 #include <string>
 #include <tuple>

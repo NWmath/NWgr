@@ -8,22 +8,10 @@
  *
  * @authors
  *   Andrew Lumsdaine
+ *   Kevin Deweese
  *   Tony Liu
  *
  */
-
-// 
-// This file is part of NW Graph (aka GraphPack) 
-// (c) Pacific Northwest National Laboratory 2018-2021 
-// (c) University of Washington 2018-2021 
-// 
-// Licensed under terms of include LICENSE file 
-// 
-// Authors: 
-//     Andrew Lumsdaine	
-//     Kevin Deweese
-//     Xu Tony Liu	
-//
 
 #ifndef NW_GRAPH_EXPERIMENTAL_BFS_HPP
 #define NW_GRAPH_EXPERIMENTAL_BFS_HPP

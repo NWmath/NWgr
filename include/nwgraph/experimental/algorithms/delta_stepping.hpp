@@ -7,21 +7,12 @@
  * SPDX-License-Identifier: BSD-3-Clause
  *
  * @authors
+ *   Andrew Lumsdaine
+ *   Kevin Deweese
  *   Tony Liu
  *
  */
 
-// 
-// This file is part of NW Graph (aka GraphPack) 
-// (c) Pacific Northwest National Laboratory 2018-2021 
-// (c) University of Washington 2018-2021 
-// 
-// Licensed under terms of include LICENSE file 
-// 
-// Authors: 
-//     Andrew Lumsdaine	
-//     Kevin Deweese	
-//
 #ifndef DELTA_STEPPING_EXPERIMENTAL_HPP
 #define DELTA_STEPPING_EXPERIMENTAL_HPP
 

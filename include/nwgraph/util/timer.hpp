@@ -11,15 +11,6 @@
  *
  */
 
-//
-// This file is part of NWutils, a project of NWmath, Pacific Northwest National Laboratory and University of Washington
-//
-// Licensed under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License
-// https://creativecommons.org/licenses/by-nc-sa/4.0/
-//
-// Author: Andrew Lumsdaine
-//
-
 #ifndef NW_UTIL_TIMER_HPP
 #define NW_UTIL_TIMER_HPP
 

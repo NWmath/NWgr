@@ -11,19 +11,8 @@
  *
  */
 
-// 
-// This file is part of NW Graph (aka GraphPack) 
-// (c) Pacific Northwest National Laboratory 2018-2021 
-// (c) University of Washington 2018-2021 
-// 
-// Licensed under terms of include LICENSE file 
-// 
-// Authors: 
-//     Andrew Lumsdaine	
-//     Kevin Deweese	
-//
-
-#pragma once
+#ifndef NW_GRAPH_MATRIXMARKETFILE_HPP
+#define NW_GRAPH_MATRIXMARKETFILE_HPP
 
 #include <cstdio>
 #include <cstring>
@@ -209,3 +198,5 @@ auto edges(const MatrixMarketFile& mm, int j, int k) {
   return Range(mm.template at<Vs...>(j), mm.template at<Vs...>(k));
 }
 }    // namespace mmio
+
+#endif // NW_GRAPH_MATRIXMARKETFILE_HPP

@@ -8,24 +8,12 @@
  *
  * @authors
  *   Andrew Lumsdaine
+ *   Luke D'Alessandro
+ *   Kevin Deweese
  *   Krzysztof Drewniak
  *   Tony Liu
  *
  */
-
-// 
-// This file is part of NW Graph (aka GraphPack) 
-// (c) Pacific Northwest National Laboratory 2018-2021 
-// (c) University of Washington 2018-2021 
-// 
-// Licensed under terms of include LICENSE file 
-// 
-// Authors: 
-//     Andrew Lumsdaine	
-//     Kevin Deweese	
-//     Luke D'Alessandro	
-//     Xu Tony Liu	
-//
 
 #ifndef NW_GRAPH_COMPRESSED_HPP
 #define NW_GRAPH_COMPRESSED_HPP

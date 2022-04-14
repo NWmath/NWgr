@@ -8,6 +8,8 @@
  *
  * @authors
  *   Andrew Lumsdaine
+ *   Kevin Deweese	
+ *   Luke D'Alessandro	
  *   Tony Liu
  *
  */
@@ -21,8 +23,6 @@
 // 
 // Authors: 
 //     Andrew Lumsdaine	
-//     Kevin Deweese	
-//     Luke D'Alessandro	
 //     Xu Tony Liu
 //
 
