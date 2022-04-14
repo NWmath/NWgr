@@ -13,15 +13,6 @@
  *
  */
 
-// This file is part of the Graph Standard Library (aka BGL17 aka NWGraph)
-//
-// (c) Pacific Northwest National Laboratory 2020
-//
-// Licensed under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License
-// https://creativecommons.org/licenses/by-nc-sa/4.0/
-//
-// Author: Andrew Lumsdaine
-//
 static constexpr const char USAGE[] =
     R"(bfs.exe: BGL17 breadth first search benchmark driver.
   Usage:

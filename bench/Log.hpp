@@ -12,16 +12,6 @@
  *
  */
 
-//
-// This file is part of the Graph Standard Library (aka BGL17 aka NWGraph)
-// (c) University of Washington
-//
-// Licensed under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License
-// https://creativecommons.org/licenses/by-nc-sa/4.0/
-//
-// Author: Luke D'Alessandro
-//
-
 #ifndef NW_GRAPH_LOG_HPP
 #define NW_GRAPH_LOG_HPP
 

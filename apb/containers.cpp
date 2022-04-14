@@ -11,16 +11,6 @@
  *
  */
 
-//
-// This file is part of BGL17 (aka NWGraph aka GraphPack aka the Graph Standard Library)
-// (c) Pacific Northwest National Laboratory 2020-2021
-//
-// Licensed under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License
-// https://creativecommons.org/licenses/by-nc-sa/4.0/
-//
-// Author: Xu Tony Liu
-//
-
 static constexpr const char USAGE[] =
     R"(containers.exe: containers abstraction penalty benchmark driver.
   Usage:
