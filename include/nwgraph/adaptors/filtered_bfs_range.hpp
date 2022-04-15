@@ -67,7 +67,7 @@ public:
     }
 
     filtered_bfs_edge_range_iterator(const filtered_bfs_edge_range_iterator& ite)
-        : the_range_(ite.the_range_), G(ite.G), v_(ite.v_), u_begin(u_begin), filter_(ite.filter_) {}
+        : the_range_(ite.the_range_), G(ite.G), v_(ite.v_), u_begin(ite.u_begin), filter_(ite.filter_) {}
 
     filtered_bfs_edge_range_iterator& operator++() {
       auto& Q      = the_range_.Q_;
