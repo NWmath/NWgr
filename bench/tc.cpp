@@ -272,7 +272,7 @@ void run_bench(int argc, char* argv[]) {
           auto&& [time, triangles] = time_op([&]() -> std::size_t {
             switch (id) {
               case 0:
-                return triangle_count_v0(cel_a);
+                return triangle_count(cel_a);
               case 1:
                 return triangle_count_v1(cel_a);
               case 2:
@@ -280,7 +280,7 @@ void run_bench(int argc, char* argv[]) {
               case 3:
                 return triangle_count_v3(cel_a);
               case 4:
-                return triangle_count_v4(cel_a.begin(), cel_a.end(), thread);
+                return triangle_count(cel_a, thread);
               case 5:
                 return triangle_count_v5(cel_a.begin(), cel_a.end(), thread);
               case 6:

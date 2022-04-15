@@ -50,7 +50,7 @@ TEST_CASE("triangle counting", "[tc]") {
 
 
   SECTION("v0") {
-    size_t triangles = triangle_count_v0(A);
+    size_t triangles = triangle_count(A);
     std::cout << triangles << " triangles (v0)\n";
     REQUIRE(triangles == 45);
   }
@@ -74,7 +74,7 @@ TEST_CASE("triangle counting", "[tc]") {
   }
 
   SECTION("v4") {
-    size_t triangles = triangle_count_v4(A.begin(), A.end());
+    size_t triangles = triangle_count(A, 1);
     std::cout << triangles << " triangles (v4)\n";
     REQUIRE(triangles == 45);
   }

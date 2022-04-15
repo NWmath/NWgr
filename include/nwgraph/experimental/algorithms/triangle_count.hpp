@@ -133,7 +133,32 @@ size_t triangle_count_v3(const Graph& A) {
   }
   return triangles;
 }
-
+/// Two-dimensional triangle counting.
+///
+/// This version of triangle counting is explicitly two-dimensional and is
+/// optimized (and only correct for) an upper-triangular graph. It uses explicit
+/// async threads to perform the parallelization.
+///
+/// @tparam RandomAccessIterator A random access BGL17 iterator type.
+///
+/// @param        first The beginning of the outer range.
+/// @param         last The end of the outer range.
+/// @param      threads The number of threads to use in the parallelization.
+///
+/// @returns            The number of triangles in the graph.
+template <typename RandomAccessIterator>
+[[gnu::noinline]] std::size_t triangle_count_v4(RandomAccessIterator first, RandomAccessIterator last, std::size_t threads = 1) {
+  return triangle_count_async(threads, [&](std::size_t tid) {
+    std::size_t triangles = 0;
+    for (auto i = first + tid; i < last; i += threads) {
+      for (auto j = (*i).begin(), end = (*i).end(); j != end; ++j) {
+        // assert(j < end);
+        triangles += nw::graph::intersection_size(j, end, first[std::get<0>(*j)]);
+      }
+    }
+    return triangles;
+  });
+}
 
 /// Two-dimensional triangle counting.
 ///
