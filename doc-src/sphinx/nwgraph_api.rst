@@ -8,6 +8,7 @@ NWGraph API Reference
 
 .. highlight:: c++
 
+
 Concepts
 --------
 
@@ -90,6 +91,26 @@ Graph Data Structures
 Graph Construction
 ------------------
 
+.. doxygenfunction:: nw::graph::fill_adj_list
+
+.. doxygenfunction:: nw::graph::fill_directed
+
+.. doxygenfunction:: nw::graph::fill_undirected
+
+.. doxygenfunction:: nw::graph::fill(edge_list_t& el, adjacency_t& cs, bool sort_adjacency = false, ExecutionPolicy&& policy = {}) {
+
+.. doxygenfunction:: nw::graph::fill(edge_list_t& el, adjacency_t& cs, directedness dir, bool sort_adjacency = false, ExecutionPolicy&& policy = {}) {
+
+.. doxygenfunction:: nw::graph::relabel_by_degree
+
+.. doxygenfunction:: nw::graph::make_plain_graph
+
+.. doxygenfunction:: nw::graph::make_index_graph
+
+.. doxygenfunction:: nw::graph::make_property_graph
+
+.. doxygenfunction:: nw::graph::join
+
 
 
 Range Adaptors
@@ -126,6 +147,7 @@ Range Adaptors
 .. doxygenclass:: nw::graph::worklist_range
 
 
+
 Graph Generators
 ----------------
 
@@ -147,9 +169,18 @@ Graph I/O
 .. doxygenfunction:: write_mm(const std::string& filename, biadjacency<idx, Attributes...>& A, const std::string& file_symmetry)
 
 
+
 Containers
 ----------
 		  
+.. doxygenclass:: nw::graph::array_of_structs
+
+.. doxygenclass:: nw::graph::struct_of_arrays
+
+.. doxygenclass:: nw::graph::indexed_struct_of_arrays
+
+.. doxygenclass:: nw::graph::zipped
+
 
 
 Utilities
