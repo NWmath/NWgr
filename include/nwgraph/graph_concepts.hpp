@@ -83,6 +83,10 @@ using inner_const_iterator_t = const_iterator_t<inner_range_t<G>>;
 template <typename G>
 using inner_value_t = std::ranges::range_value_t<inner_range_t<G>>;
 
+template <typename G>
+using inner_reference_t = std::ranges::range_reference_t<inner_range_t<G>>;
+
+
 template <size_t N, typename... Ts>
 auto nth_cdr(std::tuple<Ts...> t) {
   return [&]<std::size_t... Ns>(std::index_sequence<Ns...>) { return std::tuple{std::get<Ns + N>(t)...}; }
@@ -140,7 +144,7 @@ concept adjacency_list_graph = graph<G>
   && std::ranges::random_access_range<G>
   && std::ranges::forward_range<inner_range_t<G>>
   && std::convertible_to<vertex_id_t<G>,std::ranges::range_difference_t<G>>
-  && requires(G g, vertex_id_t<G> u, inner_value_t<G> e) {
+  && requires(G g, vertex_id_t<G> u, inner_reference_t<G> e) {
   { g[u] } -> std::convertible_to<inner_range_t<G>>;
   { target(g, e) } -> std::convertible_to<vertex_id_t<G>>;
 };
@@ -229,12 +233,12 @@ struct graph_traits<G> {
 
 // target CPO
 template <idx_adjacency_list T, class U>
-auto tag_invoke(const target_tag, const T& graph, const U& e) {
+auto& tag_invoke(const target_tag, const T& graph, const U& e) {
   return std::get<0>(e);
 }
 
 template <min_idx_adjacency_list T, class U>
-auto tag_invoke(const target_tag, const T& graph, const U& e) {
+auto& tag_invoke(const target_tag, const T& graph, const U& e) {
   return e;
 }
 
