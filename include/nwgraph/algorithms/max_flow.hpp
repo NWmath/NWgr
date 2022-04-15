@@ -28,12 +28,32 @@ namespace graph {
 
 static int DEFAULT_MAX = 1000;
 enum class default_dict { capacity_idx = 1, flow_idx = 2 };
+/**
+ * @brief A helper function to access the property in a backedge (a tuple)
+ * 
+ * @tparam Idx the Idx-th element in the backedge
+ * @tparam Edge the type of the backedge
+ * @param edge input backedge
+ * @return auto the Idx-the element in the backedge
+ */
 template <size_t Idx, typename Edge>
 auto backedge_property(Edge edge) {
   return std::get<Idx>(edge);
 }
-//****************************************************************************
-template <typename Dict = default_dict, typename flowtype = double, typename Graph>
+
+/**
+ * @brief A sequetial algorithm to compute the max flow within a graph.
+ * 
+ * @tparam Dict the dictionary type for max flow
+ * @tparam flowtype the type for flow value
+ * @tparam Graph adjacency_list_graph graph type
+ * @param A input graph
+ * @param source source vertex
+ * @param sink sink vertex
+ * @param max_iters the maximum number of iterations 
+ * @return flowtype the max flow value
+ */
+template <typename Dict = default_dict, typename flowtype = double, adjacency_list_graph Graph>
 flowtype max_flow(const Graph& A, vertex_id_type source, vertex_id_type sink, size_t max_iters = DEFAULT_MAX) {
   struct tree_edge {
     flowtype* capacity;
