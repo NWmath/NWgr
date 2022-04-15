@@ -17,18 +17,35 @@
 #include <algorithm>
 #include <tuple>
 
+#include "nwgraph/graph_concepts.hpp"
 #include "nwgraph/util/disjoint_set.hpp"
 #include "nwgraph/util/util.hpp"
+#include "nwgraph/edge_list.hpp"
 
 namespace nw {
 namespace graph {
 
-template <typename EdgeListT>
+/**
+ * @brief A wrapper function to avoid pass compare function as an arg.
+ * 
+ * @tparam EdgeListT the edge_list_graph graph type
+ * @param E input edge list
+ * @return EdgeListT output edge list of the minimum spanning tree
+ */
+template <edge_list_graph EdgeListT>
 EdgeListT kruskal(EdgeListT& E) {
   return kruskal(E, [](auto t1, auto t2) { return std::get<2>(t1) < std::get<2>(t2); });
 }
-//****************************************************************************
-template <typename EdgeListT, typename Compare>
+/**
+ * @brief A sequential Kruskal's algorithm to find a minimum spanning tree of an undirected edge-weighted graph.
+ * 
+ * @tparam EdgeListT the edge_list_graph graph type
+ * @tparam Compare the comparison function type
+ * @param E input edge list
+ * @param comp comparison function object for sorting the input edge list
+ * @return EdgeListT output edge list of the minimum spanning tree
+ */
+template <edge_list_graph EdgeListT, typename Compare>
 EdgeListT kruskal(EdgeListT& E, Compare comp) {
   size_t    n_vtx = E.size();
   EdgeListT T(n_vtx);
