@@ -66,7 +66,7 @@ target_sources(nw_graph
   nwgraph/algorithms/k_core.hpp
   nwgraph/algorithms/kruskal.hpp
   nwgraph/algorithms/max_flow.hpp
-  nwgraph/algorithms/mis.hpp
+  nwgraph/algorithms/maximal_independent_set.hpp
   nwgraph/algorithms/page_rank.hpp
   nwgraph/algorithms/prim.hpp
   nwgraph/algorithms/spMatspMat.hpp

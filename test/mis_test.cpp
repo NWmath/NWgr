@@ -31,7 +31,7 @@
 #include "nwgraph/graph_traits.hpp"
 
 #include "nwgraph/algorithms/dag_based_mis.hpp"
-#include "nwgraph/algorithms/mis.hpp"
+#include "nwgraph/algorithms/maximal_independent_set.hpp"
 #include "nwgraph/containers/aos.hpp"
 #include "nwgraph/containers/compressed.hpp"
 #include "nwgraph/io/mmio.hpp"
@@ -57,7 +57,7 @@ TEST_CASE("Maximal independent set", "[mis]") {
 
   size_t              N = A.size();
   std::vector<size_t> independentSet;
-  mis_algorithm(A, independentSet);
+  maximal_independent_set(A, independentSet);
   // for (auto v: independentSet)
   //   std::cout << v << " ";
   std::vector<size_t> result = {0, 3, 4, 5, 6};

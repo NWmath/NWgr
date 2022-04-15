@@ -22,8 +22,15 @@
 namespace nw {
 namespace graph {
 
+/**
+ * @brief A sequential algorithm to find maximal independent set in a graph.
+ * 
+ * @tparam Graph input adjacency_list_graph type
+ * @param A input graph
+ * @param mis the vertices in the maximal independent set
+ */
 template <adjacency_list_graph Graph>
-void mis_algorithm(const Graph& A, std::vector<size_t>& mis) {
+void maximal_independent_set(const Graph& A, std::vector<size_t>& mis) {
   using vertex_id_type = vertex_id_t<Graph>;
   size_t            N = A.size();
   std::vector<bool> removedVertices(N);

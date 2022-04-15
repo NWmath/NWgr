@@ -21,7 +21,7 @@
 #include "nwgraph/adaptors/edge_range.hpp"
 #include "nwgraph/adaptors/plain_range.hpp"
 
-#include "nwgraph/algorithms/mis.hpp"
+#include "nwgraph/algorithms/maximal_independent_set.hpp"
 
 namespace nw {
 namespace graph {
@@ -35,7 +35,7 @@ void jones_plassmann_coloring(Graph A, std::vector<size_t>& colors) {
 
   //find the maximal independent set
   std::vector<size_t> independentSet;
-  mis_algorithm(A, independentSet);
+  maximal_independent_set(A, independentSet);
 
   // Function for finding the first
   // missing positive number in an (unsorted) array
