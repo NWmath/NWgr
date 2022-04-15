@@ -44,10 +44,10 @@ using namespace nw::graph;
 using namespace nw::util;
 
 template <typename Vector>
-void print_n_ranks(const Vector& page_rank, size_t n) {
-  auto perm = proxysort<size_t>(page_rank, std::greater<float>());
+void print_n_ranks(const Vector& rankings, size_t n) {
+  auto perm = proxysort<size_t>(rankings, std::greater<float>());
   for (size_t i = 0; i < 10; ++i) {
-    std::cout << std::to_string(perm[i]) + ": " << std::to_string(page_rank[perm[i]]) << std::endl;
+    std::cout << std::to_string(perm[i]) + ": " << std::to_string(rankings[perm[i]]) << std::endl;
   }
 }
 
@@ -86,7 +86,7 @@ int main(int argc, char* argv[]) {
 
     auto degrees = build_degrees(graph);
 
-    std::vector<float> page_rank(graph.size());
+    std::vector<float> rankings(graph.size());
 
     for (auto thread : threads) {
       auto _ = set_n_threads(thread);
@@ -95,59 +95,59 @@ int main(int argc, char* argv[]) {
           times.record(file, id, thread, [&] {
             switch (id) {
               case 0:
-                // page_rank_range_for(graph, page_rank, 0.85f, tolerance, max_iters);
+                // page_rank_range_for(graph, rankings, 0.85f, tolerance, max_iters);
                 break;
 
               case 1:
-                page_rank_v1(graph, degrees, page_rank, 0.85f, tolerance, max_iters);
+                page_rank_v1(graph, degrees, rankings, 0.85f, tolerance, max_iters);
                 break;
 
               case 2:
-                page_rank_v2(graph, degrees, page_rank, 0.85f, tolerance, max_iters);
+                page_rank_v2(graph, degrees, rankings, 0.85f, tolerance, max_iters);
                 break;
 
               case 3:
-                page_rank_v3(graph, degrees, page_rank, 0.85f, tolerance, max_iters);
+                page_rank_v3(graph, degrees, rankings, 0.85f, tolerance, max_iters);
                 break;
 
               case 4:
-                page_rank_v4(graph, degrees, page_rank, 0.85f, tolerance, max_iters, thread);
+                page_rank_v4(graph, degrees, rankings, 0.85f, tolerance, max_iters, thread);
                 break;
 
               case 6:
-                page_rank_v6(graph, degrees, page_rank, 0.85f, tolerance, max_iters);
+                page_rank_v6(graph, degrees, rankings, 0.85f, tolerance, max_iters);
                 break;
 
               case 7:
-                page_rank_v7(graph, degrees, page_rank, 0.85f, tolerance, max_iters);
+                page_rank_v7(graph, degrees, rankings, 0.85f, tolerance, max_iters);
                 break;
 
               case 8:
-                page_rank_v8(graph, degrees, page_rank, 0.85f, tolerance, max_iters);
+                page_rank_v8(graph, degrees, rankings, 0.85f, tolerance, max_iters);
                 break;
 
               case 9:
-                page_rank_v9(graph, degrees, page_rank, 0.85f, tolerance, max_iters, thread);
+                page_rank_v9(graph, degrees, rankings, 0.85f, tolerance, max_iters, thread);
                 break;
 
               case 10:
-                page_rank_v10(graph, degrees, page_rank, 0.85f, tolerance, max_iters, thread);
+                page_rank_v10(graph, degrees, rankings, 0.85f, tolerance, max_iters, thread);
                 break;
 
               case 11:
-                page_rank_v11(graph, degrees, page_rank, 0.85f, tolerance, max_iters, thread);
+                page_rank(graph, degrees, rankings, 0.85f, tolerance, max_iters, thread);
                 break;
 
               case 12:
-                page_rank_v12(graph, degrees, page_rank, 0.85f, tolerance, max_iters, thread);
+                page_rank_v12(graph, degrees, rankings, 0.85f, tolerance, max_iters, thread);
                 break;
 
               case 13:
-                page_rank_v13(graph, degrees, page_rank, 0.85f, tolerance, max_iters, thread);
+                page_rank_v13(graph, degrees, rankings, 0.85f, tolerance, max_iters, thread);
                 break;
 
               case 14:
-                page_rank_v14(graph, degrees, page_rank, 0.85f, tolerance, max_iters);
+                page_rank_v14(graph, degrees, rankings, 0.85f, tolerance, max_iters);
                 break;
 
               default:
@@ -159,7 +159,7 @@ int main(int argc, char* argv[]) {
 
         if (verify) {
           std::cout << "Verifying\n";
-          print_n_ranks(page_rank, 10);
+          print_n_ranks(rankings, 10);
         }
       }
     }

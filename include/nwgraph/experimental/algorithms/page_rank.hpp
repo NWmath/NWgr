@@ -417,16 +417,16 @@ template <adjacency_list_graph Graph, typename Real>
   std::fill(std::execution::par_unseq, page_rank.begin(), page_rank.end(), init_score);
   std::unique_ptr<Real[]> outgoing_contrib(new Real[N]);
 
-  page_rank::trace("iter", "error", "time", "outgoing");
+  pagerank::trace("iter", "error", "time", "outgoing");
 
   for (size_t iter = 0; iter < max_iters; ++iter) {
-    auto&& [outgoing] = page_rank::time_op([&] {
+    auto&& [outgoing] = pagerank::time_op([&] {
       std::transform(std::execution::par_unseq, page_rank.begin(), page_rank.end(), degrees.begin(), &outgoing_contrib[0],
                      [&](auto&& x, auto&& y) { return x / y; });
     });
 
 
-    auto&& [time, error] = page_rank::time_op([&] {
+    auto&& [time, error] = pagerank::time_op([&] {
       return std::transform_reduce(std::execution::par_unseq, counting_iterator<vertex_id_type>(0), counting_iterator<vertex_id_type>(N),
                                    Real(0.0), std::plus{}, [&](auto&& i) {
                                      Real z = 0.0;
@@ -439,7 +439,7 @@ template <adjacency_list_graph Graph, typename Real>
                                    });
     });
 
-    page_rank::trace(iter, error, time, outgoing);
+    pagerank::trace(iter, error, time, outgoing);
 
     if (error < threshold) {
       return;
@@ -467,10 +467,10 @@ template <adjacency_list_graph Graph, typename Real>
 
   std::unique_ptr<Real[]> outgoing_contrib(new Real[N]);
 
-  page_rank::trace("iter", "error", "time", "outgoing");
+  pagerank::trace("iter", "error", "time", "outgoing");
 
   for (size_t iter = 0; iter < max_iters; ++iter) {
-    auto&& [outgoing] = page_rank::time_op([&] {
+    auto&& [outgoing] = pagerank::time_op([&] {
       tbb::parallel_for(tbb::blocked_range(0ul, N), [&](auto&& r) {
         for (auto i = r.begin(), e = r.end(); i != e; ++i) {
           outgoing_contrib[i] = page_rank[i] / degrees[i];
@@ -478,7 +478,7 @@ template <adjacency_list_graph Graph, typename Real>
       });
     });
 
-    auto&& [time, error] = page_rank::time_op([&] {
+    auto&& [time, error] = pagerank::time_op([&] {
       return tbb::parallel_reduce(
           tbb::blocked_range(0ul, N), 0.0,
           [&](auto&& r, auto partial_sum) {
@@ -496,7 +496,7 @@ template <adjacency_list_graph Graph, typename Real>
           std::plus{});
     });
 
-    page_rank::trace(iter, error, time, outgoing);
+    pagerank::trace(iter, error, time, outgoing);
 
     if (error < threshold) {
       return;
@@ -524,7 +524,7 @@ template <adjacency_list_graph Graph, typename Real>
 
   std::unique_ptr<Real[]> outgoing_contrib(new Real[N]);
 
-  page_rank::trace("iter", "error", "time", "outgoing");
+  pagerank::trace("iter", "error", "time", "outgoing");
 
   tbb::parallel_for(tbb::blocked_range(0ul, N), [&](auto&& r) {
     for (auto i = r.begin(), e = r.end(); i != e; ++i) {
@@ -534,7 +534,7 @@ template <adjacency_list_graph Graph, typename Real>
 
   for (size_t iter = 0; iter < max_iters; ++iter) {
 
-    auto&& [time, error] = page_rank::time_op([&] {
+    auto&& [time, error] = pagerank::time_op([&] {
       return tbb::parallel_reduce(
           tbb::blocked_range(0ul, N), 0.0,
           [&](auto&& r, auto partial_sum) {
@@ -555,7 +555,7 @@ template <adjacency_list_graph Graph, typename Real>
           std::plus{});
     });
 
-    page_rank::trace(iter, error, time, 0);
+    pagerank::trace(iter, error, time, 0);
 
     if (error < threshold) {
       return;
@@ -654,7 +654,7 @@ template <adjacency_list_graph Graph, typename Real>
   for (size_t iter = 0; iter < max_iters; ++iter) {
     bool changed = false;
 
-    auto&& [outgoing] = page_rank::time_op([&] {
+    auto&& [outgoing] = pagerank::time_op([&] {
       tbb::parallel_for(tbb::blocked_range(0ul, N), [&](auto&& r) {
         for (auto src = r.begin(), e = r.end(); src != e; ++src) {
           delta[src] = 0;
@@ -671,7 +671,7 @@ template <adjacency_list_graph Graph, typename Real>
       });
     });
 
-    auto&& [time] = page_rank::time_op([&] {
+    auto&& [time] = pagerank::time_op([&] {
       tbb::parallel_for(tbb::blocked_range(0ul, N), [&](auto&& r) {
         for (size_t i = r.begin(), e = r.end(); i != e; ++i) {
 
@@ -689,7 +689,7 @@ template <adjacency_list_graph Graph, typename Real>
       });
     });
 
-    page_rank::trace(iter, 0, time, outgoing);
+    pagerank::trace(iter, 0, time, outgoing);
 
     if (!changed) {    // termination condition
       break;

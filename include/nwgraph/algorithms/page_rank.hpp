@@ -34,7 +34,7 @@
 namespace nw {
 namespace graph {
 
-namespace page_rank {
+namespace pagerank {
 /**
  * @brief Helper to trace some timing.
  * 
@@ -71,7 +71,7 @@ auto time_op(Op&& op) {
     return std::tuple{end.count(), e};
   }
 }
-}    // namespace page_rank
+}    // namespace pagerank
 
 /**
  * @brief Parallel page rank.
@@ -87,7 +87,7 @@ auto time_op(Op&& op) {
  * @param num_threads number of threads
  */
 template <adjacency_list_graph Graph, typename Real>
-[[gnu::noinline]] void page_rank_v11(const Graph& graph, const std::vector<typename Graph::vertex_id_type>& degrees,
+[[gnu::noinline]] void page_rank(const Graph& graph, const std::vector<typename Graph::vertex_id_type>& degrees,
                                      std::vector<Real>& page_rank, Real damping_factor, Real threshold, size_t max_iters, size_t num_threads) {
   std::size_t N          = graph.size();
   Real        init_score = 1.0 / N;
@@ -106,7 +106,7 @@ template <adjacency_list_graph Graph, typename Real>
 
   std::unique_ptr<Real[]> outgoing_contrib(new Real[N]);
 
-  page_rank::trace("iter", "error", "time", "outgoing");
+  pagerank::trace("iter", "error", "time", "outgoing");
 
   {
     nw::util::life_timer _("init contrib");
@@ -120,7 +120,7 @@ template <adjacency_list_graph Graph, typename Real>
 
   for (size_t iter = 0; iter < max_iters; ++iter) {
 
-    auto&& [time, error] = page_rank::time_op([&] {
+    auto&& [time, error] = pagerank::time_op([&] {
       return tbb::parallel_reduce(
           tbb::blocked_range(0ul, N), 0.0,
           [&](auto&& r, auto partial_sum) {
@@ -139,7 +139,7 @@ template <adjacency_list_graph Graph, typename Real>
           std::plus{});
     });
 
-    page_rank::trace(iter, error, time, 0);
+    pagerank::trace(iter, error, time, 0);
 
     if (error < threshold) {
       return;
