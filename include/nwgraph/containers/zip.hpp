@@ -120,8 +120,8 @@ struct zipped : std::tuple<Ranges&...> {
       return *this;
     }
 
-    soa_iterator operator+(std::ptrdiff_t n) const { return {soa_, i_ + n}; }
-    soa_iterator operator-(std::ptrdiff_t n) const { return {soa_, i_ - n}; }
+    soa_iterator operator+(std::ptrdiff_t n) const { return soa_iterator(soa_, i_ + n); }
+    soa_iterator operator-(std::ptrdiff_t n) const { return soa_iterator(soa_, i_ - n); }
 
     friend soa_iterator operator+(std::ptrdiff_t n, soa_iterator i) { return i + n; }
     friend soa_iterator operator-(std::ptrdiff_t n, soa_iterator i) { return i - n; }
@@ -167,8 +167,8 @@ struct zipped : std::tuple<Ranges&...> {
 
   explicit zipped(Ranges&... rs) : base(std::forward_as_tuple(rs...)) { }
 
-  iterator       begin() { return {this}; }
-  const_iterator begin() const { return {this}; }
+  iterator       begin() { return iterator(this); }
+  const_iterator begin() const { return const_iterator(this); }
 
   iterator end() { return begin() + size(); }
 
@@ -274,12 +274,12 @@ struct zipped : std::tuple<Ranges&...> {
 
 template <std::ranges::random_access_range... Ranges>
 zipped<Ranges...> make_zipped(Ranges&... rs) {
-  return { rs... };
+  return zipped<Ranges...>( rs... );
 }
 
 template <std::ranges::random_access_range... Ranges>
 zipped<Ranges...> make_zipped(Ranges&&... rs) {
-  return { rs... };
+  return zipped<Ranges...>(  rs... );
 }
 
 

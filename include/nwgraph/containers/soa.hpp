@@ -116,8 +116,8 @@ struct struct_of_arrays : std::tuple<std::vector<Attributes>...> {
       return *this;
     }
 
-    soa_iterator operator+(std::ptrdiff_t n) const { return {soa_, i_ + n}; }
-    soa_iterator operator-(std::ptrdiff_t n) const { return {soa_, i_ - n}; }
+    soa_iterator operator+(std::ptrdiff_t n) const { return soa_iterator(soa_, i_ + n); }
+    soa_iterator operator-(std::ptrdiff_t n) const { return soa_iterator(soa_, i_ - n); }
 
     std::ptrdiff_t operator-(const soa_iterator& b) const { return i_ - b.i_; }
 
@@ -164,9 +164,9 @@ struct struct_of_arrays : std::tuple<std::vector<Attributes>...> {
     for_each(l.begin(), l.end(), [&](value_type x) { push_back(x); });
   }
 
-  iterator       begin()        { return {this}; }
-  const_iterator begin()  const { return {this}; }
-  const_iterator cbegin() const { return {this}; }
+  iterator       begin()        { return iterator(this); }
+  const_iterator begin()  const { return const_iterator(this); }
+  const_iterator cbegin() const { return const_iterator(this); }
 
   iterator end()              { return begin() + size(); }
   const_iterator end()  const { return begin() + size(); }
