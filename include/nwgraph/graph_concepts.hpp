@@ -153,7 +153,7 @@ concept degree_enumerable_graph = adjacency_list_graph<G>
 
 template <typename G>
 concept edge_list_graph = graph<G>
-  && requires (G g, std::ranges::range_value_t<G> e) {
+  && requires (G g, std::ranges::range_reference_t<G> e) {
   { source(g, e) } -> std::convertible_to<vertex_id_t<G>>;
   { target(g, e) } -> std::convertible_to<vertex_id_t<G>>;
 };

@@ -22,6 +22,9 @@
 #include "nwgraph/util/util.hpp"
 #include "nwgraph/edge_list.hpp"
 
+#include "nwgraph/util/print_types.hpp"
+
+
 namespace nw {
 namespace graph {
 
@@ -58,8 +61,11 @@ EdgeListT kruskal(EdgeListT& E, Compare comp) {
   }
 
   for (auto y : E) {
-    auto u = std::get<0>(y);
-    auto v = std::get<1>(y);
+    //    auto u = std::get<0>(y);
+    //    auto v = std::get<1>(y);
+
+    auto u = source(E, y);
+    auto v = target(E, y);
     if (disjoint_union_find(subsets, u, v)) T.push_back(y);
   }
 

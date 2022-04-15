@@ -31,7 +31,6 @@
 
 #include "nwgraph/util/defaults.hpp"
 #include "nwgraph/util/demangle.hpp"
-#include "nwgraph/util/print_types.hpp"
 #include "util/timer.hpp"
 
 #include <algorithm>
@@ -60,6 +59,8 @@ public:
   using vertex_id_type = vertex_id;
   using base           = struct_of_arrays<vertex_id_type, vertex_id_type, Attributes...>;
   using element        = std::tuple<vertex_id_type, vertex_id_type, Attributes...>;
+  using reference      = base::reference;
+
 
   static const directedness edge_directedness = direct;
   using attributes_t                          = std::tuple<Attributes...>;
@@ -241,12 +242,12 @@ auto tag_invoke(const num_vertices_tag, const index_edge_list<vertex_id, graph_b
 }
 
 template <std::unsigned_integral vertex_id, typename graph_base_t, directedness direct = directedness::undirected, typename... Attributes>
-auto tag_invoke(const source_tag, const index_edge_list<vertex_id, graph_base_t, direct, Attributes...>&, const std::tuple<vertex_id, vertex_id, Attributes...>& e) {
+auto tag_invoke(const source_tag, const index_edge_list<vertex_id, graph_base_t, direct, Attributes...>&, const typename index_edge_list<vertex_id, graph_base_t, direct, Attributes...>::reference e) { 
   return std::get<0>(e);
 }
 
 template <std::unsigned_integral vertex_id, typename graph_base_t, directedness direct = directedness::undirected, typename... Attributes>
-auto tag_invoke(const target_tag, const index_edge_list<vertex_id, graph_base_t, direct, Attributes...>&, const std::tuple<vertex_id, vertex_id, Attributes...>& e) {
+auto tag_invoke(const target_tag, const index_edge_list<vertex_id, graph_base_t, direct, Attributes...>&, const typename index_edge_list<vertex_id, graph_base_t, direct, Attributes...>::reference e) {
   return std::get<1>(e);
 }
 
