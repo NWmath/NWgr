@@ -1295,7 +1295,7 @@ auto bc2_v0(const Graph& graph, const std::vector<typename Graph::vertex_id_type
 }
 
 template <adjacency_list_graph Graph, typename score_t = float, typename accum_t = size_t>
-auto bc2_v1(const Graph& graph, const std::vector<typename Graph::vertex_id_type> sources, bool normalize = true) {
+auto bc2_v1(const Graph& graph, const std::vector<typename Graph::vertex_id_type>& sources, bool normalize = true) {
   using vertex_id_type = typename Graph::vertex_id_type;
 
   auto                 g = graph.begin();

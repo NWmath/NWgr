@@ -182,7 +182,7 @@ public:
   decltype(auto) end() const { return times_.end(); }
 
   template <class Op>
-  auto record(std::string file, long id, long thread, Op&& op, Extra... extra) {
+  auto record(const std::string& file, long id, long thread, Op&& op, Extra... extra) {
     return std::apply(
         [&](auto time, auto&&... rest) {
           append(file, id, thread, time, extra...);
@@ -192,7 +192,7 @@ public:
   }
 
   template <class Op, class Verify>
-  void record(std::string file, long id, long thread, Op&& op, Verify&& verify, Extra... extra) {
+  void record(const std::string& file, long id, long thread, Op&& op, Verify&& verify, Extra... extra) {
     auto&& [time, result] = time_op(std::forward<Op>(op));
     verify(std::forward<decltype(result)>(result));
     append(file, id, thread, time, extra...);

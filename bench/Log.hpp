@@ -127,7 +127,7 @@ struct Log {
   }
 
   template <class Benchmark, class Version, class Threads, class... Times>
-  void operator()(Benchmark benchmark, Version version, Threads threads, CXX_FILESYSTEM_NAMESPACE::path graph, Times... times) {
+  void operator()(Benchmark benchmark, Version version, Threads threads, CXX_FILESYSTEM_NAMESPACE::path graph, Times&... times) {
     auto p = os_.precision(8);
     auto f = os_.setf(std::ios::scientific, std::ios::floatfield);
 

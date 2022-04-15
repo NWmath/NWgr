@@ -149,7 +149,7 @@ void jones_plassmann_coloring2(Graph A, std::vector<size_t>& colors) {
 
       /*Find the minimum available color*/
       uint64_t min_color = pred_count;
-      for (std::vector<uint64_t>::iterator it = pred_colors[u].begin(); it < pred_colors[u].end(); it++) {
+      for (std::vector<uint64_t>::iterator it = pred_colors[u].begin(); it < pred_colors[u].end(); ++it) {
         if (*it == 0) {
           min_color = *it;
           break;

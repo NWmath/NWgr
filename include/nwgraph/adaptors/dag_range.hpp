@@ -32,7 +32,7 @@ public:
 
   typedef std::vector<std::vector<size_t>> VOV;
 
-  dag_range(Graph& graph, VOV pred_list, VOV successor_list)
+  dag_range(Graph& graph, VOV& pred_list, VOV& successor_list)
       : the_graph_(graph), _predecessor_list(pred_list), _successor_list(successor_list) {
     /*Set all pred done counter to zero*/
     _pred_done_counter.resize(the_graph_.size(), 0);
@@ -91,7 +91,7 @@ public:
     }
 
     dag_range_iterator& operator++() {
-      successor_iterator++;
+      ++successor_iterator;
       advance_next();
       return *this;
     }
