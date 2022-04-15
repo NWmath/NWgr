@@ -59,17 +59,19 @@ Graph Algorithms
 
 .. doxygenfunction:: nw::graph::max_flow
 
-.. doxygenfunction:: nw::graph::mis_algorithm
+.. doxygenfunction:: nw::graph::maximal_independent_set
 
-.. doxygenfunction:: nw::graph::page_rank_v11
+.. doxygenfunction:: nw::graph::page_rank
 
 .. doxygenfunction:: nw::graph::prim
 
 .. doxygenfunction:: nw::graph::spMatspMat
 
-.. doxygenfunction:: nw::graph::triangle_count_v0
+.. doxygenfunction:: nw::graph::triangle_count(const GraphT& A)
 
-.. doxygenfunction:: nw::graph::triangle_count_async
+.. doxygenfunction:: nw::graph::triangle_count_async(std::size_t threads, Op&& op)
+
+.. doxygenfunction:: nw::graph::triangle_count(const Graph& G, std::size_t threads)
 
 
 
