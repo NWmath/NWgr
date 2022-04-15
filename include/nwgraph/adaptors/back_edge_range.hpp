@@ -135,6 +135,7 @@ public:
 
     auto& operator=(const outer_back_edge_range_iterator& b) {
       G = b.G;
+      the_range_ = b.the_range_;
       return *this;
     }
 
