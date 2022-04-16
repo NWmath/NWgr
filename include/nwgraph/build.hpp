@@ -204,18 +204,25 @@ void fill_helper_tmp(edge_list_t& el, adjacency_t& cs, std::index_sequence<Is...
 }
 
 /**
- * @brief This function fills an adjacency list with an edge list.
- * The graph can eithr be a unipartite or bipartite graph.
+ * @brief This function fills an adjacency list graph structure from edges contained in a directed edge list.
+ *
+ * If edge (u,v) is the edge list, the edge (u,v) will be inserted into the adjacency list -- that is, 
+ * v will be inserted into the neighborhood of u.
+ *
+ * If the edges in the edge list have properties, those properties will be copied to the adjacency list.
  * 
- * @tparam idx, which end point to fill in the edge list
- * @tparam edge_list_t, the type of the edge list
- * @tparam adjacency_t, the type of the adjacency list
- * @tparam Int, the type of number of vertices
- * @tparam ExecutionPolicy, the type of the execution policy
- * @param el, the edge list
- * @param N, number of vertices at [idx] partition
- * @param cs, adjacency list
- * @param policy, execution policy
+ * The adjacency list graph can either be a unipartite or bipartite graph.
+ *
+ * 
+ * @tparam idx Which end point to fill in the edge list.
+ * @tparam edge_list_t The type of the edge list.
+ * @tparam adjacency_t The type of the adjacency list.
+ * @tparam Int The type of number of vertices.
+ * @tparam ExecutionPolicy The type of the execution policy.
+ * @param el The edge list.
+ * @param N  Number of vertices at [idx] partition.
+ * @param cs The adjacency list.
+ * @param policy The parallel execution policy to use in calls to standard library algorithms called by this function.
  */
 template <int idx, edge_list_graph edge_list_t, adjacency_list_graph adjacency_t, class Int, class ExecutionPolicy = default_execution_policy>
 void fill_directed(edge_list_t& el, Int N, adjacency_t& cs, ExecutionPolicy&& policy = {}) {
