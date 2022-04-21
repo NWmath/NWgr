@@ -50,6 +50,21 @@ static bool g_time_edge_list  = false;
 void debug_edge_list(bool flag = true) { g_debug_edge_list = flag; }
 void time_edge_list(bool flag = true) { g_time_edge_list = flag; }
 
+/**
+ * Index edge list structure.  This variadic data structure stores edges with their
+ * properties, using a structure of arrays for storage.
+ *
+ * An edge in this case is notionally a tuple (u, v, p0, p1, ...), where u and v are
+ * vertex indices and p0, p1, ... are edge properties.  If the * directedness tag is set
+ * to `directed`, the edges are directed.  If the directedness * tag is set to
+ * `undirected`, the edges are undirected.  In either case, a given edge * (u, v, ...) is
+ * only stored once in the edge list.
+ *
+ * @tparam vertex_id The data type used to represent a vertex index, required to be os unsigned integral type.
+ * @tparam graph_base_t The class of graph represented by the edge list.  May be unipartite or bipartite.
+ * @tparam directed The directness of the tag.  May be directed or undirected.
+ * @tparam Attributes A variadic list of edge property types.
+ */
 template <std::unsigned_integral vertex_id, typename graph_base_t, directedness direct = directedness::undirected, typename... Attributes>
 class index_edge_list : public graph_base_t, public struct_of_arrays<vertex_id, vertex_id, Attributes...> {
 
@@ -222,9 +237,17 @@ public:
   bool operator!=(index_edge_list<vertex_id_type, graph_base_t, edge_directedness, Attributes...>& e) { return !operator==(e); }
 };
 
+/**
+ * Type alias for unipartite index edge list structure, using the default_vertex_id_type as the vertex_id type.
+ * \see{index_edge_list}
+ */
 template <directedness edge_directedness = directedness::undirected, typename... Attributes>
 using edge_list = index_edge_list<default_vertex_id_type, unipartite_graph_base, edge_directedness, Attributes...>;
 
+/**
+ * Type alias for bipartite index edge list structure, using the default_vertex_id_type as the vertex_id type.
+ * \see{index_edge_list}
+ */
 template <directedness edge_directedness = directedness::directed, typename... Attributes>
 using bi_edge_list = index_edge_list<default_vertex_id_type, bipartite_graph_base, edge_directedness, Attributes...>;
 
@@ -232,7 +255,8 @@ template <std::unsigned_integral vertex_id, typename graph_base_t, directedness 
 auto tag_invoke(const num_edges_tag, const index_edge_list<vertex_id, graph_base_t, direct, Attributes...>& b) {
   return b.num_edges();
 }
-//num_vertics CPO, works for both unipartite_graph_base and bipartite_graph_base
+
+// num_vertics CPO, works for both unipartite_graph_base and bipartite_graph_base
 template <std::unsigned_integral vertex_id, typename graph_base_t, directedness direct = directedness::undirected, typename... Attributes>
 auto tag_invoke(const num_vertices_tag, const index_edge_list<vertex_id, graph_base_t, direct, Attributes...>& b, int idx = 0) {
   if constexpr (true == is_unipartite<graph_base_t>::value)
@@ -251,7 +275,6 @@ auto& tag_invoke(const target_tag, const index_edge_list<vertex_id, graph_base_t
   return std::get<1>(e);
 }
 
-
 template <std::unsigned_integral vertex_id, typename graph_base_t, directedness direct, typename... Attributes>
 struct graph_traits<index_edge_list<vertex_id, graph_base_t, direct, Attributes...>> {
   using G = index_edge_list<vertex_id, graph_base_t, direct, Attributes...>;
@@ -267,8 +290,6 @@ struct graph_traits<index_edge_list<vertex_id, graph_base_t, direct, Attributes.
   using const_outer_iterator = std::false_type;
   using const_inner_iterator = std::false_type;
 };
-
-
 
 }    // namespace graph
 }    // namespace nw

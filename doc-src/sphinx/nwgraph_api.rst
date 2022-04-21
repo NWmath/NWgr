@@ -99,9 +99,11 @@ Graph Construction
 
 .. doxygenfunction:: nw::graph::fill_undirected
 
-.. doxygenfunction:: nw::graph::fill(edge_list_t& el, adjacency_t& cs, bool sort_adjacency = false, ExecutionPolicy&& policy = {}) {
+.. doxygenfunction:: nw::graph::fill(edge_list_t& el, adjacency_t& cs, bool sort_adjacency = false, ExecutionPolicy&& policy = {})
 
-.. doxygenfunction:: nw::graph::fill(edge_list_t& el, adjacency_t& cs, directedness dir, bool sort_adjacency = false, ExecutionPolicy&& policy = {}) {
+.. doxygenfunction:: nw::graph::fill(edge_list_t& el, adjacency_t& cs, directedness dir, bool sort_adjacency = false, ExecutionPolicy&& policy = {})
+
+.. doxygenfunction:: nw::graph::relabel_by_degree< edge_list_graph edge_list_t, class Vector >
 
 .. doxygenfunction:: nw::graph::relabel_by_degree
 
@@ -177,11 +179,11 @@ Containers
 		  
 .. doxygenclass:: nw::graph::array_of_structs
 
-.. doxygenclass:: nw::graph::struct_of_arrays
+.. doxygencstruct:: nw::graph::struct_of_arrays
 
 .. doxygenclass:: nw::graph::indexed_struct_of_arrays
 
-.. doxygenclass:: nw::graph::zipped
+.. doxygenstruct:: nw::graph::zipped
 
 
 
