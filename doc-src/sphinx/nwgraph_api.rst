@@ -25,7 +25,9 @@ Concepts
 Graph Algorithms
 ----------------
 
-.. doxygenfunction:: nw::graph::betweenness_brandes
+.. doxygenfunction:: nw::graph::brandes_bc(const Graph& G, bool normalize = true)
+
+.. doxygenfunction:: nw::graph::brandes_bc(const Graph& graph, const std::vector<typename Graph::vertex_id_type>& sources, size_t threads, OuterExecutionPolicy&& outer_policy = {}, InnerExecutionPolicy&& inner_policy = {}, bool normalize = true)
 
 .. doxygenfunction:: nw::graph::bfs_v0
 

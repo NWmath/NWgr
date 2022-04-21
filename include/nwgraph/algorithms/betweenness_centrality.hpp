@@ -125,9 +125,18 @@ bool BCVerifier(const Graph& g, std::vector<typename graph_traits<Graph>::vertex
   return all_ok;
 }
 
-//****************************************************************************
+/**
+ * Compute betweenness centrality using Brandes algorithm @verbatim embed:rst:inline :cite:`brandes_bc`.@endverbatim
+ *
+ * @tparam Graph Type of the graph.  Must meet requirements of adjacency_list_graph concept.
+ * @tparam score_t Type of the centrality scores computed for each vertex.
+ * @tparam accum_t Type of path counts.
+ * @param G Input graph.
+ * @param normalize Flag indicating whether to normalize centrality scores relative to largest score.
+ * @return Vector of centrality for each vertex.
+ */
 template <adjacency_list_graph Graph, typename score_t = float, typename accum_t = size_t>
-std::vector<score_t> betweenness_brandes(const Graph& G, bool normalize = true) {
+std::vector<score_t> brandes_bc(const Graph& G, bool normalize = true) {
   using vertex_id_type = typename Graph::vertex_id_type;
 
   size_t               n_vtx = num_vertices(G);
@@ -179,15 +188,34 @@ std::vector<score_t> betweenness_brandes(const Graph& G, bool normalize = true) 
   }
   if (normalize) {
     score_t largest = *std::max_element(centrality.begin(), centrality.end());
-    std::transform(centrality.begin(), centrality.end(), centrality.begin(), [&](auto &val) { return val /= largest; });
+    std::transform(centrality.begin(), centrality.end(), centrality.begin(), [&](auto& val) { return val /= largest; });
   }
   return centrality;
 }
 
-template <class score_t, class accum_t, adjacency_list_graph Graph, class OuterExecutionPolicy = std::execution::parallel_unsequenced_policy,
+/**
+ * Parallel approximate betweenness centrality using Brandes algorithm @verbatim embed:rst:inline :cite:`brandes_bc`.@endverbatim
+ * Rather than using all vertices in the graph to compute paths, the algorithm uses a
+ * specified set of root nodes.  Parallelization is effected through C++ standard library
+ * execution policies.
+ *
+ * @tparam Graph Type of the graph.  Must meet requirements of adjacency_list_graph concept.
+ * @tparam score_t Type of the centrality scores computed for each vertex.
+ * @tparam accum_t Type of path counts.
+ * @tparam OuterExecutionPolicy Parallel execution policy type for outer loop of algorithm.  Default: std::execution::parallel_unsequenced_policy
+ * @tparam InnerExecutionPolicy Parallel execution policy type for inner loop of algorithm.  Default: std::execution::parallel_unsequenced_policy
+ * @param G Input graph.
+ * @param normalize Flag indicating whether to normalize centrality scores relative to largest score.
+ * @param sources Vector of starting sources.
+ * @param outer_policy Outer loop parallel execution policy.
+ * @param inner_policy Inner loop parallel execution policy.
+ * @param threads Number of threads being used in computation.  Used to compute number of bins in computation.
+ * @return Vector of centrality for each vertex.
+ */
+template <adjacency_list_graph Graph, class score_t, class accum_t, class OuterExecutionPolicy = std::execution::parallel_unsequenced_policy,
           class InnerExecutionPolicy = std::execution::parallel_unsequenced_policy>
-auto bc2_v5(const Graph& graph, const std::vector<typename Graph::vertex_id_type>& sources, int threads,
-            OuterExecutionPolicy&& outer_policy = {}, InnerExecutionPolicy&& inner_policy = {}, bool normalize = true) {
+auto brandes_bc(const Graph& graph, const std::vector<typename Graph::vertex_id_type>& sources, size_t threads,
+                OuterExecutionPolicy&& outer_policy = {}, InnerExecutionPolicy&& inner_policy = {}, bool normalize = true) {
   using vertex_id_type = typename Graph::vertex_id_type;
 
   vertex_id_type       N     = num_vertices(graph);
@@ -225,7 +253,7 @@ auto bc2_v5(const Graph& graph, const std::vector<typename Graph::vertex_id_type
             std::for_each(outer_policy, q1.begin(), q1.end(), [&](auto&& q) {
               std::for_each(inner_policy, q.begin(), q.end(), [&](auto&& u) {
                 for (auto&& elt : graph[u]) {
-                  auto v = target(graph, elt);
+                  auto   v        = target(graph, elt);
                   auto&& infinity = std::numeric_limits<vertex_id_type>::max();
                   auto&& lvl_v    = nw::graph::acquire(levels[v]);
 
