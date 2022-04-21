@@ -122,7 +122,7 @@ using attributes_t = decltype(nth_cdr<1>(inner_value_t<G>{}));
  *   the *customization point object* `target(g, e)` returns a type convertible to 
  *   `vertex_id_t<G>`
  *
- * To enable standard library types to meet the requirements of the `adjacency_list_graph` concept, 
+ * To enable standard library types to meet the requirements of the `adjacency_list_graph` concept,
  * appropriate definitions of `target` have been made in the `graph_concepts.hpp` header file.
  *
  * **Example:** Standard library components meeting the requirements of `adjacency_list_graph`
@@ -149,19 +149,65 @@ concept adjacency_list_graph = graph<G>
   { target(g, e) } -> std::convertible_to<vertex_id_t<G>>;
 };
 
+/**
+ * @concept degree_enumerable_graph
+ *
+ * @headerfile nwgraph/graph_concepts.hpp
+ *
+ * @brief Concept for types fulfilling requirements of a graph whose neighborhood size can be queried in constant time.
+ * 
+ * The `degree_enumerable_graph` concept requires the following:
+ * - The type `G` must meet the requirements o `adjacency_list_graph` 
+ * - If `g` is of graph type `G` and `u` is of the vertex id type,
+ *   the *customization point object* `degree(g[u])` returns a type
+ *   convertible to the difference type of `G`.  The `degree` operation
+ *   is guaranteed to be constant time.
+ */
 template <typename G>
 concept degree_enumerable_graph = adjacency_list_graph<G>
   && requires (G g, vertex_id_t<G> u) {
   { degree(g[u]) } -> std::convertible_to<std::ranges::range_difference_t<G>>;
 };
 
+/**
+ * @concept edge_list_graph
+ *
+ * @headerfile nwgraph/graph_concepts.hpp
+ *
+ * @brief Concept for types fulfilling requirements of a graph in edge list format.
+ * 
+ * The `edge_list_graph` concept requires the following:
+ * - The type `G` must meet the requirements of `graph`
+ * - The type `G` must meet the requirements of `std::ranges::forward_range`
+ * - If `g` is of type 'G' and `e` is an element of type `vertex_id_t<G>`, then
+ *   `source(g, e)` returns a type convertible to the vertex type of G.
+ * - If `g` is of type 'G' and `e` is an element of type `vertex_id_t<G>`, then
+ *   `target(g, e)` returns a type convertible to the vertex type of G.
+ *
+ * To enable standard library types to meet the requirements of the `edge_list_graph` concept,
+ * appropriate definitions of `source` and `target` have been made in the `graph_concepts.hpp` 
+ * header file.
+ *
+ * **Example:** Standard library components meeting the requirements of `edge_list_graph`
+ *
+ *     #include <forward_list>
+ *     #include <list>
+ *     #include <tuple>
+ *     #include <vector>
+ *
+ *     int main() {
+ *       static_assert(nw::graph::edge_list_graph<std::forward_list<std::tuple<int, int, double>>);
+ *       static_assert(nw::graph::edge_list_graph<std::list<std::tuple<int, int, double>>);
+ *       static_assert(nw::graph::edge_list_graph<std::vector<std::tuple<int, int, double>>);
+ *     }
+ */
 template <typename G>
 concept edge_list_graph = graph<G>
-  && requires (G g, std::ranges::range_reference_t<G> e) {
+  && std::ranges::forward_range<G>
+  && requires(G g, std::ranges::range_reference_t<G> e) {
   { source(g, e) } -> std::convertible_to<vertex_id_t<G>>;
   { target(g, e) } -> std::convertible_to<vertex_id_t<G>>;
 };
-
 
 // Some default traits for common classes of graphs
 
