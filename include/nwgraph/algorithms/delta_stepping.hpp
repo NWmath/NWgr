@@ -52,10 +52,9 @@ public:
   auto end() const { return base::c.begin(); }
 };
 
-template <class distance_t, adjacency_list_graph Graph, class Id,
-          class Weight>
-auto delta_stepping_m1(const Graph& graph, Id source, distance_t,
-    Weight weight = [](auto& e) -> auto& { return std::get<1>(e); }) {
+template <class distance_t, adjacency_list_graph Graph, class Id, class Weight>
+auto delta_stepping_m1(
+    const Graph& graph, Id source, distance_t, Weight weight = [](auto& e) -> auto& { return std::get<1>(e); }) {
   std::vector<distance_t> tdist(num_vertices(graph), std::numeric_limits<distance_t>::max());
   size_t                  top_bin = 0;
 
@@ -92,12 +91,24 @@ auto delta_stepping_m1(const Graph& graph, Id source, distance_t,
   return tdist;
 }
 
-// Inspired by gapbs implementation
-template <class distance_t, adjacency_list_graph Graph, class Id, class T,
-          class Weight>
-auto delta_stepping_v0(
-    const Graph& graph, Id source, T delta,
-    Weight weight = [](auto& e) -> auto& { return std::get<1>(e); }) {
+/**
+ * Delta-stepping single-source shortest-paths.
+ *
+ * Sequential implementation of delta-stepping single-source shortest-paths
+ *
+ * @verbatim embed:rst:inline :cite:`MEYER2003114`.@endverbatim 
+ * @tparam distance_t Type of distance measure.
+ * @tparam Graph Type of input graph.  Must meet the requirements of adjacency_list_graph.
+ * @tparam T Type of delta parameter.
+ * @tparam Weight Type of function used to compute edge weights.
+ * @param graph The input graph.
+ * @param source The starting vertex.
+ * @param delta The delta parameter for the algorithm.
+ * @param weight Function to compute weight of an edge.
+ */
+template <class distance_t, adjacency_list_graph Graph, class T, class Weight>
+auto delta_stepping(
+    const Graph& graph, vertex_id_t<Graph> source, T delta, Weight weight = [](auto& e) -> auto& { return std::get<1>(e); }) {
   std::vector<distance_t>      tdist(num_vertices(graph), std::numeric_limits<distance_t>::max());
   std::vector<std::vector<Id>> bins(1);
   std::size_t                  top_bin = 0;
@@ -127,7 +138,7 @@ auto delta_stepping_v0(
     std::for_each(frontier.begin(), frontier.end(), [&](Id i) {
       if (tdist[i] >= delta * top_bin) {
         std::for_each(graph[i].begin(), graph[i].end(), [&](auto&& elt) {
-          auto j = target(graph, elt);
+          auto j  = target(graph, elt);
           auto wt = weight(elt);
           //auto&& [j, wt] = elt;    // i == v
           relax(i, j, wt);
@@ -143,8 +154,22 @@ auto delta_stepping_v0(
   return tdist;
 }
 
-template <class distance_t, adjacency_list_graph Graph, class Id, class T>
-auto delta_stepping_v12(const Graph& graph, Id source, T delta) {
+/**
+ * Delta-stepping single-source shortest-paths.
+ *
+ * Parallel implementation of delta-stepping single-source shortest-paths 
+ * @verbatim embed:rst:inline :cite:`MEYER2003114`.@endverbatim  Uses Intel TBB
+ * for parallelization.
+ *
+ * @tparam distance_t Type of distance measure.
+ * @tparam Graph Type of input graph.  Must meet the requirements of adjacency_list_graph.
+ * @tparam T Type of delta parameter.
+ * @param graph The input graph.
+ * @param source The starting vertex.
+ * @param delta The delta parameter for the algorithm.
+ */
+template <class distance_t, adjacency_list_graph Graph, class T>
+auto delta_stepping(const Graph& graph, vertex_id_t<Graph> source, T delta) {
   tbb::queuing_mutex                                 lock;
   std::atomic<std::size_t>                           size = 1;
   tbb::concurrent_vector<tbb::concurrent_vector<Id>> bins(size);

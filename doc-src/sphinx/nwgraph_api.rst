@@ -27,13 +27,11 @@ Graph Algorithms
 
 .. doxygenfunction:: nw::graph::brandes_bc(const Graph& G, bool normalize = true)
 
-.. doxygenfunction:: nw::graph::brandes_bc(const Graph& graph, const std::vector<typename Graph::vertex_id_type>& sources, size_t threads, OuterExecutionPolicy&& outer_policy = {}, InnerExecutionPolicy&& inner_policy = {}, bool normalize = true)
+.. doxygenfunction:: nw::graph::brandes_bc(const Graph& graph, const std::vector<typename Graph::vertex_id_type>& sources, int threads, OuterExecutionPolicy&& outer_policy = {}, InnerExecutionPolicy&& inner_policy = {}, bool normalize = true)
 
 .. doxygenfunction:: nw::graph::bfs(const Graph& graph, vertex_id_t<Graph> root)
 
 .. doxygenfunction:: nw::graph::bfs(const OutGraph& out_graph, const InGraph& in_graph, vertex_id_t<OutGraph> root, int num_bins = 32, int alpha = 15, int beta = 18)
-
-.. doxygenfunction:: nw::graph::bc2_v5
 
 .. doxygenfunction:: nw::graph::bk_maxflow
 
@@ -41,9 +39,9 @@ Graph Algorithms
 
 .. doxygenfunction:: nw::graph::dag_based_mis
 
-.. doxygenfunction:: nw::graph::delta_stepping_v0
+.. doxygenfunction:: nw::graph::delta_stepping(const Graph& graph, vertex_id_t<Graph> source, T delta, Weight weight = [](auto& e) -> auto& { return std::get<1>(e); })
 
-.. doxygenfunction:: nw::graph::delta_stepping_v12
+.. doxygenfunction:: nw::graph::delta_stepping(const Graph& graph, vertex_id_t<Graph> source, T delta)
 
 .. doxygenfunction:: nw::graph::dijkstra
 

@@ -126,7 +126,8 @@ bool BCVerifier(const Graph& g, std::vector<typename graph_traits<Graph>::vertex
 }
 
 /**
- * Compute betweenness centrality using Brandes algorithm @verbatim embed:rst:inline :cite:`brandes_bc`.@endverbatim
+ * Compute exact betweenness centrality using Brandes algorithm 
+ * @verbatim embed:rst:inline :cite:`brandes_bc`.@endverbatim
  *
  * @tparam Graph Type of the graph.  Must meet requirements of adjacency_list_graph concept.
  * @tparam score_t Type of the centrality scores computed for each vertex.
@@ -212,9 +213,9 @@ std::vector<score_t> brandes_bc(const Graph& G, bool normalize = true) {
  * @param threads Number of threads being used in computation.  Used to compute number of bins in computation.
  * @return Vector of centrality for each vertex.
  */
-template <adjacency_list_graph Graph, class score_t, class accum_t, class OuterExecutionPolicy = std::execution::parallel_unsequenced_policy,
+template <class score_t, class accum_t, adjacency_list_graph Graph, class OuterExecutionPolicy = std::execution::parallel_unsequenced_policy,
           class InnerExecutionPolicy = std::execution::parallel_unsequenced_policy>
-auto brandes_bc(const Graph& graph, const std::vector<typename Graph::vertex_id_type>& sources, size_t threads,
+auto brandes_bc(const Graph& graph, const std::vector<typename Graph::vertex_id_type>& sources, int threads,
                 OuterExecutionPolicy&& outer_policy = {}, InnerExecutionPolicy&& inner_policy = {}, bool normalize = true) {
   using vertex_id_type = typename Graph::vertex_id_type;
 

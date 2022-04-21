@@ -48,7 +48,6 @@ using namespace nw::graph::bench;
 using namespace nw::graph;
 using namespace nw::util;
 
-
 int main(int argc, char* argv[]) {
   std::vector strings = std::vector<std::string>(argv + 1, argv + argc);
   std::map    args    = docopt::docopt(USAGE, strings, true);
@@ -112,7 +111,7 @@ int main(int argc, char* argv[]) {
         auto&& [time, parents] = time_op([&] {
           switch (id) {
             case 0:
-              return bfs_v0(graph, source);
+              return bfs(graph, source);
             case 1:
               return bfs_v1(graph, gx, source, num_bins, alpha, beta);
             case 2:
@@ -128,7 +127,7 @@ int main(int argc, char* argv[]) {
             case 10:
               return bfs_top_down(graph, source);
             case 11:
-              return bfs_v11(graph, gx, source, num_bins, alpha, beta);
+              return bfs(graph, gx, source, num_bins, alpha, beta);
             case 12:
               return bfs_top_down_bitmap(graph, source);
             case 13:
