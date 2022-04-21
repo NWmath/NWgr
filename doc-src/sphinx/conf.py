@@ -44,7 +44,7 @@ extensions = [
     'sphinxcontrib.bibtex',
 #    'sphinx_book_theme', # 'sphinx_rtd_theme',
     'breathe', 
-#    'nw_exhale'
+    'nw_exhale'
 ]
 
 source_suffix = {
