@@ -29,9 +29,9 @@ Graph Algorithms
 
 .. doxygenfunction:: nw::graph::brandes_bc(const Graph& graph, const std::vector<typename Graph::vertex_id_type>& sources, size_t threads, OuterExecutionPolicy&& outer_policy = {}, InnerExecutionPolicy&& inner_policy = {}, bool normalize = true)
 
-.. doxygenfunction:: nw::graph::bfs_v0
+.. doxygenfunction:: nw::graph::bfs(const Graph& graph, vertex_id_t<Graph> root)
 
-.. doxygenfunction:: nw::graph::bfs_v11
+.. doxygenfunction:: nw::graph::bfs(const OutGraph& out_graph, const InGraph& in_graph, vertex_id_t<OutGraph> root, int num_bins = 32, int alpha = 15, int beta = 18)
 
 .. doxygenfunction:: nw::graph::bc2_v5
 

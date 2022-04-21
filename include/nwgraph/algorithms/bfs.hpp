@@ -96,17 +96,19 @@ bool BFSVerifier(const Graph& g, GraphT& g_t, vertex_id_t<Graph> source, std::ve
   }
   return true;
 }
-  /**
-   * \brief Breadth-First Search.
+
+/**
+   * @brief Breadth-First Search.
    * 
-   * Perform breadth-first search of a graph.
+   * Perform breadth-first search of a graph, starting from a given vertex.
    *
-   * \param graph The graph to be searched.
-   * \param root The starting vertex.
-   * \return The parent list.
+   * @tparam Graph Type of the input graph. Must meet the requirements of the adjacency_list_graph concept.
+   * @param graph The graph to be searched.
+   * @param root The starting vertex.
+   * @return The parent list.
    */
 template <adjacency_list_graph Graph>
-auto bfs_v0(const Graph& graph, vertex_id_t<Graph> root) {
+auto bfs(const Graph& graph, vertex_id_t<Graph> root) {
   using vertex_id_type = vertex_id_t<Graph>;
 
   std::deque<vertex_id_type>  q1, q2;
@@ -137,20 +139,27 @@ auto bfs_v0(const Graph& graph, vertex_id_t<Graph> root) {
   return parents;
 }
 
-
-  /**
-   * \brief Parallel Breadth-First Search.
-   * 
-   * Perform parallel breadth-first search of a graph, using the graph and its transpose
-   *
-   * \param out_graph The graph to be searched, representing out edges
-   * \param in_graph The transpose of the graph to be searched, representing in edges
-   * \param root The starting vertex.
-   * \return The parent list.
-   */
+/**
+ * @brief Parallel Breadth-First Search.
+ * 
+ * Perform parallel breadth-first search of a graph, using Beamer's direction-optimizing 
+ * algorithm @verbatim embed:rst:inline :cite:`Beamer-DOBFS`.@endverbatim  The algorithm requires being able to 
+ * access the out edges of each vertex as well as the in edges of each vertex.  These are passed into the graph 
+ * as two adajacency lists.
+ *
+ * @tparam OutGraph Type of graph containing out edges.  Must meet the requirements of adjacency_list_graph concept.
+ * @tparam InGraph Type of graph containing in edges.  Must meet the requirements of adjacency_list_graph concept.
+ * @param out_graph The graph to be searched, representing out edges.
+ * @param in_graph The transpose of the graph to be searched, representing in edges.
+ * @param root The starting vertex.
+ * @param num_bins Number of bins.
+ * @param alpha Algorithm parameter.
+ * @param beta Algorithm parameter.
+ * @return The parent list.
+ */
 template <adjacency_list_graph OutGraph, adjacency_list_graph InGraph>
-[[gnu::noinline]] auto bfs_v11(const OutGraph& out_graph, const InGraph& in_graph, vertex_id_t<OutGraph> root, int num_bins = 32,
-                               int alpha = 15, int beta = 18) {
+[[gnu::noinline]] auto bfs(const OutGraph& out_graph, const InGraph& in_graph, vertex_id_t<OutGraph> root, int num_bins = 32, int alpha = 15,
+                           int beta = 18) {
 
   using vertex_id_type = vertex_id_t<OutGraph>;
 
@@ -160,8 +169,8 @@ template <adjacency_list_graph OutGraph, adjacency_list_graph InGraph>
   std::vector<tbb::concurrent_vector<vertex_id_type>> q1(n), q2(n);
 
   std::vector<vertex_id_type> parents(N);
-  nw::graph::AtomicBitVector front(N, false);
-  nw::graph::AtomicBitVector curr(N);
+  nw::graph::AtomicBitVector  front(N, false);
+  nw::graph::AtomicBitVector  curr(N);
 
   constexpr const auto null_vertex = null_vertex_v<vertex_id_type>();
   std::fill(std::execution::par_unseq, parents.begin(), parents.end(), null_vertex);
@@ -201,7 +210,7 @@ template <adjacency_list_graph OutGraph, adjacency_list_graph InGraph>
         awake_count = tbb::parallel_reduce(
             tbb::blocked_range(0ul, N), 0ul,
             [&](auto&& range, auto count) {
-              for (auto&& u = range.begin(), e = range.end(); u != e; ++u) {
+              for (auto &&u = range.begin(), e = range.end(); u != e; ++u) {
                 if (null_vertex == parents[u]) {
                   for (auto&& elt : in_graph[u]) {
                     auto v = target(in_graph, elt);
@@ -259,7 +268,7 @@ template <adjacency_list_graph OutGraph, adjacency_list_graph InGraph>
           },
           std::plus{}, 0ul);
           */
-        scout_count = nw::graph::parallel_reduce(
+      scout_count = nw::graph::parallel_reduce(
           tbb::blocked_range(0ul, q1.size()),
           [&](auto&& i) {
             auto&& q = q1[i];
@@ -267,9 +276,9 @@ template <adjacency_list_graph OutGraph, adjacency_list_graph InGraph>
                 tbb::blocked_range(0ul, q.size()),
                 [&](auto&& i) {
                   size_t count = 0;
-                  auto&& u = q[i];
+                  auto&& u     = q[i];
                   for (auto&& elt : out_graph[u]) {
-                    auto v = target(out_graph, elt);
+                    auto v        = target(out_graph, elt);
                     auto curr_val = parents[v];
                     if (null_vertex == curr_val) {
                       if (nw::graph::cas(parents[v], curr_val, u)) {
@@ -279,8 +288,10 @@ template <adjacency_list_graph OutGraph, adjacency_list_graph InGraph>
                     }
                   }
                   return count;
-                }, std::plus{}, 0ul);
-        }, std::plus{}, 0ul);
+                },
+                std::plus{}, 0ul);
+          },
+          std::plus{}, 0ul);
     }
 
     done = true;
@@ -294,12 +305,10 @@ template <adjacency_list_graph OutGraph, adjacency_list_graph InGraph>
     for (auto&& q : q2) {
       q.clear();
     }
-    
   }
 
   return parents;
 }
-
 
 }    // namespace graph
 }    // namespace nw
