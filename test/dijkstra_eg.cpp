@@ -49,7 +49,7 @@ int main(int argc, char* argv[]) {
   //  for (auto d : distance)
   //    std::cout << d << std::endl;
 
-  auto distance_v0 = dijkstra_v0<size_t>(A, 0);
+  auto distance_v0 = dijkstra<size_t>(A, 0);
 
   for (auto d : distance_v0)
     std::cout << d << std::endl;

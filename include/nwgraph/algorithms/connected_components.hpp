@@ -180,17 +180,18 @@ static T sample_frequent_element(const Vector& comp, size_t num_samples = 1024) 
 }
 
 /**
- * @brief Afforest algorithm based SV algorithm + subgraph sampling to
- * skip the largest intermediate component to save work.
+ * @brief Afforest algorithm based on Shiloach-Vishkin with subgraph sampling to
+ * skip the largest intermediate component.  Labels each vertex in the graph
+ * with a component identifier.
  * 
- * @tparam Execution execution policy type
- * @tparam Graph1 adjacency_list_graph type
- * @tparam Graph2 adjacency_list_graph type for the transpose
- * @param exec execution policy
- * @param graph input graph
- * @param t_graph transpose input graph
- * @param neighbor_rounds the number of rounds to do neighborhood subgraph sampling
- * @return auto CC labelings
+ * @tparam Execution execution policy type.
+ * @tparam Graph1 Type of input graph.  Must meet requirements of adjacency_list_graph concept.
+ * @tparam Graph2 Type of transpose input graph.  Must meet requirements of adjacency_list_graph concept.
+ * @param exec Parallel execution policy.
+ * @param graph Input graph.
+ * @param t_graph Transpose of the input graph.
+ * @param neighbor_rounds The number of rounds to do neighborhood subgraph sampling.
+ * @return Vector of component labelings.
  */
 template <typename Execution, adjacency_list_graph Graph1, adjacency_list_graph Graph2>
 static auto afforest(Execution& exec, const Graph1& graph, const Graph2& t_graph, const size_t neighbor_rounds = 2) {

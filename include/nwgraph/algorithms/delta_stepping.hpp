@@ -24,9 +24,9 @@
 #include <type_traits>
 #include <vector>
 
-#include "nwgraph/graph_concepts.hpp"
 #include "nwgraph/containers/compressed.hpp"
 #include "nwgraph/edge_list.hpp"
+#include "nwgraph/graph_concepts.hpp"
 #include "nwgraph/util/atomic.hpp"
 
 #include "nwgraph/util/parallel_for.hpp"
@@ -80,7 +80,7 @@ auto delta_stepping_m1(
 
     std::for_each(frontier.begin(), frontier.end(), [&](Id i) {
       std::for_each(graph[i].begin(), graph[i].end(), [&](auto&& elt) {
-        auto j = target(graph, elt);
+        auto j  = target(graph, elt);
         auto wt = weight(elt);
         //auto&& [j, wt] = elt;    // i == v
         relax(i, j, wt);
@@ -109,6 +109,7 @@ auto delta_stepping_m1(
 template <class distance_t, adjacency_list_graph Graph, class T, class Weight>
 auto delta_stepping(
     const Graph& graph, vertex_id_t<Graph> source, T delta, Weight weight = [](auto& e) -> auto& { return std::get<1>(e); }) {
+  using Id = vertex_id_t<Graph>;
   std::vector<distance_t>      tdist(num_vertices(graph), std::numeric_limits<distance_t>::max());
   std::vector<std::vector<Id>> bins(1);
   std::size_t                  top_bin = 0;
@@ -170,6 +171,7 @@ auto delta_stepping(
  */
 template <class distance_t, adjacency_list_graph Graph, class T>
 auto delta_stepping(const Graph& graph, vertex_id_t<Graph> source, T delta) {
+  using Id = vertex_id_t<Graph>;
   tbb::queuing_mutex                                 lock;
   std::atomic<std::size_t>                           size = 1;
   tbb::concurrent_vector<tbb::concurrent_vector<Id>> bins(size);

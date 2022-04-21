@@ -43,9 +43,9 @@ Graph Algorithms
 
 .. doxygenfunction:: nw::graph::delta_stepping(const Graph& graph, vertex_id_t<Graph> source, T delta)
 
-.. doxygenfunction:: nw::graph::dijkstra
+.. doxygenfunction:: nw::graph::dijkstra_er
 
-.. doxygenfunction:: nw::graph::dijkstra_v0
+.. doxygenfunction:: nw::graph::dijkstra
 
 .. doxygenfunction:: nw::graph::jaccard_similarity_v0
 

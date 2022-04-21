@@ -113,10 +113,11 @@ Weight weight) {
 /// and verifies the result, based on the verifier. Returns the time it took to
 /// run, as well as a boolean indicating if we passed verification.
 template <adjacency_list_graph Graph, class Weight, class Verifier>
-static std::tuple<double, bool> sssp(int id, const Graph& graph, vertex_id_t<Graph> source, distance_t delta, Weight weight, Verifier&& verifier) {
+static std::tuple<double, bool> sssp(int id, const Graph& graph, vertex_id_t<Graph> source, distance_t delta, Weight weight,
+                                     Verifier&& verifier) {
   switch (id) {
     case 0:
-      return time_op_verify([&] { return delta_stepping_v0<distance_t>(graph, source, delta, weight); }, std::forward<Verifier>(verifier));
+      return time_op_verify([&] { return delta_stepping<distance_t>(graph, source, delta, weight); }, std::forward<Verifier>(verifier));
     case 1:
       return time_op_verify([&] { return delta_stepping_m1<distance_t>(graph, source, delta, weight); }, std::forward<Verifier>(verifier));
     case 6:
@@ -130,7 +131,7 @@ static std::tuple<double, bool> sssp(int id, const Graph& graph, vertex_id_t<Gra
     case 11:
       return time_op_verify([&] { return delta_stepping_v11<distance_t>(graph, source, delta, weight); }, std::forward<Verifier>(verifier));
     case 12:
-      return time_op_verify([&] { return delta_stepping_v12<distance_t>(graph, source, delta); }, std::forward<Verifier>(verifier));
+      return time_op_verify([&] { return delta_stepping<distance_t>(graph, source, delta); }, std::forward<Verifier>(verifier));
     default:
       std::cerr << "Invalid SSSP version " << id << "\n";
       return std::tuple(0.0, true);

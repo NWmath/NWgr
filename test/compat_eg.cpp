@@ -81,16 +81,11 @@ static_assert(adjacency_list_graph<vof>);
 static_assert(adjacency_list_graph<vol>);
 static_assert(adjacency_list_graph<vov>);
 
-
-
-
-
-
 int main() {
 
-  bfs_v0(vov(), 0);
-  bfs_v0(vol(), 0);
-  bfs_v0(vof(), 0);
+  bfs(vov(), 0);
+  bfs(vol(), 0);
+  bfs(vof(), 0);
 
   return 0;
 }

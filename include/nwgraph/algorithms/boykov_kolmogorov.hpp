@@ -30,6 +30,14 @@ const size_t INFINITE_D = 100000000;
 
 enum class tree_mem : bool { source = false, term = true };
 
+/**
+ * Boykov-Kolmogorov max-flow 
+ * @verbatim embed:rst:inline :cite:`boykov01:_exper_compar_min_cut_max`.@endverbatim
+ *
+ * @tparam Graph Type of the input graph.
+ * @param A The input graph.
+ * @param cap Vector of edge capacities.
+ */
 template <typename Graph>
 std::tuple<double, std::vector<tree_mem>> bk_maxflow(const Graph& A, std::vector<double>& cap) {
   // std::clock_t start;

@@ -13,7 +13,6 @@
  *
  */
 
-/*Implements DAG-adapter based MIS algorithm */
 #ifndef DAG_BASED_MIS_HPP
 #define DAG_BASED_MIS_HPP
 
@@ -24,10 +23,16 @@
 #include "nwgraph/adaptors/edge_range.hpp"
 #include "nwgraph/adaptors/plain_range.hpp"
 
-
 namespace nw {
 namespace graph {
 
+/**
+ * Compute maximal independent set, using DAG adaptor.
+ *
+ * @tparam Graph Type of the input graph.  Must meet requirements of adjacency_list_graph concept.
+ * @param A The input graph.
+ * @param mis (out) Boolean vector indicating whether corresponding vertex is in the maximal independent set.
+ */
 template <adjacency_list_graph Graph>
 void dag_based_mis(Graph& A, std::vector<bool>& mis) {
   size_t N = A.size();
