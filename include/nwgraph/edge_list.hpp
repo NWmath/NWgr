@@ -239,7 +239,7 @@ public:
 
 /**
  * Type alias for unipartite index edge list structure, using the default_vertex_id_type as the vertex_id type.
- * \see{index_edge_list}
+ * See @verbatim embed:rst:inline :cpp:class:`index_edge_list` @endverbatim .
  */
 template <directedness edge_directedness = directedness::undirected, typename... Attributes>
 using edge_list = index_edge_list<default_vertex_id_type, unipartite_graph_base, edge_directedness, Attributes...>;

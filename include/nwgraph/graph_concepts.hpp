@@ -138,6 +138,12 @@ using attributes_t = decltype(nth_cdr<1>(inner_value_t<G>{}));
  *       static_assert(nw::graph::adjacency_list_graph<std::vector<std::vector<std::tuple<int, int, double>>>);
  *     }
  *
+ *     template <typename G>
+ *     concept adjacency_list_graph = graph<G>;
+ *
+ *     template <adjacency_list_graph Graph, typename score_t = float, typename accum_t = size_t>
+ *     std::vector<score_t> brandes_bc(const Graph& G, bool normalize = true) {
+ *
  */
 template <typename G>
 concept adjacency_list_graph = graph<G>

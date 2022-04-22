@@ -12,60 +12,158 @@ NWGraph API Reference
 Concepts
 --------
 
+graph
+~~~~~
+
 .. doxygenconcept:: nw::graph::graph
+
+--------------------------------
+
+
+adjacency_list_graph
+~~~~~~~~~~~~~~~~~~~~
 
 .. doxygenconcept:: nw::graph::adjacency_list_graph
 
+--------------------------------
+
+degree_enumerable_graph
+~~~~~~~~~~~~~~~~~~~~~~~
+
 .. doxygenconcept:: nw::graph::degree_enumerable_graph
+
+--------------------------------
+
+edge_list_graph
+~~~~~~~~~~~~~~~
 
 .. doxygenconcept:: nw::graph::edge_list_graph
 
+--------------------------------
 
+--------------------------------
 
 Graph Algorithms
 ----------------
 
+Betweenness Centrality
+~~~~~~~~~~~~~~~~~~~~~~
+
+
 .. doxygenfunction:: nw::graph::brandes_bc(const Graph& G, bool normalize = true)
+
 
 .. doxygenfunction:: nw::graph::brandes_bc(const Graph& graph, const std::vector<typename Graph::vertex_id_type>& sources, int threads, OuterExecutionPolicy&& outer_policy = {}, InnerExecutionPolicy&& inner_policy = {}, bool normalize = true)
 
+--------------------------------
+
+
+Breadth-First Search
+~~~~~~~~~~~~~~~~~~~~
+
 .. doxygenfunction:: nw::graph::bfs(const Graph& graph, vertex_id_t<Graph> root)
+
 
 .. doxygenfunction:: nw::graph::bfs(const OutGraph& out_graph, const InGraph& in_graph, vertex_id_t<OutGraph> root, int num_bins = 32, int alpha = 15, int beta = 18)
 
-.. doxygenfunction:: nw::graph::bk_maxflow
+
+--------------------------------
+
+Connected Components
+~~~~~~~~~~~~~~~~~~~~
+
 
 .. doxygenfunction:: nw::graph::afforest
 
-.. doxygenfunction:: nw::graph::dag_based_mis
+--------------------------------
 
-.. doxygenfunction:: nw::graph::delta_stepping(const Graph& graph, vertex_id_t<Graph> source, T delta, Weight weight = [](auto& e) -> auto& { return std::get<1>(e); })
 
-.. doxygenfunction:: nw::graph::delta_stepping(const Graph& graph, vertex_id_t<Graph> source, T delta)
 
-.. doxygenfunction:: nw::graph::dijkstra_er
+Jaccard Similarity
+~~~~~~~~~~~~~~~~~~
 
-.. doxygenfunction:: nw::graph::dijkstra
 
 .. doxygenfunction:: nw::graph::jaccard_similarity_v0
 
+--------------------------------
+
+Graph Coloring
+~~~~~~~~~~~~~~
+
 .. doxygenfunction:: nw::graph::jones_plassmann_coloring
 
+--------------------------------
+
 .. doxygenfunction:: nw::graph::k_core
+
+--------------------------------
+
+Minimum Spanning Tree
+~~~~~~~~~~~~~~~~~~~~~
 
 .. doxygenfunction:: nw::graph::kruskal(EdgeListT &E, Compare comp)
 
 .. doxygenfunction:: nw::graph::kruskal(EdgeListT &E)
 
+.. doxygenfunction:: nw::graph::prim
+
+--------------------------------
+
+Max Flow
+~~~~~~~~
+
 .. doxygenfunction:: nw::graph::max_flow
+
+
+.. doxygenfunction:: nw::graph::bk_maxflow
+
+--------------------------------
+
+Maximal Independent Set
+~~~~~~~~~~~~~~~~~~~~~~~
 
 .. doxygenfunction:: nw::graph::maximal_independent_set
 
+.. doxygenfunction:: nw::graph::dag_based_mis
+
+--------------------------------
+
+
+PageRank
+~~~~~~~~
+
 .. doxygenfunction:: nw::graph::page_rank
 
-.. doxygenfunction:: nw::graph::prim
+--------------------------------
+
+Single-Source Shortest Paths
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+.. doxygenfunction:: nw::graph::dijkstra_er
+
+.. doxygenfunction:: nw::graph::dijkstra
+
+
+.. doxygenfunction:: nw::graph::delta_stepping(const Graph& graph, vertex_id_t<Graph> source, T delta, Weight weight = [](auto& e) -> auto& { return std::get<1>(e); })
+
+
+.. doxygenfunction:: nw::graph::delta_stepping(const Graph& graph, vertex_id_t<Graph> source, T delta)
+
+
+--------------------------------
+
+Sparse Matrix Sparse Matrix Product
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 
 .. doxygenfunction:: nw::graph::spMatspMat
+
+--------------------------------
+
+
+Triangle Counting
+~~~~~~~~~~~~~~~~~
 
 .. doxygenfunction:: nw::graph::triangle_count(const GraphT& A)
 
@@ -78,17 +176,36 @@ Graph Algorithms
 Graph Data Structures
 ---------------------
 
-.. doxygentypedef:: nw::graph::adjacency
+
+
+Adjacency List
+~~~~~~~~~~~~~~
 
 .. doxygenclass:: nw::graph::index_adjacency
 
-.. doxygentypedef:: nw::graph::edge_list
+.. doxygentypedef:: nw::graph::adjacency
 
-.. doxygentypedef:: nw::graph::bi_edge_list
+.. doxygentypedef:: nw::graph::bi_adjacency
+
+--------------------------------
+
+
+
+Edge List
+~~~~~~~~~
+
 
 .. doxygenclass:: nw::graph::index_edge_list
 
 
+.. doxygentypedef:: nw::graph::edge_list
+
+
+.. doxygentypedef:: nw::graph::bi_edge_list
+
+
+--------------------------------
+--------------------------------
 
 Graph Construction
 ------------------
@@ -115,7 +232,8 @@ Graph Construction
 
 .. doxygenfunction:: nw::graph::join
 
-
+--------------------------------
+--------------------------------
 
 Range Adaptors
 --------------
@@ -150,12 +268,15 @@ Range Adaptors
 
 .. doxygenclass:: nw::graph::worklist_range
 
+--------------------------------
+--------------------------------
 
 
 Graph Generators
 ----------------
 
-
+--------------------------------
+--------------------------------
 
 Graph I/O
 ---------
@@ -172,7 +293,8 @@ Graph I/O
 
 .. doxygenfunction:: write_mm(const std::string& filename, biadjacency<idx, Attributes...>& A, const std::string& file_symmetry)
 
-
+--------------------------------
+--------------------------------
 
 Containers
 ----------
@@ -185,7 +307,8 @@ Containers
 
 .. doxygenstruct:: nw::graph::zipped
 
-
+--------------------------------
+--------------------------------
 
 Utilities
 ---------
@@ -202,6 +325,8 @@ Utilities
 
 .. doxygenfunction:: nw::graph::intersection_size
 
+--------------------------------
+--------------------------------
 
 Experimental Components
 -----------------------
