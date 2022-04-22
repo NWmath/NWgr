@@ -323,6 +323,135 @@ auto brandes_bc(const Graph& graph, const std::vector<typename Graph::vertex_id_
   return bc;
 }
 
+/**
+ * Parallel exact betweenness centrality using Brandes algorithm @verbatim embed:rst:inline :cite:`brandes_bc`.@endverbatim
+ * Rather than using a specified set of root nodes to compute paths, 
+ * the algorithm uses all vertices in the graph.  Parallelization is effected through C++ standard library
+ * execution policies.
+ *
+ * @tparam Graph Type of the graph.  Must meet requirements of adjacency_list_graph concept.
+ * @tparam score_t Type of the centrality scores computed for each vertex.
+ * @tparam accum_t Type of path counts.
+ * @tparam OuterExecutionPolicy Parallel execution policy type for outer loop of algorithm.  Default: std::execution::parallel_unsequenced_policy
+ * @tparam InnerExecutionPolicy Parallel execution policy type for inner loop of algorithm.  Default: std::execution::parallel_unsequenced_policy
+ * @param G Input graph.
+ * @param normalize Flag indicating whether to normalize centrality scores relative to largest score.
+ * @param sources Vector of starting sources.
+ * @param outer_policy Outer loop parallel execution policy.
+ * @param inner_policy Inner loop parallel execution policy.
+ * @param threads Number of threads being used in computation.  Used to compute number of bins in computation.
+ * @return Vector of centrality for each vertex.
+ */
+template <class score_t, class accum_t, adjacency_list_graph Graph, class OuterExecutionPolicy = std::execution::parallel_unsequenced_policy,
+          class InnerExecutionPolicy = std::execution::parallel_unsequenced_policy>
+auto exact_brandes_bc(const Graph& graph, int threads,
+                OuterExecutionPolicy&& outer_policy = {}, InnerExecutionPolicy&& inner_policy = {}, bool normalize = true) {
+  using vertex_id_type = typename Graph::vertex_id_type;
+
+  vertex_id_type       N     = num_vertices(graph);
+  size_t               M     = graph.to_be_indexed_.size();
+  auto&&               edges = std::get<0>(*(graph[0]).begin());
+  std::vector<score_t> bc(N);
+
+  const vertex_id_type num_bins = nw::graph::pow2(nw::graph::ceil_log2(threads));
+  const vertex_id_type bin_mask = num_bins - 1;
+
+  std::vector<std::future<void>> futures(N);
+  for (vertex_id_type s = 0; s < N; ++s) {
+    futures[s] = std::async(
+        std::launch::async,
+        [&](vertex_id_type root) {
+          std::vector<vertex_id_type> levels(N);
+          nw::graph::AtomicBitVector  succ(M);
+
+          // Initialize the levels to infinity.
+          std::fill(outer_policy, levels.begin(), levels.end(), std::numeric_limits<vertex_id_type>::max());
+
+          std::vector<accum_t>                                             path_counts(N);
+          std::vector<tbb::concurrent_vector<vertex_id_type>>              q1(num_bins);
+          std::vector<tbb::concurrent_vector<vertex_id_type>>              q2(num_bins);
+          std::vector<std::vector<tbb::concurrent_vector<vertex_id_type>>> retired;
+
+          vertex_id_type lvl = 0;
+
+          path_counts[root] = 1;
+          q1[0].push_back(root);
+          levels[root] = lvl++;
+
+          bool done = false;
+          while (!done) {
+            std::for_each(outer_policy, q1.begin(), q1.end(), [&](auto&& q) {
+              std::for_each(inner_policy, q.begin(), q.end(), [&](auto&& u) {
+                for (auto&& elt : graph[u]) {
+                  auto   v        = target(graph, elt);
+                  auto&& infinity = std::numeric_limits<vertex_id_type>::max();
+                  auto&& lvl_v    = nw::graph::acquire(levels[v]);
+
+                  // If this is our first encounter with this node, or
+                  // it's on the right level, then propagate the counts
+                  // from u to v, and mark the edge from u to v as used.
+                  if (lvl_v == infinity || lvl_v == lvl) {
+                    nw::graph::fetch_add(path_counts[v], nw::graph::acquire(path_counts[u]));
+                    succ.atomic_set(&v - &edges);    // edge(w,v) : P[w][v]
+                  }
+
+                  // We need to add v to the frontier exactly once the
+                  // first time we encounter it, so we race to set its
+                  // level and if we win that race we can be the one to
+                  // add it.
+                  if (lvl_v == infinity && nw::graph::cas(levels[v], infinity, lvl)) {
+                    q2[u & bin_mask].push_back(v);
+                  }
+                }
+              });
+            });
+
+            done = true;
+            for (size_t i = 0; i < num_bins; ++i) {
+              if (q2[i].size() != 0) {
+                done = false;
+                break;
+              }
+            }
+
+            retired.emplace_back(num_bins);
+            std::swap(q1, retired.back());
+            std::swap(q1, q2);
+
+            ++lvl;
+          }
+
+          std::vector<score_t> deltas(N);
+
+          std::for_each(retired.rbegin(), retired.rend(), [&](auto&& vvv) {
+            std::for_each(outer_policy, vvv.begin(), vvv.end(), [&](auto&& vv) {
+              std::for_each(inner_policy, vv.begin(), vv.end(), [&](auto&& u) {
+                score_t delta = 0;
+                for (auto&& elt : graph[u]) {
+                  auto v = target(graph, elt);
+                  if (succ.get(&v - &edges)) {
+                    delta += path_counts[u] / path_counts[v] * (1.0f + deltas[v]);
+                  }
+                }
+                nw::graph::fetch_add(bc[u], deltas[u] = delta);
+              });
+            });
+          });
+        },
+        s);
+  }
+
+  for (auto&& f : futures) {
+    f.wait();
+  }
+
+  if (normalize) {
+    auto max = std::reduce(outer_policy, bc.begin(), bc.end(), 0.0f, nw::graph::max{});
+    std::for_each(outer_policy, bc.begin(), bc.end(), [&](auto&& j) { j /= max; });
+  }
+  return bc;
+}
+
 }    // namespace graph
 }    // namespace nw
 #endif    // BETWEENNESS_CENTRALITY_HPP
