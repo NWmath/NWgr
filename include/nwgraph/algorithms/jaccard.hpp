@@ -33,8 +33,17 @@
 namespace nw {
 namespace graph {
 
+/**
+ * @brief A sequential jaccard similarity algorithm using set intersection.
+ * 
+ * @tparam GraphT Type of graph.  Must meet the requirements of adjacency_list_graph concept.
+ * @tparam Weight Type of the edge weight function.
+ * @param G Input graph.
+ * @param weight Weight function on how to access the edge weight.
+ * @return size_t Jaccard similarity score.
+ */
 template <adjacency_list_graph GraphT, typename Weight>
-size_t jaccard_similarity_v0(GraphT& G, Weight weight) {
+size_t jaccard_similarity(GraphT& G, Weight weight) {
   size_t ctr = 0;
 
   for (size_t u = 0; u < num_vertices(G); ++u) {
