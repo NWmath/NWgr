@@ -36,19 +36,19 @@ namespace nw {
 namespace graph {
 
 /**
- * @brief Verifies CC result by performing a BFS from a vertex in each component
- * Asserts search does not reach a vertex with a different component label
- * If the graph is directed, it performs the search as if it was undirected
- * Asserts every vertex is visited (degree-0 vertex should have own label)
+ * @brief Verifies CC result by performing a BFS from a vertex in each component.
+ * Asserts search does not reach a vertex with a different component label.
+ * If the graph is directed, it performs the search as if it was undirected.
+ * Asserts every vertex is visited (degree-0 vertex should have own label).
  * 
- * @tparam Graph adjacency_list graph type
- * @tparam Transpose adjacency_list graph type for transpose
- * @tparam Vector container type for CC labelings
- * @param graph the adjacency_list_graph
- * @param xpose transpose of the adjacency_list_graph
+ * @tparam Graph Type of graph. Must meet the requirements of adjacency_list_graph concept.
+ * @tparam Graph Type of transpose graph. Must meet the requirements of adjacency_list_graph concept.
+ * @tparam Vector Container type for CC labelings.
+ * @param graph Input graph.
+ * @param xpose Input transpose graph.
  * @param comp CC labelings
- * @return true if the CC labelings are all correct
- * @return false if the CC labelings are wrong
+ * @return true If the CC labelings are all correct.
+ * @return false If the CC labelings are wrong.
  */
 template <adjacency_list_graph Graph, adjacency_list_graph Transpose, class Vector>
 static bool CCVerifier(const Graph& graph, const Transpose& xpose, Vector&& comp) {
@@ -109,11 +109,11 @@ static bool CCVerifier(const Graph& graph, const Transpose& xpose, Vector&& comp
  * The vertex having smaller label will become the parent of vertex having the larger label.
  * This operation is also known as hook operation.
  * 
- * @tparam Vector CC labeling container type
- * @tparam T CC labeling type
- * @param u vertex u
- * @param v vertex v
- * @param comp CC labelings
+ * @tparam Vector CC labeling container type.
+ * @tparam T CC labeling type.
+ * @param u Vertex u.
+ * @param v Vertex v.
+ * @param comp CC labelings of every vertex.
  */
 template <typename Vector, typename T>
 static void link(T u, T v, Vector& comp) {
@@ -136,10 +136,10 @@ static void link(T u, T v, Vector& comp) {
  * Every leaf will be hooked to the root of the tree.
  * The tree of each component becomes a star at the end of the CC algorithm.
  * 
- * @tparam Execution execution policy type
- * @tparam Vector CC labeling container type
- * @param exec execution policy
- * @param comp CC labelings
+ * @tparam Execution execution policy type.
+ * @tparam Vector CC labeling container type.
+ * @param exec Execution policy.
+ * @param comp CC labelings.
  */
 template <typename Execution, typename Vector>
 static void compress(Execution& exec, Vector& comp) {
@@ -156,11 +156,11 @@ static void compress(Execution& exec, Vector& comp) {
  * @brief Subgraph sampling to find the most commonly appeared labeling 
  * within the sampled subgraph.
  * 
- * @tparam Vector CC labeling container type
- * @tparam T type of the CC labeling
- * @param comp CC labelings
- * @param num_samples the number of vertices in the sampled subgraph
- * @return T the potential largest intermediate component ID
+ * @tparam Vector CC labeling container type.
+ * @tparam T type of the CC labeling.
+ * @param comp CC labelings.
+ * @param num_samples Number of vertices in the sampled subgraph.
+ * @return T the potential largest intermediate component ID.
  */
 template <typename Vector, typename T>
 static T sample_frequent_element(const Vector& comp, size_t num_samples = 1024) {
