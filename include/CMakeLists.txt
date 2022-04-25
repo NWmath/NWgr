@@ -75,6 +75,7 @@ target_sources(nw_graph
   nwgraph/experimental/algorithms/bfs.hpp
   nwgraph/experimental/algorithms/connected_components.hpp
   nwgraph/experimental/algorithms/jaccard.hpp
+  nwgraph/experimental/algorithms/jones_plassmann_coloring.hpp
   nwgraph/experimental/algorithms/page_rank.hpp
   nwgraph/experimental/algorithms/delta_stepping.hpp
   nwgraph/experimental/algorithms/triangle_count.hpp
