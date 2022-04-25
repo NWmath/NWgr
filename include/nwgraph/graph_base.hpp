@@ -17,6 +17,7 @@
 
 #include <array>
 #include <cstddef>
+#include <istream>
 
 namespace nw {
 namespace graph {
@@ -62,6 +63,27 @@ public:
   unipartite_graph_base(size_t d0 = 0) : vertex_cardinality{d0}, is_open(false) {}
 
   // auto num_edges() { return num_edges_; }
+  /**
+   * @brief Serialize the unipartite_graph_base into binary.
+   * 
+   * @param outfile The output ostream object.
+   */
+  void serialize(std::ostream& outfile) const {
+    outfile.write(reinterpret_cast<const char*>(&vertex_cardinality[0]), sizeof(size_t));
+    outfile.write(reinterpret_cast<const char*>(&is_open), sizeof(bool));
+  }
+
+  /**
+   * @brief Deserialize the binary back to unipartite_graph_base.
+   * 
+   * @param infile The input istream object.
+   */
+  void deserialize(std::istream& infile) {
+    size_t N;
+    infile.read(reinterpret_cast<char*>(&N), sizeof(size_t));
+    vertex_cardinality[0] = N;
+    infile.read(reinterpret_cast<char*>(&is_open), sizeof(bool));
+  }
 
 protected:
   vertex_cardinality_t vertex_cardinality;
@@ -76,6 +98,30 @@ public:
   bipartite_graph_base(vertex_cardinality_t cardinality) : vertex_cardinality(cardinality), is_open(false) {}
 
   // auto num_edges() { return num_edges_; }
+  /**
+   * @brief Serialize the bipartite_graph_base into binary.
+   * 
+   * @param outfile The output ostream object.
+   */
+  void serialize(std::ostream& outfile) const {
+    outfile.write(reinterpret_cast<const char*>(&vertex_cardinality[0]), sizeof(size_t));
+    outfile.write(reinterpret_cast<const char*>(&vertex_cardinality[1]), sizeof(size_t));
+    outfile.write(reinterpret_cast<const char*>(&is_open), sizeof(bool));
+  }
+
+  /**
+   * @brief Deserialize the binary back to bipartite_graph_base.
+   * 
+   * @param infile The input istream object.
+   */
+  void deserialize(std::istream& infile) {
+    size_t N0, N1;
+    infile.read(reinterpret_cast<char*>(&N0), sizeof(size_t));
+    infile.read(reinterpret_cast<char*>(&N1), sizeof(size_t));
+    vertex_cardinality[0] = N0;
+    vertex_cardinality[1] = N1;
+    infile.read(reinterpret_cast<char*>(&is_open), sizeof(bool));
+  }
 
 protected:
   vertex_cardinality_t vertex_cardinality;    // ordinal limits

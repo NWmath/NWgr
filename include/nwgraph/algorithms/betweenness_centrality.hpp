@@ -336,7 +336,6 @@ auto brandes_bc(const Graph& graph, const std::vector<typename Graph::vertex_id_
  * @tparam InnerExecutionPolicy Parallel execution policy type for inner loop of algorithm.  Default: std::execution::parallel_unsequenced_policy
  * @param G Input graph.
  * @param normalize Flag indicating whether to normalize centrality scores relative to largest score.
- * @param sources Vector of starting sources.
  * @param outer_policy Outer loop parallel execution policy.
  * @param inner_policy Inner loop parallel execution policy.
  * @param threads Number of threads being used in computation.  Used to compute number of bins in computation.

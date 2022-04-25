@@ -124,6 +124,27 @@ public:
 
   num_vertices_type num_vertices() const { return {base::size()}; };
   num_edges_type    num_edges() const { return base::to_be_indexed_.size(); };
+  /**
+   * @brief Serialize the index_adjacency into binary file.
+   * 
+   * @param outfile_name The output file name.
+   */
+  void serialize(const std::string& outfile_name) const {
+    std::ofstream out_file(outfile_name, std::ofstream::binary);
+    unipartite_graph_base::serialize(out_file);
+    base::serialize(out_file);
+  }
+
+  /**
+   * @brief Deserialize the binary into index_adjacency.
+   * 
+   * @param infile_name The input file name.
+   */
+  void deserialize(const std::string& infile_name) {
+    std::ifstream infile(infile_name, std::ifstream::binary);
+    unipartite_graph_base::deserialize(infile);
+    base::deserialize(infile);
+  }
 };
 
 template <int idx, typename... Attributes>
@@ -201,6 +222,27 @@ public:
 
   auto num_vertices() const { return vertex_cardinality; }
   num_edges_type    num_edges() const { return base::to_be_indexed_.size(); };
+  /**
+   * @brief Serialize the index_adjacency into binary file.
+   * 
+   * @param outfile_name The output file name.
+   */
+  void serialize(const std::string& outfile_name) {
+    std::ofstream out_file(outfile_name, std::ofstream::binary);
+    bipartite_graph_base::serialize(out_file);
+    base::serialize(out_file);
+  }
+
+  /**
+   * @brief Deserialize the binary into index_adjacency.
+   * 
+   * @param infile_name The input file name.
+   */
+  void deserialize(const std::string& infile_name) {
+    std::ifstream infile(infile_name, std::ifstream::binary);
+    bipartite_graph_base::deserialize(infile);
+    base::deserialize(infile);
+  }
 };
 
 template <int idx, typename... Attributes>
