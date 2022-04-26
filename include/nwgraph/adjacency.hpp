@@ -52,6 +52,17 @@ template <typename... Attributes>
 using compressed = index_compressed<default_index_t, default_vertex_id_type, Attributes...>;
 #endif
 
+/**
+ * @brief Index adjacency structure. This data structures stores unipartite graph in Compressed Sparse Row format.
+ * The underlying data structure is a structure of arrays for storage.
+ * Index_adjacency is an adjacency list represenation of a unipartite graph.
+ * A unipartite graph has one vertex set.
+ * 
+ * @tparam idx The index type to indicate the type of the graph, can be either 0 or 1.
+ * @tparam index_type The data type used to represent a vertex index, required to be os unsigned integral type.
+ * @tparam vertex_id The data type used to represent a vertex ID, required to be os unsigned integral type.
+ * @tparam Attributes A variadic list of edge property types.
+ */
 template <int idx, std::unsigned_integral index_type, std::unsigned_integral vertex_id, typename... Attributes>
 class index_adjacency : public unipartite_graph_base, public indexed_struct_of_arrays<index_type, vertex_id, Attributes...> {
   using base = indexed_struct_of_arrays<index_type, vertex_id, Attributes...>;
@@ -65,14 +76,22 @@ public:
   // The first index_t isn't considered an attribute.
   using attributes_t = std::tuple<Attributes...>;
   static constexpr std::size_t getNAttr() { return sizeof...(Attributes); }
-
+  /**
+   * @brief Constructor of index_adjacency. Require the type of the graph to be unipartite.
+   * Create an empty index_adjacency.
+   */
   index_adjacency(size_t N = 0, size_t M = 0) requires(std::is_same<unipartite_graph_base, unipartite_graph_base>::value) : unipartite_graph_base(N), base(N, M) {}
+    /**
+   * @brief Constructor of index_adjacency. Require the type of the graph to be unipartite.
+   * Create an empty index_adjacency.
+   */
   index_adjacency(std::array<size_t, 1> N, size_t M = 0) requires(std::is_same<unipartite_graph_base, unipartite_graph_base>::value) : unipartite_graph_base(N), base(N[0], M) {}
 
   template <class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
   index_adjacency(index_edge_list<vertex_id_type, unipartite_graph_base, directedness::directed, Attributes...>& A,
                   bool sort_adjacency = false,
                   ExecutionPolicy&&                                                                              policy = {})
+      requires(std::is_same<unipartite_graph_base, unipartite_graph_base>::value) 
       : unipartite_graph_base(A.num_vertices()[0]), base(A.num_vertices()[0] + 1) {
     fill<idx>(A, *this, sort_adjacency, policy);
   }
@@ -81,6 +100,7 @@ public:
   index_adjacency(index_edge_list<vertex_id_type, unipartite_graph_base, directedness::undirected, Attributes...>& A,
                   bool sort_adjacency = false,
                   ExecutionPolicy&&                                                                                policy = {})
+      requires(std::is_same<unipartite_graph_base, unipartite_graph_base>::value) 
       : unipartite_graph_base(A.num_vertices()[0]), base(A.num_vertices()[0] + 1) {
     fill<idx>(A, *this, sort_adjacency, policy);
   }
@@ -91,6 +111,7 @@ public:
                                   directedness::directed, Attributes...>& A,
                   bool sort_adjacency = false,                
                   ExecutionPolicy&& policy = {})
+      requires(std::is_same<unipartite_graph_base, unipartite_graph_base>::value) 
       : unipartite_graph_base(N), base(N) {
     fill<idx>(A, *this, sort_adjacency, policy);
   }
@@ -100,6 +121,7 @@ public:
                                   directedness::undirected, Attributes...>& A,
                   bool sort_adjacency = false,
                   ExecutionPolicy&& policy = {})
+      requires(std::is_same<unipartite_graph_base, unipartite_graph_base>::value) 
       : unipartite_graph_base(N), base(N) {
     fill<idx>(A, *this, sort_adjacency, policy);
   }
@@ -107,19 +129,23 @@ public:
   index_adjacency(std::vector<vertex_id>&& indices,
                   std::vector<vertex_id>&& first_to_be,
                   std::vector<Attributes>&&... rest_to_be)
+      requires(std::is_same<unipartite_graph_base, unipartite_graph_base>::value) 
       : unipartite_graph_base(indices.size() - 1), base(std::move(indices), std::move(first_to_be), std::move(rest_to_be)...) {}
   index_adjacency(std::vector<vertex_id>&& indices,
                   std::tuple<std::vector<vertex_id>,
                              std::vector<Attributes>...>&& to_be_indexed)
+      requires(std::is_same<unipartite_graph_base, unipartite_graph_base>::value) 
       : unipartite_graph_base(indices.size() - 1), base(std::move(indices), std::move(to_be_indexed)) {}
   // customized copy constructor
   index_adjacency(const std::vector<vertex_id>& indices,
                   const std::vector<vertex_id>& first_to_be,
                   const std::vector<Attributes>&... rest_to_be)
+      requires(std::is_same<unipartite_graph_base, unipartite_graph_base>::value) 
       : unipartite_graph_base(indices.size() - 1), base(indices, first_to_be, rest_to_be...) {}
   index_adjacency(const std::vector<vertex_id>& indices,
                   const std::tuple<std::vector<vertex_id>,
                                    std::vector<Attributes>...>& to_be_indexed)
+      requires(std::is_same<unipartite_graph_base, unipartite_graph_base>::value) 
       : unipartite_graph_base(indices.size() - 1), base(indices, to_be_indexed) {}
 
   num_vertices_type num_vertices() const { return {base::size()}; };
@@ -163,6 +189,18 @@ auto make_adjacency(edge_list_t& el, u_integral n, directedness edge_directednes
   return adj;
 }
 
+/**
+ * @brief Index biadjacency structure. This data structures stores bipartite graph in Compressed Sparse Row format.
+ * The underlying data structure is a structure of arrays for storage.
+ * Index_biadjacency is an biadjacency list represenation of a bipartite graph.
+ * A bipartite graph has two vertex partitions.
+ * 
+ * 
+ * @tparam idx The index type to indicate the type of the graph, can be either 0 or 1.
+ * @tparam index_type The data type used to represent a vertex index, required to be os unsigned integral type.
+ * @tparam vertex_id The data type used to represent a vertex ID, required to be os unsigned integral type.
+ * @tparam Attributes A variadic list of edge property types.
+ */
 template <int idx, std::unsigned_integral index_type, std::unsigned_integral vertex_id, typename... Attributes>
 class index_biadjacency : public bipartite_graph_base, public indexed_struct_of_arrays<index_type, vertex_id, Attributes...> {
   using base = indexed_struct_of_arrays<index_type, vertex_id, Attributes...>;
@@ -170,14 +208,22 @@ class index_biadjacency : public bipartite_graph_base, public indexed_struct_of_
 public:
   using index_t           = index_type;
   using vertex_id_type    = vertex_id;
-  using num_vertices_type = std::array<vertex_id_type, 1>;
+  using num_vertices_type = std::array<vertex_id_type, 2>;
   using num_edges_type    = index_t;
 
   // The first index_t isn't considered an attribute.
   using attributes_t = std::tuple<Attributes...>;
   static constexpr std::size_t getNAttr() { return sizeof...(Attributes); }
 
+  /**
+   * @brief Constructor of index_biadjacency. Require the type of the graph to be bipartite. 
+   * Create an empty index_biadjacency.
+   */
   index_biadjacency(size_t N0 = 0, size_t N1 = 0, size_t M = 0) requires(std::is_same<bipartite_graph_base, bipartite_graph_base>::value) : bipartite_graph_base(N0, N1), base(N0, M) {}
+    /**
+   * @brief Constructor of index_biadjacency. Require the type of the graph to be bipartite. 
+   * Create an empty index_biadjacency.
+   */
   index_biadjacency(std::array<size_t, 2> N, size_t M = 0) requires(std::is_same<bipartite_graph_base, bipartite_graph_base>::value) : bipartite_graph_base(N[idx], N[(idx + 1) % 2]), base(N[idx], M) {}
 
   template <class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
@@ -185,6 +231,7 @@ public:
                                     directedness::directed, Attributes...>& A,
                     bool sort_biadjacency = false,
                     ExecutionPolicy&& policy = {})
+      requires(std::is_same<bipartite_graph_base, bipartite_graph_base>::value)
       : bipartite_graph_base(A.num_vertices()[idx],
                              A.num_vertices()[(idx + 1) % 2]),
         base(A.num_vertices()[idx] + 1) {
@@ -196,6 +243,7 @@ public:
                                     directedness::undirected, Attributes...>& A,
                     bool sort_biadjacency = false,
                     ExecutionPolicy&& policy = {})
+      requires(std::is_same<bipartite_graph_base, bipartite_graph_base>::value)
       : bipartite_graph_base(A.num_vertices()[idx],
                              A.num_vertices()[(idx + 1) % 2]),
         base(A.num_vertices()[idx] + 1) {
@@ -205,6 +253,7 @@ public:
   index_biadjacency(size_t N1, std::vector<vertex_id>&& indices,
                   std::vector<vertex_id>&& first_to_be,
                   std::vector<Attributes>&&... rest_to_be)
+      requires(std::is_same<bipartite_graph_base, bipartite_graph_base>::value)
       : bipartite_graph_base(indices.size() - 1, N1), base(std::move(indices), std::move(first_to_be), std::move(rest_to_be)...) {}
   index_biadjacency(size_t N1, std::vector<vertex_id>&& indices,
                   std::tuple<std::vector<vertex_id>,
@@ -214,10 +263,12 @@ public:
   index_biadjacency(size_t N1, const std::vector<vertex_id>& indices,
                   const std::vector<vertex_id>& first_to_be,
                   const std::vector<Attributes>&... rest_to_be)
+      requires(std::is_same<bipartite_graph_base, bipartite_graph_base>::value)
       : bipartite_graph_base(indices.size() - 1, N1), base(indices, first_to_be, rest_to_be...) {}
   index_biadjacency(size_t N1, const std::vector<vertex_id>& indices,
                   const std::tuple<std::vector<vertex_id>,
                                    std::vector<Attributes>...>& to_be_indexed)
+      requires(std::is_same<bipartite_graph_base, bipartite_graph_base>::value)
       : bipartite_graph_base(indices.size() - 1, N1), base(indices, to_be_indexed) {}
 
   auto num_vertices() const { return vertex_cardinality; }
