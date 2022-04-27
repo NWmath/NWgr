@@ -185,7 +185,7 @@ Adjacency List
 
 .. doxygentypedef:: nw::graph::adjacency
 
-.. doxygentypedef:: nw::graph::bi_adjacency
+.. doxygentypedef:: nw::graph::biadjacency
 
 --------------------------------
 

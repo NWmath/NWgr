@@ -246,7 +246,6 @@ using edge_list = index_edge_list<default_vertex_id_type, unipartite_graph_base,
 
 /**
  * Type alias for bipartite index edge list structure, using the default_vertex_id_type as the vertex_id type.
- * \see{index_edge_list}
  */
 template <directedness edge_directedness = directedness::directed, typename... Attributes>
 using bi_edge_list = index_edge_list<default_vertex_id_type, bipartite_graph_base, edge_directedness, Attributes...>;
