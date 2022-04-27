@@ -52,7 +52,7 @@ int main(int argc, char* argv[]) {
   auto Weight = [](auto& e) -> auto& {
     return std::get<1>(e);
   };
-  size_t js_score = jaccard_similarity_v0<>(A, Weight);
+  size_t js_score = jaccard_similarity<>(A, Weight);
 
   return 0;
 }

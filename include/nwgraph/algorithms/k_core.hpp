@@ -26,6 +26,10 @@
 namespace nw {
 namespace graph {
 
+/**
+ * @brief Helper hash function for unordered_map
+ * 
+ */
 struct pair_hash {
   std::size_t operator()(const std::pair<size_t, size_t>& p) const {
 
@@ -38,13 +42,28 @@ struct pair_hash {
 using Neighbors     = std::pair<size_t, size_t>;
 using Unordered_map = std::unordered_map<Neighbors, bool, pair_hash>;
 
+/**
+ * @brief Helper function to make an ordered pair out of two endpoints.
+ * The smaller vertex id will be first, the larger one will be second.
+ * 
+ * @param x One endpoint of an edge.
+ * @param y The other endpoint of an edge.
+ * @return Neighbors of an edge such that 0th element in the pair is smaller than 1th element.
+ */
 Neighbors make_my_pair(default_vertex_id_type x, default_vertex_id_type y) {
   if (x < y) return std::make_pair(x, y);
   return std::make_pair(y, x);
 }
 
-//****************************************************************************
-template <typename Graph>
+/**
+ * @brief A sequential k core algorithm to find the k cores in a graph.
+ * 
+ * @tparam Graph Type of the graph.  Must meet requirements of adjacency_list_graph concept.
+ * @param A Input graph.
+ * @param k The value of k in the k core.
+ * @return std::tuple<Unordered_map, size_t> of an Unordered_map (k core), and the number of vertices in k core.
+ */
+template <adjacency_list_graph Graph>
 std::tuple<Unordered_map, size_t> k_core(const Graph& A, int k) {
   Unordered_map filter;
 

@@ -84,8 +84,8 @@ edge_list<Directedness, Attributes...> load_graph(std::string file) {
   std::ifstream in(file);
   std::string   type;
   in >> type;
-
-  if (type == "BGL17") {
+  
+  if (type == "NW") {
     nw::util::life_timer                   _("deserialize");
     edge_list<Directedness, Attributes...> aos_a(0);
     aos_a.deserialize(file);

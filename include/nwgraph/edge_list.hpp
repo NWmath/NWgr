@@ -176,11 +176,16 @@ public:
 
   constexpr static const char magic[27] = "NW Graph index_edge_list";
 
+  /**
+   * @brief Serialize the index_edge_list into binary. Can handle unipartite and bipartite graphs.
+   * 
+   * @param outfile The output ostream object.
+   */
   void serialize(std::ostream& outfile) const {
     outfile.write(reinterpret_cast<const char*>(magic), sizeof(magic));
     directedness d = edge_directedness;
     outfile.write(reinterpret_cast<const char*>(&d), sizeof(d));
-    outfile.write(reinterpret_cast<const char*>(&graph_base::vertex_cardinality[0]), sizeof(graph_base::vertex_cardinality));
+    graph_base::serialize(outfile);
     base::serialize(outfile);
   }
 
@@ -189,6 +194,11 @@ public:
     serialize(outfile);
   }
 
+  /**
+   * @brief Deserialize the binary into index_edge_list object. Can handle unipartite and bipartite graphs.
+   * 
+   * @param infile The input istream object.
+   */
   void deserialize(std::istream& infile) {
     char spell[sizeof(magic) + 1];
     infile.read(reinterpret_cast<char*>(spell), sizeof(magic));
@@ -199,7 +209,7 @@ public:
                        std::to_string((int)d)
                 << std::endl;
     }
-    infile.read(reinterpret_cast<char*>(&graph_base::vertex_cardinality[0]), sizeof(graph_base::vertex_cardinality));
+    graph_base::deserialize(infile);
     base::deserialize(infile);
     close_for_push_back();
   }
