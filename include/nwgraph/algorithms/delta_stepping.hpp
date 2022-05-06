@@ -139,8 +139,8 @@ auto delta_stepping(
     std::for_each(frontier.begin(), frontier.end(), [&](Id i) {
       if (tdist[i] >= delta * top_bin) {
         std::for_each(graph[i].begin(), graph[i].end(), [&](auto&& elt) {
-          auto j  = target(graph, elt);
-          auto wt = weight(elt);
+          auto&& j  = target(graph, elt);
+          auto&& wt = weight(elt);
           //auto&& [j, wt] = elt;    // i == v
           relax(i, j, wt);
         });
