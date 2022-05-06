@@ -211,7 +211,7 @@ Formats <https://math.nist.gov/MatrixMarket/formats.html>`__
 Running benchmarks
 ------------------
 
-We have five main benchmarks: Breadth-first Search, Connected Component
+We have six main benchmarks: Breadth-first Search, Betweenness Centrality, Connected Component
 Decomposition, Page rank, Single Source Shortest Path, and Triangle
 Counting.
 
