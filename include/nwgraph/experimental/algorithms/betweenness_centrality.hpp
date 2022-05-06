@@ -1478,7 +1478,7 @@ auto bc2_v3(const Graph& graph, const std::vector<typename Graph::vertex_id_type
         std::for_each(inner_policy, q.begin(), q.end(), [&](vertex_id_type u) {
           // tbb::parallel_for(g[u], [&](auto&& gu) {
           for (auto x = graph[u].begin(); x != graph[u].end(); ++x) {
-            auto v = target(graph, *x);
+            auto&& v = target(graph, *x);
             //auto&&         v       = std::get<0>(*x);
             vertex_id_type neg_one = std::numeric_limits<vertex_id_type>::max();
             if (levels[v] == neg_one && levels[v].compare_exchange_strong(neg_one, lvl)) {
@@ -1575,7 +1575,7 @@ auto bc2_v4(const Graph& graph, const std::vector<typename Graph::vertex_id_type
       std::for_each(outer_policy, q1.begin(), q1.end(), [&](auto&& q) {
         std::for_each(inner_policy, q.begin(), q.end(), [&](auto&& u) {
           for (auto&& elt : graph[u]) {
-            auto v = target(graph, elt);
+            auto&& v = target(graph, elt);
             auto&& neg_one = std::numeric_limits<vertex_id_type>::max();
             if (nw::graph::acquire(levels[v]) == neg_one && nw::graph::cas(levels[v], neg_one, lvl)) {
               q2[u & bin_mask].push_back(v);
@@ -1612,7 +1612,7 @@ auto bc2_v4(const Graph& graph, const std::vector<typename Graph::vertex_id_type
         std::for_each(inner_policy, vv.begin(), vv.end(), [&](auto&& u) {
           score_t delta = 0;
           for (auto x = graph[u].begin(); x != graph[u].end(); ++x) {
-            auto v = target(graph, *x);
+            auto&& v = target(graph, *x);
             //auto&& v = std::get<0>(*x);
             if (succ.get(&v - &edges)) {
               delta += path_counts[u] / path_counts[v] * (1 + deltas[v]);

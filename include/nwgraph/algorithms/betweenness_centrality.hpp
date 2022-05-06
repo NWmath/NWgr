@@ -254,7 +254,7 @@ auto brandes_bc(const Graph& graph, const std::vector<typename Graph::vertex_id_
             std::for_each(outer_policy, q1.begin(), q1.end(), [&](auto&& q) {
               std::for_each(inner_policy, q.begin(), q.end(), [&](auto&& u) {
                 for (auto&& elt : graph[u]) {
-                  auto   v        = target(graph, elt);
+                  auto&&   v        = target(graph, elt);
                   auto&& infinity = std::numeric_limits<vertex_id_type>::max();
                   auto&& lvl_v    = nw::graph::acquire(levels[v]);
 
@@ -299,7 +299,7 @@ auto brandes_bc(const Graph& graph, const std::vector<typename Graph::vertex_id_
               std::for_each(inner_policy, vv.begin(), vv.end(), [&](auto&& u) {
                 score_t delta = 0;
                 for (auto&& elt : graph[u]) {
-                  auto v = target(graph, elt);
+                  auto&& v = target(graph, elt);
                   if (succ.get(&v - &edges)) {
                     delta += path_counts[u] / path_counts[v] * (1.0f + deltas[v]);
                   }
@@ -382,7 +382,7 @@ auto exact_brandes_bc(const Graph& graph, int threads,
             std::for_each(outer_policy, q1.begin(), q1.end(), [&](auto&& q) {
               std::for_each(inner_policy, q.begin(), q.end(), [&](auto&& u) {
                 for (auto&& elt : graph[u]) {
-                  auto   v        = target(graph, elt);
+                  auto&&   v      = target(graph, elt);
                   auto&& infinity = std::numeric_limits<vertex_id_type>::max();
                   auto&& lvl_v    = nw::graph::acquire(levels[v]);
 
@@ -427,7 +427,7 @@ auto exact_brandes_bc(const Graph& graph, int threads,
               std::for_each(inner_policy, vv.begin(), vv.end(), [&](auto&& u) {
                 score_t delta = 0;
                 for (auto&& elt : graph[u]) {
-                  auto v = target(graph, elt);
+                  auto&& v = target(graph, elt);
                   if (succ.get(&v - &edges)) {
                     delta += path_counts[u] / path_counts[v] * (1.0f + deltas[v]);
                   }
