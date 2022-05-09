@@ -138,6 +138,8 @@ int main(int argc, char* argv[]) {
               return brandes_bc(graph);
             case 7:
               return approx_betweenness_brandes(graph, trial_sources);
+            case 8:
+              return exact_brandes_bc<score_t, accum_t, decltype(graph)>(graph, thread);
             default:
               std::cerr << "Invalid BC version " << id << "\n";
               return {};

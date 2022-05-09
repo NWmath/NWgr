@@ -23,6 +23,7 @@
 #include "nwgraph/util/atomic.hpp"
 #include "nwgraph/util/parallel_for.hpp"
 #include "nwgraph/util/util.hpp"
+#include "nwgraph/adaptors/vertex_range.hpp"
 
 #include <algorithm>
 
@@ -348,11 +349,15 @@ auto exact_brandes_bc(const Graph& graph, int threads,
   using vertex_id_type = typename Graph::vertex_id_type;
   vertex_id_type       N     = num_vertices(graph);
   std::vector<vertex_id_type> sources(N);
-  auto r = vertex_range(graph);
-  std::for_each(outer_policy, r.begin(), r.end(), [&](auto i) {
+  auto&& r = vertex_range<Graph>(N);
+  std::for_each(outer_policy, r.begin(), r.end(), [&](const auto& i) {
     sources[i] = i;
   });
-  return brandes_bc(graph, sources, outer_policy, inner_policy, normalize);
+  return brandes_bc<score_t, 
+  accum_t, 
+  Graph, 
+  OuterExecutionPolicy, 
+  InnerExecutionPolicy>(graph, sources, threads, std::forward<OuterExecutionPolicy>(outer_policy), std::forward<InnerExecutionPolicy>(inner_policy), normalize);
 }
 
 }    // namespace graph
