@@ -39,6 +39,7 @@ static constexpr const char USAGE[] =
 #include "Log.hpp"
 #include "nwgraph/algorithms/delta_stepping.hpp"
 #include "nwgraph/experimental/algorithms/delta_stepping.hpp"
+//#include "nwgraph/algorithms/dijkstra.hpp"
 #include "common.hpp"
 #include "nwgraph/util/make_priority_queue.hpp"
 #include "nwgraph/util/traits.hpp"
@@ -132,6 +133,8 @@ static std::tuple<double, bool> sssp(int id, const Graph& graph, vertex_id_t<Gra
       return time_op_verify([&] { return delta_stepping_v11<distance_t>(graph, source, delta, weight); }, std::forward<Verifier>(verifier));
     case 12:
       return time_op_verify([&] { return delta_stepping<distance_t>(graph, source, delta); }, std::forward<Verifier>(verifier));
+    case 13:
+      return time_op_verify([&] { return dijkstra<Graph, Weight>(graph, source, weight); }, std::forward<Verifier>(verifier));
     default:
       std::cerr << "Invalid SSSP version " << id << "\n";
       return std::tuple(0.0, true);
