@@ -71,10 +71,10 @@ static auto dijkstra(const Graph& graph, vertex_id_t<Graph> source,
     mq.pop();
     if (td == dist[u]) {
       for (auto&& elt : graph[u]) {
-        auto v = target(graph, elt);
-        auto w = weight(elt);
-        assert(w > 0);
-        assert(td < td + w);
+        auto&& v = target(graph, elt);
+        auto&& w = weight(elt);
+        //assert(w > 0);
+        //assert(td < td + w);
         if (td + w < dist[v]) {
           dist[v] = td + w;
           mq.emplace(v, td + w);
