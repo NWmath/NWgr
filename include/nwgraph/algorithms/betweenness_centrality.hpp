@@ -58,7 +58,7 @@ namespace graph {
 
 template <class score_t, class accum_t, adjacency_list_graph Graph>
 bool BCVerifier(const Graph& g, std::vector<typename graph_traits<Graph>::vertex_id_type>& trial_sources,
-                std::vector<score_t>& scores_to_test) {
+                std::vector<score_t>& scores_to_test, bool normalize = true) {
   using vertex_id_type = typename graph_traits<Graph>::vertex_id_type;
 
   std::vector<score_t> scores(num_vertices(g), 0);
@@ -107,10 +107,11 @@ bool BCVerifier(const Graph& g, std::vector<typename graph_traits<Graph>::vertex
       }
     }
   }
-
-  score_t biggest_score = *std::max_element(scores.begin(), scores.end());
-  for (size_t i = 0; i < num_vertices(g); ++i) {
-    scores[i] = scores[i] / biggest_score;
+  if (normalize){
+    score_t biggest_score = *std::max_element(scores.begin(), scores.end());
+    for (size_t i = 0; i < num_vertices(g); ++i) {
+      scores[i] = scores[i] / biggest_score;
+    }
   }
 
   bool all_ok = true;
