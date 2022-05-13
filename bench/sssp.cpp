@@ -57,28 +57,31 @@ static auto dijkstra(const Graph& graph, vertex_id_t<Graph> source,
   Weight weight = [](auto& e) -> auto& { return std::get<1>(e); }) {
   using vertex_id_type = vertex_id_t<Graph>;
 
-  // Workqueue
-  using WN = std::tuple<vertex_id_type, distance_t>;
-  auto mq  = nw::graph::make_priority_queue<WN>([](const WN& a, const WN& b) { return std::get<1>(a) > std::get<1>(b); });
-  mq.emplace(source, 0);
 
   // Distances
   std::vector<distance_t> dist(num_vertices(graph), std::numeric_limits<distance_t>::max());
+
+  // Workqueue
+  //  using WN = std::tuple<vertex_id_type, distance_t>;
+  //  auto mq  = nw::graph::make_priority_queue<WN>([](const WN& a, const WN& b) { return std::get<1>(a) > std::get<1>(b); });
+  auto mq  = nw::graph::make_priority_queue<vertex_id_type>([&dist](const vertex_id_type& a, vertex_id_type& b) { 
+							      return dist[a] > dist[b]; 
+							    });
+  mq.emplace(source);
   dist[source] = 0;
 
   while (!mq.empty()) {
-    auto [u, td] = mq.top();    // don't capture auto&& references here
+    auto u = mq.top();    // don't capture auto&& references here
     mq.pop();
-    if (td == dist[u]) {
-      for (auto&& elt : graph[u]) {
-        auto&& v = target(graph, elt);
-        auto&& w = weight(elt);
-        //assert(w > 0);
-        //assert(td < td + w);
-        if (td + w < dist[v]) {
-          dist[v] = td + w;
-          mq.emplace(v, td + w);
-        }
+    for (auto&& elt : graph[u]) {
+      auto&& v = target(graph, elt);
+      auto&& w = weight(elt);
+      //assert(w > 0);
+      //assert(td < td + w);
+      auto tw = dist[u] + w;
+      if (tw < dist[v]) {
+	dist[v] = tw;
+	mq.emplace(v);
       }
     }
   }

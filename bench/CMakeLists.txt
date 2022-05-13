@@ -46,7 +46,7 @@ add_custom_target(bench)
 # NW_GRAPH driver to process edgelists.
 # -----------------------------------------------------------------------------
 add_executable(process_edge_list ProcessEdgelist.cpp)
-target_link_libraries(process_edge_list nw_graph docopt )
+target_link_libraries(process_edge_list nw_graph docopt)
 add_dependencies(bench process_edge_list)
 
 
