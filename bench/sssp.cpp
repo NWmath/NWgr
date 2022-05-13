@@ -97,11 +97,11 @@ Weight weight) {
     return true;
   }
 
-  std::cerr << "BGL17: verification failed\n";
+  std::cerr << "NWGraph: verification failed\n";
 
   if (verbose) {
     if (dist.size() != oracle.size()) {
-      std::cerr << "BGL17: verification found different graph sizes\n";
+      std::cerr << "NWGraph: verification found different graph sizes\n";
     }
 
     for (std::size_t i = 0, e = dist.size(); i != e; ++i) {
