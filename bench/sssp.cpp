@@ -59,7 +59,7 @@ static auto dijkstra(const Graph& graph, vertex_id_t<Graph> source,
 
 
   // Distances
-  std::vector<distance_t> dist(num_vertices(graph), std::numeric_limits<distance_t>::max());
+  std::vector<distance_t> dist(num_vertices(graph), std::numeric_limits<distance_t>::max()/4);
 
   // Workqueue
   //  using WN = std::tuple<vertex_id_type, distance_t>;
