@@ -14,16 +14,6 @@
  *
  */
 
-//
-// This file is part of BGL17 (aka NWGraph aka GraphPack aka the Graph Standard Library)
-// (c) Pacific Northwest National Laboratory 2018
-//
-// Licensed under Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License
-// https://creativecommons.org/licenses/by-nc-sa/4.0/
-//
-// Author: Kevin Deweese
-//
-
 #include "nwgraph/adaptors/back_edge_range.hpp"
 #include "nwgraph/adaptors/filtered_bfs_range.hpp"
 #include "nwgraph/adaptors/reverse.hpp"
