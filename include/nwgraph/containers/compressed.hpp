@@ -538,6 +538,19 @@ public:    // fixme
     out << "\n+++\n";
   }
 
+  void stream_edge_list(std::ostream& out = std::cout) {
+    // stream simple edge list with no annotations 
+    // format: edge1 edge2
+    auto s = std::get<0>(to_be_indexed_).begin();
+
+    for (size_t i = 0; i < indices_.size() - 1; ++i) {
+
+      for (size_t j = indices_[i]; j < indices_[i + 1]; ++j) {
+        out << i << " " << s[j] << std::endl;
+      }
+    }
+  }
+
   void stream_stats(std::ostream& os = std::cout) const {
     int status = -4;
     std::cout << "% ";
