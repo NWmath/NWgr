@@ -171,8 +171,21 @@ public:
   // size_t length() const { return base::size(); }
   // auto max() const { return graph_base::vertex_cardinality; }
 
-  auto num_edges() const { return base::size(); }
-  auto num_vertices() const { return graph_base::vertex_cardinality; }
+
+  /**
+   * Return the number of edges in the edge list graph
+   */
+  auto num_edges() const {
+    return base::size();
+  }
+
+  /**
+   * Return the number of vertices in the edge list graph.  This will be the largest vertex id 
+   * among the edges (either source or target) in the edge list 
+   */
+  auto num_vertices() const {
+    return graph_base::vertex_cardinality;
+  }
 
   constexpr static const char magic[27] = "NW Graph index_edge_list";
 

@@ -110,6 +110,11 @@ public:
     outfile.write(reinterpret_cast<const char*>(base::data()), st_size * el_size);
   }
 
+  void serialize(const std::string& outfile_name) {
+    std::ofstream out_file(outfile_name, std::ofstream::binary);
+    serialize(out_file);
+  }
+
   void deserialize(std::istream& infile) {
     size_t st_size = -1;
     size_t el_size = -1;
@@ -118,6 +123,11 @@ public:
     infile.read(reinterpret_cast<char*>(&el_size), sizeof(size_t));
     base::resize(st_size);
     infile.read(reinterpret_cast<char*>(base::data()), st_size * el_size);
+  }
+
+  void deserialize(const std::string& infile_name) {
+    std::ifstream infile(infile_name, std::ifstream::binary);
+    deserialize(infile);
   }
 };
 }    // namespace graph

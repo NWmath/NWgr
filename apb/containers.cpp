@@ -175,20 +175,21 @@ void run_bench(int argc, char* argv[], EdgeList& el_a) {
 int main(int argc, char* argv[]) {
   std::vector<std::string> strings(argv + 1, argv + argc);
   auto                     args = docopt::docopt(USAGE, strings, true);
-  
+
   // Read the more complex options
-  std::string file    = args["-f"].asString();
+  std::string file = args["-f"].asString();
   std::cout << "processing " << file << "\n";
 
-  auto el_a   = load_graph<nw::graph::directedness::undirected, double>(file);
+  auto el_a = load_graph<nw::graph::directedness::undirected, double>(file);
 
-  std::vector formats   = args["--format"].asStringList();
+  std::vector formats = args["--format"].asStringList();
   for (auto& f : formats) {
     std::cout << f << " format" << std::endl;
     if ("CSR" == f) {
       run_bench<adjacency<0, double>>(argc, argv, el_a);
     } else if ("VOV" == f) {
-      run_bench<vov<0, double>>(argc, argv, el_a);
+      //      run_bench<vov<0, double>>(argc, argv, el_a);
+      run_bench<std::vector<std::vector<std::tuple<uint32_t, double>>>>(argc, argv, el_a);
     } else if ("VOL" == f) {
       run_bench<adj_list<0, double>>(argc, argv, el_a);
     } else if ("VOF" == f) {

@@ -31,7 +31,6 @@
 #include <vector>
 
 #include "nwgraph/util/arrow_proxy.hpp"
-#include "nwgraph/util/print_types.hpp"
 #include "nwgraph/util/util.hpp"
 
 #if defined(CL_SYCL_LANGUAGE_VERSION)
@@ -50,16 +49,16 @@ namespace nw {
 namespace graph {
 
 
-// Bare bones zipper of ranges 
+// Bare bones zipper of ranges
 
 template <std::ranges::random_access_range... Ranges>
 struct zipped : std::tuple<Ranges&...> {
   using storage_type = std::tuple<Ranges&...>;
   using base         = std::tuple<Ranges&...>;
 
-  using attributes_t = std::tuple<std::ranges::range_value_t<Ranges>...>;
+  using attributes_t       = std::tuple<std::ranges::range_value_t<Ranges>...>;
   using const_attributes_t = std::tuple<const std::ranges::range_value_t<Ranges>...>;
-  using attributes_r = std::tuple<std::ranges::range_reference_t<Ranges>...>;
+  using attributes_r       = std::tuple<std::ranges::range_reference_t<Ranges>...>;
   using const_attributes_r = std::tuple<const std::ranges::range_reference_t<Ranges>...>;
 
 
@@ -81,17 +80,19 @@ struct zipped : std::tuple<Ranges&...> {
 
     soa_iterator() = default;
 
-    explicit soa_iterator(soa_t* soa, std::size_t i = 0) : i_(i), soa_(soa) {}
+    explicit soa_iterator(soa_t* soa, std::size_t i = 0) : i_(i), soa_(soa) {
+    }
 
-    soa_iterator(soa_iterator&&) = default;
+    soa_iterator(soa_iterator&&)      = default;
     soa_iterator(const soa_iterator&) = default;
 
-    soa_iterator(const soa_iterator<false>& b) requires(is_const) : i_(b.i_), soa_(b.soa_) {}
+    soa_iterator(const soa_iterator<false>& b) requires(is_const) : i_(b.i_), soa_(b.soa_) {
+    }
 
     soa_iterator& operator=(const soa_iterator&) = default;
     soa_iterator& operator=(soa_iterator&&) = default;
 
-    soa_iterator& operator                       =(const soa_iterator<false>& b) requires(is_const) {
+    soa_iterator& operator=(const soa_iterator<false>& b) requires(is_const) {
       i_   = b.i_;
       soa_ = b.soa_;
       return *this;
@@ -100,8 +101,12 @@ struct zipped : std::tuple<Ranges&...> {
     bool operator==(const soa_iterator&) const  = default;
     auto operator<=>(const soa_iterator&) const = default;
 
-    soa_iterator operator++(int) { return soa_iterator(i_++, soa_); }
-    soa_iterator operator--(int) { return soa_iterator(i_--, soa_); }
+    soa_iterator operator++(int) {
+      return soa_iterator(i_++, soa_);
+    }
+    soa_iterator operator--(int) {
+      return soa_iterator(i_--, soa_);
+    }
 
     soa_iterator& operator++() {
       ++i_;
@@ -120,13 +125,23 @@ struct zipped : std::tuple<Ranges&...> {
       return *this;
     }
 
-    soa_iterator operator+(std::ptrdiff_t n) const { return soa_iterator(soa_, i_ + n); }
-    soa_iterator operator-(std::ptrdiff_t n) const { return soa_iterator(soa_, i_ - n); }
+    soa_iterator operator+(std::ptrdiff_t n) const {
+      return soa_iterator(soa_, i_ + n);
+    }
+    soa_iterator operator-(std::ptrdiff_t n) const {
+      return soa_iterator(soa_, i_ - n);
+    }
 
-    friend soa_iterator operator+(std::ptrdiff_t n, soa_iterator i) { return i + n; }
-    friend soa_iterator operator-(std::ptrdiff_t n, soa_iterator i) { return i - n; }
+    friend soa_iterator operator+(std::ptrdiff_t n, soa_iterator i) {
+      return i + n;
+    }
+    friend soa_iterator operator-(std::ptrdiff_t n, soa_iterator i) {
+      return i - n;
+    }
 
-    std::ptrdiff_t operator-(const soa_iterator& b) const { return i_ - b.i_; }
+    std::ptrdiff_t operator-(const soa_iterator& b) const {
+      return i_ - b.i_;
+    }
 
     reference operator*() const {
       return std::apply(
@@ -138,8 +153,12 @@ struct zipped : std::tuple<Ranges&...> {
           [this, n]<class... Vectors>(Vectors && ... v) { return reference(std::forward<Vectors>(v)[i_ + n]...); }, *soa_);
     }
 
-    pointer operator->() const { return {**this}; }
-    pointer operator->() { return {**this}; }
+    pointer operator->() const {
+      return {**this};
+    }
+    pointer operator->() {
+      return {**this};
+    }
   };
 
   using iterator = soa_iterator<false>;
@@ -165,14 +184,23 @@ struct zipped : std::tuple<Ranges&...> {
   // }
 
 
-  explicit zipped(Ranges&... rs) : base(std::forward_as_tuple(rs...)) { }
+  explicit zipped(Ranges&... rs) : base(std::forward_as_tuple(rs...)) {
+  }
 
-  iterator       begin() { return iterator(this); }
-  const_iterator begin() const { return const_iterator(this); }
+  iterator begin() {
+    return iterator(this);
+  }
+  const_iterator begin() const {
+    return const_iterator(this);
+  }
 
-  iterator end() { return begin() + size(); }
+  iterator end() {
+    return begin() + size();
+  }
 
-  const_iterator end() const { return begin() + size(); }
+  const_iterator end() const {
+    return begin() + size();
+  }
 
   reference operator[](std::size_t i) {
     return std::apply([&](auto&&... r) { return std::forward_as_tuple(std::forward<decltype(r)>(r)[i]...); }, *this);
@@ -264,27 +292,29 @@ struct zipped : std::tuple<Ranges&...> {
     std::apply([&](auto&... vs) { (permute(indices, new_indices, perm, vs), ...); }, *this);
   }
 
-  size_t size() const { return std::get<0>(*this).size(); }
+  size_t size() const {
+    return std::get<0>(*this).size();
+  }
 
-  bool operator==(zipped& a) { return std::equal(std::execution::par, begin(), end(), a.begin()); }
+  bool operator==(zipped& a) {
+    return std::equal(std::execution::par, begin(), end(), a.begin());
+  }
 
-  bool operator!=(const storage_type& a) { return !operator==(a); }
+  bool operator!=(const storage_type& a) {
+    return !operator==(a);
+  }
 };
 
 
 template <std::ranges::random_access_range... Ranges>
 zipped<Ranges...> make_zipped(Ranges&... rs) {
-  return zipped<Ranges...>( rs... );
+  return zipped<Ranges...>(rs...);
 }
 
 template <std::ranges::random_access_range... Ranges>
 zipped<Ranges...> make_zipped(Ranges&&... rs) {
-  return zipped<Ranges...>(  rs... );
+  return zipped<Ranges...>(rs...);
 }
-
-
-
-
 
 
 }    // namespace graph

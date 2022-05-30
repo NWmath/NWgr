@@ -14,15 +14,15 @@
  *
  */
 
-// 
-// This file is part of NW Graph (aka GraphPack) 
-// (c) Pacific Northwest National Laboratory 2018-2021 
-// (c) University of Washington 2018-2021 
-// 
-// Licensed under terms of include LICENSE file 
-// 
-// Authors: 
-//     Andrew Lumsdaine	
+//
+// This file is part of NW Graph (aka GraphPack)
+// (c) Pacific Northwest National Laboratory 2018-2021
+// (c) University of Washington 2018-2021
+//
+// Licensed under terms of include LICENSE file
+//
+// Authors:
+//     Andrew Lumsdaine
 //     Xu Tony Liu
 //
 
@@ -43,7 +43,6 @@
 #include <vector>
 
 #include "nwgraph/util/arrow_proxy.hpp"
-#include "nwgraph/util/print_types.hpp"
 #include "nwgraph/util/util.hpp"
 
 #if defined(CL_SYCL_LANGUAGE_VERSION)
@@ -81,10 +80,12 @@ struct struct_of_arrays : std::tuple<std::vector<Attributes>...> {
 
     soa_iterator() = default;
 
-    explicit soa_iterator(soa_t* soa, std::size_t i = 0) : i_(i), soa_(soa) {}
+    explicit soa_iterator(soa_t* soa, std::size_t i = 0) : i_(i), soa_(soa) {
+    }
 
     soa_iterator(const soa_iterator&) = default;
-    soa_iterator(const soa_iterator<false>& b) requires(is_const) : i_(b.i_), soa_(b.soa_) {}
+    soa_iterator(const soa_iterator<false>& b) requires(is_const) : i_(b.i_), soa_(b.soa_) {
+    }
 
     soa_iterator& operator=(const soa_iterator&) = default;
     soa_iterator& operator                       =(const soa_iterator<false>& b) requires(is_const) {
@@ -96,8 +97,12 @@ struct struct_of_arrays : std::tuple<std::vector<Attributes>...> {
     bool operator==(const soa_iterator&) const  = default;
     auto operator<=>(const soa_iterator&) const = default;
 
-    soa_iterator operator++(int) { return soa_iterator(i_++, soa_); }
-    soa_iterator operator--(int) { return soa_iterator(i_--, soa_); }
+    soa_iterator operator++(int) {
+      return soa_iterator(i_++, soa_);
+    }
+    soa_iterator operator--(int) {
+      return soa_iterator(i_--, soa_);
+    }
 
     soa_iterator& operator++() {
       ++i_;
@@ -116,13 +121,23 @@ struct struct_of_arrays : std::tuple<std::vector<Attributes>...> {
       return *this;
     }
 
-    soa_iterator operator+(std::ptrdiff_t n) const { return soa_iterator(soa_, i_ + n); }
-    soa_iterator operator-(std::ptrdiff_t n) const { return soa_iterator(soa_, i_ - n); }
+    soa_iterator operator+(std::ptrdiff_t n) const {
+      return soa_iterator(soa_, i_ + n);
+    }
+    soa_iterator operator-(std::ptrdiff_t n) const {
+      return soa_iterator(soa_, i_ - n);
+    }
 
-    std::ptrdiff_t operator-(const soa_iterator& b) const { return i_ - b.i_; }
+    std::ptrdiff_t operator-(const soa_iterator& b) const {
+      return i_ - b.i_;
+    }
 
-    friend soa_iterator operator+(std::ptrdiff_t n, soa_iterator i) { return i + n; }
-    friend soa_iterator operator-(std::ptrdiff_t n, soa_iterator i) { return i - n; }
+    friend soa_iterator operator+(std::ptrdiff_t n, soa_iterator i) {
+      return i + n;
+    }
+    friend soa_iterator operator-(std::ptrdiff_t n, soa_iterator i) {
+      return i - n;
+    }
 
 
     reference operator*() const {
@@ -135,8 +150,12 @@ struct struct_of_arrays : std::tuple<std::vector<Attributes>...> {
           [this, n]<class... Vectors>(Vectors && ... v) { return reference(std::forward<Vectors>(v)[i_ + n]...); }, *soa_);
     }
 
-    pointer operator->() const { return {**this}; }
-    pointer operator->() { return {**this}; }
+    pointer operator->() const {
+      return {**this};
+    }
+    pointer operator->() {
+      return {**this};
+    }
   };
 
   using iterator = soa_iterator<false>;
@@ -155,29 +174,54 @@ struct struct_of_arrays : std::tuple<std::vector<Attributes>...> {
   using const_reverse_iterator = std::reverse_iterator<const_iterator>;
 
   struct_of_arrays() = default;
-  struct_of_arrays(size_t M) : base(std::vector<Attributes>(M)...) {}
-  explicit struct_of_arrays(std::vector<Attributes>&&... l) : base(std::move(l)...) {}
-  explicit struct_of_arrays(const std::vector<Attributes>&... l) : base(l...) {}
-  struct_of_arrays(std::tuple<std::vector<Attributes>...>&& l) : base(std::move(l)) {}
-  struct_of_arrays(const std::tuple<std::vector<Attributes>...>& l) : base(l) {}
+  struct_of_arrays(size_t M) : base(std::vector<Attributes>(M)...) {
+  }
+  explicit struct_of_arrays(std::vector<Attributes>&&... l) : base(std::move(l)...) {
+  }
+  explicit struct_of_arrays(const std::vector<Attributes>&... l) : base(l...) {
+  }
+  struct_of_arrays(std::tuple<std::vector<Attributes>...>&& l) : base(std::move(l)) {
+  }
+  struct_of_arrays(const std::tuple<std::vector<Attributes>...>& l) : base(l) {
+  }
   struct_of_arrays(std::initializer_list<value_type> l) {
     for_each(l.begin(), l.end(), [&](value_type x) { push_back(x); });
   }
 
-  iterator       begin()        { return iterator(this); }
-  const_iterator begin()  const { return const_iterator(this); }
-  const_iterator cbegin() const { return const_iterator(this); }
+  iterator begin() {
+    return iterator(this);
+  }
+  const_iterator begin() const {
+    return const_iterator(this);
+  }
+  const_iterator cbegin() const {
+    return const_iterator(this);
+  }
 
-  iterator end()              { return begin() + size(); }
-  const_iterator end()  const { return begin() + size(); }
-  const_iterator cend() const { return begin() + size(); }
+  iterator end() {
+    return begin() + size();
+  }
+  const_iterator end() const {
+    return begin() + size();
+  }
+  const_iterator cend() const {
+    return begin() + size();
+  }
 
   reference operator[](std::size_t i) {
-    return std::apply([&](auto&&... r) { return std::forward_as_tuple(std::forward<decltype(r)>(r)[i]...); }, *this);
+    return std::apply([&](auto&... r) { return std::forward_as_tuple(std::forward<decltype(r)>(r)[i]...); }, *this);
   }
 
   const_reference operator[](std::size_t i) const {
-    return std::apply([&](auto&&... r) { return std::forward_as_tuple(std::forward<decltype(r)>(r)[i]...); }, *this);
+    return std::apply([&](auto&... r) { return std::forward_as_tuple(std::forward<decltype(r)>(r)[i]...); }, *this);
+  }
+
+  constexpr pointer data() noexcept {
+    return std::apply([&](auto&... p) { return std::forward_as_tuple(std::forward<decltype(p)>(p).data()...); }, *this);
+  }
+
+  constexpr const_pointer data() const noexcept {
+    return std::apply([&](auto&... p) { return std::forward_as_tuple(std::forward<decltype(p)>(p).data()...); }, *this);
   }
 
   void move(std::vector<Attributes>&&... attrs) {
@@ -250,6 +294,11 @@ struct struct_of_arrays : std::tuple<std::vector<Attributes>...> {
     std::apply([&](auto&... vs) { (serialize(outfile, vs), ...); }, *this);
   }
 
+  void serialize(const std::string& outfile_name) {
+    std::ofstream out_file(outfile_name, std::ofstream::binary);
+    serialize(out_file);
+  }
+
   void deserialize(std::istream& infile) {
     size_t st_size = -1;
     size_t el_size = -1;
@@ -257,6 +306,11 @@ struct struct_of_arrays : std::tuple<std::vector<Attributes>...> {
     infile.read(reinterpret_cast<char*>(&el_size), sizeof(size_t));
     resize(st_size);
     std::apply([&](auto&... vs) { (deserialize(infile, vs), ...); }, *this);
+  }
+
+  void deserialize(const std::string& infile_name) {
+    std::ifstream infile(infile_name, std::ifstream::binary);
+    deserialize(infile);
   }
 
   template <typename index_t, typename vertex_id_type, class T, class ExecutionPolicy = std::execution::parallel_unsequenced_policy>
@@ -275,11 +329,17 @@ struct struct_of_arrays : std::tuple<std::vector<Attributes>...> {
     std::apply([&](auto&... vs) { (permute(indices, new_indices, perm, vs), ...); }, *this);
   }
 
-  size_t size() const { return std::get<0>(*this).size(); }
+  size_t size() const {
+    return std::get<0>(*this).size();
+  }
 
-  bool operator==(struct_of_arrays& a) { return std::equal(std::execution::par, begin(), end(), a.begin()); }
+  bool operator==(struct_of_arrays& a) {
+    return std::equal(std::execution::par, begin(), end(), a.begin());
+  }
 
-  bool operator!=(const storage_type& a) { return !operator==(a); }
+  bool operator!=(const storage_type& a) {
+    return !operator==(a);
+  }
 };
 
 }    // namespace graph

@@ -15,8 +15,6 @@
 #ifndef NW_GRAPH_BUILD_HPP
 #define NW_GRAPH_BUILD_HPP
 
-#include "util/print_types.hpp"
-
 #include "nwgraph/util/proxysort.hpp"
 
 #include "nwgraph/graph_base.hpp"
@@ -27,18 +25,17 @@
 #include <cassert>
 #include <execution>
 #include <iostream>
+#include <map>
 #include <string>
 #include <tuple>
 #include <type_traits>
 #include <utility>
 #include <vector>
-#include <map>
 
 
 #include "graph_concepts.hpp"
 
 #include "nwgraph/containers/zip.hpp"
-
 
 
 namespace nw {
@@ -107,30 +104,14 @@ void push_back_fill(const EdgeList& edge_list, Adjacency& adj, bool directed, si
 
   for (auto&& e : edge_list) {
     if (0 == idx) {
-      std::apply(
-          [&](auto... properties) {
-            adj[std::get<0>(e)].emplace_back(std::get<1>(e), properties...);
-          },
-          props(e));
+      std::apply([&](auto... properties) { adj[std::get<0>(e)].emplace_back(std::get<1>(e), properties...); }, props(e));
       if (!directed) {
-        std::apply(
-            [&](auto... properties) {
-              adj[std::get<1>(e)].emplace_back(std::get<0>(e), properties...);
-            },
-            props(e));
+        std::apply([&](auto... properties) { adj[std::get<1>(e)].emplace_back(std::get<0>(e), properties...); }, props(e));
       }
     } else {
-      std::apply(
-          [&](auto... properties) {
-            adj[std::get<1>(e)].emplace_back(std::get<0>(e), properties...);
-          },
-          props(e));
+      std::apply([&](auto... properties) { adj[std::get<1>(e)].emplace_back(std::get<0>(e), properties...); }, props(e));
       if (!directed) {
-        std::apply(
-            [&](auto... properties) {
-              adj[std::get<0>(e)].emplace_back(std::get<1>(e), properties...);
-            },
-            props(e));
+        std::apply([&](auto... properties) { adj[std::get<0>(e)].emplace_back(std::get<1>(e), properties...); }, props(e));
       }
     }
   }
@@ -178,10 +159,9 @@ void permute_helper_all(edge_list_t& el, adjacency_t& cs, std::index_sequence<Is
 }
 
 
-
 template <edge_list_graph edge_list_t, adjacency_list_graph adjacency_t, class T, class Perm, size_t... Is>
 void permute_helper(edge_list_t& el, adjacency_t& cs, std::index_sequence<Is...> is, T& Tmp, Perm& perm) {
-  (..., (permute(std::get<Is + 2>(dynamic_cast<typename edge_list_t::base&>(Tmp)),std::get<Is + 1>(cs.to_be_indexed_), perm)));
+  (..., (permute(std::get<Is + 2>(dynamic_cast<typename edge_list_t::base&>(Tmp)), std::get<Is + 1>(cs.to_be_indexed_), perm)));
 }
 
 
@@ -193,11 +173,13 @@ void fill_helper(edge_list_t& el, adjacency_t& cs, std::index_sequence<Is...> is
 
 template <edge_list_graph edge_list_t, adjacency_list_graph adjacency_t, class ExecutionPolicy = default_execution_policy, size_t... Is>
 void copy_helper(edge_list_t& el, adjacency_t& cs, std::index_sequence<Is...> is, size_t offset, ExecutionPolicy&& policy = {}) {
-  (..., (std::copy(policy, std::get<Is + 2>(dynamic_cast<typename edge_list_t::base&>(el)).begin(),
-                   std::get<Is + 2>(dynamic_cast<typename edge_list_t::base&>(el)).end(), std::get<Is + 1>(cs.to_be_indexed_).begin()+offset)));
+  (...,
+   (std::copy(policy, std::get<Is + 2>(dynamic_cast<typename edge_list_t::base&>(el)).begin(),
+              std::get<Is + 2>(dynamic_cast<typename edge_list_t::base&>(el)).end(), std::get<Is + 1>(cs.to_be_indexed_).begin() + offset)));
 }
 
-template <edge_list_graph edge_list_t, adjacency_list_graph adjacency_t, class T, class ExecutionPolicy = default_execution_policy, size_t... Is>
+template <edge_list_graph edge_list_t, adjacency_list_graph adjacency_t, class T, class ExecutionPolicy = default_execution_policy,
+          size_t... Is>
 void fill_helper_tmp(edge_list_t& el, adjacency_t& cs, std::index_sequence<Is...> is, T& Tmp, ExecutionPolicy&& policy = {}) {
   (..., (std::copy(policy, std::get<Is + 2>(dynamic_cast<typename edge_list_t::base&>(Tmp)).begin(),
                    std::get<Is + 2>(dynamic_cast<typename edge_list_t::base&>(Tmp)).end(), std::get<Is + 1>(cs.to_be_indexed_).begin())));
@@ -233,7 +215,7 @@ void fill_directed(edge_list_t& el, Int N, adjacency_t& cs, ExecutionPolicy&& po
   cs.indices_[0] = 0;
   std::inclusive_scan(policy, degree.begin(), degree.end(), cs.indices_.begin() + 1);
   cs.to_be_indexed_.resize(el.size());
-  
+
 #if 0
 
   sort_by<idx>(el);  // Need to do this in a way that will let us have const el
@@ -260,8 +242,8 @@ void fill_directed(edge_list_t& el, Int N, adjacency_t& cs, ExecutionPolicy&& po
   // Better yet
   const int kdx = (idx + 1) % 2;
   std::copy(policy, std::get<kdx>(dynamic_cast<typename edge_list_t::base&>(el)).begin(),
-	    std::get<kdx>(dynamic_cast<typename edge_list_t::base&>(el)).end(), std::get<0>(cs.to_be_indexed_).begin());
-  
+            std::get<kdx>(dynamic_cast<typename edge_list_t::base&>(el)).end(), std::get<0>(cs.to_be_indexed_).begin());
+
   // Copy properties
   if constexpr (std::tuple_size<typename edge_list_t::attributes_t>::value > 0) {
     fill_helper(el, cs, std::make_integer_sequence<size_t, std::tuple_size<typename edge_list_t::attributes_t>::value>(), policy);
@@ -277,7 +259,7 @@ void fill_directed(edge_list_t& el, Int N, adjacency_t& cs, ExecutionPolicy&& po
   //	    std::get<kdx>(dynamic_cast<typename edge_list_t::base&>(el)).end(), tmp.begin());
 
   auto a = make_zipped(tmp, cs.to_be_indexed_);
-  std::sort(policy, a.begin(), a.end(), [](auto &&a, auto&&b) { return std::get<0>(a) < std::get<0>(b); });
+  std::sort(policy, a.begin(), a.end(), [](auto&& a, auto&& b) { return std::get<0>(a) < std::get<0>(b); });
 
 #endif
 }
@@ -292,24 +274,24 @@ void fill_undirected(edge_list_t& el, Int N, adjacency_t& cs, ExecutionPolicy&& 
 
   using vertex_id_type = vertex_id_t<edge_list_t>;
 
-  std::vector<vertex_id_type> Tmp(2*el.size());
-  const int kdx = (idx + 1) % 2;
+  std::vector<vertex_id_type> Tmp(2 * el.size());
+  const int                   kdx = (idx + 1) % 2;
 
   std::copy(policy, std::get<idx>(el).begin(), std::get<idx>(el).end(), Tmp.begin());
-  std::copy(policy, std::get<kdx>(el).begin(), std::get<kdx>(el).end(), Tmp.begin()+el.size());
+  std::copy(policy, std::get<kdx>(el).begin(), std::get<kdx>(el).end(), Tmp.begin() + el.size());
 
   {
     std::vector<vertex_id_type> degrees(N);
     cs.indices_.resize(N + 1);
     cs.indices_[0] = 0;
-    std::for_each(/* policy, */  Tmp.begin(), Tmp.end(), [&](auto&& i) { ++degrees[i]; });
+    std::for_each(/* policy, */ Tmp.begin(), Tmp.end(), [&](auto&& i) { ++degrees[i]; });
     std::inclusive_scan(policy, degrees.begin(), degrees.end(), cs.indices_.begin() + 1);
   }
 
   cs.to_be_indexed_.resize(Tmp.size());
 
   std::copy(policy, std::get<kdx>(el).begin(), std::get<kdx>(el).end(), std::get<0>(cs.to_be_indexed_).begin());
-  std::copy(policy, std::get<idx>(el).begin(), std::get<idx>(el).end(), std::get<0>(cs.to_be_indexed_).begin()+el.size());
+  std::copy(policy, std::get<idx>(el).begin(), std::get<idx>(el).end(), std::get<0>(cs.to_be_indexed_).begin() + el.size());
 
   if constexpr (std::tuple_size<typename edge_list_t::attributes_t>::value > 0) {
     copy_helper(el, cs, std::make_integer_sequence<size_t, std::tuple_size<typename edge_list_t::attributes_t>::value>(), 0, policy);
@@ -319,24 +301,24 @@ void fill_undirected(edge_list_t& el, Int N, adjacency_t& cs, ExecutionPolicy&& 
   }
 
   auto a = make_zipped(Tmp, cs.to_be_indexed_);
-  std::sort(policy, a.begin(), a.end(), [](auto &&a, auto&&b) { return std::get<0>(a) < std::get<0>(b); });
+  std::sort(policy, a.begin(), a.end(), [](auto&& a, auto&& b) { return std::get<0>(a) < std::get<0>(b); });
 
-#else  
+#else
 
 
   typename edge_list_t::directed_type Tmp(N);    // directedness doesn't matter for the Tmp, so just use same type as el
                                                  // EXCEPT -- degrees does something different if undirected
 
   Tmp.resize(2 * el.size());
-  
+
   std::copy(policy, el.begin(), el.end(), Tmp.begin());
-  
+
   std::transform(policy, el.begin(), el.end(), Tmp.begin() + el.size(), [&](auto&& elt) {
     auto flt = elt;
     std::swap(std::get<0>(flt), std::get<1>(flt));
     return flt;
   });
-  
+
   sort_by<idx>(Tmp);    // stable_sort may allocate extra memory
 
   {
@@ -346,11 +328,11 @@ void fill_undirected(edge_list_t& el, Int N, adjacency_t& cs, ExecutionPolicy&& 
   }
 
   cs.to_be_indexed_.resize(Tmp.size());
-  
+
   const int kdx = (idx + 1) % 2;
   std::copy(policy, std::get<kdx>(dynamic_cast<typename edge_list_t::base&>(Tmp)).begin(),
-	    std::get<kdx>(dynamic_cast<typename edge_list_t::base&>(Tmp)).end(), std::get<0>(cs.to_be_indexed_).begin());
-  
+            std::get<kdx>(dynamic_cast<typename edge_list_t::base&>(Tmp)).end(), std::get<0>(cs.to_be_indexed_).begin());
+
   if constexpr (std::tuple_size<typename edge_list_t::attributes_t>::value > 0) {
     fill_helper_tmp(el, cs, std::make_integer_sequence<size_t, std::tuple_size<typename edge_list_t::attributes_t>::value>(), Tmp, policy);
   }
@@ -461,10 +443,10 @@ void remove_self_loops(edge_list_t& el) {
 }
 
 
-template<degree_enumerable_graph Graph, class ExecutionPolicy = default_execution_policy>
+template <degree_enumerable_graph Graph, class ExecutionPolicy = default_execution_policy>
 auto degrees(const Graph& graph, ExecutionPolicy&& policy = {}) {
   std::vector<vertex_id_t<Graph>> degree_v(num_vertices(graph));
-  
+
   tbb::parallel_for(tbb::blocked_range(0ul, degree_v.size()), [&](auto&& r) {
     for (auto i = r.begin(), e = r.end(); i != e; ++i) {
       degree_v[i] = degree(graph[i]);
@@ -475,8 +457,8 @@ auto degrees(const Graph& graph, ExecutionPolicy&& policy = {}) {
 
 
 template <int d_idx = 0, edge_list_graph edge_list_t, class ExecutionPolicy = default_execution_policy>
-requires(is_unipartite<typename edge_list_t::unipartite_graph_base>::value)
-auto degrees(edge_list_t& el, ExecutionPolicy&& policy = {}) requires(!degree_enumerable_graph<edge_list_t>) {
+requires(is_unipartite<typename edge_list_t::unipartite_graph_base>::value) auto degrees(
+    edge_list_t& el, ExecutionPolicy&& policy = {}) requires(!degree_enumerable_graph<edge_list_t>) {
 
   size_t d_size = 0;
   if constexpr (is_unipartite<typename edge_list_t::unipartite_graph_base>::value) {
@@ -487,7 +469,7 @@ auto degrees(edge_list_t& el, ExecutionPolicy&& policy = {}) requires(!degree_en
     d_size = num_vertices(el, d_idx);
   }
   using vertex_id_type = typename edge_list_t::vertex_id_type;
-  
+
   std::vector<vertex_id_type> degree(d_size);
 
   if constexpr (edge_list_t::edge_directedness == directedness::directed) {
@@ -511,12 +493,12 @@ auto degrees(edge_list_t& el, ExecutionPolicy&& policy = {}) requires(!degree_en
 
 //for bipartite graph
 template <int d_idx, edge_list_graph edge_list_t, class ExecutionPolicy = default_execution_policy>
-requires(false == is_unipartite<typename edge_list_t::bipartite_graph_base>::value)
-auto degrees(edge_list_t& el, ExecutionPolicy&& policy = {}) requires(!degree_enumerable_graph<edge_list_t>) {
+requires(false == is_unipartite<typename edge_list_t::bipartite_graph_base>::value) auto degrees(
+    edge_list_t& el, ExecutionPolicy&& policy = {}) requires(!degree_enumerable_graph<edge_list_t>) {
 
-  size_t d_size = num_vertices(el, d_idx);
+  size_t d_size        = num_vertices(el, d_idx);
   using vertex_id_type = typename edge_list_t::vertex_id_type;
-  
+
   std::vector<vertex_id_type> degree(d_size);
 
   if constexpr (edge_list_t::edge_directedness == directedness::directed) {
@@ -525,7 +507,6 @@ auto degrees(edge_list_t& el, ExecutionPolicy&& policy = {}) requires(!degree_en
     std::for_each(policy, el.begin(), el.end(), [&](auto&& x) { ++tmp[std::get<d_idx>(x)]; });
 
     std::copy(policy, tmp.begin(), tmp.end(), degree.begin());
-
   }
   return degree;
 }
@@ -572,8 +553,8 @@ auto perm_by_degree(edge_list_t& el, const Vector& degree, std::string direction
  * @return the new IDs of the vertices after permutation
  */
 template <edge_list_graph edge_list_t, class Vector, class ExecutionPolicy = default_execution_policy>
-requires(true == is_unipartite<typename edge_list_t::unipartite_graph_base>::value)
-auto relabel(edge_list_t& el, const Vector& perm, ExecutionPolicy&& policy = {}) {
+requires(true == is_unipartite<typename edge_list_t::unipartite_graph_base>::value) auto relabel(edge_list_t& el, const Vector& perm,
+                                                                                                 ExecutionPolicy&& policy = {}) {
   std::vector<typename edge_list_t::vertex_id_type> iperm(perm.size());
 
   tbb::parallel_for(tbb::blocked_range(0ul, iperm.size()), [&](auto&& r) {
@@ -602,8 +583,8 @@ auto relabel(edge_list_t& el, const Vector& perm, ExecutionPolicy&& policy = {})
  * @return the new IDs of the vertices after permutation
  */
 template <int idx, edge_list_graph edge_list_t, class Vector, class ExecutionPolicy = default_execution_policy>
-requires(false == is_unipartite<typename edge_list_t::bipartite_graph_base>::value)
-auto relabel(edge_list_t& el, const Vector& perm, ExecutionPolicy&& policy = {}) {
+requires(false == is_unipartite<typename edge_list_t::bipartite_graph_base>::value) auto relabel(edge_list_t& el, const Vector& perm,
+                                                                                                 ExecutionPolicy&& policy = {}) {
   std::vector<typename edge_list_t::vertex_id_type> iperm(perm.size());
 
   tbb::parallel_for(tbb::blocked_range(0ul, iperm.size()), [&](auto&& r) {
@@ -612,9 +593,7 @@ auto relabel(edge_list_t& el, const Vector& perm, ExecutionPolicy&& policy = {})
     }
   });
 
-  std::for_each(policy, el.begin(), el.end(), [&](auto&& x) {
-    std::get<idx>(x) = iperm[std::get<idx>(x)];
-  });
+  std::for_each(policy, el.begin(), el.end(), [&](auto&& x) { std::get<idx>(x) = iperm[std::get<idx>(x)]; });
   return iperm;
 }
 
@@ -628,8 +607,9 @@ auto relabel(edge_list_t& el, const Vector& perm, ExecutionPolicy&& policy = {})
  * @param degree, the degree array
  */
 template <edge_list_graph edge_list_t, class Vector = std::vector<int>>
-requires(is_unipartite<typename edge_list_t::unipartite_graph_base>::value)
-void relabel_by_degree(edge_list_t& el, std::string direction = "ascending", const Vector& degree = std::vector<int>(0)) {
+requires(is_unipartite<typename edge_list_t::unipartite_graph_base>::value) void relabel_by_degree(edge_list_t&  el,
+                                                                                                   std::string   direction = "ascending",
+                                                                                                   const Vector& degree = std::vector<int>(0)) {
 
   std::vector<typename edge_list_t::vertex_id_type> perm =
       degree.size() == 0 ? perm_by_degree<0>(el, direction) : perm_by_degree<0>(el, degree, direction);
@@ -649,12 +629,13 @@ void relabel_by_degree(edge_list_t& el, std::string direction = "ascending", con
  * @return the new IDs of the vertices after permutation
  */
 template <int idx, edge_list_graph edge_list_t, class Vector = std::vector<int>>
-requires(is_unipartite<typename edge_list_t::unipartite_graph_base>::value)
-auto relabel_by_degree(edge_list_t& el, std::string direction = "ascending", const Vector& degree = std::vector<int>(0)) {
+requires(is_unipartite<typename edge_list_t::unipartite_graph_base>::value) auto relabel_by_degree(edge_list_t&  el,
+                                                                                                   std::string   direction = "ascending",
+                                                                                                   const Vector& degree = std::vector<int>(0)) {
 
   std::vector<typename edge_list_t::vertex_id_type> perm =
       degree.size() == 0 ? perm_by_degree<idx>(el, direction) : perm_by_degree<idx>(el, degree, direction);
-  if constexpr (true == is_unipartite<typename edge_list_t::unipartite_graph_base>::value) {  // Compress idx
+  if constexpr (true == is_unipartite<typename edge_list_t::unipartite_graph_base>::value) {    // Compress idx
     //unipartite graph relabels both endpoints of the edge
     return relabel(el, perm);
     //return perm;
@@ -681,9 +662,8 @@ auto make_index_map(const R& range) {
 /**
  * Make an edge list without properties from original data, e.g., vector<tuple<size_t, size_t>>
  */
-template <class M, std::ranges::random_access_range E, 
-class Edge = decltype(std::tuple_cat(std::tuple<size_t, size_t>())),
-class EdgeList = std::vector<Edge>>
+template <class M, std::ranges::random_access_range E, class Edge = decltype(std::tuple_cat(std::tuple<size_t, size_t>())),
+          class EdgeList = std::vector<Edge>>
 auto make_plain_edges(M& map, const E& edges) {
   EdgeList index_edges;
 
@@ -697,8 +677,7 @@ auto make_plain_edges(M& map, const E& edges) {
 /**
  * Make an edge list with properties copied from original data, e.g., vector<tuple<size_t, size_t, props...>>
  */
-template <class M, std::ranges::random_access_range E,
-          class Edge = decltype(std::tuple_cat(std::tuple<size_t, size_t>(), props(E()[0]))),
+template <class M, std::ranges::random_access_range E, class Edge = decltype(std::tuple_cat(std::tuple<size_t, size_t>(), props(E()[0]))),
           class EdgeList = std::vector<Edge>>
 auto make_property_edges(M& map, const E& edges) {
   EdgeList index_edges;
